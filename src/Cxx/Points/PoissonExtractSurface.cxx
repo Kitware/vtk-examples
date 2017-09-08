@@ -6,8 +6,10 @@
 #include <vtkSTLReader.h>
 #include <vtkPointSource.h>
 
-#include <vtkPowerCrustSurfaceReconstruction.h>
+#include <vtkPoissonReconstruction.h>
+#include <vtkPCANormalEstimation.h>
 
+#include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
@@ -28,9 +30,31 @@ int main (int argc, char *argv[])
   vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");;
   std::cout << "# of points: " << polyData->GetNumberOfPoints() << std::endl;
 
-  vtkSmartPointer<vtkPowerCrustSurfaceReconstruction> surface =
-    vtkSmartPointer<vtkPowerCrustSurfaceReconstruction>::New();
-  surface->SetInputData (polyData);
+  vtkSmartPointer<vtkPoissonReconstruction> surface =
+    vtkSmartPointer<vtkPoissonReconstruction>::New();
+  surface->SetDepth(12);
+
+  int sampleSize = polyData->GetNumberOfPoints() * .00005;
+  if (sampleSize < 10)
+  {
+    sampleSize = 10;
+  }
+  if (polyData->GetPointData()->GetNormals())
+  {
+    std::cout << "Using normals from input file" << std::endl;
+    surface->SetInputData (polyData);
+  }
+  else
+  {
+    std::cout << "Estimating normals using PCANormalEstimation" << std::endl;
+    vtkSmartPointer<vtkPCANormalEstimation> normals =
+      vtkSmartPointer<vtkPCANormalEstimation>::New();
+    normals->SetInputData (polyData);
+    normals->SetSampleSize(sampleSize);
+    normals->SetNormalOrientationToGraphTraversal();
+    normals->FlipNormalsOff();
+    surface->SetInputConnection(normals->GetOutputPort());
+  }
 
   vtkSmartPointer<vtkPolyDataMapper> surfaceMapper =
     vtkSmartPointer<vtkPolyDataMapper>::New();
