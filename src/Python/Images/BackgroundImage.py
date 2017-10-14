@@ -10,12 +10,15 @@ tested with:
 >>> python background_image.py image_filename.jpg
 """
 from __future__ import print_function
+
 import sys
+
 from vtk import (
     vtkJPEGReader, vtkImageCanvasSource2D, vtkImageActor, vtkPolyDataMapper,
     vtkRenderer, vtkRenderWindow, vtkRenderWindowInteractor, vtkSuperquadricSource,
     vtkActor, VTK_MAJOR_VERSION
 )
+
 
 def main(argv):
     #  Verify input arguments
@@ -97,8 +100,8 @@ def main(argv):
     camera = background_renderer.GetActiveCamera()
     camera.ParallelProjectionOn()
 
-    xc = origin[0] + 0.5*(extent[0] + extent[1]) * spacing[0]
-    yc = origin[1] + 0.5*(extent[2] + extent[3]) * spacing[1]
+    xc = origin[0] + 0.5 * (extent[0] + extent[1]) * spacing[0]
+    yc = origin[1] + 0.5 * (extent[2] + extent[3]) * spacing[1]
     # xd = (extent[1] - extent[0] + 1) * spacing[0]
     yd = (extent[3] - extent[2] + 1) * spacing[1]
     d = camera.GetDistance()

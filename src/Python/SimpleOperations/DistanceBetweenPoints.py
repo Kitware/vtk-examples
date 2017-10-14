@@ -1,11 +1,13 @@
 from __future__ import print_function
-import vtk
+
 import math
 
-p0 = (0,0,0)
-p1 = (1,1,1)
+import vtk
 
-distSquared = vtk.vtkMath.Distance2BetweenPoints(p0,p1)
+p0 = (0, 0, 0)
+p1 = (1, 1, 1)
+
+distSquared = vtk.vtkMath.Distance2BetweenPoints(p0, p1)
 
 dist = math.sqrt(distSquared)
 

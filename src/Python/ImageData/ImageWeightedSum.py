@@ -6,16 +6,16 @@ import vtk
 source1 = vtk.vtkImageMandelbrotSource()
 source1.SetWholeExtent(0, 255, 0, 255, 0, 0)
 source1.Update()
- 
+
 source1Double = vtk.vtkImageCast()
 source1Double.SetInputConnection(0, source1.GetOutputPort())
 source1Double.SetOutputScalarTypeToDouble()
- 
+
 # Create image 2
 source2 = vtk.vtkImageSinusoidSource()
 source2.SetWholeExtent(0, 255, 0, 255, 0, 0)
 source2.Update()
- 
+
 # Do the sum
 sumFilter = vtk.vtkImageWeightedSum()
 sumFilter.SetWeight(0, 0.8)
@@ -39,13 +39,13 @@ summedCastFilter = vtk.vtkImageCast()
 summedCastFilter.SetInputConnection(sumFilter.GetOutputPort())
 summedCastFilter.SetOutputScalarTypeToUnsignedChar()
 summedCastFilter.Update()
- 
+
 # Create actors
 source1Actor = vtk.vtkImageActor()
 if vtk.VTK_MAJOR_VERSION <= 5:
-  source1Actor.SetInput(source1CastFilter.GetOutput())
+    source1Actor.SetInput(source1CastFilter.GetOutput())
 else:
-  source1Actor.GetMapper().SetInputConnection(source1CastFilter.GetOutputPort())
+    source1Actor.GetMapper().SetInputConnection(source1CastFilter.GetOutputPort())
 
 source2Actor = vtk.vtkImageActor()
 if vtk.VTK_MAJOR_VERSION <= 5:
@@ -58,27 +58,27 @@ if vtk.VTK_MAJOR_VERSION <= 5:
     summedActor.SetInput(summedCastFilter.GetOutput())
 else:
     summedActor.GetMapper().SetInputConnection(summedCastFilter.GetOutputPort())
- 
+
 # There will be one render window
 renderWindow = vtk.vtkRenderWindow()
 renderWindow.SetSize(600, 300)
- 
+
 # And one interactor
 interactor = vtk.vtkRenderWindowInteractor()
 interactor.SetRenderWindow(renderWindow)
- 
+
 # Define viewport ranges
 # (xmin, ymin, xmax, ymax)
 leftViewport = [0.0, 0.0, 0.33, 1.0]
 centerViewport = [0.33, 0.0, .66, 1.0]
 rightViewport = [0.66, 0.0, 1.0, 1.0]
- 
+
 # Setup renderers
 leftRenderer = vtk.vtkRenderer()
 renderWindow.AddRenderer(leftRenderer)
 leftRenderer.SetViewport(leftViewport)
 leftRenderer.SetBackground(.6, .5, .4)
- 
+
 centerRenderer = vtk.vtkRenderer()
 renderWindow.AddRenderer(centerRenderer)
 centerRenderer.SetViewport(centerViewport)
