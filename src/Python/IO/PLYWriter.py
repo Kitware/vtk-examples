@@ -10,7 +10,7 @@ plyWriter.SetFileName(filename)
 plyWriter.SetInputConnection(sphereSource.GetOutputPort())
 plyWriter.Write()
 
-#Read and display for verication
+# Read and display for verication
 reader = vtk.vtkPLYReader()
 reader.SetFileName(filename)
 reader.Update()
@@ -28,7 +28,7 @@ renderWindowInteractor = vtk.vtkRenderWindowInteractor()
 renderWindowInteractor.SetRenderWindow(renderWindow)
 
 renderer.AddActor(actor)
-renderer.SetBackground(.3, .6, .3)   #Background color green
+renderer.SetBackground(.3, .6, .3)  # Background color green
 
 renderWindow.Render()
 renderWindowInteractor.Start()

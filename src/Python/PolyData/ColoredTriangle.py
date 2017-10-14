@@ -1,7 +1,6 @@
-import vtk
 from vtk import *
 
-#setup points and vertices
+# setup points and vertices
 Points = vtk.vtkPoints()
 Triangles = vtk.vtkCellArray()
 
@@ -15,13 +14,13 @@ Triangle.GetPointIds().SetId(1, 1)
 Triangle.GetPointIds().SetId(2, 2)
 Triangles.InsertNextCell(Triangle)
 
-#setup colors
+# setup colors
 Colors = vtk.vtkUnsignedCharArray()
 Colors.SetNumberOfComponents(3)
 Colors.SetName("Colors")
-Colors.InsertNextTuple3(255,0,0)
-Colors.InsertNextTuple3(0,255,0)
-Colors.InsertNextTuple3(0,0,255)
+Colors.InsertNextTuple3(255, 0, 0)
+Colors.InsertNextTuple3(0, 255, 0)
+Colors.InsertNextTuple3(0, 0, 255)
 
 polydata = vtk.vtkPolyData()
 polydata.SetPoints(Points)
