@@ -1,5 +1,5 @@
 from __future__ import print_function
-import vtk
+
 from vtk import *
 
 # ============ create source points ==============
@@ -7,17 +7,17 @@ print("Creating source points...")
 sourcePoints = vtk.vtkPoints()
 sourceVertices = vtk.vtkCellArray()
 
-id = sourcePoints.InsertNextPoint(1.0, 0.1, 0.0)
+sp_id = sourcePoints.InsertNextPoint(1.0, 0.1, 0.0)
 sourceVertices.InsertNextCell(1)
-sourceVertices.InsertCellPoint(id)
+sourceVertices.InsertCellPoint(sp_id)
 
-id = sourcePoints.InsertNextPoint(0.1, 1.1, 0.0)
+sp_id = sourcePoints.InsertNextPoint(0.1, 1.1, 0.0)
 sourceVertices.InsertNextCell(1)
-sourceVertices.InsertCellPoint(id)
+sourceVertices.InsertCellPoint(sp_id)
 
-id = sourcePoints.InsertNextPoint(0.0, 0.1, 1.0)
+sp_id = sourcePoints.InsertNextPoint(0.0, 0.1, 1.0)
 sourceVertices.InsertNextCell(1)
-sourceVertices.InsertCellPoint(id)
+sourceVertices.InsertCellPoint(sp_id)
 
 source = vtk.vtkPolyData()
 source.SetPoints(sourcePoints)
@@ -29,26 +29,26 @@ print("Displaying source points...")
 # ============ display source points ==============
 pointCount = 3
 for index in range(pointCount):
-    point = [0,0,0]
+    point = [0, 0, 0]
     sourcePoints.GetPoint(index, point)
-    print("source point[%s]=%s" % (index,point))
+    print("source point[%s]=%s" % (index, point))
 
-#============ create target points ==============
+# ============ create target points ==============
 print("Creating target points...")
 targetPoints = vtk.vtkPoints()
 targetVertices = vtk.vtkCellArray()
 
-id = targetPoints.InsertNextPoint(1.0, 0.0, 0.0)
+tp_id = targetPoints.InsertNextPoint(1.0, 0.0, 0.0)
 targetVertices.InsertNextCell(1)
-targetVertices.InsertCellPoint(id)
+targetVertices.InsertCellPoint(tp_id)
 
-id = targetPoints.InsertNextPoint(0.0, 1.0, 0.0)##
+tp_id = targetPoints.InsertNextPoint(0.0, 1.0, 0.0)
 targetVertices.InsertNextCell(1)
-targetVertices.InsertCellPoint(id)
+targetVertices.InsertCellPoint(tp_id)
 
-id = targetPoints.InsertNextPoint(0.0, 0.0, 1.0)
+tp_id = targetPoints.InsertNextPoint(0.0, 0.0, 1.0)
 targetVertices.InsertNextCell(1)
-targetVertices.InsertCellPoint(id)
+targetVertices.InsertCellPoint(tp_id)
 
 target = vtk.vtkPolyData()
 target.SetPoints(targetPoints)
@@ -56,14 +56,13 @@ target.SetVerts(targetVertices)
 if vtk.VTK_MAJOR_VERSION <= 5:
     target.Update()
 
-
 # ============ display target points ==============
 print("Displaying target points...")
 pointCount = 3
 for index in range(pointCount):
-    point = [0,0,0]
+    point = [0, 0, 0]
     targetPoints.GetPoint(index, point)
-    print("target point[%s]=%s" % (index,point))
+    print("target point[%s]=%s" % (index, point))
 
 print("Running ICP ----------------")
 # ============ run ICP ==============
@@ -71,7 +70,7 @@ icp = vtk.vtkIterativeClosestPointTransform()
 icp.SetSource(source)
 icp.SetTarget(target)
 icp.GetLandmarkTransform().SetModeToRigidBody()
-#icp.DebugOn()
+# icp.DebugOn()
 icp.SetMaximumNumberOfIterations(20)
 icp.StartByMatchingCentroidsOn()
 icp.Modified()
@@ -91,6 +90,6 @@ transformedSource = icpTransformFilter.GetOutput()
 # ============ display transformed points ==============
 pointCount = 3
 for index in range(pointCount):
-    point = [0,0,0]
+    point = [0, 0, 0]
     transformedSource.GetPoint(index, point)
-    print("transformed source point[%s]=%s" % (index,point))
+    print("transformed source point[%s]=%s" % (index, point))

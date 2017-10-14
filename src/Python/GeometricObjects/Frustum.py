@@ -2,44 +2,39 @@
 
 import vtk
 
+# create a rendering window and renderer
+ren = vtk.vtkRenderer()
+renWin = vtk.vtkRenderWindow()
+renWin.AddRenderer(ren)
+
+# create a renderwindowinteractor
+iren = vtk.vtkRenderWindowInteractor()
+iren.SetRenderWindow(renWin)
+
+planesArray=[0]*24 # Allocate a list of length 24
 camera = vtk.vtkCamera()
-planesArray = [0 for i in range(24)]
-
 camera.GetFrustumPlanes(1, planesArray)
-
-planes = vtk.vtkPlanes()
+planes=vtk.vtkPlanes()
 planes.SetFrustumPlanes(planesArray)
 
 frustumSource = vtk.vtkFrustumSource()
 frustumSource.SetPlanes(planes)
+frustumSource.ShowLinesOff();
 frustumSource.Update()
 
-frustum = frustumSource.GetOutput()
-
+# mapper
 mapper = vtk.vtkPolyDataMapper()
-if vtk.VTK_MAJOR_VERSION <= 5:
-    mapper.SetInput(frustum)
-else:
-    mapper.SetInputData(frustum)
+mapper.SetInputData(frustumSource.GetOutput())
 
+# actor
 actor = vtk.vtkActor()
 actor.SetMapper(mapper)
+actor.GetProperty().SetColor(0.8,0.9,0.7)
 
-# a renderer and render window
-renderer = vtk.vtkRenderer()
-renderWindow = vtk. vtk.vtkRenderWindow()
-renderWindow.AddRenderer(renderer)
-
-# an interactor
-renderWindowInteractor = vtk.vtkRenderWindowInteractor()
-renderWindowInteractor.SetRenderWindow(renderWindow)
-
-# add the actors to the scene
-renderer.AddActor(actor)
-renderer.SetBackground( .2, .1, .3) # Background color dark purple
-
-# render an image (lights and cameras are created automatically)
-renderWindow.Render()
-
-# begin mouse interaction
-renderWindowInteractor.Start()
+# assign actor to the renderer
+ren.AddActor(actor)
+ren.SetBackground(0.2,0.1,0.3)
+# enable user interface interactor
+iren.Initialize()
+renWin.Render()
+iren.Start()

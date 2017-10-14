@@ -9,21 +9,20 @@ renWin.AddRenderer(ren)
 iren = vtk.vtkRenderWindowInteractor()
 iren.SetRenderWindow(renWin)
 
+style = vtk.vtkInteractorStyleTrackballActor()
+iren.SetInteractorStyle(style)
+
 # create source
-source = vtk.vtkSphereSource()
-source.SetCenter(0,0,0)
-source.SetRadius(5.0)
+sphereSource = vtk.vtkSphereSource()
+sphereSource.Update()
 
 # mapper
 mapper = vtk.vtkPolyDataMapper()
-mapper.SetInputConnection(source.GetOutputPort())
+mapper.SetInputConnection(sphereSource.GetOutputPort())
 
 # actor
 actor = vtk.vtkActor()
 actor.SetMapper(mapper)
-
-# color the actor
-actor.GetProperty().SetColor(1,0,0) # (R,G,B)
 
 # assign actor to the renderer
 ren.AddActor(actor)

@@ -9,7 +9,7 @@ sphere.SetRadius(1)
 sphere.Update()
 
 cube = vtk.vtkCubeSource()
-cube.SetBounds(-1,1,-1,1,-1,1)
+cube.SetBounds(-1, 1, -1, 1, -1, 1)
 cube.Update()
 
 # Create 3D cells so vtkImplicitDataSet evaluates inside vs outside correctly

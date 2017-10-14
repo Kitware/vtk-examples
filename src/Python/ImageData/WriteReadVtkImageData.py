@@ -18,7 +18,6 @@ for z in range(dims[2]):
         for x in range(dims[0]):
             imageData.SetScalarComponentFromDouble(x, y, z, 0, 2.0)
 
-
 writer = vtk.vtkXMLImageDataWriter()
 writer.SetFileName(filename)
 if vtk.VTK_MAJOR_VERSION <= 5:
@@ -47,7 +46,7 @@ actor.GetProperty().SetPointSize(3)
 # Setup rendering
 renderer = vtk.vtkRenderer()
 renderer.AddActor(actor)
-renderer.SetBackground(1,1,1)
+renderer.SetBackground(1, 1, 1)
 renderer.ResetCamera()
 
 renderWindow = vtk.vtkRenderWindow()
