@@ -1,5 +1,8 @@
 
-<!DOCTYPE html>
+
+
+
+<!doctype html>
 <html lang="en" class="no-js">
   <head>
     
@@ -10,9 +13,26 @@
       
       
       
-        <link rel="shortcut icon" href="/VTKExamples/site/assets/images/favicon.png">
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
       
-      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.7.4">
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="/VTKExamples/site/assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
     
     
       
@@ -20,68 +40,101 @@
       
     
     
-      <script src="/VTKExamples/site/assets/javascripts/modernizr-1df76c4e58.js"></script>
-    
-    
-      <link rel="stylesheet" href="/VTKExamples/site/assets/stylesheets/application-769c285a91.css">
+      <link rel="stylesheet" href="/VTKExamples/site/assets/stylesheets/application.adb8469c.css">
+      
       
     
     
+      <script src="/VTKExamples/site/assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
       
-        
-        
-        
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <link rel="stylesheet" href="/VTKExamples/site/assets/fonts/material-icons.css">
     
     
       <link rel="stylesheet" href="/VTKExamples/site/stylesheets/extra.css">
     
     
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-3660134-4", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
   </head>
   
-  
-  
-  
-    <body>
+    <body dir="ltr">
   
     <svg class="md-svg">
       <defs>
         
         
-          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
         
       </defs>
     </svg>
-    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
-    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
-    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
     
       <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        
-          <a href="https://lorensen.github.io/VTKExamples/site/" title="VTKExamples" class="md-icon md-icon--home md-header-nav__button">
-          </a>
-        
+        <a href="https://lorensen.github.io/VTKExamples/site/" title="VTKExamples" aria-label="VTKExamples" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
-        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
-        <span class="md-flex__ellipsis md-header-nav__title">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           
-            
-            VTKExamples
+            <span class="md-header-nav__topic">
+              VTKExamples
+            </span>
+            <span class="md-header-nav__topic">
+              
+                
+              
+            </span>
           
-        </span>
+        </div>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
           <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <gcse:searchbox-only>Search enableAutoComplete="true"</gcse:searchbox-only>
         
@@ -94,20 +147,18 @@
 
   
 
-
-  <a href="https://github.com/lorensen/VTKExamples" title="Go to repository" class="md-source" data-md-source="github">
-    
-      <div class="md-source__icon">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <use xlink:href="#github" width="24" height="24"></use>
-        </svg>
-      </div>
-    
-    <div class="md-source__repository">
-      lorensen/VTKExamples
+<a href="https://github.com/lorensen/VTKExamples/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
     </div>
-  </a>
-
+  
+  <div class="md-source__repository">
+    lorensen/VTKExamples
+  </div>
+</a>
           </div>
         </div>
       
@@ -117,8 +168,10 @@
     
     <div class="md-container">
       
+        
       
-      <main class="md-main">
+      
+      <main class="md-main" role="main">
         <div class="md-main__inner md-grid" data-md-component="container">
           
             
@@ -126,10 +179,12 @@
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
-  <label class="md-nav__title md-nav__title--site" for="drawer">
-    
-      <i class="md-icon md-icon--home md-nav__button"></i>
-    
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://lorensen.github.io/VTKExamples/site/" title="VTKExamples" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
     VTKExamples
   </label>
   
@@ -139,20 +194,18 @@
 
   
 
-
-  <a href="https://github.com/lorensen/VTKExamples" title="Go to repository" class="md-source" data-md-source="github">
-    
-      <div class="md-source__icon">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <use xlink:href="#github" width="24" height="24"></use>
-        </svg>
-      </div>
-    
-    <div class="md-source__repository">
-      lorensen/VTKExamples
+<a href="https://github.com/lorensen/VTKExamples/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
     </div>
-  </a>
-
+  
+  <div class="md-source__repository">
+    lorensen/VTKExamples
+  </div>
+</a>
     </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -163,8 +216,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/" title="Home" class="md-nav__link">
-      Home
+    <a href="/VTKExamples/site/." title="About the Examples" class="md-nav__link">
+      About the Examples
     </a>
   </li>
 
@@ -175,8 +228,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/CSharp/" title="CSharp" class="md-nav__link">
-      CSharp
+    <a href="/VTKExamples/site/CSharp/" title="CSharp Examples" class="md-nav__link">
+      CSharp Examples
     </a>
   </li>
 
@@ -187,8 +240,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Cxx/" title="Cxx" class="md-nav__link">
-      Cxx
+    <a href="/VTKExamples/site/Cxx/" title="C++ Examples" class="md-nav__link">
+      C++ Examples
     </a>
   </li>
 
@@ -199,8 +252,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Java/" title="Java" class="md-nav__link">
-      Java
+    <a href="/VTKExamples/site/Java/" title="Java Examples" class="md-nav__link">
+      Java Examples
     </a>
   </li>
 
@@ -223,8 +276,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Python/" title="Python" class="md-nav__link">
-      Python
+    <a href="/VTKExamples/site/Python/" title="Python Examples" class="md-nav__link">
+      Python Examples
     </a>
   </li>
 
@@ -235,8 +288,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/" title="VTKBook" class="md-nav__link">
-      VTKBook
+    <a href="/VTKExamples/site/VTKBook/" title="VTK Textbook Updates" class="md-nav__link">
+      VTK Textbook Updates
     </a>
   </li>
 
@@ -247,8 +300,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBookFigures/" title="VTKBookFigures" class="md-nav__link">
-      VTKBookFigures
+    <a href="/VTKExamples/site/VTKBookFigures/" title="VTK Book Figure Examples" class="md-nav__link">
+      VTK Book Figure Examples
     </a>
   </li>
 
@@ -259,8 +312,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKFileFormats/" title="VTKFileFormats" class="md-nav__link">
-      VTKFileFormats
+    <a href="/VTKExamples/site/VTKFileFormats/" title="VTK File Formats [1](#VTKUsersGuide)" class="md-nav__link">
+      VTK File Formats <sup>[1](#VTKUsersGuide)</sup>
     </a>
   </li>
 
@@ -2078,8 +2131,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Coverage/CSharpVTKClassesNotUsed/" title="CSharpVTKClassesNotUsed" class="md-nav__link">
-      CSharpVTKClassesNotUsed
+    <a href="/VTKExamples/site/Coverage/CSharpVTKClassesNotUsed/" title="VTK Classes not used in the Examples" class="md-nav__link">
+      VTK Classes not used in the Examples
     </a>
   </li>
 
@@ -2090,8 +2143,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Coverage/CSharpVTKClassesUsed/" title="CSharpVTKClassesUsed" class="md-nav__link">
-      CSharpVTKClassesUsed
+    <a href="/VTKExamples/site/Coverage/CSharpVTKClassesUsed/" title="VTK Classes used in the Examples" class="md-nav__link">
+      VTK Classes used in the Examples
     </a>
   </li>
 
@@ -2102,8 +2155,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Coverage/CxxVTKClassesNotUsed/" title="CxxVTKClassesNotUsed" class="md-nav__link">
-      CxxVTKClassesNotUsed
+    <a href="/VTKExamples/site/Coverage/CxxVTKClassesNotUsed/" title="VTK Classes not used in the Examples" class="md-nav__link">
+      VTK Classes not used in the Examples
     </a>
   </li>
 
@@ -2114,8 +2167,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Coverage/CxxVTKClassesUsed/" title="CxxVTKClassesUsed" class="md-nav__link">
-      CxxVTKClassesUsed
+    <a href="/VTKExamples/site/Coverage/CxxVTKClassesUsed/" title="VTK Classes used in the Examples" class="md-nav__link">
+      VTK Classes used in the Examples
     </a>
   </li>
 
@@ -2126,8 +2179,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Coverage/JavaVTKClassesNotUsed/" title="JavaVTKClassesNotUsed" class="md-nav__link">
-      JavaVTKClassesNotUsed
+    <a href="/VTKExamples/site/Coverage/JavaVTKClassesNotUsed/" title="VTK Classes not used in the Examples" class="md-nav__link">
+      VTK Classes not used in the Examples
     </a>
   </li>
 
@@ -2138,8 +2191,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Coverage/JavaVTKClassesUsed/" title="JavaVTKClassesUsed" class="md-nav__link">
-      JavaVTKClassesUsed
+    <a href="/VTKExamples/site/Coverage/JavaVTKClassesUsed/" title="VTK Classes used in the Examples" class="md-nav__link">
+      VTK Classes used in the Examples
     </a>
   </li>
 
@@ -2150,8 +2203,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Coverage/PythonVTKClassesNotUsed/" title="PythonVTKClassesNotUsed" class="md-nav__link">
-      PythonVTKClassesNotUsed
+    <a href="/VTKExamples/site/Coverage/PythonVTKClassesNotUsed/" title="VTK Classes not used in the Examples" class="md-nav__link">
+      VTK Classes not used in the Examples
     </a>
   </li>
 
@@ -2162,8 +2215,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Coverage/PythonVTKClassesUsed/" title="PythonVTKClassesUsed" class="md-nav__link">
-      PythonVTKClassesUsed
+    <a href="/VTKExamples/site/Coverage/PythonVTKClassesUsed/" title="VTK Classes used in the Examples" class="md-nav__link">
+      VTK Classes used in the Examples
     </a>
   </li>
 
@@ -3006,6 +3059,54 @@
   <li class="md-nav__item">
     <a href="/VTKExamples/site/Cxx/Deprecated/GeometricObjects/ParametricObjectsDemo2/" title="ParametricObjectsDemo2" class="md-nav__link">
       ParametricObjectsDemo2
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-12-9-2" type="checkbox" id="nav-12-9-2">
+    
+    <label class="md-nav__link" for="nav-12-9-2">
+      Utilities
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-12-9-2">
+        Utilities
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="/VTKExamples/site/Cxx/Deprecated/Utilities/CMakeVTKVersionCheck/" title="CMakeVTKVersionCheck" class="md-nav__link">
+      CMakeVTKVersionCheck
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="/VTKExamples/site/Cxx/Deprecated/Utilities/VersionMacros/" title="VersionMacros" class="md-nav__link">
+      VersionMacros
     </a>
   </li>
 
@@ -5723,18 +5824,6 @@
   <li class="md-nav__item">
     <a href="/VTKExamples/site/Cxx/ImageData/CellIdFromGridCoordinates/" title="CellIdFromGridCoordinates" class="md-nav__link">
       CellIdFromGridCoordinates
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="/VTKExamples/site/Cxx/ImageData/ClipScalarVolume/" title="ClipScalarVolume" class="md-nav__link">
-      ClipScalarVolume
     </a>
   </li>
 
@@ -9237,18 +9326,6 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Cxx/Points/DisplayPoints/" title="DisplayPoints" class="md-nav__link">
-      DisplayPoints
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="/VTKExamples/site/Cxx/Points/ExtractClusters/" title="ExtractClusters" class="md-nav__link">
       ExtractClusters
     </a>
@@ -9455,18 +9532,6 @@
   <li class="md-nav__item">
     <a href="/VTKExamples/site/Cxx/PolyData/AlignTwoPolyDatas/" title="AlignTwoPolyDatas" class="md-nav__link">
       AlignTwoPolyDatas
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="/VTKExamples/site/Cxx/PolyData/AlignTwoPolyDatasUsingTPS/" title="AlignTwoPolyDatasUsingTPS" class="md-nav__link">
-      AlignTwoPolyDatasUsingTPS
     </a>
   </li>
 
@@ -10473,18 +10538,6 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Cxx/PolyData/PolyDataBooleanOperationFilter/" title="PolyDataBooleanOperationFilter" class="md-nav__link">
-      PolyDataBooleanOperationFilter
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="/VTKExamples/site/Cxx/PolyData/PolyDataCellNormals/" title="PolyDataCellNormals" class="md-nav__link">
       PolyDataCellNormals
     </a>
@@ -11469,18 +11522,6 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Cxx/Rendering/LightKit/" title="LightKit" class="md-nav__link">
-      LightKit
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="/VTKExamples/site/Cxx/Rendering/Mace/" title="Mace" class="md-nav__link">
       Mace
     </a>
@@ -11793,18 +11834,6 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Cxx/Shaders/DisplacementShader/" title="DisplacementShader" class="md-nav__link">
-      DisplacementShader
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="/VTKExamples/site/Cxx/Shaders/MarbleShader/" title="MarbleShader" class="md-nav__link">
       MarbleShader
     </a>
@@ -12081,8 +12110,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Cxx/Snippets/WriteImage/" title="WriteImage" class="md-nav__link">
-      WriteImage
+    <a href="/VTKExamples/site/Cxx/Snippets/WriteImage/" title="Description" class="md-nav__link">
+      Description
     </a>
   </li>
 
@@ -12717,18 +12746,6 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Cxx/Utilities/CMakeVTKVersionCheck/" title="CMakeVTKVersionCheck" class="md-nav__link">
-      CMakeVTKVersionCheck
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="/VTKExamples/site/Cxx/Utilities/CameraModifiedEvent/" title="CameraModifiedEvent" class="md-nav__link">
       CameraModifiedEvent
     </a>
@@ -13319,18 +13336,6 @@
   <li class="md-nav__item">
     <a href="/VTKExamples/site/Cxx/Utilities/VectorArrayUnknownLength/" title="VectorArrayUnknownLength" class="md-nav__link">
       VectorArrayUnknownLength
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="/VTKExamples/site/Cxx/Utilities/VersionMacros/" title="VersionMacros" class="md-nav__link">
-      VersionMacros
     </a>
   </li>
 
@@ -19065,8 +19070,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/Java/Snippets/WriteImage/" title="WriteImage" class="md-nav__link">
-      WriteImage
+    <a href="/VTKExamples/site/Java/Snippets/WriteImage/" title="Description" class="md-nav__link">
+      Description
     </a>
   </li>
 
@@ -22815,6 +22820,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="/VTKExamples/site/Python/Meshes/SolidClip/" title="SolidClip" class="md-nav__link">
+      SolidClip
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -23121,6 +23138,18 @@
 
 
   <li class="md-nav__item">
+    <a href="/VTKExamples/site/Python/PolyData/ExtractPolyLinesFromPolyData/" title="ExtractPolyLinesFromPolyData" class="md-nav__link">
+      ExtractPolyLinesFromPolyData
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="/VTKExamples/site/Python/PolyData/ExtractSelection/" title="ExtractSelection" class="md-nav__link">
       ExtractSelection
     </a>
@@ -23159,6 +23188,18 @@
   <li class="md-nav__item">
     <a href="/VTKExamples/site/Python/PolyData/ImplicitPolyDataDistance/" title="ImplicitPolyDataDistance" class="md-nav__link">
       ImplicitPolyDataDistance
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="/VTKExamples/site/Python/PolyData/IterateOverLines/" title="IterateOverLines" class="md-nav__link">
+      IterateOverLines
     </a>
   </li>
 
@@ -24753,6 +24794,18 @@
 
 
   <li class="md-nav__item">
+    <a href="/VTKExamples/site/Python/Visualization/ShadowsLightsDemo/" title="ShadowsLightsDemo" class="md-nav__link">
+      ShadowsLightsDemo
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="/VTKExamples/site/Python/Visualization/SphereTexture/" title="SphereTexture" class="md-nav__link">
       SphereTexture
     </a>
@@ -25742,8 +25795,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/00Preface/" title="00Preface" class="md-nav__link">
-      00Preface
+    <a href="/VTKExamples/site/VTKBook/00Preface/" title="Preface" class="md-nav__link">
+      Preface
     </a>
   </li>
 
@@ -25754,8 +25807,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/01Chapter1/" title="01Chapter1" class="md-nav__link">
-      01Chapter1
+    <a href="/VTKExamples/site/VTKBook/01Chapter1/" title="Chapter 1 - Introduction" class="md-nav__link">
+      Chapter 1 - Introduction
     </a>
   </li>
 
@@ -25766,8 +25819,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/02Chapter2/" title="02Chapter2" class="md-nav__link">
-      02Chapter2
+    <a href="/VTKExamples/site/VTKBook/02Chapter2/" title="Chapter 2 - Object-Oriented Design" class="md-nav__link">
+      Chapter 2 - Object-Oriented Design
     </a>
   </li>
 
@@ -25778,8 +25831,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/03Chapter3/" title="03Chapter3" class="md-nav__link">
-      03Chapter3
+    <a href="/VTKExamples/site/VTKBook/03Chapter3/" title="Chapter 3 - Computer Graphics Primer" class="md-nav__link">
+      Chapter 3 - Computer Graphics Primer
     </a>
   </li>
 
@@ -25790,8 +25843,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/04Chapter4/" title="04Chapter4" class="md-nav__link">
-      04Chapter4
+    <a href="/VTKExamples/site/VTKBook/04Chapter4/" title="Chapter 4 - The Visualization Pipeline" class="md-nav__link">
+      Chapter 4 - The Visualization Pipeline
     </a>
   </li>
 
@@ -25802,8 +25855,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/05Chapter5/" title="05Chapter5" class="md-nav__link">
-      05Chapter5
+    <a href="/VTKExamples/site/VTKBook/05Chapter5/" title="Chapter 5 - Data Representation" class="md-nav__link">
+      Chapter 5 - Data Representation
     </a>
   </li>
 
@@ -25814,8 +25867,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/06Chapter6/" title="06Chapter6" class="md-nav__link">
-      06Chapter6
+    <a href="/VTKExamples/site/VTKBook/06Chapter6/" title="Chapter 6 - Fundamental Algorithms" class="md-nav__link">
+      Chapter 6 - Fundamental Algorithms
     </a>
   </li>
 
@@ -25826,8 +25879,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/07Chapter7/" title="07Chapter7" class="md-nav__link">
-      07Chapter7
+    <a href="/VTKExamples/site/VTKBook/07Chapter7/" title="Chapter 7 - Advanced Computer Graphics" class="md-nav__link">
+      Chapter 7 - Advanced Computer Graphics
     </a>
   </li>
 
@@ -25838,8 +25891,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/08Chapter8/" title="08Chapter8" class="md-nav__link">
-      08Chapter8
+    <a href="/VTKExamples/site/VTKBook/08Chapter8/" title="Chapter 8 - Advanced Data Representation" class="md-nav__link">
+      Chapter 8 - Advanced Data Representation
     </a>
   </li>
 
@@ -25850,8 +25903,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/09Chapter9/" title="09Chapter9" class="md-nav__link">
-      09Chapter9
+    <a href="/VTKExamples/site/VTKBook/09Chapter9/" title="Chapter 9 - Advanced Algorithms" class="md-nav__link">
+      Chapter 9 - Advanced Algorithms
     </a>
   </li>
 
@@ -25862,8 +25915,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/10Chapter10/" title="10Chapter10" class="md-nav__link">
-      10Chapter10
+    <a href="/VTKExamples/site/VTKBook/10Chapter10/" title="Chapter 10 - Image Processing" class="md-nav__link">
+      Chapter 10 - Image Processing
     </a>
   </li>
 
@@ -25874,8 +25927,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/11Chapter11/" title="11Chapter11" class="md-nav__link">
-      11Chapter11
+    <a href="/VTKExamples/site/VTKBook/11Chapter11/" title="Chapter 11 - Visualization on the Web" class="md-nav__link">
+      Chapter 11 - Visualization on the Web
     </a>
   </li>
 
@@ -25886,8 +25939,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/12Chapter12/" title="12Chapter12" class="md-nav__link">
-      12Chapter12
+    <a href="/VTKExamples/site/VTKBook/12Chapter12/" title="Chapter 12 - Applications" class="md-nav__link">
+      Chapter 12 - Applications
     </a>
   </li>
 
@@ -25898,8 +25951,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBook/13Glossary/" title="13Glossary" class="md-nav__link">
-      13Glossary
+    <a href="/VTKExamples/site/VTKBook/13Glossary/" title="Glossary" class="md-nav__link">
+      Glossary
     </a>
   </li>
 
@@ -25934,8 +25987,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/VTKExamples/site/VTKBookLaTeX/VTKTextBook/" title="VTKTextBook" class="md-nav__link">
-      VTKTextBook
+    <a href="/VTKExamples/site/VTKBookLaTeX/VTKTextBook/" title="VTK Textbook - PDF Version" class="md-nav__link">
+      VTK Textbook - PDF Version
     </a>
   </li>
 
@@ -25960,6 +26013,8 @@
 
               
                 
+
+
               
             </article>
           </div>
@@ -25978,13 +26033,11 @@
           </div>
         
         powered by
-        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
         and
-        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs</a>
       </div>
-      
-        
       
     </div>
   </div>
@@ -25992,17 +26045,11 @@
       
     </div>
     
-      <script src="/VTKExamples/site/assets/javascripts/application-c35428f87f.js"></script>
+      <script src="/VTKExamples/site/assets/javascripts/application.c33a9706.js"></script>
       
-      
-      <script>app.initialize({url:{base:"/VTKExamples/site"}})</script>
+      <script>app.initialize({version:"1.1",url:{base:"/VTKExamples/site/"}})</script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-      
-    
-    
-      
-      <script>!function(e,t,a,n,o,c,i){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,c=t.createElement(a),i=t.getElementsByTagName(a)[0],c.async=1,c.src=n,i.parentNode.insertBefore(c,i)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-3660134-4","auto"),ga("set","anonymizeIp",!0),ga("send","pageview");var links=document.getElementsByTagName("a");Array.prototype.map.call(links,function(e){e.host!=document.location.host&&e.addEventListener("click",function(){var t=e.getAttribute("data-md-action")||"follow";ga("send","event","outbound",t,e.href)})});var query=document.forms.search.query;query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})</script>
       
     
   </body>

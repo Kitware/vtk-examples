@@ -1,18 +1,25 @@
+# This is for the most recent Python 3 version of mkdocs.
+# To use it, remove "Py3" from the filename.
 site_name: VTKExamples
-theme: material
 site_url: https://lorensen.github.io/VTKExamples/site/
 repo_name: lorensen/VTKExamples
 repo_url: https://github.com/lorensen/VTKExamples
-theme_dir: custom_theme
+
+theme:
+    name: material
+    custom_dir: custom_theme/
+
 markdown_extensions:
   - pymdownx.arithmatex
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.magiclink
   - admonition
-  - codehilite(guess_lang=false)
+  - codehilite:
+      guess_lang: false
   - footnotes
-  - toc(permalink=true)
+  - toc:
+        permalink: true
 google_analytics:
   -  'UA-3660134-4'
   -  'auto'

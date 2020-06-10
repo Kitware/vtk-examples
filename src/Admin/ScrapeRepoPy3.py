@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # This is a currently untested Python 3 version of ScrapeRepo
-# 
+#
 # concurrent.futures is used to set up a thread pool
 #   to make processing of tiny urls faster
 
@@ -33,10 +33,10 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('RepoDir', help='The local directory containing the VTK example source e.g. VTKExamples/src/')
-    parser.add_argument('DocDir', help='The directory to receive the markdown pages e.g. VTKExamples/docs/')
+    parser.add_argument('RepoDir', help='The local directory containing the VTK example source e.g. VTKEx/src/')
+    parser.add_argument('DocDir', help='The directory to receive the markdown pages e.g. VTKEx/docs/')
     parser.add_argument('RepoURL',
-                        help='RepoURL is the githib repo UR e.g. https::/github.com/**YOUR_NAME**/VTKExamples')
+                        help='RepoURL is the githib repo UR e.g. https://github.com/**YOUR_NAME**/VTKEx')
     parser.add_argument('VTKSrc', help='The local directory containing the VTK source')
     args = parser.parse_args()
     return args.RepoDir, args.DocDir, args.RepoURL, args.VTKSrc
@@ -703,7 +703,7 @@ def main():
             if start:
                 continue
             # Get the part of the file name that comes after RepoDir
-            # e.g. if the file name is VTKExamples/Cxx/GeometricObjects/Line,
+            # e.g. if the file name is VTKEx/Cxx/GeometricObjects/Line,
             # Path will be Cxx/GeometriObjects/Line
             KitName = root[start + 1 + len(to_find):]
             if KitName.find('Boneyard') >= 0:
@@ -751,7 +751,7 @@ def main():
                         os.makedirs(PathName)
                 OutputFile = os.path.join(DocDir, lang, KitName, ExampleName + '.md')
                 MdFile = open(OutputFile, 'w')
-                MdFile.write('[VTKExamples](/)/[' + lang + '](/' + lang + ')/' + KitName + '/' + ExampleName + '\n\n')
+                MdFile.write('[VTKEx](/)/[' + lang + '](/' + lang + ')/' + KitName + '/' + ExampleName + '\n\n')
 
                 if os.path.isfile(BaselinePath):
                     ImgUrl = RepoURL + '/blob/master/src/Testing/Baseline/' + lang + '/' + KitName + '/Test' + ExampleName + '.png?raw=true'
@@ -782,7 +782,7 @@ def main():
                     MdFile.write('\n')
 
                 # Add email contact for questions
-                question = '\n!!! question\n    If you have a simple question about this example contact us at <a href=mailto:VTKExamplesProject@gmail.com?subject=' + ExampleName + langExt + '&body=' + 'https://lorensen.github.io/VTKExamples/site/' + lang + '/' + KitName + '/' + ExampleName + '>VTKExamplesProject</a>\n    If your question is more complex and may require extended discussion, please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
+                question = '\n!!! question\n    If you have a simple question about this example contact us at <a href=mailto:VTKExProject@gmail.com?subject=' + ExampleName + langExt + '&body=' + 'https://lorensen.github.io/VTKEx/site/' + lang + '/' + KitName + '/' + ExampleName + '>VTKExProject</a>\n    If your question is more complex and may require extended discussion, please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
                 MdFile.write(question)
                 MdFile.write('\n')
 
