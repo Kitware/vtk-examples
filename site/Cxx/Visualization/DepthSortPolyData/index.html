@@ -87,7 +87,7 @@ PhiResolution ... PHI resolution for the spheres
 ScalarVisibilityFlag ... show/hide the found depth values as scalars</code></pre> <p><em>Example calls:</em></p> <pre class=codehilite><code>./DepthSortPolyData 0 100 100 0
 ... will render the spheres 'as usual' (without depth sorting); in general you will be confronted with situations (specific view directions) where you cannot determine whether a small sphere is behind or in front of the big center sphere</code></pre> <pre class=codehilite><code>./DepthSortPolyData 1 100 100 0
 ... will render the spheres using depth sorting; the sphere depth order should now be visually traceable</code></pre> <pre class=codehilite><code>./DepthSortPolyData 1 100 100 1
-... will render the spheres using depth sorting; the depth values are mapped to the spheres and renderd on the surfaces</code></pre> <p>Using higher PHI/THETA resolutions shows how depth sorting reduces the frame rate.</p> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a simple question about this example contact us at <a href="mailto:VTKExProject@gmail.com?subject=DepthSortPolyData.cxx&body=https://lorensen.github.io/VTKEx/site/Cxx/Visualization/DepthSortPolyData">VTKExProject</a> If your question is more complex and may require extended discussion, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>DepthSortPolyData.cxx</strong></p> <pre class=codehilite><code class=language-c++>#include &lt;vtkSphereSource.h&gt;
+... will render the spheres using depth sorting; the depth values are mapped to the spheres and renderd on the surfaces</code></pre> <p>Using higher PHI/THETA resolutions shows how depth sorting reduces the frame rate.</p> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a simple question about this example contact us at <a href="mailto:VTKExExProject@gmail.com?subject=DepthSortPolyData.cxx&body=https://lorensen.github.io/VTKEx/site/Cxx/Visualization/DepthSortPolyData">VTKExProject</a> If your question is more complex and may require extended discussion, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>DepthSortPolyData.cxx</strong></p> <pre class=codehilite><code class=language-c++>#include &lt;vtkSphereSource.h&gt;
 #include &lt;vtkSmartPointer.h&gt;
 #include &lt;vtkAppendPolyData.h&gt;
 #include &lt;vtkCamera.h&gt;
@@ -224,8 +224,10 @@ find_package(VTK COMPONENTS
   vtkFiltersHybrid
   vtkFiltersSources
   vtkInteractionStyle
+  vtkRenderingContextOpenGL2
   vtkRenderingCore
   vtkRenderingFreeType
+  vtkRenderingGL2PSOpenGL2
   vtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping DepthSortPolyData: ${VTK_NOT_FOUND_MESSAGE}&quot;)

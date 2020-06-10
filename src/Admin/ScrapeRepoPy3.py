@@ -28,17 +28,18 @@ except ModuleNotFoundError:
 
 def get_program_parameters():
     import argparse
-    description = 'Creates site files from the source respository.'
+    description = 'Creates site files from the source repository.'
     epilogue = '''
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('RepoDir', help='The local directory containing the VTK example source e.g. VTKEx/src/')
-    parser.add_argument('DocDir', help='The directory to receive the markdown pages e.g. VTKEx/docs/')
+    parser.add_argument('RepoDir', help='The local directory containing the VTK example source e.g. VTKExamples/src/')
+    parser.add_argument('DocDir', help='The directory to receive the markdown pages e.g. VTKExamples/docs/')
     parser.add_argument('RepoURL',
-                        help='RepoURL is the githib repo UR e.g. https://github.com/**YOUR_NAME**/VTKEx')
+                        help='RepoURL is the github repo URL e.g. https://github.com/**YOUR_NAME**/VTKExamples')
     parser.add_argument('VTKSrc', help='The local directory containing the VTK source')
     args = parser.parse_args()
+    print('Paths:\n',args.RepoDir,'\n', args.DocDir,'\n', args.RepoURL,'\n', args.VTKSrc)
     return args.RepoDir, args.DocDir, args.RepoURL, args.VTKSrc
 
 
@@ -384,13 +385,13 @@ def AddThumbnailsAndLanguageLinks(repoDir, repoURL, fromFile, toFile):
         exampleLine = FindThumbnail(line.strip())[0]
         startCxx = exampleLine.find("Cxx")
         if startCxx >= 0:
-            pythonLink = FindPythonGivenCxx("src", exampleLine)
+            pythonLink = FindPythonGivenCxx(repoDir, exampleLine)
             if pythonLink != '':
                 line = AddLanguage(line, pythonLink)
 
         startPython = exampleLine.find("Python")
         if startPython >= 0:
-            cxxLink = FindCxxGivenPython("src", exampleLine)
+            cxxLink = FindCxxGivenPython(repoDir, exampleLine)
             if cxxLink != '':
                 line = AddLanguage(line, cxxLink)
 
@@ -507,6 +508,7 @@ def main():
     global VTKSrcDir
 
     RepoDir, DocDir, RepoURL, VTKSrcDir = get_program_parameters()
+    RepoName = list(filter(None, RepoURL.split('/')))[-1]
 
     # Make sure the wiki docs folder exists
     if not os.path.exists(DocDir):
@@ -703,7 +705,7 @@ def main():
             if start:
                 continue
             # Get the part of the file name that comes after RepoDir
-            # e.g. if the file name is VTKEx/Cxx/GeometricObjects/Line,
+            # e.g. if the file name is VTKExamples/Cxx/GeometricObjects/Line,
             # Path will be Cxx/GeometriObjects/Line
             KitName = root[start + 1 + len(to_find):]
             if KitName.find('Boneyard') >= 0:
@@ -751,7 +753,7 @@ def main():
                         os.makedirs(PathName)
                 OutputFile = os.path.join(DocDir, lang, KitName, ExampleName + '.md')
                 MdFile = open(OutputFile, 'w')
-                MdFile.write('[VTKEx](/)/[' + lang + '](/' + lang + ')/' + KitName + '/' + ExampleName + '\n\n')
+                MdFile.write('[' + RepoName + '](/)/[' + lang + '](/' + lang + ')/' + KitName + '/' + ExampleName + '\n\n')
 
                 if os.path.isfile(BaselinePath):
                     ImgUrl = RepoURL + '/blob/master/src/Testing/Baseline/' + lang + '/' + KitName + '/Test' + ExampleName + '.png?raw=true'
@@ -782,7 +784,7 @@ def main():
                     MdFile.write('\n')
 
                 # Add email contact for questions
-                question = '\n!!! question\n    If you have a simple question about this example contact us at <a href=mailto:VTKExProject@gmail.com?subject=' + ExampleName + langExt + '&body=' + 'https://lorensen.github.io/VTKEx/site/' + lang + '/' + KitName + '/' + ExampleName + '>VTKExProject</a>\n    If your question is more complex and may require extended discussion, please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
+                question = '\n!!! question\n    If you have a simple question about this example contact us at <a href=mailto:' + RepoName+ 'ExProject@gmail.com?subject=' + ExampleName + langExt + '&body=' + 'https://lorensen.github.io/' + RepoName + '/site/' + lang + '/' + KitName + '/' + ExampleName + '>' + RepoName + 'Project</a>\n    If your question is more complex and may require extended discussion, please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
                 MdFile.write(question)
                 MdFile.write('\n')
 

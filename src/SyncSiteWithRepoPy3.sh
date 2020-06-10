@@ -8,7 +8,8 @@
 if [ $# -lt 2 ]
   then
   echo "Usage: SyncSiteWithRepoPy3 REPO_URL VTK_SOURCE_DIR"
-  echo "e.g  : ./src/SyncSiteWithRepoPy3.sh https::/github.com/<github_username>/VTKExamples /home/<username>/Development/Kitware/src/VTK/"
+  echo "e.g  : ./src/SyncSiteWithRepoPy3.sh https://github.com/<github_username>/VTKExamples /home/<username>/Development/Kitware/src/VTK/"
+  echo "e.g  : ./src/SyncSiteWithRepoPy3.sh https://github.com/ajpmaclean/VTKEx /home/amaclean/Development/Kitware/src/VTK/"
   echo "Note  : This is run from the top-level VTKExamples directory."
   echo "e.g  : /home/<username>/Development/Kitware/src/VTKExamples/"
   exit 1
@@ -40,7 +41,7 @@ echo "2) Create coverage files"
 echo "3) Scrape the repo"
 rm -rf docs/*
 rm -rf site/*
-src/Admin/ScrapeRepoPy3.py  src docs ${REPO} ${VTK_SOURCE_DIR}
+src/Admin/ScrapeRepoPy3.py  ./src ./docs ${REPO} ${VTK_SOURCE_DIR}
 
 echo "4) Check for a successful scrape"
 pushd docs
