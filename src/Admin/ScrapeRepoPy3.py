@@ -352,10 +352,9 @@ def find_other_given_lang(example, exampleLang, otherLang, otherExt):
         return ''
     otherLink = re.sub(r'/' + exampleLang + r'/', r'/' + otherLang + '/', example)
     otherPath = otherLink + otherExt
-    otherLink = re.sub(r'/' + exampleLang + r'/', r'/' + otherLang + '/', otherLink)
-    path_elements = split_path(otherLink)
+    # path_elements = split_path(otherLink)
     if os.path.exists(otherPath):
-        return '([' + otherLang + '](' + '/' + '/'.join(path_elements[-3:]) + '))'
+        return '([' + otherLang + '](' + otherLink + '))'
     return ''
 
 
@@ -697,7 +696,8 @@ def main():
                 for lLang, lExt in list(available_languages.items()):
                     otherLink = find_other_given_lang(os.path.splitext(fp)[0], lang, lLang, lExt)
                     if otherLink != '':
-                        otherLink = re.sub(r'src', r'', otherLink)
+                        # otherLink = re.sub(r'src', r'', otherLink)
+                        otherLink = 'site'.join(otherLink.rsplit('src', 1))
                         other_languages.append(otherLink)
                 BaselinePath = os.path.join(repo_path, 'Testing', 'Baseline', lang, kit_name, 'Test' +
                                             ExampleName + '.png')
@@ -708,7 +708,7 @@ def main():
                 OutputFile = os.path.join(doc_path, lang, kit_name, ExampleName + '.md')
                 MdFile = open(OutputFile, 'w')
                 MdFile.write(
-                    '[' + repo_dir + '](/)/[' + lang + '](/' + lang + ')/' + kit_name + '/' + ExampleName + '\n\n')
+                    '[' + repo_name + '](/)/[' + lang + '](/' + lang + ')/' + kit_name + '/' + ExampleName + '\n\n')
 
                 if os.path.isfile(BaselinePath):
                     ImgUrl = repo_url + '/blob/master/src/Testing/Baseline/' + lang + '/' + kit_name + '/Test' + ExampleName + '.png?raw=true'

@@ -1,9 +1,10 @@
 # This is for the most recent Python 3 version of mkdocs.
 # To use it, remove "Py3" from the filename.
-site_name: VTKExamples
-site_url: https://lorensen.github.io/VTKExamples/site/
-repo_name: lorensen/VTKExamples
-repo_url: https://github.com/lorensen/VTKExamples
+# Change these to reflect the user and site details.
+site_name: VTKEx
+site_url: https://ajpmaclean.github.io/VTKEx/site/
+repo_name: ajpmaclean/VTKEx
+repo_url: https://github.com/ajpmaclean/VTKEx
 
 theme:
     name: material
