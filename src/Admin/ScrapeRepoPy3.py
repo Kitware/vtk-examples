@@ -141,9 +141,9 @@ def get_components(repo_path, components_cache, vtk_src_dir, src_file, src):
     result = process.stdout.decode('utf-8')
     components = parse_WhatModulesVTKOutput(result)
 
-    cache_dict[str(src_file)] = sha
+    components_cache[str(src_file)] = sha
     for component in components:
-        cache_dict[str(src_file)] += " " + component
+        components_cache[str(src_file)] += " " + component
     print("Components: cache miss: ", str(src_file))
     return components
 
@@ -509,19 +509,14 @@ def main():
         repo_dir = re.sub(sub_str, '', repo_dir)
     if doc_dir.startswith(sub_str):
         doc_dir = re.sub(sub_str, '', doc_dir)
-    print(repo_dir, doc_dir)
-        # Find the root path, this program resides in the Admin folder so go up two levels.
+    # Find the root path, this program resides in the Admin folder so go up two levels.
     root_path = os.path.dirname(os.path.abspath(__file__))
     for i in range(2):
         root_path = os.path.dirname(root_path)
-    print('Root path:', root_path)
-
     # The name of the repository on the server.
     repo_name = list(filter(None, repo_url.split('/')))[-1]
-    print('Repository name:', repo_name)
     # The user name for the repository.
     user_name = list(filter(None, repo_url.split('/')))[-2]
-    print('User name:', user_name)
 
     repo_path = make_path(root_path, repo_dir)
     doc_path = make_path(root_path, doc_dir)
