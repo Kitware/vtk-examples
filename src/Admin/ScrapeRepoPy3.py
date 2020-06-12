@@ -33,14 +33,15 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('RepoDir', help='The local directory containing the VTK example source e.g. VTKExamples/src/')
-    parser.add_argument('DocDir', help='The directory to receive the markdown pages e.g. VTKExamples/docs/')
-    parser.add_argument('RepoURL',
-                        help='RepoURL is the github repo URL e.g. https://github.com/**YOUR_NAME**/VTKExamples')
-    parser.add_argument('VTKSrc', help='The local directory containing the VTK source')
+    parser.add_argument('repo_dir', nargs='?', default='src',
+                        help='The local directory in the VTK Examples folder containing the source files e.g. src')
+    parser.add_argument('doc_dir', nargs='?', default='docs',
+                        help='The directory to receive the markdown pages in the VTK Examples folder e.g. docs')
+    parser.add_argument('repo_url',
+                        help='repo_url is the github repo URL e.g. https://github.com/**YOUR_NAME**/VTKExamples')
+    parser.add_argument('vtk_src', help='The local directory containing the VTK source')
     args = parser.parse_args()
-    print('Paths:\n',args.RepoDir,'\n', args.DocDir,'\n', args.RepoURL,'\n', args.VTKSrc)
-    return args.RepoDir, args.DocDir, args.RepoURL, args.VTKSrc
+    return args.repo_dir, args.doc_dir, args.repo_url, args.vtk_src
 
 
 def make_tiny(url):
@@ -50,83 +51,80 @@ def make_tiny(url):
         return response.read().decode('utf-8')
 
 
-# copy a file
-
-def CopyFile(fromFile, toFile):
-    fromFn = make_path_name(fromFile)
-    toFn = make_path_name(toFile)
-    outFile = open(toFn, 'wb')
-    with open(fromFn, 'rb') as f:
-        outFile.write(f.read())
-    outFile.close()
-
-
-# create a list of html id's
-def CreateHtmlIds(fromFile):
-    global htmlIdSet
-    fromFn = make_path_name(fromFile)
-    with open(fromFn, 'r') as chapterLine:
+def create_html_ids(from_file, html_id_set):
+    """
+    Create a set of html ids.
+    :param from_file:
+    :param html_id_set:
+    :return:
+    """
+    with open(from_file, 'r') as chapterLine:
         for line in chapterLine:
-            idFound = re.findall(r'<figure[ ]*id="([^\"]*)">', line)
-            if len(idFound) > 0:
-                htmlIdSet.add(idFound[0])
+            id_found = re.findall(r'<figure[ ]*id="([^\"]*)">', line)
+            if len(id_found) > 0:
+                html_id_set.add(id_found[0])
 
 
-# copy a file and add figure and doxygen links
-# only add links to doxygen if we are outside code blocks
-# delimited by ```
-# only add links to a figure if the figure exists
-def CopyChapterAndAddLinks(fromFile, toFile):
-    global htmlIdSet
-    fromFn = make_path_name(fromFile)
-    toFn = make_path_name(toFile)
-    inCode = False
-    outFile = open(toFn, 'w')
-    with open(fromFn, 'r') as chapterLine:
-        for line in chapterLine:
-            if line.count(r'```') % 2 != 0:
-                inCode = not inCode
-            if not inCode:
-                line = AddDoxygen(line)
-                figureFound = sorted(re.findall(r'\*\*(Figure[^\*]*)\*\*', line), reverse=True)
-                if len(figureFound) > 0:
-                    for figure in figureFound:
-                        if figure in htmlIdSet:
-                            line = line.replace(figure, r'<a href="#' + figure.replace("Figure",
-                                                                                       "FIGURE") + '">**' + figure.replace(
-                                "Figure", "FIGURE") + r'**</a>')
-            line = line.replace("FIGURE", "Figure")
-            outFile.write(line)
-    outFile.close()
+def copy_chapter_add_links(from_to_file, html_id_set):
+    """
+     Copy a file and add figure and doxygen links.
+
+     Only add links to doxygen if we are outside code blocks delimited by ```
+        and only add links to a figure if the figure exists.
+
+    :param from_to_file: [from, to]
+    :param html_id_set: A set of html ids
+    :return:
+    """
+    in_code = False
+    with open(from_to_file[1], 'w') as outFile:
+        with open(from_to_file[0], 'r') as chapterLine:
+            for line in chapterLine:
+                if line.count(r'```') % 2 != 0:
+                    in_code = not in_code
+                if not in_code:
+                    line = AddDoxygen(line)
+                    figureFound = sorted(re.findall(r'\*\*(Figure[^\*]*)\*\*', line), reverse=True)
+                    if len(figureFound) > 0:
+                        for figure in figureFound:
+                            if figure in html_id_set:
+                                line = line.replace(figure, r'<a href="#' + figure.replace(
+                                    "Figure", "FIGURE") + '">**' + figure.replace(
+                                    "Figure", "FIGURE") + r'**</a>')
+                line = line.replace("FIGURE", "Figure")
+                outFile.write(line)
 
 
-# load the component cache into a dictionary
+def load_components_cache(cache_file):
+    """
+    Load the component cache into a dictionary.
+    :param cache_file:
+    :return: The component cache as a dictionary.
+    """
+    cache_dict = dict()
+    with open(cache_file, 'r') as cf:
+        for line in cf:
+            words = line.split()
+            cache_dict[words[0]] = ""
+            for word in words[1:]:
+                cache_dict[words[0]] += " " + word
+    return cache_dict
 
-def LoadComponentsCache(CacheFile, CacheDict):
-    cf = open(CacheFile, 'r')
-    for line in cf:
-        words = line.split()
-        CacheDict[words[0]] = ""
-        for word in words[1:]:
-            CacheDict[words[0]] += " " + word
-    cf.close()
 
-
-# if the source code components are not in the cache, find them
-
-def GetComponents(CacheDict, VTKSrcDir, srcFile, src):
-    global componentsCacheHits
-    global componentsCacheMisses
+# If the source code components are not in the cache, find them
+def get_components(repo_path, components_cache, vtk_src_dir, src_file, src):
+    global components_cache_hits
+    global components_cache_misses
     # compute sha of src
     sha = hashlib.sha256(str.encode(src)).hexdigest()
-    if srcFile in list(CacheDict.keys()):
-        words = CacheDict[srcFile].split()
+    if src_file in list(components_cache.keys()):
+        words = components_cache[src_file].split()
         if str(sha) == words[0]:
-            componentsCacheHits = componentsCacheHits + 1
+            components_cache_hits = components_cache_hits + 1
             return words[1:]
-    componentsCacheMisses = componentsCacheMisses + 1
+    components_cache_misses = components_cache_misses + 1
     try:
-        cmd = os.path.join(RepoDir, 'Admin', 'WhatModulesVTKPy3.py') + ' -p ' + VTKSrcDir + ' -s ' + srcFile
+        cmd = make_path(repo_path, 'Admin', 'WhatModulesVTKPy3.py') + ' -p ' + vtk_src_dir + ' -s ' + src_file
         process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, )
     except subprocess.CalledProcessError as err:
         print('ERROR:', err)
@@ -140,18 +138,18 @@ def GetComponents(CacheDict, VTKSrcDir, srcFile, src):
             len(process.stderr),
             process.stderr.decode('utf-8'))
         )
-    rawWhatOutput = process.stdout.decode('utf-8')
-    components = ParseWhatModulesVTKOutput(rawWhatOutput)
+    result = process.stdout.decode('utf-8')
+    components = parse_WhatModulesVTKOutput(result)
 
-    CacheDict[str(srcFile)] = sha
+    cache_dict[str(src_file)] = sha
     for component in components:
-        CacheDict[str(srcFile)] += " " + component
-    print("cache miss: ", str(srcFile))
+        cache_dict[str(src_file)] += " " + component
+    print("Components: cache miss: ", str(src_file))
     return components
 
 
-def ParseWhatModulesVTKOutput(rawWhatOutput):
-    words = rawWhatOutput.split('\n')
+def parse_WhatModulesVTKOutput(output):
+    words = output.split('\n')
     components = list()
     for word in words:
         if "find_package" in word:
@@ -170,27 +168,34 @@ def ParseWhatModulesVTKOutput(rawWhatOutput):
 
 # load the tinyurl cache into a dictionary
 
-def LoadTinyUrlCache(CacheFile, CacheDict):
-    cf = open(CacheFile, 'r')
-    for line in cf:
-        words = line.split()
-        CacheDict[words[0]] = words[1]
-    cf.close()
+def load_tiny_url_cache(cache_path):
+    """
+    Load the tinyurl cache into a dictionary.
+    
+    :param cache_path: 
+    :return: the cache dictionary
+    """
+    cache_dict = dict()
+    with open(cache_path, 'r') as cf:
+        for line in cf:
+            words = line.split()
+            cache_dict[words[0]] = words[1]
+    return cache_dict
 
 
 # if the url is not in the cache, get the tinyurl
 
-def GetTinyUrl(CacheDict, Url):
-    global cacheHits
-    global cacheMisses
-    if Url in list(CacheDict.keys()):
-        cacheHits = cacheHits + 1
-        return CacheDict[Url]
+def get_tiny_url(cache_dict, Url):
+    global cache_hits
+    global cache_misses
+    if Url in list(cache_dict.keys()):
+        cache_hits = cache_hits + 1
+        return cache_dict[Url]
     tinyOne = make_tiny(Url)
-    CacheDict[Url] = tinyOne
-    cacheMisses = cacheMisses + 1
-    print("cache miss: " + Url)
-    return CacheDict[Url]
+    cache_dict[Url] = tinyOne
+    cache_misses = cache_misses + 1
+    print("URL cache miss: " + Url)
+    return cache_dict[Url]
 
 
 def tiny_url(k):
@@ -211,9 +216,9 @@ def get_results(url):
             #     print_exc()
 
 
-def UpdateUrlCache(CacheDict, lines):
-    global cacheHits
-    global cacheMisses
+def update_url_cache(cache_dict, lines):
+    global cache_hits
+    global cache_misses
     #  Extract the lines that need tiny urls
     needUrls = dict()
     urlsToShorten = list()
@@ -221,23 +226,23 @@ def UpdateUrlCache(CacheDict, lines):
         if v[0]:
             needUrls[k] = v
     for k, v in needUrls.items():
-        if v[2] in list(CacheDict.keys()):
-            cacheHits += 1
+        if v[2] in list(cache_dict.keys()):
+            cache_hits += 1
         else:
-            cacheMisses += 1
-            print("cache miss: " + v[2])
+            cache_misses += 1
+            print("URL cache miss: " + v[2])
             urlsToShorten.append(v[2])
     res = get_results(urlsToShorten)
     #  Update the cache
     for r in res:
-        CacheDict[r[0]] = r[1]
+        cache_dict[r[0]] = r[1]
 
 
-def MakeTinyUrls(CacheDict, lines):
-    UpdateUrlCache(CacheDict, lines)
+def make_tiny_urls(cache_dict, lines):
+    update_url_cache(cache_dict, lines)
     for k, v in lines.items():
         if v[0]:
-            img = '<img class="lazy" style="float:center" data-src="' + CacheDict[v[2]] + '?raw=true" width="64" />'
+            img = '<img class="lazy" style="float:center" data-src="' + cache_dict[v[2]] + '?raw=true" width="64" />'
             s = ' | <a href="{}?raw=true target="_blank">{}\n</a>'.format(v[2], img)
             lines[k][2] = s
     return  # lines
@@ -289,61 +294,96 @@ def FindLinesWithVTK(srcFileName):
     return hl_lines
 
 
-# Add a link to an example in anpther language
-def AddLanguage(S, link):
-    reg = re.compile(r'(^\[[^\)]*\))')
-    if reg.findall(S):
-        return re.sub(r'(^\[[^\)]*\))', r'\1' + link, S)
-    return S
+# # Add a link to an example in another language
+# def AddLanguage(S, link):
+#     reg = re.compile(r'(^\[[^\)]*\))')
+#     if reg.findall(S):
+#         return re.sub(r'(^\[[^\)]*\))', r'\1' + link, S)
+#     return S
+#
+#
+# # Given a lang example return a link to a Python example if it exists
+# def FindPythonGivenLang(repo_dir, example, lang):
+#     if lang == "Python":
+#         return ""
+#     pythonLink = re.sub(r'/' + lang + r'/', r'/Python/', example)
+#     pythonPath = repo_dir + pythonLink + ".py"
+#     if os.path.exists(pythonPath):
+#         return "([python](" + pythonLink + "))"
+#     return ""
 
 
-# Given a lang example return a link to a Python example if it exists
-def FindPythonGivenLang(repoDir, example, lang):
-    if lang == "Python":
-        return ""
-    pythonLink = re.sub(r'/' + lang + r'/', r'/Python/', example)
-    pythonPath = repoDir + pythonLink + ".py"
-    if os.path.exists(pythonPath):
-        return "([python](" + pythonLink + "))"
-    return ""
+def split_path(filepath, maxdepth=20):
+    """
+    Split a path into its constituent elements.
+
+    Note:
+       It is probably best to use os.path.normpath(path) before splitting the path.
+       You can reconstruct the path after splitting as follows:
+          os.path.join(*splitpath(os.path.normpath(filepath)))
+
+    :param filepath: The path
+    :param maxdepth: The maximum recursion depth - increase for a very long path
+    :return:
+    """
+    (head, tail) = os.path.split(filepath)
+    return split_path(head, maxdepth - 1) + [tail] if maxdepth and head and head != filepath else [head or tail]
+
+def make_path(*args):
+    """
+    Return a path name
+    :param args: One of more arguments to make a path from.
+    :return: The path.
+    """
+    components = []
+    for a in args:
+        components.append(a.split('/'))
+    flat_list = [item for sublist in components for item in sublist]
+    if flat_list[0] == '':
+        flat_list[0] = '/'
+    # Strip out remaining ''s
+    list1 = [elem for elem in flat_list if elem]
+    return os.path.join(*list1)
 
 
 # Given a lang example return a link to another example if it exists
-def FindOtherGivenLang(repoDir, example, exampleLang, otherLang, otherExt):
+def find_other_given_lang(example, exampleLang, otherLang, otherExt):
     if otherLang == exampleLang:
-        return ""
+        return ''
     otherLink = re.sub(r'/' + exampleLang + r'/', r'/' + otherLang + '/', example)
-    otherPath = repoDir + otherLink + otherExt
+    otherPath = otherLink + otherExt
+    otherLink = re.sub(r'/' + exampleLang + r'/', r'/' + otherLang + '/', otherLink)
+    path_elements = split_path(otherLink)
     if os.path.exists(otherPath):
-        return "([" + otherLang + "](" + otherLink + "))"
-    return ""
+        return '([' + otherLang + '](' + '/' + '/'.join(path_elements[-3:]) + '))'
+    return ''
 
 
-# Given a Cxx example return a link to a Python example if it exists
-def FindPythonGivenCxx(repoDir, cxxExample):
-    pythonLink = re.sub(r'/Cxx/', r'/Python/', cxxExample)
-    pythonPath = repoDir + pythonLink + ".py"
-    if os.path.exists(pythonPath):
-        return "([python](" + pythonLink + "))"
-    return ""
-
-
-# Given a Python example return a link to a Cxx example if it exists
-def FindCxxGivenPython(repoDir, pythonExample):
-    cxxLink = re.sub(r'/Python/', r'/Cxx/', pythonExample)
-    cxxPath = repoDir + cxxLink + ".cxx"
-    if os.path.exists(cxxPath):
-        return "([cxx](" + cxxLink + "))"
-    return ""
+# # Given a Cxx example return a link to a Python example if it exists
+# def FindPythonGivenCxx(repo_dir, cxxExample):
+#     pythonLink = re.sub(r'/Cxx/', r'/Python/', cxxExample)
+#     pythonPath = repo_dir + pythonLink + ".py"
+#     if os.path.exists(pythonPath):
+#         return "([python](" + pythonLink + "))"
+#     return ""
+#
+#
+# # Given a Python example return a link to a Cxx example if it exists
+# def FindCxxGivenPython(repo_dir, pythonExample):
+#     cxxLink = re.sub(r'/Python/', r'/Cxx/', pythonExample)
+#     cxxPath = repo_dir + cxxLink + ".cxx"
+#     if os.path.exists(cxxPath):
+#         return "([cxx](" + cxxLink + "))"
+#     return ""
 
 
 # If vtkXXXX is in the string, add a link to the doxygen file
 
 def AddDoxygen(S):
-    global doxyCount
+    global doxy_count
     reg = re.compile(r'[^\./\[s\-](vtk[^ &][0-9a-zA-Z]*)')
     if reg.findall(S):
-        doxyCount = doxyCount + 1
+        doxy_count = doxy_count + 1
         return re.sub(r'[^\./\[-](vtk[0-9a-zA-Z]*)',
                       r' [\1](' + r'http://www.vtk.org/doc/nightly/html/class' + r'\1.html#details)', S)
     return S
@@ -351,7 +391,7 @@ def AddDoxygen(S):
 
 # add doxygen links to a file
 
-def AddDoxygens(repoDir, repoURL, fromFile, toFile):
+def AddDoxygens(repo_dir, repo_url, fromFile, toFile):
     mdFile = open(fromFile, 'r')
     outFile = open(toFile, 'w')
     for line in mdFile:
@@ -364,7 +404,7 @@ def AddDoxygens(repoDir, repoURL, fromFile, toFile):
 
 # add thumbnails to example tables
 
-def FindThumbnail(S):
+def find_thumbnail(S):
     reg = re.compile(r'^\[[^\(]*\]\(([^)]*)')
     if reg.match(S):
         return [''.join(reg.findall(S))]
@@ -372,56 +412,42 @@ def FindThumbnail(S):
 
 
 # add thumbnails to a file
+# AddThumbnailsAndLanguageLinks(repo_url, repo_dir, doc_dir, 'Cxx.md', 'Cxx.md')
+# def AddThumbnailsAndLanguageLinks(repo_dir, repo_url, fromFile, toFile):
+def add_thumbnails_language_links(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_dict, from_file, to_file):
+    global thumb_count
 
-def AddThumbnailsAndLanguageLinks(repoDir, repoURL, fromFile, toFile):
-    global thumbCount
-    fromFn = make_path_name(fromFile)
-    toFn = make_path_name(toFile)
-    mdFile = open(fromFn, 'r')
+    from_path = make_path(root_path, repo_dir, from_file)
+    to_path = make_path(root_path, doc_dir, to_file)
+    md_file = open(from_path, 'r')
     lines = dict()
     line_count = 0
     x = []
-    for line in mdFile:
-        exampleLine = FindThumbnail(line.strip())[0]
-        startCxx = exampleLine.find("Cxx")
-        if startCxx >= 0:
-            pythonLink = FindPythonGivenCxx(repoDir, exampleLine)
-            if pythonLink != '':
-                line = AddLanguage(line, pythonLink)
-
-        startPython = exampleLine.find("Python")
-        if startPython >= 0:
-            cxxLink = FindCxxGivenPython(repoDir, exampleLine)
-            if cxxLink != '':
-                line = AddLanguage(line, cxxLink)
-
+    for line in md_file:
+        example_line = find_thumbnail(line.strip())[0]
         withDoxy = AddDoxygen(line)
         x.append(False)
         x.append(withDoxy.rstrip())
-        if exampleLine != '':
-            thumbCount = thumbCount + 1
-            exampleName = os.path.split(exampleLine)[1]
-            exampleDir = os.path.split(exampleLine)[0]
-            baseline = make_path_name(RepoDir + "/Testing/Baseline" + exampleDir + "/Test" + exampleName + ".png")
+        if example_line != '':
+            thumb_count = thumb_count + 1
+            exampleName = os.path.split(example_line)[1]
+            exampleDir = os.path.split(example_line)[0]
+            baseline = make_path(root_path, repo_dir, baseline_dir, exampleDir, "Test" + exampleName + ".png")
             if os.path.exists(baseline):
-                baselineURL = make_path_name(repoURL + "/blob/master/" + baseline)
+                baselineURL = make_path(repo_url, "blob/master", "src", baseline_dir, exampleDir,
+                                             "Test" + exampleName + ".png")
                 x[0] = True
                 x.append(baselineURL)
         lines[line_count] = x
         line_count += 1
         x = []
-    MakeTinyUrls(CacheDict, lines)
-    mdFile.close()
-    outFile = open(toFn, 'w')
-    k = sorted(lines.keys())
-    for kv in k:
-        line = ''.join(lines[kv][1:])
-        # print(lines[kv])
-        # print(line)
-        # if lines[kv][0]:
-        #     print(line)
-        outFile.write(line + '\n')
-    outFile.close()
+    make_tiny_urls(cache_dict, lines)
+    md_file.close()
+    with open(to_path, 'w') as ofn:
+        k = sorted(lines.keys())
+        for kv in k:
+            line = ''.join(lines[kv][1:])
+            ofn.write(line + '\n')
 
 
 # Fill in the template parameters in a CMakeLists template file
@@ -440,106 +466,92 @@ def FillQtCMakeLists(S, Name, Components):
     return reg
 
 
-def make_path_name(*args):
-    """
-    Return a path name
-    :param args:
-    :return:
-    """
-    components = []
-    for a in args:
-        components.append(a.split('/'))
-    flat_list = [item for sublist in components for item in sublist]
-    if flat_list[0] == '':
-        flat_list[0] = '/'
-    # Strip out remaining ''s
-    list1 = [elem for elem in flat_list if elem]
-    return os.path.join(*list1)
-
 
 #####################################################################
 # Initialize counts on these globals
-cacheHits = 0
-cacheMisses = 0
-componentsCacheHits = 0
-componentsCacheMisses = 0
+cache_hits = 0
+cache_misses = 0
+components_cache_hits = 0
+components_cache_misses = 0
 
-cxxCount = 0
-csCount = 0
-pyCount = 0
-javaCount = 0
+cxx_count = 0
+cs_count = 0
+py_count = 0
+java_count = 0
 
-thumbCount = 0
-doxyCount = 0
+thumb_count = 0
+doxy_count = 0
 
 # Other globals
-CacheDict = dict()
-ComponentsDict = dict()
-htmlIdSet = set()
-
-RepoDir = ''
-DocDir = ''
-RepoURL = ''
-VTKSrcDir = ''
-
+cache_dict = dict()
+components_dict = dict()
 
 #####################################################################
 #  This is the main module.
 def main():
-    global cacheHits
-    global cacheMisses
-    global componentsCacheHits
-    global componentsCacheMisses
+    global cache_hits
+    global cache_misses
+    global components_cache_hits
+    global components_cache_misses
 
-    global cxxCount
-    global csCount
-    global pyCount
-    global javaCount
+    global cxx_count
+    global cs_count
+    global py_count
+    global java_count
 
-    global thumbCount
-    global doxyCount
+    global thumb_count
+    global doxy_count
 
-    global CacheDict
-    global ComponentsDict
+    repo_dir, doc_dir, repo_url, vtk_src_dir = get_program_parameters()
 
-    global RepoDir
-    global DocDir
-    global RepoURL
-    global VTKSrcDir
+    sub_str = './'
+    if repo_dir.startswith(sub_str):
+        repo_dir = re.sub(sub_str, '', repo_dir)
+    if doc_dir.startswith(sub_str):
+        doc_dir = re.sub(sub_str, '', doc_dir)
+    print(repo_dir, doc_dir)
+        # Find the root path, this program resides in the Admin folder so go up two levels.
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    for i in range(2):
+        root_path = os.path.dirname(root_path)
+    print('Root path:', root_path)
 
-    RepoDir, DocDir, RepoURL, VTKSrcDir = get_program_parameters()
-    RepoName = list(filter(None, RepoURL.split('/')))[-1]
+    # The name of the repository on the server.
+    repo_name = list(filter(None, repo_url.split('/')))[-1]
+    print('Repository name:', repo_name)
+    # The user name for the repository.
+    user_name = list(filter(None, repo_url.split('/')))[-2]
+    print('User name:', user_name)
 
+    repo_path = make_path(root_path, repo_dir)
+    doc_path = make_path(root_path, doc_dir)
     # Make sure the wiki docs folder exists
-    if not os.path.exists(DocDir):
-        os.makedirs(DocDir)
+    if not os.path.exists(doc_path):
+        os.makedirs(doc_path)
 
     # Baseline top level
-    BaselineName = make_path_name(RepoDir, '/Testing/Baseline')
+    baseline_path = make_path(repo_dir, '/Testing/Baseline')
+    baseline_src_path = 'Testing/Baseline'
 
     # Load the TinyUrl cache
-    CacheFile = make_path_name(RepoDir, '/Admin/TinyUrlCache')
-    # CacheDict = dict()
-    LoadTinyUrlCache(CacheFile, CacheDict)
+    cache_dict = load_tiny_url_cache(make_path(repo_path, 'Admin/TinyUrlCache'))
 
     # Load the Component cache
-    ComponentsCacheFile = make_path_name(RepoDir, '/Admin/ComponentsCache')
-    # ComponentsDict = dict()
-    LoadComponentsCache(ComponentsCacheFile, ComponentsDict)
+    components_dict = load_components_cache(make_path(repo_path, 'Admin/ComponentsCache'))
 
     # Read the Wiki Templates
-    with open(make_path_name(RepoDir, '/Admin/VTKCMakeLists'), 'r') as VTKTemplateFile:
+    with open(make_path(repo_path, 'Admin/VTKCMakeLists'), 'r') as VTKTemplateFile:
         VTKTemplate = VTKTemplateFile.read()
 
-    with open(make_path_name(RepoDir, '/Admin/VTKQtCMakeLists'), 'r') as VTKQtTemplateFile:
+    with open(make_path(repo_path, 'Admin/VTKQtCMakeLists'), 'r') as VTKQtTemplateFile:
         VTKQtTemplate = VTKQtTemplateFile.read()
 
     # Make the reference mtime to be the most recent of the two CMakeLists templates
-    refStat1 = os.stat(make_path_name(RepoDir, '/Admin/VTKQtCMakeLists'))
-    refStat2 = os.stat(make_path_name(RepoDir, '/Admin/VTKCMakeLists'))
-    refMtime = refStat1.st_mtime
-    if refStat2.st_mtime > refStat1.st_mtime:
-        refMtime = refStat2.st_mtime
+    ref_stat1 = os.stat(make_path(repo_path, 'Admin/VTKQtCMakeLists'))
+    ref_stat2 = os.stat(make_path(repo_path, 'Admin/VTKCMakeLists'))
+    ref_mtime = ref_stat1.st_mtime
+    if ref_stat2.st_mtime > ref_stat1.st_mtime:
+        ref_mtime = ref_stat2.st_mtime
 
     # Create a dict to hold code name and page name
     codeToPage = dict()
@@ -551,171 +563,133 @@ def main():
     exampleToFileNames = dict()
 
     # Create Snippets directories for Cxx, Python and Java
-    if not os.path.exists(make_path_name(DocDir, '/Cxx/Snippets')):
-        os.makedirs(make_path_name(DocDir, '/Cxx/Snippets'))
+    if not os.path.exists(make_path(doc_path, 'Cxx/Snippets')):
+        os.makedirs(make_path(doc_path, 'Cxx/Snippets'))
 
-    if not os.path.exists(make_path_name(DocDir, '/Python/Snippets')):
-        os.makedirs(make_path_name(DocDir, '/Python/Snippets'))
+    if not os.path.exists(make_path(doc_path, 'Python/Snippets')):
+        os.makedirs(make_path(doc_path, 'Python/Snippets'))
 
-    if not os.path.exists(make_path_name(DocDir, '/Java/Snippets')):
-        os.makedirs(make_path_name(DocDir, '/Java/Snippets'))
+    if not os.path.exists(make_path(doc_path, 'Java/Snippets')):
+        os.makedirs(make_path(doc_path, 'Java/Snippets'))
 
     # Add thumbnails and language links to each of the language summary pages, Snippets and Book figures
-    AddThumbnailsAndLanguageLinks(RepoDir, RepoURL, RepoDir + '/Cxx.md', DocDir + '/Cxx.md')
-    AddThumbnailsAndLanguageLinks(RepoDir, RepoURL, RepoDir + '/Python.md', DocDir + '/Python.md')
-    AddThumbnailsAndLanguageLinks(RepoDir, RepoURL, RepoDir + '/CSharp.md', DocDir + '/CSharp.md')
-    AddThumbnailsAndLanguageLinks(RepoDir, RepoURL, RepoDir + '/Java.md', DocDir + '/Java.md')
-    AddThumbnailsAndLanguageLinks(RepoDir, RepoURL, RepoDir + '/JavaScript.md', DocDir + '/JavaScript.md')
-
-    AddThumbnailsAndLanguageLinks(RepoDir, RepoURL, RepoDir + '/Cxx/Snippets.md', DocDir + '/Cxx/Snippets.md')
-    AddThumbnailsAndLanguageLinks(RepoDir, RepoURL, RepoDir + '/Python/Snippets.md', DocDir + '/Python/Snippets.md')
-    AddThumbnailsAndLanguageLinks(RepoDir, RepoURL, RepoDir + '/Java/Snippets.md', DocDir + '/Java/Snippets.md')
-    AddThumbnailsAndLanguageLinks(RepoDir, RepoURL, RepoDir + '/VTKBookFigures.md', DocDir + '/VTKBookFigures.md')
-    AddThumbnailsAndLanguageLinks(RepoDir, RepoURL, RepoDir + '/VTKFileFormats.md', DocDir + '/VTKFileFormats.md')
+    pages = ['Cxx.md', 'Python.md', 'CSharp.md', 'Java.md', 'JavaScript.md', 'Cxx/Snippets.md', 'Python/Snippets.md',
+             'Java/Snippets.md', 'VTKBookFigures.md', 'VTKFileFormats.md']
+    for p in pages:
+        add_thumbnails_language_links(repo_url, root_path, repo_dir, doc_dir, baseline_src_path, cache_dict, p, p)
 
     # C++ Snippets
-    files = os.listdir(make_path_name(RepoDir + '/Cxx/Snippets'))
-    for f in files:
+    src = make_path(repo_path, 'Cxx/Snippets')
+    dest = make_path(doc_path, 'Cxx/Snippets')
+    for f in os.listdir(src):
         snippet = os.path.splitext(f)[0]
-        fromPath = RepoDir + '/Cxx/Snippets/' + snippet + '.md'
-        toPath = DocDir + '/Cxx/Snippets/' + snippet + '.md'
-        CopyFile(fromPath, toPath)
+        shutil.copy(make_path(src, snippet + '.md'), dest)
 
     # Python Snippets
-    files = os.listdir(make_path_name(RepoDir + '/Python/Snippets'))
-    for f in files:
+    src = make_path(repo_path, 'Python/Snippets')
+    dest = make_path(doc_path, 'Python/Snippets')
+    for f in os.listdir(src):
         snippet = os.path.splitext(f)[0]
-        fromPath = RepoDir + '/Python/Snippets/' + snippet + '.md'
-        toPath = DocDir + '/Python/Snippets/' + snippet + '.md'
-        CopyFile(fromPath, toPath)
+        shutil.copy(make_path(src, snippet + '.md'), dest)
 
     # Java Snippets
-    files = os.listdir(make_path_name(RepoDir + '/Java/Snippets'))
-    for f in files:
+    src = make_path(repo_path, 'Java/Snippets')
+    dest = make_path(doc_path, 'Java/Snippets')
+    for f in os.listdir(src):
         snippet = os.path.splitext(f)[0]
-        fromPath = RepoDir + '/Java/Snippets/' + snippet + '.md'
-        toPath = DocDir + '/Java/Snippets/' + snippet + '.md'
-        CopyFile(fromPath, toPath)
+        shutil.copy(make_path(src, snippet + '.md'), dest)
 
     # Copy favicon.png
-    fromPath = make_path_name(DocDir + '/assets')
-    toPath = make_path_name(make_path_name(DocDir + '/assets/images'))
-    if not os.path.exists(fromPath):
-        os.makedirs(fromPath)
-    if not os.path.exists(toPath):
-        os.makedirs(toPath)
-    CopyFile(RepoDir + '/Images/favicon.png', DocDir + '/assets/images/favicon.png')
+    dest = make_path(make_path(doc_path, 'assets/images'))
+    if not os.path.exists(dest):
+        os.makedirs(dest)
+    shutil.copy(make_path(repo_path, 'Images/favicon.png'), dest)
 
     # Copy repo .md files
-    CopyFile(RepoDir + '/index.md', DocDir + '/index.md')
-    CopyFile(RepoDir + '/VTKBook.md', DocDir + '/VTKBook.md')
+    shutil.copy(make_path(repo_path, 'index.md'), doc_path)
+    shutil.copy(make_path(repo_path, 'VTKBook.md'), doc_path)
 
     # Copy coverage files
-    if not os.path.exists(make_path_name(DocDir + '/Coverage')):
-        os.makedirs(make_path_name(DocDir + '/Coverage'))
+    dest = make_path(doc_path, 'Coverage')
+    if not os.path.exists(dest):
+        os.makedirs(dest)
 
-    # Get list of all  examples
-    Languages = dict()
-    Languages['Cxx'] = '.cxx'
-    Languages['Python'] = '.py'
-    Languages['Java'] = '.java'
-    Languages['CSharp'] = '.cs'
-
-    for k in Languages.keys():
-        tmp = []
-        tmp.append(RepoDir + '/Coverage/' + k + 'VTKClassesNotUsed.md')
-        tmp.append(DocDir + '/Coverage/' + k + 'VTKClassesNotUsed.md')
-        tmp.append(RepoDir + '/Coverage/' + k + 'VTKClassesUsed.md')
-        tmp.append(DocDir + '/Coverage/' + k + 'VTKClassesUsed.md')
-        CopyFile(tmp[0], tmp[1])
-        CopyFile(tmp[2], tmp[3])
+    # Get a list of all  examples
+    # A dictionary of available languages
+    available_languages = dict()
+    available_languages['Cxx'] = '.cxx'
+    available_languages['Python'] = '.py'
+    available_languages['Java'] = '.java'
+    available_languages['CSharp'] = '.cs'
+    for k in available_languages.keys():
+        shutil.copy(make_path(repo_path, 'Coverage', k + 'VTKClassesNotUsed.md'), dest)
+        shutil.copy(make_path(repo_path, 'Coverage', k + 'VTKClassesUsed.md'), dest)
 
     # Copy Instructions files
-    if not os.path.exists(make_path_name(DocDir + '/Instructions')):
-        os.makedirs(make_path_name(DocDir + '/Instructions'))
-    CopyFile(RepoDir + '/Instructions/ForUsers.md', DocDir + '/Instructions/ForUsers.md')
-    CopyFile(RepoDir + '/Instructions/ForDevelopers.md', DocDir + '/Instructions/ForDevelopers.md')
-    CopyFile(RepoDir + '/Instructions/ForAdministrators.md', DocDir + '/Instructions/ForAdministrators.md')
-    CopyFile(RepoDir + '/Instructions/Guidelines.md', DocDir + '/Instructions/Guidelines.md')
-    CopyFile(RepoDir + '/Instructions/ConvertingFiguresToExamples.md',
-             DocDir + '/Instructions/ConvertingFiguresToExamples.md')
+    dest = make_path(doc_path, 'Instructions')
+    if not os.path.exists(dest):
+        os.makedirs(dest)
+    shutil.copy(make_path(repo_path, 'Instructions/ForUsers.md'), dest)
+    shutil.copy(make_path(repo_path, 'Instructions/ForDevelopers.md'), dest)
+    shutil.copy(make_path(repo_path, 'Instructions/ForAdministrators.md'), dest)
+    shutil.copy(make_path(repo_path, 'Instructions/Guidelines.md'), dest)
+    shutil.copy(make_path(repo_path, 'Instructions/ConvertingFiguresToExamples.md'), dest)
 
     # Copy VTKBook files
-    if not os.path.exists(make_path_name(DocDir + '/VTKBook')):
-        os.makedirs(make_path_name(DocDir + '/VTKBook'))
-    # htmlIdSet = set()
-    CreateHtmlIds(RepoDir + '/VTKBook/00Preface.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/01Chapter1.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/02Chapter2.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/03Chapter3.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/04Chapter4.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/05Chapter5.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/06Chapter6.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/07Chapter7.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/08Chapter8.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/09Chapter9.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/10Chapter10.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/11Chapter11.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/12Chapter12.md')
-    CreateHtmlIds(RepoDir + '/VTKBook/13Glossary.md')
-
-    print('Found', len(htmlIdSet), 'figures with html ids')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/00Preface.md', DocDir + '/VTKBook/00Preface.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/01Chapter1.md', DocDir + '/VTKBook/01Chapter1.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/02Chapter2.md', DocDir + '/VTKBook/02Chapter2.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/03Chapter3.md', DocDir + '/VTKBook/03Chapter3.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/04Chapter4.md', DocDir + '/VTKBook/04Chapter4.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/05Chapter5.md', DocDir + '/VTKBook/05Chapter5.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/06Chapter6.md', DocDir + '/VTKBook/06Chapter6.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/07Chapter7.md', DocDir + '/VTKBook/07Chapter7.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/08Chapter8.md', DocDir + '/VTKBook/08Chapter8.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/09Chapter9.md', DocDir + '/VTKBook/09Chapter9.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/10Chapter10.md', DocDir + '/VTKBook/10Chapter10.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/11Chapter11.md', DocDir + '/VTKBook/11Chapter11.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/12Chapter12.md', DocDir + '/VTKBook/12Chapter12.md')
-    CopyChapterAndAddLinks(RepoDir + '/VTKBook/13Glossary.md', DocDir + '/VTKBook/13Glossary.md')
+    if not os.path.exists(make_path(doc_path, 'VTKBook')):
+        os.makedirs(make_path(doc_path, 'VTKBook'))
+    html_id_set = set()
+    chapters = ['00Preface', '01Chapter1', '02Chapter2', '03Chapter3', '04Chapter4', '05Chapter5', '06Chapter6',
+                '07Chapter7', '08Chapter8', '09Chapter9', '10Chapter10', '11Chapter11', '12Chapter12', '13Glossary']
+    ch_src = [make_path(repo_path, 'VTKBook', ch + '.md') for ch in chapters]
+    for ch in ch_src:
+        create_html_ids(ch, html_id_set)
+    ch_dest = [make_path(doc_path, 'VTKBook', ch + '.md') for ch in chapters]
+    ch_src_dest = list(zip(ch_src, ch_dest))
+    print('Found', len(html_id_set), 'figures with html ids')
+    for ch in ch_src_dest:
+        copy_chapter_add_links(ch, html_id_set)
 
     # Copy VTKBookLaTeX files
-    if not os.path.exists(make_path_name(DocDir + '/VTKBookLaTeX')):
-        os.makedirs(make_path_name(DocDir + '/VTKBookLaTeX'))
-    CopyFile(make_path_name(RepoDir + '/VTKBookLaTeX/VTKTextBook.md'),
-             make_path_name(DocDir + '/VTKBookLaTeX/VTKTextBook.md'))
+    dest = make_path(doc_path, 'VTKBookLaTeX')
+    if not os.path.exists(dest):
+        os.makedirs(dest)
+    shutil.copy(make_path(repo_path, 'VTKBookLaTeX/VTKTextBook.md'), dest)
 
     # Scan all Cxx directories and look for extras
-    allExtras = set()
-    for root, dirs, files in os.walk(RepoDir):
-        to_find = RepoDir + '/' + 'Cxx'
+    all_extras = set()
+    for root, dirs, files in os.walk(repo_path):
+        to_find = make_path(repo_path, 'Cxx')
         start = root.find(to_find)
         if start < 0:
             continue
         for f in files:
-            fileName = os.path.splitext(f)
-            if fileName[1] == '.extras':
-                ExtrasPath = root + '/' + f
-                ExtrasFile = open(ExtrasPath, 'r')
-                for line in ExtrasFile:
-                    line = line.strip()
-                    allExtras.add(line)
-                ExtrasFile.close()
+            file_name = os.path.splitext(f)
+            if file_name[1] == '.extras':
+                extras_path = make_path(root, f)
+                with open(extras_path, 'r') as ifn:
+                    for line in ifn:
+                        line = line.strip()
+                        all_extras.add(line)
 
-    for lang, langExt in list(Languages.items()):
-        for root, dirs, files in os.walk(RepoDir):
-            to_find = os.path.join(RepoDir, lang)
+    for lang, langExt in list(available_languages.items()):
+        to_find = os.path.join(repo_dir, lang)
+        for root, dirs, files in os.walk(repo_path):
             start = root.find(to_find)
-            if start:
+            if start < 0:
                 continue
-            # Get the part of the file name that comes after RepoDir
+            # Get the part of the file name that comes after repo_dir
             # e.g. if the file name is VTKExamples/Cxx/GeometricObjects/Line,
             # Path will be Cxx/GeometriObjects/Line
-            KitName = root[start + 1 + len(to_find):]
-            if KitName.find('Boneyard') >= 0:
+            kit_name = root[start + 1 + len(to_find):]
+            if kit_name.find('Boneyard') >= 0:
                 continue
-            if KitName.find('Broken') >= 0:
+            if kit_name.find('Broken') >= 0:
                 continue
             for f in files:
-                otherLanguages = list()
+                other_languages = list()
                 # skip files that are listed as extras
-                if f in allExtras:
+                if f in all_extras:
                     continue
                 if f == 'CMakeLists.txt':
                     continue
@@ -723,40 +697,26 @@ def main():
                 ExampleExt = os.path.splitext(f)[1]
                 if ExampleExt != langExt:
                     continue
-                # Find examples in other languages
+                # Find examples in other available_languages
                 fp = root + '/' + f
-                for lLang, lExt in list(Languages.items()):
-                    otherLink = FindOtherGivenLang('', os.path.splitext(fp)[0], lang, lLang, lExt)
+                for lLang, lExt in list(available_languages.items()):
+                    otherLink = find_other_given_lang(os.path.splitext(fp)[0], lang, lLang, lExt)
                     if otherLink != '':
                         otherLink = re.sub(r'src', r'', otherLink)
-                        otherLanguages.append(otherLink)
-                #           otherLink = FindOtherGivenLang("", os.path.splitext(fp)[0], lang, "Cxx", ".cxx")
-                #            if otherLink != '' :
-                #                otherLink = re.sub(r'src',r'', otherLink)
-                #                otherLanguages.append(otherLink)
-                #            otherLink = FindOtherGivenLang("", os.path.splitext(fp)[0], lang, "Python", ".py")
-                #            if otherLink != '' :
-                #                otherLink = re.sub(r'src',r'', otherLink)
-                #                otherLanguages.append(otherLink)
-                #            otherLink = FindOtherGivenLang("", os.path.splitext(fp)[0], lang, "Java", ".java")
-                #            if otherLink != '' :
-                #                otherLink = re.sub(r'src',r'', otherLink)
-                #                otherLanguages.append(otherLink)
-                #            otherLink = FindOtherGivenLang("", os.path.splitext(fp)[0], lang, "CSharp", ".cs")
-                #            if otherLink != '' :
-                #                otherLink = re.sub(r'src',r'', otherLink)
-                #                otherLanguages.append(otherLink)
-                BaselinePath = os.path.join(RepoDir, 'Testing', 'Baseline', lang, KitName, 'Test', ExampleName + '.png')
-                PathName = os.path.join(DocDir, lang, KitName)
+                        other_languages.append(otherLink)
+                BaselinePath = os.path.join(repo_path, 'Testing', 'Baseline', lang, kit_name, 'Test' +
+                                            ExampleName + '.png')
+                PathName = os.path.join(doc_path, lang, kit_name)
                 if not os.path.exists(PathName):
                     if PathName != '':
                         os.makedirs(PathName)
-                OutputFile = os.path.join(DocDir, lang, KitName, ExampleName + '.md')
+                OutputFile = os.path.join(doc_path, lang, kit_name, ExampleName + '.md')
                 MdFile = open(OutputFile, 'w')
-                MdFile.write('[' + RepoName + '](/)/[' + lang + '](/' + lang + ')/' + KitName + '/' + ExampleName + '\n\n')
+                MdFile.write(
+                    '[' + repo_dir + '](/)/[' + lang + '](/' + lang + ')/' + kit_name + '/' + ExampleName + '\n\n')
 
                 if os.path.isfile(BaselinePath):
-                    ImgUrl = RepoURL + '/blob/master/src/Testing/Baseline/' + lang + '/' + KitName + '/Test' + ExampleName + '.png?raw=true'
+                    ImgUrl = repo_url + '/blob/master/src/Testing/Baseline/' + lang + '/' + kit_name + '/Test' + ExampleName + '.png?raw=true'
                     # href to open image in new tab
                     MdFile.write('<a href="' + ImgUrl + ' target="_blank">' + '\n')
                     MdFile.write(
@@ -764,7 +724,7 @@ def main():
                     MdFile.write('</a>' + '\n')
                     MdFile.write('<hr>\n')
                     MdFile.write('\n')
-                DescriptionPath = os.path.join(RepoDir, lang, KitName, ExampleName + ".md")
+                DescriptionPath = os.path.join(repo_path, lang, kit_name, ExampleName + ".md")
                 # Add a description if a .md file exists for the example
                 if os.path.isfile(DescriptionPath):
                     DescriptionFile = open(DescriptionPath, 'r')
@@ -772,11 +732,11 @@ def main():
                     DescriptionFile.close()
                     description = AddDoxygen(description)
                     MdFile.write(description)
-                # Add examples from other languages if they exist
-                if len(otherLanguages) > 0:
-                    seeAlso = '\n!!! Tip "Other Languages"\n'
+                # Add examples from other available languages if they exist
+                if len(other_languages) > 0:
+                    seeAlso = '\n!!! Tip "Other languages"\n'
                     see = '    See '
-                    for other in otherLanguages:
+                    for other in other_languages:
                         seeAlso += see + other
                         see = ', '
                     seeAlso += '\n'
@@ -784,11 +744,11 @@ def main():
                     MdFile.write('\n')
 
                 # Add email contact for questions
-                question = '\n!!! question\n    If you have a simple question about this example contact us at <a href=mailto:' + RepoName+ 'ExProject@gmail.com?subject=' + ExampleName + langExt + '&body=' + 'https://lorensen.github.io/' + RepoName + '/site/' + lang + '/' + KitName + '/' + ExampleName + '>' + RepoName + 'Project</a>\n    If your question is more complex and may require extended discussion, please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
+                question = '\n!!! question\n    If you have a simple question about this example contact us at <a href=mailto:' + repo_name + 'ExProject@gmail.com?subject=' + ExampleName + langExt + '&body=' + 'https://' + user_name + '.github.io/' + repo_name + '/site/' + lang + '/' + kit_name + '/' + ExampleName + '>' + repo_name + 'Project</a>\n    If your question is more complex and may require extended discussion, please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
                 MdFile.write(question)
                 MdFile.write('\n')
 
-                SrcFileName = os.path.join(RepoDir, lang, KitName, ExampleName + langExt)
+                SrcFileName = os.path.join(repo_path, lang, kit_name, ExampleName + langExt)
                 with open(SrcFileName, 'r') as SrcFile:
                     src = SrcFile.read()
                 hiliteLines = FindLinesWithVTK(SrcFileName)
@@ -797,27 +757,27 @@ def main():
                 if langExt == '.cxx':
                     MdFile.write('``` c++ ' + hiliteLines + '\n')
                     # Get the components used in this example
-                    components = GetComponents(ComponentsDict, VTKSrcDir, SrcFileName, src)
-                    cxxCount = cxxCount + 1
+                    components = get_components(repo_path, components_dict, vtk_src_dir, SrcFileName, src)
+                    cxx_count = cxx_count + 1
                 elif langExt == '.cs':
                     MdFile.write('```csharp' + hiliteLines + '\n')
-                    csCount = csCount + 1
+                    cs_count = cs_count + 1
                 elif langExt == '.py':
                     MdFile.write('```python' + hiliteLines + '\n')
-                    pyCount = pyCount + 1
+                    py_count = py_count + 1
                 elif langExt == '.java':
                     MdFile.write('```java' + hiliteLines + '\n')
-                    javaCount = javaCount + 1
+                    java_count = java_count + 1
                 MdFile.write(src)
                 MdFile.write('```' + '\n')
 
                 # Store the full file names for the example
                 if ExampleName not in exampleToFileNames:
                     exampleToFileNames[ExampleName] = set()
-                SrcFile = os.path.join(RepoDir, lang, KitName, ExampleName + ExampleExt)
+                SrcFile = os.path.join(repo_path, lang, kit_name, ExampleName + ExampleExt)
                 exampleToFileNames[ExampleName].add(SrcFile)
 
-                ExtrasPath = os.path.join(RepoDir, lang, KitName, ExampleName + '.extras')
+                ExtrasPath = os.path.join(repo_path, lang, kit_name, ExampleName + '.extras')
                 ExtraNames = ''
                 if os.path.isfile(ExtrasPath):
                     ExtrasFile = open(ExtrasPath, 'r')
@@ -825,8 +785,8 @@ def main():
                         line = line.strip()
                         if line == '':
                             continue
-                        ExtraPath = os.path.join(RepoDir, lang, KitName, line)
-                        SrcFile = os.path.join(RepoDir, lang, KitName, line)
+                        ExtraPath = os.path.join(repo_path, lang, kit_name, line)
+                        SrcFile = os.path.join(repo_path, lang, kit_name, line)
 
                         exampleToFileNames[ExampleName].add(SrcFile)
                         ExtraFile = open(ExtraPath, 'r')
@@ -837,14 +797,14 @@ def main():
                         if extent[1] == '.cxx':
                             ExtraNames += ' ' + line
                     ExtrasFile.close()
-                CustomCMakePath = os.path.join(RepoDir, lang, KitName, ExampleName + '.cmake')
+                CustomCMakePath = os.path.join(repo_path, lang, kit_name, ExampleName + '.cmake')
                 if os.path.isfile(CustomCMakePath):
                     CustomCMakeFile = open(CustomCMakePath, 'r')
                     cmake = CustomCMakeFile.read()
                     CustomCMakeFile.close()
                 else:
                     if IsQtExample(src):
-                        CMakeFile = open(os.path.join(RepoDir, 'Admin', 'VTKQtCMakeLists'), 'r')
+                        CMakeFile = open(os.path.join(repo_path, 'Admin', 'VTKQtCMakeLists'), 'r')
                         CMakeContents = CMakeFile.read()
                         CMakeFile.close()
                         # Create component lines
@@ -859,7 +819,7 @@ def main():
                         # print('Components: ' + Components)
                         cmake = FillQtCMakeLists(CMakeContents, ExampleName, Components)
                     else:
-                        with open(os.path.join(RepoDir, 'Admin', 'VTKCMakeLists'), 'r') as CMakeFile:
+                        with open(os.path.join(repo_path, 'Admin', 'VTKCMakeLists'), 'r') as CMakeFile:
                             CMakeContents = CMakeFile.read()
                         # Create component lines
                         Components = ''
@@ -876,17 +836,17 @@ def main():
                     exampleToCMake[ExampleName] = GetVTKCMakelists(cmake)
                     MdFile.write(cmake)
                 MdFile.close()
-                codeToPage[ExampleName + langExt] = '/' + lang + '/' + KitName + '/' + ExampleName
+                codeToPage[ExampleName + langExt] = '/' + lang + '/' + kit_name + '/' + ExampleName
 
     # Generate an html page that links each example code file to its Wiki Example page
-    indexFile = open(os.path.join(DocDir, 'ExampleCodeToWikiPage.html'), 'w')
+    indexFile = open(os.path.join(doc_path, 'ExampleCodeToWikiPage.html'), 'w')
     indexFile.write('Navigate to the page that contains the source code of an example<br>')
     indexFile.write('\n')
     sortedByCode = sorted(codeToPage.items())
     for item in sortedByCode:
-        indexFile.write("<A HREF=" + RepoURL + "/wikis" + re.sub(" ", "_", item[1]) + ">" + item[0] + "</A>")
+        indexFile.write("<A HREF=" + repo_url + "/wikis" + re.sub(" ", "_", item[1]) + ">" + item[0] + "</A>")
         indexFile.write(
-            "<A HREF=" + RepoURL + "/blob/master" + re.sub(" ", "_", item[1]) + ".md" + ">" + "(md)" + "</A>")
+            "<A HREF=" + repo_url + "/blob/master" + re.sub(" ", "_", item[1]) + ".md" + ">" + "(md)" + "</A>")
         indexFile.write("<br>\n")
     indexFile.close()
 
@@ -923,7 +883,7 @@ def main():
                 tarFileName = srcDir + '/' + os.path.split(exampleFileName)[1]
                 # Copy the code for the example
                 shutil.copy(exampleFileName, tarFileName)
-                os.utime(tarFileName, (refMtime, refMtime))
+                os.utime(tarFileName, (ref_mtime, ref_mtime))
 
         # Some examples do not have a CMakeLists.txt file
         if example in exampleToCMake:
@@ -932,55 +892,53 @@ def main():
             cmakeFile = open(cmakeFileName, 'w')
             cmakeFile.write(exampleToCMake[example][0])
             cmakeFile.close()
-            os.utime(cmakeFileName, (refMtime, refMtime))
+            os.utime(cmakeFileName, (ref_mtime, ref_mtime))
 
         # Set the mtimes for the directories containing the example
         # Since the mtime is stored in the tar header for each file and directory,
         # we need a consistent time so that a tar of an unchanged example will be equal
         # to the one in the repo
-        os.utime(srcDir, (refMtime, refMtime))
-        os.utime(srcDir + '/build', (refMtime, refMtime))
+        os.utime(srcDir, (ref_mtime, ref_mtime))
+        os.utime(srcDir + '/build', (ref_mtime, ref_mtime))
 
         # Now create the tar file for the example
         # The tarballs are stored in the source tree
-        tar = tarfile.open('src/Tarballs/' + example + '.tar', 'w')
+        tar = tarfile.open(make_path(repo_path, 'Tarballs',  example + '.tar'), 'w')
         tar.add(srcDir, arcname=example)
         tar.close()
 
-    os.utime(tmpDir, (0, refMtime))
+    os.utime(tmpDir, (0, ref_mtime))
     # Cleanup the temporary directories
     shutil.rmtree(tmpDir)
 
     # Update the tinyurl cache file if necessary
-    if cacheMisses > 0:
-        cf = open(CacheFile, 'w')
-        for key in CacheDict:
-            cf.write(key + ' ' + CacheDict[key] + '\n')
-        cf.close()
+    if cache_misses > 0:
+        with open(make_path(repo_path, 'Admin/TinyUrlCache'), 'w') as cf:
+            for key in cache_dict.keys():
+                cf.write(key + ' ' + cache_dict[key] + '\n')
 
     # Rewrite the components cache file if necessary
-    if componentsCacheMisses > 0:
-        cf = open(ComponentsCacheFile, 'w')
-        for key, contents in list(ComponentsDict.items()):
-            if os.path.exists(key):
-                # add the vtk prefix to the component to support older versions of vtk
-                cf.write(key + ' ' + contents + '\n')
-        cf.close()
+    if components_cache_misses > 0:
+        with open(make_path(repo_path, 'Admin/ComponentsCache'), 'w') as cf:
+            for key, contents in list(components_dict.items()):
+                if os.path.exists(key):
+                    # add the vtk prefix to the component to support older versions of vtk
+                    cf.write(key + ' ' + contents + '\n')
 
     # Report stats
     stats = list()
     stats.append('ScrapeRepo Summary')
-    stats.append('    C++ examples: ' + str(cxxCount))
-    stats.append('    CSharp examples: ' + str(csCount))
-    stats.append('    Python examples: ' + str(pyCount))
-    stats.append('    Java examples: ' + str(javaCount))
-    stats.append('    Total examples: ' + str(cxxCount + csCount + pyCount + javaCount))
-    stats.append('    Doxygen added: ' + str(doxyCount))
-    stats.append('    Thumbnails added: ' + str(thumbCount))
-    stats.append('    TinyUrl Cache hits: ' + str(cacheHits))
-    stats.append('    TinyUrl Cache misses: ' + str(cacheMisses))
-    stats.append('    Components Cache hits: ' + str(componentsCacheHits))
-    stats.append('    Components Cache misses: ' + str(componentsCacheMisses))
+    stats.append('    C++ examples: ' + str(cxx_count))
+    stats.append('    CSharp examples: ' + str(cs_count))
+    stats.append('    Python examples: ' + str(py_count))
+    stats.append('    Java examples: ' + str(java_count))
+    stats.append('    Total examples: ' + str(cxx_count + cs_count + py_count + java_count))
+    stats.append('    Doxygen added: ' + str(doxy_count))
+    stats.append('    Thumbnails added: ' + str(thumb_count))
+    stats.append('    TinyUrl Cache hits: ' + str(cache_hits))
+    stats.append('    TinyUrl Cache misses: ' + str(cache_misses))
+    stats.append('    Components Cache hits: ' + str(components_cache_hits))
+    stats.append('    Components Cache misses: ' + str(components_cache_misses))
     print('\n'.join(stats))
 
 
