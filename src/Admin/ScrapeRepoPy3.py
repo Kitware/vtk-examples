@@ -411,9 +411,7 @@ def find_thumbnail(S):
 
 
 # add thumbnails to a file
-# AddThumbnailsAndLanguageLinks(repo_url, repo_dir, doc_dir, 'Cxx.md', 'Cxx.md')
-# def AddThumbnailsAndLanguageLinks(repo_dir, repo_url, fromFile, toFile):
-def add_thumbnails_language_links(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_dict, from_file, to_file):
+def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_dict, from_file, to_file):
     global thumb_count
 
     from_path = make_path(root_path, repo_dir, from_file)
@@ -431,6 +429,8 @@ def add_thumbnails_language_links(repo_url, root_path, repo_dir, doc_dir, baseli
             thumb_count = thumb_count + 1
             exampleName = os.path.split(example_line)[1]
             exampleDir = os.path.split(example_line)[0]
+            eg_path = make_path(repo_url, 'site', example_line)
+            x[1] = eg_path.join(x[1].rsplit(example_line, 1))
             baseline = make_path(root_path, repo_dir, baseline_dir, exampleDir, "Test" + exampleName + ".png")
             if os.path.exists(baseline):
                 baselineURL = make_path(repo_url, "blob/master", "src", baseline_dir, exampleDir,
@@ -452,16 +452,16 @@ def add_thumbnails_language_links(repo_url, root_path, repo_dir, doc_dir, baseli
 # Fill in the template parameters in a CMakeLists template file
 # The output is a CMakeLists.txt file with Name substituted for {{{1}}}
 
-def FillCMakeLists(S, Name, ExtraNames, Components):
-    r1 = re.sub(r'XXX', Name, S)
-    r2 = re.sub(r'YYY', ExtraNames, r1)
-    reg = re.sub(r'ZZZ', Components, r1)
+def fill_CMake_lists(cmake_contents, example_name, extra_names, components):
+    r1 = re.sub(r'XXX', example_name, cmake_contents)
+    r2 = re.sub(r'YYY', extra_names, r1)
+    reg = re.sub(r'ZZZ', components, r1)
     return reg
 
 
-def FillQtCMakeLists(S, Name, Components):
-    r1 = re.sub(r'XXX', Name, S)
-    reg = re.sub(r'ZZZ', Components, r1)
+def fill_Qt_CMake_lists(cmake_contents, example_name, components):
+    r1 = re.sub(r'XXX', example_name, cmake_contents)
+    reg = re.sub(r'ZZZ', components, r1)
     return reg
 
 
@@ -570,7 +570,7 @@ def main():
     pages = ['Cxx.md', 'Python.md', 'CSharp.md', 'Java.md', 'JavaScript.md', 'Cxx/Snippets.md', 'Python/Snippets.md',
              'Java/Snippets.md', 'VTKBookFigures.md', 'VTKFileFormats.md']
     for p in pages:
-        add_thumbnails_language_links(repo_url, root_path, repo_dir, doc_dir, baseline_src_path, cache_dict, p, p)
+        add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_src_path, cache_dict, p, p)
 
     # C++ Snippets
     src = make_path(repo_path, 'Cxx/Snippets')
@@ -673,13 +673,25 @@ def main():
             if start < 0:
                 continue
             # Get the part of the file name that comes after repo_dir
-            # e.g. if the file name is VTKExamples/Cxx/GeometricObjects/Line,
-            # Path will be Cxx/GeometriObjects/Line
+            # e.g. if the file name is VTKExamples/src/Cxx/GeometricObjects/Line,
+            # Path will be GeometricObjects/Line
             kit_name = root[start + 1 + len(to_find):]
+
+            if kit_name == '':
+                continue
             if kit_name.find('Boneyard') >= 0:
                 continue
             if kit_name.find('Broken') >= 0:
                 continue
+            if kit_name.find('Deprecated') >= 0:
+                continue
+            if kit_name.find('Untested') >= 0:
+                continue
+            if kit_name.find('Databases') >= 0:
+                continue
+            if kit_name.find('Wishlist') >= 0:
+                continue
+
             for f in files:
                 other_languages = list()
                 # skip files that are listed as extras
@@ -812,7 +824,7 @@ def main():
                         # If there are no components found, assume we need then all
                         # This occurs when the source file includes another Cxx file
                         # print('Components: ' + Components)
-                        cmake = FillQtCMakeLists(CMakeContents, ExampleName, Components)
+                        cmake = fill_Qt_CMake_lists(CMakeContents, ExampleName, Components)
                     else:
                         with open(os.path.join(repo_path, 'Admin', 'VTKCMakeLists'), 'r') as CMakeFile:
                             CMakeContents = CMakeFile.read()
@@ -826,7 +838,7 @@ def main():
                         # If there are no components found, assume we need then all
                         # This occurs when the source file includes another Cxx file
                         # print('Components: ' + Components)
-                        cmake = FillCMakeLists(CMakeContents, ExampleName, ExtraNames, Components)
+                        cmake = fill_CMake_lists(CMakeContents, ExampleName, ExtraNames, Components)
                 if lang == 'Cxx':
                     exampleToCMake[ExampleName] = GetVTKCMakelists(cmake)
                     MdFile.write(cmake)
