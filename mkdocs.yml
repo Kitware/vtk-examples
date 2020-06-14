@@ -2,9 +2,9 @@
 # To use it, remove "Py3" from the filename.
 # Change these to reflect the user and site details.
 site_name: VTKEx
-site_url: https://ajpmaclean.github.io/VTKEx/site/
-repo_name: ajpmaclean/VTKEx
-repo_url: https://github.com/ajpmaclean/VTKEx
+# site_url: https://ajpmaclean.github.io/VTKEx/site/
+# repo_name: ajpmaclean/VTKEx
+# repo_url: https://github.com/ajpmaclean/VTKEx
 
 theme:
     name: material
