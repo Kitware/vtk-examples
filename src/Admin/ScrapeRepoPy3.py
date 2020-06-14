@@ -311,25 +311,6 @@ def FindLinesWithVTK(srcFileName):
     return hl_lines
 
 
-# # Add a link to an example in another language
-# def AddLanguage(S, link):
-#     reg = re.compile(r'(^\[[^\)]*\))')
-#     if reg.findall(S):
-#         return re.sub(r'(^\[[^\)]*\))', r'\1' + link, S)
-#     return S
-#
-#
-# # Given a lang example return a link to a Python example if it exists
-# def FindPythonGivenLang(repo_dir, example, lang):
-#     if lang == "Python":
-#         return ""
-#     pythonLink = re.sub(r'/' + lang + r'/', r'/Python/', example)
-#     pythonPath = repo_dir + pythonLink + ".py"
-#     if os.path.exists(pythonPath):
-#         return "([python](" + pythonLink + "))"
-#     return ""
-
-
 def split_path(filepath, maxdepth=20):
     """
     Split a path into its constituent elements.
@@ -372,30 +353,10 @@ def find_other_given_lang(example, exampleLang, otherLang, otherExt):
     otherPath = otherLink + otherExt
     if os.path.exists(otherPath):
         path_elements = split_path(otherLink)[-3:]
-        return '([' + otherLang + '](' + make_path(*path_elements) + '))'
+        return '([' + otherLang + '](' + make_path('..', '..', '..', *path_elements) + '))'
     return ''
 
-
-# # Given a Cxx example return a link to a Python example if it exists
-# def FindPythonGivenCxx(repo_dir, cxxExample):
-#     pythonLink = re.sub(r'/Cxx/', r'/Python/', cxxExample)
-#     pythonPath = repo_dir + pythonLink + ".py"
-#     if os.path.exists(pythonPath):
-#         return "([python](" + pythonLink + "))"
-#     return ""
-#
-#
-# # Given a Python example return a link to a Cxx example if it exists
-# def FindCxxGivenPython(repo_dir, pythonExample):
-#     cxxLink = re.sub(r'/Python/', r'/Cxx/', pythonExample)
-#     cxxPath = repo_dir + cxxLink + ".cxx"
-#     if os.path.exists(cxxPath):
-#         return "([cxx](" + cxxLink + "))"
-#     return ""
-
-
 # If vtkXXXX is in the string, add a link to the doxygen file
-
 def AddDoxygen(S):
     global doxy_count
     reg = re.compile(r'[^\./\[s\-](vtk[^ &][0-9a-zA-Z]*)')
@@ -407,7 +368,6 @@ def AddDoxygen(S):
 
 
 # add doxygen links to a file
-
 def AddDoxygens(repo_dir, repo_url, fromFile, toFile):
     mdFile = open(fromFile, 'r')
     outFile = open(toFile, 'w')
@@ -420,7 +380,6 @@ def AddDoxygens(repo_dir, repo_url, fromFile, toFile):
 
 
 # add thumbnails to example tables
-
 def find_thumbnail(S):
     reg = re.compile(r'^\[[^\(]*\]\(([^)]*)')
     if reg.match(S):

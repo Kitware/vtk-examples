@@ -27,13 +27,13 @@ echo "Synchronizing the VTKExamples site with the repository."
 #   exit 1
 # fi
 
-echo "1) Pull updates from master repositories"
-git pull
-if ( test -d src/Tarballs ); then
-  (cd src/Tarballs; git checkout .)
-  (cd src/Tarballs; git pull origin master)
-  (cd src/Tarballs; rm *.tar)
-fi
+# echo "1) Pull updates from master repositories"
+# git pull
+# if ( test -d src/Tarballs ); then
+#   (cd src/Tarballs; git checkout .)
+#   (cd src/Tarballs; git pull origin master)
+#   (cd src/Tarballs; rm *.tar)
+# fi
 
 echo "2) Create coverage files"
 (cd src/Admin; python ./VTKClassesUsedInExamples.py -a ..; python ./VTKClassesUsedInExamples.py -a -u ..)
