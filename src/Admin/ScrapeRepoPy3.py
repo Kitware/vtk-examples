@@ -7,7 +7,6 @@
 
 import concurrent.futures
 import contextlib
-# imports
 import hashlib
 import os
 import re
@@ -15,6 +14,7 @@ import shutil
 import subprocess
 import tarfile
 import tempfile
+import time
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
@@ -28,8 +28,9 @@ except ModuleNotFoundError:
 
 def get_program_parameters():
     import argparse
-    description = 'Creates site files from the source repository.'
+    description = 'Copy/edit files from the src folder into the docs folder.'
     epilogue = '''
+
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -42,6 +43,22 @@ def get_program_parameters():
     parser.add_argument('vtk_src', help='The local directory containing the VTK source')
     args = parser.parse_args()
     return args.repo_dir, args.doc_dir, args.repo_url, args.vtk_src
+
+
+class ElapsedTime:
+    """
+    Return the value (in fractional seconds) of a performance counter,
+     i.e. a clock with the highest available resolution to measure a short duration.
+    This includes sleep time and is system-wide.
+    """
+
+    def __enter__(self):
+        self.start = time.perf_counter()
+        return self
+
+    def __exit__(self, *args):
+        self.end = time.perf_counter()
+        self.interval = self.end - self.start
 
 
 def make_tiny(url):
@@ -329,6 +346,7 @@ def split_path(filepath, maxdepth=20):
     (head, tail) = os.path.split(filepath)
     return split_path(head, maxdepth - 1) + [tail] if maxdepth and head and head != filepath else [head or tail]
 
+
 def make_path(*args):
     """
     Return a path name
@@ -352,9 +370,9 @@ def find_other_given_lang(example, exampleLang, otherLang, otherExt):
         return ''
     otherLink = re.sub(r'/' + exampleLang + r'/', r'/' + otherLang + '/', example)
     otherPath = otherLink + otherExt
-    # path_elements = split_path(otherLink)
     if os.path.exists(otherPath):
-        return '([' + otherLang + '](' + otherLink + '))'
+        path_elements = split_path(otherLink)[-3:]
+        return '([' + otherLang + '](' + make_path(*path_elements) + '))'
     return ''
 
 
@@ -429,12 +447,10 @@ def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_d
             thumb_count = thumb_count + 1
             exampleName = os.path.split(example_line)[1]
             exampleDir = os.path.split(example_line)[0]
-            eg_path = make_path(repo_url, 'site', example_line)
-            x[1] = eg_path.join(x[1].rsplit(example_line, 1))
             baseline = make_path(root_path, repo_dir, baseline_dir, exampleDir, "Test" + exampleName + ".png")
             if os.path.exists(baseline):
                 baselineURL = make_path(repo_url, "blob/master", "src", baseline_dir, exampleDir,
-                                             "Test" + exampleName + ".png")
+                                        "Test" + exampleName + ".png")
                 x[0] = True
                 x.append(baselineURL)
         lines[line_count] = x
@@ -465,7 +481,6 @@ def fill_Qt_CMake_lists(cmake_contents, example_name, components):
     return reg
 
 
-
 #####################################################################
 # Initialize counts on these globals
 cache_hits = 0
@@ -484,6 +499,7 @@ doxy_count = 0
 # Other globals
 cache_dict = dict()
 components_dict = dict()
+
 
 #####################################################################
 #  This is the main module.
@@ -708,8 +724,6 @@ def main():
                 for lLang, lExt in list(available_languages.items()):
                     otherLink = find_other_given_lang(os.path.splitext(fp)[0], lang, lLang, lExt)
                     if otherLink != '':
-                        # otherLink = re.sub(r'src', r'', otherLink)
-                        otherLink = 'site'.join(otherLink.rsplit('src', 1))
                         other_languages.append(otherLink)
                 BaselinePath = os.path.join(repo_path, 'Testing', 'Baseline', lang, kit_name, 'Test' +
                                             ExampleName + '.png')
@@ -910,7 +924,7 @@ def main():
 
         # Now create the tar file for the example
         # The tarballs are stored in the source tree
-        tar = tarfile.open(make_path(repo_path, 'Tarballs',  example + '.tar'), 'w')
+        tar = tarfile.open(make_path(repo_path, 'Tarballs', example + '.tar'), 'w')
         tar.add(srcDir, arcname=example)
         tar.close()
 
@@ -950,4 +964,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    with ElapsedTime() as et:
+        main()
+    print('Time taken: {:0.3f}s'.format(et.interval))
