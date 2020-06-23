@@ -287,7 +287,6 @@ def update_test_image_cache(test_image_cache, lines, stats):
     for r in res:
         test_image_cache[r[0]] = r[1]
 
-
 def add_image_link(test_image_cache, lines, stats):
     """
     Add a link to the image if one exists.
@@ -456,6 +455,13 @@ def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_d
         line_count = 0
         x = []
         for line in md_file:
+            if '](/Coverage' in line:
+                # Make the coverage link relative.
+                line = re.sub(r'][ ]*\([ ]*/', r'](', line)
+            else:
+                # Make the language link relative.
+                line = re.sub(r'][ ]*\([ ]*/\w+/', r'](', line)
+            # line = line.replace('(/Cxx/','(')
             example_line = find_thumbnail(line.strip())[0]
             withDoxy = AddDoxygen(line, stats)
             x.append(False)
@@ -638,15 +644,16 @@ def main():
     shutil.copy(make_path(repo_path, 'index.md'), doc_path)
     shutil.copy(make_path(repo_path, 'VTKBook.md'), doc_path)
 
-    # Copy coverage files
-    dest = make_path(doc_path, 'Coverage')
-    if not os.path.exists(dest):
-        os.makedirs(dest)
 
     # Get a list of all  examples
     # A dictionary of available languages
     available_languages = {'Cxx': '.cxx', 'Python': '.py', 'Java': '.java', 'CSharp': '.cs'}
+
+    # Copy coverage files
     for k in available_languages.keys():
+        dest = make_path(doc_path, k, 'Coverage')
+        if not os.path.exists(dest):
+            os.makedirs(dest)
         shutil.copy(make_path(repo_path, 'Coverage', k + 'VTKClassesNotUsed.md'), dest)
         shutil.copy(make_path(repo_path, 'Coverage', k + 'VTKClassesUsed.md'), dest)
 
