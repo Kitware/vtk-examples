@@ -15,9 +15,9 @@ import subprocess
 import tarfile
 import tempfile
 import time
+from collections import Counter
 from urllib.parse import urlencode
 from urllib.request import urlopen
-from collections import Counter
 
 try:
     import markdown
@@ -217,7 +217,7 @@ def load_test_image_cache(cache_path):
     return cache_dict
 
 
-def get_tiny_url(cache_dict, url , stats):
+def get_tiny_url(cache_dict, url, stats):
     """
     If the tiny URL is not in the cache, get it.
     :param cache_dict:
@@ -389,7 +389,15 @@ def make_path(*args):
         flat_list[0] = '/'
     # Strip out remaining ''s
     list1 = [elem for elem in flat_list if elem]
-    return os.path.join(*list1)
+    path = os.path.join(*list1)
+    if 'https:' in path or 'http:' in path:
+        path = path.split('/')
+        for i in range(path.count('https:')):
+            path[i] = path[i] + '/'
+        for i in range(path.count('http:')):
+            path[i] = path[i] + '/'
+        path = '/'.join(path)
+    return path
 
 
 # Given a lang example return a link to another example if it exists
@@ -443,30 +451,29 @@ def find_thumbnail(S):
 def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_dict, from_file, to_file, stats):
     from_path = make_path(root_path, repo_dir, from_file)
     to_path = make_path(root_path, doc_dir, to_file)
-    md_file = open(from_path, 'r')
-    lines = dict()
-    line_count = 0
-    x = []
-    for line in md_file:
-        example_line = find_thumbnail(line.strip())[0]
-        withDoxy = AddDoxygen(line, stats)
-        x.append(False)
-        x.append(withDoxy.rstrip())
-        if example_line != '':
-            stats['thumb_count'] += 1
-            exampleName = os.path.split(example_line)[1]
-            exampleDir = os.path.split(example_line)[0]
-            baseline = make_path(root_path, repo_dir, baseline_dir, exampleDir, "Test" + exampleName + ".png")
-            if os.path.exists(baseline):
-                baselineURL = make_path(repo_url, "blob/master", "src", baseline_dir, exampleDir,
-                                        "Test" + exampleName + ".png")
-                x[0] = True
-                x.append(baselineURL)
-        lines[line_count] = x
-        line_count += 1
+    with open(from_path, 'r') as md_file:
+        lines = dict()
+        line_count = 0
         x = []
-    add_image_link(cache_dict, lines, stats)
-    md_file.close()
+        for line in md_file:
+            example_line = find_thumbnail(line.strip())[0]
+            withDoxy = AddDoxygen(line, stats)
+            x.append(False)
+            x.append(withDoxy.rstrip())
+            if example_line != '':
+                stats['thumb_count'] += 1
+                exampleName = os.path.split(example_line)[1]
+                exampleDir = os.path.split(example_line)[0]
+                baseline = make_path(root_path, repo_dir, baseline_dir, exampleDir, "Test" + exampleName + ".png")
+                if os.path.exists(baseline):
+                    baselineURL = make_path(repo_url, "blob/master", "src", baseline_dir, exampleDir,
+                                            "Test" + exampleName + ".png")
+                    x[0] = True
+                    x.append(baselineURL)
+            lines[line_count] = x
+            line_count += 1
+            x = []
+        add_image_link(cache_dict, lines, stats)
     with open(to_path, 'w') as ofn:
         k = sorted(lines.keys())
         for kv in k:
@@ -488,6 +495,7 @@ def fill_Qt_CMake_lists(cmake_contents, example_name, components):
     r1 = re.sub(r'XXX', example_name, cmake_contents)
     reg = re.sub(r'ZZZ', components, r1)
     return reg
+
 
 def get_statistics(stats):
     totals = list()
@@ -758,7 +766,7 @@ def main():
                     DescriptionFile = open(DescriptionPath, 'r')
                     description = DescriptionFile.read()
                     DescriptionFile.close()
-                    description = AddDoxygen(description,stats)
+                    description = AddDoxygen(description, stats)
                     MdFile.write(description)
                 # Add examples from other available languages if they exist
                 if len(other_languages) > 0:
