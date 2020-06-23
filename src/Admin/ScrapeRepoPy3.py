@@ -17,6 +17,7 @@ import tempfile
 import time
 from urllib.parse import urlencode
 from urllib.request import urlopen
+from collections import Counter
 
 try:
     import markdown
@@ -62,6 +63,11 @@ class ElapsedTime:
 
 
 def make_tiny(url):
+    """
+    Make a tiny URL.
+    :param url: The url to use.
+    :return: The tiny URL.
+    """
     request_url = ('http://tinyurl.com/api-create.php?' +
                    urlencode({'url': url}))
     with contextlib.closing(urlopen(request_url)) as response:
@@ -82,7 +88,7 @@ def create_html_ids(from_file, html_id_set):
                 html_id_set.add(id_found[0])
 
 
-def copy_chapter_add_links(from_to_file, html_id_set):
+def copy_chapter_add_links(from_to_file, html_id_set, stats):
     """
      Copy a file and add figure and doxygen links.
 
@@ -100,7 +106,7 @@ def copy_chapter_add_links(from_to_file, html_id_set):
                 if line.count(r'```') % 2 != 0:
                     in_code = not in_code
                 if not in_code:
-                    line = AddDoxygen(line)
+                    line = AddDoxygen(line, stats)
                     figureFound = sorted(re.findall(r'\*\*(Figure[^\*]*)\*\*', line), reverse=True)
                     if len(figureFound) > 0:
                         for figure in figureFound:
@@ -112,34 +118,44 @@ def copy_chapter_add_links(from_to_file, html_id_set):
                 outFile.write(line)
 
 
-def load_components_cache(cache_file):
+def load_components_cache(cache_path):
     """
     Load the component cache into a dictionary.
-    :param cache_file:
+    :param cache_path: The path to the component cache.
     :return: The component cache as a dictionary.
     """
     cache_dict = dict()
-    with open(cache_file, 'r') as cf:
-        for line in cf:
-            words = line.split()
-            cache_dict[words[0]] = ""
-            for word in words[1:]:
-                cache_dict[words[0]] += " " + word
+    if os.path.isfile(cache_path):
+        with open(cache_path, 'r') as cf:
+            for line in cf:
+                words = line.split()
+                cache_dict[words[0]] = ""
+                for word in words[1:]:
+                    cache_dict[words[0]] += " " + word
+    else:
+        f = open(cache_path, 'x')
+        f.close()
     return cache_dict
 
 
-# If the source code components are not in the cache, find them
-def get_components(repo_path, components_cache, vtk_src_dir, src_file, src):
-    global components_cache_hits
-    global components_cache_misses
+def get_components(repo_path, components_cache, vtk_src_dir, src_file, src, stats):
+    """
+    If the source code components are not in the cache, find them.
+    :param repo_path:
+    :param components_cache:
+    :param vtk_src_dir:
+    :param src_file:
+    :param src:
+    :return:
+    """
     # compute sha of src
     sha = hashlib.sha256(str.encode(src)).hexdigest()
     if src_file in list(components_cache.keys()):
         words = components_cache[src_file].split()
         if str(sha) == words[0]:
-            components_cache_hits = components_cache_hits + 1
+            stats['components_hits'] += 1
             return words[1:]
-    components_cache_misses = components_cache_misses + 1
+    stats['components_misses'] += 1
     try:
         cmd = make_path(repo_path, 'Admin', 'WhatModulesVTKPy3.py') + ' -p ' + vtk_src_dir + ' -s ' + src_file
         process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, )
@@ -183,46 +199,59 @@ def parse_WhatModulesVTKOutput(output):
     return components
 
 
-# load the tinyurl cache into a dictionary
-
-def load_tiny_url_cache(cache_path):
+def load_test_image_cache(cache_path):
     """
-    Load the tinyurl cache into a dictionary.
-    
-    :param cache_path: 
-    :return: the cache dictionary
+    Load the  into a dictionary.
+    :param cache_path: The path to the test image cache.
+    :return: The tiny URL cache dictionary
     """
     cache_dict = dict()
-    with open(cache_path, 'r') as cf:
-        for line in cf:
-            words = line.split()
-            cache_dict[words[0]] = words[1]
+    if os.path.isfile(cache_path):
+        with open(cache_path, 'r') as cf:
+            for line in cf:
+                words = line.split()
+                cache_dict[words[0]] = words[1]
+    else:
+        f = open(cache_path, 'x')
+        f.close()
     return cache_dict
 
 
-# if the url is not in the cache, get the tinyurl
-
-def get_tiny_url(cache_dict, Url):
-    global cache_hits
-    global cache_misses
-    if Url in list(cache_dict.keys()):
-        cache_hits = cache_hits + 1
-        return cache_dict[Url]
-    tinyOne = make_tiny(Url)
-    cache_dict[Url] = tinyOne
-    cache_misses = cache_misses + 1
-    print("URL cache miss: " + Url)
-    return cache_dict[Url]
-
-
-def tiny_url(k):
-    return k, make_tiny(k)
+def get_tiny_url(cache_dict, url , stats):
+    """
+    If the tiny URL is not in the cache, get it.
+    :param cache_dict:
+    :param url:
+    :return:
+    """
+    if url in list(cache_dict.keys()):
+        stats['test_image_hits'] += 1
+        return cache_dict[url]
+    tinyOne = make_tiny(url)
+    cache_dict[url] = tinyOne
+    stats['test_image_misses'] += 1
+    print("Test image cache miss: " + url)
+    return cache_dict[url]
 
 
-def get_results(url):
+def tiny_url(url):
+    """
+    Given a URL make a tiny URL.
+    :param k:
+    :return: Return the URL and the corresponding tiny URL.
+    """
+    return url, make_tiny(url)
+
+
+def make_missing_tiny_urls(urls_to_shorten):
+    """
+    Set up a thread pool and make the missing tiny URLS.
+    :param urls_to_shorten: The URLs to shorten.
+    :return:
+    """
     # The default value of max_workers is min(32, os.cpu_count() + 4) for Python 3.8 or greater
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        future_results = [executor.submit(tiny_url, k) for k in url]
+        future_results = [executor.submit(tiny_url, k) for k in urls_to_shorten]
         # Block execution until all the tasks are completed
         concurrent.futures.wait(future_results)
         for future in future_results:
@@ -233,9 +262,13 @@ def get_results(url):
             #     print_exc()
 
 
-def update_url_cache(cache_dict, lines):
-    global cache_hits
-    global cache_misses
+def update_test_image_cache(test_image_cache, lines, stats):
+    """
+    Update the test_image_cache cache dictionary
+    :param cache_dict: The URL cache dictionary.
+    :param lines: Lines possibly containing URLs.
+    :return:
+    """
     #  Extract the lines that need tiny urls
     needUrls = dict()
     urlsToShorten = list()
@@ -243,40 +276,54 @@ def update_url_cache(cache_dict, lines):
         if v[0]:
             needUrls[k] = v
     for k, v in needUrls.items():
-        if v[2] in list(cache_dict.keys()):
-            cache_hits += 1
+        if v[2] in list(test_image_cache.keys()):
+            stats['test_image_hits'] += 1
         else:
-            cache_misses += 1
-            print("URL cache miss: " + v[2])
+            stats['test_image_misses'] += 1
+            print("Test image cache miss: " + v[2])
             urlsToShorten.append(v[2])
-    res = get_results(urlsToShorten)
+    res = make_missing_tiny_urls(urlsToShorten)
     #  Update the cache
     for r in res:
-        cache_dict[r[0]] = r[1]
+        test_image_cache[r[0]] = r[1]
 
 
-def make_tiny_urls(cache_dict, lines):
-    update_url_cache(cache_dict, lines)
+def add_image_link(test_image_cache, lines, stats):
+    """
+    Add a link to the image if one exists.
+    :param test_image_cache: The cache of test images.
+    :param lines: Lines some of which need an image.
+    :return:
+    """
+    update_test_image_cache(test_image_cache, lines, stats)
     for k, v in lines.items():
         if v[0]:
-            img = '<img class="lazy" style="float:center" data-src="' + cache_dict[v[2]] + '?raw=true" width="64" />'
+            #  Needs an image link.
+            img = '<img class="lazy" style="float:center" data-src="' + test_image_cache[
+                v[2]] + '?raw=true" width="64" />'
             s = ' | <a href="{}?raw=true target="_blank">{}\n</a>'.format(v[2], img)
             lines[k][2] = s
-    return  # lines
+    return
 
 
-# Is the example a Qt example
-
-def IsQtExample(S):
+def is_qt_example(example):
+    """
+    Is the example a Qt example?
+    :param example: The example.
+    :return: True if it is a Qt example.
+    """
     reg = re.compile(r".*Qt.*", re.DOTALL)
-    return reg.match(S)
+    return reg.match(example)
 
 
-# Get the Qt CMake file
-
-def GetVTKQtCMake(S):
-    reg = re.compile(r"\{\{(VTKQtCMakeLists)\|(.*?)\}\}.*?", re.DOTALL)
-    return [reg.findall(S)]
+# def GetVTKQtCMake(example):
+#     """
+#     Get the Qt CMake file.
+#     :param example: The example.
+#     :return:
+#     """
+#     reg = re.compile(r"\{\{(VTKQtCMakeLists)\|(.*?)\}\}.*?", re.DOTALL)
+#     return [reg.findall(example)]
 
 
 # Get the VTK CMake file
@@ -294,7 +341,7 @@ def WriteCxxCode(toFile, codeName, code):
     toFile.write("```" + "\n")
 
 
-# Return hl_lines to highlight lines that have vtk classes mentiones
+# Return hl_lines to highlight lines that have vtk classes mentions
 
 def FindLinesWithVTK(srcFileName):
     srcFile = open(srcFileName, 'r')
@@ -356,27 +403,32 @@ def find_other_given_lang(example, exampleLang, otherLang, otherExt):
         return '([' + otherLang + '](' + make_path('..', '..', '..', *path_elements) + '))'
     return ''
 
-# If vtkXXXX is in the string, add a link to the doxygen file
-def AddDoxygen(S):
-    global doxy_count
+
+def AddDoxygen(s, stats):
+    """
+    If vtkXXXX is in the string, add a link to the doxygen file.
+    :param s: The string.
+    :param stats: Statistics
+    :return:
+    """
     reg = re.compile(r'[^\./\[s\-](vtk[^ &][0-9a-zA-Z]*)')
-    if reg.findall(S):
-        doxy_count = doxy_count + 1
+    if reg.findall(s):
+        stats['doxy_count'] += 1
         return re.sub(r'[^\./\[-](vtk[0-9a-zA-Z]*)',
-                      r' [\1](' + r'http://www.vtk.org/doc/nightly/html/class' + r'\1.html#details)', S)
-    return S
+                      r' [\1](' + r'http://www.vtk.org/doc/nightly/html/class' + r'\1.html#details)', s)
+    return s
 
 
-# add doxygen links to a file
-def AddDoxygens(repo_dir, repo_url, fromFile, toFile):
-    mdFile = open(fromFile, 'r')
-    outFile = open(toFile, 'w')
-    for line in mdFile:
-        withDoxy = AddDoxygen(line)
-        outFile.write(withDoxy.rstrip())
-        outFile.write("\n")
-    mdFile.close()
-    outFile.close()
+# # add doxygen links to a file
+# def AddDoxygens(repo_dir, repo_url, fromFile, toFile):
+#     mdFile = open(fromFile, 'r')
+#     outFile = open(toFile, 'w')
+#     for line in mdFile:
+#         withDoxy = AddDoxygen(line)
+#         outFile.write(withDoxy.rstrip())
+#         outFile.write("\n")
+#     mdFile.close()
+#     outFile.close()
 
 
 # add thumbnails to example tables
@@ -388,9 +440,7 @@ def find_thumbnail(S):
 
 
 # add thumbnails to a file
-def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_dict, from_file, to_file):
-    global thumb_count
-
+def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_dict, from_file, to_file, stats):
     from_path = make_path(root_path, repo_dir, from_file)
     to_path = make_path(root_path, doc_dir, to_file)
     md_file = open(from_path, 'r')
@@ -399,11 +449,11 @@ def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_d
     x = []
     for line in md_file:
         example_line = find_thumbnail(line.strip())[0]
-        withDoxy = AddDoxygen(line)
+        withDoxy = AddDoxygen(line, stats)
         x.append(False)
         x.append(withDoxy.rstrip())
         if example_line != '':
-            thumb_count = thumb_count + 1
+            stats['thumb_count'] += 1
             exampleName = os.path.split(example_line)[1]
             exampleDir = os.path.split(example_line)[0]
             baseline = make_path(root_path, repo_dir, baseline_dir, exampleDir, "Test" + exampleName + ".png")
@@ -415,7 +465,7 @@ def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_d
         lines[line_count] = x
         line_count += 1
         x = []
-    make_tiny_urls(cache_dict, lines)
+    add_image_link(cache_dict, lines, stats)
     md_file.close()
     with open(to_path, 'w') as ofn:
         k = sorted(lines.keys())
@@ -439,42 +489,44 @@ def fill_Qt_CMake_lists(cmake_contents, example_name, components):
     reg = re.sub(r'ZZZ', components, r1)
     return reg
 
+def get_statistics(stats):
+    totals = list()
+    for k, v in stats.items():
+        if k in ['cxx_count', 'cs_count', 'py_count', 'java_count']:
+            totals.append(v)
+    res = list()
+    res.append('ScrapeRepo Summary')
+    res.append('    C++ examples: ' + str(stats['cxx_count']))
+    res.append('    CSharp examples: ' + str(stats['cs_count']))
+    res.append('    Python examples: ' + str(stats['py_count']))
+    res.append('    Java examples: ' + str(stats['java_count']))
+    res.append('    Total examples: ' + str(sum(totals)))
+    res.append('    Doxygen added: ' + str(stats['doxy_count']))
+    res.append('    Thumbnails added: ' + str(stats['thumb_count']))
+    res.append('    TinyUrl Cache hits: ' + str(stats['test_image_hits']))
+    res.append('    TinyUrl Cache misses: ' + str(stats['test_image_misses']))
+    res.append('    Components Cache hits: ' + str(stats['components_hits']))
+    res.append('    Components Cache misses: ' + str(stats['components_misses']))
+    return res
+
 
 #####################################################################
-# Initialize counts on these globals
-cache_hits = 0
-cache_misses = 0
-components_cache_hits = 0
-components_cache_misses = 0
-
-cxx_count = 0
-cs_count = 0
-py_count = 0
-java_count = 0
-
-thumb_count = 0
-doxy_count = 0
-
-# Other globals
-cache_dict = dict()
-components_dict = dict()
-
 
 #####################################################################
 #  This is the main module.
 def main():
-    global cache_hits
-    global cache_misses
-    global components_cache_hits
-    global components_cache_misses
-
-    global cxx_count
-    global cs_count
-    global py_count
-    global java_count
-
-    global thumb_count
-    global doxy_count
+    # Initialize the statistics
+    stats = Counter()
+    stats['test_image_hits'] = 0
+    stats['test_image_misses'] = 0
+    stats['components_hits'] = 0
+    stats['components_misses'] = 0
+    stats['cxx_count'] = 0
+    stats['cs_count'] = 0
+    stats['py_count'] = 0
+    stats['java_count'] = 0
+    stats['thumb_count'] = 0
+    stats['doxy_count'] = 0
 
     repo_dir, doc_dir, repo_url, vtk_src_dir = get_program_parameters()
 
@@ -502,8 +554,8 @@ def main():
     baseline_path = make_path(repo_dir, '/Testing/Baseline')
     baseline_src_path = 'Testing/Baseline'
 
-    # Load the TinyUrl cache
-    cache_dict = load_tiny_url_cache(make_path(repo_path, 'Admin/TinyUrlCache'))
+    # Load the test image cache
+    test_image_dict = load_test_image_cache(make_path(repo_path, 'Admin/TinyUrlCache'))
 
     # Load the Component cache
     components_dict = load_components_cache(make_path(repo_path, 'Admin/ComponentsCache'))
@@ -545,7 +597,7 @@ def main():
     pages = ['Cxx.md', 'Python.md', 'CSharp.md', 'Java.md', 'JavaScript.md', 'Cxx/Snippets.md', 'Python/Snippets.md',
              'Java/Snippets.md', 'VTKBookFigures.md', 'VTKFileFormats.md']
     for p in pages:
-        add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_src_path, cache_dict, p, p)
+        add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_src_path, test_image_dict, p, p, stats)
 
     # C++ Snippets
     src = make_path(repo_path, 'Cxx/Snippets')
@@ -585,11 +637,7 @@ def main():
 
     # Get a list of all  examples
     # A dictionary of available languages
-    available_languages = dict()
-    available_languages['Cxx'] = '.cxx'
-    available_languages['Python'] = '.py'
-    available_languages['Java'] = '.java'
-    available_languages['CSharp'] = '.cs'
+    available_languages = {'Cxx': '.cxx', 'Python': '.py', 'Java': '.java', 'CSharp': '.cs'}
     for k in available_languages.keys():
         shutil.copy(make_path(repo_path, 'Coverage', k + 'VTKClassesNotUsed.md'), dest)
         shutil.copy(make_path(repo_path, 'Coverage', k + 'VTKClassesUsed.md'), dest)
@@ -617,7 +665,7 @@ def main():
     ch_src_dest = list(zip(ch_src, ch_dest))
     print('Found', len(html_id_set), 'figures with html ids')
     for ch in ch_src_dest:
-        copy_chapter_add_links(ch, html_id_set)
+        copy_chapter_add_links(ch, html_id_set, stats)
 
     # Copy VTKBookLaTeX files
     dest = make_path(doc_path, 'VTKBookLaTeX')
@@ -710,7 +758,7 @@ def main():
                     DescriptionFile = open(DescriptionPath, 'r')
                     description = DescriptionFile.read()
                     DescriptionFile.close()
-                    description = AddDoxygen(description)
+                    description = AddDoxygen(description,stats)
                     MdFile.write(description)
                 # Add examples from other available languages if they exist
                 if len(other_languages) > 0:
@@ -737,17 +785,17 @@ def main():
                 if langExt == '.cxx':
                     MdFile.write('``` c++ ' + hiliteLines + '\n')
                     # Get the components used in this example
-                    components = get_components(repo_path, components_dict, vtk_src_dir, SrcFileName, src)
-                    cxx_count = cxx_count + 1
+                    components = get_components(repo_path, components_dict, vtk_src_dir, SrcFileName, src, stats)
+                    stats['cxx_count'] += 1
                 elif langExt == '.cs':
                     MdFile.write('```csharp' + hiliteLines + '\n')
-                    cs_count = cs_count + 1
+                    stats['cs_count'] += 1
                 elif langExt == '.py':
                     MdFile.write('```python' + hiliteLines + '\n')
-                    py_count = py_count + 1
+                    stats['py_count'] += 1
                 elif langExt == '.java':
                     MdFile.write('```java' + hiliteLines + '\n')
-                    java_count = java_count + 1
+                    stats['java_count'] += 1
                 MdFile.write(src)
                 MdFile.write('```' + '\n')
 
@@ -783,7 +831,7 @@ def main():
                     cmake = CustomCMakeFile.read()
                     CustomCMakeFile.close()
                 else:
-                    if IsQtExample(src):
+                    if is_qt_example(src):
                         CMakeFile = open(os.path.join(repo_path, 'Admin', 'VTKQtCMakeLists'), 'r')
                         CMakeContents = CMakeFile.read()
                         CMakeFile.close()
@@ -891,14 +939,14 @@ def main():
     # Cleanup the temporary directories
     shutil.rmtree(tmpDir)
 
-    # Update the tinyurl cache file if necessary
-    if cache_misses > 0:
+    # Update the test image cache file if necessary
+    if stats['test_image_misses'] > 0:
         with open(make_path(repo_path, 'Admin/TinyUrlCache'), 'w') as cf:
-            for key in cache_dict.keys():
-                cf.write(key + ' ' + cache_dict[key] + '\n')
+            for key in test_image_dict.keys():
+                cf.write(key + ' ' + test_image_dict[key] + '\n')
 
     # Rewrite the components cache file if necessary
-    if components_cache_misses > 0:
+    if stats['components_misses'] > 0:
         with open(make_path(repo_path, 'Admin/ComponentsCache'), 'w') as cf:
             for key, contents in list(components_dict.items()):
                 if os.path.exists(key):
@@ -906,20 +954,7 @@ def main():
                     cf.write(key + ' ' + contents + '\n')
 
     # Report stats
-    stats = list()
-    stats.append('ScrapeRepo Summary')
-    stats.append('    C++ examples: ' + str(cxx_count))
-    stats.append('    CSharp examples: ' + str(cs_count))
-    stats.append('    Python examples: ' + str(py_count))
-    stats.append('    Java examples: ' + str(java_count))
-    stats.append('    Total examples: ' + str(cxx_count + cs_count + py_count + java_count))
-    stats.append('    Doxygen added: ' + str(doxy_count))
-    stats.append('    Thumbnails added: ' + str(thumb_count))
-    stats.append('    TinyUrl Cache hits: ' + str(cache_hits))
-    stats.append('    TinyUrl Cache misses: ' + str(cache_misses))
-    stats.append('    Components Cache hits: ' + str(components_cache_hits))
-    stats.append('    Components Cache misses: ' + str(components_cache_misses))
-    print('\n'.join(stats))
+    print('\n'.join(get_statistics(stats)))
 
 
 if __name__ == '__main__':
