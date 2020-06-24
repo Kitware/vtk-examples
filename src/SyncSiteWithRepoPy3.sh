@@ -67,6 +67,11 @@ rm site/mkdocs/search_index.json
 echo "6.1 Modify highlight color"
 (cd site/assets/stylesheets; sed -i -e 's/background-color:rgba(255,235,59,\.5)/background-color:rgba(240,240,240,.8)/g' application-*.css)
 
+#####################
+# echo "Premature exit for testing"
+# exit
+
+#####################
 echo "7) Minify Html"
 (cd site; find . -name index.html -exec htmlmin {} {} \;)
 
