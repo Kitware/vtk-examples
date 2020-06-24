@@ -672,7 +672,7 @@ def main():
         with open(dest, 'w') as ofh:
             for line in lines:
                 # Make the link to the example relative.
-                line = re.sub(r'][ ]*\([ ]*/\w+/', r'](../', line)
+                line = re.sub(r'][ ]*\([ ]*/\w+/', r'](../../', line)
                 ofh.write(line)
 
     # Copy Instructions files
