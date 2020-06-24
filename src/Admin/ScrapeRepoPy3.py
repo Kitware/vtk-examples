@@ -106,7 +106,9 @@ def copy_chapter_add_links(from_to_file, html_id_set, stats):
                 if line.count(r'```') % 2 != 0:
                     in_code = not in_code
                 if not in_code:
-                    line = AddDoxygen(line, stats)
+                    line = add_vtk_nightly_doc_link(line, stats)
+                    # Make the language link relative, also drop off VTKBook.
+                    line = re.sub(r'][ ]*\([ ]*/\w+/', r'](', line)
                     figureFound = sorted(re.findall(r'\*\*(Figure[^\*]*)\*\*', line), reverse=True)
                     if len(figureFound) > 0:
                         for figure in figureFound:
@@ -374,20 +376,21 @@ def split_path(filepath, maxdepth=20):
     return split_path(head, maxdepth - 1) + [tail] if maxdepth and head and head != filepath else [head or tail]
 
 
-def make_path(*args):
+def make_path(*args, relative=False):
     """
     Return a path name
     :param args: One of more arguments to make a path from.
+    :param relative: If true make the path relative, i.e. no leading /
     :return: The path.
     """
     components = []
     for a in args:
         components.append(a.split('/'))
-    flat_list = [item for sublist in components for item in sublist]
-    if flat_list[0] == '':
-        flat_list[0] = '/'
+    flattened_list = [item for sublist in components for item in sublist]
+    if flattened_list[0] == '' and not relative:
+        flattened_list[0] = '/'
     # Strip out remaining ''s
-    list1 = [elem for elem in flat_list if elem]
+    list1 = [elem for elem in flattened_list if elem]
     path = os.path.join(*list1)
     if 'https:' in path or 'http:' in path:
         path = path.split('/')
@@ -411,7 +414,7 @@ def find_other_given_lang(example, exampleLang, otherLang, otherExt):
     return ''
 
 
-def AddDoxygen(s, stats):
+def add_vtk_nightly_doc_link(s, stats):
     """
     If vtkXXXX is in the string, add a link to the doxygen file.
     :param s: The string.
@@ -422,16 +425,16 @@ def AddDoxygen(s, stats):
     if reg.findall(s):
         stats['doxy_count'] += 1
         return re.sub(r'[^\./\[-](vtk[0-9a-zA-Z]*)',
-                      r' [\1](' + r'http://www.vtk.org/doc/nightly/html/class' + r'\1.html#details)', s)
+                      r' [\1](' + r'https://www.vtk.org/doc/nightly/html/class' + r'\1.html#details)', s)
     return s
 
 
 # # add doxygen links to a file
-# def AddDoxygens(repo_dir, repo_url, fromFile, toFile):
+# def add_vtk_nightly_doc_links(repo_dir, repo_url, fromFile, toFile):
 #     mdFile = open(fromFile, 'r')
 #     outFile = open(toFile, 'w')
 #     for line in mdFile:
-#         withDoxy = AddDoxygen(line)
+#         withDoxy = add_vtk_nightly_doc_link(line)
 #         outFile.write(withDoxy.rstrip())
 #         outFile.write("\n")
 #     mdFile.close()
@@ -447,7 +450,7 @@ def find_thumbnail(S):
 
 
 # add thumbnails to a file
-def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_dict, from_file, to_file, stats):
+def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, test_images, from_file, to_file, stats):
     from_path = make_path(root_path, repo_dir, from_file)
     to_path = make_path(root_path, doc_dir, to_file)
     with open(from_path, 'r') as md_file:
@@ -455,15 +458,8 @@ def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_d
         line_count = 0
         x = []
         for line in md_file:
-            if '](/Coverage' in line:
-                # Make the coverage link relative.
-                line = re.sub(r'][ ]*\([ ]*/', r'](', line)
-            else:
-                # Make the language link relative.
-                line = re.sub(r'][ ]*\([ ]*/\w+/', r'](', line)
-            # line = line.replace('(/Cxx/','(')
             example_line = find_thumbnail(line.strip())[0]
-            withDoxy = AddDoxygen(line, stats)
+            withDoxy = add_vtk_nightly_doc_link(line, stats)
             x.append(False)
             x.append(withDoxy.rstrip())
             if example_line != '':
@@ -479,7 +475,20 @@ def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, cache_d
             lines[line_count] = x
             line_count += 1
             x = []
-        add_image_link(cache_dict, lines, stats)
+        add_image_link(test_images, lines, stats)
+        for k, v in lines.items():
+            if v[1] != '':
+                line_changed = False
+                if '](/Coverage' in v[1]:
+                    # Make the coverage link relative.
+                    v[1] = re.sub(r'][ ]*\([ ]*/', r'](', v[1])
+                    line_changed = True
+                if '/CSharp/' in v[1] or '/Cxx/' in v[1] or '/Java/' in v[1]  or  '/Python/' in v[1]:
+                    # Make the language link relative, also drop off the language.
+                    v[1] = re.sub(r'][ ]*\([ ]*/\w+/', r'](', v[1])
+                    line_changed = True
+                if line_changed:
+                    lines[k] = v
     with open(to_path, 'w') as ofn:
         k = sorted(lines.keys())
         for kv in k:
@@ -510,17 +519,17 @@ def get_statistics(stats):
             totals.append(v)
     res = list()
     res.append('ScrapeRepo Summary')
-    res.append('    C++ examples: ' + str(stats['cxx_count']))
-    res.append('    CSharp examples: ' + str(stats['cs_count']))
-    res.append('    Python examples: ' + str(stats['py_count']))
-    res.append('    Java examples: ' + str(stats['java_count']))
-    res.append('    Total examples: ' + str(sum(totals)))
-    res.append('    Doxygen added: ' + str(stats['doxy_count']))
-    res.append('    Thumbnails added: ' + str(stats['thumb_count']))
-    res.append('    TinyUrl Cache hits: ' + str(stats['test_image_hits']))
-    res.append('    TinyUrl Cache misses: ' + str(stats['test_image_misses']))
-    res.append('    Components Cache hits: ' + str(stats['components_hits']))
-    res.append('    Components Cache misses: ' + str(stats['components_misses']))
+    res.append('  C++ examples:            ' + str(stats['cxx_count']))
+    res.append('  CSharp examples:         ' + str(stats['cs_count']))
+    res.append('  Python examples:         ' + str(stats['py_count']))
+    res.append('  Java examples:           ' + str(stats['java_count']))
+    res.append('  Total examples:          ' + str(sum(totals)))
+    res.append('  Doxygen added:           ' + str(stats['doxy_count']))
+    res.append('  Thumbnails added:        ' + str(stats['thumb_count']))
+    res.append('  Test Image Cache hits:   ' + str(stats['test_image_hits']))
+    res.append('  Test Image Cache misses: ' + str(stats['test_image_misses']))
+    res.append('  Components Cache hits:   ' + str(stats['components_hits']))
+    res.append('  Components Cache misses: ' + str(stats['components_misses']))
     return res
 
 
@@ -655,7 +664,15 @@ def main():
         if not os.path.exists(dest):
             os.makedirs(dest)
         shutil.copy(make_path(repo_path, 'Coverage', k + 'VTKClassesNotUsed.md'), dest)
-        shutil.copy(make_path(repo_path, 'Coverage', k + 'VTKClassesUsed.md'), dest)
+        src = make_path(repo_path, 'Coverage', k + 'VTKClassesUsed.md')
+        with open(src, 'r') as ifh:
+            lines = ifh.readlines()
+        dest = make_path(doc_path, k, 'Coverage', k + 'VTKClassesUsed.md')
+        with open(dest, 'w') as ofh:
+            for line in lines:
+                # Make the link to the example relative.
+                line = re.sub(r'][ ]*\([ ]*/', r'](', line)
+                ofh.write(line)
 
     # Copy Instructions files
     dest = make_path(doc_path, 'Instructions')
@@ -767,13 +784,12 @@ def main():
                     MdFile.write('</a>' + '\n')
                     MdFile.write('<hr>\n')
                     MdFile.write('\n')
-                DescriptionPath = os.path.join(repo_path, lang, kit_name, ExampleName + ".md")
+                description_path = os.path.join(repo_path, lang, kit_name, ExampleName + ".md")
                 # Add a description if a .md file exists for the example
-                if os.path.isfile(DescriptionPath):
-                    DescriptionFile = open(DescriptionPath, 'r')
-                    description = DescriptionFile.read()
-                    DescriptionFile.close()
-                    description = AddDoxygen(description, stats)
+                if os.path.isfile(description_path):
+                    with open(description_path, 'r') as description_file:
+                        description = description_file.read()
+                    description = add_vtk_nightly_doc_link(description, stats)
                     MdFile.write(description)
                 # Add examples from other available languages if they exist
                 if len(other_languages) > 0:
