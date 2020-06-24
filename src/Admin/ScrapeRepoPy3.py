@@ -482,6 +482,7 @@ def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, test_im
                 if '](/Coverage' in v[1]:
                     # Make the coverage link relative.
                     v[1] = re.sub(r'][ ]*\([ ]*/', r'](', v[1])
+                    v[1] = v[1].replace('.md','')
                     line_changed = True
                 if '/CSharp/' in v[1] or '/Cxx/' in v[1] or '/Java/' in v[1]  or  '/Python/' in v[1]:
                     # Make the language link relative, also drop off the language.
