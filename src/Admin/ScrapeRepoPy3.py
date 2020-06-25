@@ -29,9 +29,12 @@ except ModuleNotFoundError:
 
 def get_program_parameters():
     import argparse
-    description = 'Copy/edit files from the src folder into the docs folder.'
+    description = 'Scrape the repository, editing where appropriate, and place files in the docs folder.'
     epilogue = '''
 
+    Note:
+       The time taken for the first run on this script will be around 370s as caches have to be created,
+       subsequent runs take around 10s since existing caches will be used.
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -452,6 +455,7 @@ def get_example_line(s):
 def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, test_images, from_file, to_file, stats):
     from_path = make_path(root_path, repo_dir, from_file)
     to_path = make_path(root_path, doc_dir, to_file)
+    baseline_path = make_path(root_path, repo_dir, baseline_dir)
     with open(from_path, 'r') as md_file:
         lines = dict()
         line_count = 0
@@ -465,7 +469,7 @@ def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, test_im
                 stats['thumb_count'] += 1
                 exampleName = os.path.split(example_line)[1]
                 exampleDir = os.path.split(example_line)[0]
-                baseline = make_path(root_path, repo_dir, baseline_dir, exampleDir, "Test" + exampleName + ".png")
+                baseline = make_path(baseline_path, exampleDir, "Test" + exampleName + ".png")
                 if os.path.exists(baseline):
                     baselineURL = make_path(repo_url, "blob/master", "src", baseline_dir, exampleDir,
                                             "Test" + exampleName + ".png")
@@ -475,20 +479,30 @@ def add_thumbnails(repo_url, root_path, repo_dir, doc_dir, baseline_dir, test_im
             line_count += 1
             x = []
         add_image_link(test_images, lines, stats)
-        for k, v in lines.items():
-            if v[1] != '':
+        if from_file != 'VTKBookFigures.md':
+            for k, v in lines.items():
                 line_changed = False
-                if '](/Coverage' in v[1]:
-                    # Make the coverage link relative.
-                    v[1] = re.sub(r'][ ]*\([ ]*/', r'](', v[1])
-                    v[1] = v[1].replace('.md', '')
-                    line_changed = True
-                if '/CSharp/' in v[1] or '/Cxx/' in v[1] or '/Java/' in v[1] or '/Python/' in v[1]:
-                    # Make the language link relative, also drop off the language.
-                    v[1] = re.sub(r'][ ]*\([ ]*/\w+/', r'](', v[1])
+                if v[1] != '':
+                    if '](/Coverage' in v[1]:
+                        # Make the coverage link relative.
+                        v[1] = re.sub(r'][ ]*\([ ]*/', r'](', v[1])
+                        v[1] = v[1].replace('.md', '')
+                        line_changed = True
+                    if '/CSharp/' in v[1] or '/Cxx/' in v[1] or '/Java/' in v[1] or '/Python/' in v[1]:
+                        # Make the language link relative, also drop off the language.
+                        v[1] = re.sub(r'][ ]*\([ ]*/\w+/', r'](', v[1])
+                        line_changed = True
+                if line_changed:
+                    lines[k] = v
+        else:
+            for k, v in lines.items():
+                line_changed = False
+                if v[1] != '':
+                    v[1] = re.sub(r'][ ]*\([ ]*/', r'](../', v[1])
                     line_changed = True
                 if line_changed:
                     lines[k] = v
+
     with open(to_path, 'w') as ofn:
         k = sorted(lines.keys())
         for kv in k:
@@ -583,19 +597,22 @@ def main():
 
     repo_path = make_path(root_path, repo_dir)
     doc_path = make_path(root_path, doc_dir)
+
     # Make sure the wiki docs folder exists
     if not os.path.exists(doc_path):
         os.makedirs(doc_path)
 
-    # Baseline top level
-    baseline_path = make_path(repo_dir, '/Testing/Baseline')
+    # The cache
+    cache_path = make_path(repo_path,'Cache')
+    if not os.path.exists(cache_path):
+        os.makedirs(cache_path)
+
+    # Load the caches, create the caches if they doen't exist.
+    test_image_dict = load_test_image_cache(make_path(cache_path, 'TestImageCache'))
+    components_dict = load_components_cache(make_path(cache_path, 'ComponentsCache'))
+
+    #  Baseline top level path relative to src
     baseline_src_path = 'Testing/Baseline'
-
-    # Load the test image cache
-    test_image_dict = load_test_image_cache(make_path(repo_path, 'Admin/TinyUrlCache'))
-
-    # Load the Component cache
-    components_dict = load_components_cache(make_path(repo_path, 'Admin/ComponentsCache'))
 
     # # Read the Wiki Templates
     # with open(make_path(repo_path, 'Admin/VTKCMakeLists'), 'r') as VTKTemplateFile:
@@ -816,7 +833,14 @@ def main():
                     MdFile.write('\n')
 
                 # Add email contact for questions
-                question = '\n!!! question\n    If you have a simple question about this example contact us at <a href=mailto:' + repo_name + 'ExProject@gmail.com?subject=' + ExampleName + langExt + '&body=' + 'https://' + user_name + '.github.io/' + repo_name + '/site/' + lang + '/' + kit_name + '/' + ExampleName + '>' + repo_name + 'Project</a>\n    If your question is more complex and may require extended discussion, please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
+                question = \
+                    '\n!!! question\n    ' \
+                    'If you have a simple question about this example contact us at <a href=mailto:'\
+                    + repo_name + 'ExProject@gmail.com?subject=' + ExampleName + langExt + '&body=' + 'https://'\
+                    + user_name + '.github.io/' + repo_name + '/site/' + lang + '/' + kit_name + '/' + ExampleName\
+                    + '>' + repo_name +\
+                    'Project</a>\n    If your question is more complex and may require extended discussion,' \
+                    ' please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
                 MdFile.write(question)
                 MdFile.write('\n')
 
@@ -983,13 +1007,13 @@ def main():
 
     # Update the test image cache file if necessary
     if stats['test_image_misses'] > 0:
-        with open(make_path(repo_path, 'Admin/TinyUrlCache'), 'w') as cf:
+        with open(make_path(cache_path, 'TestImageCache'), 'w') as cf:
             for key in test_image_dict.keys():
                 cf.write(key + ' ' + test_image_dict[key] + '\n')
 
     # Rewrite the components cache file if necessary
     if stats['components_misses'] > 0:
-        with open(make_path(repo_path, 'Admin/ComponentsCache'), 'w') as cf:
+        with open(make_path(cache_path, 'ComponentsCache'), 'w') as cf:
             for key, contents in list(components_dict.items()):
                 if os.path.exists(key):
                     # add the vtk prefix to the component to support older versions of vtk
