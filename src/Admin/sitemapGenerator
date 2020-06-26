@@ -1,2 +1,2 @@
 #!/bin/bash
-python sitemap_gen.py -c daily https://lorensen.github.io/VTKExamples/site/
+python sitemap_gen.py -c daily https://ajpmaclean.github.io/VTKEx/site/
