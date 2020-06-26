@@ -1,33 +1,37 @@
 #!/bin/bash
 #
-# SyncSiteWithRepo - synchronize the examples site with the
+# SyncSiteWithRepoPy3 - synchronize the examples site with the
 #                    examples repo
 #
 if [ $# -lt 2 ]
   then
   echo "Usage: SyncSiteWithRepo REPO_URL VTK_SOURCE_DIR"
+  echo "e.g  : ./src/SyncSiteWithRepo.sh https://github.com/<github_username>/VTKExamples /home/<username>/Development/Kitware/src/VTK/"
+  echo "e.g  : ./src/SyncSiteWithRepo.sh https://github.com/ajpmaclean/VTKEx /home/amaclean/Development/Kitware/src/VTK/"
+  echo "Note  : This is run from the top-level VTKExamples directory."
+  echo "e.g  : /home/<username>/Development/Kitware/src/VTKExamples/"
   exit 1
 fi
 REPO=$1
 VTK_SOURCE_DIR=$2
 # Make sure the repo site is up
 echo "Synchronizing the VTKExamples site with the repository."
-HOST=www.github.com
-echo "0) Can we access the repo?"
-ping -c 1 $HOST &> /dev/null
-if test "${?}" != 0
-  then
-  echo "VTKExamples: $HOST is not accessible. Try again later"
-  exit 1
-fi
+# HOST=www.github.com
+# echo "0) Can we access the repo?"
+# ping -c 1 $HOST &> /dev/null
+# if test "${?}" != 0
+#   then
+#   echo "VTKExamples: $HOST is not accessible. Try again later"
+#   exit 1
+# fi
 
-echo "1) Pull updates from master repositories"
-git pull
-if ( test -d src/Tarballs ); then
-  (cd src/Tarballs; git checkout .)
-  (cd src/Tarballs; git pull origin master)
-  (cd src/Tarballs; rm *.tar)
-fi
+# echo "1) Pull updates from master repositories"
+# git pull
+# if ( test -d src/Tarballs ); then
+#   (cd src/Tarballs; git checkout .)
+#   (cd src/Tarballs; git pull origin master)
+#   (cd src/Tarballs; rm *.tar)
+# fi
 
 echo "2) Create coverage files"
 (cd src/Admin; python ./VTKClassesUsedInExamples.py -a ..; python ./VTKClassesUsedInExamples.py -a -u ..)
@@ -35,7 +39,7 @@ echo "2) Create coverage files"
 echo "3) Scrape the repo"
 rm -rf docs/*
 rm -rf site/*
-src/Admin/ScrapeRepo  src docs ${REPO} ${VTK_SOURCE_DIR}
+src/Admin/ScrapeRepo.py  ./src ./docs ${REPO} ${VTK_SOURCE_DIR}
 
 echo "4) Check for a successful scrape"
 pushd docs
@@ -61,6 +65,11 @@ rm site/mkdocs/search_index.json
 echo "6.1 Modify highlight color"
 (cd site/assets/stylesheets; sed -i -e 's/background-color:rgba(255,235,59,\.5)/background-color:rgba(240,240,240,.8)/g' application-*.css)
 
+#####################
+ echo "Premature exit for testing"
+ exit
+
+#####################
 echo "7) Minify Html"
 (cd site; find . -name index.html -exec htmlmin {} {} \;)
 

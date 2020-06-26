@@ -4,6 +4,7 @@
 
     Contributors:
         Redirect handling by Pavel "ShadoW" Dvorak
+        Converted to Python3 by Andrew Maclean
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,15 +18,16 @@
 
 """
 
-import sys
 import getopt
-import urllib2
-import urlparse
-from HTMLParser import HTMLParser
-from HTMLParser import HTMLParseError
+import sys
+import time
 import xml.sax.saxutils
-import robotparser
-
+from html.parser import HTMLParser
+from urllib import robotparser
+from urllib.error import URLError
+from urllib.parse import urlparse, urljoin, urlsplit, urldefrag
+from urllib.request import build_opener, install_opener
+from urllib.request import urlopen
 
 helpText = """sitemap_gen.py version 1.1.0 (2009-09-05)
 
@@ -79,33 +81,34 @@ allowedChangefreq = ["always", "hourly", "daily", "weekly", "monthly", "yearly",
 
 def getPage(url):
     try:
-        f = urllib2.urlopen(url)
+        f = urlopen(url)
         page = ""
         for i in f.readlines():
-            page += i
-        date = f.info().getdate('Last-Modified')
-        if date is None:
-            date = (0, 0, 0)
-        else:
-            date = date[:3]
+            page += str(i)
+        time_struct = time.strptime(f.headers['last-modified'], '%a, %d %b %Y %H:%M:%S %Z')
+        date = (time_struct.tm_year, time_struct.tm_mon, time_struct.tm_wday)
         f.close()
         return (page, date, f.url)
-    except urllib2.URLError as detail:
+    except URLError as detail:
         print("%s. Skipping..." % detail)
         return (None, (0, 0, 0), "")
+
+
 # end def
 
 
 def joinUrls(baseUrl, newUrl):
-    helpUrl, fragment = urlparse.urldefrag(newUrl)
-    return urlparse.urljoin(baseUrl, helpUrl)
+    helpUrl, fragment = urldefrag(newUrl)
+    return urljoin(baseUrl, helpUrl)
+
+
 # end def
 
 
 def getRobotParser(startUrl):
     rp = robotparser.RobotFileParser()
 
-    robotUrl = urlparse.urljoin(startUrl, "/robots.txt")
+    robotUrl = urljoin(startUrl, "/robots.txt")
     page, date, url = getPage(robotUrl)
 
     if page is None:
@@ -116,6 +119,8 @@ def getRobotParser(startUrl):
     rp.parse(page)
     print("Found ROBOTS.TXT at:", robotUrl)
     return rp
+
+
 # end def
 
 
@@ -126,14 +131,15 @@ class MyHTMLParser(HTMLParser):
         self.pageMap = pageMap
         self.redirects = redirects
         self.baseUrl = baseUrl
-        self.server = urlparse.urlsplit(baseUrl)[1]  # netloc in python 2.5
+        self.server = urlsplit(baseUrl)[1]
         self.maxUrls = maxUrls
         self.blockExtensions = blockExtensions
         self.robotParser = robotParser
+
     # end def
 
     def hasBlockedExtension(self, url):
-        p = urlparse.urlparse(url)
+        p = urlparse(url)
         path = p[2].upper()  # path attribute
         # In python 2.5, endswith() also accepts a tuple,
         # but let's make it backwards compatible
@@ -141,6 +147,7 @@ class MyHTMLParser(HTMLParser):
             if path.endswith(i):
                 return 1
         return 0
+
     # end def
 
     def handle_starttag(self, tag, attrs):
@@ -170,11 +177,11 @@ class MyHTMLParser(HTMLParser):
                 return
 
             # Check if we want to follow the link
-            if urlparse.urlsplit(url)[1] != self.server:
+            if urlsplit(url)[1] != self.server:
                 return
             if self.hasBlockedExtension(url) or self.redirects.count(url) > 0:
                 return
-            if (self.robotParser is not None) and not(self.robotParser.can_fetch("*", url)):
+            if (self.robotParser is not None) and not (self.robotParser.can_fetch("*", url)):
                 print("URL restricted by ROBOTS.TXT: ", url)
                 return
             # It's OK to add url to the map and fetch it later
@@ -182,6 +189,8 @@ class MyHTMLParser(HTMLParser):
                 self.pageMap[url] = ()
         # end if
     # end def
+
+
 # end class
 
 
@@ -198,7 +207,6 @@ def parsePages(startUrl, maxUrls, blockExtensions):
     redirects = []
 
     robotParser = getRobotParser(startUrl)
-
     while True:
         url = getUrlToProcess(pageMap)
         if url is None:
@@ -218,13 +226,13 @@ def parsePages(startUrl, maxUrls, blockExtensions):
             try:
                 parser.feed(page)
                 parser.close()
-            except HTMLParseError:
-                print("Error parsing %s, skipping." % url)
             except UnicodeDecodeError:
                 print("Failed decoding %s . Try to check if the page is valid." % url)
     # end while
 
     return pageMap
+
+
 # end def
 
 
@@ -244,6 +252,8 @@ def generateSitemapFile(pageMap, fileName, changefreq="", priority=0.0):
     # end for
     fw.write('</urlset>')
     fw.close()
+
+
 # end def
 
 
@@ -302,9 +312,9 @@ def main():
         return
 
     # Set user agent string
-    opener = urllib2.build_opener()
+    opener = build_opener()
     opener.addheaders = [('User-agent', 'sitemap_gen/1.0')]
-    urllib2.install_opener(opener)
+    install_opener(opener)
 
     # Start processing
     print("Crawling the site...")
@@ -312,6 +322,8 @@ def main():
     print("Generating sitemap: %d URLs" % len(pageMap))
     generateSitemapFile(pageMap, fileName, changefreq, priority)
     print("Finished.")
+
+
 # end def
 
 
