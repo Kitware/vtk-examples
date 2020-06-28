@@ -760,20 +760,20 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
 project(ElevationBandsWithGlyphs)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonComputationalGeometry
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersModeling
-  vtkFiltersSources
-  vtkInteractionStyle
-  vtkRenderingAnnotation
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonComputationalGeometry
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersModeling
+  vtkvtkFiltersSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingAnnotation
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ElevationBandsWithGlyphs: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

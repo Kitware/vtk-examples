@@ -228,21 +228,21 @@ int main (int argc, char *argv[])
 project(FireFlow)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersFlowPaths
-  vtkFiltersGeneric
-  vtkFiltersSources
-  vtkIOImport
-  vtkIOXML
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersFlowPaths
+  vtkvtkFiltersGeneric
+  vtkvtkFiltersSources
+  vtkvtkIOImport
+  vtkvtkIOXML
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping FireFlow: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

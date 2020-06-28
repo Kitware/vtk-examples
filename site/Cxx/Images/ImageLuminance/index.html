@@ -166,16 +166,16 @@ int main(int, char *[])
 project(ImageLuminance)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkImagingColor
-  vtkImagingSources
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkImagingColor
+  vtkvtkImagingSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ImageLuminance: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

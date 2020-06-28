@@ -107,9 +107,9 @@ int main(int, char *[])
 project(XMLPImageDataWriter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkIOParallelXML
-  vtkImagingSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkIOParallelXML
+  vtkvtkImagingSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping XMLPImageDataWriter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

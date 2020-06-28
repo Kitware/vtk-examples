@@ -219,19 +219,19 @@ int main (int argc, char *argv[])
 project(ResamplePolyLine)
 
 find_package(VTK COMPONENTS 
-  vtkCommonComputationalGeometry
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersGeneral
-  vtkFiltersSources
-  vtkIOXML
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonComputationalGeometry
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersSources
+  vtkvtkIOXML
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ResamplePolyLine: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

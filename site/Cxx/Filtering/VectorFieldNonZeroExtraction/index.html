@@ -183,11 +183,11 @@ void WriteImage(vtkImageData* image, const std::string&amp; fileName)
 project(VectorFieldNonZeroExtraction)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkIOXML
-  vtkImagingMath QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkIOXML
+  vtkvtkImagingMath QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping VectorFieldNonZeroExtraction: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -117,10 +117,10 @@ int main(int, char *[])
 project(ModifiedBSPTreeIntersectWithLine)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersFlowPaths
-  vtkFiltersSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersFlowPaths
+  vtkvtkFiltersSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ModifiedBSPTreeIntersectWithLine: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

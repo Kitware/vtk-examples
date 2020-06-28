@@ -131,9 +131,9 @@ void CreateImage(vtkImageData* const image)
 project(RescaleAnImage)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkImagingCore QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkImagingCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping RescaleAnImage: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -197,13 +197,13 @@ vtkSmartPointer&lt;vtkPolyData&gt; ReadPolyData(const char *fileName)
 project(ClosedSurface)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkFiltersCore
-  vtkFiltersSources
-  vtkIOGeometry
-  vtkIOLegacy
-  vtkIOPLY
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkFiltersCore
+  vtkvtkFiltersSources
+  vtkvtkIOGeometry
+  vtkvtkIOLegacy
+  vtkvtkIOPLY
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ClosedSurface: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

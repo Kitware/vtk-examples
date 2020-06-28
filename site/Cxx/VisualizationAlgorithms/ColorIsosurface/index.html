@@ -195,18 +195,18 @@ int main (int argc, char *argv[])
 project(ColorIsosurface)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkIOParallel
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingLOD
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkIOParallel
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingLOD
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ColorIsosurface: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

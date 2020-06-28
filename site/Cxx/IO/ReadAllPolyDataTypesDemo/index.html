@@ -350,21 +350,21 @@ void ViewportBorder(vtkSmartPointer&lt;vtkRenderer&gt; &amp;renderer,
 project(ReadAllPolyDataTypesDemo)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonSystem
-  vtkFiltersSources
-  vtkIOGeometry
-  vtkIOLegacy
-  vtkIOPLY
-  vtkIOXML
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkCommonSystem
+  vtkvtkFiltersSources
+  vtkvtkIOGeometry
+  vtkvtkIOLegacy
+  vtkvtkIOPLY
+  vtkvtkIOXML
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ReadAllPolyDataTypesDemo: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -390,17 +390,17 @@ vtkSmartPointer&lt;vtkUnstructuredGrid&gt; MakeQuadraticPolygon()
 project(IsoparametricCellsDemo)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersSources
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingLabel
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingLabel
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping IsoparametricCellsDemo: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -112,9 +112,9 @@ int main(int vtkNotUsed(argc), char* vtkNotUsed(argv)[])
 project(JPEGWriter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkIOImage
-  vtkImagingSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkIOImage
+  vtkvtkImagingSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping JPEGWriter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

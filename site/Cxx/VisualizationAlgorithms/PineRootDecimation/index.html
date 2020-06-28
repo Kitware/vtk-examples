@@ -274,17 +274,17 @@ int main(int argc, char* argv[])
 project(PineRootDecimation)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersModeling
-  vtkIOGeometry
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersModeling
+  vtkvtkIOGeometry
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PineRootDecimation: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

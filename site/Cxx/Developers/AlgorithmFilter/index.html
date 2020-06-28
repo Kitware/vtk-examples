@@ -472,7 +472,7 @@ void vtkTestAlgorithmFilter::AddInput(int index, vtkDataObject* input)
 project(AlgorithmFilter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore QUIET)
+  vtkvtkCommonCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping AlgorithmFilter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

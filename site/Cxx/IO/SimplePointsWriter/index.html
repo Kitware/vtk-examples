@@ -98,9 +98,9 @@ int main(int vtkNotUsed(argc), char* vtkNotUsed(argv)[])
 project(SimplePointsWriter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkFiltersSources
-  vtkIOLegacy QUIET)
+  vtkvtkCommonCore
+  vtkvtkFiltersSources
+  vtkvtkIOLegacy QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping SimplePointsWriter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

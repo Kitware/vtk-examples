@@ -129,9 +129,9 @@ int main(int, char *[])
 project(VectorNorm)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping VectorNorm: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

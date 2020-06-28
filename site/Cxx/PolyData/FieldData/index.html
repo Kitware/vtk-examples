@@ -129,10 +129,10 @@ int main(int, char *[])
 project(FieldData)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersSources
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersSources
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping FieldData: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

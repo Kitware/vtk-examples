@@ -392,10 +392,10 @@ namespace
 project(Generate3DAMRDataSetWithPulse)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOLegacy
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOLegacy
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping Generate3DAMRDataSetWithPulse: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

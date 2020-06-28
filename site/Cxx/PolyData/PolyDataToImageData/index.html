@@ -166,11 +166,11 @@ int main(int, char *[])
 project(PolyDataToImageData)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersSources
-  vtkIOImage
-  vtkImagingStencil QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersSources
+  vtkvtkIOImage
+  vtkvtkImagingStencil QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PolyDataToImageData: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

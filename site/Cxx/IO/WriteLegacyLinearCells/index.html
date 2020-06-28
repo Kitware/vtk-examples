@@ -343,9 +343,9 @@ vtkSmartPointer&lt;vtkUnstructuredGrid&gt; MakePolygon()
 project(WriteLegacyLinearCells)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOLegacy QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOLegacy QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping WriteLegacyLinearCells: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -192,16 +192,16 @@ int main (int argc, char *argv[])
 project(DecimateHawaii)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkFiltersCore
-  vtkIOImage
-  vtkIOLegacy
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkFiltersCore
+  vtkvtkIOImage
+  vtkvtkIOLegacy
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping DecimateHawaii: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

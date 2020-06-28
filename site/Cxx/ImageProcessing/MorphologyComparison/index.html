@@ -278,16 +278,16 @@ int main (int argc, char *argv[])
 project(MorphologyComparison)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOImage
-  vtkImagingMorphological
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOImage
+  vtkvtkImagingMorphological
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping MorphologyComparison: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

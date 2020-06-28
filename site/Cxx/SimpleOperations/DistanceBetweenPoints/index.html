@@ -100,7 +100,7 @@ int main(int, char *[])
 project(DistanceBetweenPoints)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore QUIET)
+  vtkvtkCommonCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping DistanceBetweenPoints: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -99,8 +99,8 @@ int main(int, char *[])
 project(FunctionParser)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonMisc QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonMisc QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping FunctionParser: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

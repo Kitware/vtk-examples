@@ -139,9 +139,9 @@ int main(int, char *[])
 project(MiscCellData)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping MiscCellData: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

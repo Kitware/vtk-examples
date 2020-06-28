@@ -138,10 +138,10 @@ int main(int, char *[])
 project(RectilinearGridToTetrahedra)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersGeneral
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersGeneral
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping RectilinearGridToTetrahedra: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

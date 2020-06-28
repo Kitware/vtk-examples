@@ -119,16 +119,16 @@ int main(int, char *[])
 project(DrawShapes)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkImagingSources
-  vtkInteractionImage
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkImagingSources
+  vtkvtkInteractionImage
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping DrawShapes: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

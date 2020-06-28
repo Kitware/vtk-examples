@@ -605,8 +605,8 @@ int main(int, char *[])
 project(LUTUtilities)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping LUTUtilities: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

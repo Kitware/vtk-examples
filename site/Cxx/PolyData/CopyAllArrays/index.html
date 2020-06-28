@@ -178,9 +178,9 @@ void AutomaticMethod(vtkPolyData* input)
 project(CopyAllArrays)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping CopyAllArrays: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -183,17 +183,17 @@ int main(int, char*[])
 project(PKMeansClustering)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersGeneral
-  vtkFiltersParallelStatistics
-  vtkIOXML
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersParallelStatistics
+  vtkvtkIOXML
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PKMeansClustering: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

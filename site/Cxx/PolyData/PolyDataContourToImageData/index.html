@@ -216,14 +216,14 @@ int main(int, char *[])
 project(PolyDataContourToImageData)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersModeling
-  vtkFiltersSources
-  vtkIOImage
-  vtkIOXML
-  vtkImagingStencil QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersModeling
+  vtkvtkFiltersSources
+  vtkvtkIOImage
+  vtkvtkIOXML
+  vtkvtkImagingStencil QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PolyDataContourToImageData: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

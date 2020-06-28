@@ -265,19 +265,19 @@ int main(int argc, char* argv[])
 project(TextureThreshold)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersGeometry
-  vtkFiltersTexture
-  vtkIOLegacy
-  vtkIOParallel
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersGeometry
+  vtkvtkFiltersTexture
+  vtkvtkIOLegacy
+  vtkvtkIOParallel
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping TextureThreshold: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

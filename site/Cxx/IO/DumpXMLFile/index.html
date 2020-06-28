@@ -247,10 +247,10 @@ int main (int argc, char *argv[])
 project(DumpXMLFile)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOLegacy
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOLegacy
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping DumpXMLFile: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

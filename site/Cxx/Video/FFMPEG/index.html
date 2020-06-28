@@ -113,9 +113,9 @@ int main (int argc, char *argv[])
 project(FFMPEG)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkIOFFMPEG
-  vtkImagingSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkIOFFMPEG
+  vtkvtkImagingSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping FFMPEG: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

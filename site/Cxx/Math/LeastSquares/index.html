@@ -141,7 +141,7 @@ int main(int, char *[])
 project(LeastSquares)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore QUIET)
+  vtkvtkCommonCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping LeastSquares: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

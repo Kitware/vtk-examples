@@ -297,24 +297,24 @@ int main (int argc, char *argv[])
 project(ReadLegacyUnstructuredGrid)
 
 find_package(VTK COMPONENTS 
-  vtkChartsCore
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersExtraction
-  vtkFiltersGeneral
-  vtkFiltersSources
-  vtkIOLegacy
-  vtkInteractionStyle
-  vtkRenderingContext2D
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingLabel
-  vtkRenderingOpenGL2
-  vtkViewsContext2D QUIET)
+  vtkvtkChartsCore
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersExtraction
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersSources
+  vtkvtkIOLegacy
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContext2D
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingLabel
+  vtkvtkRenderingOpenGL2
+  vtkvtkViewsContext2D QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ReadLegacyUnstructuredGrid: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

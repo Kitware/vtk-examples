@@ -136,9 +136,9 @@ int main(int, char *[])
 project(ThresholdPoints)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ThresholdPoints: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

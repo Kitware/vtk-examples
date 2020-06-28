@@ -130,17 +130,17 @@ int main(int, char *argv[])
 project(OpenVRCylinder)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersSources
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2
-  vtkRenderingOpenVR QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2
+  vtkvtkRenderingOpenVR QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping OpenVRCylinder: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

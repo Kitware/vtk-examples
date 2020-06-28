@@ -298,19 +298,19 @@ int main (int, char *[])
 project(HyperStreamline)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonDataModel
-  vtkFiltersGeneral
-  vtkFiltersGeometry
-  vtkFiltersModeling
-  vtkFiltersSources
-  vtkImagingHybrid
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonDataModel
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersGeometry
+  vtkvtkFiltersModeling
+  vtkvtkFiltersSources
+  vtkvtkImagingHybrid
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping HyperStreamline: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

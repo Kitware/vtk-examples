@@ -396,25 +396,25 @@ vtkSmartPointer&lt;vtkPolyData&gt; ReadPolyData(const char *fileName)
 project(ExtrudePolyDataAlongLine)
 
 find_package(VTK COMPONENTS 
-  vtkCommonComputationalGeometry
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonMath
-  vtkCommonTransforms
-  vtkFiltersCore
-  vtkFiltersGeneral
-  vtkFiltersModeling
-  vtkFiltersSources
-  vtkIOGeometry
-  vtkIOLegacy
-  vtkIOPLY
-  vtkIOXML
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonComputationalGeometry
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkCommonMath
+  vtkvtkCommonTransforms
+  vtkvtkFiltersCore
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersModeling
+  vtkvtkFiltersSources
+  vtkvtkIOGeometry
+  vtkvtkIOLegacy
+  vtkvtkIOPLY
+  vtkvtkIOXML
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ExtrudePolyDataAlongLine: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -169,17 +169,17 @@ int main( int, char *[] )
 project(ContourQuadric)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersModeling
-  vtkImagingHybrid
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersModeling
+  vtkvtkImagingHybrid
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ContourQuadric: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

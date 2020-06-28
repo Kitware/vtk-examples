@@ -129,9 +129,9 @@ int main(int argc, char* argv[])
 project(ExtractFaces)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ExtractFaces: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

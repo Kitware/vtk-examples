@@ -150,16 +150,16 @@ int main( int, char *[] )
 project(Mace)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersSources
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping Mace: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

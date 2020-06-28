@@ -107,10 +107,10 @@ int main(int argc, char *argv[])
 project(ConvertFile)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOPLY
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOPLY
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ConvertFile: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

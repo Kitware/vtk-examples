@@ -194,8 +194,8 @@ int vtkTestMultipleInputPortsFilter::RequestData(vtkInformation *vtkNotUsed(requ
 project(MultipleInputPorts)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkFiltersSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkFiltersSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping MultipleInputPorts: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

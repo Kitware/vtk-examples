@@ -117,15 +117,15 @@ int main(int argc, char* argv[])
 project(ReadPNM)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkIOImage
-  vtkInteractionImage
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkIOImage
+  vtkvtkInteractionImage
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ReadPNM: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

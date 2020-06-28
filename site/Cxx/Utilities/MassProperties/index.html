@@ -203,14 +203,14 @@ vtkSmartPointer&lt;vtkPolyData&gt; ReadPolyData(const char *fileName)
 project(MassProperties)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkFiltersCore
-  vtkFiltersModeling
-  vtkFiltersSources
-  vtkIOGeometry
-  vtkIOLegacy
-  vtkIOPLY
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkFiltersCore
+  vtkvtkFiltersModeling
+  vtkvtkFiltersSources
+  vtkvtkIOGeometry
+  vtkvtkIOLegacy
+  vtkvtkIOPLY
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping MassProperties: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -101,10 +101,10 @@ int main(int /* argc */, char * /* argv */[]) {
 project(ImplicitDataSet)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersSources
-  vtkImagingCore QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersSources
+  vtkvtkImagingCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ImplicitDataSet: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -142,10 +142,10 @@ int main(int, char *[])
 project(CellTreeLocator)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersGeneral
-  vtkFiltersSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping CellTreeLocator: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -114,9 +114,9 @@ int main ( int argc, char *argv[] )
 project(GenericDataObjectReader)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOLegacy QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOLegacy QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping GenericDataObjectReader: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

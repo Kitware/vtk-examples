@@ -896,25 +896,25 @@ MakeSliderWidget(SliderProperties const&amp; properties)
 project(PhysicallyBasedRendering)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonComputationalGeometry
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonTransforms
-  vtkFiltersCore
-  vtkFiltersGeneral
-  vtkFiltersModeling
-  vtkFiltersSources
-  vtkIOImage
-  vtkImagingCore
-  vtkInteractionStyle
-  vtkInteractionWidgets
-  vtkRenderingAnnotation
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonComputationalGeometry
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkCommonTransforms
+  vtkvtkFiltersCore
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersModeling
+  vtkvtkFiltersSources
+  vtkvtkIOImage
+  vtkvtkImagingCore
+  vtkvtkInteractionStyle
+  vtkvtkInteractionWidgets
+  vtkvtkRenderingAnnotation
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PhysicallyBasedRendering: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

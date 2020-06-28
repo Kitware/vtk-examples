@@ -185,17 +185,17 @@ int main ( int argc, char *argv[] )
 project(ShortestPath)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersModeling
-  vtkFiltersSources
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2
-  vtkViewsInfovis QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersModeling
+  vtkvtkFiltersSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2
+  vtkvtkViewsInfovis QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ShortestPath: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

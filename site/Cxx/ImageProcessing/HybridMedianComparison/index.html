@@ -317,19 +317,19 @@ void AddShotNoise(vtkSmartPointer&lt;vtkImageData&gt; &amp;inputImage,
 project(HybridMedianComparison)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOImage
-  vtkImagingCore
-  vtkImagingGeneral
-  vtkImagingMath
-  vtkImagingSources
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOImage
+  vtkvtkImagingCore
+  vtkvtkImagingGeneral
+  vtkvtkImagingMath
+  vtkvtkImagingSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping HybridMedianComparison: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

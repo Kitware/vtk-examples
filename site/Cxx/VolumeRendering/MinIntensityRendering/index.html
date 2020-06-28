@@ -160,18 +160,18 @@ int main(int argc, char *argv[])
 project(MinIntensityRendering)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOLegacy
-  vtkImagingCore
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2
-  vtkRenderingVolume
-  vtkRenderingVolumeOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOLegacy
+  vtkvtkImagingCore
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2
+  vtkvtkRenderingVolume
+  vtkvtkRenderingVolumeOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping MinIntensityRendering: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

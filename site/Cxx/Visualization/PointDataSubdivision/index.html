@@ -750,24 +750,24 @@ int main(int argc, char * argv[])
 project(PointDataSubdivision)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonComputationalGeometry
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonExecutionModel
-  vtkFiltersCore
-  vtkFiltersHybrid
-  vtkFiltersModeling
-  vtkFiltersSources
-  vtkIOImage
-  vtkInteractionStyle
-  vtkInteractionWidgets
-  vtkRenderingAnnotation
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonComputationalGeometry
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkCommonExecutionModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersHybrid
+  vtkvtkFiltersModeling
+  vtkvtkFiltersSources
+  vtkvtkIOImage
+  vtkvtkInteractionStyle
+  vtkvtkInteractionWidgets
+  vtkvtkRenderingAnnotation
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PointDataSubdivision: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

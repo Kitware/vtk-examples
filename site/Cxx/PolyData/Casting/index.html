@@ -149,8 +149,8 @@ int main(int, char *[])
 project(Casting)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping Casting: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

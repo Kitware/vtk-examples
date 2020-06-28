@@ -353,19 +353,19 @@ int main(int argc, char* argv[])
 project(PickPixel2)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOImage
-  vtkImagingCore
-  vtkImagingSources
-  vtkInteractionImage
-  vtkInteractionStyle
-  vtkRenderingAnnotation
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOImage
+  vtkvtkImagingCore
+  vtkvtkImagingSources
+  vtkvtkInteractionImage
+  vtkvtkInteractionStyle
+  vtkvtkRenderingAnnotation
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PickPixel2: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

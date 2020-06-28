@@ -98,8 +98,8 @@ int main(int, char *[])
 project(MatrixTranspose)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonMath QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonMath QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping MatrixTranspose: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

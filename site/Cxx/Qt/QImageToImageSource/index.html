@@ -103,8 +103,8 @@ int main(int argc, char *argv[]) {
 project(QImageToImageSource)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkRenderingQt QUIET)
+  vtkvtkCommonCore
+  vtkvtkRenderingQt QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping QImageToImageSource: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

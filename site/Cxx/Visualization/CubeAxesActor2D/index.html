@@ -198,18 +198,18 @@ int main(int, char *[])
 project(CubeAxesActor2D)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkFiltersCore
-  vtkFiltersModeling
-  vtkFiltersSources
-  vtkInteractionStyle
-  vtkRenderingAnnotation
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingLOD
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkFiltersCore
+  vtkvtkFiltersModeling
+  vtkvtkFiltersSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingAnnotation
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingLOD
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping CubeAxesActor2D: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

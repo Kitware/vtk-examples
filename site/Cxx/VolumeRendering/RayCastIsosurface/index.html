@@ -203,18 +203,18 @@ int main (int argc, char *argv[])
 project(RayCastIsosurface)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonMisc
-  vtkIOImage
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2
-  vtkRenderingVolumeOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkCommonMisc
+  vtkvtkIOImage
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2
+  vtkvtkRenderingVolumeOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping RayCastIsosurface: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

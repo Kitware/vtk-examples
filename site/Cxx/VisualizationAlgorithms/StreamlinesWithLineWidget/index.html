@@ -369,21 +369,21 @@ int main(int argc, char* argv[])
 project(StreamlinesWithLineWidget)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonMath
-  vtkFiltersCore
-  vtkFiltersFlowPaths
-  vtkFiltersModeling
-  vtkIOParallel
-  vtkInteractionStyle
-  vtkInteractionWidgets
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkCommonMath
+  vtkvtkFiltersCore
+  vtkvtkFiltersFlowPaths
+  vtkvtkFiltersModeling
+  vtkvtkIOParallel
+  vtkvtkInteractionStyle
+  vtkvtkInteractionWidgets
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping StreamlinesWithLineWidget: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

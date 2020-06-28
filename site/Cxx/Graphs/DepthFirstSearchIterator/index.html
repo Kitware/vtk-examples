@@ -171,9 +171,9 @@ int main(int, char *[])
 project(DepthFirstSearchIterator)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkInfovisBoostGraphAlgorithms QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkInfovisBoostGraphAlgorithms QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping DepthFirstSearchIterator: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

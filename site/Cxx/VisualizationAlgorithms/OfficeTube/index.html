@@ -478,19 +478,19 @@ int main (int argc, char *argv[])
 project(OfficeTube)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonDataModel
-  vtkCommonMath
-  vtkFiltersCore
-  vtkFiltersFlowPaths
-  vtkFiltersGeometry
-  vtkIOLegacy
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonDataModel
+  vtkvtkCommonMath
+  vtkvtkFiltersCore
+  vtkvtkFiltersFlowPaths
+  vtkvtkFiltersGeometry
+  vtkvtkIOLegacy
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping OfficeTube: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

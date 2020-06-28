@@ -121,8 +121,8 @@ int main(int, char *[])
 project(PointInPolygon)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PointInPolygon: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

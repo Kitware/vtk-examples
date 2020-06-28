@@ -354,19 +354,19 @@ vtkSmartPointer&lt;vtkUnstructuredGrid&gt; MakeQuadraticHexahedron()
 project(QuadraticHexahedronDemo)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersGeneral
-  vtkFiltersSources
-  vtkInteractionStyle
-  vtkInteractionWidgets
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersSources
+  vtkvtkInteractionStyle
+  vtkvtkInteractionWidgets
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping QuadraticHexahedronDemo: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

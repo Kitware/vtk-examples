@@ -175,7 +175,7 @@ void vtkTestPolyDataFilter::PrintSelf(ostream&amp; os, vtkIndent indent)
 project(PolyDataFilter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore QUIET)
+  vtkvtkCommonCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PolyDataFilter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

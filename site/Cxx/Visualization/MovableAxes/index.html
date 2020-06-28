@@ -264,15 +264,15 @@ int main (int, char *[])
 project(MovableAxes)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkFiltersSources
-  vtkInteractionStyle
-  vtkRenderingAnnotation
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkFiltersSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingAnnotation
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping MovableAxes: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -195,17 +195,17 @@ int main( int, char *[] )
 project(SpiderPlot)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkInteractionStyle
-  vtkRenderingAnnotation
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2
-  vtkTestingCore
-  vtkTestingRendering QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkInteractionStyle
+  vtkvtkRenderingAnnotation
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2
+  vtkvtkTestingCore
+  vtkvtkTestingRendering QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping SpiderPlot: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

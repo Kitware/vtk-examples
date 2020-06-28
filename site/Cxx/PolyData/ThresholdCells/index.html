@@ -162,9 +162,9 @@ int main(int, char *[])
 project(ThresholdCells)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ThresholdCells: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

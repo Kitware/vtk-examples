@@ -114,9 +114,9 @@ int main(int, char *[])
 project(ArrayWriter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOCore QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ArrayWriter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

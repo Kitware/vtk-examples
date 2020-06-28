@@ -104,10 +104,10 @@ int main(int, char *[])
 project(CleanPolyData)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping CleanPolyData: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

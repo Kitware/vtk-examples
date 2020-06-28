@@ -113,9 +113,9 @@ int main (int argc, char *argv[])
 project(OggTheora)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkIOOggTheora
-  vtkImagingSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkIOOggTheora
+  vtkvtkImagingSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping OggTheora: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

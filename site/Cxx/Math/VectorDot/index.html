@@ -152,9 +152,9 @@ int main(int, char *[])
 project(VectorDot)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping VectorDot: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

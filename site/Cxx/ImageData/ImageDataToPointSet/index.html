@@ -126,10 +126,10 @@ void CreateImage(vtkImageData* image)
 project(ImageDataToPointSet)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersGeneral
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersGeneral
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ImageDataToPointSet: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

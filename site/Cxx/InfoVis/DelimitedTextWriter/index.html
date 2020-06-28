@@ -139,10 +139,10 @@ int main(int argc, char *argv[])
 project(DelimitedTextWriter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersSources
-  vtkIOCore QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersSources
+  vtkvtkIOCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping DelimitedTextWriter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -430,8 +430,8 @@ std::string HTMLTableMaker::MakeHTMLTable()
 project(ColorSeriesPatches)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ColorSeriesPatches: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

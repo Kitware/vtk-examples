@@ -105,10 +105,10 @@ int main(int, char *[])
 project(PassThrough)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PassThrough: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

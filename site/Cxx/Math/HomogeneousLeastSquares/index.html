@@ -130,7 +130,7 @@ int main (int, char *[])
 project(HomogeneousLeastSquares)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore QUIET)
+  vtkvtkCommonCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping HomogeneousLeastSquares: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

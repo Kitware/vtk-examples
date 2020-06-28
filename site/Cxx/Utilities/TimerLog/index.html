@@ -98,8 +98,8 @@ int main(int, char *[])
 project(TimerLog)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonSystem QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonSystem QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping TimerLog: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -264,21 +264,21 @@ void RandomDirection(double v[3])
 project(OBBTreeTimingDemo)
 
 find_package(VTK COMPONENTS 
-  vtkChartsCore
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonSystem
-  vtkFiltersGeneral
-  vtkFiltersSources
-  vtkIOXML
-  vtkInteractionStyle
-  vtkRenderingContext2D
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2
-  vtkViewsContext2D QUIET)
+  vtkvtkChartsCore
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkCommonSystem
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersSources
+  vtkvtkIOXML
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContext2D
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2
+  vtkvtkViewsContext2D QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping OBBTreeTimingDemo: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

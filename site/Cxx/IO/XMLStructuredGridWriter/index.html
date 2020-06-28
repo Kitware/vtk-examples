@@ -115,9 +115,9 @@ int main ( int, char *[] )
 project(XMLStructuredGridWriter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping XMLStructuredGridWriter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

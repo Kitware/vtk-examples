@@ -310,18 +310,18 @@ void CreateModel(vtkSmartPointer&lt;vtkRenderer&gt;&amp; renderer, bool flat,
 project(FlatVersusGouraud)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersSources
-  vtkIOGeometry
-  vtkImagingHybrid
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersSources
+  vtkvtkIOGeometry
+  vtkvtkImagingHybrid
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping FlatVersusGouraud: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

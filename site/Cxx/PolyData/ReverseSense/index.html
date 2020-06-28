@@ -126,10 +126,10 @@ int main(int, char *[])
 project(ReverseSense)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ReverseSense: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

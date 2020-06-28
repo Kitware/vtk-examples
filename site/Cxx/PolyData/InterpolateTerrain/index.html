@@ -193,10 +193,10 @@ int main(int, char *[])
 project(InterpolateTerrain)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping InterpolateTerrain: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

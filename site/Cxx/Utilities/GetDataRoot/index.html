@@ -94,8 +94,8 @@ int main(int, char *[])
 project(GetDataRoot)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkTestingRendering QUIET)
+  vtkvtkCommonCore
+  vtkvtkTestingRendering QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping GetDataRoot: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

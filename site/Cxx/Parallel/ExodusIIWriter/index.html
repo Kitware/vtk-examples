@@ -100,10 +100,10 @@ int main(int, char *[])
 project(ExodusIIWriter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersGeneral
-  vtkIOExodus QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersGeneral
+  vtkvtkIOExodus QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ExodusIIWriter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

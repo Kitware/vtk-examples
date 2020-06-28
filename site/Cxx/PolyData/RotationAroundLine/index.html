@@ -122,12 +122,12 @@ int main(int, char *[])
 project(RotationAroundLine)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonTransforms
-  vtkFiltersGeneral
-  vtkFiltersSources
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkCommonTransforms
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersSources
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping RotationAroundLine: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -214,18 +214,18 @@ int main(int, char *[])
 project(AffineWidget)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonTransforms
-  vtkFiltersCore
-  vtkFiltersSources
-  vtkInteractionStyle
-  vtkInteractionWidgets
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkCommonTransforms
+  vtkvtkFiltersCore
+  vtkvtkFiltersSources
+  vtkvtkInteractionStyle
+  vtkvtkInteractionWidgets
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping AffineWidget: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -113,15 +113,15 @@ int main(int, char*[])
 project(RenderView)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkFiltersSources
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2
-  vtkViewsInfovis QUIET)
+  vtkvtkCommonCore
+  vtkvtkFiltersSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2
+  vtkvtkViewsInfovis QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping RenderView: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

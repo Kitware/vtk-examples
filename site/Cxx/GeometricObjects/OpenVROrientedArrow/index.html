@@ -233,19 +233,19 @@ int main(int, char *[])
 project(OpenVROrientedArrow)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonTransforms
-  vtkFiltersGeneral
-  vtkFiltersSources
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2
-  vtkRenderingOpenVR QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkCommonTransforms
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2
+  vtkvtkRenderingOpenVR QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping OpenVROrientedArrow: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

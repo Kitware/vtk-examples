@@ -197,17 +197,17 @@ int main(int, char *[])
 project(TransformOrderDemo)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonTransforms
-  vtkImagingCore
-  vtkImagingSources
-  vtkInteractionStyle
-  vtkRenderingAnnotation
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonTransforms
+  vtkvtkImagingCore
+  vtkvtkImagingSources
+  vtkvtkInteractionStyle
+  vtkvtkRenderingAnnotation
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping TransformOrderDemo: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

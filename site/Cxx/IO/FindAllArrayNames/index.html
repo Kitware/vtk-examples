@@ -163,10 +163,10 @@ void FindAllData(vtkPolyData* polydata)
 project(FindAllArrayNames)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersSources
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersSources
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping FindAllArrayNames: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

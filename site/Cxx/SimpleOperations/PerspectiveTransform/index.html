@@ -136,9 +136,9 @@ int main(int, char *[])
 project(PerspectiveTransform)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonMath
-  vtkCommonTransforms QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonMath
+  vtkvtkCommonTransforms QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PerspectiveTransform: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

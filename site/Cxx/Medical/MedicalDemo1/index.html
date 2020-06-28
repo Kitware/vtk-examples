@@ -208,17 +208,17 @@ int main (int argc, char *argv[])
 project(MedicalDemo1)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkFiltersCore
-  vtkFiltersModeling
-  vtkIOImage
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkFiltersCore
+  vtkvtkFiltersModeling
+  vtkvtkIOImage
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping MedicalDemo1: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

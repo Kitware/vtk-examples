@@ -147,9 +147,9 @@ int main(int, char *[])
 project(MinimumSpanningTree)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkInfovisBoostGraphAlgorithms QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkInfovisBoostGraphAlgorithms QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping MinimumSpanningTree: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

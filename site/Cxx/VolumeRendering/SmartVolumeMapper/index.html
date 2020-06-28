@@ -223,18 +223,18 @@ void CreateImageData(vtkImageData* imageData)
 project(SmartVolumeMapper)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOXML
-  vtkImagingCore
-  vtkImagingHybrid
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2
-  vtkRenderingVolumeOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOXML
+  vtkvtkImagingCore
+  vtkvtkImagingHybrid
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2
+  vtkvtkRenderingVolumeOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping SmartVolumeMapper: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

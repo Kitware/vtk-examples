@@ -98,7 +98,7 @@ int main(int, char *[])
 project(BoundingBoxIntersection)
 
 find_package(VTK COMPONENTS 
-  vtkCommonDataModel QUIET)
+  vtkvtkCommonDataModel QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping BoundingBoxIntersection: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

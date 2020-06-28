@@ -118,9 +118,9 @@ int main(int, char*[])
 project(CenterOfMass)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping CenterOfMass: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

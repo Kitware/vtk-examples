@@ -543,20 +543,20 @@ std::vector&lt;vtkSmartPointer&lt;vtkActor&gt;&gt; AddTextToPlanes()
 project(AnatomicalOrientation)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonTransforms
-  vtkFiltersGeneral
-  vtkFiltersSources
-  vtkIOXML
-  vtkInteractionStyle
-  vtkInteractionWidgets
-  vtkRenderingAnnotation
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonTransforms
+  vtkvtkFiltersGeneral
+  vtkvtkFiltersSources
+  vtkvtkIOXML
+  vtkvtkInteractionStyle
+  vtkvtkInteractionWidgets
+  vtkvtkRenderingAnnotation
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping AnatomicalOrientation: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -412,11 +412,11 @@ bool GetCellNormals(vtkPolyData* polydata)
 project(PolyDataExtractNormals)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersCore
-  vtkFiltersSources
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersCore
+  vtkvtkFiltersSources
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PolyDataExtractNormals: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -116,9 +116,9 @@ int main(int, char *[])
 project(RemoveIsolatedVertices)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkInfovisCore QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkInfovisCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping RemoveIsolatedVertices: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

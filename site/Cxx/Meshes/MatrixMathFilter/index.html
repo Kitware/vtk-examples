@@ -151,19 +151,19 @@ int main(int argc, char *argv[])
 project(MatrixMathFilter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersGeometry
-  vtkFiltersSources
-  vtkFiltersVerdict
-  vtkIOLegacy
-  vtkIOXML
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersGeometry
+  vtkvtkFiltersSources
+  vtkvtkFiltersVerdict
+  vtkvtkIOLegacy
+  vtkvtkIOXML
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping MatrixMathFilter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

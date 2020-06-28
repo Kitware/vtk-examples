@@ -131,9 +131,9 @@ int main(int, char *[])
 project(ImageExport)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOImage QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOImage QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ImageExport: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

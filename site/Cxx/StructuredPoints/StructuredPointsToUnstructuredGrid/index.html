@@ -141,9 +141,9 @@ int main(int, char *[])
 project(StructuredPointsToUnstructuredGrid)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping StructuredPointsToUnstructuredGrid: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

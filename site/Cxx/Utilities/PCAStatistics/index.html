@@ -176,9 +176,9 @@ int main(int, char*[])
 project(PCAStatistics)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersStatistics QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersStatistics QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PCAStatistics: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

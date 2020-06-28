@@ -114,7 +114,7 @@ int main(int, char *[])
 project(BoundingBox)
 
 find_package(VTK COMPONENTS 
-  vtkCommonDataModel QUIET)
+  vtkvtkCommonDataModel QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping BoundingBox: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

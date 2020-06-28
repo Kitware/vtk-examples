@@ -860,8 +860,8 @@ std::string HTMLTableMaker::MakeSynonymColorTable()
 project(NamedColorPatches)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping NamedColorPatches: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

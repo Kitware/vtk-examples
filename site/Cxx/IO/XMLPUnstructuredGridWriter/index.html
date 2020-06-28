@@ -107,10 +107,10 @@ int main(int, char *[])
 project(XMLPUnstructuredGridWriter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkFiltersCore
-  vtkFiltersSources
-  vtkIOParallelXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkFiltersCore
+  vtkvtkFiltersSources
+  vtkvtkIOParallelXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping XMLPUnstructuredGridWriter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -277,11 +277,11 @@ void AlignFrames(Frame sourceFrame, Frame targetFrame, vtkTransform* transform)
 project(AlignFrames)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonTransforms
-  vtkFiltersGeneral
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkCommonTransforms
+  vtkvtkFiltersGeneral
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping AlignFrames: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

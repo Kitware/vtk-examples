@@ -168,19 +168,19 @@ int main(int , char * [])
 project(SurfacePlot)
 
 find_package(VTK COMPONENTS 
-  vtkChartsCore
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkInteractionStyle
-  vtkRenderingContext2D
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2
-  vtkTestingRendering
-  vtkViewsContext2D QUIET)
+  vtkvtkChartsCore
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContext2D
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2
+  vtkvtkTestingRendering
+  vtkvtkViewsContext2D QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping SurfacePlot: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

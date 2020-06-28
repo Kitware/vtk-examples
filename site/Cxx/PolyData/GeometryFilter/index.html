@@ -103,10 +103,10 @@ int main(int, char *[])
 project(GeometryFilter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersGeometry
-  vtkFiltersSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersGeometry
+  vtkvtkFiltersSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping GeometryFilter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

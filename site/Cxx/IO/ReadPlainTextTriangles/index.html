@@ -157,9 +157,9 @@ int main(int argc, char * argv[])
 project(ReadPlainTextTriangles)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ReadPlainTextTriangles: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

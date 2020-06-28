@@ -113,8 +113,8 @@ int main (int argc, char *argv[])
 project(MPEG2)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkImagingSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkImagingSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping MPEG2: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -221,19 +221,19 @@ void CreateImageActor(vtkSmartPointer&lt;vtkImageActor&gt; &amp;actor,
 project(VTKSpectrum)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOImage
-  vtkImagingCore
-  vtkImagingFourier
-  vtkImagingMath
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOImage
+  vtkvtkImagingCore
+  vtkvtkImagingFourier
+  vtkvtkImagingMath
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping VTKSpectrum: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -227,20 +227,20 @@ void CreateImage1(vtkImageData* image)
 project(ImageTracerWidgetInsideContour)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersSources
-  vtkIOImage
-  vtkImagingSources
-  vtkImagingStatistics
-  vtkImagingStencil
-  vtkInteractionStyle
-  vtkInteractionWidgets
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersSources
+  vtkvtkIOImage
+  vtkvtkImagingSources
+  vtkvtkImagingStatistics
+  vtkvtkImagingStencil
+  vtkvtkInteractionStyle
+  vtkvtkInteractionWidgets
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ImageTracerWidgetInsideContour: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

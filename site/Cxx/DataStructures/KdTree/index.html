@@ -114,9 +114,9 @@ int main(int, char *[])
 project(KdTree)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkFiltersGeneral QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkFiltersGeneral QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping KdTree: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

@@ -167,7 +167,7 @@ bool VTKVersionOk(unsigned long long const&amp; major,
 project(CheckVTKVersion)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore QUIET)
+  vtkvtkCommonCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping CheckVTKVersion: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

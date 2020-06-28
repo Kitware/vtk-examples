@@ -107,7 +107,7 @@ int main(int, char *[])
 project(KnownLengthArray)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore QUIET)
+  vtkvtkCommonCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping KnownLengthArray: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

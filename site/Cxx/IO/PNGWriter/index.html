@@ -124,11 +124,11 @@ int main(int argc, char *argv[])
 project(PNGWriter)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOImage
-  vtkImagingCore
-  vtkImagingSources QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOImage
+  vtkvtkImagingCore
+  vtkvtkImagingSources QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping PNGWriter: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

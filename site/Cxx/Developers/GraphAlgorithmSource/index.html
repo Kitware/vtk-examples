@@ -191,8 +191,8 @@ void vtkTestGraphAlgorithmSource::PrintSelf(ostream&amp; os, vtkIndent indent)
 project(GraphAlgorithmSource)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping GraphAlgorithmSource: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

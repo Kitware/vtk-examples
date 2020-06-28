@@ -149,7 +149,7 @@ int main(int, char *[])
 project(EigenSymmetric)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore QUIET)
+  vtkvtkCommonCore QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping EigenSymmetric: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

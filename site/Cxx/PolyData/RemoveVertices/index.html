@@ -116,9 +116,9 @@ int main ( int argc, char *argv[] )
 project(RemoveVertices)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkIOXML QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkIOXML QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping RemoveVertices: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

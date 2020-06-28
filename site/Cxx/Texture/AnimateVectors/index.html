@@ -215,17 +215,17 @@ int main (int argc, char *argv[])
 project(AnimateVectors)
 
 find_package(VTK COMPONENTS 
-  vtkCommonColor
-  vtkFiltersCore
-  vtkFiltersModeling
-  vtkFiltersSources
-  vtkIOLegacy
-  vtkInteractionStyle
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2 QUIET)
+  vtkvtkCommonColor
+  vtkvtkFiltersCore
+  vtkvtkFiltersModeling
+  vtkvtkFiltersSources
+  vtkvtkIOLegacy
+  vtkvtkInteractionStyle
+  vtkvtkRenderingContextOpenGL2
+  vtkvtkRenderingCore
+  vtkvtkRenderingFreeType
+  vtkvtkRenderingGL2PSOpenGL2
+  vtkvtkRenderingOpenGL2 QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping AnimateVectors: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()

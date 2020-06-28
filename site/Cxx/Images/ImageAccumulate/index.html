@@ -143,9 +143,9 @@ void CreateImage(vtkSmartPointer&lt;vtkImageData&gt; image)
 project(ImageAccumulate)
 
 find_package(VTK COMPONENTS 
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkImagingStatistics QUIET)
+  vtkvtkCommonCore
+  vtkvtkCommonDataModel
+  vtkvtkImagingStatistics QUIET)
 if (NOT VTK_FOUND)
   message(&quot;Skipping ImageAccumulate: ${VTK_NOT_FOUND_MESSAGE}&quot;)
   return ()
