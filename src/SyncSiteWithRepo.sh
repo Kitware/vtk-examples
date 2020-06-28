@@ -27,11 +27,11 @@ echo "Synchronizing the VTKExamples site with the repository."
 
 # echo "1) Pull updates from master repositories"
 # git pull
-# if ( test -d src/Tarballs ); then
-#   (cd src/Tarballs; git checkout .)
-#   (cd src/Tarballs; git pull origin master)
-#   (cd src/Tarballs; rm *.tar)
-# fi
+#if ( test -d src/Tarballs ); then
+# (cd src/Tarballs; git checkout .)
+# (cd src/Tarballs; git pull origin master)
+# (cd src/Tarballs; rm *.tar)
+#fi
 
 echo "2) Create coverage files"
 (cd src/Admin; python ./VTKClassesUsedInExamples.py -a ..; python ./VTKClassesUsedInExamples.py -a -u ..)
@@ -63,11 +63,11 @@ cp src/Admin/sitemap.xml site/sitemap.xml
 rm site/mkdocs/search_index.json
 
 echo "6.1 Modify highlight color"
-(cd site/assets/stylesheets; sed -i -e 's/background-color:rgba(255,235,59,\.5)/background-color:rgba(240,240,240,.8)/g' application-*.css)
+(cd site/assets/stylesheets; sed -i -e 's/background-color:rgba(255,235,59,\.5)/background-color:rgba(240,240,240,.8)/g' application.*.css)
 
 #####################
-# echo "Premature exit for testing"
-# exit
+#echo "Premature exit for testing"
+#exit
 
 #####################
 echo "7) Minify Html"

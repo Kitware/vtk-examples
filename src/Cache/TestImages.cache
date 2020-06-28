@@ -412,6 +412,7 @@ https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Cxx/Renderi
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Cxx/Rendering/TestStringToImageDemo.png http://tinyurl.com/ycedjgca
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Cxx/Rendering/TestStripFran.png http://tinyurl.com/ybjw6yz9
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Cxx/Rendering/TestTransformSphere.png http://tinyurl.com/y9v3c4u7
+https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Cxx/Rendering/TestTransparentBackground.png http://tinyurl.com/yc52922w
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Cxx/Rendering/TestWalkCow.png http://tinyurl.com/yazmdwhg
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Cxx/Rendering/TestWalkCowA.png http://tinyurl.com/y77uq68c
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Cxx/Rendering/TestWalkCowB.png http://tinyurl.com/yd8rwv6b
@@ -1017,6 +1018,7 @@ https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Python/Rend
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Python/Rendering/TestStippledLine.png http://tinyurl.com/yak2d892
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Python/Rendering/TestStripFran.png http://tinyurl.com/y79apewv
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Python/Rendering/TestTransformSphere.png http://tinyurl.com/yc8v74u4
+https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Python/Rendering/TestTransparentBackground.png http://tinyurl.com/y83adkjn
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Python/Rendering/TestWalkCow.png http://tinyurl.com/y8v6jblx
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Python/Rendering/TestWalkCowA.png http://tinyurl.com/y83p5tqw
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Python/Rendering/TestWalkCowB.png http://tinyurl.com/ybegqn33
@@ -1405,5 +1407,3 @@ https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Java/Widget
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Java/Widgets/TestSeedWidget.png http://tinyurl.com/ycovvmw8
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Java/Widgets/TestSplineWidget.png http://tinyurl.com/yamcezum
 https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Java/Widgets/TestTextWidget.png http://tinyurl.com/y9xgkm9k
-https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Cxx/Rendering/TestTransparentBackground.png http://tinyurl.com/yc52922w
-https://github.com/ajpmaclean/VTKEx/blob/master/src/Testing/Baseline/Python/Rendering/TestTransparentBackground.png http://tinyurl.com/y83adkjn

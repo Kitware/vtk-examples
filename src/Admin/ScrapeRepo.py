@@ -7,6 +7,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import tarfile
 import tempfile
 import time
@@ -60,18 +61,6 @@ class ElapsedTime:
         self.interval = self.end - self.start
 
 
-def make_tiny(url):
-    """
-    Make a tiny URL.
-    :param url: The url to use.
-    :return: The tiny URL.
-    """
-    request_url = ('http://tinyurl.com/api-create.php?' +
-                   urlencode({'url': url}))
-    with contextlib.closing(urlopen(request_url)) as response:
-        return response.read().decode('utf-8')
-
-
 def create_html_ids(from_file, html_id_set):
     """
     Create a set of html ids.
@@ -119,11 +108,11 @@ def copy_chapter_add_links(from_to_file, html_id_set, stats):
                 ofh.write(line)
 
 
-def load_components_cache(cache_path):
+def load_vtk_modules_cache(cache_path):
     """
-    Load the component cache into a dictionary.
-    :param cache_path: The path to the component cache.
-    :return: The component cache as a dictionary.
+    Load the VTK module cache into a dictionary.
+    :param cache_path: The path to the VTK module cache cache.
+    :return: The VTK module cache as a dictionary.
     """
     cache_dict = dict()
     if os.path.isfile(cache_path):
@@ -139,11 +128,11 @@ def load_components_cache(cache_path):
     return cache_dict
 
 
-def get_components(repo_path, components_cache, vtk_src_dir, src_file, src, stats):
+def get_vtk_modules(repo_path, vtk_modules_cache, vtk_src_dir, src_file, src, stats):
     """
-    If the source code components are not in the cache, find them.
+    If the source code VTK modules are not in the cache, get them.
     :param repo_path:
-    :param components_cache:
+    :param vtk_modules_cache:
     :param vtk_src_dir:
     :param src_file:
     :param src:
@@ -152,40 +141,50 @@ def get_components(repo_path, components_cache, vtk_src_dir, src_file, src, stat
     """
     # compute sha of src
     sha = hashlib.sha256(str.encode(src)).hexdigest()
-    if src_file in list(components_cache.keys()):
-        words = components_cache[src_file].split()
+    if src_file in list(vtk_modules_cache.keys()):
+        words = vtk_modules_cache[src_file].split()
         if str(sha) == words[0]:
-            stats['components_hits'] += 1
+            stats['vtk_modules_hits'] += 1
             return words[1:]
-    stats['components_misses'] += 1
-    try:
-        cmd = make_path(repo_path, 'Admin', 'WhatModulesVTKPy3.py') + ' -p ' + vtk_src_dir + ' -s ' + src_file
-        process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, )
-    except subprocess.CalledProcessError as err:
-        print('ERROR:', err)
-    if process.returncode != 0:
-        print('returncode:', process.returncode)
-        print('Have {} bytes in stdout:\n{}'.format(
-            len(process.stdout),
-            process.stdout.decode('utf-8'))
-        )
-        print('Have {} bytes in stderr:\n{}'.format(
-            len(process.stderr),
-            process.stderr.decode('utf-8'))
-        )
-    result = process.stdout.decode('utf-8')
-    components = parse_WhatModulesVTKOutput(result)
+    stats['vtk_modules_misses'] += 1
+    path = make_path(repo_path, 'Admin', 'WhatModulesVTK.py')
+    if os.path.exists(path):
+        try:
+            cmd = path + ' -p ' + vtk_src_dir + ' -s ' + src_file
+            process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, )
+        except subprocess.CalledProcessError as err:
+            print('ERROR:', err)
+            if process.returncode != 0:
+                print('returncode:', process.returncode)
+                print('Have {} bytes in stdout:\n{}'.format(
+                    len(process.stdout),
+                    process.stdout.decode('utf-8'))
+                )
+                print('Have {} bytes in stderr:\n{}'.format(
+                    len(process.stderr),
+                    process.stderr.decode('utf-8'))
+                )
+        result = process.stdout.decode('utf-8')
+        vtk_modules = parse_WhatModulesVTKOutput(result)
 
-    components_cache[str(src_file)] = sha
-    for component in components:
-        components_cache[str(src_file)] += " " + component
-    print("Components: cache miss: ", str(src_file))
-    return components
+        vtk_modules_cache[str(src_file)] = sha
+        for vtk_module in vtk_modules:
+            vtk_modules_cache[str(src_file)] += " " + vtk_module
+        print("VTK Modules: cache miss: ", str(src_file))
+        return vtk_modules_cache
+    else:
+        s = 'Unable to continue, the path: {} \nDoes not exist.'.format(path)
+        sys.exit(s)
 
 
-def parse_WhatModulesVTKOutput(output):
-    words = output.split('\n')
-    components = list()
+def parse_WhatModulesVTKOutput(str_to_parse):
+    """
+    Parse the string looking for any VTK modules.
+    :param str_to_parse: The string to parse
+    :return: The VTK modules found.
+    """
+    words = str_to_parse.split('\n')
+    vtk_modules = list()
     for word in words:
         if "find_package" in word:
             continue
@@ -197,8 +196,8 @@ def parse_WhatModulesVTKOutput(output):
             continue
         if word == "":
             continue
-        components.append(word.strip())
-    return components
+        vtk_modules.append(word.strip())
+    return vtk_modules
 
 
 def load_test_image_cache(cache_path):
@@ -219,6 +218,18 @@ def load_test_image_cache(cache_path):
     return cache_dict
 
 
+def make_tiny(url):
+    """
+    Make a tiny URL.
+    :param url: The url to use.
+    :return: The tiny URL.
+    """
+    request_url = ('http://tinyurl.com/api-create.php?' +
+                   urlencode({'url': url}))
+    with contextlib.closing(urlopen(request_url)) as response:
+        return response.read().decode('utf-8')
+
+
 def get_tiny_url(cache_dict, url, stats):
     """
     If the tiny URL is not in the cache, get it.
@@ -237,10 +248,10 @@ def get_tiny_url(cache_dict, url, stats):
     return cache_dict[url]
 
 
-def tiny_url(url):
+def make_tiny_url(url):
     """
-    Given a URL make a tiny URL.
-    :param url:
+    Given a URL get a tiny URL.
+    :param url: The URL
     :return: Return the URL and the corresponding tiny URL.
     """
     return url, make_tiny(url)
@@ -254,7 +265,7 @@ def make_missing_tiny_urls(urls_to_shorten):
     """
     # The default value of max_workers is min(32, os.cpu_count() + 4) for Python 3.8 or greater
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        future_results = [executor.submit(tiny_url, k) for k in urls_to_shorten]
+        future_results = [executor.submit(make_tiny_url, k) for k in urls_to_shorten]
         # Block execution until all the tasks are completed
         concurrent.futures.wait(future_results)
         for future in future_results:
@@ -388,10 +399,10 @@ def make_path(*args, relative=False):
     :param relative: If true make the path relative, i.e. no leading /
     :return: The path.
     """
-    components = []
+    path_elements = []
     for a in args:
-        components.append(a.split('/'))
-    flattened_list = [item for sublist in components for item in sublist]
+        path_elements.append(a.split('/'))
+    flattened_list = [item for sublist in path_elements for item in sublist]
     if flattened_list[0] == '' and not relative:
         flattened_list[0] = '/'
     # Strip out remaining ''s
@@ -525,38 +536,38 @@ def add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_di
             ofn.write(line + '\n')
 
 
-def fill_CMake_lists(cmake_contents, example_name, extra_names, components):
+def fill_CMake_lists(cmake_contents, example_name, extra_names, vtk_module):
     """
     Fill in the template parameters in a CMakeLists template file.
     The output is a CMakeLists.txt file with Name substituted for {{{1}}}
     :param cmake_contents: The template file.
     :param example_name: The example file name.
     :param extra_names: Any needed extra files needed to build the example.
-    :param components: The VTK components e.g. vtkCommonCore.
+    :param vtk_module: The VTK module e.g. vtkCommonCore.
     :return: A CMakeLists.txt file.
     """
     r1 = re.sub(r'XXX', example_name, cmake_contents)
     r2 = re.sub(r'YYY', extra_names, r1)
-    r3 = re.sub(r'ZZZ', components, r2)
+    r3 = re.sub(r'ZZZ', vtk_module, r2)
     return r3
 
 
-def fill_Qt_CMake_lists(cmake_contents, example_name, components):
+def fill_Qt_CMake_lists(cmake_contents, example_name, vtk_module):
     """
     Fill in the template parameters in a CMakeLists template file.
     The output is a CMakeLists.txt file with Name substituted for {{{1}}}
     :param cmake_contents: The template file.
     :param example_name: The example file name.
-    :param components: The VTK components e.g. vtkCommonCore.
+    :param vtk_module: The VTK modules e.g. vtkCommonCore.
     :return: A CMakeLists.txt file
     """
     r1 = re.sub(r'XXX', example_name, cmake_contents)
-    reg = re.sub(r'ZZZ', components, r1)
+    reg = re.sub(r'ZZZ', vtk_module, r1)
     return reg
 
 
 def make_markdown_example_page(f, lang, lang_ext, root, available_languages, repo_path, doc_path,
-                               kit_name, repo_name, repo_url, user_name, components_dict, vtk_src_dir,
+                               kit_name, repo_name, repo_url, user_name, vtk_modules_dict, vtk_src_dir,
                                example_to_file_names, example_to_CMake, code_to_page, stats):
     """
     Here we make the markdown page for a given example.
@@ -571,8 +582,8 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
     :param repo_name: The repository name.
     :param repo_url: The repository URL.
     :param user_name: The user name.
-    :param components_dict: The components dictionary.
-    :param vtk_src_dir: The VTK source direcrory.
+    :param vtk_modules_dict: The VTK modules dictionary.
+    :param vtk_src_dir: The VTK source directory.
     :param example_to_file_names: A dictionary to hold the file names for each example.
     :param example_to_CMake: A dictionary to hold CMakeLists.txt file.
     :param code_to_page: A dictionary to hold code name and page name.
@@ -648,11 +659,11 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
         hilite_lines = lines_with_VTK_classes(source_file_name)
         md_file.write('###Code\n')
         md_file.write('**' + example_name + lang_ext + '**' + '\n')
-        components = None
+        vtk_modules = None
         if lang_ext == '.cxx':
             md_file.write('``` c++ ' + hilite_lines + '\n')
-            # Get the components used in this example
-            components = get_components(repo_path, components_dict, vtk_src_dir, source_file_name, src, stats)
+            # Get the vtk_modules used in this example
+            vtk_modules = get_vtk_modules(repo_path, vtk_modules_dict, vtk_src_dir, source_file_name, src, stats)
             stats['cxx_count'] += 1
         elif lang_ext == '.cs':
             md_file.write('```csharp' + hilite_lines + '\n')
@@ -699,29 +710,25 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
                 if is_qt_example(src):
                     with open(os.path.join(repo_path, 'Admin', 'VTKQtCMakeLists'), 'r') as CMakeFile:
                         CMake_contents = CMakeFile.read()
-                    # Create component lines
-                    Components = ''
-                    for component in components:
-                        if 'vtk' in component:
-                            Components += '\n  ' + component
+                    # Create component lines for the VTK modules
+                    needed_modules = ''
+                    for vtk_module in vtk_modules:
+                        if 'vtk' in vtk_module:
+                            needed_modules += '\n  ' + vtk_module
                         else:
-                            Components += '\n  ' + 'vtk' + component
-                    # If there are no components found, assume we need then all
-                    # This occurs when the source file includes another Cxx file
-                    cmake = fill_Qt_CMake_lists(CMake_contents, example_name, Components)
+                            needed_modules += '\n  ' + 'vtk' + vtk_module
+                    cmake = fill_Qt_CMake_lists(CMake_contents, example_name, needed_modules)
                 else:
                     with open(os.path.join(repo_path, 'Admin', 'VTKCMakeLists'), 'r') as CMakeFile:
                         CMake_contents = CMakeFile.read()
-                    # Create component lines
-                    Components = ''
-                    for component in components:
-                        if 'vtk' in component:
-                            Components += '\n  ' + component
+                    # Create component lines for the VTK modules
+                    needed_modules = ''
+                    for vtk_module in vtk_modules:
+                        if 'vtk' in vtk_modules:
+                            needed_modules += '\n  ' + vtk_module
                         else:
-                            Components += '\n  ' + 'vtk' + component
-                    # If there are no components found, assume we need then all
-                    # This occurs when the source file includes another Cxx file
-                    cmake = fill_CMake_lists(CMake_contents, example_name, extra_names, Components)
+                            needed_modules += '\n  ' + 'vtk' + vtk_module
+                    cmake = fill_CMake_lists(CMake_contents, example_name, extra_names, needed_modules)
         if lang == 'Cxx':
             example_to_CMake[example_name] = get_VTK_CMake_file(cmake)
             md_file.write(cmake)
@@ -810,17 +817,17 @@ def get_statistics(stats):
             totals.append(v)
     res = list()
     res.append('ScrapeRepo Summary')
-    res.append('  C++ examples:            ' + str(stats['cxx_count']))
-    res.append('  CSharp examples:         ' + str(stats['cs_count']))
-    res.append('  Python examples:         ' + str(stats['py_count']))
-    res.append('  Java examples:           ' + str(stats['java_count']))
-    res.append('  Total examples:          ' + str(sum(totals)))
-    res.append('  Doxygen added:           ' + str(stats['doxy_count']))
-    res.append('  Thumbnails added:        ' + str(stats['thumb_count']))
-    res.append('  Test Image Cache hits:   ' + str(stats['test_image_hits']))
-    res.append('  Test Image Cache misses: ' + str(stats['test_image_misses']))
-    res.append('  Components Cache hits:   ' + str(stats['components_hits']))
-    res.append('  Components Cache misses: ' + str(stats['components_misses']))
+    res.append('  C++ examples:             ' + str(stats['cxx_count']))
+    res.append('  CSharp examples:          ' + str(stats['cs_count']))
+    res.append('  Python examples:          ' + str(stats['py_count']))
+    res.append('  Java examples:            ' + str(stats['java_count']))
+    res.append('  Total examples:           ' + str(sum(totals)))
+    res.append('  Doxygen added:            ' + str(stats['doxy_count']))
+    res.append('  Thumbnails added:         ' + str(stats['thumb_count']))
+    res.append('  Test Image Cache hits:    ' + str(stats['test_image_hits']))
+    res.append('  Test Image Cache misses:  ' + str(stats['test_image_misses']))
+    res.append('  VTK Modules Cache hits:   ' + str(stats['vtk_modules_hits']))
+    res.append('  VTK Modules Cache misses: ' + str(stats['vtk_modules_misses']))
     return res
 
 
@@ -829,8 +836,8 @@ def main():
     stats = Counter()
     stats['test_image_hits'] = 0
     stats['test_image_misses'] = 0
-    stats['components_hits'] = 0
-    stats['components_misses'] = 0
+    stats['vtk_modules_hits'] = 0
+    stats['vtk_modules_misses'] = 0
     stats['cxx_count'] = 0
     stats['cs_count'] = 0
     stats['py_count'] = 0
@@ -866,9 +873,11 @@ def main():
     if not os.path.exists(cache_path):
         os.makedirs(cache_path)
 
-    # Load the caches, create the caches if they doen't exist.
-    test_image_dict = load_test_image_cache(make_path(cache_path, 'TestImageCache'))
-    components_dict = load_components_cache(make_path(cache_path, 'ComponentsCache'))
+    # Load the caches, create the caches if they don't exist.
+    test_images_cache_path = make_path(cache_path, 'TestImages.cache')
+    test_images_dict = load_test_image_cache(test_images_cache_path)
+    vtk_modules_cache_path = make_path(cache_path, 'VTKModules.cache')
+    vtk_modules_dict = load_vtk_modules_cache(vtk_modules_cache_path)
 
     #  Baseline top level path relative to src
     baseline_src_path = 'Testing/Baseline'
@@ -903,7 +912,7 @@ def main():
     pages = ['Cxx.md', 'Python.md', 'CSharp.md', 'Java.md', 'JavaScript.md', 'Cxx/Snippets.md', 'Python/Snippets.md',
              'Java/Snippets.md', 'VTKBookFigures.md', 'VTKFileFormats.md']
     for p in pages:
-        add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_src_path, test_image_dict, p, p,
+        add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_src_path, test_images_dict, p, p,
                                  stats)
 
     # C++ Snippets
@@ -938,7 +947,7 @@ def main():
     shutil.copy(make_path(repo_path, 'VTKBook.md'), doc_path)
 
     # Get a list of all  examples
-    # A dictionary of available languages
+    # A dictionary of available languages and extensions
     available_languages = {'Cxx': '.cxx', 'Python': '.py', 'Java': '.java', 'CSharp': '.cs'}
 
     # Copy coverage files
@@ -1040,7 +1049,7 @@ def main():
                     continue
                 # Make the markdown page for each example
                 make_markdown_example_page(f, lang, lang_ext, root, available_languages, repo_path, doc_path,
-                                           kit_name, repo_name, repo_url, user_name, components_dict, vtk_src_dir,
+                                           kit_name, repo_name, repo_url, user_name, vtk_modules_dict, vtk_src_dir,
                                            example_to_file_names, example_to_CMake, code_to_page, stats)
 
     # Generate an html page that links each example code file to its Wiki Example page
@@ -1059,16 +1068,16 @@ def main():
 
     # Update the test image cache file if necessary
     if stats['test_image_misses'] > 0:
-        with open(make_path(cache_path, 'TestImageCache'), 'w') as cf:
-            for key in test_image_dict.keys():
-                cf.write(key + ' ' + test_image_dict[key] + '\n')
+        with open(test_images_cache_path, 'w') as cf:
+            for key in test_images_dict.keys():
+                cf.write(key + ' ' + test_images_dict[key] + '\n')
 
-    # Rewrite the components cache file if necessary
-    if stats['components_misses'] > 0:
-        with open(make_path(cache_path, 'ComponentsCache'), 'w') as cf:
-            for key, contents in list(components_dict.items()):
+    # Rewrite the VTK modules cache file if necessary
+    if stats['vtk_modules_misses'] > 0:
+        with open(vtk_modules_cache_path, 'w') as cf:
+            for key, contents in list(vtk_modules_dict.items()):
                 if os.path.exists(key):
-                    # add the vtk prefix to the component to support older versions of vtk
+                    # add the vtk prefix to the module name to support older versions of vtk
                     cf.write(key + ' ' + contents + '\n')
 
     # Report stats
