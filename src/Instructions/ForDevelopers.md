@@ -18,7 +18,7 @@ Some additional steps need to be done for Python C# and Java, see the sections b
 
     If you do not have an account, you can register on the sign-in page.
 
-2. Fork the [VTKExamples repository](https://github.com/lorensen/VTKExamples)
+2. Fork the [VTKEx repository](https://github.com/ajpmaclean/VTKEx)
 
     A fork is a copy of a project. Forking a repository allows you to make changes without affecting the original project.
 
@@ -29,24 +29,24 @@ Some additional steps need to be done for Python C# and Java, see the sections b
 4. Clone the repository on your local machine
 
     ```
-    git clone https://YOURNAME@github.com/YOURNAME/VTKExamples.git
+    git clone https://YOURNAME@github.com/YOURNAME/VTKEx.git
     ```
 
     Or, if you are using SSH:
 
     ```
-    git clone git@github.com:YOURNAME/VTKExamples.git
+    git clone git@github.com:YOURNAME/VTKEx.git
     ```
 
     where **YOURNAME** is your GitHub username.
 
-5. Add the VTKExamples repository as a *remote* called *upstream*
+5. Add the VTKEx repository as a *remote* called *upstream*
 
     ```
-    git remote add upstream https://github.com/lorensen/VTKExamples
+    git remote add upstream https://github.com/ajpmaclean/VTKEx
     ```
 
-6. Before adding your examples, sync your repository with the VTKExamples repository. Remember that to run the following commands, you need to be in the **VTKExamples** directory.
+6. Before adding your examples, sync your repository with the VTKEx repository. Remember that to run the following commands, you need to be in the **VTKEx** directory.
 
     ```
     git fetch upstream
@@ -64,10 +64,10 @@ Some additional steps need to be done for Python C# and Java, see the sections b
     git push
     ```
 
-7. Build the VTKExamples
+7. Build the VTKEx
 
     ```
-    cd VTKExamples
+    cd VTKEx
     ```
 
     ```
@@ -109,7 +109,7 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
     - [Python available snippets](/Cxx/Snippets).
     - [Java available snippets](/Cxx/Snippets).
 
-3. Save your source code in VTKExamples/src/**LANGUAGE**/**TOPIC**/
+3. Save your source code in VTKEx/src/**LANGUAGE**/**TOPIC**/
 
     where **LANGUAGE** is Cxx, Python, CSharp or Java.
 
@@ -120,7 +120,7 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
    - for Cxx
 
         ```
-        cd VTKExamples/build
+        cd VTKEx/build
         ```
 
         ```
@@ -141,9 +141,9 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
         touch CMakeLists.txt
         ```
 
-5. If your C++ example does any rendering, the test will fail the first time and create an image in VTKExamples/build/Testing/Temporary. The image will be called Test**MyNewExample**.png.
+5. If your C++ example does any rendering, the test will fail the first time and create an image in VTKEx/build/Testing/Temporary. The image will be called Test**MyNewExample**.png.
 
-6. Copy the image into: VTKExamples/src/Testing/Baseline/**LANG**/**TOPIC**/. For Python and other languages, create an image with the proper name using a screen capture and copy that image into the proper location.
+6. Copy the image into: VTKEx/src/Testing/Baseline/**LANG**/**TOPIC**/. For Python and other languages, create an image with the proper name using a screen capture and copy that image into the proper location.
 
 7. Rerun ctest and the test should pass.
 
@@ -158,8 +158,8 @@ Keep the same directory structure as that in Cxx.
 
   The following snippets can be used to write the image out:
 
-  - [WriteImage](https://lorensen.github.io/VTKExamples/site/Python/Snippets/WriteImage/) for Python
-  - [WriteImage](https://lorensen.github.io/VTKExamples/site/Java/Snippets/WriteImage/) for Java
+  - [WriteImage](https://ajpmaclean.github.io/VTKEx/site/Python/Snippets/WriteImage/) for Python
+  - [WriteImage](https://ajpmaclean.github.io/VTKEx/site/Java/Snippets/WriteImage/) for Java
 
 - Then follow step 6 above
 
@@ -232,7 +232,7 @@ If you want to preview your changes in a browser (**NOTE:** You must have Python
   3. Sync your site with your repository
 
     ```
-    ./src/SyncSiteWithRepo.sh https::/github.com/**YOUR_NAME**/VTKExamples
+    ./src/SyncSiteWithRepo.sh https::/github.com/**YOUR_NAME**/VTKEx
     ```
 
-  4. After a few minutes go to https://**YOUR_NAME**.github.io/VTKExamples/ to see your changes before issuing your pull request.
+  4. After a few minutes go to https://**YOUR_NAME**.github.io/VTKEx/ to see your changes before issuing your pull request.

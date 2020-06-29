@@ -1,17 +1,17 @@
-VTKExamples Administrators have write access to the [git repository](https://github.com/lorensen/VTKExamples). If you are a VTKExamples User [go here](/Instructions/ForUsers) or a VTKExamples Developer [go here](/Instructions/ForDevelopers).
+ Administrators have write access to the [git repository](https://github.com/ajpmaclean/). If you are a  User [go here](/Instructions/ForUsers) or a  Developer [go here](/Instructions/ForDevelopers).
 
-# Organization of the VTKExamples Repository
+# Organization of the  Repository
 
-The VTKExamples are stored in a [git repository](https://github.com/lorensen/VTKExamples.git) hosted at [github.com](http://www.github.com/). The repository contains several types of files.
+The  are stored in a [git repository](https://github.com/ajpmaclean/.git) hosted at [github.com](http://www.github.com/). The repository contains several types of files.
 
 All example source code, descriptions, test data, and test baselines are stored in the *src/* tree.
 
-## VTKExamples Repository
+##  Repository
 
 The major elements of the tree are:
 
 ``` bash
-|-- VTKExamples
+|-- 
   |-- CMakeLists.txt   # To build all of the examples
   |-- _layouts         # Contains _default.html
   |-- custom_theme     # tweaks to the material theme
@@ -41,9 +41,9 @@ The major elements of the tree are:
 ```
 
 ## Look and Feel
-A priority in moving from the wiki media [VTK Wiki Examples](http://www.vtk.org/Wiki/VTK/Examples) to the Github pages [VTKExamples](https://lorensen.github.io/VTKExamples/site/) was to provide a modern, familiar look and feel. We also wanted to support tablet and mobile platforms. We chose [MkDocs](http://www.mkdocs.org/) because it generated static HTML pages that can be hosted anywhere.
+A priority in moving from the wiki media [VTK Wiki Examples](http://www.vtk.org/Wiki/VTK/Examples) to the Github pages [](https://ajpmaclean.github.io//site/) was to provide a modern, familiar look and feel. We also wanted to support tablet and mobile platforms. We chose [MkDocs](http://www.mkdocs.org/) because it generated static HTML pages that can be hosted anywhere.
 
-<img style="border:2px solid beige;float:center" src="https://github.com/lorensen/VTKExamples/blob/master/src/Artifacts/OldVersusNew.png?raw=true" />
+<img style="border:2px solid beige;float:center" src="https://github.com/ajpmaclean//blob/master/src/Artifacts/OldVersusNew.png?raw=true" />
 
 ### [MkDocs](http://www.mkdocs.org/)
 #### Installing MkDocs
@@ -55,25 +55,40 @@ pip install mkdocs
 #### Configuring MkDocs
 The *mkdocs.yml* file contains the configuration parameters
 ```bash
-site_name: VTKExamples
-theme: material
-site_url: https://lorensen.github.io/VTKExamples/site/
-repo_name: lorensen/VTKExamples
-repo_url: https://github.com/lorensen/VTKExamples
-theme_dir: custom_theme
+site_name: VTKEx
+site_url: https://ajpmaclean.github.io/VTKEx/site/
+repo_name: ajpmaclean/VTKEx
+repo_url: https://github.com/ajpmaclean/VTKEx
+
+theme:
+    name: material
+    custom_dir: custom_theme/
+
 markdown_extensions:
-  - admonition
-  - codehilite(guess_lang=false)
-  - toc(permalink=true)
+    - pymdownx.arithmatex
+    - pymdownx.tasklist:
+        custom_checkbox: true
+    - pymdownx.magiclink
+    - admonition
+    - codehilite:
+        guess_lang: false
+        use_pygments: true
+    - footnotes
+    - toc:
+        permalink: true
 google_analytics:
-  -  'UA-3660134-4'
-  -  'auto'
+    -  'UA-3660134-4'
+    -  'auto'
 extra_css:
-  -  'stylesheets/extra.css'
+    -  'stylesheets/extra.css'
 copyright: '<font color=#666>Content is available under </font><a href="https://creativecommons.org/licenses/by/2.5/" title="Attribution2.5">Attribution2.5</a> <font color=#666>unless otherwise noted.</font>'
+extra_javascript:
+    - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
 ```
+
 #### Markdown Extensions
 A number of markdown extensions are available.
+
 ##### [admonition](http://squidfunk.github.io/mkdocs-material/extensions/admonition/)
 Admonitions are specially marked "topics" that can appear anywhere an ordinary body element can. They contain arbitrary body elements. Typically, an admonition is rendered as an offset block in a document, sometimes outlined or shaded, with a title matching the admonition type.
 For example:
@@ -153,7 +168,7 @@ The overall look and feel are established at [https://cse.google.com/cse/](https
 ```
 
 ### Configuring GCSE
-The code is added to [custom_theme/main.html](https://github.com/lorensen/VTKExamples/blob/master/custom_theme/main.html).
+The code is added to [custom_theme/main.html](https://github.com/ajpmaclean//blob/master/custom_theme/main.html).
 ```html
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <gcse:searchbox-only>Search</gcse:searchbox-only>
@@ -172,14 +187,10 @@ The Lazy Image Loading is implemented in javascript. The javascript is stored in
 
 ### Tiny URLs
 
-The VTKExamples web pages have many URL's that link to images and VTK doxygen pages. The long length of these URLs can increase page load times, especially on the language summary pages. 
+The  web pages have many URL's that link to images and VTK doxygen pages. The long length of these URLs can increase page load times, especially on the language summary pages. 
 
-[http://tinyurl.com](http://tinyurl.com) provides a service to map the long URL's into shorted URLs. There is a python package, [tinyurl](https://pypi.python.org/pypi/TinyUrl/) that converts the long URL's. Unfortunately, this process is slow. To speed up the process, we cache the long/short URLs in a file [src/Admin/TinyUrlCache](https://github.com/lorensen/VTKExamples/raw/master/src/Admin/TinyUrlCache). *ScrapeRepo* uses this cache to only convert URLs that are not in the cache. *ScrapeRepo* updates the cache after each run.
+[http://tinyurl.com](http://tinyurl.com) provides a service to map the long URL's into shorted URLs. To speed up the process, we cache the long/short URLs in a file [src/Admin/TinyUrlCache](https://github.com/ajpmaclean//raw/master/src/Admin/TinyUrlCache). *ScrapeRepo.py* uses this cache to only convert URLs that are not in the cache. *ScrapeRepo.py* updates the cache after each run.
 
-*tinyurl* must be installed:
-```bash
-pip install tinyurl
-```
 ### Minify HTML pages
 
 *mkdocs* generates HTML pages from the markdown files in *doc*. These pages have lots of white space. We use the python package [htmlmin](https://htmlmin.readthedocs.io/en/latest/) to compress the generated HTML. The compressed pages are about 30% smaller after running *htmlmin*. We use the command line to process each *index.html* file in *site/*.
@@ -190,9 +201,9 @@ pip install htmlmin
 ```
 ## Administrator Tasks
 
-### [ScrapeRepo](https://github.com/lorensen/VTKExamples/blob/master/src/Admin/ScrapeRepo)
+### [ScrapeRepo](https://github.com/ajpmaclean//blob/master/src/Admin/ScrapeRepo)
 
-<img style="border:2px solid beige;float:center" src="https://github.com/lorensen/VTKExamples/blob/master/src/Artifacts/ScrapeRepo.png?raw=true" />
+<img style="border:2px solid beige;float:center" src="https://github.com/ajpmaclean//blob/master/src/Artifacts/ScrapeRepo.png?raw=true" />
 
 Given a *RepositoryDir*, *DocDir* and a *RepositoryUrl*, *ScrapeRepo* proceeds as follows:
 
@@ -215,21 +226,21 @@ The *SyncSiteWithRepo.sh* shell script executes all of the steps to update the s
 
 1. Makes sure the site is up
 
-2. Pulls updates from the [master repository](https://github.com/lorensen/VTKExamples).
+2. Pulls updates from the [master repository](https://github.com/ajpmaclean/).
 
-3. Pulls updates from the [src/Tarballs repository](https://github.com/lorensen/VTKWikiExamplesTarballs)
+3. Pulls updates from the [src/Tarballs repository](https://github.com/ajpmaclean/VTKWikiExamplesTarballs)
 
      The tarballs are kept in a separate repository to reduce the size of the main repository. They are only accessed from the individual example pages.
 
 4. Creates the coverage files
 
-     The [src/Admin/VTKClassesUsedInExamples.py](https://github.com/lorensen/VTKExamples/blob/master/src/Admin/VTKClassesUsedInExamples.py) python script generates two tables for each language. One table list each class and what classes it uses. The second table lists the classes that are not used in any example.
+     The [src/Admin/VTKClassesUsedInExamples.py](https://github.com/ajpmaclean//blob/master/src/Admin/VTKClassesUsedInExamples.py) python script generates two tables for each language. One table list each class and what classes it uses. The second table lists the classes that are not used in any example.
 
 4. Wipes the *docs* directory
 
      The *docs* directory contains all of the md and HTML files for the site. A clean directory prevents old files from being used.
 
-5. Runs the [ScrapeRepo script](https://lorensen.github.io/VTKExamples/site/Instructions/ForAdministrators/#scraperepo)
+5. Runs the [ScrapeRepo script](https://ajpmaclean.github.io//site/Instructions/ForAdministrators/#scraperepo)
 
      populate the *docs* directory.
 
@@ -241,7 +252,7 @@ The *SyncSiteWithRepo.sh* shell script executes all of the steps to update the s
 
 8. Copies the sitemap.xml file
 
-     This file is updated periodically by [sitemapGenerator](https://github.com/lorensen/VTKExamples/blob/master/src/Admin/sitemapGenerator)
+     This file is updated periodically by [sitemapGenerator](https://github.com/ajpmaclean//blob/master/src/Admin/sitemapGenerator)
 
 9. Minify the HTML
 

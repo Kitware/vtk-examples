@@ -1,4 +1,4 @@
-If you want to use [VTK Examples](https://github.com/lorensen/VTKExamples), you have several options. If you are a VTK Example Developer, [go here](../Instructions/ForDevelopers) or a VTK Example Administrator [go here](../Instructions/ForAdministrators).
+If you want to use [VTK Ex](https://github.com/ajpmaclean/VTKEx), you have several options. If you are a VTK Example Developer, [go here](../Instructions/ForDevelopers) or a VTK Example Administrator [go here](../Instructions/ForAdministrators).
 
 ## Build an example
 
@@ -11,15 +11,15 @@ downloading individual examples, you can build them all.
 
 1. As a VTK Remote module
 
-   When you configure your VTK build, set Module_VTKExamples:BOOL=ON and rebuild VTK.
+   When you configure your VTK build, set Module_VTKEx:BOOL=ON and rebuild VTK.
 
-2. Download a [zip](https://github.com/lorensen/VTKExamples/archive/master.zip) containing the source.
+2. Download a [zip](https://github.com/ajpmaclean/VTKEx/archive/master.zip) containing the source.
 
 3. Clone the VTK examples repository
 
 ```bash
-   git clone https://github.com/lorensen/VTKExamples.git
-   cd VTKExamples
+   git clone https://github.com/ajpmaclean/VTKEx.git
+   cd VTKEx
    cd build
    cmake -DVTK_DIR:PATH=YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL=ON ..
    make
@@ -31,10 +31,10 @@ downloading individual examples, you can build them all.
 If you cloned the examples repository, you can get the latest updates:
 
 ``` bash
-cd VTKExamples
+cd VTKEx
 git pull
 cd build
-cmake ../VTKExamples
+cmake ../VTKEx
 make
 ```
 
