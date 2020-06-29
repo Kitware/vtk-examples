@@ -366,12 +366,13 @@ def lines_with_VTK_classes(src_file_name):
         lines = ifh.readlines()
         line_number = 1
         reg = re.compile(r'(vtk[0-9a-zA-Z]*)')
-        hl_lines = 'hl_lines="'
+        hl_lines = []
         for line in lines:
             if reg.search(line):
-                hl_lines += str(line_number) + " "
+                hl_lines.append(str(line_number))
             line_number += 1
-        hl_lines += '"\n'
+        hl_lines = ' '.join(hl_lines)
+        hl_lines = 'hl_lines="' + hl_lines + '"\n'
     return hl_lines
 
 
