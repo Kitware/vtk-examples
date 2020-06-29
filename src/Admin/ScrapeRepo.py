@@ -666,13 +666,13 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
             vtk_modules = get_vtk_modules(repo_path, vtk_modules_dict, vtk_src_dir, source_file_name, src, stats)
             stats['cxx_count'] += 1
         elif lang_ext == '.cs':
-            md_file.write('```csharp' + hilite_lines + '\n')
+            md_file.write('``` csharp ' + hilite_lines + '\n')
             stats['cs_count'] += 1
         elif lang_ext == '.py':
-            md_file.write('```python' + hilite_lines + '\n')
+            md_file.write('``` python ' + hilite_lines + '\n')
             stats['py_count'] += 1
         elif lang_ext == '.java':
-            md_file.write('```java' + hilite_lines + '\n')
+            md_file.write('``` java ' + hilite_lines + '\n')
             stats['java_count'] += 1
         md_file.write(src)
         md_file.write('```' + '\n')
