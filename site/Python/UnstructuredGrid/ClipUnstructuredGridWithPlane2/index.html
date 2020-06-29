@@ -85,137 +85,138 @@ The clipped dataset contains a
   <a href=https://www.vtk.org/doc/nightly/html/classvtkUnstructuredGrid.html#details>vtkUnstructuredGrid</a> that has 111824 cells
         Cell type <a href=https://www.vtk.org/doc/nightly/html/classvtkTetra.html#details>vtkTetra</a> occurs 107420 times.
         Cell type <a href=https://www.vtk.org/doc/nightly/html/classvtkWedge.html#details>vtkWedge</a> occurs 4404 times.
-</code></pre></p> <p>Compare these results with <a href=/Cxx/UnstructuredGrid/ClipUnstructuredGridWithPlane>ClipUnstructuredGridWithPlane (C++)</a> <a href=/Python/UnstructuredGrid/ClipUnstructuredGridWithPlane>ClipUnstructuredGridWithPlane (Python)</a>. Notice that in this example, the original <a href=https://www.vtk.org/doc/nightly/html/classvtkHexahedron.html#details>vtkHexahedron</a> in the unclipped regions are converted to <a href=https://www.vtk.org/doc/nightly/html/classvtkTetra.html#details>vtkTetra</a>. Also, the resulting <a href=https://www.vtk.org/doc/nightly/html/classvtkUnstructuredGrid.html#details>vtkUnstructuredGrid</a>'s have more than 4 times the number of cells.</p> <div class="admonition example"> <p class=admonition-title>usage</p> <p>ClipUnstructuredGridWithPlane2 treemesh.vtk</p> </div> <div class="admonition info"> <p class=admonition-title>thanks</p> <p>Thanks to Bane Sullivan for sharing the treemesh.vtk unstructured grid dataset.</p> </div> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Cxx/UnstructuredGrid/ClipUnstructuredGridWithPlane2>Cxx</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a simple question about this example contact us at <a href="mailto:VTKExExProject@gmail.com?subject=ClipUnstructuredGridWithPlane2.py&body=https://ajpmaclean.github.io/VTKEx/site/Python/UnstructuredGrid/ClipUnstructuredGridWithPlane2">VTKExProject</a> If your question is more complex and may require extended discussion, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>ClipUnstructuredGridWithPlane2.py</strong></p> <pre class=codehilite><code class=language-python>#!/usr/bin/env python
+</code></pre></p> <p>Compare these results with <a href=/Cxx/UnstructuredGrid/ClipUnstructuredGridWithPlane>ClipUnstructuredGridWithPlane (C++)</a> <a href=/Python/UnstructuredGrid/ClipUnstructuredGridWithPlane>ClipUnstructuredGridWithPlane (Python)</a>. Notice that in this example, the original <a href=https://www.vtk.org/doc/nightly/html/classvtkHexahedron.html#details>vtkHexahedron</a> in the unclipped regions are converted to <a href=https://www.vtk.org/doc/nightly/html/classvtkTetra.html#details>vtkTetra</a>. Also, the resulting <a href=https://www.vtk.org/doc/nightly/html/classvtkUnstructuredGrid.html#details>vtkUnstructuredGrid</a>'s have more than 4 times the number of cells.</p> <div class="admonition example"> <p class=admonition-title>usage</p> <p>ClipUnstructuredGridWithPlane2 treemesh.vtk</p> </div> <div class="admonition info"> <p class=admonition-title>thanks</p> <p>Thanks to Bane Sullivan for sharing the treemesh.vtk unstructured grid dataset.</p> </div> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Cxx/UnstructuredGrid/ClipUnstructuredGridWithPlane2>Cxx</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a simple question about this example contact us at <a href="mailto:VTKExExProject@gmail.com?subject=ClipUnstructuredGridWithPlane2.py&body=https://ajpmaclean.github.io/VTKEx/site/Python/UnstructuredGrid/ClipUnstructuredGridWithPlane2">VTKExProject</a> If your question is more complex and may require extended discussion, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>ClipUnstructuredGridWithPlane2.py</strong></p> <div class=codehilite><pre><span></span><code><span class=ch>#!/usr/bin/env python</span>
 
-import collections
+<span class=kn>import</span> <span class=nn>collections</span>
 
-import vtk
+<span class=hll><span class=kn>import</span> <span class=nn>vtk</span>
+</span>
 
-
-def get_program_parameters():
-    import argparse
-    description = 'Use a vtkClipDataSet to clip a vtkUnstructuredGrid..'
-    epilogue = '''
- Use a vtkClipDataSet to clip a vtkUnstructuredGrid..
- The resulting output and clipped output are presented in yellow and red respectively.
- To illustrate the clipped interfaces, the example uses a vtkTransform to rotate each
-    output about their centers.
- Note: This clipping filter does not retain the original cells if they are not clipped.
-   '''
-    parser = argparse.ArgumentParser(description=description, epilog=epilogue,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename', help='treemesh.vtk.')
-    args = parser.parse_args()
-    return args.filename
-
-
-def main():
-    filename = get_program_parameters()
-
-    # Create the reader for the data.
-    reader = vtk.vtkUnstructuredGridReader()
-    reader.SetFileName(filename)
-    reader.Update()
-
-    bounds = reader.GetOutput().GetBounds()
-    center = reader.GetOutput().GetCenter()
-
-    colors = vtk.vtkNamedColors()
-    renderer = vtk.vtkRenderer()
-    renderer.SetBackground(colors.GetColor3d(&quot;Wheat&quot;))
-    renderer.UseHiddenLineRemovalOn()
-
-    renderWindow = vtk.vtkRenderWindow()
-    renderWindow.AddRenderer(renderer)
-    renderWindow.SetSize(640, 480)
-
-    interactor = vtk.vtkRenderWindowInteractor()
-    interactor.SetRenderWindow(renderWindow)
-
-    xnorm = [-1.0, -1.0, 1.0]
-
-    clipPlane = vtk.vtkPlane()
-    clipPlane.SetOrigin(reader.GetOutput().GetCenter())
-    clipPlane.SetNormal(xnorm)
-
-    clipper = vtk.vtkClipDataSet()
-    clipper.SetClipFunction(clipPlane)
-    clipper.SetInputData(reader.GetOutput())
-    clipper.SetValue(0.0)
-    clipper.GenerateClippedOutputOn()
-    clipper.Update()
-
-    insideMapper = vtk.vtkDataSetMapper()
-    insideMapper.SetInputData(clipper.GetOutput())
-    insideMapper.ScalarVisibilityOff()
-
-    insideActor = vtk.vtkActor()
-    insideActor.SetMapper(insideMapper)
-    insideActor.GetProperty().SetDiffuseColor(colors.GetColor3d(&quot;banana&quot;))
-    insideActor.GetProperty().SetAmbient(.3)
-    insideActor.GetProperty().EdgeVisibilityOn()
-
-    clippedMapper = vtk.vtkDataSetMapper()
-    clippedMapper.SetInputData(clipper.GetClippedOutput())
-    clippedMapper.ScalarVisibilityOff()
-
-    clippedActor = vtk.vtkActor()
-    clippedActor.SetMapper(clippedMapper)
-    clippedActor.GetProperty().SetDiffuseColor(colors.GetColor3d(&quot;tomato&quot;))
-    insideActor.GetProperty().SetAmbient(.3)
-    clippedActor.GetProperty().EdgeVisibilityOn()
-
-    # Create transforms to make a better visualization
-    insideTransform = vtk.vtkTransform()
-    insideTransform.Translate(-(bounds[1] - bounds[0]) * 0.75, 0, 0)
-    insideTransform.Translate(center[0], center[1], center[2])
-    insideTransform.RotateY(-120.0)
-    insideTransform.Translate(-center[0], -center[1], -center[2])
-    insideActor.SetUserTransform(insideTransform)
-
-    clippedTransform = vtk.vtkTransform()
-    clippedTransform.Translate((bounds[1] - bounds[0]) * 0.75, 0, 0)
-    clippedTransform.Translate(center[0], center[1], center[2])
-    clippedTransform.RotateY(60.0)
-    clippedTransform.Translate(-center[0], -center[1], -center[2])
-    clippedActor.SetUserTransform(clippedTransform)
-
-    renderer.AddViewProp(clippedActor)
-    renderer.AddViewProp(insideActor)
-
-    renderer.ResetCamera()
-    renderer.GetActiveCamera().Dolly(1.4)
-    renderer.ResetCameraClippingRange()
-    renderWindow.Render()
-    renderWindow.SetWindowName('ClipUnstructuredGridWithPlane2')
-    renderWindow.Render()
-
-    interactor.Start()
-
-    # Generate a report
-    numberOfCells = clipper.GetOutput().GetNumberOfCells()
-    print(&quot;------------------------&quot;)
-    print(&quot;The inside dataset contains a \n&quot;, clipper.GetOutput().GetClassName(), &quot; that has &quot;, numberOfCells, &quot; cells&quot;)
-    cellMap = dict()
-    for i in range(0, numberOfCells):
-        cellMap.setdefault(clipper.GetOutput().GetCellType(i), 0)
-        cellMap[clipper.GetOutput().GetCellType(i)] += 1
-    # Sort by key and put into an OrderedDict.
-    # An OrderedDict remembers the order in which the keys have been inserted.
-    for k, v in collections.OrderedDict(sorted(cellMap.items())).items():
-        print(&quot;\tCell type &quot;, vtk.vtkCellTypes.GetClassNameFromTypeId(k), &quot; occurs &quot;, v, &quot; times.&quot;)
-
-    numberOfCells = clipper.GetClippedOutput().GetNumberOfCells()
-    print(&quot;------------------------&quot;)
-    print(&quot;The clipped dataset contains a \n&quot;, clipper.GetClippedOutput().GetClassName(), &quot; that has &quot;, numberOfCells,
-          &quot; cells&quot;)
-    outsideCellMap = dict()
-    for i in range(0, numberOfCells):
-        outsideCellMap.setdefault(clipper.GetClippedOutput().GetCellType(i), 0)
-        outsideCellMap[clipper.GetClippedOutput().GetCellType(i)] += 1
-    for k, v in collections.OrderedDict(sorted(outsideCellMap.items())).items():
-        print(&quot;\tCell type &quot;, vtk.vtkCellTypes.GetClassNameFromTypeId(k), &quot; occurs &quot;, v, &quot; times.&quot;)
+<span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>():</span>
+    <span class=kn>import</span> <span class=nn>argparse</span>
+<span class=hll>    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Use a vtkClipDataSet to clip a vtkUnstructuredGrid..&#39;</span>
+</span>    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+<span class=hll><span class=s1> Use a vtkClipDataSet to clip a vtkUnstructuredGrid..</span>
+</span><span class=s1> The resulting output and clipped output are presented in yellow and red respectively.</span>
+<span class=hll><span class=s1> To illustrate the clipped interfaces, the example uses a vtkTransform to rotate each</span>
+</span><span class=s1>    output about their centers.</span>
+<span class=s1> Note: This clipping filter does not retain the original cells if they are not clipped.</span>
+<span class=s1>   &#39;&#39;&#39;</span>
+    <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
+                                     <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
+<span class=hll>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;treemesh.vtk.&#39;</span><span class=p>)</span>
+</span>    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
+    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span>
 
 
-if __name__ == &quot;__main__&quot;:
-    main()</code></pre> </article> </div> </div> </main> <footer class=md-footer> <div class=md-footer-nav> <nav class="md-footer-nav__inner md-grid"> <a href=../ClipUnstructuredGridWithPlane/ title=ClipUnstructuredGridWithPlane class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel=prev> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i> </div> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Previous </span> ClipUnstructuredGridWithPlane </span> </div> </a> <a href=../UGrid/ title=UGrid class="md-flex md-footer-nav__link md-footer-nav__link--next" rel=next> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Next </span> UGrid </span> </div> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i> </div> </a> </nav> </div> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-footer-copyright> <div class=md-footer-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> powered by <a href=https://www.mkdocs.org target=_blank rel=noopener>MkDocs</a> and <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs</a> </div> </div> </div> </footer> </div> <script src=../../../assets/javascripts/application.c33a9706.js></script> <script>app.initialize({version:"1.1",url:{base:"../../.."}})</script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>
+<span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+    <span class=n>filename</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
+
+    <span class=c1># Create the reader for the data.</span>
+<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkUnstructuredGridReader</span><span class=p>()</span>
+</span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filename</span><span class=p>)</span>
+    <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+
+    <span class=n>bounds</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetBounds</span><span class=p>()</span>
+    <span class=n>center</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCenter</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+</span>    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Wheat&quot;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>UseHiddenLineRemovalOn</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+</span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
+
+<span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+</span>    <span class=n>interactor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>)</span>
+
+    <span class=n>xnorm</span> <span class=o>=</span> <span class=p>[</span><span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
+
+<span class=hll>    <span class=n>clipPlane</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlane</span><span class=p>()</span>
+</span>    <span class=n>clipPlane</span><span class=o>.</span><span class=n>SetOrigin</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCenter</span><span class=p>())</span>
+    <span class=n>clipPlane</span><span class=o>.</span><span class=n>SetNormal</span><span class=p>(</span><span class=n>xnorm</span><span class=p>)</span>
+
+<span class=hll>    <span class=n>clipper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkClipDataSet</span><span class=p>()</span>
+</span>    <span class=n>clipper</span><span class=o>.</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clipPlane</span><span class=p>)</span>
+    <span class=n>clipper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
+    <span class=n>clipper</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>)</span>
+    <span class=n>clipper</span><span class=o>.</span><span class=n>GenerateClippedOutputOn</span><span class=p>()</span>
+    <span class=n>clipper</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>insideMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>()</span>
+</span>    <span class=n>insideMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
+    <span class=n>insideMapper</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>insideActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+</span>    <span class=n>insideActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>insideMapper</span><span class=p>)</span>
+    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;banana&quot;</span><span class=p>))</span>
+    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=o>.</span><span class=mi>3</span><span class=p>)</span>
+    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>clippedMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>()</span>
+</span>    <span class=n>clippedMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>())</span>
+    <span class=n>clippedMapper</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>clippedActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+</span>    <span class=n>clippedActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>clippedMapper</span><span class=p>)</span>
+    <span class=n>clippedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;tomato&quot;</span><span class=p>))</span>
+    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=o>.</span><span class=mi>3</span><span class=p>)</span>
+    <span class=n>clippedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
+
+    <span class=c1># Create transforms to make a better visualization</span>
+<span class=hll>    <span class=n>insideTransform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+</span>    <span class=n>insideTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=p>(</span><span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>*</span> <span class=mf>0.75</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>insideTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
+    <span class=n>insideTransform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=o>-</span><span class=mf>120.0</span><span class=p>)</span>
+    <span class=n>insideTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
+    <span class=n>insideActor</span><span class=o>.</span><span class=n>SetUserTransform</span><span class=p>(</span><span class=n>insideTransform</span><span class=p>)</span>
+
+<span class=hll>    <span class=n>clippedTransform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+</span>    <span class=n>clippedTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>((</span><span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>*</span> <span class=mf>0.75</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>clippedTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
+    <span class=n>clippedTransform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mf>60.0</span><span class=p>)</span>
+    <span class=n>clippedTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
+    <span class=n>clippedActor</span><span class=o>.</span><span class=n>SetUserTransform</span><span class=p>(</span><span class=n>clippedTransform</span><span class=p>)</span>
+
+    <span class=n>renderer</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>clippedActor</span><span class=p>)</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>insideActor</span><span class=p>)</span>
+
+    <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Dolly</span><span class=p>(</span><span class=mf>1.4</span><span class=p>)</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCameraClippingRange</span><span class=p>()</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ClipUnstructuredGridWithPlane2&#39;</span><span class=p>)</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+
+    <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
+
+    <span class=c1># Generate a report</span>
+    <span class=n>numberOfCells</span> <span class=o>=</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>()</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;------------------------&quot;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;The inside dataset contains a </span><span class=se>\n</span><span class=s2>&quot;</span><span class=p>,</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetClassName</span><span class=p>(),</span> <span class=s2>&quot; that has &quot;</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>,</span> <span class=s2>&quot; cells&quot;</span><span class=p>)</span>
+    <span class=n>cellMap</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
+    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>):</span>
+        <span class=n>cellMap</span><span class=o>.</span><span class=n>setdefault</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span>
+        <span class=n>cellMap</span><span class=p>[</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>)]</span> <span class=o>+=</span> <span class=mi>1</span>
+    <span class=c1># Sort by key and put into an OrderedDict.</span>
+    <span class=c1># An OrderedDict remembers the order in which the keys have been inserted.</span>
+    <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>collections</span><span class=o>.</span><span class=n>OrderedDict</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=n>cellMap</span><span class=o>.</span><span class=n>items</span><span class=p>()))</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
+<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;</span><span class=se>\t</span><span class=s2>Cell type &quot;</span><span class=p>,</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s2>&quot; occurs &quot;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s2>&quot; times.&quot;</span><span class=p>)</span>
+</span>
+    <span class=n>numberOfCells</span> <span class=o>=</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>()</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;------------------------&quot;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;The clipped dataset contains a </span><span class=se>\n</span><span class=s2>&quot;</span><span class=p>,</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetClassName</span><span class=p>(),</span> <span class=s2>&quot; that has &quot;</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>,</span>
+          <span class=s2>&quot; cells&quot;</span><span class=p>)</span>
+    <span class=n>outsideCellMap</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
+    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>):</span>
+        <span class=n>outsideCellMap</span><span class=o>.</span><span class=n>setdefault</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span>
+        <span class=n>outsideCellMap</span><span class=p>[</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>)]</span> <span class=o>+=</span> <span class=mi>1</span>
+    <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>collections</span><span class=o>.</span><span class=n>OrderedDict</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=n>outsideCellMap</span><span class=o>.</span><span class=n>items</span><span class=p>()))</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
+<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;</span><span class=se>\t</span><span class=s2>Cell type &quot;</span><span class=p>,</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s2>&quot; occurs &quot;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s2>&quot; times.&quot;</span><span class=p>)</span>
+</span>
+
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&quot;__main__&quot;</span><span class=p>:</span>
+    <span class=n>main</span><span class=p>()</span>
+</code></pre></div> </article> </div> </div> </main> <footer class=md-footer> <div class=md-footer-nav> <nav class="md-footer-nav__inner md-grid"> <a href=../ClipUnstructuredGridWithPlane/ title=ClipUnstructuredGridWithPlane class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel=prev> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i> </div> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Previous </span> ClipUnstructuredGridWithPlane </span> </div> </a> <a href=../UGrid/ title=UGrid class="md-flex md-footer-nav__link md-footer-nav__link--next" rel=next> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Next </span> UGrid </span> </div> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i> </div> </a> </nav> </div> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-footer-copyright> <div class=md-footer-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> powered by <a href=https://www.mkdocs.org target=_blank rel=noopener>MkDocs</a> and <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs</a> </div> </div> </div> </footer> </div> <script src=../../../assets/javascripts/application.c33a9706.js></script> <script>app.initialize({version:"1.1",url:{base:"../../.."}})</script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

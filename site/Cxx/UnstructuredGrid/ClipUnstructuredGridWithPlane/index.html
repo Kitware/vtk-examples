@@ -89,198 +89,205 @@ The clipped dataset contains a
     Cell type <a href=https://www.vtk.org/doc/nightly/html/classvtkHexahedron.html#details>vtkHexahedron</a> occurs 16984 times.
     Cell type <a href=https://www.vtk.org/doc/nightly/html/classvtkWedge.html#details>vtkWedge</a> occurs 616 times.
     Cell type <a href=https://www.vtk.org/doc/nightly/html/classvtkPyramid.html#details>vtkPyramid</a> occurs 4340 times.
-</code></pre></p> <p>Compare these results with <a href=/Cxx/UnstructuredGrid/ClipUnstructuredGridWithPlane2>ClipUnstructuredGridWithPlane2 (C++)</a>, <a href=/Python/UnstructuredGrid/ClipUnstructuredGridWithPlane2>ClipUnstructuredGridWithPlane2 (Python)</a>. Also, the resulting <a href=https://www.vtk.org/doc/nightly/html/classvtkUnstructuredGrid.html#details>vtkUnstructuredGrid</a>'s has 1/4 the number of cells.</p> <div class="admonition example"> <p class=admonition-title>usage</p> <p>ClipUnstructuredGridWithPlane treemesh.vtk</p> </div> <div class="admonition info"> <p class=admonition-title>thanks</p> <p>Thanks to Bane Sullivan for sharing the treemesh.vtk unstructured grid dataset.</p> </div> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Python/UnstructuredGrid/ClipUnstructuredGridWithPlane>Python</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a simple question about this example contact us at <a href="mailto:VTKExExProject@gmail.com?subject=ClipUnstructuredGridWithPlane.cxx&body=https://ajpmaclean.github.io/VTKEx/site/Cxx/UnstructuredGrid/ClipUnstructuredGridWithPlane">VTKExProject</a> If your question is more complex and may require extended discussion, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>ClipUnstructuredGridWithPlane.cxx</strong></p> <pre class=codehilite><code class=language-c++>#include &lt;vtkSmartPointer.h&gt;
-#include &lt;vtkTableBasedClipDataSet.h&gt;
-#include &lt;vtkUnstructuredGridReader.h&gt;
-#include &lt;vtkUnstructuredGrid.h&gt;
-#include &lt;vtkPlane.h&gt;
-#include &lt;vtkTransform.h&gt;
+</code></pre></p> <p>Compare these results with <a href=/Cxx/UnstructuredGrid/ClipUnstructuredGridWithPlane2>ClipUnstructuredGridWithPlane2 (C++)</a>, <a href=/Python/UnstructuredGrid/ClipUnstructuredGridWithPlane2>ClipUnstructuredGridWithPlane2 (Python)</a>. Also, the resulting <a href=https://www.vtk.org/doc/nightly/html/classvtkUnstructuredGrid.html#details>vtkUnstructuredGrid</a>'s has 1/4 the number of cells.</p> <div class="admonition example"> <p class=admonition-title>usage</p> <p>ClipUnstructuredGridWithPlane treemesh.vtk</p> </div> <div class="admonition info"> <p class=admonition-title>thanks</p> <p>Thanks to Bane Sullivan for sharing the treemesh.vtk unstructured grid dataset.</p> </div> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Python/UnstructuredGrid/ClipUnstructuredGridWithPlane>Python</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a simple question about this example contact us at <a href="mailto:VTKExExProject@gmail.com?subject=ClipUnstructuredGridWithPlane.cxx&body=https://ajpmaclean.github.io/VTKEx/site/Cxx/UnstructuredGrid/ClipUnstructuredGridWithPlane">VTKExProject</a> If your question is more complex and may require extended discussion, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>ClipUnstructuredGridWithPlane.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTableBasedClipDataSet.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkUnstructuredGridReader.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkUnstructuredGrid.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPlane.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTransform.h&gt;</span><span class=cp></span>
+</span>
+<span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkActor.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCamera.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCellTypes.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkDataSetMapper.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkLookupTable.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkProperty.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
+</span>
+<span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span>
+<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
+<span class=p>{</span>
+  <span class=k>if</span> <span class=p>(</span><span class=n>argc</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=p>)</span>
+  <span class=p>{</span>
+<span class=hll>    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Usage: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; filename.vtk&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span>    <span class=k>return</span> <span class=n>EXIT_FAILURE</span><span class=p>;</span>
+  <span class=p>}</span>
+  <span class=c1>// Create the reader for the data.</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>filename</span> <span class=o>=</span> <span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Loading &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>filename</span><span class=p>.</span><span class=n>c_str</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>reader</span> <span class=o>=</span>
+<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGridReader</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filename</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
+  <span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-#include &lt;vtkActor.h&gt;
-#include &lt;vtkCamera.h&gt;
-#include &lt;vtkCellTypes.h&gt;
-#include &lt;vtkDataSetMapper.h&gt;
-#include &lt;vtkLookupTable.h&gt;
-#include &lt;vtkProperty.h&gt;
-#include &lt;vtkRenderWindow.h&gt;
-#include &lt;vtkRenderWindowInteractor.h&gt;
-#include &lt;vtkRenderer.h&gt;
+  <span class=kt>double</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>6</span><span class=p>];</span>
+  <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetBounds</span><span class=p>(</span><span class=n>bounds</span><span class=p>);</span>  
+  <span class=kt>double</span> <span class=n>center</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
+  <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetCenter</span><span class=p>(</span><span class=n>center</span><span class=p>);</span>  
 
-#include &lt;vtkNamedColors.h&gt;
+  <span class=k>auto</span> <span class=n>colors</span> <span class=o>=</span>
+<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span><span class=hll>  <span class=k>auto</span> <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Wheat&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>UseHiddenLineRemovalOn</span><span class=p>();</span>
 
-int main(int argc, char *argv[])
-{
-  if (argc &lt; 2)
-  {
-    std::cout &lt;&lt; &quot;Usage: &quot; &lt;&lt; argv[0] &lt;&lt; &quot; filename.vtk&quot; &lt;&lt; std::endl;
-    return EXIT_FAILURE;
-  }
-  // Create the reader for the data.
-  std::string filename = argv[1];
-  std::cout &lt;&lt; &quot;Loading &quot; &lt;&lt; filename.c_str() &lt;&lt; std::endl;
-  auto reader =
-    vtkSmartPointer&lt;vtkUnstructuredGridReader&gt;::New();
-  reader-&gt;SetFileName(filename.c_str());
-  reader-&gt;Update();
+  <span class=k>auto</span> <span class=n>renderWindow</span> <span class=o>=</span>
+<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>);</span>
 
-  double bounds[6];
-  reader-&gt;GetOutput()-&gt;GetBounds(bounds);  
-  double center[3];
-  reader-&gt;GetOutput()-&gt;GetCenter(center);  
+  <span class=k>auto</span> <span class=n>interactor</span> <span class=o>=</span>
+<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
-  auto colors =
-    vtkSmartPointer&lt;vtkNamedColors&gt;::New();
-  auto renderer = vtkSmartPointer&lt;vtkRenderer&gt;::New();
-  renderer-&gt;SetBackground(colors-&gt;GetColor3d(&quot;Wheat&quot;).GetData());
-  renderer-&gt;UseHiddenLineRemovalOn();
+  <span class=kt>double</span> <span class=n>xnorm</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>};</span>
 
-  auto renderWindow =
-    vtkSmartPointer&lt;vtkRenderWindow&gt;::New();
-  renderWindow-&gt;AddRenderer(renderer);
-  renderWindow-&gt;SetSize(640, 480);
+<span class=hll>  <span class=k>auto</span> <span class=n>clipPlane</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPlane</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>clipPlane</span><span class=o>-&gt;</span><span class=n>SetOrigin</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetCenter</span><span class=p>());</span>
+  <span class=n>clipPlane</span><span class=o>-&gt;</span><span class=n>SetNormal</span><span class=p>(</span><span class=n>xnorm</span><span class=p>);</span>
 
-  auto interactor =
-    vtkSmartPointer&lt;vtkRenderWindowInteractor&gt;::New();
-  interactor-&gt;SetRenderWindow(renderWindow);
+  <span class=k>auto</span> <span class=n>clipper</span> <span class=o>=</span>
+<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTableBasedClipDataSet</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>clipper</span><span class=o>-&gt;</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clipPlane</span><span class=p>);</span>
+  <span class=n>clipper</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
+  <span class=n>clipper</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
+  <span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GenerateClippedOutputOn</span><span class=p>();</span>
+  <span class=n>clipper</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-  double xnorm[3] = {-1.0, -1.0, 1.0};
+  <span class=k>auto</span> <span class=n>insideMapper</span> <span class=o>=</span>
+<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>insideMapper</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
+  <span class=n>insideMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 
-  auto clipPlane = vtkSmartPointer&lt;vtkPlane&gt;::New();
-  clipPlane-&gt;SetOrigin(reader-&gt;GetOutput()-&gt;GetCenter());
-  clipPlane-&gt;SetNormal(xnorm);
+  <span class=k>auto</span> <span class=n>insideActor</span> <span class=o>=</span>
+<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>insideActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>insideMapper</span><span class=p>);</span>
+  <span class=n>insideActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;banana&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>insideActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>.3</span><span class=p>);</span>
+  <span class=n>insideActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>EdgeVisibilityOn</span><span class=p>();</span>
 
-  auto clipper =
-    vtkSmartPointer&lt;vtkTableBasedClipDataSet&gt;::New();
-  clipper-&gt;SetClipFunction(clipPlane);
-  clipper-&gt;SetInputData(reader-&gt;GetOutput());
-  clipper-&gt;SetValue(0.0);
-  clipper-&gt;GenerateClippedOutputOn();
-  clipper-&gt;Update();
+  <span class=k>auto</span> <span class=n>clippedMapper</span> <span class=o>=</span>
+<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>clippedMapper</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GetClippedOutput</span><span class=p>());</span>
+  <span class=n>clippedMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 
-  auto insideMapper =
-    vtkSmartPointer&lt;vtkDataSetMapper&gt;::New();
-  insideMapper-&gt;SetInputData(clipper-&gt;GetOutput());
-  insideMapper-&gt;ScalarVisibilityOff();
+  <span class=k>auto</span> <span class=n>clippedActor</span> <span class=o>=</span>
+<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>clippedActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>clippedMapper</span><span class=p>);</span>
+  <span class=n>clippedActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>insideActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>.3</span><span class=p>);</span>
+  <span class=n>clippedActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>EdgeVisibilityOn</span><span class=p>();</span>
 
-  auto insideActor =
-    vtkSmartPointer&lt;vtkActor&gt;::New();
-  insideActor-&gt;SetMapper(insideMapper);
-  insideActor-&gt;GetProperty()-&gt;SetDiffuseColor(colors-&gt;GetColor3d(&quot;banana&quot;).GetData());
-  insideActor-&gt;GetProperty()-&gt;SetAmbient(.3);
-  insideActor-&gt;GetProperty()-&gt;EdgeVisibilityOn();
+  <span class=c1>// Create transforms to make a better visualization</span>
+<span class=hll>  <span class=k>auto</span> <span class=n>insideTransform</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>insideTransform</span><span class=o>-&gt;</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=p>(</span><span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>*</span> <span class=mf>.75</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+  <span class=n>insideTransform</span><span class=o>-&gt;</span><span class=n>Translate</span><span class=p>(</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
+  <span class=n>insideTransform</span><span class=o>-&gt;</span><span class=n>RotateY</span><span class=p>(</span><span class=o>-</span><span class=mf>120.0</span><span class=p>);</span>
+  <span class=n>insideTransform</span><span class=o>-&gt;</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
+  <span class=n>insideActor</span><span class=o>-&gt;</span><span class=n>SetUserTransform</span><span class=p>(</span><span class=n>insideTransform</span><span class=p>);</span>
 
-  auto clippedMapper =
-    vtkSmartPointer&lt;vtkDataSetMapper&gt;::New();
-  clippedMapper-&gt;SetInputData(clipper-&gt;GetClippedOutput());
-  clippedMapper-&gt;ScalarVisibilityOff();
+<span class=hll>  <span class=k>auto</span> <span class=n>clippedTransform</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+</span>  <span class=n>clippedTransform</span><span class=o>-&gt;</span><span class=n>Translate</span><span class=p>((</span><span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>*</span> <span class=mf>.75</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+  <span class=n>clippedTransform</span><span class=o>-&gt;</span><span class=n>Translate</span><span class=p>(</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
+  <span class=n>clippedTransform</span><span class=o>-&gt;</span><span class=n>RotateY</span><span class=p>(</span><span class=mf>60.0</span><span class=p>);</span>
+  <span class=n>clippedTransform</span><span class=o>-&gt;</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
+  <span class=n>clippedActor</span><span class=o>-&gt;</span><span class=n>SetUserTransform</span><span class=p>(</span><span class=n>clippedTransform</span><span class=p>);</span>
 
-  auto clippedActor =
-    vtkSmartPointer&lt;vtkActor&gt;::New();
-  clippedActor-&gt;SetMapper(clippedMapper);
-  clippedActor-&gt;GetProperty()-&gt;SetDiffuseColor(colors-&gt;GetColor3d(&quot;tomato&quot;).GetData());
-  insideActor-&gt;GetProperty()-&gt;SetAmbient(.3);
-  clippedActor-&gt;GetProperty()-&gt;EdgeVisibilityOn();
+  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>clippedActor</span><span class=p>);</span>
+  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>insideActor</span><span class=p>);</span>
 
-  // Create transforms to make a better visualization
-  auto insideTransform = vtkSmartPointer&lt;vtkTransform&gt;::New();
-  insideTransform-&gt;Translate(-(bounds[1] - bounds[0]) * .75, 0, 0);
-  insideTransform-&gt;Translate(center[0], center[1], center[2]);
-  insideTransform-&gt;RotateY(-120.0);
-  insideTransform-&gt;Translate(-center[0], -center[1], -center[2]);
-  insideActor-&gt;SetUserTransform(insideTransform);
+  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
+  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Dolly</span><span class=p>(</span><span class=mf>1.4</span><span class=p>);</span>
+  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCameraClippingRange</span><span class=p>();</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ClipUnstructuredGridWithPlane&quot;</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
-  auto clippedTransform = vtkSmartPointer&lt;vtkTransform&gt;::New();
-  clippedTransform-&gt;Translate((bounds[1] - bounds[0]) * .75, 0, 0);
-  clippedTransform-&gt;Translate(center[0], center[1], center[2]);
-  clippedTransform-&gt;RotateY(60.0);
-  clippedTransform-&gt;Translate(-center[0], -center[1], -center[2]);
-  clippedActor-&gt;SetUserTransform(clippedTransform);
+  <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
 
-  renderer-&gt;AddViewProp(clippedActor);
-  renderer-&gt;AddViewProp(insideActor);
+  <span class=c1>// Generate a report</span>
+<span class=hll>  <span class=n>vtkIdType</span> <span class=n>numberOfCells</span> <span class=o>=</span> <span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfCells</span><span class=p>();</span>
+</span>  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;------------------------&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;The inside dataset contains a &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span>
+            <span class=o>&lt;&lt;</span> <span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span>
+            <span class=o>&lt;&lt;</span>  <span class=s>&quot; that has &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>numberOfCells</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; cells&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=k>typedef</span> <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span><span class=kt>int</span><span class=o>&gt;</span> <span class=n>CellContainer</span><span class=p>;</span>
+  <span class=n>CellContainer</span> <span class=n>cellMap</span><span class=p>;</span>
+<span class=hll>  <span class=k>for</span> <span class=p>(</span><span class=n>vtkIdType</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>numberOfCells</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span>  <span class=p>{</span>
+    <span class=n>cellMap</span><span class=p>[</span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>)]</span><span class=o>++</span><span class=p>;</span>
+  <span class=p>}</span>
 
-  renderer-&gt;ResetCamera();
-  renderer-&gt;GetActiveCamera()-&gt;Dolly(1.4);
-  renderer-&gt;ResetCameraClippingRange();
-  renderWindow-&gt;Render();
-  renderWindow-&gt;SetWindowName(&quot;ClipUnstructuredGridWithPlane&quot;);
-  renderWindow-&gt;Render();
+  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=nl>c</span> <span class=p>:</span> <span class=n>cellMap</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;</span><span class=se>\t</span><span class=s>Cell type &quot;</span>
+<span class=hll>              <span class=o>&lt;&lt;</span> <span class=n>vtkCellTypes</span><span class=o>::</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>c</span><span class=p>.</span><span class=n>first</span><span class=p>)</span>
+</span>              <span class=o>&lt;&lt;</span> <span class=s>&quot; occurs &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>c</span><span class=p>.</span><span class=n>second</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; times.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=p>}</span>
 
-  interactor-&gt;Start();
+  <span class=n>numberOfCells</span> <span class=o>=</span> <span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfCells</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;------------------------&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;The clipped dataset contains a &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span>
+            <span class=o>&lt;&lt;</span> <span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span>
+            <span class=o>&lt;&lt;</span>  <span class=s>&quot; that has &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>numberOfCells</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; cells&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=k>typedef</span> <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span><span class=kt>int</span><span class=o>&gt;</span> <span class=n>OutsideCellContainer</span><span class=p>;</span>
+  <span class=n>CellContainer</span> <span class=n>outsideCellMap</span><span class=p>;</span>
+<span class=hll>  <span class=k>for</span> <span class=p>(</span><span class=n>vtkIdType</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>numberOfCells</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span>  <span class=p>{</span>
+    <span class=n>outsideCellMap</span><span class=p>[</span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>)]</span><span class=o>++</span><span class=p>;</span>
+  <span class=p>}</span>
 
-  // Generate a report
-  vtkIdType numberOfCells = clipper-&gt;GetOutput()-&gt;GetNumberOfCells();
-  std::cout &lt;&lt; &quot;------------------------&quot; &lt;&lt; std::endl;
-  std::cout &lt;&lt; &quot;The inside dataset contains a &quot; &lt;&lt; std::endl
-            &lt;&lt; clipper-&gt;GetOutput()-&gt;GetClassName()
-            &lt;&lt;  &quot; that has &quot; &lt;&lt; numberOfCells &lt;&lt; &quot; cells&quot; &lt;&lt; std::endl;
-  typedef std::map&lt;int,int&gt; CellContainer;
-  CellContainer cellMap;
-  for (vtkIdType i = 0; i &lt; numberOfCells; i++)
-  {
-    cellMap[clipper-&gt;GetOutput()-&gt;GetCellType(i)]++;
-  }
+  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=nl>c</span> <span class=p>:</span> <span class=n>outsideCellMap</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;</span><span class=se>\t</span><span class=s>Cell type &quot;</span>
+<span class=hll>              <span class=o>&lt;&lt;</span> <span class=n>vtkCellTypes</span><span class=o>::</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>c</span><span class=p>.</span><span class=n>first</span><span class=p>)</span>
+</span>              <span class=o>&lt;&lt;</span> <span class=s>&quot; occurs &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>c</span><span class=p>.</span><span class=n>second</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; times.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=n>EXIT_SUCCESS</span><span class=p>;</span>
+<span class=p>}</span>
+</code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.3</span> <span class=s>FATAL_ERROR</span><span class=p>)</span>
 
-  for (auto c : cellMap)
-  {
-    std::cout &lt;&lt; &quot;\tCell type &quot;
-              &lt;&lt; vtkCellTypes::GetClassNameFromTypeId(c.first)
-              &lt;&lt; &quot; occurs &quot; &lt;&lt; c.second &lt;&lt; &quot; times.&quot; &lt;&lt; std::endl;
-  }
+<span class=nb>project</span><span class=p>(</span><span class=s>ClipUnstructuredGridWithPlane</span><span class=p>)</span>
 
-  numberOfCells = clipper-&gt;GetClippedOutput()-&gt;GetNumberOfCells();
-  std::cout &lt;&lt; &quot;------------------------&quot; &lt;&lt; std::endl;
-  std::cout &lt;&lt; &quot;The clipped dataset contains a &quot; &lt;&lt; std::endl
-            &lt;&lt; clipper-&gt;GetClippedOutput()-&gt;GetClassName()
-            &lt;&lt;  &quot; that has &quot; &lt;&lt; numberOfCells &lt;&lt; &quot; cells&quot; &lt;&lt; std::endl;
-  typedef std::map&lt;int,int&gt; OutsideCellContainer;
-  CellContainer outsideCellMap;
-  for (vtkIdType i = 0; i &lt; numberOfCells; i++)
-  {
-    outsideCellMap[clipper-&gt;GetClippedOutput()-&gt;GetCellType(i)]++;
-  }
-
-  for (auto c : outsideCellMap)
-  {
-    std::cout &lt;&lt; &quot;\tCell type &quot;
-              &lt;&lt; vtkCellTypes::GetClassNameFromTypeId(c.first)
-              &lt;&lt; &quot; occurs &quot; &lt;&lt; c.second &lt;&lt; &quot; times.&quot; &lt;&lt; std::endl;
-  }
-  return EXIT_SUCCESS;
-}</code></pre> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <pre class=codehilite><code class=language-cmake>cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
-
-project(ClipUnstructuredGridWithPlane)
-
-find_package(VTK COMPONENTS 
-  vtkvtkCommonColor
-  vtkvtkCommonCore
-  vtkvtkCommonDataModel
-  vtkvtkCommonTransforms
-  vtkvtkFiltersGeneral
-  vtkvtkIOLegacy
-  vtkvtkInteractionStyle
-  vtkvtkRenderingContextOpenGL2
-  vtkvtkRenderingCore
-  vtkvtkRenderingFreeType
-  vtkvtkRenderingGL2PSOpenGL2
-  vtkvtkRenderingOpenGL2 QUIET)
-if (NOT VTK_FOUND)
-  message(&quot;Skipping ClipUnstructuredGridWithPlane: ${VTK_NOT_FOUND_MESSAGE}&quot;)
-  return ()
-endif()
-message (STATUS &quot;VTK_VERSION: ${VTK_VERSION}&quot;)
-if (VTK_VERSION VERSION_LESS &quot;8.90.0&quot;)
-  # old system
-  include(${VTK_USE_FILE})
-  add_executable(ClipUnstructuredGridWithPlane MACOSX_BUNDLE ClipUnstructuredGridWithPlane.cxx )
-  target_link_libraries(ClipUnstructuredGridWithPlane PRIVATE ${VTK_LIBRARIES})
-else ()
-  # include all components
-  add_executable(ClipUnstructuredGridWithPlane MACOSX_BUNDLE ClipUnstructuredGridWithPlane.cxx )
-  target_link_libraries(ClipUnstructuredGridWithPlane PRIVATE ${VTK_LIBRARIES})
-  # vtk_module_autoinit is needed
-  vtk_module_autoinit(
-    TARGETS ClipUnstructuredGridWithPlane
-    MODULES ${VTK_LIBRARIES}
-    )
-endif ()</code></pre> <h3 id=download-and-build-clipunstructuredgridwithplane>Download and Build ClipUnstructuredGridWithPlane<a class=headerlink href=#download-and-build-clipunstructuredgridwithplane title="Permanent link">&para;</a></h3> <p>Click <a href=https://github.com/ajpmaclean/VTKEx/raw/master/src/Tarballs/ClipUnstructuredGridWithPlane.tar>here to download ClipUnstructuredGridWithPlane</a> and its <em>CMakeLists.txt</em> file. Once the <em>tarball ClipUnstructuredGridWithPlane.tar</em> has been downloaded and extracted,</p> <pre class=codehilite><code>cd ClipUnstructuredGridWithPlane/build</code></pre> <p>If VTK is installed:</p> <pre class=codehilite><code>cmake ..</code></pre> <p>If VTK is not installed but compiled on your system, you will need to specify the path to your VTK build:</p> <pre class=codehilite><code>cmake -DVTK_DIR:PATH=/home/me/vtk_build ..</code></pre> <p>Build the project:</p> <pre class=codehilite><code>make</code></pre> <p>and run it:</p> <pre class=codehilite><code>./ClipUnstructuredGridWithPlane</code></pre> <div class="admonition note"> <p class=admonition-title>WINDOWS USERS</p> <p>Be sure to add the VTK bin directory to your path. This will resolve the VTK dll's at run time.</p> </div> </article> </div> </div> </main> <footer class=md-footer> <div class=md-footer-nav> <nav class="md-footer-nav__inner md-grid"> <a href=../../Texture/TexturedSphere/ title=TexturedSphere class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel=prev> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i> </div> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Previous </span> TexturedSphere </span> </div> </a> <a href=../ClipUnstructuredGridWithPlane2/ title=ClipUnstructuredGridWithPlane2 class="md-flex md-footer-nav__link md-footer-nav__link--next" rel=next> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Next </span> ClipUnstructuredGridWithPlane2 </span> </div> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i> </div> </a> </nav> </div> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-footer-copyright> <div class=md-footer-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> powered by <a href=https://www.mkdocs.org target=_blank rel=noopener>MkDocs</a> and <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs</a> </div> </div> </div> </footer> </div> <script src=../../../assets/javascripts/application.c33a9706.js></script> <script>app.initialize({version:"1.1",url:{base:"../../.."}})</script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>
+<span class=nb>find_package</span><span class=p>(</span><span class=s>VTK</span> <span class=s>COMPONENTS</span> 
+  <span class=s>vtkvtkCommonColor</span>
+  <span class=s>vtkvtkCommonCore</span>
+  <span class=s>vtkvtkCommonDataModel</span>
+  <span class=s>vtkvtkCommonTransforms</span>
+  <span class=s>vtkvtkFiltersGeneral</span>
+  <span class=s>vtkvtkIOLegacy</span>
+  <span class=s>vtkvtkInteractionStyle</span>
+  <span class=s>vtkvtkRenderingContextOpenGL2</span>
+  <span class=s>vtkvtkRenderingCore</span>
+  <span class=s>vtkvtkRenderingFreeType</span>
+  <span class=s>vtkvtkRenderingGL2PSOpenGL2</span>
+  <span class=s>vtkvtkRenderingOpenGL2</span> <span class=s>QUIET</span><span class=p>)</span>
+<span class=nb>if</span> <span class=p>(</span><span class=s>NOT</span> <span class=s>VTK_FOUND</span><span class=p>)</span>
+  <span class=nb>message</span><span class=p>(</span><span class=s2>&quot;Skipping ClipUnstructuredGridWithPlane: ${VTK_NOT_FOUND_MESSAGE}&quot;</span><span class=p>)</span>
+  <span class=nb>return</span> <span class=p>()</span>
+<span class=nb>endif</span><span class=p>()</span>
+<span class=nb>message</span> <span class=p>(</span><span class=s>STATUS</span> <span class=s2>&quot;VTK_VERSION: ${VTK_VERSION}&quot;</span><span class=p>)</span>
+<span class=nb>if</span> <span class=p>(</span><span class=s>VTK_VERSION</span> <span class=s>VERSION_LESS</span> <span class=s2>&quot;8.90.0&quot;</span><span class=p>)</span>
+  <span class=c># old system</span>
+  <span class=nb>include</span><span class=p>(</span><span class=o>${</span><span class=nv>VTK_USE_FILE</span><span class=o>}</span><span class=p>)</span>
+  <span class=nb>add_executable</span><span class=p>(</span><span class=s>ClipUnstructuredGridWithPlane</span> <span class=s>MACOSX_BUNDLE</span> <span class=s>ClipUnstructuredGridWithPlane.cxx</span> <span class=p>)</span>
+  <span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>ClipUnstructuredGridWithPlane</span> <span class=s>PRIVATE</span> <span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span><span class=p>)</span>
+<span class=nb>else</span> <span class=p>()</span>
+  <span class=c># include all components</span>
+  <span class=nb>add_executable</span><span class=p>(</span><span class=s>ClipUnstructuredGridWithPlane</span> <span class=s>MACOSX_BUNDLE</span> <span class=s>ClipUnstructuredGridWithPlane.cxx</span> <span class=p>)</span>
+  <span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>ClipUnstructuredGridWithPlane</span> <span class=s>PRIVATE</span> <span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span><span class=p>)</span>
+  <span class=c># vtk_module_autoinit is needed</span>
+  <span class=nb>vtk_module_autoinit</span><span class=p>(</span>
+    <span class=s>TARGETS</span> <span class=s>ClipUnstructuredGridWithPlane</span>
+    <span class=s>MODULES</span> <span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
+    <span class=p>)</span>
+<span class=nb>endif</span> <span class=p>()</span>
+</code></pre></div> <h3 id=download-and-build-clipunstructuredgridwithplane>Download and Build ClipUnstructuredGridWithPlane<a class=headerlink href=#download-and-build-clipunstructuredgridwithplane title="Permanent link">&para;</a></h3> <p>Click <a href=https://github.com/ajpmaclean/VTKEx/raw/master/src/Tarballs/ClipUnstructuredGridWithPlane.tar>here to download ClipUnstructuredGridWithPlane</a> and its <em>CMakeLists.txt</em> file. Once the <em>tarball ClipUnstructuredGridWithPlane.tar</em> has been downloaded and extracted,</p> <div class=codehilite><pre><span></span><code>cd ClipUnstructuredGridWithPlane/build
+</code></pre></div> <p>If VTK is installed:</p> <div class=codehilite><pre><span></span><code>cmake ..
+</code></pre></div> <p>If VTK is not installed but compiled on your system, you will need to specify the path to your VTK build:</p> <div class=codehilite><pre><span></span><code>cmake -DVTK_DIR:PATH=/home/me/vtk_build ..
+</code></pre></div> <p>Build the project:</p> <div class=codehilite><pre><span></span><code>make
+</code></pre></div> <p>and run it:</p> <div class=codehilite><pre><span></span><code>./ClipUnstructuredGridWithPlane
+</code></pre></div> <div class="admonition note"> <p class=admonition-title>WINDOWS USERS</p> <p>Be sure to add the VTK bin directory to your path. This will resolve the VTK dll's at run time.</p> </div> </article> </div> </div> </main> <footer class=md-footer> <div class=md-footer-nav> <nav class="md-footer-nav__inner md-grid"> <a href=../../Texture/TexturedSphere/ title=TexturedSphere class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel=prev> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i> </div> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Previous </span> TexturedSphere </span> </div> </a> <a href=../ClipUnstructuredGridWithPlane2/ title=ClipUnstructuredGridWithPlane2 class="md-flex md-footer-nav__link md-footer-nav__link--next" rel=next> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Next </span> ClipUnstructuredGridWithPlane2 </span> </div> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i> </div> </a> </nav> </div> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-footer-copyright> <div class=md-footer-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> powered by <a href=https://www.mkdocs.org target=_blank rel=noopener>MkDocs</a> and <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs</a> </div> </div> </div> </footer> </div> <script src=../../../assets/javascripts/application.c33a9706.js></script> <script>app.initialize({version:"1.1",url:{base:"../../.."}})</script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>
