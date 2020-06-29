@@ -62,6 +62,9 @@ echo "6) Copy sitemap.xml"
 cp src/Admin/sitemap.xml site/sitemap.xml
 rm site/mkdocs/search_index.json
 
+echo "6.1 Modify highlight color to semitransparent Lavender"
+(cd site/assets/stylesheets; sed -i -e 's/background-color:rgba(255,235,59,\.5)/background-color:rgba(230,230,250,0.6)/g' application.*.css)
+
 #####################
 #echo "Premature exit for testing"
 #exit
