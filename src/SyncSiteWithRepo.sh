@@ -67,8 +67,8 @@ echo "6.1 Modify highlight color to semitransparent Lavender"
 (cd site/assets/stylesheets; sed -i -e 's/background-color:rgba(255,235,59,\.5)/background-color:rgba(230,230,250,0.6)/g' application.*.css)
 
 #####################
-echo "Premature exit for testing"
-exit
+#echo "Premature exit for testing"
+#exit
 
 #####################
 echo "7) Minify Html"
