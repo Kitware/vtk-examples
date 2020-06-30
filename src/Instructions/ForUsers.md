@@ -1,4 +1,4 @@
-If you want to use [VTK Ex](https://github.com/ajpmaclean/VTKEx), you have several options. If you are a VTK Example Developer, [go here](../Instructions/ForDevelopers) or a VTK Example Administrator [go here](../Instructions/ForAdministrators).
+If you want to use [VTK Ex](https://github.com/ajpmaclean/VTKEx), you have several options. If you are a VTK Example Developer, [go here](../ForDevelopers) or a VTK Example Administrator [go here](../ForAdministrators).
 
 ## Build an example
 

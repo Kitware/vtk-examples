@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # SyncSiteWithRepoPy3 - synchronize the examples site with the
-#                    examples repo
+#                    examples repository
 #
 if [ $# -lt 2 ]
   then
@@ -39,7 +39,8 @@ echo "2) Create coverage files"
 echo "3) Scrape the repo"
 rm -rf docs/*
 rm -rf site/*
-src/Admin/ScrapeRepo.py  ./src ./docs ${REPO} ${VTK_SOURCE_DIR}
+# Assumes src, docs by default for the repo_dir and the doc_dir.
+src/Admin/ScrapeRepo.py ${REPO} ${VTK_SOURCE_DIR}
 
 echo "4) Check for a successful scrape"
 pushd docs
@@ -66,8 +67,8 @@ echo "6.1 Modify highlight color to semitransparent Lavender"
 (cd site/assets/stylesheets; sed -i -e 's/background-color:rgba(255,235,59,\.5)/background-color:rgba(230,230,250,0.6)/g' application.*.css)
 
 #####################
-#echo "Premature exit for testing"
-#exit
+echo "Premature exit for testing"
+exit
 
 #####################
 echo "7) Minify Html"

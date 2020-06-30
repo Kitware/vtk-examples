@@ -1,12 +1,12 @@
 ## Introduction
 
-The success of the VTK Examples depends on the contributions from the VTK user community. If you wish to contribute to this valuable resource, please follow these guidelines. If you are a VTK Example User, [go here](../Instructions/ForUsers) or an Example Administrator [go here](../Instructions/ForAdministrators).
+The success of the VTK Examples depends on the contributions from the VTK user community. If you wish to contribute to this valuable resource, please follow these guidelines. If you are a VTK Example User, [go here](../ForUsers) or an Example Administrator [go here](../ForAdministrators).
 
 C++, C#,  Python, and Java examples are welcome! Examples should illustrate a single concept.
 
 ## Follow the Coding Guidelines
 
-When you write an example, please follow the [coding guidelines](../Instructions/Guidelines). Create the example on your local repository, compile and run it before you generate a pull request.
+When you write an example, please follow the [coding guidelines](../Guidelines). Create the example on your local repository, compile and run it before you generate a pull request.
 
 Some additional steps need to be done for Python C# and Java, see the sections below.
 
@@ -105,9 +105,9 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
 
 2. Check the:
 
-    - [Cxx available snippets](/Cxx/Snippets).
-    - [Python available snippets](/Cxx/Snippets).
-    - [Java available snippets](/Cxx/Snippets).
+    - [Cxx available snippets](../../Cxx/Snippets).
+    - [Python available snippets](../../Python/Snippets).
+    - [Java available snippets](../../Java/Snippets).
 
 3. Save your source code in VTKEx/src/**LANGUAGE**/**TOPIC**/
 
@@ -158,8 +158,8 @@ Keep the same directory structure as that in Cxx.
 
   The following snippets can be used to write the image out:
 
-  - [WriteImage](https://ajpmaclean.github.io/VTKEx/site/Python/Snippets/WriteImage/) for Python
-  - [WriteImage](https://ajpmaclean.github.io/VTKEx/site/Java/Snippets/WriteImage/) for Java
+  - [WriteImage](../../Python/Snippets/WriteImage/) for Python
+  - [WriteImage](../../Java/Snippets/WriteImage/) for Java
 
 - Then follow step 6 above
 
