@@ -1,4 +1,4 @@
-## Introduction
+## Developers
 
 The success of the VTK Examples depends on the contributions from the VTK user community. If you wish to contribute to this valuable resource, please follow these guidelines. If you are a VTK Example User, [go here](../ForUsers) or an Example Administrator [go here](../ForAdministrators).
 
@@ -6,7 +6,7 @@ C++, C#,  Python, and Java examples are welcome! Examples should illustrate a si
 
 ## Follow the Coding Guidelines
 
-When you write an example, please follow the [coding guidelines](../Guidelines). Create the example on your local repository, compile and run it before you generate a pull request.
+When you write an example, please follow the [coding guidelines](../Guidelines). Create the example in your local repository, compile and run it before you generate a pull request.
 
 Some additional steps need to be done for Python C# and Java, see the sections below.
 
@@ -28,13 +28,13 @@ Some additional steps need to be done for Python C# and Java, see the sections b
 
 4. Clone the repository on your local machine
 
-    ```
+    ``` bash
     git clone https://YOURNAME@github.com/YOURNAME/VTKEx.git
     ```
 
     Or, if you are using SSH:
 
-    ```
+    ``` bash
     git clone git@github.com:YOURNAME/VTKEx.git
     ```
 
@@ -42,43 +42,43 @@ Some additional steps need to be done for Python C# and Java, see the sections b
 
 5. Add the VTKEx repository as a *remote* called *upstream*
 
-    ```
+    ``` bash
     git remote add upstream https://github.com/ajpmaclean/VTKEx
     ```
 
 6. Before adding your examples, sync your repository with the VTKEx repository. Remember that to run the following commands, you need to be in the **VTKEx** directory.
 
-    ```
+    ``` bash
     git fetch upstream
     ```
 
-    ```
+    ``` bash
     git checkout master
     ```
 
-    ```
+    ``` bash
     git merge upstream/master
     ```
 
-    ```
+    ``` bash
     git push
     ```
 
-7. Build the VTKEx
+7. Build the VTKEx code
 
-    ```
+    ``` bash
     cd VTKEx
     ```
 
-    ```
+    ``` bash
     cd build
     ```
 
-    ```
+    ``` bash
     cmake -DVTK_DIR:PATH=YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL=ON ..
     ```
 
-    ```
+    ``` bash
     make
     ```
 
@@ -97,7 +97,7 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
 
 1. Create a branch in your repository
 
-    ```
+    ``` bash
     git checkout -b MyNewExample
     ```
 
@@ -119,25 +119,25 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
 
    - for Cxx
 
-        ```
+        ``` bash
         cd VTKEx/build
         ```
 
-        ```
+        ``` bash
         cmake ..
         ```
 
-        ```
+        ``` bash
         make
         ```
 
-        ```
+        ``` bash
         ctest -V -R MyNewExample
         ```
 
         Note: If **MyNewExample** is not built, then in the directory where you put the file do:
 
-        ```
+        ``` bash
         touch CMakeLists.txt
         ```
 
@@ -163,7 +163,7 @@ Keep the same directory structure as that in Cxx.
 
 - Then follow step 6 above
 
-#### Add the example to the language page.
+#### Add the example to the language page
 
 Depending on the language of your example, edit the file *Cxx.md*, *Python.md*, *CSharp.md*, or *Java.md*.
 
@@ -175,33 +175,33 @@ where **LANG** is one of Cxx, Python, CSharp, Java.
 
 #### Commit your changes to your topic branch
 
-```
+``` bash
 git add MyNewExample.cxx
 ```
 
 and if you have a baseline image,
 
-```
+``` bash
 git add Testing/Baseline/LANG/TOPIC/TestMyNewExample.png
 ```
 
-```
+``` bash
 git commit
 ```
 
 #### Push the changes to GitHub
 
-```
+``` bash
 git push origin MyNewExample
 ```
 
-#### Go to your GitHub project and [generate a pull request](https://help.github.com/articles/creating-a-pull-request/).
+#### Go to your GitHub project and [generate a pull request](https://help.github.com/articles/creating-a-pull-request/)
 
 ### Advanced usage
 
 #### Add a description
 
-If your example could benefit from an extended description, you can create a file **MyNewExample**.md. Store the file alongside your source code. Use [markdown](https://guides.github.com/features/mastering-markdown/) to format the description.
+If your example could benefit from an extended description, you can create a file **MyNewExample.md**. Store the file alongside your source code. Use [markdown](https://guides.github.com/features/mastering-markdown/) to format the description. Also look at existing files for layout ideas.
 
 #### Add arguments to the test
 
@@ -229,10 +229,11 @@ If you want to preview your changes in a browser (**NOTE:** You must have Python
 
   2. Install the material theme for markdown. Go [here](http://squidfunk.github.io/mkdocs-material/#quick-start).
 
-  3. Sync your site with your repository
+  3. Sync your site with your repository with a command like this:
 
-    ```
-    ./src/SyncSiteWithRepo.sh https::/github.com/**YOUR_NAME**/VTKEx
-    ```
+        ``` bash
+        ./src/SyncSiteWithRepo.sh https://github.com/**github_username**/VTKEx /home/**username**/**path_to**/VTK/
+        ./src/SyncSiteWithRepo.sh https::/github.com/**YOUR_NAME**/VTKEx
+        ```
 
-  4. After a few minutes go to https://**YOUR_NAME**.github.io/VTKEx/ to see your changes before issuing your pull request.
+  4. After a few minutes go to https://**github_username**.github.io/VTKEx/ to see your changes before issuing your pull request.

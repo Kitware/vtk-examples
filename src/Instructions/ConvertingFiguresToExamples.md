@@ -1,6 +1,8 @@
+## Converting Figures to Examples
+
 There is an ongoing effort to convert the examples in the [VTK Book](http://www.kitware.com/products/books/VTKTextbook.pdf) into VTKExamples.
 
-# Process to Convert Figures to Examples
+## The process
 
 1. Follow the procedure [ForDevelopers](../ForDevelopers) to contribute examples.
 2. Download a copy of the [VTK Book](http://www.kitware.com/products/books/VTKTextbook.pdf).

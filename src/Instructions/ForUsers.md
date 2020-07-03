@@ -1,3 +1,5 @@
+## Users
+
 If you want to use [VTK Ex](https://github.com/ajpmaclean/VTKEx), you have several options. If you are a VTK Example Developer, [go here](../ForDevelopers) or a VTK Example Administrator [go here](../ForAdministrators).
 
 ## Build an example
@@ -17,13 +19,14 @@ downloading individual examples, you can build them all.
 
 3. Clone the VTK examples repository
 
-```bash
-   git clone https://github.com/ajpmaclean/VTKEx.git
-   cd VTKEx
-   cd build
-   cmake -DVTK_DIR:PATH=YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL=ON ..
-   make
-```
+   ``` bash
+      git clone https://github.com/ajpmaclean/VTKEx.git
+      cd VTKEx
+      cd build
+      cmake -DVTK_DIR:PATH=YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL=ON ..
+      make
+   ```
+
    where **YOUR_VTK_BIN_DIR** is the location of your VTK build.
 
 ### Update the examples repository

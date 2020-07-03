@@ -1,17 +1,19 @@
- Administrators have write access to the [git repository](https://github.com/ajpmaclean/VtkEx). If you are a  User [go here](../ForUsers) or a  Developer [go here](../ForDevelopers).
+## Administrators
 
-# Organization of the  Repository
+Administrators have write access to the [git repository](https://github.com/ajpmaclean/VtkEx). If you are a  User [go here](../ForUsers) or a  Developer [go here](../ForDevelopers).
+
+## Organization of the Repository
 
 The  are stored in a [git repository](https://github.com/ajpmaclean/VtkEx.git) hosted at [github.com](http://www.github.com/). The repository contains several types of files.
 
 All example source code, descriptions, test data, and test baselines are stored in the *src/* tree.
 
-##  Repository
+## Repository
 
 The major elements of the tree are:
 
 ``` bash
-|-- 
+|--
   |-- CMakeLists.txt   # To build all of the examples
   |-- _layouts         # Contains _default.html
   |-- custom_theme     # tweaks to the material theme
@@ -46,19 +48,25 @@ The major elements of the tree are:
 ```
 
 ## Look and Feel
-A priority in moving from the wiki media [VTK Wiki Examples](http://www.vtk.org/Wiki/VTK/Examples) to the Github pages [](https://ajpmaclean.github.io/VtkEx/site/) was to provide a modern, familiar look and feel. We also wanted to support tablet and mobile platforms. We chose [MkDocs](http://www.mkdocs.org/) because it generated static HTML pages that can be hosted anywhere.
+
+A priority in moving from the wiki media [VTK Wiki Examples](http://www.vtk.org/Wiki/VTK/Examples) to the Github pages [VtkEx](https://ajpmaclean.github.io/VtkEx/site/) was to provide a modern, familiar look and feel. We also wanted to support tablet and mobile platforms. We chose [MkDocs](http://www.mkdocs.org/) because it generated static HTML pages that can be hosted anywhere.
 
 <img style="border:2px solid beige;float:center" src="https://github.com/ajpmaclean/VTKEx/blob/master/src/Artifacts/OldVersusNew.png?raw=true" />
 
 ### [MkDocs](http://www.mkdocs.org/)
+
 #### Installing MkDocs
+
 MkDocs is a python package and can be installed using `pip`;
 
 ```bash
 pip install mkdocs
 ```
+
 #### Configuring MkDocs
+
 The *mkdocs.yml* file contains the configuration parameters
+
 ```bash
 site_name: VTKEx
 site_url: https://ajpmaclean.github.io/VTKEx/site/
@@ -92,9 +100,11 @@ extra_javascript:
 ```
 
 #### Markdown Extensions
+
 A number of markdown extensions are available.
 
 ##### [admonition](http://squidfunk.github.io/mkdocs-material/extensions/admonition/)
+
 Admonitions are specially marked "topics" that can appear anywhere an ordinary body element can. They contain arbitrary body elements. Typically, an admonition is rendered as an offset block in a document, sometimes outlined or shaded, with a title matching the admonition type.
 For example:
 
@@ -135,30 +145,37 @@ For example:
     This is a cite admonition
 
 ##### [codehilite](http://squidfunk.github.io/mkdocs-material/extensions/codehilite/)
+
 The codehilite extension highlights code depending on the language.
 
 ##### toc
+
 The toc extension generates a table of contents, like the one at the right of this page.
 
 ### [MkDocs Materials theme](http://squidfunk.github.io/mkdocs-material/)
+
 The Materials theme is built using Google's [Material Design](https://material.io/guidelines/) guidelines. It offers a unified experience across platforms. The look and feel is a familiar one.
 
 #### Configuring Materials
+
 The materials theme is selected using the *material* keyword in the *mkdocs.yml* file.
 
 ## [Google Analytics](https://analytics.google.com/)
+
 Google Analytics tracks the site usage, providing lots of useful statistics. To have Google Analytics track web usage, you need to register the URL with the Google Analytics System. After registration, an HTML snippet is provided to include on every web page to be tracked.
 
 ### Configuring Google Analytics
 
 The *google_analytics* keyword in the *mkdocs.yml" file specifies the google analytics unique code for this web site. The *custom_theme/main.html* file defines the metadata for the google site verification:
-HTML
+
+``` html
 <meta name="google-site-verification" content="8hi6AHNlzKOmFDV4W8tLmySODRzQvtqMEIfZdc3WTLA" />
 ```
 ## [Google Custom Search Engine](https://cse.google.com/cse/)
+
 The overall look and feel are established at [https://cse.google.com/cse/](https://cse.google.com/cse/). After setting up the search engine, you can get the code to add to the web pages.
 
-```javascript
+``` javascript
 <script>
   (function() {
     var cx = '015419652359195128492:0lkxso1wcym';
@@ -173,17 +190,24 @@ The overall look and feel are established at [https://cse.google.com/cse/](https
 ```
 
 ### Configuring GCSE
+
 The code is added to [custom_theme/main.html](https://github.com/ajpmaclean/VtkEx/blob/master/custom_theme/main.html).
-```html
+
+``` html
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <gcse:searchbox-only>Search</gcse:searchbox-only>
 ```
+
 ### Implementing GCSE
+
 The search box is added to the web pages by adding the gcse search box html
+
 ``` html
     <gcse:searchbox-only>Search</gcse:searchbox-only>
 ```
+
 ## Performance
+
 ### [Lazy Image Loading](https://davidwalsh.name/lazyload-image-fade)
 
 The first implementation had problems loading the [Cxx summary](https://ajpmaclean.github.io/VTKEx/site/Cxx/). The number of embedded images exceeded the throttle limits of Github. A lazy image load solution solved the problem. Now, images are only loaded if they appear in the browser window.
@@ -201,9 +225,11 @@ The  web pages have many URL's that link to images and VTK doxygen pages. The lo
 *mkdocs* generates HTML pages from the markdown files in *doc*. These pages have lots of white space. We use the python package [htmlmin](https://htmlmin.readthedocs.io/en/latest/) to compress the generated HTML. The compressed pages are about 30% smaller after running *htmlmin*. We use the command line to process each *index.html* file in *site/*.
 
 *htmlmin* must be installed:
+
 ```bash
 pip install htmlmin
 ```
+
 ## Administrator Tasks
 
 ### [ScrapeRepo.py](https://github.com/ajpmaclean/VtkEx/blob/master/src/Admin/ScrapeRepo.py)
@@ -224,9 +250,10 @@ Given a *SiteDir*, *DocDir*, *RepositoryDir* and a *RepositoryUrl*, *ScrapeRepo*
 4. For each Cxx source file
     1. If _Cxx/_**TOPIC**/**EXAMPLE**_.cmake_ exists, add it as the CMakeLists section of the _.md_ file, otherwise, fill in the *VTKCMakelists* template, including the files listed in the optional _src/Cxx/_**TOPIC**/**EXAMPLE**_.extras_ file.
 
-4. For each Cxx source file, create a _src/Tarballs/_**EXAMPLE**_.tar_ file containing the source and _CMakeLists.txt_ file.
+5. For each Cxx source file, create a _src/Tarballs/_**EXAMPLE**_.tar_ file containing the source and _CMakeLists.txt_ file.
 
 ## SyncSiteWithRepo
+
 The *SyncSiteWithRepo.sh* shell script executes all of the steps to update the static website. It proceeds as follow:
 
 1. Makes sure the site is up
@@ -241,30 +268,30 @@ The *SyncSiteWithRepo.sh* shell script executes all of the steps to update the s
 
      The [src/Admin/VTKClassesUsedInExamples.py](https://github.com/ajpmaclean/VtkEx/blob/master/src/Admin/VTKClassesUsedInExamples.py) python script generates two tables for each language. One table list each class and what classes it uses. The second table lists the classes that are not used in any example.
 
-4. Wipes the *docs* directory
+5. Wipes the *docs* directory
 
      The *docs* directory contains all of the md and HTML files for the site. A clean directory prevents old files from being used.
 
-5. Runs the [ScrapeRepo script](https://github.com/ajpmaclean/VtkEx/blob/master/src/Admin/ScrapeRepo.py)
+6. Runs the [ScrapeRepo script](https://github.com/ajpmaclean/VtkEx/blob/master/src/Admin/ScrapeRepo.py)
 
      populate the *docs* directory.
 
-6. Checks for a successful scrape
+7. Checks for a successful scrape
 
      This sanity check sees if a reasonable number of files have Pbeen updated.
 
-7. Copies the *src/stylesheets* directory ino *docs/stylesheets*
+8. Copies the *src/stylesheets* directory ino *docs/stylesheets*
 
-8. Copies the sitemap.xml file
+9. Copies the sitemap.xml file
 
      This file is updated periodically by [sitemapGenerator](https://github.com/ajpmaclean/VtkEx/blob/master/src/Admin/sitemapGenerator.sh)
 
-9. Minify the HTML
+10. Minify the HTML
 
-10. Process any modified added or deleted files
-11. Update the tarballs
+11. Process any modified added or deleted files
+12. Update the tarballs
 
-12. Push the changes
+13. Push the changes
 
      After a *short* time GitHub will update the Github pages.
 
