@@ -19,13 +19,13 @@ downloading individual examples, you can build them all.
 
 3. Clone the VTK examples repository
 
-   ``` bash
-      git clone https://github.com/ajpmaclean/VTKEx.git
-      cd VTKEx
-      cd build
-      cmake -DVTK_DIR:PATH=YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL=ON ..
-      make
-   ```
+``` bash
+   git clone https://github.com/ajpmaclean/VTKEx.git
+   cd VTKEx
+   cd build
+   cmake -DVTK_DIR:PATH=YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL=ON ..
+   make
+```
 
    where **YOUR_VTK_BIN_DIR** is the location of your VTK build.
 
@@ -43,6 +43,6 @@ make
 
 ### Run all of the examples
 
-`
+``` bash
 ctest
-`
+```

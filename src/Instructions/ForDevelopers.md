@@ -28,61 +28,43 @@ Some additional steps need to be done for Python C# and Java, see the sections b
 
 4. Clone the repository on your local machine
 
-    ``` bash
+``` bash
     git clone https://YOURNAME@github.com/YOURNAME/VTKEx.git
-    ```
+```
 
-    Or, if you are using SSH:
+   Or, if you are using SSH:
 
-    ``` bash
+``` bash
     git clone git@github.com:YOURNAME/VTKEx.git
-    ```
+```
 
-    where **YOURNAME** is your GitHub username.
+   where **YOURNAME** is your GitHub username.
 
 5. Add the VTKEx repository as a *remote* called *upstream*
 
-    ``` bash
+``` bash
     git remote add upstream https://github.com/ajpmaclean/VTKEx
-    ```
+```
 
 6. Before adding your examples, sync your repository with the VTKEx repository. Remember that to run the following commands, you need to be in the **VTKEx** directory.
 
-    ``` bash
+``` bash
     git fetch upstream
-    ```
-
-    ``` bash
     git checkout master
-    ```
-
-    ``` bash
     git merge upstream/master
-    ```
-
-    ``` bash
     git push
-    ```
+```
 
 7. Build the VTKEx code
 
-    ``` bash
+``` bash
     cd VTKEx
-    ```
-
-    ``` bash
     cd build
-    ```
-
-    ``` bash
     cmake -DVTK_DIR:PATH=YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL=ON ..
-    ```
-
-    ``` bash
     make
-    ```
+```
 
-    where **YOUR_VTK_BIN_DIR** is the location of your VTK build.
+where **YOUR_VTK_BIN_DIR** is the location of your VTK build.
 
 ### Add the example
 
@@ -97,9 +79,9 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
 
 1. Create a branch in your repository
 
-    ``` bash
+``` bash
     git checkout -b MyNewExample
-    ```
+```
 
     where **MyNewExample** is the name of your new example.
 
@@ -119,27 +101,18 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
 
    - for Cxx
 
-        ``` bash
+``` bash
         cd VTKEx/build
-        ```
-
-        ``` bash
         cmake ..
-        ```
-
-        ``` bash
         make
-        ```
-
-        ``` bash
         ctest -V -R MyNewExample
-        ```
+```
 
-        Note: If **MyNewExample** is not built, then in the directory where you put the file do:
+Note: If **MyNewExample** is not built, then in the directory where you put the file do:
 
-        ``` bash
-        touch CMakeLists.txt
-        ```
+``` bash
+    touch CMakeLists.txt
+```
 
 5. If your C++ example does any rendering, the test will fail the first time and create an image in VTKEx/build/Testing/Temporary. The image will be called Test**MyNewExample**.png.
 
@@ -184,6 +157,8 @@ and if you have a baseline image,
 ``` bash
 git add Testing/Baseline/LANG/TOPIC/TestMyNewExample.png
 ```
+
+finally,
 
 ``` bash
 git commit
@@ -231,9 +206,9 @@ If you want to preview your changes in a browser (**NOTE:** You must have Python
 
   3. Sync your site with your repository with a command like this:
 
-        ``` bash
+``` bash
         ./src/SyncSiteWithRepo.sh https://github.com/**github_username**/VTKEx /home/**username**/**path_to**/VTK/
         ./src/SyncSiteWithRepo.sh https::/github.com/**YOUR_NAME**/VTKEx
-        ```
+```
 
   4. After a few minutes go to https://**github_username**.github.io/VTKEx/ to see your changes before issuing your pull request.
