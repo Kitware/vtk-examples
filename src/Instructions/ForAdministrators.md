@@ -289,6 +289,7 @@ The *SyncSiteWithRepo.sh* shell script executes all of the steps to update the s
 10. Minify the HTML
 
 11. Process any modified added or deleted files
+
 12. Update the tarballs
 
 13. Push the changes

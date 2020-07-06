@@ -3,7 +3,7 @@
 # SyncSiteWithRepoPy3 - synchronize the examples site with the
 #                    examples repository
 #
-# These Python packages are needed: markdown, pygments, htmlmin
+# These Python packages are needed: mkdocs, pygments, htmlmin
 #
 if [ $# -lt 2 ]
   then
