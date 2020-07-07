@@ -473,7 +473,7 @@ def add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_di
     :param root_path: Path to the top-level folder e.g. VTKExamples.
     :param repo_dir: Usually 'src'.
     :param doc_dir: Usually 'docs'.
-    :param baseline_dir: The baseline directors relative to root_path/repo_dir.
+    :param baseline_dir: The baseline directories relative to root_path/repo_dir.
     :param test_images: The cache containing the rest images.
     :param from_file: The file to copy/edit
     :param to_file: The save file name.
@@ -736,6 +736,49 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
     code_to_page[example_name + lang_ext] = '/' + lang + '/' + kit_name + '/' + example_name
 
 
+def make_instruction_pages(repo_url, root_path, repo_name, user_name, repo_dir, doc_dir, from_file, to_file):
+    """
+    Make the instruction pages.
+
+    Note: In site_url, if you are not using github.io, change it appropriately.
+
+    :param repo_url: The repository URL.
+    :param root_path: Path to the top-level folder e.g. VTKExamples.
+    :param repo_name: The name of the repository.
+    :param user_name: The username for the repository.
+    :param repo_dir: Usually 'src'.
+    :param doc_dir: Usually 'docs'.
+    :param from_file: The file to copy/edit
+    :param to_file: The save file name.
+    :return:
+    """
+    src = make_path(root_path, repo_dir, 'Instructions', from_file)
+    dest = make_path(root_path, doc_dir, 'Instructions', to_file)
+    site_url = 'https://' + user_name + '.github.io/' + repo_name + '/site/'
+    patterns = {'__BLOB__': repo_url + '/blob/master',
+                '__TREE__': repo_url + '/tree/master',
+                '__REPOSITORY__': repo_url,
+                '__ARCHIVE__': repo_url + '/archive/master.zip',
+                '__GIT_REPO__': repo_url + '.git',
+                '__REPO_NAME__': repo_name,
+                '__USER_NAME__': user_name,
+                '__SITE__': site_url,
+                }
+    keys = patterns.keys()
+    with open(src, 'r') as ifh:
+        lines = ifh.readlines()
+        lines_to_update = list()
+    for idx in range(0, len(lines)):
+        if any(k in lines[idx] for k in keys):
+            lines_to_update.append(idx)
+    for idx in lines_to_update:
+        for k in keys:
+            lines[idx] = re.sub(k, patterns[k], lines[idx])
+    with open(dest, 'w') as ofh:
+        for line in lines:
+            ofh.write(line)
+
+
 def make_tarballs(repo_path, example_to_file_names, example_to_CMake, ref_mtime):
     """
     Create tarballs for each example.
@@ -971,11 +1014,10 @@ def main():
     dest = make_path(doc_path, 'Instructions')
     if not os.path.exists(dest):
         os.makedirs(dest)
-    shutil.copy(make_path(repo_path, 'Instructions/ForUsers.md'), dest)
-    shutil.copy(make_path(repo_path, 'Instructions/ForDevelopers.md'), dest)
-    shutil.copy(make_path(repo_path, 'Instructions/ForAdministrators.md'), dest)
-    shutil.copy(make_path(repo_path, 'Instructions/Guidelines.md'), dest)
-    shutil.copy(make_path(repo_path, 'Instructions/ConvertingFiguresToExamples.md'), dest)
+    instruction_files = ['ForUsers.md', 'ForDevelopers.md', 'ForAdministrators.md', 'Guidelines.md',
+                         'ConvertingFiguresToExamples.md']
+    for f in instruction_files:
+        make_instruction_pages(repo_url, root_path, repo_name, user_name, repo_dir, doc_dir, f, f)
 
     # Copy VTKBook files
     if not os.path.exists(make_path(doc_path, 'VTKBook')):

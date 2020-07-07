@@ -1,6 +1,6 @@
 ## Users
 
-If you want to use [VTK Ex](https://github.com/ajpmaclean/VTKEx), you have several options. If you are a VTK Example Developer, [go here](../ForDevelopers) or a VTK Example Administrator [go here](../ForAdministrators).
+If you want to use the examples [repository](__REPOSITORY__), you have several options. If you are a VTK Example Developer, [go here](../ForDevelopers) or a VTK Example Administrator [go here](../ForAdministrators).
 
 ## Build an example
 
@@ -13,15 +13,15 @@ downloading individual examples, you can build them all.
 
 1. As a VTK Remote module
 
-   When you configure your VTK build, set Module_VTKEx:BOOL=ON and rebuild VTK.
+   When you configure your VTK build, set Module___REPO_NAME__:BOOL=ON and rebuild VTK.
 
-2. Download a [zip](https://github.com/ajpmaclean/VTKEx/archive/master.zip) containing the source.
+2. Download a [zip](__ARCHIVE__) containing the source.
 
 3. Clone the VTK examples repository
 
 ``` bash
-   git clone https://github.com/ajpmaclean/VTKEx.git
-   cd VTKEx
+   git clone __GIT_REPO__
+   cd __REPO_NAME__
    cd build
    cmake -DVTK_DIR:PATH=YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL=ON ..
    make
@@ -34,10 +34,10 @@ downloading individual examples, you can build them all.
 If you cloned the examples repository, you can get the latest updates:
 
 ``` bash
-cd VTKEx
+cd __REPO_NAME__
 git pull
 cd build
-cmake ../VTKEx
+cmake ../__REPO_NAME__
 make
 ```
 
