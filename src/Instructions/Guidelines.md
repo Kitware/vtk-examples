@@ -4,7 +4,7 @@ Although education of new users is the main motivation, the VTK Examples should 
 
 1. Encourage good programming style
 2. Promote the proper and modern way to use VTK and write VTK programs
-3. Facilitate the nightly compilation and testing of examples that reside in the VTKExamples repository.
+3. Facilitate the nightly compilation and testing of examples that reside in the VTK Examples repository.
 
 These requirements must be met without compromising the main goal of user education.
 
@@ -14,7 +14,7 @@ All examples should follow the VTK programming style and there should be a singl
 
 ### C++
 
-* The indentation style can be characterized as the [AllmannStyle](https://en.wikipedia.org/wiki/Indent_style#Allman_style). The curly brace (scope delimiter) is on a separate line and aligns with the control statement, The control block is indented by two spaces (**no tabs**). A suitable `.clang-format` is provided in `src/Cxx` [see here](https://github.com/ajpmaclean/VtkEx/blob/master/src/Cxx/.clang-format).
+* The indentation style can be characterized as the [AllmannStyle](https://en.wikipedia.org/wiki/Indent_style#Allman_style). The curly brace (scope delimiter) is on a separate line and aligns with the control statement, The control block is indented by two spaces (**no tabs**). A suitable `.clang-format` is provided in `src/Cxx` [see here](__BLOB__/src/Cxx/.clang-format).
 
     Example:
 
@@ -122,7 +122,7 @@ All examples should follow the VTK programming style and there should be a singl
 
 * Always provide a background for the renderers. Avoid setting the background to white.
 
-* Use [vtkNamedColors](http://www.vtk.org/doc/nightly/html/classvtkNamedColors.html) for setting colors of actors and renderer backgrounds. [VTKNamedColorPatches](http://htmlpreview.github.io/?https://github.com/ajpmaclean/VTKEx/blob/master/VTKNamedColorPatches.html) shows the colors that are available. If you are using a color series, then you can choose what you want from here [VTKColorSeriesPatches](http://htmlpreview.github.io/?https://github.com/ajpmaclean/VTKEx/blob/master/VTKColorSeriesPatches.html).
+* Use [vtkNamedColors](http://www.vtk.org/doc/nightly/html/classvtkNamedColors.html) for setting colors of actors and renderer backgrounds. [VTKNamedColorPatches](http://htmlpreview.github.io/?__BLOB__/VTKNamedColorPatches.html) shows the colors that are available. If you are using a color series, then you can choose what you want from here [VTKColorSeriesPatches](http://htmlpreview.github.io/?__BLOB__/VTKColorSeriesPatches.html).
 
     For example,
 
@@ -141,7 +141,7 @@ All examples should follow the VTK programming style and there should be a singl
         renderer->SetBackground(0.9412, 0.9020, 0.5490);
     ```
 
-* Use admonitions to warn/cite/info, etc. [Here is a summary of admonitions](https://ajpmaclean.github.io/VTKEx/site/Instructions/ForAdministrators/#admonition).
+* Use admonitions to warn/cite/info, etc. [Here is a summary of admonitions](__SITE__/Instructions/ForAdministrators/#admonition).
 
 ### Python
 
@@ -170,13 +170,13 @@ if __name__ == '__main__':
 
 * Input/Output filenames and parameters.
 
-    Use this snippet [GetProgramParameters](https://ajpmaclean.github.io/VTKEx/site/Python/Snippets/GetProgramParameters/) 
+    Use this snippet [GetProgramParameters](__SITE__/Python/Snippets/GetProgramParameters/) 
 
 ### Java
 
 In general, Java submissions should follow the VTK Programming style and the comments outlined for C++ above (with language appropriate modification).
 
-For Java code layout, look at [CylinderExample](https://ajpmaclean.github.io/VTKEx/site/Java/GeometricObjects/CylinderExample/)
+For Java code layout, look at [CylinderExample](__SITE__/Java/GeometricObjects/CylinderExample/)
 
 Java code styling follows the usual style as implemented in the IDEs.
 

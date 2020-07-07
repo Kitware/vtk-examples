@@ -1,10 +1,10 @@
 ## Administrators
 
-Administrators have write access to the [git repository](https://github.com/ajpmaclean/VtkEx). If you are a  User [go here](../ForUsers) or a  Developer [go here](../ForDevelopers).
+Administrators have write access to the [git repository](__REPOSITORY__). If you are a  User [go here](../ForUsers) or a  Developer [go here](../ForDevelopers).
 
 ## Organization of the Repository
 
-The  are stored in a [git repository](https://github.com/ajpmaclean/VtkEx.git) hosted at [github.com](http://www.github.com/). The repository contains several types of files.
+The files are stored in a [git repository](__REPOSITORY__) hosted at [github.com](http://www.github.com/). The repository contains several types of files.
 
 All example source code, descriptions, test data, and test baselines are stored in the *src/* tree.
 
@@ -49,9 +49,9 @@ The major elements of the tree are:
 
 ## Look and Feel
 
-A priority in moving from the wiki media [VTK Wiki Examples](http://www.vtk.org/Wiki/VTK/Examples) to the Github pages [VtkEx](https://ajpmaclean.github.io/VtkEx/site/) was to provide a modern, familiar look and feel. We also wanted to support tablet and mobile platforms. We chose [MkDocs](http://www.mkdocs.org/) because it generated static HTML pages that can be hosted anywhere.
+A priority in moving from the wiki media [VTK Wiki Examples](http://www.vtk.org/Wiki/VTK/Examples) to the Github pages [VTK Examples](__REPOSITORY__/site/) was to provide a modern, familiar look and feel. We also wanted to support tablet and mobile platforms. We chose [MkDocs](http://www.mkdocs.org/) because it generated static HTML pages that can be hosted anywhere.
 
-<img style="border:2px solid beige;float:center" src="https://github.com/ajpmaclean/VTKEx/blob/master/src/Artifacts/OldVersusNew.png?raw=true" />
+<img style="border:2px solid beige;float:center" src="__BLOB__/src/Artifacts/OldVersusNew.png?raw=true" />
 
 ### [MkDocs](http://www.mkdocs.org/)
 
@@ -68,10 +68,10 @@ pip install mkdocs
 The *mkdocs.yml* file contains the configuration parameters
 
 ```bash
-site_name: VTKEx
-site_url: https://ajpmaclean.github.io/VTKEx/site/
-repo_name: ajpmaclean/VTKEx
-repo_url: https://github.com/ajpmaclean/VTKEx
+site_name: __REPO_NAME__
+site_url: https://__USER_NAME__.github.io/__REPO_NAME__/site/
+repo_name: __USER_NAME__/__REPO_NAME__
+repo_url: __REPOSITORY__
 
 theme:
     name: material
@@ -166,7 +166,7 @@ Google Analytics tracks the site usage, providing lots of useful statistics. To 
 
 ### Configuring Google Analytics
 
-The *google_analytics* keyword in the *mkdocs.yml" file specifies the google analytics unique code for this web site. The *custom_theme/main.html* file defines the metadata for the google site verification:
+The *google_analytics* keyword in the *mkdocs.yml* file specifies the google analytics unique code for this web site. The *custom_theme/main.html* file defines the metadata for the google site verification:
 
 ``` html
 <meta name="google-site-verification" content="8hi6AHNlzKOmFDV4W8tLmySODRzQvtqMEIfZdc3WTLA" />
@@ -191,7 +191,7 @@ The overall look and feel are established at [https://cse.google.com/cse/](https
 
 ### Configuring GCSE
 
-The code is added to [custom_theme/main.html](https://github.com/ajpmaclean/VtkEx/blob/master/custom_theme/main.html).
+The code is added to [custom_theme/main.html](__BLOB_/custom_theme/main.html).
 
 ``` html
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -210,7 +210,7 @@ The search box is added to the web pages by adding the gcse search box html
 
 ### [Lazy Image Loading](https://davidwalsh.name/lazyload-image-fade)
 
-The first implementation had problems loading the [Cxx summary](https://ajpmaclean.github.io/VTKEx/site/Cxx/). The number of embedded images exceeded the throttle limits of Github. A lazy image load solution solved the problem. Now, images are only loaded if they appear in the browser window.
+The first implementation had problems loading the [Cxx summary](__REPOSITORY__/site/Cxx/). The number of embedded images exceeded the throttle limits of Github. A lazy image load solution solved the problem. Now, images are only loaded if they appear in the browser window.
 
 The Lazy Image Loading is implemented in javascript. The javascript is stored in *custom_theme/main.html*. It uses a clever *trick*. Images that should be lazy loaded use a *<img>* tag with a *class=lazy* and attribute *data_src*. If the image is in the viewport, the *data_src* is removed, and the image renders.
 
@@ -218,7 +218,7 @@ The Lazy Image Loading is implemented in javascript. The javascript is stored in
 
 The  web pages have many URL's that link to images and VTK doxygen pages. The long length of these URLs can increase page load times, especially on the language summary pages. 
 
-[http://tinyurl.com](http://tinyurl.com) provides a service to map the long URL's into shorted URLs. To speed up the process, we cache the long/short URLs in a file [src/Cache/TestImages.cache](https://github.com/ajpmaclean/VtkEx/raw/master/src/Cache/TestImages.cache). *ScrapeRepo.py* uses this cache to only convert URLs that are not in the cache. *ScrapeRepo.py* updates the cache after each run.
+[http://tinyurl.com](http://tinyurl.com) provides a service to map the long URL's into shorted URLs. To speed up the process, we cache the long/short URLs in a file [src/Cache/TestImages.cache](__REPOSITORY__/raw/master/src/Cache/TestImages.cache). *ScrapeRepo.py* uses this cache to only convert URLs that are not in the cache. *ScrapeRepo.py* updates the cache after each run.
 
 ### Minify HTML pages
 
@@ -232,9 +232,9 @@ pip install htmlmin
 
 ## Administrator Tasks
 
-### [ScrapeRepo.py](https://github.com/ajpmaclean/VtkEx/blob/master/src/Admin/ScrapeRepo.py)
+### [ScrapeRepo.py](__BLOB__/src/Admin/ScrapeRepo.py)
 
-<img style="border:2px solid beige;float:center" src="https://github.com/ajpmaclean/VtkEx/blob/master/src/Artifacts/ScrapeRepo.png?raw=true" />
+<img style="border:2px solid beige;float:center" src="__BLOB__/src/Artifacts/ScrapeRepo.png?raw=true" />
 
 Given a *SiteDir*, *DocDir*, *RepositoryDir* and a *RepositoryUrl*, *ScrapeRepo* proceeds as follows:
 
@@ -258,21 +258,21 @@ The *SyncSiteWithRepo.sh* shell script executes all of the steps to update the s
 
 1. Makes sure the site is up
 
-2. Pulls updates from the [master repository](https://github.com/ajpmaclean/VtkEx).
+2. Pulls updates from the [master repository](__REPOSITORY__).
 
-3. Pulls updates from the [src/Tarballs repository](https://github.com/ajpmaclean/VTKEx/tree/master/src/Tarballs)
+3. Pulls updates from the [src/Tarballs repository](__TREE__/src/Tarballs)
 
      The tarballs should be kept in a separate repository to reduce the size of the main repository. They are only accessed from the individual example pages. Currently they are in the main repository.
 
 4. Creates the coverage files
 
-     The [src/Admin/VTKClassesUsedInExamples.py](https://github.com/ajpmaclean/VtkEx/blob/master/src/Admin/VTKClassesUsedInExamples.py) python script generates two tables for each language. One table list each class and what classes it uses. The second table lists the classes that are not used in any example.
+     The [src/Admin/VTKClassesUsedInExamples.py](__BLOB__/src/Admin/VTKClassesUsedInExamples.py) python script generates two tables for each language. One table list each class and what classes it uses. The second table lists the classes that are not used in any example.
 
 5. Wipes the *docs* directory
 
      The *docs* directory contains all of the md and HTML files for the site. A clean directory prevents old files from being used.
 
-6. Runs the [ScrapeRepo script](https://github.com/ajpmaclean/VtkEx/blob/master/src/Admin/ScrapeRepo.py)
+6. Runs the [ScrapeRepo script](__BLOB__/src/Admin/ScrapeRepo.py)
 
      populate the *docs* directory.
 
@@ -284,7 +284,7 @@ The *SyncSiteWithRepo.sh* shell script executes all of the steps to update the s
 
 9. Copies the sitemap.xml file
 
-     This file is updated periodically by [sitemapGenerator](https://github.com/ajpmaclean/VtkEx/blob/master/src/Admin/sitemapGenerator.sh)
+     This file is updated periodically by [sitemapGenerator](__BLOB__/src/Admin/sitemapGenerator.sh)
 
 10. Minify the HTML
 
