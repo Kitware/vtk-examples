@@ -191,7 +191,7 @@ The overall look and feel are established at [https://cse.google.com/cse/](https
 
 ### Configuring GCSE
 
-The code is added to [custom_theme/main.html](__BLOB_/custom_theme/main.html).
+The code is added to [custom_theme/main.html](__BLOB__/custom_theme/main.html).
 
 ``` html
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
