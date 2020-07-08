@@ -18,7 +18,7 @@ All examples should follow the VTK programming style and there should be a singl
 
     Example:
 
-    ``` c++
+``` c++
     if (this->Locator == locator)
     {
     return;
@@ -28,19 +28,19 @@ All examples should follow the VTK programming style and there should be a singl
     p1 = this->Source->GetPoint(i);
     [...]
     }
-    ```
+```
 
 * Where appropriate, explicitly use the std:: namespace:
 
-    ```c ++
+```c ++
         std::cout << "Print something" << std::endl;
-    ```
+```
 
     rather than
 
-    ``` c++
+``` c++
         cout << "Print something" << endl;
-    ```
+```
 
 * All includes from the toolkit should use <> notation. This follows C++ programming conventions.
 
@@ -48,55 +48,55 @@ All examples should follow the VTK programming style and there should be a singl
 
 * The main program must have the following signature:
 
-    ``` c++
+``` c++
     int main (int argc, char *argv[])
-    ```
+```
 
     or, if argc and argv are not referenced in the code,
 
-    ``` c++
+``` c++
     int main (int, char *[])
-    ```
+```
 
 * If arguments are required, a check similar to the following should be made at the start of the main program.
 
-    ``` c++
+``` c++
     if (argc != 3)
     {
     std::cerr << "Usage: " << argv[0] << "Alpha InputFile OutputFile" << std::endl;
     return EXIT_FAILURE;
     }
-    ```
+```
 
 * An example should **never call exit()**. If the main program executes successfully, it should
 
-    ``` c++
+``` c++
     return EXIT_SUCCESS;
-    ```
+```
 
     otherwise
 
-    ``` c++
+``` c++
     return EXIT_FAILURE;
-    ```
+```
 
 * The use of SmartPointers is preferred in VTK examples.
 
-    ``` c++
+``` c++
     vtkSmartPointer<vtkCutter> cutter = vtkSmartPointer<vtkCutter>::New();
-    ```
+```
 
     or
 
-    ``` c++
+``` c++
     vtkNew<vtkCutter> cutter;
-    ```
+```
 
     is preferred over
 
-    ``` c++
+``` c++
     vtkCutter *cutter = vtkCutter::New();
-    ```
+```
 
 * When building pipelines, the new `SetInputConnection()`, `GetOutputPort()` methods should be used instead of `SetInput()`, `GetOutput()`
 
@@ -108,17 +108,17 @@ All examples should follow the VTK programming style and there should be a singl
 
     For example, this program
 
-    ``` c++
+``` c++
     Delaunay3DAlpha Alpha InputPolydataFileName(.vtp) OutputUnstructuredGridFilename(.vtu)
-    ```
+```
 
     would use the arguments in this manner
 
-    ``` c++
+``` c++
     reader->SetFileName (argv[2]);
     delaunay3D->SetAlpha(atof(argv[1]));
     writer->SetFileName ( argv[3] );
-    ```
+```
 
 * Always provide a background for the renderers. Avoid setting the background to white.
 
@@ -126,20 +126,20 @@ All examples should follow the VTK programming style and there should be a singl
 
     For example,
 
-    ``` c++
+``` c++
     #include <vtkNamedColors.h>
 
     vtkSmartPointer<vtkNamedColors> namedColors =
         vtkSmartPointer<vtkNamedColors>::New();
 
         renderer->SetBackground(namedColors->GetColor3d("Khaki").GetData());
-    ```
+```
 
     is preferred over
 
-    ``` c++
+``` c++
         renderer->SetBackground(0.9412, 0.9020, 0.5490);
-    ```
+```
 
 * Use admonitions to warn/cite/info, etc. [Here is a summary of admonitions](__SITE__/Instructions/ForAdministrators/#admonition).
 
