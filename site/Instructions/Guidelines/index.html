@@ -85,10 +85,9 @@ function registerListener(event, func) {
     <span class=n>p1</span> <span class=o>=</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>Source</span><span class=o>-&gt;</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
     <span class=p>[...]</span>
     <span class=p>}</span>
-</code></pre></div> <ul> <li>Where appropriate, explicitly use the std:: namespace:</li> </ul> <p>```c ++ std::cout &lt;&lt; "Print something" &lt;&lt; std::endl;</p> <div class=codehilite><pre><span></span><code>    rather than
-
-``` c++
-        cout &lt;&lt; &quot;Print something&quot; &lt;&lt; endl;
+</code></pre></div> <ul> <li>Where appropriate, explicitly use the std:: namespace:</li> </ul> <div class=codehilite><pre><span></span><code>        <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Print something&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</code></pre></div> <div class=codehilite><pre><span></span><code>rather than
+</code></pre></div> <div class=codehilite><pre><span></span><code>        <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Print something&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
 </code></pre></div> <ul> <li> <p>All includes from the toolkit should use &lt;&gt; notation. This follows C++ programming conventions.</p> <p>For example: <code>#include &lt;vtkContourFilter.h&gt;</code> is preferred over <code>#include "vtkContourFilter.h"</code></p> </li> <li> <p>The main program must have the following signature:</p> </li> </ul> <div class=codehilite><pre><span></span><code>    <span class=kt>int</span> <span class=n>main</span> <span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
 </code></pre></div> <div class=codehilite><pre><span></span><code>or, if argc and argv are not referenced in the code,
 </code></pre></div> <div class=codehilite><pre><span></span><code>    <span class=kt>int</span> <span class=n>main</span> <span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=p>[])</span>

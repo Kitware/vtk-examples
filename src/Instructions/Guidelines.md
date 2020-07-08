@@ -32,7 +32,7 @@ All examples should follow the VTK programming style and there should be a singl
 
 * Where appropriate, explicitly use the std:: namespace:
 
-```c ++
+``` c++
         std::cout << "Print something" << std::endl;
 ```
 
