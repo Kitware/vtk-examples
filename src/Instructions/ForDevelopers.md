@@ -14,19 +14,19 @@ Some additional steps need to be done for Python C# and Java, see the sections b
 
 ### Fork the repository
 
-1. Sign into [github](https://github.com/login).
+* Sign into [github](https://github.com/login).
 
     If you do not have an account, you can register on the sign-in page.
 
-2. Fork the VTK examples [repository](__REPOSITORY__)
+* Fork the VTK examples [repository](__REPOSITORY__)
 
     A fork is a copy of a project. Forking a repository allows you to make changes without affecting the original project.
 
-3. Enable a static web site for the examples.
+* Enable a static web site for the examples.
 
     Under **Settings**, **GitHub Pages**, set the *Source* to **master branch** and click *Save*.
 
-4. Clone the repository on your local machine
+* Clone the repository on your local machine
 
 ``` bash
     git clone https://YOURNAME@github.com/YOURNAME/__REPO_NAME__.git
@@ -40,13 +40,13 @@ Some additional steps need to be done for Python C# and Java, see the sections b
 
    where **YOURNAME** is your GitHub username.
 
-5. Add the __REPO_NAME__ repository as a *remote* called *upstream*
+* Add the __REPO_NAME__ repository as a *remote* called *upstream*
 
 ``` bash
     git remote add upstream __REPOSITORY__
 ```
 
-6. Before adding your examples, sync your repository with the __REPO_NAME__ repository. Remember that to run the following commands, you need to be in the **__REPO_NAME__** directory.
+* Before adding your examples, sync your repository with the __REPO_NAME__ repository. Remember that to run the following commands, you need to be in the **__REPO_NAME__** directory.
 
 ``` bash
     git fetch upstream
@@ -55,7 +55,7 @@ Some additional steps need to be done for Python C# and Java, see the sections b
     git push
 ```
 
-7. Build the __REPO_NAME__ code
+* Build the __REPO_NAME__ code
 
 ``` bash
     cd __REPO_NAME__
@@ -77,27 +77,27 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
 
 **Note**: Steps 4, 5 and 7 apply to C++. For Python, Java, and C# see the steps in the section **Steps for Python, Java and C#**.
 
-1. Create a branch in your repository
+* Create a branch in your repository
 
 ``` bash
     git checkout -b MyNewExample
 ```
 
-    where **MyNewExample** is the name of your new example.
+  where **MyNewExample** is the name of your new example.
 
-2. Check the:
+* Check the:
 
-    - [Cxx available snippets](../../Cxx/Snippets).
-    - [Python available snippets](../../Python/Snippets).
-    - [Java available snippets](../../Java/Snippets).
+  * [Cxx available snippets](../../Cxx/Snippets).
+  * [Python available snippets](../../Python/Snippets).
+  * [Java available snippets](../../Java/Snippets).
 
-3. Save your source code in __REPO_NAME__/src/**LANGUAGE**/**TOPIC**/
+* Save your source code in __REPO_NAME__/src/**LANGUAGE**/**TOPIC**/
 
     where **LANGUAGE** is Cxx, Python, CSharp or Java.
 
     and **TOPIC** is the topic that you have chosen.
 
-4. Build and test your example (**NOTE:** only for cxx examples)
+* Build and test your example (**NOTE:** only for cxx examples)
 
    - for Cxx
 
@@ -114,11 +114,11 @@ Note: If **MyNewExample** is not built, then in the directory where you put the 
     touch CMakeLists.txt
 ```
 
-5. If your C++ example does any rendering, the test will fail the first time and create an image in __REPO_NAME__/build/Testing/Temporary. The image will be called Test**MyNewExample**.png.
+* If your C++ example does any rendering, the test will fail the first time and create an image in __REPO_NAME__/build/Testing/Temporary. The image will be called Test**MyNewExample**.png.
 
-6. Copy the image into: __REPO_NAME__/src/Testing/Baseline/**LANG**/**TOPIC**/. For Python and other languages, create an image with the proper name using a screen capture and copy that image into the proper location.
+* Copy the image into: __REPO_NAME__/src/Testing/Baseline/**LANG**/**TOPIC**/. For Python and other languages, create an image with the proper name using a screen capture and copy that image into the proper location.
 
-7. Rerun ctest and the test should pass.
+* Rerun ctest and the test should pass.
 
 #### Steps for Python, Java and C#
 
@@ -126,7 +126,7 @@ If you are basing your code on a Cxx example use the same name as the Cxx exampl
 
 Keep the same directory structure as that in Cxx.
 
-- Follow steps 1-3 above.
+- Follow first three steps above.
 - Manually create a test image if your example does any rendering. The image should be called Test**MyNewExample**.png.
 
   The following snippets can be used to write the image out:
@@ -182,9 +182,9 @@ If your example could benefit from an extended description, you can create a fil
 
 If your example requires arguments, you will need to edit the *CMakeLists.txt* in the topic directory.
 
-1. Add the name of your example to the *NEEDS_ARGS* variable
+* Add the name of your example to the *NEEDS_ARGS* variable
 
-2. Add an *ADD_TEST* line. See other *CMakeLists.txt* files for examples.
+* Add an *ADD_TEST* line. See other *CMakeLists.txt* files for examples.
 
 #### Add extra files to a C++ example
 
@@ -200,15 +200,15 @@ extra filename in the *.extras* file, one filename per line.
 
 If you want to preview your changes in a browser (**NOTE:** You must have Python installed on your system)
 
-  1. Install the markdown package for Python. Go [here](https://pythonhosted.org/Markdown/install.html)
+* Install the markdown package for Python. Go [here](https://pythonhosted.org/Markdown/install.html)
 
-  2. Install the material theme for markdown. Go [here](http://squidfunk.github.io/mkdocs-material/#quick-start).
+* Install the material theme for markdown. Go [here](http://squidfunk.github.io/mkdocs-material/#quick-start).
 
-  3. Sync your site with your repository with a command like this:
+* Sync your site with your repository with a command like this:
 
 ``` bash
-        ./src/SyncSiteWithRepo.sh https://github.com/**github_username**/__REPO_NAME__ /home/**username**/**path_to**/VTK/
-        ./src/SyncSiteWithRepo.sh https::/github.com/**YOUR_NAME**/__REPO_NAME__
+  ./src/SyncSiteWithRepo.sh https://github.com/**github_username**/__REPO_NAME__ /home/**username**/**path_to**/VTK/
+  ./src/SyncSiteWithRepo.sh https::/github.com/**YOUR_NAME**/__REPO_NAME__
 ```
 
-  4. After a few minutes go to https://**github_username**.github.io/__REPO_NAME__/ to see your changes before issuing your pull request.
+* After a few minutes go to https://**github_username**.github.io/__REPO_NAME__/ to see your changes before issuing your pull request.
