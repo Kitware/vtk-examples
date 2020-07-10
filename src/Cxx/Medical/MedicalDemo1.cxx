@@ -26,61 +26,50 @@ int main (int argc, char *argv[])
     return EXIT_FAILURE;
   }
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   std::array<unsigned char , 4> skinColor{{255, 125, 64}};
-    colors->SetColor("SkinColor", skinColor.data());
+  colors->SetColor("SkinColor", skinColor.data());
   std::array<unsigned char , 4> bkg{{51, 77, 102, 255}};
-    colors->SetColor("BkgColor", bkg.data());
+  colors->SetColor("BkgColor", bkg.data());
 
   // Create the renderer, the render window, and the interactor. The renderer
   // draws into the render window, the interactor enables mouse- and
   // keyboard-based interaction with the data within the render window.
   //
-  vtkSmartPointer<vtkRenderer> aRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> aRenderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(aRenderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  vtkSmartPointer<vtkMetaImageReader> reader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
+  vtkNew<vtkMetaImageReader> reader;
   reader->SetFileName (argv[1]);
 
   // An isosurface, or contour value of 500 is known to correspond to the
   // skin of the patient.
-  vtkSmartPointer<vtkMarchingCubes> skinExtractor =
-    vtkSmartPointer<vtkMarchingCubes>::New();
+  vtkNew<vtkMarchingCubes> skinExtractor;
   skinExtractor->SetInputConnection(reader->GetOutputPort());
   skinExtractor->SetValue(0, 500);
 
-  vtkSmartPointer<vtkPolyDataMapper> skinMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> skinMapper;
   skinMapper->SetInputConnection(skinExtractor->GetOutputPort());
   skinMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> skin =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> skin;
   skin->SetMapper(skinMapper);
   skin->GetProperty()->SetDiffuseColor(colors->GetColor3d("SkinColor").GetData());
 
   // An outline provides context around the data.
   //
-  vtkSmartPointer<vtkOutlineFilter> outlineData =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outlineData;
   outlineData->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> mapOutline =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapOutline;
   mapOutline->SetInputConnection(outlineData->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outline =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outline;
   outline->SetMapper(mapOutline);
   outline->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
@@ -88,8 +77,7 @@ int main (int argc, char *argv[])
   // and Position form a vector direction. Later on (ResetCamera() method)
   // this vector is used to position the camera to look at the data in
   // this direction.
-  vtkSmartPointer<vtkCamera> aCamera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> aCamera;
   aCamera->SetViewUp (0, 0, -1);
   aCamera->SetPosition (0, -1, 0);
   aCamera->SetFocalPoint (0, 0, 0);

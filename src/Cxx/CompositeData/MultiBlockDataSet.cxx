@@ -4,44 +4,41 @@
 #include <vtkCompositeDataGeometryFilter.h>
 #include <vtkExtractEdges.h>
 #include <vtkMultiBlockDataSet.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
+#include <vtkVector.h>
+
+namespace {
+vtkSmartPointer<vtkDataSet> CreateSphereDataSet(const vtkVector3d& center,
+                                                double radius = 0.5)
+{
+  vtkNew<vtkSphereSource> leaf;
+  leaf->SetCenter(center.GetData());
+  leaf->SetRadius(radius);
+  leaf->Update();
+  return leaf->GetOutput();
+}
+
+} // namespace
 
 int main (int, char *[])
 {
   // PART 1 Make some Data
   // make a tree
-  vtkSmartPointer<vtkMultiBlockDataSet> root =
-    vtkSmartPointer<vtkMultiBlockDataSet>::New();
+  vtkNew<vtkMultiBlockDataSet> root;
 
-  vtkSmartPointer<vtkMultiBlockDataSet> branch =
-    vtkSmartPointer<vtkMultiBlockDataSet>::New();
+  vtkNew<vtkMultiBlockDataSet> branch;
   root->SetBlock(0, branch);
 
   // make some leaves
-  vtkSmartPointer<vtkSphereSource> leaf1 =
-    vtkSmartPointer<vtkSphereSource>::New();
-  leaf1->SetCenter(0,0,0);
-  leaf1->Update();
-  branch->SetBlock(0, leaf1->GetOutput());
-
-  vtkSmartPointer<vtkSphereSource> leaf2 =
-    vtkSmartPointer<vtkSphereSource>::New();
-  leaf2->SetCenter(1.75,2.5,0);
-  leaf2->SetRadius(1.5);
-  leaf2->Update();
-  branch->SetBlock(1, leaf2->GetOutput());
-
-  vtkSmartPointer<vtkSphereSource> leaf3 =
-    vtkSmartPointer<vtkSphereSource>::New();
-  leaf3->SetCenter(4,0,0);
-  leaf3->SetRadius(2);
-  leaf3->Update();
-  root->SetBlock(1, leaf3->GetOutput());
+  branch->SetBlock(0, ::CreateSphereDataSet({0, 0, 0}));
+  branch->SetBlock(1, ::CreateSphereDataSet({1.75, 2.5, 0.0}, 1.5));
+  root->SetBlock(1, ::CreateSphereDataSet({4, 0, 0}, 2.0));
 
   // uncomment to inspect
   //std::cerr << root->GetClassName() << std::endl;
@@ -49,8 +46,7 @@ int main (int, char *[])
 
   // PART 2 Do something with the data
   // a non composite aware filter, the pipeline will iterate
-  vtkSmartPointer<vtkExtractEdges> edges =
-    vtkSmartPointer<vtkExtractEdges>::New();
+  vtkNew<vtkExtractEdges> edges;
   edges->SetInputData(root);
 
   // uncomment to inspect
@@ -63,8 +59,7 @@ int main (int, char *[])
   // this filter aggregates all blocks into one polydata
   // this is handy for display, although fairly limited
   // see vtkCompositePolyDataMapper2 for something better
-  vtkSmartPointer<vtkCompositeDataGeometryFilter> polydata =
-    vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
+  vtkNew<vtkCompositeDataGeometryFilter> polydata;
   polydata->SetInputConnection(edges->GetOutputPort());
 
   // uncomment to inspect
@@ -73,19 +68,15 @@ int main (int, char *[])
   //polydata->GetOutput()->PrintSelf(std::cerr, vtkIndent(0));
 
   // display the data
-  vtkSmartPointer<vtkRenderer> aren = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin  =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> aren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(aren);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(0, polydata->GetOutputPort(0));
-
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   aren->AddActor(actor);
 

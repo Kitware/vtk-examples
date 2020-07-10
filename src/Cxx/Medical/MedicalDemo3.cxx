@@ -33,25 +33,22 @@ int main (int argc, char *argv[])
     return EXIT_FAILURE;
   }
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   std::array<unsigned char , 4> skinColor{{255, 125, 64}};
-    colors->SetColor("SkinColor", skinColor.data());
+  colors->SetColor("SkinColor", skinColor.data());
   std::array<unsigned char , 4> bkg{{51, 77, 102, 255}};
-    colors->SetColor("BkgColor", bkg.data());
+  colors->SetColor("BkgColor", bkg.data());
 
   // Create the renderer, the render window, and the interactor. The
   // renderer draws into the render window, the interactor enables
   // mouse- and keyboard-based interaction with the data within the
   // render window.
   //
-  vtkSmartPointer<vtkRenderer> aRenderer = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> aRenderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(aRenderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Set a background color for the renderer and set the size of the
@@ -65,8 +62,7 @@ int main (int argc, char *argv[])
   // reader uses the FilePrefix in combination with the slice number to
   // construct filenames using the format FilePrefix.%d. (In this case
   // the FilePrefix is the root name of the file: quarter.)
-  vtkSmartPointer<vtkMetaImageReader> reader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
+  vtkNew<vtkMetaImageReader> reader;
   reader->SetFileName (argv[1]);
   reader->Update();
 
@@ -75,24 +71,20 @@ int main (int argc, char *argv[])
   // The triangle stripper is used to create triangle
   // strips from the isosurface; these render much faster on may
   // systems.
-  vtkSmartPointer<vtkMarchingCubes> skinExtractor =
-    vtkSmartPointer<vtkMarchingCubes>::New();
+  vtkNew<vtkMarchingCubes> skinExtractor;
   skinExtractor->SetInputConnection( reader->GetOutputPort());
   skinExtractor->SetValue(0, 500);
   skinExtractor->Update();
 
-  vtkSmartPointer<vtkStripper> skinStripper =
-    vtkSmartPointer<vtkStripper>::New();
+  vtkNew<vtkStripper> skinStripper;
   skinStripper->SetInputConnection(skinExtractor->GetOutputPort());
   skinStripper->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> skinMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> skinMapper;
   skinMapper->SetInputConnection(skinStripper->GetOutputPort());
   skinMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> skin =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> skin;
   skin->SetMapper(skinMapper);
   skin->GetProperty()->SetDiffuseColor(colors->GetColor3d("SkinColor").GetData());
   skin->GetProperty()->SetSpecular(.3);
@@ -103,38 +95,31 @@ int main (int argc, char *argv[])
   // The triangle stripper is used to create triangle
   // strips from the isosurface; these render much faster on may
   // systems.
-  vtkSmartPointer<vtkMarchingCubes> boneExtractor =
-    vtkSmartPointer<vtkMarchingCubes>::New();
+  vtkNew<vtkMarchingCubes> boneExtractor;
   boneExtractor->SetInputConnection(reader->GetOutputPort());
   boneExtractor->SetValue(0, 1150);
 
-  vtkSmartPointer<vtkStripper> boneStripper =
-    vtkSmartPointer<vtkStripper>::New();
+  vtkNew<vtkStripper> boneStripper;
   boneStripper->SetInputConnection(boneExtractor->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> boneMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> boneMapper;
   boneMapper->SetInputConnection(boneStripper->GetOutputPort());
   boneMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> bone =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bone;
   bone->SetMapper(boneMapper);
   bone->GetProperty()->SetDiffuseColor(colors->GetColor3d("Ivory").GetData());
 
   // An outline provides context around the data.
   //
-  vtkSmartPointer<vtkOutlineFilter> outlineData =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outlineData;
   outlineData->SetInputConnection(reader->GetOutputPort());
   outlineData->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapOutline =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapOutline;
   mapOutline->SetInputConnection(outlineData->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outline =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outline;
   outline->SetMapper(mapOutline);
   outline->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
@@ -143,8 +128,7 @@ int main (int argc, char *argv[])
   // different coloration.
 
   // Start by creating a black/white lookup table.
-  vtkSmartPointer<vtkLookupTable> bwLut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> bwLut;
   bwLut->SetTableRange (0, 2000);
   bwLut->SetSaturationRange (0, 0);
   bwLut->SetHueRange (0, 0);
@@ -153,8 +137,7 @@ int main (int argc, char *argv[])
 
   // Now create a lookup table that consists of the full hue circle
   // (from HSV).
-  vtkSmartPointer<vtkLookupTable> hueLut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> hueLut;
   hueLut->SetTableRange (0, 2000);
   hueLut->SetHueRange (0, 1);
   hueLut->SetSaturationRange (1, 1);
@@ -163,8 +146,7 @@ int main (int argc, char *argv[])
 
   // Finally, create a lookup table with a single hue but having a range
   // in the saturation of the hue.
-  vtkSmartPointer<vtkLookupTable> satLut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> satLut;
   satLut->SetTableRange (0, 2000);
   satLut->SetHueRange (.6, .6);
   satLut->SetSaturationRange (0, 1);
@@ -179,42 +161,36 @@ int main (int argc, char *argv[])
   // values, which the vtkImageMapToColors produces.) Note also that by
   // specifying the DisplayExtent, the pipeline requests data of this extent
   // and the vtkImageMapToColors only processes a slice of data.
-  vtkSmartPointer<vtkImageMapToColors> sagittalColors =
-    vtkSmartPointer<vtkImageMapToColors>::New();
+  vtkNew<vtkImageMapToColors> sagittalColors;
   sagittalColors->SetInputConnection(reader->GetOutputPort());
   sagittalColors->SetLookupTable(bwLut);
   sagittalColors->Update();
 
-  vtkSmartPointer<vtkImageActor> sagittal =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> sagittal;
   sagittal->GetMapper()->SetInputConnection(sagittalColors->GetOutputPort());
   sagittal->SetDisplayExtent(128, 128, 0,255, 0,92);
   sagittal->ForceOpaqueOn();
 
   // Create the second (axial) plane of the three planes. We use the
   // same approach as before except that the extent differs.
-  vtkSmartPointer<vtkImageMapToColors> axialColors =
-    vtkSmartPointer<vtkImageMapToColors>::New();
+  vtkNew<vtkImageMapToColors> axialColors;
   axialColors->SetInputConnection(reader->GetOutputPort());
   axialColors->SetLookupTable(hueLut);
   axialColors->Update();
 
-  vtkSmartPointer<vtkImageActor> axial =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> axial;
   axial->GetMapper()->SetInputConnection(axialColors->GetOutputPort());
   axial->SetDisplayExtent(0,255, 0,255, 46,46);
   axial->ForceOpaqueOn();
 
   // Create the third (coronal) plane of the three planes. We use
   // the same approach as before except that the extent differs.
-  vtkSmartPointer<vtkImageMapToColors> coronalColors =
-    vtkSmartPointer<vtkImageMapToColors>::New();
+  vtkNew<vtkImageMapToColors> coronalColors;
   coronalColors->SetInputConnection(reader->GetOutputPort());
   coronalColors->SetLookupTable(satLut);
   coronalColors->Update();
 
-  vtkSmartPointer<vtkImageActor> coronal =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> coronal;
   coronal->GetMapper()->SetInputConnection(coronalColors->GetOutputPort());
   coronal->SetDisplayExtent(0,255, 128,128, 0,92);
   coronal->ForceOpaqueOn();
@@ -224,8 +200,7 @@ int main (int argc, char *argv[])
   // FocalPoint and Position form a vector direction. Later on
   // (ResetCamera() method) this vector is used to position the camera
   // to look at the data in this direction.
-  vtkSmartPointer<vtkCamera> aCamera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> aCamera;
   aCamera->SetViewUp (0, 0, -1);
   aCamera->SetPosition (0, -1, 0);
   aCamera->SetFocalPoint (0, 0, 0);

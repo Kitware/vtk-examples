@@ -34,22 +34,14 @@ int main (int argc, char *argv[])
   }
 
   // Create all of the classes we will need
-  vtkSmartPointer<vtkMetaImageReader> reader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
-  vtkSmartPointer<vtkImageAccumulate> histogram =
-    vtkSmartPointer<vtkImageAccumulate>::New();
-  vtkSmartPointer<vtkDiscreteMarchingCubes> discreteCubes =
-    vtkSmartPointer<vtkDiscreteMarchingCubes>::New();
-  vtkSmartPointer<vtkWindowedSincPolyDataFilter> smoother =
-    vtkSmartPointer<vtkWindowedSincPolyDataFilter>::New();
-  vtkSmartPointer<vtkThreshold> selector =
-    vtkSmartPointer<vtkThreshold>::New();
-  vtkSmartPointer<vtkMaskFields> scalarsOff =
-    vtkSmartPointer<vtkMaskFields>::New();
-  vtkSmartPointer<vtkGeometryFilter> geometry =
-    vtkSmartPointer<vtkGeometryFilter>::New();
-  vtkSmartPointer<vtkXMLPolyDataWriter> writer =
-    vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+  vtkNew<vtkMetaImageReader> reader;
+  vtkNew<vtkImageAccumulate> histogram;
+  vtkNew<vtkDiscreteMarchingCubes> discreteCubes;
+  vtkNew<vtkWindowedSincPolyDataFilter> smoother;
+  vtkNew<vtkThreshold> selector;
+  vtkNew<vtkMaskFields> scalarsOff;
+  vtkNew<vtkGeometryFilter> geometry;
+  vtkNew<vtkXMLPolyDataWriter> writer;
 
   // Define all of the variables
   unsigned int startLabel = atoi(argv[2]);

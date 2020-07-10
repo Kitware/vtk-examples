@@ -27,7 +27,7 @@ namespace
       vtkSmartPointer<vtkSphere>::New();
     sphere->SetRadius(3);
     sphere->SetCenter(5, 5, 5);
-  
+
     scalars->SetNumberOfTuples(dims[0]*dims[1]*dims[2]);
     for (int k=0; k<dims[2]; k++)
     {
@@ -38,9 +38,8 @@ namespace
         for (int i=0; i<dims[0]; i++)
         {
           double x = origin[0] + spacing[0]*i;
-          scalars->SetValue(
-              k*dims[0]*dims[1] + j*dims[0] + i, 
-              sphere->EvaluateFunction(x, y, z));
+          scalars->SetValue(k * dims[0] * dims[1] + j * dims[0] + i,
+                            sphere->EvaluateFunction(x, y, z));
         }
       }
     }
@@ -48,35 +47,32 @@ namespace
 }
 
 int main (int, char *[])
-{  
+{
   // Create and populate the AMR dataset
   // The dataset should look like
   // Level 0
-  //   uniform grid, dimensions 11, 11, 11, AMR box (0, 0, 0) - (9, 9, 9) 
+  //   uniform grid, dimensions 11, 11, 11, AMR box (0, 0, 0) - (9, 9, 9)
   // Level 1 - refinement ratio : 2
   //   uniform grid, dimensions 11, 11, 11, AMR box (0, 0, 0) - (9, 9, 9)
   //   uniform grid, dimensions 11, 11, 11, AMR box (10, 10, 10) - (19, 19, 19)
   // Use MakeScalars() above to fill the scalar arrays
 
-  vtkSmartPointer<vtkOverlappingAMR> amr = 
-    vtkSmartPointer<vtkOverlappingAMR>::New();
+  vtkNew<vtkOverlappingAMR> amr;
   int blocksPerLevel[] = { 1, 2 };
   amr->Initialize(2, blocksPerLevel);
-    
+
   double origin[3] = {0.0, 0.0, 0.0};
   double spacing[3] = {1.0, 1.0, 1.0};
   int dims[3] = {11, 11, 11};
 
-  vtkSmartPointer<vtkUniformGrid> ug1 =
-    vtkSmartPointer<vtkUniformGrid>::New();
+  vtkNew<vtkUniformGrid> ug1;
   // Geometry
   ug1->SetOrigin(origin);
   ug1->SetSpacing(spacing);
   ug1->SetDimensions(dims);
-  
+
   // Data
-  vtkSmartPointer<vtkFloatArray> scalars = 
-    vtkSmartPointer<vtkFloatArray>::New(); 
+  vtkNew<vtkFloatArray> scalars;
   ug1->GetPointData()->SetScalars(scalars);
   MakeScalars(dims, origin, spacing, scalars);
 
@@ -88,17 +84,16 @@ int main (int, char *[])
 
   double spacing2[3] = {0.5, 0.5, 0.5};
 
-  vtkSmartPointer<vtkUniformGrid> ug2 =
-    vtkSmartPointer<vtkUniformGrid>::New();
+  vtkNew<vtkUniformGrid> ug2;
   // Geometry
   ug2->SetOrigin(origin);
   ug2->SetSpacing(spacing2);
   ug2->SetDimensions(dims);
-  
+
   // Data
-  scalars = vtkSmartPointer<vtkFloatArray>::New(); 
-  ug2->GetPointData()->SetScalars(scalars);
-  MakeScalars(dims, origin, spacing2, scalars);
+  vtkNew<vtkFloatArray> scalars2;
+  ug2->GetPointData()->SetScalars(scalars2);
+  MakeScalars(dims, origin, spacing2, scalars2);
 
   int lo2[3] = {0, 0, 0};
   int hi2[3] = {9, 9, 9};
@@ -108,77 +103,62 @@ int main (int, char *[])
 
   double origin3[3] = {5, 5, 5};
 
-  vtkSmartPointer<vtkUniformGrid> ug3 =
-    vtkSmartPointer<vtkUniformGrid>::New();
+  vtkNew<vtkUniformGrid> ug3;
   // Geometry
   ug3->SetOrigin(origin3);
   ug3->SetSpacing(spacing2);
   ug3->SetDimensions(dims);
-  
+
   // Data
-  scalars = vtkSmartPointer<vtkFloatArray>::New(); 
-  ug3->GetPointData()->SetScalars(scalars);
-  MakeScalars(dims, origin3, spacing2, scalars);
+  vtkNew<vtkFloatArray> scalars3;
+  ug3->GetPointData()->SetScalars(scalars3);
+  MakeScalars(dims, origin3, spacing2, scalars3);
 
   int lo3[3] = {10, 10, 10};
   int hi3[3] = {19, 19, 19};
   vtkAMRBox box3(lo3, hi3);
   amr->SetAMRBox(1, 1, box3);
   amr->SetDataSet(1, 1, ug3);
-  
+
   amr->SetRefinementRatio(0, 2);
 
   vtkAMRUtilities::BlankCells(amr);
-  
-  vtkSmartPointer<vtkOutlineFilter> of = 
-    vtkSmartPointer<vtkOutlineFilter>::New();
+
+  vtkNew<vtkOutlineFilter> of;
   of->SetInputData(amr);
-  
-  vtkSmartPointer<vtkCompositeDataGeometryFilter> geomFilter =
-    vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
+
+  vtkNew<vtkCompositeDataGeometryFilter> geomFilter;
   geomFilter->SetInputConnection(of->GetOutputPort());
 
   // Create an iso-surface - at 10
-  vtkSmartPointer<vtkContourFilter> cf = 
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> cf;
   cf->SetInputData(amr);
   cf->SetNumberOfContours(1);
   cf->SetValue(0, 10.0);
 
-  vtkSmartPointer<vtkCompositeDataGeometryFilter> geomFilter2 =
-    vtkSmartPointer<vtkCompositeDataGeometryFilter>::New();
+  vtkNew<vtkCompositeDataGeometryFilter> geomFilter2;
   geomFilter2->SetInputConnection(cf->GetOutputPort());
 
   // create the render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderer> aren =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin  = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> aren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(aren);
-  
-  vtkSmartPointer<vtkRenderWindowInteractor> iren = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
-  
+
   // associate the geometry with a mapper and the mapper to an actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(of->GetOutputPort());
-  
-  vtkSmartPointer<vtkActor> actor1 =
-    vtkSmartPointer<vtkActor>::New();
-     
+
+  vtkNew<vtkActor> actor1;
   actor1->SetMapper(mapper);
 
   // associate the geometry with a mapper and the mapper to an actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper2 = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  
+  vtkNew<vtkPolyDataMapper> mapper2;
   mapper2->SetInputConnection(geomFilter2->GetOutputPort());
-  
-  vtkSmartPointer<vtkActor> actor2 =
-    vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> actor2;
   actor2->SetMapper(mapper2);
 
   // add the actor to the renderer and start handling events

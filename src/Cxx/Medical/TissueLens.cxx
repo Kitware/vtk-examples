@@ -29,96 +29,82 @@ int main (int argc, char *argv[])
   }
 
   // Read the volume data
-  vtkSmartPointer<vtkMetaImageReader> reader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
+  vtkNew<vtkMetaImageReader> reader;
   reader->SetFileName (argv[1]);
   reader->Update();
 
   // An isosurface, or contour value of 500 is known to correspond to the
   // skin of the patient.
-  vtkSmartPointer<vtkMarchingCubes> skinExtractor =
-    vtkSmartPointer<vtkMarchingCubes>::New();
+  vtkNew<vtkMarchingCubes> skinExtractor;
   skinExtractor->SetInputConnection(reader->GetOutputPort());
   skinExtractor->SetValue(0, 500);
 
   // Define a spherical clip function to clip the isosurface
-  vtkSmartPointer<vtkSphere> clipFunction =
-    vtkSmartPointer<vtkSphere>::New();
+  vtkNew<vtkSphere> clipFunction;
   clipFunction->SetRadius(50);
   clipFunction->SetCenter(73, 52, 15);
 
   // Clip the isosurface with a sphere
-  vtkSmartPointer<vtkClipDataSet> skinClip =
-    vtkSmartPointer<vtkClipDataSet>::New();
+  vtkNew<vtkClipDataSet> skinClip;
   skinClip->SetInputConnection(skinExtractor->GetOutputPort());
   skinClip->SetClipFunction(clipFunction);
   skinClip->SetValue(0);
   skinClip->GenerateClipScalarsOn();
   skinClip->Update();
 
-  vtkSmartPointer<vtkDataSetMapper> skinMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> skinMapper;
   skinMapper->SetInputConnection(skinClip->GetOutputPort());
   skinMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> skin =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> skin;
   skin->SetMapper(skinMapper);
   skin->GetProperty()->SetDiffuseColor(1, .49, .25);
 
-  vtkSmartPointer<vtkProperty> backProp =
-    vtkSmartPointer<vtkProperty>::New();
+  vtkNew<vtkProperty> backProp;
   backProp->SetDiffuseColor(0.8900, 0.8100, 0.3400);
   skin->SetBackfaceProperty(backProp);
 
   // Define a model for the "lens". Its geometry matches the implicit
   // sphere used to clip the isosurface
-  vtkSmartPointer<vtkSphereSource> lensModel =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> lensModel;
   lensModel->SetRadius(50);
   lensModel->SetCenter(73, 52, 15);
   lensModel->SetPhiResolution(201);
   lensModel->SetThetaResolution(101);
 
   // Sample the input volume with the lens model geometry
-  vtkSmartPointer<vtkProbeFilter> lensProbe =
-    vtkSmartPointer<vtkProbeFilter>::New();
+  vtkNew<vtkProbeFilter> lensProbe;
   lensProbe->SetInputConnection(lensModel->GetOutputPort());
   lensProbe->SetSourceConnection(reader->GetOutputPort());
 
   // Clip the lens data with the isosurface value
-  vtkSmartPointer<vtkClipDataSet> lensClip =
-    vtkSmartPointer<vtkClipDataSet>::New();
+  vtkNew<vtkClipDataSet> lensClip;
   lensClip->SetInputConnection(lensProbe->GetOutputPort());
   lensClip->SetValue(500);
   lensClip->GenerateClipScalarsOff();
   lensClip->Update();
 
   // Define a suitable grayscale lut
-  vtkSmartPointer<vtkLookupTable> bwLut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> bwLut;
   bwLut->SetTableRange (0, 2048);
   bwLut->SetSaturationRange (0, 0);
   bwLut->SetHueRange (0, 0);
   bwLut->SetValueRange (.2, 1);
   bwLut->Build();
 
-  vtkSmartPointer<vtkDataSetMapper> lensMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> lensMapper;
   lensMapper->SetInputConnection(lensClip->GetOutputPort());
   lensMapper->SetScalarRange(lensClip->GetOutput()->GetScalarRange());
   lensMapper->SetLookupTable(bwLut);
 
-  vtkSmartPointer<vtkActor> lens =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> lens;
   lens->SetMapper(lensMapper);
 
   // It is convenient to create an initial view of the data. The FocalPoint
   // and Position form a vector direction. Later on (ResetCamera() method)
   // this vector is used to position the camera to look at the data in
   // this direction.
-  vtkSmartPointer<vtkCamera> aCamera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> aCamera;
   aCamera->SetViewUp (0, 0, -1);
   aCamera->SetPosition (0, -1, 0);
   aCamera->SetFocalPoint (0, 0, 0);
@@ -130,14 +116,11 @@ int main (int argc, char *argv[])
   // draws into the render window, the interactor enables mouse- and
   // keyboard-based interaction with the data within the render window.
   //
-  vtkSmartPointer<vtkRenderer> aRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> aRenderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(aRenderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Actors are added to the renderer. An initial camera view is created.
