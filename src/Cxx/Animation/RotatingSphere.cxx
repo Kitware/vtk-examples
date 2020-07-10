@@ -7,6 +7,7 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
+#include <vtkNew.h>
 
 class vtkTimerCallback2 : public vtkCommand
 {
@@ -50,10 +51,10 @@ public:
 
 int main(int, char*[])
 {
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create a sphere
-  auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(0.0, 0.0, 0.0);
   sphereSource->SetRadius(1.0);
   sphereSource->SetThetaResolution(15);
@@ -61,21 +62,20 @@ int main(int, char*[])
   sphereSource->Update();
 
   // Create a mapper and actor
-  auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->RotateX(90);
   actor->GetProperty()->SetRepresentationToWireframe();
 
   // Create a renderer, render window, and interactor
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
 
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
@@ -89,7 +89,7 @@ int main(int, char*[])
   renderWindowInteractor->Initialize();
 
   // Sign up to receive TimerEvent
-  auto cb = vtkSmartPointer<vtkTimerCallback2>::New();
+  vtkNew<vtkTimerCallback2> cb;
   cb->actor = actor;
 
   renderWindowInteractor->AddObserver(vtkCommand::TimerEvent, cb);

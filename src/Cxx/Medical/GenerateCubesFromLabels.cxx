@@ -45,16 +45,14 @@ int main (int argc, char *argv[])
   // 2) Convert point data to cell data
   // 3) Convert to geometry and display
 
-  vtkSmartPointer<vtkMetaImageReader> reader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
+  vtkNew<vtkMetaImageReader> reader;
   reader->SetFileName(argv[1]);
   reader->Update();
 
   // Pad the volume so that we can change the point data into cell
   // data.
   int *extent = reader->GetOutput()->GetExtent();
-  vtkSmartPointer<vtkImageWrapPad> pad =
-    vtkSmartPointer<vtkImageWrapPad>::New();
+  vtkNew<vtkImageWrapPad> pad;
   pad->SetInputConnection(reader->GetOutputPort());
   pad->SetOutputWholeExtent(extent[0], extent[1] + 1,
                             extent[2], extent[3] + 1,
@@ -65,8 +63,7 @@ int main (int argc, char *argv[])
   pad->GetOutput()->GetCellData()->SetScalars(
     reader->GetOutput()->GetPointData()->GetScalars());
 
-  vtkSmartPointer<vtkThreshold> selector =
-    vtkSmartPointer<vtkThreshold>::New();
+  vtkNew<vtkThreshold> selector;
   selector->SetInputArrayToProcess(0, 0, 0,
                                    vtkDataObject::FIELD_ASSOCIATION_CELLS,
                                    vtkDataSetAttributes::SCALARS);
@@ -75,37 +72,29 @@ int main (int argc, char *argv[])
   selector->Update();
 
   // Shift the geometry by 1/2
-  vtkSmartPointer<vtkTransform> transform =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform;
   transform->Translate (-.5, -.5, -.5);
 
-  vtkSmartPointer<vtkTransformFilter> transformModel =
-    vtkSmartPointer<vtkTransformFilter>::New();
+  vtkNew<vtkTransformFilter> transformModel;
   transformModel->SetTransform(transform);
   transformModel->SetInputConnection(selector->GetOutputPort());
 
-  vtkSmartPointer<vtkGeometryFilter> geometry =
-    vtkSmartPointer<vtkGeometryFilter>::New();
+  vtkNew<vtkGeometryFilter> geometry;
   geometry->SetInputConnection(transformModel->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(geometry->GetOutputPort());
   mapper->SetScalarRange(startLabel, endLabel);
   mapper->SetScalarModeToUseCellData();
   mapper->SetColorModeToMapScalars();
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
