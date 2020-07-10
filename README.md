@@ -1,5 +1,3 @@
-# VTKEx
+# vtk-examples
 
-This is a mirror of the VTK examples, found at [lorensen.github.io/VTKExamples](https://lorensen.github.io/VTKExamples).
-
-It is used for testing.
+This is the new VTK Examples repository based on the original repository found at [lorensen.github.io/VTKExamples](https://lorensen.github.io/VTKExamples).
