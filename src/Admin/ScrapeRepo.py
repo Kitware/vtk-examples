@@ -35,14 +35,13 @@ def get_program_parameters():
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('repo_dir', nargs='?', default='src',
-                        help='The local directory in the VTK Examples folder containing the source files e.g. src')
-    parser.add_argument('doc_dir', nargs='?', default='docs',
-                        help='The directory to receive the markdown pages in the VTK Examples folder e.g. docs')
+                        help='The local path in the VTK Examples folder containing the source files e.g. src')
+    parser.add_argument('web_path', nargs='?', default='docs', help='The path to the web folder')
     parser.add_argument('repo_url',
                         help='repo_url is the github repo URL e.g. https://github.com/**YOUR_NAME**/VTKExamples')
     parser.add_argument('vtk_src', help='The local directory containing the VTK source')
     args = parser.parse_args()
-    return args.repo_dir, args.doc_dir, args.repo_url, args.vtk_src
+    return args.repo_dir, args.web_path, args.repo_url, args.vtk_src
 
 
 class ElapsedTime:
@@ -465,7 +464,7 @@ def get_example_line(s):
     return ['']
 
 
-def add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_dir, test_images, from_file, to_file,
+def add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_path, test_images, from_file, to_file,
                              stats):
     """
     Add thumbnails, and language links, then copy to the doc_dir.
@@ -481,8 +480,8 @@ def add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_di
     :return:
     """
     from_path = make_path(root_path, repo_dir, from_file)
-    to_path = make_path(root_path, doc_dir, to_file)
-    baseline_path = make_path(root_path, repo_dir, baseline_dir)
+    to_path = make_path(doc_dir, to_file)
+    # baseline_path = make_path(root_path, repo_dir, baseline_dir)
     with open(from_path, 'r') as md_file:
         lines = dict()
         line_count = 0
@@ -498,7 +497,7 @@ def add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_di
                 example_dir = os.path.split(example_line)[0]
                 baseline = make_path(baseline_path, example_dir, "Test" + example_name + ".png")
                 if os.path.exists(baseline):
-                    baseline_url = make_path(repo_url, "blob/master", "src", baseline_dir, example_dir,
+                    baseline_url = make_path(repo_url, "blob/master", "src/Testing/Baseline", example_dir,
                                              "Test" + example_name + ".png")
                     x[0] = True
                     x.append(baseline_url)
@@ -736,7 +735,7 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
     code_to_page[example_name + lang_ext] = '/' + lang + '/' + kit_name + '/' + example_name
 
 
-def make_instruction_pages(repo_url, root_path, repo_name, user_name, repo_dir, doc_dir, from_file, to_file):
+def make_instruction_pages(repo_url, root_path, repo_name, user_name, repo_dir, doc_path, from_file, to_file):
     """
     Make the instruction pages.
 
@@ -753,7 +752,7 @@ def make_instruction_pages(repo_url, root_path, repo_name, user_name, repo_dir, 
     :return:
     """
     src = make_path(root_path, repo_dir, 'Instructions', from_file)
-    dest = make_path(root_path, doc_dir, 'Instructions', to_file)
+    dest = make_path(doc_path, 'Instructions', to_file)
     site_url = 'https://' + user_name + '.github.io/' + repo_name + '/site/'
     patterns = {'__BLOB__': repo_url + '/blob/master',
                 '__TREE__': repo_url + '/tree/master',
@@ -779,7 +778,7 @@ def make_instruction_pages(repo_url, root_path, repo_name, user_name, repo_dir, 
             ofh.write(line)
 
 
-def make_tarballs(repo_path, example_to_file_names, example_to_CMake, ref_mtime):
+def make_tarballs(repo_path, web_path, example_to_file_names, example_to_CMake, ref_mtime):
     """
     Create tarballs for each example.
     :param repo_path: Repository path.
@@ -794,7 +793,7 @@ def make_tarballs(repo_path, example_to_file_names, example_to_CMake, ref_mtime)
     # Create the Tarballs directory in the source tree if not present
     # If it does not exist, assume the tarball repo has not been cloned
     # and we need to ignore tar files
-    tar_dir = make_path(repo_path, 'Tarballs')
+    tar_dir = make_path(web_path, 'Tarballs')
     if not os.path.exists(tar_dir):
         os.makedirs(tar_dir)
         with open(make_path(tar_dir, '.gitignore'), 'w') as ofh:
@@ -840,7 +839,7 @@ def make_tarballs(repo_path, example_to_file_names, example_to_CMake, ref_mtime)
 
         # Now create the tar file for the example
         # The tarballs are stored in the source tree
-        tar = tarfile.open(make_path(repo_path, 'Tarballs', example + '.tar'), 'w')
+        tar = tarfile.open(make_path(web_path, 'Tarballs', example + '.tar'), 'w')
         tar.add(src_dir, arcname=example)
         tar.close()
 
@@ -889,13 +888,11 @@ def main():
     stats['thumb_count'] = 0
     stats['doxy_count'] = 0
 
-    repo_dir, doc_dir, repo_url, vtk_src_dir = get_program_parameters()
+    repo_dir, web_path, repo_url, vtk_src_dir = get_program_parameters()
 
     sub_str = './'
     if repo_dir.startswith(sub_str):
         repo_dir = re.sub(sub_str, '', repo_dir)
-    if doc_dir.startswith(sub_str):
-        doc_dir = re.sub(sub_str, '', doc_dir)
     # Find the root path, this program resides in the Admin folder so go up two levels.
     root_path = os.path.dirname(os.path.abspath(__file__))
     for i in range(2):
@@ -906,14 +903,14 @@ def main():
     user_name = list(filter(None, repo_url.split('/')))[-2]
 
     repo_path = make_path(root_path, repo_dir)
-    doc_path = make_path(root_path, doc_dir)
+    doc_path = make_path(web_path, 'docs')
 
     # Make sure the wiki docs folder exists
     if not os.path.exists(doc_path):
         os.makedirs(doc_path)
 
     # The cache
-    cache_path = make_path(repo_path, 'Cache')
+    cache_path = make_path(web_path, 'src/Cache')
     if not os.path.exists(cache_path):
         os.makedirs(cache_path)
 
@@ -923,8 +920,8 @@ def main():
     vtk_modules_cache_path = make_path(cache_path, 'VTKModules.cache')
     vtk_modules_dict = load_vtk_modules_cache(vtk_modules_cache_path)
 
-    #  Baseline top level path relative to src
-    baseline_src_path = 'Testing/Baseline'
+    #  Baseline images path (assumed to exist)
+    baseline_src_path = make_path(web_path, 'src/Testing/Baseline/')
 
     # Make the reference mtime to be the most recent of the two CMakeLists templates
     ref_stat1 = os.stat(make_path(repo_path, 'Admin/VTKQtCMakeLists'))
@@ -956,7 +953,7 @@ def main():
     pages = ['Cxx.md', 'Python.md', 'CSharp.md', 'Java.md', 'JavaScript.md', 'Cxx/Snippets.md', 'Python/Snippets.md',
              'Java/Snippets.md', 'VTKBookFigures.md', 'VTKFileFormats.md']
     for p in pages:
-        add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_src_path, test_images_dict, p, p,
+        add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_path, baseline_src_path, test_images_dict, p, p,
                                  stats)
 
     # C++ Snippets
@@ -999,8 +996,8 @@ def main():
         dest = make_path(doc_path, k, 'Coverage')
         if not os.path.exists(dest):
             os.makedirs(dest)
-        shutil.copy(make_path(repo_path, 'Coverage', k + 'VTKClassesNotUsed.md'), dest)
-        src = make_path(repo_path, 'Coverage', k + 'VTKClassesUsed.md')
+        shutil.copy(make_path(web_path, 'src/Coverage', k + 'VTKClassesNotUsed.md'), dest)
+        src = make_path(web_path, 'src/Coverage', k + 'VTKClassesUsed.md')
         with open(src, 'r') as ifh:
             lines = ifh.readlines()
         dest = make_path(doc_path, k, 'Coverage', k + 'VTKClassesUsed.md')
@@ -1017,7 +1014,7 @@ def main():
     instruction_files = ['ForUsers.md', 'ForDevelopers.md', 'ForAdministrators.md', 'Guidelines.md',
                          'ConvertingFiguresToExamples.md']
     for f in instruction_files:
-        make_instruction_pages(repo_url, root_path, repo_name, user_name, repo_dir, doc_dir, f, f)
+        make_instruction_pages(repo_url, root_path, repo_name, user_name, repo_dir, doc_path, f, f)
 
     # Copy VTKBook files
     if not os.path.exists(make_path(doc_path, 'VTKBook')):
@@ -1107,7 +1104,7 @@ def main():
             index_file.write("<br>\n")
 
     # Create tarballs for each example
-    make_tarballs(repo_path, example_to_file_names, example_to_CMake, ref_mtime)
+    make_tarballs(repo_path, web_path, example_to_file_names, example_to_CMake, ref_mtime)
 
     # Update the test image cache file if necessary
     if stats['test_image_misses'] > 0:

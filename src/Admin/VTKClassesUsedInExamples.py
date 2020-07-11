@@ -1,17 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-
 import os
 import re
-
-try:
-    from urllib.request import urlopen
-except ImportError:
-    # urllib.request does not exist in Python 2.7
-    from urllib2 import urlopen
 from collections import defaultdict
+from urllib.request import urlopen
 
 
 def get_program_parameters():
@@ -24,7 +17,7 @@ Typical usage:
    To produce tables of classes used and those not used in some_path/VTKExamples/src:
       VTKClassesUsedInExamples.py some_path/VTKExamples/src -u
 
-   The markdown tables are written to some_path/VTKExamples/src/Coverage
+   The markdown tables are written to some_path/src/Coverage
 
    Note:
       To add links to the VTK class documentation on the web, just add -a as a parameter.
@@ -33,6 +26,8 @@ Typical usage:
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('vtk_examples', help='The path to the VTK example source files.')
+    parser.add_argument('coverage_dest',
+                        help='The path to the folder to store the coverage files. Usually web_dir/src/Coverage')
     parser.add_argument('-c', '--columns',
                         help='Specify the number of columns for unused VTK classes output, default is 5.', nargs='?',
                         const=5, type=int, default=5)
@@ -45,7 +40,8 @@ Typical usage:
     parser.add_argument('-a', '--add_vtk_html', help='Add html paths to the VTK classes.', action='store_true')
 
     args = parser.parse_args()
-    return args.vtk_examples, args.columns, args.excluded_columns, args.unused_vtk, args.add_vtk_html
+    return args.vtk_examples, args.coverage_dest, args.columns, args.excluded_columns,\
+           args.unused_vtk, args.add_vtk_html
 
 
 def print_table(table, filename):
@@ -97,9 +93,10 @@ class VTKClassesInExamples(object):
     Determine what classes are being used or not used in the examples.
     """
 
-    def __init__(self, base_directory, columns, excluded_columns, unused_vtk, add_vtk_html):
+    def __init__(self, base_directory, output_directory, columns, excluded_columns, unused_vtk, add_vtk_html):
         """
         :param base_directory: The path to the VTK Examples sources, usually some_path/VTKExamples/src
+        :param output_directory: Where the coverage file will be written.
         :param columns: When generating the classes not used table, the number of columns to use.
         :param excluded_columns: When generating the excluded classes table, the number of columns to use.
         :param unused_vtk: True if the unused VTK class tables are to be generated.
@@ -115,6 +112,7 @@ class VTKClassesInExamples(object):
         self.vtk_html_fmt = '[{:s}](http://www.vtk.org/doc/nightly/html/{:s}#details)'
 
         self.base_directory = base_directory
+        self.output_directory = output_directory
         self.columns = columns
         self.excluded_columns = excluded_columns
         self.unused_vtk = unused_vtk
@@ -383,18 +381,21 @@ class VTKClassesInExamples(object):
             raise RuntimeError('The classes used tables have not been built.')
         if self.unused_vtk and not self.not_used_tables_built:
             raise RuntimeError('The classes not used tables have not been built. Enable -u.')
-        pth = os.path.join(self.base_directory, 'Coverage')
+        if not os.path.exists(self.output_directory):
+            os.makedirs(self.output_directory)
         for eg in self.example_types:
-            fn = os.path.join(pth, eg + 'VTKClassesUsed')
-            print_table(self.classes_used_table[eg], fn)
             if self.unused_vtk:
-                fn = os.path.join(pth, eg + 'VTKClassesNotUsed')
+                fn = os.path.join(self.output_directory, eg + 'VTKClassesNotUsed')
                 print_table(self.classes_not_used_table[eg], fn)
+            else:
+                fn = os.path.join(self.output_directory, eg + 'VTKClassesUsed')
+                print_table(self.classes_used_table[eg], fn)
 
 
 def main():
-    example_source, columns, excluded_columns, unused_vtk, add_vtk_html = get_program_parameters()
-    vtk_classes = VTKClassesInExamples(example_source, columns, excluded_columns, unused_vtk, add_vtk_html)
+    example_source, coverage_dest, columns, excluded_columns, unused_vtk, add_vtk_html = get_program_parameters()
+    vtk_classes = VTKClassesInExamples(example_source, coverage_dest, columns, excluded_columns, unused_vtk,
+                                       add_vtk_html)
     vtk_classes.build_tables()
     vtk_classes.print_tables()
 

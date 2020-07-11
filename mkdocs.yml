@@ -1,8 +1,8 @@
 # Change these to reflect the user and site details.
-site_name: VTKEx
-site_url: https://ajpmaclean.github.io/VTKEx/site/
-repo_name: ajpmaclean/VTKEx
-repo_url: https://github.com/ajpmaclean/VTKEx
+site_name: web-test
+site_url: https://ajpmaclean.github.io/web-test/site/
+repo_name: ajpmaclean/web-test
+repo_url: https://github.com/ajpmaclean/web-test
 
 theme:
     name: material

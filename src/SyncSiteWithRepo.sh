@@ -7,66 +7,69 @@
 #
 if [ $# -lt 2 ]
   then
-  echo "Usage: SyncSiteWithRepo REPO_URL VTK_SOURCE_DIR"
-  echo "e.g  : ./src/SyncSiteWithRepo.sh https://github.com/<github_username>/VTKExamples /home/<username>/Development/Kitware/src/VTK/"
-  echo "e.g  : ./src/SyncSiteWithRepo.sh https://github.com/ajpmaclean/VTKEx /home/amaclean/Development/Kitware/src/VTK/"
+  echo "Usage: SyncSiteWithRepo REPO_URL REPO_DIR VTK_SOURCE_DIR"
+  echo "e.g  : ./src/SyncSiteWithRepo.sh https://github.com/<github_username>/VTKExamples /home/<username>/Development/Kitware/src/web-test /home/<username>/Development/Kitware/src/VTK/"
+  echo "e.g  : ./src/SyncSiteWithRepo.sh https://github.com/ajpmaclean/VTKEx /home/amaclean/Development/Kitware/src/web-test /home/amaclean/Development/Kitware/src/VTK/"
   echo "Note  : This is run from the top-level VTKExamples directory."
   echo "e.g  : /home/<username>/Development/Kitware/src/VTKExamples/"
   exit 1
 fi
-REPO=$1
-VTK_SOURCE_DIR=$2
-# Make sure the repo site is up
-echo "Synchronizing the VTKExamples site with the repository."
-# HOST=www.github.com
-# echo "0) Can we access the repo?"
-# ping -c 1 $HOST &> /dev/null
-# if test "${?}" != 0
-#   then
-#   echo "VTKExamples: $HOST is not accessible. Try again later"
-#   exit 1
-# fi
+REPO_URL=$1
+REPO_DIR=$2
+VTK_DIR=$3
 
-# echo "1) Pull updates from master repositories"
-# git pull
-#if ( test -d src/Tarballs ); then
-# (cd src/Tarballs; git checkout .)
-# (cd src/Tarballs; git pull origin master)
-# (cd src/Tarballs; rm *.tar)
-#fi
+echo "Synchronizing the vtk-examples site with the repository folder."
+echo "Repository URL: "$REPO_URL
+echo "Repository DIR: "$REPO_DIR
+echo "VTK Source DIR: "$VTK_DIR
+
+echo "1) Copy the baseline images and other essential files"
+rsync -rv --append-verify index.html ${REPO_DIR}
+rsync -rv --append-verify LICENSE ${REPO_DIR}
+rsync -rv --append-verify mkdocs.yml ${REPO_DIR}
+rsync -rv --append-verify VTKColorSeriesPatches.html ${REPO_DIR}
+rsync -rv --append-verify VTKNamedColorPatches.html ${REPO_DIR}
+rsync -rv --append-verify _layouts/ ${REPO_DIR}/_layouts
+rsync -rv --append-verify custom_theme/ ${REPO_DIR}/custom_theme
+rsync -rv --append-verify src/Artifacts/ ${REPO_DIR}/src/Artifacts
+rsync -rv --append-verify src/Images/ ${REPO_DIR}/src/Images
+rsync -rv --append-verify src/stylesheets/ ${REPO_DIR}/src/stylesheets
+mkdir -p ${REPO_DIR}/src/Testing/Baseline/
+rsync -rv --append-verify src/Testing/Baseline/ ${REPO_DIR}/src/Testing/Baseline/
+cp web_gitignore ${REPO_DIR}/.gitignore
 
 echo "2) Create coverage files"
-(cd src/Admin; python ./VTKClassesUsedInExamples.py -a ..; python ./VTKClassesUsedInExamples.py -a -u ..)
+(cd src/Admin; python ./VTKClassesUsedInExamples.py -a .. ${REPO_DIR}/src/Coverage)
+(cd src/Admin; python ./VTKClassesUsedInExamples.py -a -u  .. ${REPO_DIR}/src/Coverage)
 
 echo "3) Scrape the repo"
-rm -rf docs/*
-rm -rf site/*
-# Assumes src, docs by default for the repo_dir and the doc_dir.
-src/Admin/ScrapeRepo.py ${REPO} ${VTK_SOURCE_DIR}
+rm -rf build/docs/*
+rm -rf build/site/*
+src/Admin/ScrapeRepo.py src ${REPO_DIR} ${REPO_URL} ${VTK_DIR}
 
 echo "4) Check for a successful scrape"
-pushd docs
+pushd ${REPO_DIR}/docs
 count=$((`find . -name \*.md | wc -l`))
 popd
 expected=800
 if test $count -lt $expected; then
-   echo VTKExamples/Admin/ScrapeRepo failed
-   echo VTKExamples: Expected at least $expected md files but only found $count md
+   echo Admin/ScrapeRepo failed
+   echo Expected at least $expected markdown files but only found $count files
    git checkout .
    exit 1
 fi
 
 echo "5) Update the html pages"
-mkdir docs/stylesheets
-cp src/stylesheets/extra.css docs/stylesheets/extra.css
+mkdir -p ${REPO_DIR}/docs/stylesheets
+cp ${REPO_DIR}/src/stylesheets/extra.css ${REPO_DIR}/docs/stylesheets/extra.css
+pushd ${REPO_DIR}
 mkdocs build
+popd
 
-echo "6) Copy sitemap.xml"
-cp src/Admin/sitemap.xml site/sitemap.xml
-rm site/mkdocs/search_index.json
-
-echo "6.1 Modify highlight color to semitransparent Lavender"
-(cd site/assets/stylesheets; sed -i -e 's/background-color:rgba(255,235,59,\.5)/background-color:rgba(230,230,250,0.6)/g' application.*.css)
+echo "6 Modify highlight color to semitransparent Lavender"
+pushd ${REPO_DIR}/site/assets/stylesheets
+sed -i -e 's/background-color:rgba(255,235,59,\.5)/background-color:rgba(230,230,250,0.6)/g' application.*.css
+popd
 
 #####################
 #echo "Premature exit for testing"
@@ -74,8 +77,11 @@ echo "6.1 Modify highlight color to semitransparent Lavender"
 
 #####################
 echo "7) Minify Html"
-(cd site; find . -name index.html -exec htmlmin {} {} \;)
+pushd ${REPO_DIR}/site
+find . -name index.html -exec htmlmin {} {} \;
+popd
 
+pushd ${REPO_DIR}
 echo "8) Process modified files"
 git commit -m "SYNC: Files modified in the repo." `git status | grep modified: | cut -d":" -f2,2`
 
@@ -97,3 +103,4 @@ fi
 
 echo "10) Push the changes"
 git push
+popd

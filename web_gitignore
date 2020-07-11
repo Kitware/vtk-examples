@@ -1,0 +1,9 @@
+# This file is copied to the Web Site folder and renamed to .gitignore.
+# These folders are used for generating the web site and are
+# not needed on the site.
+docs/
+src/Coverage
+_layouts/
+custom_theme/
+index.html
+mkdocs.yml
