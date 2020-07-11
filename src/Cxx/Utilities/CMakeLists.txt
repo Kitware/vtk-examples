@@ -12,6 +12,7 @@ if(NOT VTK_BINARY_DIR)
     vtkCommonTransforms
     vtkFiltersCore
     vtkFiltersGeneral
+    vtkFiltersGeometry
     vtkFiltersModeling
     vtkFiltersProgrammable
     vtkFiltersSources
@@ -69,6 +70,7 @@ if (BUILD_TESTING)
     SaveSceneToFile
     ViewportBorders
     ZBuffer
+    RenderScalarToFloatBuffer
     )
   set(DATA ${WikiExamples_SOURCE_DIR}/src/Testing/Data)
   set(TEMP ${WikiExamples_BINARY_DIR}/Testing/Temporary)
@@ -87,6 +89,9 @@ if (BUILD_TESTING)
 
   add_test(${KIT}-ZBuffer ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestZBuffer ${DATA}/Bunny.vtp ${TEMP}/ZBuffer.bmp)
+
+  add_test(${KIT}-RenderScalarToFloatBuffer ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestRenderScalarToFloatBuffer ${DATA}/uGridEx.vtk scalars ${TEMP}/RenderScalarToFloatBuffer.vti)
 
   include(${WikiExamples_SOURCE_DIR}/CMake/ExamplesTesting.cmake)
 
