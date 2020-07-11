@@ -664,6 +664,7 @@ This section includes vtkUnstructuredGrid.
 [ViewportBorders](/Cxx/Utilities/ViewportBorders) |  | Draw a border around each viewport.
 [VisualDebugging](/Cxx/Demos/VisualDebugging) |  | Update the screen from inside an algorithm.
 [ZBuffer](/Cxx/Utilities/ZBuffer) | vtkRenderer | zbuffer.
+[RenderScalarToFloatBuffer](/Cxx/Utilities/RenderScalarToFloatBuffer) | | Demonstrates how to render scalars in a vtkPolyData object into a vtkFloatArray buffer for further processing.
 
 ### Arrays
 
