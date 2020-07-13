@@ -1,6 +1,6 @@
 ## Users
 
-If you want to use the examples [repository](__REPOSITORY__), you have several options. If you are a VTK Example Developer, [go here](../ForDevelopers) or a VTK Example Administrator [go here](../ForAdministrators).
+If you want to use the examples repository [VTK Examples](__REPOSITORY__), you have several options. If you are a VTK Example Developer, [go here](../ForDevelopers) or a VTK Example Administrator [go here](../ForAdministrators).
 
 ## Build an example
 
@@ -15,9 +15,7 @@ downloading individual examples, you can build them all.
 
    When you configure your VTK build, set Module___REPO_NAME__:BOOL=ON and rebuild VTK.
 
-2. Download a [zip](__ARCHIVE__) containing the source.
-
-3. Clone the VTK examples repository
+2. Clone the VTK examples repository
 
 ``` bash
    git clone __GIT_REPO__

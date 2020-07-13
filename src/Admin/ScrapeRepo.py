@@ -37,11 +37,11 @@ def get_program_parameters():
     parser.add_argument('repo_dir', nargs='?', default='src',
                         help='The local path in the VTK Examples folder containing the source files e.g. src')
     parser.add_argument('web_path', nargs='?', default='docs', help='The path to the web folder')
-    parser.add_argument('repo_url',
-                        help='repo_url is the github repo URL e.g. https://github.com/**YOUR_NAME**/VTKExamples')
+    parser.add_argument('web_url',
+                        help='web_url is the github repo URL e.g. https://github.com/**YOUR_NAME**/VTKExamples')
     parser.add_argument('vtk_src', help='The local directory containing the VTK source')
     args = parser.parse_args()
-    return args.repo_dir, args.web_path, args.repo_url, args.vtk_src
+    return args.repo_dir, args.web_path, args.web_url, args.vtk_src
 
 
 class ElapsedTime:
@@ -464,11 +464,11 @@ def get_example_line(s):
     return ['']
 
 
-def add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_path, test_images, from_file, to_file,
+def add_thumbnails_and_links(web_url, root_path, repo_dir, doc_dir, baseline_path, test_images, from_file, to_file,
                              stats):
     """
     Add thumbnails, and language links, then copy to the doc_dir.
-    :param repo_url: The repository URL.
+    :param web_url: The repository URL.
     :param root_path: Path to the top-level folder e.g. VTKExamples.
     :param repo_dir: Usually 'src'.
     :param doc_dir: Usually 'docs'.
@@ -497,7 +497,7 @@ def add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_pa
                 example_dir = os.path.split(example_line)[0]
                 baseline = make_path(baseline_path, example_dir, "Test" + example_name + ".png")
                 if os.path.exists(baseline):
-                    baseline_url = make_path(repo_url, "blob/master", "src/Testing/Baseline", example_dir,
+                    baseline_url = make_path(web_url, "blob/master", "src/Testing/Baseline", example_dir,
                                              "Test" + example_name + ".png")
                     x[0] = True
                     x.append(baseline_url)
@@ -536,7 +536,7 @@ def add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_pa
             ofn.write(line + '\n')
 
 
-def fill_CMake_lists(cmake_contents, example_name, extra_names, vtk_modules, repo_url):
+def fill_CMake_lists(cmake_contents, example_name, extra_names, vtk_modules, web_url):
     """
     Fill in the template parameters in a CMakeLists template file.
     The output is a CMakeLists.txt file with Name substituted for {{{1}}}
@@ -544,34 +544,34 @@ def fill_CMake_lists(cmake_contents, example_name, extra_names, vtk_modules, rep
     :param example_name: The example file name.
     :param extra_names: Any needed extra files needed to build the example.
     :param vtk_modules: The VTK modules e.g. vtkCommonCore ... in a string.
-    :param repo_url: The repository URL.
+    :param web_url: The repository URL.
     :return: A CMakeLists.txt file.
     """
-    r1 = re.sub(r'WWW', repo_url, cmake_contents)
+    r1 = re.sub(r'WWW', web_url, cmake_contents)
     r2 = re.sub(r'XXX', example_name, r1)
     r3 = re.sub(r'YYY', extra_names, r2)
     r4 = re.sub(r'ZZZ', vtk_modules, r3)
     return r4
 
 
-def fill_Qt_CMake_lists(cmake_contents, example_name, vtk_modules, repo_url):
+def fill_Qt_CMake_lists(cmake_contents, example_name, vtk_modules, web_url):
     """
     Fill in the template parameters in a CMakeLists template file.
     The output is a CMakeLists.txt file with Name substituted for {{{1}}}
     :param cmake_contents: The template file.
     :param example_name: The example file name.
     :param vtk_modules: The VTK modules e.g. vtkCommonCore ... in a string.
-    :param repo_url: The repository URL.
+    :param web_url: The repository URL.
     :return: A CMakeLists.txt file
     """
-    r1 = re.sub(r'WWW', repo_url, cmake_contents)
+    r1 = re.sub(r'WWW', web_url, cmake_contents)
     r2 = re.sub(r'XXX', example_name, r1)
     r3 = re.sub(r'ZZZ', vtk_modules, r2)
     return r3
 
 
 def make_markdown_example_page(f, lang, lang_ext, root, available_languages, repo_path, doc_path,
-                               kit_name, repo_name, repo_url, user_name, vtk_modules_dict, vtk_src_dir,
+                               kit_name, repo_name, web_url, user_name, vtk_modules_dict, vtk_src_dir,
                                example_to_file_names, example_to_CMake, code_to_page, stats):
     """
     Here we make the markdown page for a given example.
@@ -584,7 +584,7 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
     :param doc_path: The path to the docs.
     :param kit_name: The kit name.
     :param repo_name: The repository name.
-    :param repo_url: The repository URL.
+    :param web_url: The repository URL.
     :param user_name: The user name.
     :param vtk_modules_dict: The VTK modules dictionary.
     :param vtk_src_dir: The VTK source directory.
@@ -618,7 +618,7 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
             '[' + repo_name + '](/)/[' + lang + '](/' + lang + ')/' + kit_name + '/' + example_name + '\n\n')
 
         if os.path.isfile(baseline_path):
-            image_url = repo_url + '/blob/master/src/Testing/Baseline/' + lang + '/' + kit_name + '/Test' \
+            image_url = web_url + '/blob/master/src/Testing/Baseline/' + lang + '/' + kit_name + '/Test' \
                         + example_name + '.png?raw=true'
             # href to open image in new tab
             md_file.write('<a href="' + image_url + ' target="_blank">' + '\n')
@@ -721,7 +721,7 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
                             needed_modules += '\n  ' + vtk_module
                         else:
                             needed_modules += '\n  ' + 'vtk' + vtk_module
-                    cmake = fill_Qt_CMake_lists(CMake_contents, example_name, needed_modules, repo_url)
+                    cmake = fill_Qt_CMake_lists(CMake_contents, example_name, needed_modules, web_url)
                 else:
                     with open(os.path.join(repo_path, 'Admin', 'VTKCMakeLists'), 'r') as CMakeFile:
                         CMake_contents = CMakeFile.read()
@@ -732,20 +732,21 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
                             needed_modules += '\n  ' + vtk_module
                         else:
                             needed_modules += '\n  ' + 'vtk' + vtk_module
-                    cmake = fill_CMake_lists(CMake_contents, example_name, extra_names, needed_modules, repo_url)
+                    cmake = fill_CMake_lists(CMake_contents, example_name, extra_names, needed_modules, web_url)
         if lang == 'Cxx':
             example_to_CMake[example_name] = get_VTK_CMake_file(cmake)
             md_file.write(cmake)
     code_to_page[example_name + lang_ext] = '/' + lang + '/' + kit_name + '/' + example_name
 
 
-def make_instruction_pages(repo_url, root_path, repo_name, user_name, repo_dir, doc_path, from_file, to_file):
+def make_instruction_pages(web_url, src_url, root_path, repo_name, user_name, repo_dir, doc_path, from_file, to_file):
     """
     Make the instruction pages.
 
     Note: In site_url, if you are not using github.io, change it appropriately.
 
-    :param repo_url: The repository URL.
+    :param web_url: The web repository URL.
+    :param web_url: The URL where the source files are.
     :param root_path: Path to the top-level folder e.g. VTKExamples.
     :param repo_name: The name of the repository.
     :param user_name: The username for the repository.
@@ -754,17 +755,18 @@ def make_instruction_pages(repo_url, root_path, repo_name, user_name, repo_dir, 
     :param from_file: The file to copy/edit
     :param to_file: The save file name.
     :return:
+    git@gitlab.kitware.com:vtk/vtk-examples.git
     """
     src = make_path(root_path, repo_dir, 'Instructions', from_file)
     dest = make_path(doc_path, 'Instructions', to_file)
     site_url = 'https://' + user_name + '.github.io/' + repo_name + '/site/'
-    patterns = {'__BLOB__': repo_url + '/blob/master',
-                '__TREE__': repo_url + '/tree/master',
-                '__REPOSITORY__': repo_url,
-                '__ARCHIVE__': repo_url + '/archive/master.zip',
-                '__GIT_REPO__': repo_url + '.git',
-                '__REPO_NAME__': repo_name,
-                '__USER_NAME__': user_name,
+    patterns = {'__BLOB__': src_url + '/blob/master',
+                '__TREE__': src_url + '/tree/master',
+                '__REPOSITORY__': src_url,
+                '__ARCHIVE__': src_url + '/archive/master.zip',
+                '__GIT_REPO__': src_url + '.git',
+                '__REPO_NAME__': list(filter(None, src_url.split('/')))[-1],
+                '__USER_NAME__': list(filter(None, src_url.split('/')))[-2],
                 '__SITE__': site_url,
                 }
     keys = patterns.keys()
@@ -892,7 +894,7 @@ def main():
     stats['thumb_count'] = 0
     stats['doxy_count'] = 0
 
-    repo_dir, web_path, repo_url, vtk_src_dir = get_program_parameters()
+    repo_dir, web_path, web_url, vtk_src_dir = get_program_parameters()
 
     sub_str = './'
     if repo_dir.startswith(sub_str):
@@ -902,9 +904,9 @@ def main():
     for i in range(2):
         root_path = os.path.dirname(root_path)
     # The name of the repository on the server.
-    repo_name = list(filter(None, repo_url.split('/')))[-1]
+    repo_name = list(filter(None, web_url.split('/')))[-1]
     # The user name for the repository.
-    user_name = list(filter(None, repo_url.split('/')))[-2]
+    user_name = list(filter(None, web_url.split('/')))[-2]
 
     repo_path = make_path(root_path, repo_dir)
     doc_path = make_path(web_path, 'docs')
@@ -957,7 +959,7 @@ def main():
     pages = ['Cxx.md', 'Python.md', 'CSharp.md', 'Java.md', 'JavaScript.md', 'Cxx/Snippets.md', 'Python/Snippets.md',
              'Java/Snippets.md', 'VTKBookFigures.md', 'VTKFileFormats.md']
     for p in pages:
-        add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_path, baseline_src_path, test_images_dict, p, p,
+        add_thumbnails_and_links(web_url, root_path, repo_dir, doc_path, baseline_src_path, test_images_dict, p, p,
                                  stats)
 
     # C++ Snippets
@@ -1018,7 +1020,7 @@ def main():
     instruction_files = ['ForUsers.md', 'ForDevelopers.md', 'ForAdministrators.md', 'Guidelines.md',
                          'ConvertingFiguresToExamples.md']
     for f in instruction_files:
-        make_instruction_pages(repo_url, root_path, repo_name, user_name, repo_dir, doc_path, f, f)
+        make_instruction_pages(web_url, 'https://gitlab.kitware.com/vtk/vtk-examples', root_path, repo_name, user_name, repo_dir, doc_path, f, f)
 
     # Copy VTKBook files
     if not os.path.exists(make_path(doc_path, 'VTKBook')):
@@ -1093,7 +1095,7 @@ def main():
                     continue
                 # Make the markdown page for each example
                 make_markdown_example_page(f, lang, lang_ext, root, available_languages, repo_path, doc_path,
-                                           kit_name, repo_name, repo_url, user_name, vtk_modules_dict, vtk_src_dir,
+                                           kit_name, repo_name, web_url, user_name, vtk_modules_dict, vtk_src_dir,
                                            example_to_file_names, example_to_CMake, code_to_page, stats)
 
     # Generate an html page that links each example code file to its Wiki Example page
@@ -1102,9 +1104,9 @@ def main():
         index_file.write('\n')
         sorted_by_code = sorted(code_to_page.items())
         for item in sorted_by_code:
-            index_file.write("<A HREF=" + repo_url + "/wikis" + re.sub(" ", "_", item[1]) + ">" + item[0] + "</A>")
+            index_file.write("<A HREF=" + web_url + "/wikis" + re.sub(" ", "_", item[1]) + ">" + item[0] + "</A>")
             index_file.write(
-                "<A HREF=" + repo_url + "/blob/master" + re.sub(" ", "_", item[1]) + ".md" + ">" + "(md)" + "</A>")
+                "<A HREF=" + web_url + "/blob/master" + re.sub(" ", "_", item[1]) + ".md" + ">" + "(md)" + "</A>")
             index_file.write("<br>\n")
 
     # Create tarballs for each example
