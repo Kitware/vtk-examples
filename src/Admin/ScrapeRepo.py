@@ -536,34 +536,38 @@ def add_thumbnails_and_links(repo_url, root_path, repo_dir, doc_dir, baseline_pa
             ofn.write(line + '\n')
 
 
-def fill_CMake_lists(cmake_contents, example_name, extra_names, vtk_module):
+def fill_CMake_lists(cmake_contents, example_name, extra_names, vtk_modules, repo_url):
     """
     Fill in the template parameters in a CMakeLists template file.
     The output is a CMakeLists.txt file with Name substituted for {{{1}}}
     :param cmake_contents: The template file.
     :param example_name: The example file name.
     :param extra_names: Any needed extra files needed to build the example.
-    :param vtk_module: The VTK module e.g. vtkCommonCore.
+    :param vtk_modules: The VTK modules e.g. vtkCommonCore ... in a string.
+    :param repo_url: The repository URL.
     :return: A CMakeLists.txt file.
     """
-    r1 = re.sub(r'XXX', example_name, cmake_contents)
-    r2 = re.sub(r'YYY', extra_names, r1)
-    r3 = re.sub(r'ZZZ', vtk_module, r2)
-    return r3
+    r1 = re.sub(r'WWW', repo_url, cmake_contents)
+    r2 = re.sub(r'XXX', example_name, r1)
+    r3 = re.sub(r'YYY', extra_names, r2)
+    r4 = re.sub(r'ZZZ', vtk_modules, r3)
+    return r4
 
 
-def fill_Qt_CMake_lists(cmake_contents, example_name, vtk_module):
+def fill_Qt_CMake_lists(cmake_contents, example_name, vtk_modules, repo_url):
     """
     Fill in the template parameters in a CMakeLists template file.
     The output is a CMakeLists.txt file with Name substituted for {{{1}}}
     :param cmake_contents: The template file.
     :param example_name: The example file name.
-    :param vtk_module: The VTK modules e.g. vtkCommonCore.
+    :param vtk_modules: The VTK modules e.g. vtkCommonCore ... in a string.
+    :param repo_url: The repository URL.
     :return: A CMakeLists.txt file
     """
-    r1 = re.sub(r'XXX', example_name, cmake_contents)
-    reg = re.sub(r'ZZZ', vtk_module, r1)
-    return reg
+    r1 = re.sub(r'WWW', repo_url, cmake_contents)
+    r2 = re.sub(r'XXX', example_name, r1)
+    r3 = re.sub(r'ZZZ', vtk_modules, r2)
+    return r3
 
 
 def make_markdown_example_page(f, lang, lang_ext, root, available_languages, repo_path, doc_path,
@@ -717,7 +721,7 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
                             needed_modules += '\n  ' + vtk_module
                         else:
                             needed_modules += '\n  ' + 'vtk' + vtk_module
-                    cmake = fill_Qt_CMake_lists(CMake_contents, example_name, needed_modules)
+                    cmake = fill_Qt_CMake_lists(CMake_contents, example_name, needed_modules, repo_url)
                 else:
                     with open(os.path.join(repo_path, 'Admin', 'VTKCMakeLists'), 'r') as CMakeFile:
                         CMake_contents = CMakeFile.read()
@@ -728,7 +732,7 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
                             needed_modules += '\n  ' + vtk_module
                         else:
                             needed_modules += '\n  ' + 'vtk' + vtk_module
-                    cmake = fill_CMake_lists(CMake_contents, example_name, extra_names, needed_modules)
+                    cmake = fill_CMake_lists(CMake_contents, example_name, extra_names, needed_modules, repo_url)
         if lang == 'Cxx':
             example_to_CMake[example_name] = get_VTK_CMake_file(cmake)
             md_file.write(cmake)
@@ -796,8 +800,8 @@ def make_tarballs(repo_path, web_path, example_to_file_names, example_to_CMake, 
     tar_dir = make_path(web_path, 'Tarballs')
     if not os.path.exists(tar_dir):
         os.makedirs(tar_dir)
-        with open(make_path(tar_dir, '.gitignore'), 'w') as ofh:
-            ofh.write('*,tar\n')
+        # with open(make_path(tar_dir, '.gitignore'), 'w') as ofh:
+        #     ofh.write('*,tar\n')
 
     # Create tarballs
     # For each example page, create a directory and copy that example's files

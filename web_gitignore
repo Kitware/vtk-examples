@@ -5,5 +5,4 @@ docs/
 src/Coverage
 _layouts/
 custom_theme/
-index.html
 mkdocs.yml

@@ -64,6 +64,9 @@ mkdir -p ${REPO_DIR}/docs/stylesheets
 cp ${REPO_DIR}/src/stylesheets/extra.css ${REPO_DIR}/docs/stylesheets/extra.css
 pushd ${REPO_DIR}
 mkdocs build
+# This file is around 118MB
+# GitHub's file size limit of 100.00 MB
+#rm site/search/search_index.json
 popd
 
 echo "6 Modify highlight color to semitransparent Lavender"
@@ -71,7 +74,7 @@ pushd ${REPO_DIR}/site/assets/stylesheets
 sed -i -e 's/background-color:rgba(255,235,59,\.5)/background-color:rgba(230,230,250,0.6)/g' application.*.css
 popd
 
-#####################
+######################
 #echo "Premature exit for testing"
 #exit
 
@@ -81,26 +84,30 @@ pushd ${REPO_DIR}/site
 find . -name index.html -exec htmlmin {} {} \;
 popd
 
-pushd ${REPO_DIR}
-echo "8) Process modified files"
-git commit -m "SYNC: Files modified in the repo." `git status | grep modified: | cut -d":" -f2,2`
+echo "Now go to the repository DIR: "$REPO_DIR
+echo " and update the site."
 
-echo "8.1) Process new files"
-find . "(" -name \*.html ")" -exec git add {} \;
-(cd site; git add assets)
-git commit -m "SYNC: Files added to the repo."
 
-echo "8.2) Process deleted files"
-git rm `git status | grep deleted: | cut -d":" -f2,2`
-git commit -m "SYNC: Files deleted (or moved) from the repo."
-
-echo "9) Update tarballs and push to tarball repo"
-if ( test -d src/Tarballs ); then
-(cd src/Tarballs; git add *tar)
-(cd src/Tarballs; git commit -m "SYNC: Tarballs modified")
-(cd src/Tarballs; git push)
-fi
-
-echo "10) Push the changes"
-git push
-popd
+#pushd ${REPO_DIR}
+#echo "8) Process modified files"
+#git commit -m "SYNC: Files modified in the repo." `git status | grep modified: | cut -d":" -f2,2`
+#
+#echo "8.1) Process new files"
+#find . "(" -name \*.html ")" -exec git add {} \;
+#(cd site; git add assets)
+#git commit -m "SYNC: Files added to the repo."
+#
+#echo "8.2) Process deleted files"
+#git rm `git status | grep deleted: | cut -d":" -f2,2`
+#git commit -m "SYNC: Files deleted (or moved) from the repo."
+#
+#echo "9) Update tarballs and push to tarball repo"
+#if ( test -d src/Tarballs ); then
+#(cd src/Tarballs; git add *tar)
+#(cd src/Tarballs; git commit -m "SYNC: Tarballs modified")
+#(cd src/Tarballs; git push)
+#fi
+#
+#echo "10) Push the changes"
+#git push
+#popd
