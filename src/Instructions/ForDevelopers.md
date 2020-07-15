@@ -12,47 +12,29 @@ Some additional steps need to be done for Python C# and Java, see the sections b
 
 ## Setup for Development
 
-### Fork the repository
+This assumes you have `VTK`, `CMake`, `git` and `git lfs` installed.
 
-* Sign into [github](https://github.com/login).
+Go to the [VTK Examples Repository](__SITE_REPOSITORY__)
 
-    If you do not have an account, you can register on the sign-in page.
-
-* Fork the VTK examples [repository](__REPOSITORY__)
-
-    A fork is a copy of a project. Forking a repository allows you to make changes without affecting the original project.
-
-* Enable a static web site for the examples.
-
-    Under **Settings**, **GitHub Pages**, set the *Source* to **master branch** and click *Save*.
-
-* Clone the repository on your local machine
+### Clone the VTK examples repository and build it
 
 ``` bash
-    git clone https://YOURNAME@github.com/YOURNAME/__REPO_NAME__.git
+   git clone __GIT_REPO__
+   cd __REPO_NAME__
+   cd build
+   cmake -DVTK_DIR:PATH=YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL=ON ..
+   make
 ```
 
-   Or, if you are using SSH:
+   where **YOUR_VTK_BIN_DIR** is the location of your VTK build.
+
+### Before adding your examples
+
+Sync your repository with the __REPO_NAME__ repository. Remember that to run the following commands, you need to be in the **__REPO_NAME__** directory.
 
 ``` bash
-    git clone git@github.com:YOURNAME/__REPO_NAME__.git
-```
-
-   where **YOURNAME** is your GitHub username.
-
-* Add the __REPO_NAME__ repository as a *remote* called *upstream*
-
-``` bash
-    git remote add upstream __REPOSITORY__
-```
-
-* Before adding your examples, sync your repository with the __REPO_NAME__ repository. Remember that to run the following commands, you need to be in the **__REPO_NAME__** directory.
-
-``` bash
-    git fetch upstream
     git checkout master
-    git merge upstream/master
-    git push
+    git pull --rebase
 ```
 
 * Build the __REPO_NAME__ code
@@ -68,16 +50,7 @@ where **YOUR_VTK_BIN_DIR** is the location of your VTK build.
 
 ### Add the example
 
-#### Choose a Topic
-
-The examples are organized by topic. Current topics include Animation,
-DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
-
-#### Write the source
-
-**Note**: Steps 4, 5 and 7 apply to C++. For Python, Java, and C# see the steps in the section **Steps for Python, Java and C#**.
-
-* Create a branch in your repository
+Create a branch in your repository
 
 ``` bash
     git checkout -b MyNewExample
@@ -85,7 +58,14 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
 
   where **MyNewExample** is the name of your new example.
 
-* Check the:
+#### Choose a Topic
+
+The examples are organized by topic. Current topics include Animation,
+DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
+
+#### Write the source
+
+* The following snippets may be of use:
 
   * [Cxx available snippets](../../Cxx/Snippets).
   * [Python available snippets](../../Python/Snippets).
@@ -93,13 +73,11 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
 
 * Save your source code in __REPO_NAME__/src/**LANGUAGE**/**TOPIC**/
 
-    where **LANGUAGE** is Cxx, Python, CSharp or Java.
+    Where **LANGUAGE** is Cxx, Python, CSharp or Java and **TOPIC** is the topic that you have chosen.
 
-    and **TOPIC** is the topic that you have chosen.
+#### Steps for C++
 
 * Build and test your example (**NOTE:** only for cxx examples)
-
-   - for Cxx
 
 ``` bash
         cd __REPO_NAME__/build
@@ -108,7 +86,7 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
         ctest -V -R MyNewExample
 ```
 
-Note: If **MyNewExample** is not built, then in the directory where you put the file do:
+Note: If **MyNewExample** is not built, then in the directory where you put the file, do:
 
 ``` bash
     touch CMakeLists.txt
@@ -120,21 +98,23 @@ Note: If **MyNewExample** is not built, then in the directory where you put the 
 
 * Rerun ctest and the test should pass.
 
+At this point you are ready to push the changes to GitLab.
+
 #### Steps for Python, Java and C#
 
-If you are basing your code on a Cxx example use the same name as the Cxx example. This ensures that cross-referencing works.
+* [ ] *TODO: Add in new instructions for* ***Python***.
+
+If you are basing your code on a Cxx example use the same name as the Cxx example. This ensures that automatic cross-referencing works.
 
 Keep the same directory structure as that in Cxx.
 
-- Follow first three steps above.
-- Manually create a test image if your example does any rendering. The image should be called Test**MyNewExample**.png.
+* Follow first three steps above.
+* Manually create a test image if your example does any rendering. The image should be called Test**MyNewExample**.png.
 
   The following snippets can be used to write the image out:
 
-  - [WriteImage](../../Python/Snippets/WriteImage/) for Python
-  - [WriteImage](../../Java/Snippets/WriteImage/) for Java
-
-- Then follow step 6 above
+  * [WriteImage](../../Python/Snippets/WriteImage/) for Python
+  * [WriteImage](../../Java/Snippets/WriteImage/) for Java
 
 #### Add the example to the language page
 
@@ -164,13 +144,17 @@ finally,
 git commit
 ```
 
-#### Push the changes to GitHub
+### Push the changes to GitLab
 
 ``` bash
 git push origin MyNewExample
 ```
 
-#### Go to your GitHub project and [generate a pull request](https://help.github.com/articles/creating-a-pull-request/)
+#### Go to your GitLab project
+
+Then generate a merge request for review.
+
+See here for [how to generate a merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html).
 
 ### Advanced usage
 
@@ -195,20 +179,3 @@ extra filename in the *.extras* file, one filename per line.
 
 !!! warning
     If you add extra files to the example, but do not add their filenames to the *.extras* file, they will appear in the left-hand file menus **and** will not be included in the tar file for the example.
-
-#### Review changes in a browser
-
-If you want to preview your changes in a browser (**NOTE:** You must have Python installed on your system)
-
-* Install the markdown package for Python. Go [here](https://pythonhosted.org/Markdown/install.html)
-
-* Install the material theme for markdown. Go [here](http://squidfunk.github.io/mkdocs-material/#quick-start).
-
-* Sync your site with your repository with a command like this:
-
-``` bash
-  ./src/SyncSiteWithRepo.sh https://github.com/**github_username**/__REPO_NAME__ /home/**username**/**path_to**/VTK/
-  ./src/SyncSiteWithRepo.sh https::/github.com/**YOUR_NAME**/__REPO_NAME__
-```
-
-* After a few minutes go to https://**github_username**.github.io/__REPO_NAME__/ to see your changes before issuing your pull request.

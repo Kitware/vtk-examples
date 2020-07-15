@@ -93,28 +93,3 @@ popd
 
 echo "Now go to the repository DIR: "$WEB_REPO_DIR
 echo " and update the site."
-
-
-#pushd ${WEB_REPO_DIR}
-#echo "8) Process modified files"
-#git commit -m "SYNC: Files modified in the repo." `git status | grep modified: | cut -d":" -f2,2`
-#
-#echo "8.1) Process new files"
-#find . "(" -name \*.html ")" -exec git add {} \;
-#(cd site; git add assets)
-#git commit -m "SYNC: Files added to the repo."
-#
-#echo "8.2) Process deleted files"
-#git rm `git status | grep deleted: | cut -d":" -f2,2`
-#git commit -m "SYNC: Files deleted (or moved) from the repo."
-#
-#echo "9) Update tarballs and push to tarball repo"
-#if ( test -d src/Tarballs ); then
-#(cd src/Tarballs; git add *tar)
-#(cd src/Tarballs; git commit -m "SYNC: Tarballs modified")
-#(cd src/Tarballs; git push)
-#fi
-#
-#echo "10) Push the changes"
-#git push
-#popd

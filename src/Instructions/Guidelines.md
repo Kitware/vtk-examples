@@ -1,5 +1,5 @@
 ## Guidelines
- 
+
 Although education of new users is the main motivation, the VTK Examples should also:
 
 1. Encourage good programming style
@@ -35,7 +35,7 @@ See [clang-format](https://clang.llvm.org/docs/ClangFormat.html) for more inform
     }
 ```
 
-* Where appropriate, explicitly use the std:: namespace:
+* Where appropriate, explicitly use the **std::** namespace:
 
 ``` c++
     std::cout << "Print something" << std::endl;
@@ -47,7 +47,7 @@ See [clang-format](https://clang.llvm.org/docs/ClangFormat.html) for more inform
     cout << "Print something" << endl;
 ```
 
-* All includes from the toolkit should use <> notation. This follows C++ programming conventions.
+* All includes from the toolkit should use **<...>** notation. This follows C++ programming conventions.
 
     For example: `#include <vtkContourFilter.h>` is preferred over `#include "vtkContourFilter.h"`
 
@@ -155,14 +155,14 @@ In general, Python submissions should follow the VTK Programming style and the c
 
 Python code styling follows [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
 
-Python code should follow the following layout:
+Python code is tested in a similar manner to C++ code, so it must follow this layout:
 
 ``` Python
 #!/usr/bin/env python
 
 #import vtk
 
-def main():
+def main(argv):
     """
     Get parameters (if needed)
     Instantiate your classes, call them and any defs.
@@ -170,9 +170,11 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv)
 
 ```
+
+- [ ] *TODO: Add in a demo showing the use of* ***argparse***.
 
 For the Input/Output of filenames and parameters. Use this snippet [GetProgramParameters](__WEB_SITE_URL__/Python/Snippets/GetProgramParameters/) 
 

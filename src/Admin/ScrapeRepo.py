@@ -1032,7 +1032,7 @@ def main():
     if not os.path.exists(dest):
         os.makedirs(dest)
     instruction_files = ['ForUsers.md', 'ForDevelopers.md', 'ForAdministrators.md', 'Guidelines.md',
-                         'ConvertingFiguresToExamples.md']
+                         'ConvertingFiguresToExamples.md', 'WebSiteMaintenance.md']
     for f in instruction_files:
         make_instruction_pages(web_repo_url, web_site_url, site_url, root_path, repo_dir, doc_path, f, f)
 
