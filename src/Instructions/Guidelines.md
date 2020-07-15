@@ -1,5 +1,5 @@
 ## Guidelines
- 
+
 Although education of new users is the main motivation, the VTK Examples should also:
 
 1. Encourage good programming style
@@ -14,23 +14,28 @@ All examples should follow the VTK programming style and there should be a singl
 
 ### C++
 
-* The indentation style can be characterized as the [AllmannStyle](https://en.wikipedia.org/wiki/Indent_style#Allman_style). The curly brace (scope delimiter) is on a separate line and aligns with the control statement, The control block is indented by two spaces (**no tabs**). A suitable `.clang-format` is provided in `src/Cxx` [see here](__BLOB__/src/Cxx/.clang-format).
+* The indentation style can be characterized as the [AllmannStyle](https://en.wikipedia.org/wiki/Indent_style#Allman_style).
+The curly brace (scope delimiter) is on a separate line and aligns with the control statement.
+The control block is indented by two spaces (**no tabs**).
+A suitable `.clang-format` is provided in `src/Cxx`.
+Most IDE's can be be configured to use this file for formatting.
+See [clang-format](https://clang.llvm.org/docs/ClangFormat.html) for more information.
 
     Example:
 
 ``` c++
     if (this->Locator == locator)
     {
-    return;
+      return;
     }
     for (i = 0; i < this->Source->GetNumberOfPoints(); i++)
     {
-    p1 = this->Source->GetPoint(i);
-    [...]
+      p1 = this->Source->GetPoint(i);
+      [...]
     }
 ```
 
-* Where appropriate, explicitly use the std:: namespace:
+* Where appropriate, explicitly use the **std::** namespace:
 
 ``` c++
     std::cout << "Print something" << std::endl;
@@ -42,7 +47,7 @@ All examples should follow the VTK programming style and there should be a singl
     cout << "Print something" << endl;
 ```
 
-* All includes from the toolkit should use <> notation. This follows C++ programming conventions.
+* All includes from the toolkit should use **<...>** notation. This follows C++ programming conventions.
 
     For example: `#include <vtkContourFilter.h>` is preferred over `#include "vtkContourFilter.h"`
 
@@ -63,8 +68,8 @@ All examples should follow the VTK programming style and there should be a singl
 ``` c++
     if (argc != 3)
     {
-    std::cerr << "Usage: " << argv[0] << "Alpha InputFile OutputFile" << std::endl;
-    return EXIT_FAILURE;
+      std::cerr << "Usage: " << argv[0] << "Alpha InputFile OutputFile" << std::endl;
+      return EXIT_FAILURE;
     }
 ```
 
@@ -122,7 +127,8 @@ All examples should follow the VTK programming style and there should be a singl
 
 * Always provide a background for the renderers. Avoid setting the background to white.
 
-* Use [vtkNamedColors](http://www.vtk.org/doc/nightly/html/classvtkNamedColors.html) for setting colors of actors and renderer backgrounds. [VTKNamedColorPatches](http://htmlpreview.github.io/?__BLOB__/VTKNamedColorPatches.html) shows the colors that are available. If you are using a color series, then you can choose what you want from here [VTKColorSeriesPatches](http://htmlpreview.github.io/?__BLOB__/VTKColorSeriesPatches.html).
+* Use [vtkNamedColors](http://www.vtk.org/doc/nightly/html/classvtkNamedColors.html) for setting colors of actors and renderer backgrounds.
+[VTKNamedColorPatches](http://htmlpreview.github.io/?__WEB_BLOB__/VTKNamedColorPatches.html) shows the colors that are available. If you are using a color series, then you can choose what you want from here [VTKColorSeriesPatches](http://htmlpreview.github.io/?__WEB_BLOB__/VTKColorSeriesPatches.html).
 
   For example,
 
@@ -141,7 +147,7 @@ All examples should follow the VTK programming style and there should be a singl
         renderer->SetBackground(0.9412, 0.9020, 0.5490);
 ```
 
-* Use admonitions to warn/cite/info, etc. [Here is a summary of admonitions](__SITE__/Instructions/ForAdministrators/#admonition).
+* Use admonitions to warn/cite/info, etc. [Here is a summary of admonitions](__WEB_SITE_URL__/Instructions/ForAdministrators/#admonition).
 
 ### Python
 
@@ -149,14 +155,14 @@ In general, Python submissions should follow the VTK Programming style and the c
 
 Python code styling follows [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
 
-Python code should follow the following layout:
+Python code is tested in a similar manner to C++ code, so it must follow this layout:
 
 ``` Python
 #!/usr/bin/env python
 
 #import vtk
 
-def main():
+def main(argv):
     """
     Get parameters (if needed)
     Instantiate your classes, call them and any defs.
@@ -164,17 +170,19 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv)
 
 ```
 
-For the Input/Output of filenames and parameters. Use this snippet [GetProgramParameters](__SITE__/Python/Snippets/GetProgramParameters/) 
+- [ ] *TODO: Add in a demo showing the use of* ***argparse***.
+
+For the Input/Output of filenames and parameters. Use this snippet [GetProgramParameters](__WEB_SITE_URL__/Python/Snippets/GetProgramParameters/) 
 
 ### Java
 
 In general, Java submissions should follow the VTK Programming style and the comments outlined for C++ above (with language appropriate modification).
 
-For Java code layout, look at [CylinderExample](__SITE__/Java/GeometricObjects/CylinderExample/)
+For Java code layout, look at [CylinderExample](__WEB_SITE_URL__/Java/GeometricObjects/CylinderExample/)
 
 Java code styling follows the usual style as implemented in the IDEs.
 
