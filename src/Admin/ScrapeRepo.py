@@ -45,7 +45,7 @@ def get_program_parameters():
     args = parser.parse_args()
 
     return args.repo_dir, args.site_url, args.web_site_url, args.web_repo_url, args.web_repo_dir, args.vtk_src_dir
-    # return args.repo_dir, args.web_path, args.web_url, args.vtk_src_dir
+
 
 class ElapsedTime:
     """
@@ -500,7 +500,7 @@ def add_thumbnails_and_links(web_repo_url, root_path, repo_dir, doc_dir, baselin
                 example_dir = os.path.split(example_line)[0]
                 baseline = make_path(baseline_path, example_dir, "Test" + example_name + ".png")
                 if os.path.exists(baseline):
-                    baseline_url = make_path(web_repo_url, "blob/master", "src/Testing/Baseline", example_dir,
+                    baseline_url = make_path(web_repo_url, "blob/gh-pages", "src/Testing/Baseline", example_dir,
                                              "Test" + example_name + ".png")
                     x[0] = True
                     x.append(baseline_url)
@@ -621,7 +621,7 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
             '[' + repo_name + '](/)/[' + lang + '](/' + lang + ')/' + kit_name + '/' + example_name + '\n\n')
 
         if os.path.isfile(baseline_path):
-            image_url = web_repo_url + '/blob/master/src/Testing/Baseline/' + lang + '/' + kit_name + '/Test' \
+            image_url = web_repo_url + '/blob/gh-pages/src/Testing/Baseline/' + lang + '/' + kit_name + '/Test' \
                         + example_name + '.png?raw=true'
             # href to open image in new tab
             md_file.write('<a href="' + image_url + ' target="_blank">' + '\n')
@@ -731,7 +731,7 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
                     # Create component lines for the VTK modules
                     needed_modules = ''
                     for vtk_module in vtk_modules:
-                        if 'vtk' in vtk_modules:
+                        if 'vtk' in vtk_module:
                             needed_modules += '\n  ' + vtk_module
                         else:
                             needed_modules += '\n  ' + 'vtk' + vtk_module
@@ -742,7 +742,8 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
     code_to_page[example_name + lang_ext] = '/' + lang + '/' + kit_name + '/' + example_name
 
 
-def make_instruction_pages(web_repo_url, web_site_url, site_repo_url, root_path, repo_dir, doc_path, from_file, to_file):
+def make_instruction_pages(web_repo_url, web_site_url, site_repo_url, root_path, repo_dir, doc_path, from_file,
+                           to_file):
     """
     Make the instruction pages. The keys in the dictionary patterns are used to replace the
     corresponding keys in the instructions.
@@ -766,7 +767,7 @@ def make_instruction_pages(web_repo_url, web_site_url, site_repo_url, root_path,
                 '__GIT_REPO__': site_repo_url + '.git',
                 '__REPO_NAME__': list(filter(None, site_repo_url.split('/')))[-1],
                 '__USER_NAME__': list(filter(None, site_repo_url.split('/')))[-2],
-                '__WEB_BLOB__': web_repo_url + '/blob/master',
+                '__WEB_BLOB__': web_repo_url + '/blob/gh-pages',
                 '__WEB_SITE__': web_repo_url + '/site',
                 '__WEB_SITE_URL__': web_site_url,
                 '__WEB_REPOSITORY__': web_repo_url,
@@ -898,17 +899,14 @@ def main():
     stats['thumb_count'] = 0
     stats['doxy_count'] = 0
 
-    # repo_dir, web_path, web_url, vtk_src_dir = get_program_parameters()
-    # The URL corresponding to the source files repository.
-    # src_url = 'https://gitlab.kitware.com/vtk/vtk-examples'
     repo_dir, site_url, web_site_url, web_repo_url, web_repo_dir, vtk_src_dir = get_program_parameters()
     print('Paths and folders to use:')
-    print(repo_dir)
-    print(site_url)
-    print(web_site_url)
-    print(web_repo_url)
-    print(web_repo_dir)
-    print(vtk_src_dir)
+    print('REPO_DIR:      ', repo_dir)
+    print('SITE_URL:      ', site_url)
+    print('WEB_SITE_URL:  ', web_site_url)
+    print('WEB_REPO_URL:  ', web_repo_url)
+    print('WEB_REPO_DIR:  ', web_repo_dir)
+    print('VTK_SOURCE_DIR:', vtk_src_dir)
     print()
     sub_str = './'
     if repo_dir.startswith(sub_str):
@@ -1120,7 +1118,8 @@ def main():
         for item in sorted_by_code:
             index_file.write("<A HREF=" + web_repo_url + "/wikis" + re.sub(" ", "_", item[1]) + ">" + item[0] + "</A>")
             index_file.write(
-                "<A HREF=" + web_repo_url + "/blob/master" + re.sub(" ", "_", item[1]) + ".md" + ">" + "(md)" + "</A>")
+                "<A HREF=" + web_repo_url + "/blob/gh-pages" + re.sub(" ", "_",
+                                                                      item[1]) + ".md" + ">" + "(md)" + "</A>")
             index_file.write("<br>\n")
 
     # Create tarballs for each example
