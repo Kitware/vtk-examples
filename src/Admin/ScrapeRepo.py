@@ -649,14 +649,19 @@ def make_markdown_example_page(f, lang, lang_ext, root, available_languages, rep
             md_file.write('\n')
 
         # Add email contact for questions
+        # question = \
+        #     '\n!!! question\n    ' \
+        #     'If you have a simple question about this example contact us at <a href=mailto:' \
+        #     + repo_name + 'ExProject@gmail.com?subject=' + example_name + lang_ext + '&body=' + 'https://' \
+        #     + user_name + '.github.io/' + repo_name + '/site/' + lang + '/' + kit_name + '/' + example_name \
+        #     + '>' + repo_name + \
+        #     'Project</a>\n    If your question is more complex and may require extended discussion,' \
+        #     ' please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
         question = \
             '\n!!! question\n    ' \
-            'If you have a simple question about this example contact us at <a href=mailto:' \
-            + repo_name + 'ExProject@gmail.com?subject=' + example_name + lang_ext + '&body=' + 'https://' \
-            + user_name + '.github.io/' + repo_name + '/site/' + lang + '/' + kit_name + '/' + example_name \
-            + '>' + repo_name + \
-            'Project</a>\n    If your question is more complex and may require extended discussion,' \
+            'If you have a question about this example,' \
             ' please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
+
         md_file.write(question)
         md_file.write('\n')
 
@@ -908,6 +913,7 @@ def main():
     print('WEB_REPO_DIR:  ', web_repo_dir)
     print('VTK_SOURCE_DIR:', vtk_src_dir)
     print()
+
     sub_str = './'
     if repo_dir.startswith(sub_str):
         repo_dir = re.sub(sub_str, '', repo_dir)

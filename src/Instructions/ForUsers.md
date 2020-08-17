@@ -49,7 +49,7 @@ From now on, if you cloned the examples repository, you can get the latest updat
 
 ``` bash
 cd __REPO_NAME__
-git pull
+git pull --rebase
 cd build
 cmake ../__REPO_NAME__
 make

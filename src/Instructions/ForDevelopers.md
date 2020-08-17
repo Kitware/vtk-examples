@@ -14,16 +14,39 @@ Some additional steps need to be done for Python C# and Java, see the sections b
 
 This assumes you have `VTK`, `CMake`, `git` and `git lfs` installed.
 
-Go to the [VTK Examples Repository](__SITE_REPOSITORY__)
+### Fork the repository
 
-### Clone the VTK examples repository and build it
+Go to the [VTK Examples Repository](__SITE_REPOSITORY__), sign in/register, and then fork the repository.
+
+A fork is a copy of a project. Forking a repository allows you to make changes without affecting the original project.
+
+### Clone the VTK examples repository onto your local machine and build it
+
+If you are using SSH:
 
 ``` bash
-   git clone __GIT_REPO__
-   cd __REPO_NAME__
-   cd build
-   cmake -DVTK_DIR:PATH=YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL=ON ..
-   make
+    git clone git@gitlab.kitware.com:<username>vtk-examples.git
+```
+
+If You are using HTTPS:
+
+``` bash
+    git clone https://gitlab.kitware.com/<username>/vtk-examples.git
+```
+
+### Add the vtk-examples repository as a *remote* called *upstream*
+
+``` bash
+    git remote add upstream __SITE_REPOSITORY__
+```
+
+### Now build it
+
+``` bash
+    cd __REPO_NAME__
+    cd build
+    cmake -DVTK_DIR:PATH=YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL=ON ..
+    make
 ```
 
    where **YOUR_VTK_BIN_DIR** is the location of your VTK build.
@@ -33,8 +56,10 @@ Go to the [VTK Examples Repository](__SITE_REPOSITORY__)
 Sync your repository with the __REPO_NAME__ repository. Remember that to run the following commands, you need to be in the **__REPO_NAME__** directory.
 
 ``` bash
+    git fetch upstream
     git checkout master
-    git pull --rebase
+    git merge upstream/master
+    git push
 ```
 
 * Build the __REPO_NAME__ code
