@@ -1,21 +1,73 @@
 ## Maintaining the GitHub web site
 
-* [ ] *TODO: Add in new instructions as outlined [here](##Note)*.
+This website will just contain the web files and any files needed by them. The repository from which these files are generated is your fork of the [VTK Examples Repository](__SITE_REPOSITORY__). For this discussion we are assuming that you have cloned your fork of this site into a repository called `__REPO_NAME__`.
 
-This website will just contain the web files and any files needed by them. The repository from which these files are generated is [VTK Examples](__SITE_REPOSITORY__). You need to have cloned this site by default into a repository called `__REPO_NAME__`.
+## Setup for Updating the Web Pages
 
-## Creating the site
+This assumes you have `VTK`, `CMake`, `git`, `git lfs`, `mkdocs`, `pygments` and `htmlmin` installed along with the checkout of your fork of the [VTK Examples Repository](__SITE_REPOSITORY__).
 
-Create the site on GitHub, do not use the same name as the Kitware repository namely `__REPO_NAME__`.
-Choose a name like `vtk-examples-web`. This means that when you clone the repository, you don't have to select a different name as the repository `vtk-examples` already exists.
+### Fork the repository
 
-You will need to set the GitHub Pages site to the master branch in the site settings.
+Go to the [VTK Examples Web Site Repository](__WEB_REPOSITORY__) sign in/register, and then fork the repository.
 
-## Cloning
+A fork is a copy of a project. Forking a repository allows you to make changes without affecting the original project.
 
-Clone the site and you should have a folder  called, for example: `vtk-examples-web`. For convenience this should be in the same folder as your local [__REPO_NAME__](__SITE_REPOSITORY__) repository.
+If you want to see what your build of the web pages will look like, go to your settings. Then scroll down until you find **GitHub Pages** and set the Source Branch to **gh-pages**.
 
-## After checkout
+### Clone the VTK Examples Web Site Repository
+
+``` bash
+git clone git@github.com:<github_username>/vtk-examples.git vtk-examples-web
+cd vtk-examples-web
+```
+
+### Add the VTK Examples Web Site Repository as a *remote* called *upstream*
+
+``` bash
+cd vtk-examples-web
+git remote add upstream __WEB_REPOSITORY__
+```
+
+## Updating web pages
+
+For this discussion we are assuming a directory structure something like this:
+
+``` bash
+|--
+  |-- VTK               # The VTK Source files
+  |-- vtk-examples      # The VTK Examples source files
+  |-- vtk-examples-web  # The VTK Examples Web Source files
+
+```
+
+### Step 1: Sync your **vtk-examples** repository
+
+Remember that to run the following commands, you need to be in your `__REPO_NAME__` folder.
+
+``` bash
+cd __REPO_NAME__
+git fetch upstream
+git checkout master
+git merge upstream/master
+git push
+```
+
+### Step 2: Sync your **vtk-examples-web** repository and checkout **gh-pages**
+
+Sync your repository with the [VTK Examples Web Site Repository](__WEB_REPOSITORY__). Remember that to run the following commands, you need to be in your **vtk-examples-web** folder.
+
+``` bash
+cd vtk-examples-web
+git fetch upstream
+git checkout master
+git merge upstream/master
+git push
+git checkout gh_pages
+```
+
+**Important:** You must be on the **gh-pages** branch in **vtk-examples-web** before doing the next steps. So remember to do `git checkout gh_pages`!
+
+### Step 3: Build the web site
 
 Go to the `__REPO_NAME__` folder, ensure that the file `mkdocs.yml` has the correct parameters.
 
@@ -30,46 +82,18 @@ where:
 - `SITE_URL` is the VTK Examples source repository URL, e.g. __SITE_REPOSITORY__
 - `WEB_SITE_URL` is the VTK Examples website site URL, e.g. __WEB_SITE_URL__
 - `WEB_REPO_URL` is the VTK Examples website source URL, e.g. __WEB_REPOSITORY__
-- `WEB_REPO_DIR` is the local website source dir, e.g. **local_path**/__WEB_REPO_NAME__
+- `WEB_REPO_DIR` is the local website source dir, e.g. **local_path**/vtk-examples-web
 - `VTK_DIR` is the local VTK source directory, e.g. **local_path**/VTK
 
 Remember that local paths are absolute or full paths, not relative paths.
 
-## First commit
+Then, once this script finishes:
 
-This is only 
-Use `git add` to add the following folders:
+### Step 4: Verify that the site works
 
-``` bash
-.gitignore
-LICENSE
-Tarballs/
-VTKColorSeriesPatches.html
-VTKNamedColorPatches.html
-site/
-src/
-```
+Go to the folder mentioned in the instructions at the end of the script and verify that the site works.
 
-Then
-
-``` bash
-git commit -m "Updating the site"
-git push
-```
-
-It will take a while for the site to appear. Once this is done, build the site:
-
-## Building the Site
-
-In the top-level folder of `__REPO_NAME__`:
-
-``` bash
-./SyncSiteWithRepo SITE_URL WEB_SITE_URL WEB_REPO_URL WEB_DIR VTK_SOURCE_DIR
-```
-
-For an explanation of the parameters, see [After checkout](##After-checkout)
-
-Then, once this script finishes, `cd` to the folder mentioned in the instructions at the end of the script and do this:
+### Step 5: Commit, Add and Push
 
 ``` bash
 git status
@@ -86,30 +110,4 @@ git commit -m"Adding new files"
 git push
 ```
 
-## Note
-
-These instructions need to be rewritten based on these notes:
-
-``` text
-1. Fork the repository
-
-2. Set up the upstream link.
-
-
-git clone git@github.com/Kitware/vtk-examples:<username>/vtk-examples.git VTKExamplesSite
-cd VTKExamplesSite
-git remote add upstream  https://github.com/Kitware/vtk-examples/vtk-examples.git
-
-
-3. Update the HTML files, tarballs, images
-
-After running ./SyncSiteWithRepo in your VTKExamples repository, sync your repository with the VTKExamplesSite repository. Remember that to run the following commands, you need to be in the **VTKExamplesSite** directory.
-
-
-git commit -a -m"Updating files"
-git push
-git add <The files>
-git commit -m"Adding new files"
-git push
-
-```
+### Step 6: Submit a merge request
