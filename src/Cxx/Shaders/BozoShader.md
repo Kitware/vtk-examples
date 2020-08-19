@@ -10,7 +10,7 @@ The file for the shader code is [here](https://github.com/lorensen/VTKExamples/b
     BozoShader PerlinNoise.glsl horse.ply
 
 !!! cite
-    [Perlin's original Siggraph Paper](Perlin, K. 1985. "An Image Synthesizer." Computer Graphics 19(3)).
+    Perlin's original Siggraph Paper: [Perlin, K. 1985. "An Image Synthesizer." Computer Graphics 19(3)](https://dl.acm.org/doi/10.1145/325165.325247).
 
 !!! cite
     This shader is inspired by Ken Perlin's Bozo shader.
