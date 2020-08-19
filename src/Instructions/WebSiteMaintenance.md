@@ -47,10 +47,12 @@ Remember that to run the following commands, you need to be in your `__REPO_NAME
 ``` bash
 cd __REPO_NAME__
 git fetch upstream
-git checkout master
+git switch master
 git merge upstream/master
 git push
 ```
+
+**Note:** You can use your own unmerged branch here but do not submit a merge request as it will be out of sync with the __REPO_NAME__ master.
 
 ### Step 2: Sync your **vtk-examples-web** repository and checkout **gh-pages**
 
@@ -59,13 +61,15 @@ Sync your repository with the [VTK Examples Web Site Repository](__WEB_REPOSITOR
 ``` bash
 cd vtk-examples-web
 git fetch upstream
-git checkout master
+git switch master
 git merge upstream/master
 git push
-git checkout gh_pages
+git switch gh-pages
 ```
 
-**Important:** You must be on the **gh-pages** branch in **vtk-examples-web** before doing the next steps. So remember to do `git checkout gh_pages`!
+**Note:** If you are doing this for the first time replace: `git switch gh-pages` with `git switch -c gh-pages  --track origin/gh-pages`
+
+**Important:** You must be on the **gh-pages** branch in **vtk-examples-web** before doing the next steps. So remember to do `git switch gh_pages`!
 
 ### Step 3: Build the web site
 
@@ -110,4 +114,17 @@ git commit -m"Adding new files"
 git push
 ```
 
-### Step 6: Submit a merge request
+### Step 6: Check it all works
+
+Verify that the links etc. are OK on `https://<username>.github.io/vtk-examples/site/`
+
+**Do not** submit a merge request. This needs to be done by an admisistrator. 
+
+### Step 7: For Administrators
+
+If you are an administrator and:
+
+- You had checked out the master in step 1.
+- The web site `https://<username>.github.io/vtk-examples/site/` is OK with all the links etc. working.
+
+ Then go to your fork `https://github.com/<username>/vtk-examples` and submit a merge request. 

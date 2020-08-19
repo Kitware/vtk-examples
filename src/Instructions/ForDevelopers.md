@@ -57,7 +57,7 @@ Sync your repository with the __REPO_NAME__ repository. Remember that to run the
 
 ``` bash
     git fetch upstream
-    git checkout master
+    git switch master
     git merge upstream/master
     git push
 ```
