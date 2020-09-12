@@ -2,8 +2,6 @@
 
 import vtk
 
-test_data = ['TestOutlineGlowPass.png']
-
 
 def get_program_parameters():
     import argparse
@@ -19,16 +17,15 @@ When combined with layered renderers, this creates a very visible highlight with
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename', nargs='?', help='{}.'.format(test_data[0]))
-    args = parser.parse_args()
-    return args.filename
+    parser.parse_args()
+    return
 
 
 def main():
     if not vtk_version_ok(9, 0, 20200909):
         print('You need VTK version 9.0.20200909 or greater to run this program.')
         return
-    fileName = get_program_parameters()
+    get_program_parameters()
 
     colors = vtk.vtkNamedColors()
 
