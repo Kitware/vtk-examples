@@ -856,6 +856,7 @@ This section includes vtkUnstructuredGrid.
 [Mace](/Cxx/Rendering/Mace) |  | An example of multiple inputs and outputs.
 [Model](/Cxx/Rendering/Model) | vtkRenderer vtkRenderWindow vtkRenderWindowInteractor | Illustrative diagram of graphics objects.
 [MotionBlur](/Cxx/Rendering/MotionBlur) | vtkRenderStepsPass vtkSimpleMotionBlurPass | Example of motion blur.
+[OutlineGlowPass](/Cxx/Rendering/OutlineGlowPass) | vtkOutlineGlowPass vtkRenderStepsPass vtkOpenGLRenderer | Demonstrates how to render a object in a scene with a glowing outline.
 [PhysicallyBasedRendering](/Cxx/Rendering/PhysicallyBasedRendering) | vtkSkybox vtkTexture | Demonstrates physically based rendering, image based lighting, texturing and a skybox.
 [Rainbow](/Cxx/Rendering/Rainbow) | vtkLookupTable | Use and manipulation of vtkLookupTables.
 [Rotations](/Cxx/Rendering/Rotations) | vtkActor::RotateX,Y,Z vtkRenderer::EraseOff | Rotations of a cow about her axes.
