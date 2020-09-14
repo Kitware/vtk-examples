@@ -1,20 +1,20 @@
-#include "vtkSmartPointer.h"
-#include "vtkOpenGLGPUVolumeRayCastMapper.h"
+#include <vtkSmartPointer.h>
+#include <vtkOpenGLGPUVolumeRayCastMapper.h>
 
-#include "vtkPiecewiseFunction.h"
-#include "vtkColorTransferFunction.h"
-#include "vtkContourValues.h"
+#include <vtkPiecewiseFunction.h>
+#include <vtkColorTransferFunction.h>
+#include <vtkContourValues.h>
 
-#include "vtkInteractorStyleTrackballCamera.h"
-#include "vtkMetaImageReader.h"
-#include "vtkRenderWindow.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkRenderer.h"
-#include "vtkCamera.h"
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkMetaImageReader.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkCamera.h>
 
-#include "vtkVolume.h"
-#include "vtkVolumeProperty.h"
-#include "vtkNamedColors.h"
+#include <vtkVolume.h>
+#include <vtkVolumeProperty.h>
+#include <vtkNamedColors.h>
 
 int main (int argc, char *argv[])
 {
@@ -106,7 +106,7 @@ int main (int argc, char *argv[])
   aCamera->SetViewUp (0, 0, -1);
   aCamera->SetPosition (0, -1, 0);
   aCamera->SetFocalPoint (0, 0, 0);
-  
+
   renderer->SetActiveCamera(aCamera);
   renderer->ResetCamera();
 

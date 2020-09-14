@@ -11,7 +11,7 @@
 #include <vtkLookupTable.h>
 #include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
-#include "vtkPointData.h"
+#include <vtkPointData.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>

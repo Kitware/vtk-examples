@@ -1,16 +1,16 @@
-#include "vtkAxisActor.h"
-#include "vtkSmartPointer.h"
+#include <vtkAxisActor.h>
+#include <vtkSmartPointer.h>
 
-#include "vtkActor.h"
-#include "vtkCamera.h"
-#include "vtkPolyDataMapper.h"
-#include "vtkProperty.h"
-#include "vtkRenderWindow.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkRenderer.h"
-#include "vtkSphereSource.h"
-#include "vtkStringArray.h"
-#include "vtkTextProperty.h"
+#include <vtkActor.h>
+#include <vtkCamera.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+#include <vtkStringArray.h>
+#include <vtkTextProperty.h>
 #include <vtkNamedColors.h>
 
 //----------------------------------------------------------------------------
