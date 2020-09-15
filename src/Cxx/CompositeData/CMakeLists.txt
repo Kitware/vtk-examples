@@ -3,6 +3,7 @@ project (${WIKI}CompositeData)
 if(NOT VTK_BINARY_DIR)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
+    vtkCommonColor
     vtkCommonCore
     vtkCommonDataModel
     vtkCommonExecutionModel

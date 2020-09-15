@@ -61,6 +61,7 @@ def main():
     # Enable user interface interactor.
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d("CornflowerBlue"))
+    renderWindow.SetWindowName('MultiBlockDataSet')
     renderWindow.Render()
     renderWindowInteractor.Start()
 

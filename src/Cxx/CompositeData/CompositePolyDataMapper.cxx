@@ -1,22 +1,25 @@
-#include <vtkMultiBlockDataSet.h>
-#include <vtkSphereSource.h>
-#include <vtkNew.h>
-#include <vtkCompositePolyDataMapper2.h>
-#include <vtkCompositeDataDisplayAttributes.h>
 #include <vtkActor.h>
-#include <vtkRenderer.h>
+#include <vtkCompositeDataDisplayAttributes.h>
+#include <vtkCompositePolyDataMapper2.h>
+#include <vtkMultiBlockDataSet.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-int main( int /* argc */, char * /* argv */ [] )
+int main(int /* argc */, char* /* argv */[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   vtkNew<vtkSphereSource> sphere1;
   sphere1->SetRadius(3);
-  sphere1->SetCenter(0,0,0);
+  sphere1->SetCenter(0, 0, 0);
   sphere1->Update();
   vtkNew<vtkSphereSource> sphere2;
   sphere2->SetRadius(2);
-  sphere2->SetCenter(2,0,0);
+  sphere2->SetCenter(2, 0, 0);
   sphere2->Update();
 
   vtkNew<vtkMultiBlockDataSet> mbds;
@@ -45,8 +48,10 @@ int main( int /* argc */, char * /* argv */ [] )
   // Note that the index is the flat index in the tree, so the whole multiblock
   // is index 0 and the blocks are flat indexes 1, 2 and 3.  This affects
   // the block returned by mbds->GetBlock(2).
-  double color[] = {1, 0, 0};
-  mapper->SetBlockColor(3, color);
+  mapper->SetBlockColor(3, colors->GetColor3d("Red").GetData());
+  // Color the spheres.
+  mapper->SetBlockColor(1, colors->GetColor3d("LavenderBlush").GetData());
+  mapper->SetBlockColor(2, colors->GetColor3d("Lavender").GetData());
 
   vtkNew<vtkActor> actor;
   actor->SetMapper(mapper.Get());
@@ -58,7 +63,9 @@ int main( int /* argc */, char * /* argv */ [] )
   renderWindowInteractor->SetRenderWindow(renderWindow.Get());
 
   renderer->AddActor(actor.Get());
+  renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
+  renderWindow->SetWindowName("CompositePolyDataMapper");
   renderWindow->Render();
   renderWindowInteractor->Start();
 

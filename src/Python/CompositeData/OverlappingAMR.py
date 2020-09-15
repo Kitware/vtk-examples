@@ -62,9 +62,9 @@ def main():
     ug2.SetDimensions(dims)
 
     # Data
-    scalars = vtk.vtkFloatArray()
-    ug2.GetPointData().SetScalars(scalars)
-    MakeScalars(dims, origin, spacing2, scalars)
+    scalars2 = vtk.vtkFloatArray()
+    ug2.GetPointData().SetScalars(scalars2)
+    MakeScalars(dims, origin, spacing2, scalars2)
 
     lo2 = [0, 0, 0]
     hi2 = [9, 9, 9]
@@ -81,9 +81,9 @@ def main():
     ug3.SetDimensions(dims)
 
     # Data
-    scalars = vtk.vtkFloatArray()
-    ug3.GetPointData().SetScalars(scalars)
-    MakeScalars(dims, origin3, spacing2, scalars)
+    scalars3 = vtk.vtkFloatArray()
+    ug3.GetPointData().SetScalars(scalars3)
+    MakeScalars(dims, origin3, spacing2, scalars3)
 
     lo3 = [10, 10, 10]
     hi3 = [19, 19, 19]
@@ -118,7 +118,7 @@ def main():
 
     # Associate the geometry with a mapper and the mapper to an actor.
     mapper = vtk.vtkPolyDataMapper()
-    mapper.SetInputConnection(geomFilter.GetOutputPort())
+    mapper.SetInputConnection(of.GetOutputPort())
     actor1 = vtk.vtkActor()
     actor1.GetProperty().SetColor(colors.GetColor3d("Yellow"))
     actor1.SetMapper(mapper)
@@ -133,8 +133,10 @@ def main():
     aren.AddActor(actor1)
     aren.AddActor(actor2)
     aren.SetBackground(colors.GetColor3d("CornflowerBlue"))
+    renWin.SetWindowName('OverlappingAMR')
     renWin.Render()
     iren.Start()
+
 
 if __name__ == '__main__':
     main()
