@@ -45,6 +45,9 @@ def main():
     # is index 0 and the blocks are flat indexes 1, 2 and 3.  This affects
     # the block returned by mbds.GetBlock(2).
     mapper.SetBlockColor(3, colors.GetColor3d("Red"))
+    # Color the spheres.
+    mapper.SetBlockColor(1, colors.GetColor3d("LavenderBlush"))
+    mapper.SetBlockColor(2, colors.GetColor3d("Lavender"))
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
@@ -59,6 +62,7 @@ def main():
     # Enable user interface interactor.
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d("SteelBlue"))
+    renderWindow.SetWindowName('CompositePolyDataMapper')
     renderWindow.Render()
     renderWindowInteractor.Start()
 

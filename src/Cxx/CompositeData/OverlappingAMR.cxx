@@ -3,51 +3,31 @@
 
 #include <vtkAMRBox.h>
 #include <vtkAMRUtilities.h>
+#include <vtkCompositeDataGeometryFilter.h>
 #include <vtkContourFilter.h>
 #include <vtkFloatArray.h>
-#include <vtkCompositeDataGeometryFilter.h>
-#include <vtkOverlappingAMR.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
+#include <vtkOverlappingAMR.h>
 #include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkRenderer.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 #include <vtkSphere.h>
 #include <vtkUniformGrid.h>
 
-namespace
-{
-  void MakeScalars(int dims[3], double origin[3], double spacing[3],
-      vtkFloatArray* scalars)
-  {
-    // Implicit function used to compute scalars
-    vtkSmartPointer<vtkSphere> sphere =
-      vtkSmartPointer<vtkSphere>::New();
-    sphere->SetRadius(3);
-    sphere->SetCenter(5, 5, 5);
-
-    scalars->SetNumberOfTuples(dims[0]*dims[1]*dims[2]);
-    for (int k=0; k<dims[2]; k++)
-    {
-      double z = origin[2] + spacing[2]*k;
-      for (int j=0; j<dims[1]; j++)
-      {
-        double y = origin[1] + spacing[1]*j;
-        for (int i=0; i<dims[0]; i++)
-        {
-          double x = origin[0] + spacing[0]*i;
-          scalars->SetValue(k * dims[0] * dims[1] + j * dims[0] + i,
-                            sphere->EvaluateFunction(x, y, z));
-        }
-      }
-    }
-  }
+namespace {
+void MakeScalars(int dims[3], double origin[3], double spacing[3],
+                 vtkFloatArray* scalars);
 }
 
-int main (int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create and populate the AMR dataset
   // The dataset should look like
   // Level 0
@@ -58,7 +38,7 @@ int main (int, char *[])
   // Use MakeScalars() above to fill the scalar arrays
 
   vtkNew<vtkOverlappingAMR> amr;
-  int blocksPerLevel[] = { 1, 2 };
+  int blocksPerLevel[] = {1, 2};
   amr->Initialize(2, blocksPerLevel);
 
   double origin[3] = {0.0, 0.0, 0.0};
@@ -152,6 +132,7 @@ int main (int, char *[])
   mapper->SetInputConnection(of->GetOutputPort());
 
   vtkNew<vtkActor> actor1;
+  actor1->GetProperty()->SetColor(colors->GetColor3d("Yellow").GetData());
   actor1->SetMapper(mapper);
 
   // associate the geometry with a mapper and the mapper to an actor
@@ -164,8 +145,40 @@ int main (int, char *[])
   // add the actor to the renderer and start handling events
   aren->AddActor(actor1);
   aren->AddActor(actor2);
+
+  aren->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
+
+  renWin->SetWindowName("OverlappingAMR");
+
   renWin->Render();
   iren->Start();
 
   return EXIT_SUCCESS;
 }
+
+namespace {
+void MakeScalars(int dims[3], double origin[3], double spacing[3],
+                 vtkFloatArray* scalars)
+{
+  // Implicit function used to compute scalars
+  vtkNew<vtkSphere> sphere;
+  sphere->SetRadius(3);
+  sphere->SetCenter(5, 5, 5);
+
+  scalars->SetNumberOfTuples(dims[0] * dims[1] * dims[2]);
+  for (int k = 0; k < dims[2]; k++)
+  {
+    auto z = origin[2] + spacing[2] * k;
+    for (int j = 0; j < dims[1]; j++)
+    {
+      auto y = origin[1] + spacing[1] * j;
+      for (int i = 0; i < dims[0]; i++)
+      {
+        auto x = origin[0] + spacing[0] * i;
+        scalars->SetValue(k * dims[0] * dims[1] + j * dims[0] + i,
+                          sphere->EvaluateFunction(x, y, z));
+      }
+    }
+  }
+}
+} // namespace
