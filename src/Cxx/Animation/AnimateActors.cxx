@@ -104,6 +104,8 @@ int main(int argc, char* argv[])
   animateCone.SetActor(cone);
   animateCone.AddObserversToCue(cue2);
 
+  renWin->SetWindowName("AnimateActors");
+
   renWin->Render();
   ren1->ResetCamera();
   ren1->GetActiveCamera()->Dolly(.5);
