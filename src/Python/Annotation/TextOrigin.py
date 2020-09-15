@@ -23,6 +23,7 @@ def main():
     textActor.SetMapper(textMapper)
     textActor.SetScale(0.2, 0.2, 0.2)
     textActor.AddPosition(0, -0.1, 0)
+    textActor.GetProperty().SetColor(colors.GetColor3d("Peacock"))
 
     # Create the Renderer, RenderWindow, and RenderWindowInteractor.
     renderer = vtk.vtkRenderer()
@@ -53,6 +54,7 @@ def main():
     textActor.SetCamera(renderer.GetActiveCamera())
 
     interactor.Initialize()
+    renderWindow.SetWindowName('TextOrigin')
     renderWindow.Render()
     interactor.Start()
 

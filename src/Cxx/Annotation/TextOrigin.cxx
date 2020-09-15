@@ -3,14 +3,14 @@
 // position the 3D text and to ensure that the text always faces the
 // renderer's active camera (i.e., the text is always readable).
 
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkAxes.h>
 #include <vtkFollower.h>
 #include <vtkVectorText.h>
-
 #include <vtkNamedColors.h>
 #include <vtkCamera.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkActor.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkPolyDataMapper.h>
@@ -20,49 +20,40 @@
 
 int main (int, char *[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
 // Create the axes and the associated mapper and actor.
-  vtkSmartPointer<vtkAxes> axes =
-    vtkSmartPointer<vtkAxes>::New();
+  vtkNew<vtkAxes> axes;
   axes->SetOrigin(0, 0, 0);
-  vtkSmartPointer<vtkPolyDataMapper> axesMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> axesMapper;
   axesMapper->SetInputConnection(axes->GetOutputPort());
-  vtkSmartPointer<vtkActor> axesActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> axesActor;
   axesActor->SetMapper(axesMapper);
 
 // Create the 3D text and the associated mapper and follower (a type of
 // actor).  Position the text so it is displayed over the origin of the
 // axes.
-  vtkSmartPointer<vtkVectorText> atext =
-    vtkSmartPointer<vtkVectorText>::New();
+  vtkNew<vtkVectorText> atext;
   atext->SetText("Origin");
-  vtkSmartPointer<vtkPolyDataMapper> textMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> textMapper;
   textMapper->SetInputConnection(atext->GetOutputPort());
-  vtkSmartPointer<vtkFollower> textActor =
-    vtkSmartPointer<vtkFollower>::New();
+  vtkNew<vtkFollower> textActor;
   textActor->SetMapper(textMapper);
   textActor->SetScale(0.2, 0.2, 0.2);
   textActor->AddPosition(0, -0.1, 0);
+  textActor->GetProperty()->SetColor(
+      colors->GetColor3d("Peacock").GetData());
 
 // Create the Renderer, RenderWindow, and RenderWindowInteractor.
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = 
-    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+  vtkNew<vtkInteractorStyleTrackballCamera> style;
   interactor->SetInteractorStyle( style );
 
 // Add the actors to the renderer.
@@ -83,6 +74,7 @@ int main (int, char *[])
   textActor->SetCamera(renderer->GetActiveCamera());
 
   interactor->Initialize();
+  renderWindow->SetWindowName("TextOrigin");
   renderWindow->Render();
   interactor->Start();
 

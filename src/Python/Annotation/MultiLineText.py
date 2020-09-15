@@ -190,6 +190,7 @@ def main():
 
     # Enable user interface interactor
     interactor.Initialize()
+    renderWindow.SetWindowName('MultiLineText')
     renderWindow.Render()
     interactor.Start()
 

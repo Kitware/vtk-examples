@@ -1,5 +1,6 @@
 #include <vtkActor.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
@@ -7,7 +8,6 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
-#include <vtkNew.h>
 
 class vtkTimerCallback2 : public vtkCommand
 {
@@ -83,6 +83,7 @@ int main(int, char*[])
 
   renderer->SetBackground(colors->GetColor3d("Seashell").GetData());
   // Render and interact
+  renderWindow->SetWindowName("RotatingSphere");
   renderWindow->Render();
 
   // Initialize must be called prior to creating timer events.
