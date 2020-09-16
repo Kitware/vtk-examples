@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
   // Add the actors to the scene
   renderer->AddActor(pointsActor);
   renderer->AddActor(bspTreeActor);
-  renderer->SetBackground(colors->GetColor3d("SteelBLue").GetData());
+  renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
   renderer->UseHiddenLineRemovalOn();
 
   // Render an image (lights and cameras are created automatically)

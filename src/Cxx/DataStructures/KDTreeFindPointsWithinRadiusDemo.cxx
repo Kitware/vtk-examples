@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
   for (std::vector<double>::reverse_iterator rIter = radii.rbegin();
        rIter != radii.rend(); ++rIter)
   {
-    auto result = vtkSmartPointer<vtkIdList>::New();
+    vtkNew<vtkIdList> result;
     pointTree->FindPointsWithinRadius(*rIter, sphereSource->GetCenter(),
                                       result);
     vtkIdType k = result->GetNumberOfIds();
@@ -161,7 +161,7 @@ int main(int argc, char* argv[])
     for (std::vector<double>::reverse_iterator rIter = radii.rbegin();
          rIter != radii.rend(); ++rIter)
     {
-      auto radiiSource = vtkSmartPointer<vtkSphereSource>::New();
+      vtkNew<vtkSphereSource> radiiSource;
       radiiSource->SetPhiResolution(31);
       radiiSource->SetThetaResolution(31);
       radiiSource->SetStartPhi(90.0);
