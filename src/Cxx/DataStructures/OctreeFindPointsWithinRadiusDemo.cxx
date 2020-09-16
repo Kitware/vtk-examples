@@ -1,12 +1,12 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 
 #include <vtkCellArray.h>
 #include <vtkDoubleArray.h>
@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0] << " shark.ply [number of radii] "
+    std::cout << "Usage: " << argv[0] << " dragon.ply [number of radii] "
               << std::endl;
     return EXIT_FAILURE;
   }
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
   double minRange = std::min({range[0], range[1], range[2]});
 
   // Define a sphere at one edge of bounding box
-  auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(range[0] / 2.0 + bounds[0],
                           range[1] / 2.0 + bounds[2], bounds[5]);
   sphereSource->SetRadius(minRange);
@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
   sphereSource->Update();
 
   // Initialize the locator
-  auto pointTree = vtkSmartPointer<vtkOctreePointLocator>::New();
+  vtkNew<vtkOctreePointLocator> pointTree;
   pointTree->SetDataSet(polyData);
   pointTree->BuildLocator();
 
@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
   }
 
   // Create an array to hold the scalar point data
-  auto scalars = vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> scalars;
   scalars->SetNumberOfComponents(1);
   scalars->SetNumberOfTuples(polyData->GetNumberOfPoints());
   scalars->FillComponent(0, 0.0);
@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
   for (std::vector<double>::reverse_iterator rIter = radii.rbegin();
        rIter != radii.rend(); ++rIter)
   {
-    auto result = vtkSmartPointer<vtkIdList>::New();
+    vtkNew<vtkIdList> result;
     pointTree->FindPointsWithinRadius(*rIter, sphereSource->GetCenter(),
                                       result);
     vtkIdType k = result->GetNumberOfIds();
@@ -149,11 +149,11 @@ int main(int argc, char* argv[])
   polyData->GetPointData()->SetScalars(scalars);
 
   // Visualize
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  auto lut = vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   lut->SetHueRange(.667, 0.0);
   lut->SetNumberOfTableValues(radii.size() + 1);
   lut->SetRange(*radii.begin(), *radii.rbegin());
@@ -165,7 +165,7 @@ int main(int argc, char* argv[])
     for (std::vector<double>::reverse_iterator rIter = radii.rbegin();
          rIter != radii.rend(); ++rIter)
     {
-      auto radiiSource = vtkSmartPointer<vtkSphereSource>::New();
+      vtkNew<vtkSphereSource> radiiSource;
       radiiSource->SetPhiResolution(31);
       radiiSource->SetThetaResolution(31);
       radiiSource->SetStartPhi(90.0);
@@ -173,13 +173,13 @@ int main(int argc, char* argv[])
       radiiSource->SetCenter(range[0] / 2.0 + bounds[0],
                              range[1] / 2.0 + bounds[2], bounds[5]);
 
-      auto radiiMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+      vtkNew<vtkPolyDataMapper> radiiMapper;
       radiiMapper->SetInputConnection(radiiSource->GetOutputPort());
 
-      auto backProp = vtkSmartPointer<vtkProperty>::New();
+      vtkNew<vtkProperty> backProp;
       backProp->SetDiffuseColor(colors->GetColor3d("LightGrey").GetData());
 
-      auto radiiActor = vtkSmartPointer<vtkActor>::New();
+      vtkNew<vtkActor> radiiActor;
       radiiActor->SetMapper(radiiMapper);
       radiiActor->GetProperty()->SetDiffuseColor(
           colors->GetColor3d("White").GetData());
@@ -191,28 +191,28 @@ int main(int argc, char* argv[])
   }
 
   // Display the original poly data
-  auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polyData);
   mapper->SetLookupTable(lut);
   mapper->SetScalarRange(*radii.begin(), *radii.rbegin());
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetDiffuseColor(
       colors->GetColor3d("Crimson").GetData());
   actor->GetProperty()->SetInterpolationToFlat();
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
 
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("BurlyWood").GetData());
   renderer->UseHiddenLineRemovalOn();
+  renderWindow->SetWindowName("OctreeFindPointsWithinRadiusDemo");
 
   renderWindow->Render();
 

@@ -1,27 +1,27 @@
 #include <vtkCellArray.h>
 #include <vtkIdList.h>
+#include <vtkNew.h>
 #include <vtkOctreePointLocator.h>
 #include <vtkPointSource.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
 
 int main(int, char*[])
 {
   // Create some random points
-  auto pointSource = vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(10);
   pointSource->Update();
 
   // Create the tree
-  auto octree = vtkSmartPointer<vtkOctreePointLocator>::New();
+  vtkNew<vtkOctreePointLocator> octree;
   octree->SetDataSet(pointSource->GetOutput());
   octree->BuildLocator();
 
   // Find the k closest points to (0,0,0)
   vtkIdType k = 1;
   double testPoint[3] = {0.0, 0.0, 0.0};
-  auto result = vtkSmartPointer<vtkIdList>::New();
+  vtkNew<vtkIdList> result;
 
   octree->FindPointsWithinRadius(1.0, testPoint, result);
 

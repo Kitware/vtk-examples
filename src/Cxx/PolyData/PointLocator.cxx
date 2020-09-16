@@ -2,6 +2,7 @@
 #include <vtkCamera.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkObjectFactory.h>
 #include <vtkPointLocator.h>
 #include <vtkPointSource.h>
@@ -11,7 +12,6 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 
 class KeyPressInteractorStyle3 : public vtkInteractorStyleTrackballCamera
 {
@@ -73,14 +73,14 @@ vtkStandardNewMacro(KeyPressInteractorStyle3);
 
 int main(int, char*[])
 {
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto pointSource = vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(4000);
   pointSource->Update();
 
   // Create the tree
-  auto pointLocator = vtkSmartPointer<vtkPointLocator>::New();
+  vtkNew<vtkPointLocator> pointLocator;
   pointLocator->SetDataSet(pointSource->GetOutput());
   pointLocator->AutomaticOn();
   pointLocator->SetNumberOfPointsPerBucket(2);
@@ -91,27 +91,25 @@ int main(int, char*[])
   std::cout << "There are " << pointLocator->GetNumberOfPointsPerBucket()
             << " points per bucket." << endl;
 
-  auto polydata = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   pointLocator->GenerateRepresentation(pointLocator->GetLevel(), polydata);
 
   // Visualize
-  auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polydata);
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetColor(colors->GetColor3d("Peru").GetData());
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<KeyPressInteractorStyle3> style =
-      vtkSmartPointer<KeyPressInteractorStyle3>::New();
+  vtkNew<KeyPressInteractorStyle3> style;
   style->pointLocator = pointLocator;
   style->renderWindow = renderWindow;
   style->polydata = polydata;
@@ -123,6 +121,7 @@ int main(int, char*[])
   renderer->ResetCamera();
   renderer->GetActiveCamera()->Elevation(60.0);
   renderer->GetActiveCamera()->Azimuth(30.0);
+  renderWindow->SetWindowName("PointLocator");
   renderWindow->Render();
 
   renderWindowInteractor->Start();

@@ -1,125 +1,108 @@
-#include <vtkSmartPointer.h>
-#include <vtkSphereSource.h>
-#include <vtkPoints.h>
+#include <vtkExtractCells.h>
 #include <vtkIdList.h>
-#include <vtkPolyData.h>
-#include <vtkPointData.h>
 #include <vtkLine.h>
 #include <vtkLineSource.h>
-#include <vtkExtractCells.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOBBTree.h>
+#include <vtkPointData.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkSphereSource.h>
 
-#include <vtkPolyDataMapper.h>
-#include <vtkDataSetMapper.h>
 #include <vtkActor.h>
+#include <vtkDataSetMapper.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetPhiResolution(7);
   sphereSource->SetThetaResolution(15);
   sphereSource->Update();
 
   // Create the locator
-  vtkSmartPointer<vtkOBBTree> tree =
-    vtkSmartPointer<vtkOBBTree>::New();
+  vtkNew<vtkOBBTree> tree;
   tree->SetDataSet(sphereSource->GetOutput());
   tree->BuildLocator();
 
   // Intersect the locator with the line
   double lineP0[3] = {-0.6, -0.6, -0.6};
   double lineP1[3] = {.6, .6, .6};
-  vtkSmartPointer<vtkPoints> intersectPoints =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> intersectPoints;
 
-  vtkSmartPointer<vtkIdList> intersectCells =
-    vtkSmartPointer<vtkIdList>::New();
+  vtkNew<vtkIdList> intersectCells;
 
   double tol = 1.e-8;
   tree->SetTolerance(tol);
-  tree->IntersectWithLine(lineP0, lineP1,
-                          intersectPoints,
-                          intersectCells);
+  tree->IntersectWithLine(lineP0, lineP1, intersectPoints, intersectCells);
 
   std::cout << "NumPoints: " << intersectPoints->GetNumberOfPoints()
             << std::endl;
 
   // Display list of intersections
   double intersection[3];
-  for(int i = 0; i < intersectPoints->GetNumberOfPoints(); i++ )
+  for (int i = 0; i < intersectPoints->GetNumberOfPoints(); i++)
   {
     intersectPoints->GetPoint(i, intersection);
-    std::cout << "\tPoint Intersection " << i << ": "
-              << intersection[0] << ", "
-              << intersection[1] << ", "
-              << intersection[2] << std::endl;
+    std::cout << "\tPoint Intersection " << i << ": " << intersection[0] << ", "
+              << intersection[1] << ", " << intersection[2] << std::endl;
   }
 
-  std::cout << "NumCells: " << intersectCells->GetNumberOfIds()
-            << std::endl;
+  std::cout << "NumCells: " << intersectCells->GetNumberOfIds() << std::endl;
 
   vtkIdType cellId;
-  for(int i = 0; i < intersectCells->GetNumberOfIds(); i++ )
+  for (int i = 0; i < intersectCells->GetNumberOfIds(); i++)
   {
     cellId = intersectCells->GetId(i);
-    std::cout << "\tCellId " << i << ": "
-              << cellId << std::endl;
+    std::cout << "\tCellId " << i << ": " << cellId << std::endl;
   }
 
   // Render the line, sphere and intersected cells
-  vtkSmartPointer<vtkLineSource> lineSource =
-    vtkSmartPointer<vtkLineSource>::New();
+  vtkNew<vtkLineSource> lineSource;
   lineSource->SetPoint1(lineP0);
   lineSource->SetPoint2(lineP1);
 
-  vtkSmartPointer<vtkPolyDataMapper> lineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> lineMapper;
   lineMapper->SetInputConnection(lineSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> lineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> lineActor;
   lineActor->SetMapper(lineMapper);
 
-  vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> sphereActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
   sphereActor->GetProperty()->SetRepresentationToWireframe();
-  sphereActor->GetProperty()->SetColor(0.89,0.81,0.34);
+  sphereActor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
 
-  vtkSmartPointer<vtkExtractCells> cellSource =
-    vtkSmartPointer<vtkExtractCells>::New();
+  vtkNew<vtkExtractCells> cellSource;
   cellSource->SetInputConnection(sphereSource->GetOutputPort());
   cellSource->SetCellList(intersectCells);
 
-  vtkSmartPointer<vtkDataSetMapper> cellMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> cellMapper;
   cellMapper->SetInputConnection(cellSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> cellActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cellActor;
   cellActor->SetMapper(cellMapper);
-  cellActor->GetProperty()->SetColor(1.0, 0.3882, 0.2784);
+  cellActor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(lineActor);
   renderer->AddActor(sphereActor);
   renderer->AddActor(cellActor);
+  renderer->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
 
-  renderer->SetBackground(.4, .5, .6);
+  renderWindow->SetWindowName("OBBTreeExtractCells");
   renderWindow->Render();
   renderWindowInteractor->Start();
 
