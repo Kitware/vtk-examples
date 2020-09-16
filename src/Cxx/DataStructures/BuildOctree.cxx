@@ -14,7 +14,7 @@ int main(int, char*[])
   double y[3]{0.0, 1.0, 0.0};
   double z[3]{0.0, 0.0, 1.0};
 
-  auto points = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
 
   for (unsigned int i = 0; i < 3; ++i)
   {
