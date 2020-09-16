@@ -4,25 +4,23 @@
 #include <vtkPointSource.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 
 int main(int, char *[]) {
   // Create some random points
-  vtkSmartPointer<vtkPointSource> pointSource =
-      vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(10);
   pointSource->Update();
 
   // Create the tree
-  vtkSmartPointer<vtkKdTreePointLocator> pointTree =
-      vtkSmartPointer<vtkKdTreePointLocator>::New();
+  vtkNew<vtkKdTreePointLocator> pointTree;
   pointTree->SetDataSet(pointSource->GetOutput());
   pointTree->BuildLocator();
 
   // Find the k closest points to (0,0,0)
   unsigned int k = 1;
   double testPoint[3] = {0.0, 0.0, 0.0};
-  vtkSmartPointer<vtkIdList> result = vtkSmartPointer<vtkIdList>::New();
+  vtkNew<vtkIdList> result;
 
   pointTree->FindClosestNPoints(k, testPoint, result);
 

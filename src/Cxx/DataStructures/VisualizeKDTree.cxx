@@ -70,34 +70,33 @@ public:
 int main(int argc, char* argv[])
 {
   auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
-  ;
 
   vtkNew<vtkNamedColors> colors;
 
-  auto pointsMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> pointsMapper;
   pointsMapper->SetInputData(polyData);
   pointsMapper->ScalarVisibilityOff();
 
-  auto pointsActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> pointsActor;
   pointsActor->SetMapper(pointsMapper);
   pointsActor->GetProperty()->SetInterpolationToFlat();
   pointsActor->GetProperty()->SetColor(colors->GetColor4d("Yellow").GetData());
 
   int maxLevel = 5;
   // Create the tree
-  auto kdTree = vtkSmartPointer<vtkKdTree>::New();
+  vtkNew<vtkKdTree> kdTree;
   kdTree->SetDataSet(polyData);
   kdTree->SetMaxLevel(maxLevel);
   kdTree->BuildLocator();
 
   // Initialize the representation
-  auto polydata = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   kdTree->GenerateRepresentation(maxLevel / 2, polydata);
 
-  auto octreeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> octreeMapper;
   octreeMapper->SetInputData(polydata);
 
-  auto octreeActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> octreeActor;
   octreeActor->SetMapper(octreeMapper);
   octreeActor->GetProperty()->SetInterpolationToFlat();
   octreeActor->GetProperty()->SetOpacity(.6);
@@ -106,13 +105,12 @@ int main(int argc, char* argv[])
       colors->GetColor4d("SpringGreen").GetData());
 
   // A renderer and render window
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
   // An interactor
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
@@ -126,7 +124,7 @@ int main(int argc, char* argv[])
   renderWindow->SetSize(600, 600);
   renderWindow->Render();
 
-  auto sliderRep = vtkSmartPointer<vtkSliderRepresentation2D>::New();
+  vtkNew<vtkSliderRepresentation2D> sliderRep;
   sliderRep->SetMinimumValue(0);
   sliderRep->SetMaximumValue(kdTree->GetLevel());
   sliderRep->SetValue(kdTree->GetLevel() / 2);
@@ -147,13 +145,13 @@ int main(int argc, char* argv[])
   sliderRep->GetSelectedProperty()->SetColor(
       colors->GetColor3d("Violet").GetData());
 
-  auto sliderWidget = vtkSmartPointer<vtkSliderWidget>::New();
+  vtkNew<vtkSliderWidget> sliderWidget;
   sliderWidget->SetInteractor(renderWindowInteractor);
   sliderWidget->SetRepresentation(sliderRep);
   sliderWidget->SetAnimationModeToAnimate();
   sliderWidget->EnabledOn();
 
-  auto callback = vtkSmartPointer<vtkSliderCallback>::New();
+  vtkNew<vtkSliderCallback> callback;
   callback->KdTree = kdTree;
   callback->PolyData = polydata;
   callback->Renderer = renderer;

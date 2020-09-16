@@ -16,7 +16,6 @@
 #include <vtkRenderer.h>
 #include <vtkSliderRepresentation2D.h>
 #include <vtkSliderWidget.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkTextProperty.h>
 #include <vtkWidgetEvent.h>
@@ -25,65 +24,66 @@
 #include <cmath>
 
 namespace {
-class vtkSliderCallback : public vtkCommand {
+class vtkSliderCallback : public vtkCommand
+{
 public:
-  static vtkSliderCallback *New()
+  static vtkSliderCallback* New()
 
   {
     return new vtkSliderCallback;
   }
-  vtkSliderCallback() : Octree(0), Level(0), PolyData(0), Renderer(0) {}
+  vtkSliderCallback() : Octree(0), Level(0), PolyData(0), Renderer(0)
+  {
+  }
 
-  virtual void Execute(vtkObject *caller, unsigned long, void *) {
-    vtkSliderWidget *sliderWidget = reinterpret_cast<vtkSliderWidget *>(caller);
-    this->Level = vtkMath::Round(static_cast<vtkSliderRepresentation *>(
-                                     sliderWidget->GetRepresentation())
-                                     ->GetValue());
+  virtual void Execute(vtkObject* caller, unsigned long, void*)
+  {
+    vtkSliderWidget* sliderWidget = reinterpret_cast<vtkSliderWidget*>(caller);
+    this->Level = vtkMath::Round(
+        static_cast<vtkSliderRepresentation*>(sliderWidget->GetRepresentation())
+            ->GetValue());
 
     this->Octree->GenerateRepresentation(this->Level, this->PolyData);
     this->Renderer->Render();
   }
 
-  vtkOctreePointLocator *Octree;
+  vtkOctreePointLocator* Octree;
   int Level;
-  vtkPolyData *PolyData;
-  vtkRenderer *Renderer;
+  vtkPolyData* PolyData;
+  vtkRenderer* Renderer;
 };
 } // namespace
 
-int main(int, char *[]) {
+int main(int, char*[])
+{
   vtkNew<vtkNamedColors> colors;
 
   // Create a point cloud
-  vtkSmartPointer<vtkSphereSource> pointSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> pointSource;
   pointSource->SetPhiResolution(50);
   pointSource->SetThetaResolution(50);
-  vtkSmartPointer<vtkPolyDataMapper> pointsMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> pointsMapper;
   pointsMapper->SetInputConnection(pointSource->GetOutputPort());
   pointSource->Update();
-  vtkSmartPointer<vtkActor> pointsActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> pointsActor;
   pointsActor->SetMapper(pointsMapper);
   pointsActor->GetProperty()->SetInterpolationToFlat();
   pointsActor->GetProperty()->SetRepresentationToPoints();
   pointsActor->GetProperty()->SetColor(colors->GetColor4d("Yellow").GetData());
 
   // Create the tree
-  vtkSmartPointer<vtkOctreePointLocator> octree =
-      vtkSmartPointer<vtkOctreePointLocator>::New();
+  vtkNew<vtkOctreePointLocator> octree;
   octree->SetMaximumPointsPerRegion(5);
   octree->SetDataSet(pointSource->GetOutput());
   octree->BuildLocator();
 
-  vtkSmartPointer<vtkPolyData> polydata = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   octree->GenerateRepresentation(0, polydata);
 
-  vtkSmartPointer<vtkPolyDataMapper> octreeMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> octreeMapper;
   octreeMapper->SetInputData(polydata);
 
-  vtkSmartPointer<vtkActor> octreeActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> octreeActor;
   octreeActor->SetMapper(octreeMapper);
   octreeActor->GetProperty()->SetInterpolationToFlat();
   octreeActor->GetProperty()->SetRepresentationToWireframe();
@@ -91,14 +91,12 @@ int main(int, char *[]) {
       colors->GetColor4d("SpringGreen").GetData());
 
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
@@ -111,8 +109,7 @@ int main(int, char *[]) {
   renderWindow->SetSize(600, 600);
   renderWindow->Render();
 
-  vtkSmartPointer<vtkSliderRepresentation2D> sliderRep =
-      vtkSmartPointer<vtkSliderRepresentation2D>::New();
+  vtkNew<vtkSliderRepresentation2D> sliderRep;
   sliderRep->SetMinimumValue(0);
   sliderRep->SetMaximumValue(octree->GetLevel());
   sliderRep->SetValue(0);
@@ -133,15 +130,13 @@ int main(int, char *[]) {
   sliderRep->GetSelectedProperty()->SetColor(
       colors->GetColor3d("Violet").GetData());
 
-  vtkSmartPointer<vtkSliderWidget> sliderWidget =
-      vtkSmartPointer<vtkSliderWidget>::New();
+  vtkNew<vtkSliderWidget> sliderWidget;
   sliderWidget->SetInteractor(renderWindowInteractor);
   sliderWidget->SetRepresentation(sliderRep);
   sliderWidget->SetAnimationModeToAnimate();
   sliderWidget->EnabledOn();
 
-  vtkSmartPointer<vtkSliderCallback> callback =
-      vtkSmartPointer<vtkSliderCallback>::New();
+  vtkNew<vtkSliderCallback> callback;
   callback->Octree = octree;
   callback->PolyData = polydata;
   callback->Renderer = renderer;
