@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import vtk
 
 
@@ -37,7 +35,7 @@ def main():
     # smoother.BoundarySmoothingOff()
     # smoother.FeatureEdgeSmoothingOff()
     # smoother.SetFeatureAngle(120.0)
-    # smoother.SetPassBand(.001)        # This increases the error a lot!
+    # smoother.SetPassBand(0.001)        # This increases the error a lot!
     smoother.NonManifoldSmoothingOn()
     smoother.NormalizeCoordinatesOn()
     smoother.GenerateErrorScalarsOn()
@@ -56,8 +54,10 @@ def main():
         print("Big smoother error: min/max:", minz, maxz)
     # minz = 0.3  # This way colours of different particles are comparable.
     # maxz = 1
-    minz = 0.3
-    maxz = 0.6
+    # minz = 0.3
+    # maxz = 0.6
+    minz = 3.25
+    maxz = 3.85
 
     # Create the color map.
     colorLookupTable = vtk.vtkLookupTable()
@@ -107,11 +107,12 @@ def main():
 
     # Start the initialization and rendering.
     iren.Initialize()
-    renWin.Render()
-    ren.GetActiveCamera().SetPosition(268.628410, 128.452157, 24.517175)
-    ren.GetActiveCamera().SetFocalPoint(256.006912, 175.949646, 24.175843)
-    ren.GetActiveCamera().SetViewUp(0.844464, 0.227883, 0.484716)
+    ren.GetActiveCamera().SetPosition(-0.004332, -1.771289, -0.754580)
+    ren.GetActiveCamera().SetFocalPoint(0.000271, -0.001974, 0.006892)
+    ren.GetActiveCamera().SetViewUp(0.790211, -0.243999, 0.562166)
     ren.ResetCameraClippingRange()
+    renWin.Render()
+    renWin.SetWindowName('MeshLabelImageColor')
     renWin.Render()
 
     iren.Start()

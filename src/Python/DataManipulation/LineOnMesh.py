@@ -161,6 +161,7 @@ def main():
     renderer.GetActiveCamera().SetFocalPoint(15.500000, 15.500000, 2.000000)
     renderer.GetActiveCamera().SetViewUp(0.348057, -0.636740, 0.688055)
     renderer.ResetCameraClippingRange()
+    renderWindow.SetWindowName('LineOnMesh')
     renderWindow.Render()
 
     renderWindowInteractor.Start()
