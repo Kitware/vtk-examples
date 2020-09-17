@@ -5,7 +5,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [0.3, 0.2, 0.1, 1.0])
+    colors.SetColor('BkgColor', [0.3, 0.2, 0.1, 1.0])
 
     input1 = vtk.vtkPolyData()
     input2 = vtk.vtkPolyData()
@@ -49,15 +49,16 @@ def main():
 
     # Add the actors to the scene
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("BkgColor"))
 
     # Render and interact
     renderWindowInteractor.Initialize()
     renderWindow.Render()
+    renderWindow.SetWindowName('CombinePolyData')
+    renderer.SetBackground(colors.GetColor3d('deep_ochre'))
     renderer.GetActiveCamera().Zoom(0.9)
     renderWindow.Render()
     renderWindowInteractor.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -332,6 +332,7 @@ This section includes vtkUnstructuredGrid.
 
 | Example Name | Classes Demonstrated | Description | Image |
 | -------------- | ---------------------- | ------------- | ------- |
+[ConstrainedDelaunay2D](/Python/Filtering/ConstrainedDelaunay2D) | vtkDelaunay2D | Perform a 2D Delaunay triangulation on a point set respecting a specified boundary.
 [Delaunay2D](/Python/Filtering/Delaunay2D) | vtkDelaunay2D |
 [LUTUtilities](/Python/Utilities/LUTUtilities) | vtkLookupTable vtkColorSeries | A utility class for vtkLookupTable allowing you to output the table contents or to compare tables.
 [MultipleViewports](/Python/Visualization/MultipleViewports) | vtkRenderer::SetViewport |

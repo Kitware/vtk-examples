@@ -12,8 +12,8 @@ vtkStandardNewMacro(vtkTestAlgorithmSource);
 //----------------------------------------------------------------------------
 vtkTestAlgorithmSource::vtkTestAlgorithmSource()
 {
-  this->SetNumberOfInputPorts( 0 );
-  this->SetNumberOfOutputPorts( 1 );
+  this->SetNumberOfInputPorts(0);
+  this->SetNumberOfOutputPorts(1);
 }
 
 //----------------------------------------------------------------------------
@@ -45,30 +45,29 @@ void vtkTestAlgorithmSource::SetOutput(vtkDataObject* d)
   this->GetExecutive()->SetOutputData(0, d);
 }
 
-
 //----------------------------------------------------------------------------
 int vtkTestAlgorithmSource::ProcessRequest(vtkInformation* request,
-                                     vtkInformationVector** inputVector,
-                                     vtkInformationVector* outputVector)
+                                           vtkInformationVector** inputVector,
+                                           vtkInformationVector* outputVector)
 {
   // Create an output object of the correct type.
-  if(request->Has(vtkDemandDrivenPipeline::REQUEST_DATA_OBJECT()))
+  if (request->Has(vtkDemandDrivenPipeline::REQUEST_DATA_OBJECT()))
   {
     return this->RequestDataObject(request, inputVector, outputVector);
   }
   // generate the data
-  if(request->Has(vtkDemandDrivenPipeline::REQUEST_DATA()))
+  if (request->Has(vtkDemandDrivenPipeline::REQUEST_DATA()))
   {
     return this->RequestData(request, inputVector, outputVector);
   }
 
-  if(request->Has(vtkStreamingDemandDrivenPipeline::REQUEST_UPDATE_EXTENT()))
+  if (request->Has(vtkStreamingDemandDrivenPipeline::REQUEST_UPDATE_EXTENT()))
   {
     return this->RequestUpdateExtent(request, inputVector, outputVector);
   }
 
   // execute information
-  if(request->Has(vtkDemandDrivenPipeline::REQUEST_INFORMATION()))
+  if (request->Has(vtkDemandDrivenPipeline::REQUEST_INFORMATION()))
   {
     return this->RequestInformation(request, inputVector, outputVector);
   }
@@ -77,33 +76,32 @@ int vtkTestAlgorithmSource::ProcessRequest(vtkInformation* request,
 }
 
 //----------------------------------------------------------------------------
-int vtkTestAlgorithmSource::FillOutputPortInformation(
-    int vtkNotUsed(port), vtkInformation* info)
+int vtkTestAlgorithmSource::FillOutputPortInformation(int vtkNotUsed(port),
+                                                      vtkInformation* info)
 {
   // now add our info
   info->Set(vtkDataObject::DATA_TYPE_NAME(), "vtkTest1");
   return 1;
 }
 
-
 //----------------------------------------------------------------------------
 int vtkTestAlgorithmSource::RequestDataObject(
-                                        vtkInformation* vtkNotUsed(request),
+    vtkInformation* vtkNotUsed(request),
     vtkInformationVector** vtkNotUsed(inputVector),
-                                      vtkInformationVector* outputVector )
+    vtkInformationVector* outputVector)
 {
-  for ( int i = 0; i < this->GetNumberOfOutputPorts(); ++i )
+  for (int i = 0; i < this->GetNumberOfOutputPorts(); ++i)
   {
-    vtkInformation* outInfo = outputVector->GetInformationObject( i );
-    vtkTest1* output = dynamic_cast<vtkTest1*>(
-                                            outInfo->Get( vtkDataObject::DATA_OBJECT() ) );
-    if ( ! output )
+    vtkInformation* outInfo = outputVector->GetInformationObject(i);
+    vtkTest1* output =
+        dynamic_cast<vtkTest1*>(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+    if (!output)
     {
       output = vtkTest1::New();
-      outInfo->Set( vtkDataObject::DATA_OBJECT(), output );
+      outInfo->Set(vtkDataObject::DATA_OBJECT(), output);
       output->FastDelete();
-      this->GetOutputPortInformation( i )->Set(
-                                      vtkDataObject::DATA_EXTENT_TYPE(), output->GetExtentType() );
+      this->GetOutputPortInformation(i)->Set(vtkDataObject::DATA_EXTENT_TYPE(),
+                                             output->GetExtentType());
     }
   }
   return 1;
@@ -111,9 +109,9 @@ int vtkTestAlgorithmSource::RequestDataObject(
 
 //----------------------------------------------------------------------------
 int vtkTestAlgorithmSource::RequestInformation(
-                                         vtkInformation* vtkNotUsed(request),
+    vtkInformation* vtkNotUsed(request),
     vtkInformationVector** vtkNotUsed(inputVector),
-                                      vtkInformationVector* vtkNotUsed(outputVector))
+    vtkInformationVector* vtkNotUsed(outputVector))
 {
   // do nothing let subclasses handle it
   return 1;
@@ -121,15 +119,14 @@ int vtkTestAlgorithmSource::RequestInformation(
 
 //----------------------------------------------------------------------------
 int vtkTestAlgorithmSource::RequestUpdateExtent(
-                                          vtkInformation* vtkNotUsed(request),
-    vtkInformationVector** inputVector,
+    vtkInformation* vtkNotUsed(request), vtkInformationVector** inputVector,
     vtkInformationVector* vtkNotUsed(outputVector))
 {
   int numInputPorts = this->GetNumberOfInputPorts();
-  for (int i=0; i<numInputPorts; i++)
+  for (int i = 0; i < numInputPorts; i++)
   {
     int numInputConnections = this->GetNumberOfInputConnections(i);
-    for (int j=0; j<numInputConnections; j++)
+    for (int j = 0; j < numInputConnections; j++)
     {
       vtkInformation* inputInfo = inputVector[i]->GetInformationObject(j);
       inputInfo->Set(vtkStreamingDemandDrivenPipeline::EXACT_EXTENT(), 1);
@@ -142,9 +139,9 @@ int vtkTestAlgorithmSource::RequestUpdateExtent(
 // This is the superclasses style of Execute method.  Convert it into
 // an imaging style Execute method.
 int vtkTestAlgorithmSource::RequestData(
-                                  vtkInformation* vtkNotUsed(request),
-    vtkInformationVector** vtkNotUsed( inputVector ),
-                                       vtkInformationVector* vtkNotUsed(outputVector) )
+    vtkInformation* vtkNotUsed(request),
+    vtkInformationVector** vtkNotUsed(inputVector),
+    vtkInformationVector* vtkNotUsed(outputVector))
 {
   // do nothing let subclasses handle it
   return 1;

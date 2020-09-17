@@ -1,66 +1,62 @@
 #!/usr/bin/python
 
-import random
-
 import vtk
 
 
 def main():
     colors = vtk.vtkNamedColors()
 
-    # Set the background color.
-    colors.SetColor("BkgColor", [0.3, 0.6, 0.3, 1.0])
-
+    # Create a set of heights on a grid.
+    # This is often called a "terrain map".
     points = vtk.vtkPoints()
 
-    for x in range(10):
-        for y in range(10):
-            points.InsertNextPoint(x + random.uniform(-.25, .25),
-                                   y + random.uniform(-.25, .25), 0)
+    gridSize = 10
+    for x in range(gridSize):
+        for y in range(gridSize):
+            points.InsertNextPoint(x, y, int((x + y) / (y + 1)))
 
-    aPolyData = vtk.vtkPolyData()
-    aPolyData.SetPoints(points)
+    # Add the grid points to a polydata object
+    polydata = vtk.vtkPolyData()
+    polydata.SetPoints(points)
 
-    aCellArray = vtk.vtkCellArray()
-
-    boundary = vtk.vtkPolyData()
-    boundary.SetPoints(aPolyData.GetPoints())
-    boundary.SetPolys(aCellArray)
     delaunay = vtk.vtkDelaunay2D()
-    delaunay.SetInputData(aPolyData)
-    delaunay.SetSourceData(boundary)
+    delaunay.SetInputData(polydata)
 
-    delaunay.Update()
-
+    # Visualize
     meshMapper = vtk.vtkPolyDataMapper()
     meshMapper.SetInputConnection(delaunay.GetOutputPort())
 
     meshActor = vtk.vtkActor()
     meshActor.SetMapper(meshMapper)
-    meshActor.GetProperty().SetEdgeColor(colors.GetColor3d("Blue"))
-    meshActor.GetProperty().SetInterpolationToFlat()
-    meshActor.GetProperty().SetRepresentationToWireframe()
+    meshActor.GetProperty().SetColor(colors.GetColor3d('Banana'))
+    meshActor.GetProperty().EdgeVisibilityOn()
 
-    boundaryMapper = vtk.vtkPolyDataMapper()
-    boundaryMapper.SetInputData(boundary)
+    glyphFilter = vtk.vtkVertexGlyphFilter()
+    glyphFilter.SetInputData(polydata)
 
-    boundaryActor = vtk.vtkActor()
-    boundaryActor.SetMapper(boundaryMapper)
-    boundaryActor.GetProperty().SetColor(colors.GetColor3d("Red"))
+    pointMapper = vtk.vtkPolyDataMapper()
+    pointMapper.SetInputConnection(glyphFilter.GetOutputPort())
+
+    pointActor = vtk.vtkActor()
+    pointActor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
+    pointActor.GetProperty().SetPointSize(5)
+    pointActor.SetMapper(pointMapper)
 
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
+
     renderer.AddActor(meshActor)
-    renderer.AddActor(boundaryActor)
-    renderer.SetBackground(colors.GetColor3d("BkgColor"))
+    renderer.AddActor(pointActor)
+    renderer.SetBackground(colors.GetColor3d('Mint'))
 
     renderWindowInteractor.Initialize()
+    renderWindow.SetWindowName('Delaunay2D')
     renderWindow.Render()
     renderWindowInteractor.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
