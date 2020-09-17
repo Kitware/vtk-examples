@@ -1,5 +1,3 @@
-#include <vtkSmartPointer.h>
-
 #include "vtkTestAlgorithmSource.h"
 #include "vtkTest1.h"
 

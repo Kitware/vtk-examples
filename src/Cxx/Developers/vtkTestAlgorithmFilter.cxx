@@ -12,8 +12,8 @@ vtkStandardNewMacro(vtkTestAlgorithmFilter);
 //----------------------------------------------------------------------------
 vtkTestAlgorithmFilter::vtkTestAlgorithmFilter()
 {
-  this->SetNumberOfInputPorts( 1 );
-  this->SetNumberOfOutputPorts( 1 );
+  this->SetNumberOfInputPorts(1);
+  this->SetNumberOfOutputPorts(1);
 }
 
 //----------------------------------------------------------------------------
@@ -65,27 +65,27 @@ vtkTest* vtkTestAlgorithmFilter::GetLabelHierarchyInput(int port)
 
 //----------------------------------------------------------------------------
 int vtkTestAlgorithmFilter::ProcessRequest(vtkInformation* request,
-                                     vtkInformationVector** inputVector,
-                                     vtkInformationVector* outputVector)
+                                           vtkInformationVector** inputVector,
+                                           vtkInformationVector* outputVector)
 {
   // Create an output object of the correct type.
-  if(request->Has(vtkDemandDrivenPipeline::REQUEST_DATA_OBJECT()))
+  if (request->Has(vtkDemandDrivenPipeline::REQUEST_DATA_OBJECT()))
   {
     return this->RequestDataObject(request, inputVector, outputVector);
   }
   // generate the data
-  if(request->Has(vtkDemandDrivenPipeline::REQUEST_DATA()))
+  if (request->Has(vtkDemandDrivenPipeline::REQUEST_DATA()))
   {
     return this->RequestData(request, inputVector, outputVector);
   }
 
-  if(request->Has(vtkStreamingDemandDrivenPipeline::REQUEST_UPDATE_EXTENT()))
+  if (request->Has(vtkStreamingDemandDrivenPipeline::REQUEST_UPDATE_EXTENT()))
   {
     return this->RequestUpdateExtent(request, inputVector, outputVector);
   }
 
   // execute information
-  if(request->Has(vtkDemandDrivenPipeline::REQUEST_INFORMATION()))
+  if (request->Has(vtkDemandDrivenPipeline::REQUEST_INFORMATION()))
   {
     return this->RequestInformation(request, inputVector, outputVector);
   }
@@ -94,8 +94,8 @@ int vtkTestAlgorithmFilter::ProcessRequest(vtkInformation* request,
 }
 
 //----------------------------------------------------------------------------
-int vtkTestAlgorithmFilter::FillOutputPortInformation(
-    int vtkNotUsed(port), vtkInformation* info)
+int vtkTestAlgorithmFilter::FillOutputPortInformation(int vtkNotUsed(port),
+                                                      vtkInformation* info)
 {
   // now add our info
   info->Set(vtkDataObject::DATA_TYPE_NAME(), "vtkTest");
@@ -103,44 +103,44 @@ int vtkTestAlgorithmFilter::FillOutputPortInformation(
 }
 
 //----------------------------------------------------------------------------
-int vtkTestAlgorithmFilter::FillInputPortInformation(
-                                               int vtkNotUsed(port), vtkInformation* info)
+int vtkTestAlgorithmFilter::FillInputPortInformation(int vtkNotUsed(port),
+                                                     vtkInformation* info)
 {
   info->Set(vtkAlgorithm::INPUT_REQUIRED_DATA_TYPE(), "vtkTest");
   return 1;
 }
 
-
-    int vtkTestAlgorithmFilter::RequestDataObject(vtkInformation* vtkNotUsed(request),
-                                         vtkInformationVector** vtkNotUsed(inputVector),
-         vtkInformationVector* outputVector )
-    {
-//RequestDataObject (RDO) is an earlier pipeline pass.
-//During RDO, each filter is supposed to produce an empty data object of the proper type
+int vtkTestAlgorithmFilter::RequestDataObject(
+    vtkInformation* vtkNotUsed(request),
+    vtkInformationVector** vtkNotUsed(inputVector),
+    vtkInformationVector* outputVector)
+{
+  // RequestDataObject (RDO) is an earlier pipeline pass.
+  // During RDO, each filter is supposed to produce an empty data object of the
+  // proper type
 
   vtkInformation* outInfo = outputVector->GetInformationObject(0);
-  vtkTest* output = dynamic_cast<vtkTest*>(
-    outInfo->Get( vtkDataObject::DATA_OBJECT() ) );
+  vtkTest* output =
+      dynamic_cast<vtkTest*>(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-  if ( ! output )
+  if (!output)
   {
     output = vtkTest::New();
-    outInfo->Set( vtkDataObject::DATA_OBJECT(), output );
+    outInfo->Set(vtkDataObject::DATA_OBJECT(), output);
     output->FastDelete();
 
-    this->GetOutputPortInformation(0)->Set(
-      vtkDataObject::DATA_EXTENT_TYPE(), output->GetExtentType() );
+    this->GetOutputPortInformation(0)->Set(vtkDataObject::DATA_EXTENT_TYPE(),
+                                           output->GetExtentType());
   }
 
   return 1;
-    }
-
+}
 
 //----------------------------------------------------------------------------
 int vtkTestAlgorithmFilter::RequestInformation(
-                                         vtkInformation* vtkNotUsed(request),
+    vtkInformation* vtkNotUsed(request),
     vtkInformationVector** vtkNotUsed(inputVector),
-                                      vtkInformationVector* vtkNotUsed(outputVector))
+    vtkInformationVector* vtkNotUsed(outputVector))
 {
   // do nothing let subclasses handle it
   return 1;
@@ -148,15 +148,14 @@ int vtkTestAlgorithmFilter::RequestInformation(
 
 //----------------------------------------------------------------------------
 int vtkTestAlgorithmFilter::RequestUpdateExtent(
-                                          vtkInformation* vtkNotUsed(request),
-    vtkInformationVector** inputVector,
+    vtkInformation* vtkNotUsed(request), vtkInformationVector** inputVector,
     vtkInformationVector* vtkNotUsed(outputVector))
 {
   int numInputPorts = this->GetNumberOfInputPorts();
-  for (int i=0; i<numInputPorts; i++)
+  for (int i = 0; i < numInputPorts; i++)
   {
     int numInputConnections = this->GetNumberOfInputConnections(i);
-    for (int j=0; j<numInputConnections; j++)
+    for (int j = 0; j < numInputConnections; j++)
     {
       vtkInformation* inputInfo = inputVector[i]->GetInformationObject(j);
       inputInfo->Set(vtkStreamingDemandDrivenPipeline::EXACT_EXTENT(), 1);
@@ -168,21 +167,21 @@ int vtkTestAlgorithmFilter::RequestUpdateExtent(
 //----------------------------------------------------------------------------
 // This is the superclasses style of Execute method.  Convert it into
 // an imaging style Execute method.
-int vtkTestAlgorithmFilter::RequestData(
-                                  vtkInformation* vtkNotUsed(request),
-    vtkInformationVector **inputVector,
-    vtkInformationVector* outputVector )
+int vtkTestAlgorithmFilter::RequestData(vtkInformation* vtkNotUsed(request),
+                                        vtkInformationVector** inputVector,
+                                        vtkInformationVector* outputVector)
 {
-//Later on RequestData (RD) happens.
-//During RD each filter examines any inputs it has, then fills in that empty data object with real data.
+  // Later on RequestData (RD) happens.
+  // During RD each filter examines any inputs it has, then fills in that empty
+  // data object with real data.
 
   vtkInformation* outInfo = outputVector->GetInformationObject(0);
-  vtkTest* output = dynamic_cast<vtkTest*>(
-                                          outInfo->Get( vtkDataObject::DATA_OBJECT() ) );
+  vtkTest* output =
+      dynamic_cast<vtkTest*>(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-  vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-  vtkTest *input = dynamic_cast<vtkTest*>(
-                                         inInfo->Get(vtkDataObject::DATA_OBJECT()));
+  vtkInformation* inInfo = inputVector[0]->GetInformationObject(0);
+  vtkTest* input =
+      dynamic_cast<vtkTest*>(inInfo->Get(vtkDataObject::DATA_OBJECT()));
   output->ShallowCopy(input);
   output->SetValue(output->GetValue() + 1.0);
 
@@ -198,7 +197,7 @@ void vtkTestAlgorithmFilter::SetInput(vtkDataObject* input)
 //----------------------------------------------------------------------------
 void vtkTestAlgorithmFilter::SetInput(int index, vtkDataObject* input)
 {
-  if(input)
+  if (input)
   {
     this->SetInputDataObject(index, input);
   }
@@ -218,7 +217,7 @@ void vtkTestAlgorithmFilter::AddInput(vtkDataObject* input)
 //----------------------------------------------------------------------------
 void vtkTestAlgorithmFilter::AddInput(int index, vtkDataObject* input)
 {
-  if(input)
+  if (input)
   {
     this->AddInputDataObject(index, input);
   }

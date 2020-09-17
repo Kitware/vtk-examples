@@ -1,19 +1,18 @@
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataConnectivityFilter.h>
-
-#include <vtkSphereSource.h>
-#include <vtkDataSetMapper.h>
-
-#include <vtkLookupTable.h>
-#include <vtkCamera.h>
 #include <vtkActor.h>
+#include <vtkAppendPolyData.h>
+#include <vtkCamera.h>
+#include <vtkDataSetMapper.h>
+#include <vtkLookupTable.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyDataConnectivityFilter.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkAppendPolyData.h>
+#include <vtkRenderer.h>
 #include <vtkScalarsToColors.h>
-#include <vtkNamedColors.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 
 // Readers
 #include <vtkBYUReader.h>
@@ -27,23 +26,20 @@
 #include <vtkSphereSource.h>
 
 #include <algorithm> // For transform()
-#include <string> // For find_last_of()
-#include <cctype> // For to_lower
+#include <cctype>    // For to_lower
+#include <string>    // For find_last_of()
 
 #include <random>
 
-namespace
-{
+namespace {
 vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName);
 }
 
-int main(int argc, char*argv[])
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkPolyData> polyData =
-    ReadPolyData(argc > 1 ? argv[1] : "");
+  auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
-  auto connectivityFilter =
-    vtkSmartPointer<vtkPolyDataConnectivityFilter>::New();
+  vtkNew<vtkPolyDataConnectivityFilter> connectivityFilter;
   connectivityFilter->SetInputData(polyData);
   connectivityFilter->SetExtractionModeToAllRegions();
   connectivityFilter->ColorRegionsOn();
@@ -52,21 +48,21 @@ int main(int argc, char*argv[])
   // Visualize
   int numberOfRegions = connectivityFilter->GetNumberOfExtractedRegions();
   if (argc > 1)
-    {
-      std::cout << argv[1] << " contains " << numberOfRegions << " regions" << std::endl;
-    }
-    else
-    {
-      std::cout << "Generated data" << " contains " << numberOfRegions << " regions" << std::endl;
-    }
-  auto lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  {
+    std::cout << argv[1] << " contains " << numberOfRegions << " regions"
+              << std::endl;
+  }
+  else
+  {
+    std::cout << "Generated data"
+              << " contains " << numberOfRegions << " regions" << std::endl;
+  }
+  vtkNew<vtkLookupTable> lut;
   lut->SetNumberOfTableValues(std::max(numberOfRegions, 10));
   lut->Build();
 
   // Fill in a few known colors, the rest will be generated if needed
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   lut->SetTableValue(0, colors->GetColor4d("Gold").GetData());
   lut->SetTableValue(1, colors->GetColor4d("Banana").GetData());
   lut->SetTableValue(2, colors->GetColor4d("Tomato").GetData());
@@ -82,32 +78,30 @@ int main(int argc, char*argv[])
   // generate some random colors.
   if (numberOfRegions > 9)
   {
-    std::mt19937 mt(4355412); //Standard mersenne_twister_engine
+    std::mt19937 mt(4355412); // Standard mersenne_twister_engine
     std::uniform_real_distribution<double> distribution(.4, 1.0);
     for (auto i = 10; i < numberOfRegions; ++i)
     {
-      lut->SetTableValue(i, distribution(mt), distribution(mt), distribution(mt), 1.0);
+      lut->SetTableValue(i, distribution(mt), distribution(mt),
+                         distribution(mt), 1.0);
     }
   }
-  auto mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(connectivityFilter->GetOutputPort());
-  mapper->SetScalarRange(0, connectivityFilter->GetNumberOfExtractedRegions() - 1);
+  mapper->SetScalarRange(0,
+                         connectivityFilter->GetNumberOfExtractedRegions() - 1);
   mapper->SetLookupTable(lut);
   mapper->Update();
 
-  auto  actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  auto  renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
   renderer->UseHiddenLineRemovalOn();
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
 
-  auto  renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
 
@@ -120,10 +114,11 @@ int main(int argc, char*argv[])
   renderer->ResetCamera();
   renderer->GetActiveCamera()->Dolly(1.25);
   renderer->ResetCameraClippingRange();
+
+  renderWindow->SetWindowName("ConnectivityFilterDemo");
   renderWindow->Render();
 
-  auto  interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
   interactor->Initialize();
   interactor->Start();

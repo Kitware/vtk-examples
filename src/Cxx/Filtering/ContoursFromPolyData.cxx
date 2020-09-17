@@ -1,48 +1,46 @@
-#include <vtkSmartPointer.h>
-#include <vtkCutter.h>
-
-#include <vtkXMLPolyDataReader.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkPlane.h>
-#include <vtkProperty.h>
 #include <vtkActor.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkCutter.h>
 #include <vtkMath.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPlane.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
+#include <vtkXMLPolyDataReader.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   vtkSmartPointer<vtkPolyData> inputPolyData;
-  if(argc > 1)
+  if (argc > 1)
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
     inputPolyData = reader->GetOutput();
   }
   else
   {
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetThetaResolution(30);
     sphereSource->SetPhiResolution(15);
     sphereSource->Update();
     inputPolyData = sphereSource->GetOutput();
   }
 
-  vtkSmartPointer<vtkPolyDataMapper> inputMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> inputMapper;
   inputMapper->SetInputData(inputPolyData);
 
   // Create a plane to cut
-  vtkSmartPointer<vtkPlane> plane =
-    vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane;
   plane->SetOrigin(inputPolyData->GetCenter());
-  plane->SetNormal(1,1,1);
+  plane->SetNormal(1, 1, 1);
 
   double minBound[3];
   minBound[0] = inputPolyData->GetBounds()[0];
@@ -63,47 +61,40 @@ int main(int argc, char *argv[])
   double distanceMax = sqrt(vtkMath::Distance2BetweenPoints(maxBound, center));
 
   // Create cutter
-  vtkSmartPointer<vtkCutter> cutter =
-    vtkSmartPointer<vtkCutter>::New();
+  vtkNew<vtkCutter> cutter;
   cutter->SetCutFunction(plane);
   cutter->SetInputData(inputPolyData);
 
   cutter->GenerateValues(20, -distanceMin, distanceMax);
-  vtkSmartPointer<vtkPolyDataMapper> cutterMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  cutterMapper->SetInputConnection( cutter->GetOutputPort());
+  vtkNew<vtkPolyDataMapper> cutterMapper;
+  cutterMapper->SetInputConnection(cutter->GetOutputPort());
   cutterMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-
   // Create plane actor
-  vtkSmartPointer<vtkActor> planeActor =
-    vtkSmartPointer<vtkActor>::New();
-  planeActor->GetProperty()->SetColor(colors->GetColor3d("Deep_pink").GetData());
+  vtkNew<vtkActor> planeActor;
+  planeActor->GetProperty()->SetColor(
+      colors->GetColor3d("Deep_pink").GetData());
   planeActor->GetProperty()->SetLineWidth(5);
   planeActor->SetMapper(cutterMapper);
 
   // Create input actor
-  vtkSmartPointer<vtkActor> inputActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> inputActor;
   inputActor->GetProperty()->SetColor(colors->GetColor3d("Bisque").GetData());
   inputActor->SetMapper(inputMapper);
 
   // Create renderers and add actors of plane and cube
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  renderer->AddActor(planeActor); //display the rectangle resulting from the cut
-  renderer->AddActor(inputActor); //display the cube
+  vtkNew<vtkRenderer> renderer;
+  renderer->AddActor(planeActor); // display the rectangle resulting from the
+                                  // cut
+  renderer->AddActor(inputActor); // display the cube
 
-  //Add renderer to renderwindow and render
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  // Add renderer to renderwindow and render
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ContoursFromPolyData");
   renderWindow->SetSize(600, 600);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
   renderer->SetBackground(colors->GetColor3d("Slate_grey").GetData());
   renderWindow->Render();

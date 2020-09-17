@@ -5,25 +5,24 @@
 
 class vtkTest : public vtkDataObject
 {
-  public:
-    static vtkTest* New();
-    vtkTypeMacro(vtkTest,vtkDataObject);
-  void PrintSelf( ostream& os, vtkIndent indent ) override;
-    void ShallowCopy(vtkDataObject* t) override;
+public:
+  static vtkTest* New();
+  vtkTypeMacro(vtkTest, vtkDataObject);
+  void PrintSelf(ostream& os, vtkIndent indent) override;
+  void ShallowCopy(vtkDataObject* t) override;
 
-    vtkGetMacro(Value, double);
-    vtkSetMacro(Value, double);
+  vtkGetMacro(Value, double);
+  vtkSetMacro(Value, double);
 
-  protected:
-    vtkTest();
-    ~vtkTest();
+protected:
+  vtkTest();
+  ~vtkTest();
 
+private:
+  vtkTest(const vtkTest&);        // Not implemented.
+  void operator=(const vtkTest&); // Not implemented.
 
-  private:
-    vtkTest( const vtkTest& ); // Not implemented.
-    void operator = ( const vtkTest& ); // Not implemented.
-
-    double Value;
+  double Value;
 };
 
 #endif

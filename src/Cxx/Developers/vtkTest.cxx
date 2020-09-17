@@ -11,16 +11,15 @@ vtkTest::vtkTest()
 
 vtkTest::~vtkTest()
 {
-
 }
 
-void vtkTest::PrintSelf( ostream& os, vtkIndent indent )
+void vtkTest::PrintSelf(ostream& os, vtkIndent indent)
 {
-  this->Superclass::PrintSelf( os, indent );
+  this->Superclass::PrintSelf(os, indent);
 }
 
 void vtkTest::ShallowCopy(vtkDataObject* t)
 {
-  vtkTest *m = dynamic_cast<vtkTest*>(t);
+  vtkTest* m = dynamic_cast<vtkTest*>(t);
   this->Value = m->GetValue();
 }

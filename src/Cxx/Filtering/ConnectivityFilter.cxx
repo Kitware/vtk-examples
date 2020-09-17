@@ -1,73 +1,72 @@
-#include <vtkSmartPointer.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkSphereSource.h>
+#include <vtkActor.h>
+#include <vtkAppendFilter.h>
+#include <vtkCamera.h>
 #include <vtkConnectivityFilter.h>
 #include <vtkDataSetMapper.h>
-#include <vtkActor.h>
+#include <vtkDelaunay3D.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkAppendFilter.h>
-#include <vtkDelaunay3D.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+#include <vtkUnstructuredGrid.h>
 
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource1 =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource1;
   sphereSource1->Update();
 
-  vtkSmartPointer<vtkDelaunay3D> delaunay1 =
-    vtkSmartPointer<vtkDelaunay3D>::New();
+  vtkNew<vtkDelaunay3D> delaunay1;
   delaunay1->SetInputConnection(sphereSource1->GetOutputPort());
   delaunay1->Update();
-  
-  vtkSmartPointer<vtkSphereSource> sphereSource2 =
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource2->SetCenter(5,0,0);
+
+  vtkNew<vtkSphereSource> sphereSource2;
+  sphereSource2->SetCenter(5, 0, 0);
   sphereSource2->Update();
 
-  vtkSmartPointer<vtkDelaunay3D> delaunay2 =
-    vtkSmartPointer<vtkDelaunay3D>::New();
+  vtkNew<vtkDelaunay3D> delaunay2;
   delaunay2->SetInputConnection(sphereSource2->GetOutputPort());
   delaunay2->Update();
-  
-  vtkSmartPointer<vtkAppendFilter> appendFilter =
-    vtkSmartPointer<vtkAppendFilter>::New();
+
+  vtkNew<vtkAppendFilter> appendFilter;
   appendFilter->AddInputConnection(delaunay1->GetOutputPort());
   appendFilter->AddInputConnection(delaunay2->GetOutputPort());
   appendFilter->Update();
 
-  vtkSmartPointer<vtkConnectivityFilter> connectivityFilter =
-    vtkSmartPointer<vtkConnectivityFilter>::New();
+  vtkNew<vtkConnectivityFilter> connectivityFilter;
   connectivityFilter->SetInputConnection(appendFilter->GetOutputPort());
   connectivityFilter->SetExtractionModeToAllRegions();
   connectivityFilter->ColorRegionsOn();
   connectivityFilter->Update();
 
   // Visualize
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(connectivityFilter->GetOutputPort());
   mapper->Update();
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
 
-  vtkSmartPointer<vtkRenderWindow> renwin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renwin;
   renwin->AddRenderer(renderer);
   renwin->Render();
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renwin);
+
   iren->Initialize();
+  renwin->Render();
+  renderer->SetBackground(colors->GetColor3d("deep_ochre").GetData());
+  renderer->GetActiveCamera()->Zoom(0.9);
+  renwin->SetWindowName("ConnectivityFilter");
+  renwin->Render();
   iren->Start();
 
   return EXIT_SUCCESS;
