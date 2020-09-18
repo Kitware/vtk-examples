@@ -36,9 +36,14 @@ def main():
     
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-	
-    renderer.SetBackground(colors.GetColor3d("green"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Gold'))
+
+    renderer.SetBackground(colors.GetColor3d('Green'))
     renderer.AddActor(actor)
+
+    renderWindow.SetWindowName('WarpTo')
+    renderWindow.Render()
+
     renderWindowInteractor.Initialize()
     renderWindowInteractor.Start()
 

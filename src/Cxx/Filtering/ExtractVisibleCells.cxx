@@ -20,6 +20,7 @@
 class KeyPressInteractorStyle : public vtkInteractorStyleTrackballCamera
 {
 public:
+  vtkNew<vtkNamedColors> colors;
   static KeyPressInteractorStyle* New();
   vtkTypeMacro(KeyPressInteractorStyle, vtkInteractorStyleTrackballCamera);
 
@@ -63,7 +64,7 @@ public:
 
       vtkNew<vtkActor> actor;
       actor->SetMapper(mapper);
-      actor->GetProperty()->SetColor(1, 0, 0);
+      actor->GetProperty()->SetColor(colors->GetColor3d("Red").GetData());
       this->Renderer->AddActor(actor);
     }
 

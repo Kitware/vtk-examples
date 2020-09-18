@@ -1,58 +1,53 @@
-#include <vtkSmartPointer.h>
-
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkSampleFunction.h>
-#include <vtkContourFilter.h>
-#include <vtkProperty.h>
 #include <vtkCamera.h>
-
+#include <vtkContourFilter.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPerlinNoise.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSampleFunction.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkPerlinNoise> perlinNoise =
-    vtkSmartPointer<vtkPerlinNoise>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkPerlinNoise> perlinNoise;
   perlinNoise->SetFrequency(2, 1.25, 1.5);
   perlinNoise->SetPhase(0, 0, 0);
 
-  vtkSmartPointer<vtkSampleFunction> sample =
-    vtkSmartPointer<vtkSampleFunction>::New();
+  vtkNew<vtkSampleFunction> sample;
   sample->SetImplicitFunction(perlinNoise);
   sample->SetSampleDimensions(65, 65, 20);
   sample->ComputeNormalsOff();
 
-  vtkSmartPointer<vtkContourFilter> surface =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> surface;
   surface->SetInputConnection(sample->GetOutputPort());
   surface->SetValue(0, 0.0);
-  
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(surface->GetOutputPort());
   mapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(0.2, 0.4, 0.6);
-  
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  actor->GetProperty()->SetColor(colors->GetColor3d("SteelBlue").GetData());
+
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
-  
+
   // Add the actors to the renderer, set the background and size
-  
+
   renderer->AddActor(actor);
-  renderer->SetBackground(1, 1, 1);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
+  renderWindow->SetWindowName("PerlinNoise");
   renderWindow->SetSize(300, 300);
   renderer->ResetCamera();
   renderWindow->Render();

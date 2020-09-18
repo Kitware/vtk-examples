@@ -71,7 +71,7 @@ def main():
     boundaryActor.GetProperty().SetColor(colors.GetColor3d('Raspberry'))
     boundaryActor.GetProperty().SetLineWidth(3)
     boundaryActor.GetProperty().EdgeVisibilityOn()
-    boundaryActor.GetProperty().SetEdgeColor(1, 0, 0)
+    boundaryActor.GetProperty().SetEdgeColor(colors.GetColor3d('Red'))
     boundaryActor.GetProperty().SetRepresentationToWireframe()
 
     # Create a renderer, render window, and interactor

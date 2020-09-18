@@ -1,6 +1,7 @@
 #include <vtkCamera.h>
 #include <vtkContourFilter.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProgrammableSource.h>
@@ -9,55 +10,55 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkReverseSense.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkSurfaceReconstructionFilter.h>
 #include <vtkXMLPolyDataReader.h>
+#include <vtkSmartPointer.h>
 
 int main(int argc, char* argv[])
 {
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkPolyData> input;
+  auto input = vtkSmartPointer<vtkPolyData>::New();
   if (argc > 1)
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
     input = reader->GetOutput();
   }
   else
   {
-    auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->Update();
     input = sphereSource->GetOutput();
   }
 
-  auto polydata = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   polydata->SetPoints(input->GetPoints());
 
   // Construct the surface and create isosurface.
-  auto surf = vtkSmartPointer<vtkSurfaceReconstructionFilter>::New();
+  vtkNew<vtkSurfaceReconstructionFilter> surf;
   surf->SetInputData(polydata);
 
-  auto cf = vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> cf;
   cf->SetInputConnection(surf->GetOutputPort());
   cf->SetValue(0, 0.0);
 
   // Sometimes the contouring algorithm can create a volume whose gradient
   // vector and ordering of polygon (using the right hand rule) are
   // inconsistent. vtkReverseSense cures this problem.
-  auto reverse = vtkSmartPointer<vtkReverseSense>::New();
+  vtkNew<vtkReverseSense> reverse;
   reverse->SetInputConnection(cf->GetOutputPort());
   reverse->ReverseCellsOn();
   reverse->ReverseNormalsOn();
 
-  auto map = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> map;
   map->SetInputConnection(reverse->GetOutputPort());
   map->ScalarVisibilityOff();
 
-  auto surfaceActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> surfaceActor;
   surfaceActor->SetMapper(map);
   surfaceActor->GetProperty()->SetDiffuseColor(
       colors->GetColor3d("Tomato").GetData());
@@ -67,18 +68,19 @@ int main(int argc, char* argv[])
   surfaceActor->GetProperty()->SetSpecularPower(50);
 
   // Create the RenderWindow, Renderer and both Actors
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Add the actors to the renderer, set the background and size
   renderer->AddActor(surfaceActor);
   renderer->SetBackground(colors->GetColor3d("Burlywood").GetData());
 
+  renderWindow->SetWindowName("SurfaceFromUnorganizedPoints");
   renderWindow->Render();
   interactor->Start();
 
