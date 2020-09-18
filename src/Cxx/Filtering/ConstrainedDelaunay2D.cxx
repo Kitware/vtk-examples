@@ -89,7 +89,8 @@ int main(int, char*[])
       colors->GetColor3d("Raspberry").GetData());
   boundaryActor->GetProperty()->SetLineWidth(3);
   boundaryActor->GetProperty()->EdgeVisibilityOn();
-  boundaryActor->GetProperty()->SetEdgeColor(1, 0, 0);
+  boundaryActor->GetProperty()->SetEdgeColor(
+      colors->GetColor3d("Red").GetData());
   boundaryActor->GetProperty()->SetRepresentationToWireframe();
 
   // Create a renderer, render window, and interactor

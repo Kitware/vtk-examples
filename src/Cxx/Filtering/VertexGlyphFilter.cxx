@@ -1,53 +1,53 @@
 #include <vtkActor.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkVertexGlyphFilter.h>
 
 int main(int, char*[])
 {
-  auto namedColors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> namedColors;
   namedColors->SetColor("Bkg", 0.3, 0.6, 0.3);
 
-  auto points = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(0, 0, 0);
   points->InsertNextPoint(1, 1, 1);
   points->InsertNextPoint(2, 2, 2);
 
-  auto polydata = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   polydata->SetPoints(points);
 
-  auto vertexGlyphFilter = vtkSmartPointer<vtkVertexGlyphFilter>::New();
+  vtkNew<vtkVertexGlyphFilter> vertexGlyphFilter;
   vertexGlyphFilter->AddInputData(polydata);
   vertexGlyphFilter->Update();
 
   // Create a mapper and actor
-  auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(vertexGlyphFilter->GetOutputPort());
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetPointSize(3);
+  actor->GetProperty()->SetPointSize(10);
+  actor->GetProperty()->SetColor(namedColors->GetColor3d("Yellow").GetData());
 
   // Create a renderer, render window, and interactor
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(
-      namedColors->GetColor3d("Bkg").GetData()); // Background color green
+  renderer->SetBackground(namedColors->GetColor3d("Green").GetData());
 
   // Render and interact
+  renderWindow->SetWindowName("VertexGlyphFilter");
   renderWindow->Render();
   renderWindowInteractor->Start();
 

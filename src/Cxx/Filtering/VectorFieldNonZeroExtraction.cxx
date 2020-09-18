@@ -3,11 +3,11 @@
 #include <vtkImageData.h>
 #include <vtkImageMagnitude.h>
 #include <vtkIntArray.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
 #include <vtkSelection.h>
 #include <vtkSelectionNode.h>
-#include <vtkSmartPointer.h>
 #include <vtkThresholdPoints.h>
 #include <vtkXMLImageDataWriter.h>
 #include <vtkXMLPolyDataWriter.h>
@@ -22,10 +22,10 @@ void WriteVectorField(vtkPolyData* vectorField, const std::string& fileName);
 int main(int, char*[])
 {
   // Create an image
-  auto image = vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> image;
   CreateVectorField(image);
 
-  auto magnitudeFilter = vtkSmartPointer<vtkImageMagnitude>::New();
+  vtkNew<vtkImageMagnitude> magnitudeFilter;
   magnitudeFilter->SetInputData(image);
   magnitudeFilter->Update(); // This filter produces a vtkImageData with an
                              // array named "Magnitude"
@@ -34,7 +34,7 @@ int main(int, char*[])
       magnitudeFilter->GetOutput()->GetPointData()->GetScalars());
   image->GetPointData()->SetActiveScalars("Magnitude");
 
-  auto thresholdPoints = vtkSmartPointer<vtkThresholdPoints>::New();
+  vtkNew<vtkThresholdPoints> thresholdPoints;
   // thresholdPoints->SetInputConnection(magnitudeFilter->GetOutputPort());
   thresholdPoints->SetInputData(image);
   thresholdPoints->ThresholdByUpper(.05);
@@ -86,7 +86,7 @@ void CreateVectorField(vtkImageData* image)
 
 void WriteVectorField(vtkPolyData* vectorField, const std::string& fileName)
 {
-  auto writer = vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+  vtkNew<vtkXMLPolyDataWriter> writer;
   writer->SetFileName(fileName.c_str());
   writer->SetInputData(vectorField);
   writer->Write();
@@ -94,7 +94,7 @@ void WriteVectorField(vtkPolyData* vectorField, const std::string& fileName)
 
 void WriteImage(vtkImageData* image, const std::string& fileName)
 {
-  auto writer = vtkSmartPointer<vtkXMLImageDataWriter>::New();
+  vtkNew<vtkXMLImageDataWriter> writer;
   writer->SetFileName(fileName.c_str());
   writer->SetInputData(image);
   writer->Write();

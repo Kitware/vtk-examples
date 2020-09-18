@@ -1,59 +1,59 @@
-#include <vtkSmartPointer.h>
-#include <vtkLineSource.h>
-#include <vtkTubeFilter.h>
 #include <vtkDataSetMapper.h>
+#include <vtkLineSource.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkTubeFilter.h>
 #include <vtkWarpTo.h>
 
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> namedColors;
+
   // Create the RenderWindow, Renderer and both Actors
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Create a line
-  vtkSmartPointer<vtkLineSource> lineSource = 
-    vtkSmartPointer<vtkLineSource>::New();
+  vtkNew<vtkLineSource> lineSource;
   lineSource->SetPoint1(0.0, 0.0, 0.0);
   lineSource->SetPoint2(0.0, 1.0, 0.0);
   lineSource->SetResolution(20);
   lineSource->Update();
 
   // Create a tube (cylinder) around the line
-  vtkSmartPointer<vtkTubeFilter> tubeFilter = 
-    vtkSmartPointer<vtkTubeFilter>::New();
+  vtkNew<vtkTubeFilter> tubeFilter;
   tubeFilter->SetInputConnection(lineSource->GetOutputPort());
-  tubeFilter->SetRadius(.01); //default is .5
+  tubeFilter->SetRadius(.01); // default is .5
   tubeFilter->SetNumberOfSides(50);
   tubeFilter->Update();
-  
-  vtkSmartPointer<vtkWarpTo> warpTo = 
-    vtkSmartPointer<vtkWarpTo>::New();
+
+  vtkNew<vtkWarpTo> warpTo;
   warpTo->SetInputConnection(tubeFilter->GetOutputPort());
   warpTo->SetPosition(10, 1, 0);
   warpTo->SetScaleFactor(5);
   warpTo->AbsoluteOn();
 
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(warpTo->GetOutputPort());
   mapper->ScalarVisibilityOff();
-  
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
-  actor->SetMapper(mapper);
-  
-  renderer->AddActor(actor);
 
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(namedColors->GetColor3d("Gold").GetData());
+
+  renderer->AddActor(actor);
+  renderer->SetBackground(namedColors->GetColor3d("Green").GetData());
+
+  renderWindow->SetWindowName("WarpTo");
   renderWindow->Render();
+
   renderWindowInteractor->Initialize();
   renderWindowInteractor->Start();
 

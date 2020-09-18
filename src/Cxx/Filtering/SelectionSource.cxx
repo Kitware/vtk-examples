@@ -1,22 +1,21 @@
-#include <vtkPointSource.h>
 #include <vtkExtractSelection.h>
+#include <vtkNew.h>
+#include <vtkPointSource.h>
 #include <vtkPolyData.h>
 #include <vtkSelectionNode.h> // for POINT and INDICES enum values
 #include <vtkSelectionSource.h>
-#include <vtkSmartPointer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
   // Note - this generates 50 points and a single poly-vertex cell.
-  vtkSmartPointer<vtkPointSource> pointSource =
-      vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(50);
   pointSource->Update();
 
-  std::cout << "There are " << pointSource->GetOutput()->GetNumberOfPoints() << " input points." << std::endl;
+  std::cout << "There are " << pointSource->GetOutput()->GetNumberOfPoints()
+            << " input points." << std::endl;
 
-  vtkSmartPointer<vtkSelectionSource> selectionSource =
-      vtkSmartPointer<vtkSelectionSource>::New();
+  vtkNew<vtkSelectionSource> selectionSource;
   selectionSource->SetFieldType(vtkSelectionNode::POINT);
   selectionSource->SetContentType(vtkSelectionNode::INDICES);
 
@@ -35,15 +34,15 @@ int main(int, char *[])
 
   selectionSource->Update();
 
-  vtkSmartPointer<vtkExtractSelection> extractSelection =
-      vtkSmartPointer<vtkExtractSelection>::New();
+  vtkNew<vtkExtractSelection> extractSelection;
   extractSelection->SetInputConnection(0, pointSource->GetOutputPort());
   extractSelection->SetInputConnection(1, selectionSource->GetOutputPort());
   extractSelection->Update();
 
-  vtkDataSet* ds = dynamic_cast<vtkDataSet*> (extractSelection->GetOutput());
+  vtkDataSet* ds = dynamic_cast<vtkDataSet*>(extractSelection->GetOutput());
 
-  std::cout << "There are " << ds->GetNumberOfPoints() << " output points." << std::endl;
+  std::cout << "There are " << ds->GetNumberOfPoints() << " output points."
+            << std::endl;
 
   return EXIT_SUCCESS;
 }
