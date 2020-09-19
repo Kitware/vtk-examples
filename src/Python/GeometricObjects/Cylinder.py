@@ -18,20 +18,20 @@ def main():
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(cylinderSource.GetOutputPort())
     actor = vtk.vtkActor()
-    actor.GetProperty().SetColor(colors.GetColor3d("Cornsilk"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Cornsilk'))
     actor.SetMapper(mapper)
 
     # Create a renderer, render window, and interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Cylinder")
+    renderWindow.SetWindowName('Cylinder')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actor to the scene
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("DarkGreen"))
+    renderer.SetBackground(colors.GetColor3d('DarkGreen'))
 
     # Render and interact
     renderWindow.Render()

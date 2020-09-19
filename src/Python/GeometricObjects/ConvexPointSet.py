@@ -61,7 +61,7 @@ def main():
     # Create a renderer, render window, and interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Convex Point Set")
+    renderWindow.SetWindowName("ConvexPointSet")
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)

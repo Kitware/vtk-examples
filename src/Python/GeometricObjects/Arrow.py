@@ -29,6 +29,7 @@ def main():
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d("MidnightBlue"))
 
+    renderWindow.SetWindowName('Arrow')
     renderWindow.Render()
     renderWindowInteractor.Start()
 

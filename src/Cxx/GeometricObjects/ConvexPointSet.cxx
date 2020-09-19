@@ -4,95 +4,82 @@
 #include <vtkDataSetMapper.h>
 #include <vtkGlyph3DMapper.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkShrinkFilter.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkUnstructuredGrid.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkConvexPointSet> cps =
-    vtkSmartPointer<vtkConvexPointSet>::New();
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint( 0, 0, 0);
-  points->InsertNextPoint( 1, 0, 0);
-  points->InsertNextPoint( 1, 1, 0);
-  points->InsertNextPoint( 0, 1, 0);
-  points->InsertNextPoint( 0, 0, 1);
-  points->InsertNextPoint( 1, 0, 1);
-  points->InsertNextPoint( 1, 1, 1);
-  points->InsertNextPoint( 0, 1, 1);
-  points->InsertNextPoint( 0.5, 0, 0);
-  points->InsertNextPoint( 1, 0.5, 0);
-  points->InsertNextPoint( 0.5, 1, 0);
-  points->InsertNextPoint( 0, 0.5, 0);
-  points->InsertNextPoint( 0.5, 0.5, 0);
+  vtkNew<vtkConvexPointSet> cps;
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(0, 0, 0);
+  points->InsertNextPoint(1, 0, 0);
+  points->InsertNextPoint(1, 1, 0);
+  points->InsertNextPoint(0, 1, 0);
+  points->InsertNextPoint(0, 0, 1);
+  points->InsertNextPoint(1, 0, 1);
+  points->InsertNextPoint(1, 1, 1);
+  points->InsertNextPoint(0, 1, 1);
+  points->InsertNextPoint(0.5, 0, 0);
+  points->InsertNextPoint(1, 0.5, 0);
+  points->InsertNextPoint(0.5, 1, 0);
+  points->InsertNextPoint(0, 0.5, 0);
+  points->InsertNextPoint(0.5, 0.5, 0);
 
   for (int i = 0; i < 13; ++i)
   {
-    cps->GetPointIds()->InsertId(i,i);
+    cps->GetPointIds()->InsertId(i, i);
   }
 
-  vtkSmartPointer<vtkUnstructuredGrid> ug =
-    vtkSmartPointer<vtkUnstructuredGrid>::New();
-  ug->Allocate(1,1);
+  vtkNew<vtkUnstructuredGrid> ug;
+  ug->Allocate(1, 1);
   ug->InsertNextCell(cps->GetCellType(), cps->GetPointIds());
   ug->SetPoints(points);
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputData(ug);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
   actor->GetProperty()->SetLineWidth(3);
   actor->GetProperty()->EdgeVisibilityOn();
 
   // Glyph the points
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphere;
   sphere->SetPhiResolution(21);
   sphere->SetThetaResolution(21);
   sphere->SetRadius(.03);
 
   // Create a polydata to store everything in
-  vtkSmartPointer<vtkPolyData> polyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polyData;
   polyData->SetPoints(points);
 
-  vtkSmartPointer<vtkGlyph3DMapper> pointMapper =
-    vtkSmartPointer<vtkGlyph3DMapper>::New();
+  vtkNew<vtkGlyph3DMapper> pointMapper;
   pointMapper->SetInputData(polyData);
   pointMapper->SetSourceConnection(sphere->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> pointActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> pointActor;
   pointActor->SetMapper(pointMapper);
   pointActor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
 
-  //Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetWindowName("Convex Point Set");
+  // Create a renderer, render window, and interactor
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetWindowName("ConvexPointSet");
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  //Add the actors to the scene
+  // Add the actors to the scene
   renderer->AddActor(actor);
   renderer->AddActor(pointActor);
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
@@ -102,10 +89,10 @@ int main (int, char *[])
   renderer->GetActiveCamera()->Elevation(30);
   renderer->ResetCameraClippingRange();
 
-  //Render and interact
-  renderWindow->SetSize(640, 480);  
+  // Render and interact
+  renderWindow->SetSize(640, 480);
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

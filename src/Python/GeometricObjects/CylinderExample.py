@@ -46,7 +46,7 @@ def main():
     ren.AddActor(cylinderActor)
     ren.SetBackground(colors.GetColor3d("BkgColor"))
     renWin.SetSize(300, 300)
-    renWin.SetWindowName('Cylinder')
+    renWin.SetWindowName('CylinderExample')
 
     # This allows the interactor to initalize itself. It has to be
     # called before an event loop.

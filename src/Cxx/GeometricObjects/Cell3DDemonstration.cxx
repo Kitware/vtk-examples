@@ -6,14 +6,15 @@
 #include <vtkHexagonalPrism.h>
 #include <vtkHexahedron.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPentagonalPrism.h>
 #include <vtkPoints.h>
 #include <vtkPolyhedron.h>
 #include <vtkProperty.h>
 #include <vtkPyramid.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkTetra.h>
 #include <vtkTextMapper.h>
@@ -27,8 +28,7 @@
 #include <string>
 #include <vector>
 
-namespace
-{
+namespace {
 // These functions return a vtkUnstructured grid corresponding to the object.
 vtkSmartPointer<vtkUnstructuredGrid> MakeHexagonalPrism();
 vtkSmartPointer<vtkUnstructuredGrid> MakeHexahedron();
@@ -40,25 +40,24 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeTetrahedron();
 
 vtkSmartPointer<vtkUnstructuredGrid> MakeVoxel();
 vtkSmartPointer<vtkUnstructuredGrid> MakeWedge();
-}
+} // namespace
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
-  std::array<unsigned char , 4> bkg{{51, 77, 102, 255}};
+  std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
   colors->SetColor("BkgColor", bkg.data());
 
   std::vector<std::string> titles;
-  std::vector<vtkSmartPointer<vtkTextMapper> > textMappers;
-  std::vector<vtkSmartPointer<vtkActor2D> > textActors;
+  std::vector<vtkSmartPointer<vtkTextMapper>> textMappers;
+  std::vector<vtkSmartPointer<vtkActor2D>> textActors;
 
-  std::vector<vtkSmartPointer<vtkUnstructuredGrid> > uGrids;
-  std::vector<vtkSmartPointer<vtkDataSetMapper> > mappers;
-  std::vector<vtkSmartPointer<vtkActor> > actors;
-  std::vector<vtkSmartPointer<vtkRenderer> > renderers;
+  std::vector<vtkSmartPointer<vtkUnstructuredGrid>> uGrids;
+  std::vector<vtkSmartPointer<vtkDataSetMapper>> mappers;
+  std::vector<vtkSmartPointer<vtkActor>> actors;
+  std::vector<vtkSmartPointer<vtkRenderer>> renderers;
 
   uGrids.push_back(MakeHexagonalPrism());
   titles.push_back("Hexagonal Prism");
@@ -79,17 +78,14 @@ int main(int, char *[])
   uGrids.push_back(MakeWedge());
   titles.push_back("Wedge");
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->SetWindowName("Cell3D Demonstration");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iRen =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iRen;
   iRen->SetRenderWindow(renWin);
 
   // Create one text property for all
-  vtkSmartPointer<vtkTextProperty> textProperty =
-    vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkTextProperty> textProperty;
   textProperty->SetFontSize(16);
   textProperty->SetJustificationToCentered();
 
@@ -106,7 +102,7 @@ int main(int, char *[])
 
     actors[i]->SetMapper(mappers[i]);
     actors[i]->GetProperty()->SetColor(
-      colors->GetColor3d("Seashell").GetData());
+        colors->GetColor3d("Seashell").GetData());
 
     renderers[i]->AddViewProp(actors[i]);
 
@@ -123,27 +119,25 @@ int main(int, char *[])
   int gridDimensions = 3;
   int rendererSize = 300;
 
-  renWin->SetSize(
-    rendererSize*gridDimensions, rendererSize*gridDimensions);
+  renWin->SetSize(rendererSize * gridDimensions, rendererSize * gridDimensions);
 
-  for(int row = 0; row < gridDimensions; row++)
+  for (int row = 0; row < gridDimensions; row++)
   {
-    for(int col = 0; col < gridDimensions; col++)
+    for (int col = 0; col < gridDimensions; col++)
     {
       int index = row * gridDimensions + col;
 
       // (xmin, ymin, xmax, ymax)
-      double viewport[4] =
-        {static_cast<double>(col) * rendererSize /
-                              (gridDimensions * rendererSize),
-         static_cast<double>(gridDimensions - (row+1)) * rendererSize /
-                              (gridDimensions * rendererSize),
-         static_cast<double>(col+1)*rendererSize /
-                              (gridDimensions * rendererSize),
-         static_cast<double>(gridDimensions - row) * rendererSize /
-                              (gridDimensions * rendererSize)};
+      double viewport[4] = {static_cast<double>(col) * rendererSize /
+                                (gridDimensions * rendererSize),
+                            static_cast<double>(gridDimensions - (row + 1)) *
+                                rendererSize / (gridDimensions * rendererSize),
+                            static_cast<double>(col + 1) * rendererSize /
+                                (gridDimensions * rendererSize),
+                            static_cast<double>(gridDimensions - row) *
+                                rendererSize / (gridDimensions * rendererSize)};
 
-      if(index > int(actors.size()) - 1)
+      if (index > int(actors.size()) - 1)
       {
         // Add a renderer even if there is no actor.
         // This makes the render window background all the same color.
@@ -166,6 +160,7 @@ int main(int, char *[])
 
   iRen->Initialize();
 
+  renWin->SetWindowName("Cell3DDemonstration");
   renWin->Render();
 
   iRen->Start();
@@ -173,8 +168,7 @@ int main(int, char *[])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
+namespace {
 vtkSmartPointer<vtkUnstructuredGrid> MakeHexagonalPrism()
 {
   // 3D: hexagonal prism: a wedge with an hexagonal base.
@@ -182,8 +176,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeHexagonalPrism()
 
   int numberOfVertices = 12;
 
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
 
   points->InsertNextPoint(0.0, 0.0, 1.0);
   points->InsertNextPoint(1.0, 0.0, 1.0);
@@ -199,15 +192,14 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeHexagonalPrism()
   points->InsertNextPoint(0.0, 1.0, 0.0);
   points->InsertNextPoint(-0.5, 0.5, 0.0);
 
-  vtkSmartPointer<vtkHexagonalPrism> hexagonalPrism =
-    vtkSmartPointer<vtkHexagonalPrism>::New();
+  vtkNew<vtkHexagonalPrism> hexagonalPrism;
   for (int i = 0; i < numberOfVertices; ++i)
   {
     hexagonalPrism->GetPointIds()->SetId(i, i);
   }
 
   vtkSmartPointer<vtkUnstructuredGrid> ug =
-    vtkSmartPointer<vtkUnstructuredGrid>::New();
+      vtkSmartPointer<vtkUnstructuredGrid>::New();
   ug->InsertNextCell(hexagonalPrism->GetCellType(),
                      hexagonalPrism->GetPointIds());
   ug->SetPoints(points);
@@ -230,8 +222,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeHexahedron()
   int numberOfVertices = 8;
 
   // Create the points
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(0.0, 0.0, 0.0);
   points->InsertNextPoint(1.0, 0.0, 0.0);
   points->InsertNextPoint(1.0, 1.0, 0.0);
@@ -242,8 +233,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeHexahedron()
   points->InsertNextPoint(0.0, 1.0, 1.0);
 
   // Create a hexahedron from the points
-  vtkSmartPointer<vtkHexahedron> hex =
-    vtkSmartPointer<vtkHexahedron>::New();
+  vtkNew<vtkHexahedron> hex;
   for (int i = 0; i < numberOfVertices; ++i)
   {
     hex->GetPointIds()->SetId(i, i);
@@ -251,7 +241,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeHexahedron()
 
   // Add the points and hexahedron to an unstructured grid
   vtkSmartPointer<vtkUnstructuredGrid> uGrid =
-    vtkSmartPointer<vtkUnstructuredGrid>::New();
+      vtkSmartPointer<vtkUnstructuredGrid>::New();
   uGrid->SetPoints(points);
   uGrid->InsertNextCell(hex->GetCellType(), hex->GetPointIds());
 
@@ -264,8 +254,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePentagonalPrism()
   int numberOfVertices = 10;
 
   // Create the points
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(11, 10, 10);
   points->InsertNextPoint(13, 10, 10);
   points->InsertNextPoint(14, 12, 10);
@@ -278,8 +267,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePentagonalPrism()
   points->InsertNextPoint(10, 12, 14);
 
   // Pentagonal Prism
-  vtkSmartPointer<vtkPentagonalPrism> pentagonalPrism =
-    vtkSmartPointer<vtkPentagonalPrism>::New();
+  vtkNew<vtkPentagonalPrism> pentagonalPrism;
   for (int i = 0; i < numberOfVertices; ++i)
   {
     pentagonalPrism->GetPointIds()->SetId(i, i);
@@ -287,7 +275,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePentagonalPrism()
 
   // Add the points and hexahedron to an unstructured grid
   vtkSmartPointer<vtkUnstructuredGrid> uGrid =
-    vtkSmartPointer<vtkUnstructuredGrid>::New();
+      vtkSmartPointer<vtkUnstructuredGrid>::New();
   uGrid->SetPoints(points);
   uGrid->InsertNextCell(pentagonalPrism->GetCellType(),
                         pentagonalPrism->GetPointIds());
@@ -304,48 +292,36 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePolyhedron()
   int numberOfFaces = 12;
   int numberOfFaceVertices = 5;
 
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint( 1.21412,   0,         1.58931);
-  points->InsertNextPoint( 0.375185,  1.1547,    1.58931);
-  points->InsertNextPoint(-0.982247,  0.713644,  1.58931);
-  points->InsertNextPoint(-0.982247, -0.713644,  1.58931);
-  points->InsertNextPoint( 0.375185, -1.1547,    1.58931);
-  points->InsertNextPoint( 1.96449,   0,         0.375185);
-  points->InsertNextPoint( 0.607062,  1.86835,   0.375185);
-  points->InsertNextPoint(-1.58931,   1.1547,    0.375185);
-  points->InsertNextPoint(-1.58931,  -1.1547,    0.375185);
-  points->InsertNextPoint( 0.607062, -1.86835,   0.375185);
-  points->InsertNextPoint( 1.58931,   1.1547,   -0.375185);
-  points->InsertNextPoint(-0.607062,  1.86835,  -0.375185);
-  points->InsertNextPoint(-1.96449,   0,        -0.375185);
-  points->InsertNextPoint(-0.607062, -1.86835,  -0.375185);
-  points->InsertNextPoint( 1.58931,  -1.1547,   -0.375185);
-  points->InsertNextPoint( 0.982247,  0.713644, -1.58931);
-  points->InsertNextPoint(-0.375185,  1.1547,   -1.58931);
-  points->InsertNextPoint(-1.21412,   0,        -1.58931);
-  points->InsertNextPoint(-0.375185, -1.1547,   -1.58931);
-  points->InsertNextPoint( 0.982247, -0.713644, -1.58931);
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(1.21412, 0, 1.58931);
+  points->InsertNextPoint(0.375185, 1.1547, 1.58931);
+  points->InsertNextPoint(-0.982247, 0.713644, 1.58931);
+  points->InsertNextPoint(-0.982247, -0.713644, 1.58931);
+  points->InsertNextPoint(0.375185, -1.1547, 1.58931);
+  points->InsertNextPoint(1.96449, 0, 0.375185);
+  points->InsertNextPoint(0.607062, 1.86835, 0.375185);
+  points->InsertNextPoint(-1.58931, 1.1547, 0.375185);
+  points->InsertNextPoint(-1.58931, -1.1547, 0.375185);
+  points->InsertNextPoint(0.607062, -1.86835, 0.375185);
+  points->InsertNextPoint(1.58931, 1.1547, -0.375185);
+  points->InsertNextPoint(-0.607062, 1.86835, -0.375185);
+  points->InsertNextPoint(-1.96449, 0, -0.375185);
+  points->InsertNextPoint(-0.607062, -1.86835, -0.375185);
+  points->InsertNextPoint(1.58931, -1.1547, -0.375185);
+  points->InsertNextPoint(0.982247, 0.713644, -1.58931);
+  points->InsertNextPoint(-0.375185, 1.1547, -1.58931);
+  points->InsertNextPoint(-1.21412, 0, -1.58931);
+  points->InsertNextPoint(-0.375185, -1.1547, -1.58931);
+  points->InsertNextPoint(0.982247, -0.713644, -1.58931);
 
-  vtkIdType dodechedronPointsIds[20] =
-      {0,   1,  2,  3,  4,  5,  6,  7,  8,  9,
-       10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
-
+  vtkIdType dodechedronPointsIds[20] = {0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
+                                        10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
 
   vtkIdType dodechedronFace[12][5] = {
-      {0, 1, 2, 3, 4},
-      {0, 5, 10, 6, 1},
-      {1, 6, 11, 7, 2},
-      {2, 7, 12, 8, 3},
-      {3, 8, 13, 9, 4},
-      {4, 9, 14, 5, 0},
-      {15, 10, 5, 14, 19},
-      {16, 11, 6, 10, 15},
-      {17, 12, 7, 11, 16},
-      {18, 13, 8, 12, 17},
-      {19, 14, 9, 13, 18},
-      {19, 18, 17, 16, 15}
-      };
+      {0, 1, 2, 3, 4},     {0, 5, 10, 6, 1},    {1, 6, 11, 7, 2},
+      {2, 7, 12, 8, 3},    {3, 8, 13, 9, 4},    {4, 9, 14, 5, 0},
+      {15, 10, 5, 14, 19}, {16, 11, 6, 10, 15}, {17, 12, 7, 11, 16},
+      {18, 13, 8, 12, 17}, {19, 14, 9, 13, 18}, {19, 18, 17, 16, 15}};
 
   vtkNew<vtkIdList> dodechedronFaces;
   for (int i = 0; i < numberOfFaces; i++)
@@ -358,10 +334,9 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePolyhedron()
   }
 
   vtkSmartPointer<vtkUnstructuredGrid> uGrid =
-    vtkSmartPointer<vtkUnstructuredGrid>::New();
-  uGrid->InsertNextCell(VTK_POLYHEDRON,
-          numberOfVertices, dodechedronPointsIds,
-        numberOfFaces, dodechedronFaces->GetPointer(0));
+      vtkSmartPointer<vtkUnstructuredGrid>::New();
+  uGrid->InsertNextCell(VTK_POLYHEDRON, numberOfVertices, dodechedronPointsIds,
+                        numberOfFaces, dodechedronFaces->GetPointer(0));
   uGrid->SetPoints(points);
 
   return uGrid;
@@ -372,9 +347,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePyramid()
   // Make a regular square pyramid.
   int numberOfVertices = 5;
 
-  vtkSmartPointer<vtkPoints> points =
-      vtkSmartPointer<vtkPoints>::New();
-
+  vtkNew<vtkPoints> points;
   float p0[3] = {1.0, 1.0, 0.0};
   float p1[3] = {-1.0, 1.0, 0.0};
   float p2[3] = {-1.0, -1.0, 0.0};
@@ -387,8 +360,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePyramid()
   points->InsertNextPoint(p3);
   points->InsertNextPoint(p4);
 
-  vtkSmartPointer<vtkPyramid> pyramid =
-      vtkSmartPointer<vtkPyramid>::New();
+  vtkNew<vtkPyramid> pyramid;
   for (int i = 0; i < numberOfVertices; ++i)
   {
     pyramid->GetPointIds()->SetId(i, i);
@@ -397,7 +369,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePyramid()
   vtkSmartPointer<vtkUnstructuredGrid> ug =
       vtkSmartPointer<vtkUnstructuredGrid>::New();
   ug->SetPoints(points);
-  ug->InsertNextCell(pyramid->GetCellType(),pyramid->GetPointIds());
+  ug->InsertNextCell(pyramid->GetCellType(), pyramid->GetPointIds());
 
   return ug;
 }
@@ -407,26 +379,23 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeTetrahedron()
   // Make a tetrahedron.
   int numberOfVertices = 4;
 
-  vtkSmartPointer< vtkPoints > points =
-    vtkSmartPointer< vtkPoints > :: New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(0, 0, 0);
   points->InsertNextPoint(1, 0, 0);
   points->InsertNextPoint(1, 1, 0);
   points->InsertNextPoint(0, 1, 1);
 
-  vtkSmartPointer<vtkTetra> tetra =
-    vtkSmartPointer<vtkTetra>::New();
+  vtkSmartPointer<vtkTetra> tetra = vtkSmartPointer<vtkTetra>::New();
   for (int i = 0; i < numberOfVertices; ++i)
   {
-      tetra->GetPointIds()->SetId(i, i);
+    tetra->GetPointIds()->SetId(i, i);
   }
 
-  vtkSmartPointer<vtkCellArray> cellArray =
-    vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkCellArray> cellArray;
   cellArray->InsertNextCell(tetra);
 
   vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid =
-    vtkSmartPointer<vtkUnstructuredGrid>::New();
+      vtkSmartPointer<vtkUnstructuredGrid>::New();
   unstructuredGrid->SetPoints(points);
   unstructuredGrid->SetCells(VTK_TETRA, cellArray);
 
@@ -438,8 +407,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeVoxel()
   // A voxel is a representation of a regular grid in 3-D space.
   int numberOfVertices = 8;
 
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(0, 0, 0);
   points->InsertNextPoint(1, 0, 0);
   points->InsertNextPoint(0, 1, 0);
@@ -449,17 +417,16 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeVoxel()
   points->InsertNextPoint(0, 1, 1);
   points->InsertNextPoint(1, 1, 1);
 
-  vtkSmartPointer<vtkVoxel> voxel =
-    vtkSmartPointer<vtkVoxel>::New();
+  vtkNew<vtkVoxel> voxel;
   for (int i = 0; i < numberOfVertices; ++i)
   {
     voxel->GetPointIds()->SetId(i, i);
   }
 
   vtkSmartPointer<vtkUnstructuredGrid> ug =
-    vtkSmartPointer<vtkUnstructuredGrid>::New();
+      vtkSmartPointer<vtkUnstructuredGrid>::New();
   ug->SetPoints(points);
-  ug->InsertNextCell(voxel->GetCellType(),voxel->GetPointIds());
+  ug->InsertNextCell(voxel->GetCellType(), voxel->GetPointIds());
 
   return ug;
 }
@@ -471,9 +438,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeWedge()
 
   int numberOfVertices = 6;
 
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(0, 1, 0);
   points->InsertNextPoint(0, 0, 0);
   points->InsertNextPoint(0, .5, .5);
@@ -481,18 +446,17 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeWedge()
   points->InsertNextPoint(1, 0.0, 0.0);
   points->InsertNextPoint(1, .5, .5);
 
-  vtkSmartPointer<vtkWedge> wedge =
-    vtkSmartPointer<vtkWedge>::New();
+  vtkNew<vtkWedge> wedge;
   for (int i = 0; i < numberOfVertices; ++i)
   {
     wedge->GetPointIds()->SetId(i, i);
   }
 
   vtkSmartPointer<vtkUnstructuredGrid> ug =
-    vtkSmartPointer<vtkUnstructuredGrid>::New();
+      vtkSmartPointer<vtkUnstructuredGrid>::New();
   ug->SetPoints(points);
-  ug->InsertNextCell(wedge->GetCellType(),wedge->GetPointIds());
+  ug->InsertNextCell(wedge->GetCellType(), wedge->GetPointIds());
 
   return ug;
 }
-}
+} // namespace
