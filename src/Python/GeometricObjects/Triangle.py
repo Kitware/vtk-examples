@@ -32,20 +32,20 @@ def main():
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputData(trianglePolyData)
     actor = vtk.vtkActor()
-    actor.GetProperty().SetColor(colors.GetColor3d("Cyan"))
+    actor.GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
     actor.SetMapper(mapper)
 
     # Create a renderer, render window, and an interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Triangle")
+    renderWindow.SetWindowName('Triangle')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actors to the scene
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("DarkGreen"))
+    renderer.SetBackground(colors.GetColor3d('DarkGreen'))
 
     # Render and interact
     renderWindow.Render()

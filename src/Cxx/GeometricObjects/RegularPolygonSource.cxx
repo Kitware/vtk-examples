@@ -8,54 +8,45 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkShrinkPolyData.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 
 int main(int , char *[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create a pentagon
-  vtkSmartPointer<vtkRegularPolygonSource> polygonSource = 
-    vtkSmartPointer<vtkRegularPolygonSource>::New();
+  vtkNew<vtkRegularPolygonSource> polygonSource;
   polygonSource->SetNumberOfSides(5);
   polygonSource->SetRadius(5);
-  polygonSource->SetCenter(0,0,0);
-  
-  vtkSmartPointer<vtkShrinkPolyData> shrink =
-    vtkSmartPointer<vtkShrinkPolyData>::New();
-  shrink->SetInputConnection(polygonSource->GetOutputPort());
-  shrink->SetShrinkFactor(.9);
+  polygonSource->SetCenter(0, 0, 0);
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkShrinkPolyData> shrink;
+  shrink->SetInputConnection(polygonSource->GetOutputPort());
+  shrink->SetShrinkFactor(0.9);
+
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(shrink->GetOutputPort());
 
-  vtkSmartPointer<vtkProperty> back =
-    vtkSmartPointer<vtkProperty>::New();
+  vtkNew<vtkProperty> back;
   back->SetColor(colors->GetColor3d("Tomato").GetData());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->EdgeVisibilityOn();
   actor->GetProperty()->SetLineWidth(5);
   actor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
   actor->SetBackfaceProperty(back);
- 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetWindowName("Regular Polygon Source");
+
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetWindowName("RegularPolygonSource");
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
- 
+
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
- 
+
   renderWindow->Render();
   renderWindowInteractor->Start();
  

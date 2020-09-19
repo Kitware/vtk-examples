@@ -88,6 +88,7 @@ int main(int, char*[])
   vtkNew<vtkTextProperty> textProperty;
   textProperty->SetFontSize(16);
   textProperty->SetJustificationToCentered();
+  textProperty->SetColor(colors->GetColor3d("LightGoldenrodYellow").GetData());
 
   // Create and link the mappers actors and renderers together.
   for (unsigned int i = 0; i < uGrids.size(); ++i)
@@ -102,7 +103,7 @@ int main(int, char*[])
 
     actors[i]->SetMapper(mappers[i]);
     actors[i]->GetProperty()->SetColor(
-        colors->GetColor3d("Seashell").GetData());
+        colors->GetColor3d("PeachPuff").GetData());
 
     renderers[i]->AddViewProp(actors[i]);
 

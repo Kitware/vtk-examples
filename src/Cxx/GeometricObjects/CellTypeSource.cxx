@@ -12,12 +12,12 @@
 #include <vtkMath.h>
 #include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkShrinkFilter.h>
-#include <vtkSmartPointer.h>
 #include <vtkTessellatorFilter.h>
 #include <vtkTextMapper.h>
 #include <vtkTextProperty.h>
@@ -62,20 +62,20 @@ int main(int argc, char* argv[])
   cellMap[vtkCellTypes::GetClassNameFromTypeId(VTK_QUADRATIC_TETRA)] =
       VTK_QUADRATIC_TETRA;
 
-  if (cellMap[std::string(cellName)] == 0)
+  if (cellMap.find(std::string(cellName)) == cellMap.end())
   {
     std::cout << "Cell type " << cellName << " is not supported." << std::endl;
     return EXIT_FAILURE;
   }
-  auto source = vtkSmartPointer<vtkCellTypeSource>::New();
+  vtkNew<vtkCellTypeSource> source;
   source->SetCellType(cellMap[cellName]);
   source->Update();
   std::cout << "Cell: " << cellName << std::endl;
 
   vtkPoints* originalPoints = source->GetOutput()->GetPoints();
-  auto points = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->SetNumberOfPoints(source->GetOutput()->GetNumberOfPoints());
-  auto rng = vtkSmartPointer<vtkMinimalStandardRandomSequence>::New();
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
   rng->SetSeed(5070); // for testing
   for (auto i = 0; i < points->GetNumberOfPoints(); ++i)
   {
@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
 
   int numCells = source->GetOutput()->GetNumberOfCells();
   std::cout << "Number of cells: " << numCells << std::endl;
-  auto idArray = vtkSmartPointer<vtkIntArray>::New();
+  vtkNew<vtkIntArray> idArray;
   idArray->SetNumberOfTuples(numCells);
   for (auto i = 0; i < numCells; ++i)
   {
@@ -105,28 +105,28 @@ int main(int argc, char* argv[])
   source->GetOutput()->GetCellData()->AddArray(idArray);
   source->GetOutput()->GetCellData()->SetActiveScalars("Ids");
 
-  auto shrink = vtkSmartPointer<vtkShrinkFilter>::New();
+  vtkNew<vtkShrinkFilter> shrink;
   shrink->SetInputConnection(source->GetOutputPort());
   shrink->SetShrinkFactor(.8);
 
-  auto tessellate = vtkSmartPointer<vtkTessellatorFilter>::New();
+  vtkNew<vtkTessellatorFilter> tessellate;
   tessellate->SetInputConnection(shrink->GetOutputPort());
   tessellate->SetMaximumNumberOfSubdivisions(3);
 
   // Create a lookup table to map cell data to colors
-  auto lut = vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
 
-  auto colorSeries = vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> colorSeries;
   int seriesEnum = colorSeries->BREWER_QUALITATIVE_SET3;
   ;
   colorSeries->SetColorScheme(seriesEnum);
   colorSeries->BuildLookupTable(lut, colorSeries->ORDINAL);
 
   // Fill in a few known colors, the rest will be generated if needed
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create a mapper and actor
-  auto mapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(source->GetOutputPort());
   mapper->SetInputConnection(shrink->GetOutputPort());
   mapper->SetScalarRange(0, numCells + 1);
@@ -142,31 +142,30 @@ int main(int argc, char* argv[])
   {
     mapper->SetInputConnection(tessellate->GetOutputPort());
   }
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->EdgeVisibilityOn();
   //  actor->GetProperty()->SetLineWidth(3);
 
-  auto textProperty = vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkTextProperty> textProperty;
   textProperty->SetFontSize(20);
   textProperty->SetJustificationToCentered();
   textProperty->SetColor(colors->GetColor3d("Lamp_Black").GetData());
 
-  auto textMapper = vtkSmartPointer<vtkTextMapper>::New();
+  vtkNew<vtkTextMapper> textMapper;
   textMapper->SetInput(cellName.c_str());
   textMapper->SetTextProperty(textProperty);
 
-  auto textActor = vtkSmartPointer<vtkActor2D>::New();
+  vtkNew<vtkActor2D> textActor;
   textActor->SetMapper(textMapper);
   textActor->SetPosition(320, 20);
 
   // Create a renderer, render window, and interactor
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetWindowName("Cell Type Source");
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetWindowName("CellTypeSource");
   renderWindow->AddRenderer(renderer);
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene

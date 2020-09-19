@@ -2,6 +2,7 @@
 #include <vtkCamera.h>
 #include <vtkLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlatonicSolidSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderWindow.h>
@@ -15,17 +16,15 @@
 #include <string>
 #include <vector>
 
-int main(int, char* [])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Each face has a different cell scalar
   // Here we create a lookup table with a different colour
   // for each face. The colors have been carefully
   // chosen so that adjacent cells are colored distinctly.
-  vtkSmartPointer<vtkLookupTable> lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   lut->SetNumberOfTableValues(20);
   lut->SetTableRange(0.0, 19.0);
   lut->Build();
@@ -57,17 +56,14 @@ int main(int, char* [])
   std::vector<vtkSmartPointer<vtkRenderer>> renderers;
 
   // Create a common text property.
-  vtkSmartPointer<vtkTextProperty> textProperty =
-    vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkTextProperty> textProperty;
   textProperty->SetFontSize(16);
   textProperty->SetJustificationToCentered();
 
   // Create the render window and interactor.
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renWin->SetWindowName("Platonic Solids");
-  vtkSmartPointer<vtkRenderWindowInteractor> iRen =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindow> renWin;
+  renWin->SetWindowName("PlatonicSolids");
+  vtkNew<vtkRenderWindowInteractor> iRen;
   iRen->SetRenderWindow(renWin);
 
   // There are five platonic solids.
@@ -116,10 +112,10 @@ int main(int, char* [])
 
       // (xmin, ymin, xmax, ymax)
       double viewport[4] = {
-        static_cast<double>(col) / xGridDimensions,
-        static_cast<double>(yGridDimensions - (row + 1)) / yGridDimensions,
-        static_cast<double>(col + 1) / xGridDimensions,
-        static_cast<double>(yGridDimensions - row) / yGridDimensions};
+          static_cast<double>(col) / xGridDimensions,
+          static_cast<double>(yGridDimensions - (row + 1)) / yGridDimensions,
+          static_cast<double>(col + 1) / xGridDimensions,
+          static_cast<double>(yGridDimensions - row) / yGridDimensions};
       if (index > (actors.size() - 1))
       {
         // Add a renderer even if there is no actor.
@@ -133,7 +129,7 @@ int main(int, char* [])
 
       renderers[index]->SetViewport(viewport);
       renderers[index]->SetBackground(
-        colors->GetColor3d("SlateGray").GetData());
+          colors->GetColor3d("SlateGray").GetData());
       renderers[index]->ResetCamera();
       renderers[index]->GetActiveCamera()->Azimuth(4.5);
       renderers[index]->GetActiveCamera()->Elevation(-18);

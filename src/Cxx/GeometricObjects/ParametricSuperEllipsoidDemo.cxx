@@ -4,16 +4,16 @@
 #include <vtkCommand.h>
 #include <vtkMath.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkParametricFunctionSource.h>
 #include <vtkParametricSuperEllipsoid.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSliderRepresentation2D.h>
 #include <vtkSliderWidget.h>
-#include <vtkSmartPointer.h>
 
 #include <array>
 
@@ -22,62 +22,61 @@
 class SliderCallbackN1 : public vtkCommand
 {
 public:
-  static SliderCallbackN1 *New()
+  static SliderCallbackN1* New()
   {
     return new SliderCallbackN1;
   }
-  virtual void Execute(vtkObject *caller, unsigned long, void*)
+  virtual void Execute(vtkObject* caller, unsigned long, void*)
   {
-    vtkSliderWidget *sliderWidget =
-      reinterpret_cast<vtkSliderWidget*>(caller);
-    double value = static_cast<vtkSliderRepresentation2D *>(sliderWidget->GetRepresentation())->GetValue();
+    vtkSliderWidget* sliderWidget = reinterpret_cast<vtkSliderWidget*>(caller);
+    double value = static_cast<vtkSliderRepresentation2D*>(
+                       sliderWidget->GetRepresentation())
+                       ->GetValue();
     this->SuperEllipsoid->SetN1(value);
   }
-  SliderCallbackN1():SuperEllipsoid(0) {}
-  vtkParametricSuperEllipsoid *SuperEllipsoid;
+  SliderCallbackN1() : SuperEllipsoid(0)
+  {
+  }
+  vtkParametricSuperEllipsoid* SuperEllipsoid;
 };
 
 class SliderCallbackN2 : public vtkCommand
 {
 public:
-  static SliderCallbackN2 *New()
+  static SliderCallbackN2* New()
   {
     return new SliderCallbackN2;
   }
-  virtual void Execute(vtkObject *caller, unsigned long, void*)
+  virtual void Execute(vtkObject* caller, unsigned long, void*)
   {
-    vtkSliderWidget *sliderWidget =
-      reinterpret_cast<vtkSliderWidget*>(caller);
-    double value = static_cast<vtkSliderRepresentation2D *>(sliderWidget->GetRepresentation())->GetValue();
+    vtkSliderWidget* sliderWidget = reinterpret_cast<vtkSliderWidget*>(caller);
+    double value = static_cast<vtkSliderRepresentation2D*>(
+                       sliderWidget->GetRepresentation())
+                       ->GetValue();
     this->SuperEllipsoid->SetN2(value);
   }
-  SliderCallbackN2():SuperEllipsoid(0) {}
-  vtkParametricSuperEllipsoid *SuperEllipsoid;
+  SliderCallbackN2() : SuperEllipsoid(0)
+  {
+  }
+  vtkParametricSuperEllipsoid* SuperEllipsoid;
 };
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
-  std::array<unsigned char , 4> bkg{{26, 51, 102, 255}};
-    colors->SetColor("BkgColor", bkg.data());
+  std::array<unsigned char, 4> bkg{{26, 51, 102, 255}};
+  colors->SetColor("BkgColor", bkg.data());
 
-  vtkSmartPointer<vtkParametricSuperEllipsoid> surface =
-    vtkSmartPointer<vtkParametricSuperEllipsoid>::New();
-  vtkSmartPointer<vtkParametricFunctionSource> source =
-    vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricSuperEllipsoid> surface;
+  vtkNew<vtkParametricFunctionSource> source;
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkPolyDataMapper> mapper;
+  vtkNew<vtkActor> actor;
 
-  vtkSmartPointer<vtkProperty> backProperty =
-    vtkSmartPointer<vtkProperty>::New();
+  vtkNew<vtkProperty> backProperty;
   backProperty->SetColor(colors->GetColor3d("Tomato").GetData());
 
   // Create a parametric function source, renderer, mapper, and actor
@@ -91,11 +90,10 @@ int main(int, char *[])
   actor->GetProperty()->SetSpecular(.5);
   actor->GetProperty()->SetSpecularPower(20);
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetWindowName("Parametric Objects Super Ellipsoid Demo");
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetWindowName("ParametricSuperEllipsoidDemo");
   renderWindow->AddRenderer(renderer);
-  renderWindow->SetSize(640,480);
+  renderWindow->SetSize(640, 480);
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
   renderer->ResetCamera();
@@ -104,8 +102,7 @@ int main(int, char *[])
   renderer->GetActiveCamera()->Zoom(0.9);
   renderer->ResetCameraClippingRange();
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Setup a slider widget for each varying parameter
@@ -114,8 +111,7 @@ int main(int, char *[])
   double titleHeight(.04);
   double labelHeight(.04);
 
-  vtkSmartPointer<vtkSliderRepresentation2D> sliderRepN1 =
-    vtkSmartPointer<vtkSliderRepresentation2D>::New();
+  vtkNew<vtkSliderRepresentation2D> sliderRepN1;
 
   sliderRepN1->SetMinimumValue(0.0);
   sliderRepN1->SetMaximumValue(4.0);
@@ -132,21 +128,18 @@ int main(int, char *[])
   sliderRepN1->SetTitleHeight(titleHeight);
   sliderRepN1->SetLabelHeight(labelHeight);
 
-  vtkSmartPointer<vtkSliderWidget> sliderWidgetN1 =
-    vtkSmartPointer<vtkSliderWidget>::New();
+  vtkNew<vtkSliderWidget> sliderWidgetN1;
   sliderWidgetN1->SetInteractor(interactor);
   sliderWidgetN1->SetRepresentation(sliderRepN1);
   sliderWidgetN1->SetAnimationModeToAnimate();
   sliderWidgetN1->EnabledOn();
 
-  vtkSmartPointer<SliderCallbackN1> callbackN1 =
-    vtkSmartPointer<SliderCallbackN1>::New();
+  vtkNew<SliderCallbackN1> callbackN1;
   callbackN1->SuperEllipsoid = surface;
 
-  sliderWidgetN1->AddObserver(vtkCommand::InteractionEvent,callbackN1);
+  sliderWidgetN1->AddObserver(vtkCommand::InteractionEvent, callbackN1);
 
-  vtkSmartPointer<vtkSliderRepresentation2D> sliderRepN2 =
-    vtkSmartPointer<vtkSliderRepresentation2D>::New();
+  vtkNew<vtkSliderRepresentation2D> sliderRepN2;
 
   sliderRepN2->SetMinimumValue(0.0001);
   sliderRepN2->SetMaximumValue(4.0);
@@ -163,30 +156,29 @@ int main(int, char *[])
   sliderRepN2->SetTitleHeight(titleHeight);
   sliderRepN2->SetLabelHeight(labelHeight);
 
-  vtkSmartPointer<vtkSliderWidget> sliderWidgetN2 =
-    vtkSmartPointer<vtkSliderWidget>::New();
+  vtkNew<vtkSliderWidget> sliderWidgetN2;
   sliderWidgetN2->SetInteractor(interactor);
   sliderWidgetN2->SetRepresentation(sliderRepN2);
   sliderWidgetN2->SetAnimationModeToAnimate();
   sliderWidgetN2->EnabledOn();
 
-  vtkSmartPointer<SliderCallbackN2> callbackN2 =
-    vtkSmartPointer<SliderCallbackN2>::New();
+  vtkNew<SliderCallbackN2> callbackN2;
   callbackN2->SuperEllipsoid = surface;
 
-  sliderWidgetN2->AddObserver(vtkCommand::InteractionEvent,callbackN2);
+  sliderWidgetN2->AddObserver(vtkCommand::InteractionEvent, callbackN2);
 
-  vtkSmartPointer<vtkSliderRepresentation2D> sliderRepMinimumV =
-    vtkSmartPointer<vtkSliderRepresentation2D>::New();
+  vtkNew<vtkSliderRepresentation2D> sliderRepMinimumV;
 
   sliderRepN1->SetMinimumValue(.0001);
-  sliderRepMinimumV->SetMaximumValue(.9999*vtkMath::Pi());
+  sliderRepMinimumV->SetMaximumValue(.9999 * vtkMath::Pi());
   sliderRepMinimumV->SetValue(.0001);
   sliderRepMinimumV->SetTitleText("V min");
 
-  sliderRepMinimumV->GetPoint1Coordinate()->SetCoordinateSystemToNormalizedDisplay();
+  sliderRepMinimumV->GetPoint1Coordinate()
+      ->SetCoordinateSystemToNormalizedDisplay();
   sliderRepMinimumV->GetPoint1Coordinate()->SetValue(.1, .1);
-  sliderRepMinimumV->GetPoint2Coordinate()->SetCoordinateSystemToNormalizedDisplay();
+  sliderRepMinimumV->GetPoint2Coordinate()
+      ->SetCoordinateSystemToNormalizedDisplay();
   sliderRepMinimumV->GetPoint2Coordinate()->SetValue(.1, .9);
 
   sliderRepMinimumV->SetTubeWidth(tubeWidth);

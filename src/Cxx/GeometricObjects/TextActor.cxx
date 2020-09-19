@@ -1,34 +1,29 @@
 #include <vtkNamedColors.h>
-#include <vtkRenderer.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 #include <vtkTextActor.h>
 #include <vtkTextProperty.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create a rendering window and renderer.
-  vtkSmartPointer<vtkRenderer> ren =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renWin->SetWindowName("Regular Polygon Source");
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
+  renWin->SetWindowName("TextActor");
   renWin->AddRenderer(ren);
 
   // Create a render window interactor.
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Create a text actor.
-  vtkSmartPointer<vtkTextActor> txt =
-    vtkSmartPointer<vtkTextActor>::New();
+  vtkNew<vtkTextActor> txt;
   txt->SetInput("Hello World!");
-  vtkTextProperty *txtprop = txt->GetTextProperty();
+  vtkTextProperty* txtprop = txt->GetTextProperty();
   txtprop->SetFontFamilyToArial();
   txtprop->BoldOn();
   txtprop->SetFontSize(36);

@@ -11,10 +11,11 @@ def main():
     points.InsertNextPoint(1, 0, 0)
     points.InsertNextPoint(1, 1, 0)
     points.InsertNextPoint(0, 1, 1)
-    points.InsertNextPoint(5, 5, 5)
-    points.InsertNextPoint(6, 5, 5)
-    points.InsertNextPoint(6, 6, 5)
-    points.InsertNextPoint(5, 6, 6)
+
+    points.InsertNextPoint(2, 2, 2)
+    points.InsertNextPoint(3, 2, 2)
+    points.InsertNextPoint(3, 3, 2)
+    points.InsertNextPoint(2, 3, 3)
 
     # The first tetrahedron
     unstructuredGrid1 = vtk.vtkUnstructuredGrid()
@@ -77,7 +78,6 @@ def main():
     renderer.ResetCamera()
     renderer.GetActiveCamera().Azimuth(-10)
     renderer.GetActiveCamera().Elevation(-20)
-
 
     # Render and interact
     renderWindow.Render()

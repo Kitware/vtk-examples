@@ -1,7 +1,12 @@
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <vector>
 #include <vtkActor.h>
 #include <vtkCellArray.h>
 #include <vtkMath.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -9,26 +14,19 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <vector>
 
-int main(int, char* [])
+int main(int, char*[])
 {
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
-  std::array<unsigned char , 4> bkg{{26, 51, 102, 255}};
-    colors->SetColor("BkgColor", bkg.data());
+  std::array<unsigned char, 4> bkg{{26, 51, 102, 255}};
+  colors->SetColor("BkgColor", bkg.data());
 
   // vtkPoints represents 3D points. The data model for vtkPoints is an array of
   // vx-vy-vz triplets accessible by (point or cell) id.
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->SetNumberOfPoints(6);
   double c = std::cos(vtkMath::Pi() / 6); // helper variable
   points->SetPoint(0, 0.0, -1.0, 0.0);
@@ -44,8 +42,7 @@ int main(int, char* [])
   // (n,id1,id2,...,idn, n,id1,id2,...,idn, ...) where n is the number of points
   // in
   // the cell, and id is a zero-offset index into an associated point list.
-  vtkSmartPointer<vtkCellArray> lines =
-    vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkCellArray> lines;
   lines->InsertNextCell(7);
   lines->InsertCellPoint(0);
   lines->InsertCellPoint(1);
@@ -59,15 +56,13 @@ int main(int, char* [])
   // vtkDataSet.
   // vtkPolyData represents a geometric structure consisting of vertices, lines,
   // polygons, and/or triangle strips
-  vtkSmartPointer<vtkPolyData> polygon =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polygon;
   polygon->SetPoints(points);
   polygon->SetLines(lines);
 
   // vtkPolyDataMapper is a class that maps polygonal data (i.e., vtkPolyData)
   // to graphics primitives
-  vtkSmartPointer<vtkPolyDataMapper> polygonMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> polygonMapper;
   polygonMapper->SetInputData(polygon);
   polygonMapper->Update();
 
@@ -76,18 +71,16 @@ int main(int, char* [])
   // the mapper's graphics primitives. An actor also refers to properties via a
   // vtkProperty instance, and includes an internal transformation matrix. We
   // set this actor's mapper to be polygonMapper which we created above.
-  vtkSmartPointer<vtkActor> polygonActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> polygonActor;
   polygonActor->SetMapper(polygonMapper);
   polygonActor->GetProperty()->SetColor(
-    colors->GetColor3d("AliceBlue").GetData());
+      colors->GetColor3d("AliceBlue").GetData());
 
   // Create the Renderer and assign actors to it. A renderer is like a
   // viewport. It is part or all of a window on the screen and it is
   // responsible for drawing the actors it has.  We also set the
   // background color here.
-  vtkSmartPointer<vtkRenderer> ren =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren;
   ren->AddActor(polygonActor);
   ren->SetBackground(colors->GetColor3d("BkgColor").GetData());
 
@@ -102,8 +95,7 @@ int main(int, char* [])
   // Finally we create the render window which will show up on the screen
   // We put our renderer into the render window using AddRenderer. We
   // also set the size to be 300 pixels by 300.
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->SetWindowName("OrderedPolyLine");
   renWin->AddRenderer(ren);
   renWin->SetSize(300, 300);
@@ -113,13 +105,11 @@ int main(int, char* [])
   // event invocations that VTK understands (see VTK/Common/vtkCommand.h
   // for all events that VTK processes). Then observers of these VTK
   // events can process them as appropriate.
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
   renWin->Render();
   iren->Initialize();
   iren->Start();
 
   return EXIT_SUCCESS;
-
 }

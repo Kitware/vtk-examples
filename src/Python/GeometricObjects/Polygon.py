@@ -35,18 +35,18 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("Silver"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Silver'))
 
     # Visualize
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Polygon")
+    renderWindow.SetWindowName('Polygon')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("Salmon"))
+    renderer.SetBackground(colors.GetColor3d('Salmon'))
     renderWindow.Render()
     renderWindowInteractor.Start()
 

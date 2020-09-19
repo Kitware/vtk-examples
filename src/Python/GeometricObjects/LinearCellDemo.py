@@ -15,43 +15,43 @@ def main():
     renderers = list()
 
     uGrids.append(MakeVertex())
-    titles.append("VTK_VERTEX (=1)")
+    titles.append('VTK_VERTEX (=1)')
     uGrids.append(MakePolyVertex())
-    titles.append("VTK_POLY_VERTEX (=2)")
+    titles.append('VTK_POLY_VERTEX (=2)')
     uGrids.append(MakeLine())
-    titles.append("VTK_LINE (=3)")
+    titles.append('VTK_LINE (=3)')
     uGrids.append(MakePolyLine())
-    titles.append("VTK_POLY_LINE (=4)")
+    titles.append('VTK_POLY_LINE (=4)')
     uGrids.append(MakeTriangle())
-    titles.append("VTK_TRIANGLE (=5)")
+    titles.append('VTK_TRIANGLE (=5)')
     uGrids.append(MakeTriangleStrip())
-    titles.append("VTK_TRIANGLE_STRIP (=6)")
+    titles.append('VTK_TRIANGLE_STRIP (=6)')
     uGrids.append(MakePolygon())
-    titles.append("VTK_POLYGON (=7)")
+    titles.append('VTK_POLYGON (=7)')
     uGrids.append(MakePixel())
-    titles.append("VTK_PIXEL (=8)")
+    titles.append('VTK_PIXEL (=8)')
     uGrids.append(MakeQuad())
-    titles.append("VTK_QUAD (=9)")
+    titles.append('VTK_QUAD (=9)')
     uGrids.append(MakeTetra())
-    titles.append("VTK_TETRA (=10)")
+    titles.append('VTK_TETRA (=10)')
     uGrids.append(MakeVoxel())
-    titles.append("VTK_VOXEL (=11)")
+    titles.append('VTK_VOXEL (=11)')
     uGrids.append(MakeHexahedron())
-    titles.append("VTK_HEXAHEDRON (=12)")
+    titles.append('VTK_HEXAHEDRON (=12)')
     uGrids.append(MakeWedge())
-    titles.append("VTK_WEDGE (=13)")
+    titles.append('VTK_WEDGE (=13)')
     uGrids.append(MakePyramid())
-    titles.append("VTK_PYRAMID (=14)")
+    titles.append('VTK_PYRAMID (=14)')
     uGrids.append(MakePentagonalPrism())
-    titles.append("VTK_PENTAGONAL_PRISM (=15)")
+    titles.append('VTK_PENTAGONAL_PRISM (=15)')
     uGrids.append(MakeHexagonalPrism())
-    titles.append("VTK_HEXAGONAL_PRISM (=16)")
+    titles.append('VTK_HEXAGONAL_PRISM (=16)')
 
     colors = vtk.vtkNamedColors()
 
     renWin = vtk.vtkRenderWindow()
     renWin.SetSize(600, 600)
-    renWin.SetWindowName("Linear Cell")
+    renWin.SetWindowName('LinearCellDemo')
 
     iRen = vtk.vtkRenderWindowInteractor()
     iRen.SetRenderWindow(renWin)
@@ -67,9 +67,10 @@ def main():
     textProperty.SetFontSize(10)
     textProperty.SetJustificationToCentered()
 
+
     # Create and link the mappers actors and renderers together.
     for i in range(0, len(uGrids)):
-        print("Creating:", titles[i])
+        print('Creating:', titles[i])
         textMappers.append(vtk.vtkTextMapper())
         textActors.append(vtk.vtkActor2D())
 
@@ -78,7 +79,7 @@ def main():
         renderers.append(vtk.vtkRenderer())
         mappers[i].SetInputData(uGrids[i])
         actors[i].SetMapper(mappers[i])
-        actors[i].GetProperty().SetColor(colors.GetColor3d("Tomato"))
+        actors[i].GetProperty().SetColor(colors.GetColor3d('Tomato'))
         actors[i].GetProperty().EdgeVisibilityOn()
         actors[i].GetProperty().SetLineWidth(3)
         actors[i].GetProperty().SetOpacity(.5)
@@ -105,7 +106,7 @@ def main():
 
         pointActor = vtk.vtkActor()
         pointActor.SetMapper(pointMapper)
-        pointActor.GetProperty().SetDiffuseColor(colors.GetColor3d("Banana"))
+        pointActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Banana'))
         pointActor.GetProperty().SetSpecular(.6)
         pointActor.GetProperty().SetSpecularColor(1.0, 1.0, 1.0)
         pointActor.GetProperty().SetSpecularPower(100)
@@ -132,23 +133,26 @@ def main():
                 # Add a renderer even if there is no actor.
                 # This makes the render window background all the same color.
                 ren = vtk.vtkRenderer()
-                ren.SetBackground(colors.GetColor3d("SlateGray"))
+                ren.SetBackground(colors.GetColor3d('SlateGray'))
                 ren.SetViewport(viewport)
                 renWin.AddRenderer(ren)
                 continue
 
             renderers[index].SetViewport(viewport)
-            renderers[index].SetBackground(colors.GetColor3d("SlateGray"))
+            renderers[index].SetBackground(colors.GetColor3d('SlateGray'))
             renderers[index].ResetCamera()
             renderers[index].GetActiveCamera().Azimuth(30)
             renderers[index].GetActiveCamera().Elevation(-30)
             if index == 0:
-                renderers[index].GetActiveCamera().Dolly(.1)
-            else:
+                renderers[index].GetActiveCamera().Dolly(0.1)
                 renderers[index].ResetCameraClippingRange()
+            if index == 4:
+                renderers[index].GetActiveCamera().Dolly(0.8)
+                renderers[index].ResetCameraClippingRange()
+            renderers[index].ResetCameraClippingRange()
 
-    iRen.Initialize()
     renWin.Render()
+    iRen.Initialize()
     iRen.Start()
 
 

@@ -4,6 +4,7 @@
 #include <vtkMath.h>
 #include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkParametricFunctionSource.h>
 #include <vtkPoints.h>
 #include <vtkPolyDataMapper.h>
@@ -303,7 +304,7 @@ int main(int argc, char* argv[])
     }
   }
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   auto rendererSize = 200;
   auto gridColumnDimensions = 5;
@@ -317,7 +318,7 @@ int main(int argc, char* argv[])
   }
 
   // Create one text property for all
-  auto textProperty = vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkTextProperty> textProperty;
   textProperty->SetJustificationToCentered();
   textProperty->SetFontSize(rendererSize / 12);
   textProperty->SetColor(colors->GetColor3d("LavenderBlush").GetData());
@@ -538,7 +539,7 @@ int main(int argc, char* argv[])
     }
   }
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();
@@ -815,7 +816,6 @@ void WriteImage(std::string const& fileName, vtkRenderWindow* renWin, bool rgba)
 
   return;
 }
-
 
 CommandLineParser::CommandLineParser(
     std::vector<std::string>& cmdLineVec,

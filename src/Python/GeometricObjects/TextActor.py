@@ -10,7 +10,7 @@ def main():
     # Create a rendering window and renderer.
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
-    renWin.SetWindowName("Text Actor")
+    renWin.SetWindowName('TextActor')
     renWin.AddRenderer(ren)
 
     # Create a render window interactor.
@@ -19,19 +19,19 @@ def main():
 
     # Create a text actor.
     txt = vtk.vtkTextActor()
-    txt.SetInput("Hello World!")
+    txt.SetInput('Hello World!')
     txtprop = txt.GetTextProperty()
     txtprop.SetFontFamilyToArial()
     txtprop.BoldOn()
     txtprop.SetFontSize(36)
     txtprop.ShadowOn()
     txtprop.SetShadowOffset(4, 4)
-    txtprop.SetColor(colors.GetColor3d("Cornsilk"))
+    txtprop.SetColor(colors.GetColor3d('Cornsilk'))
     txt.SetDisplayPosition(20, 30)
 
     # Assign actor to the renderer.
     ren.AddActor(txt)
-    ren.SetBackground(colors.GetColor3d("DarkGreen"))
+    ren.SetBackground(colors.GetColor3d('DarkGreen'))
 
     # Enable user interface interactor.
     iren.Initialize()

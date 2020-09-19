@@ -8,7 +8,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [51, 77, 102, 255])
+    colors.SetColor('BkgColor', [51, 77, 102, 255])
 
     sourceObjects = list()
     sourceObjects.append(vtk.vtkSphereSource())
@@ -24,7 +24,7 @@ def main():
     sourceObjects.append(vtk.vtkCubeSource())
     sourceObjects.append(vtk.vtkPlaneSource())
     sourceObjects.append(vtk.vtkTextSource())
-    sourceObjects[-1].SetText("Hello")
+    sourceObjects[-1].SetText('Hello')
     sourceObjects[-1].BackingOff()
 
     sourceObjects.append(vtk.vtkPointSource())
@@ -45,9 +45,10 @@ def main():
     textProperty = vtk.vtkTextProperty()
     textProperty.SetFontSize(16)
     textProperty.SetJustificationToCentered()
+    textProperty.SetColor(colors.GetColor3d('LightGoldenrodYellow'))
 
     backProperty = vtk.vtkProperty()
-    backProperty.SetColor(colors.GetColor3d("Red"))
+    backProperty.SetColor(colors.GetColor3d('Tomato'))
 
     # Create a source, renderer, mapper, and actor
     # for each object.
@@ -57,7 +58,7 @@ def main():
 
         actors.append(vtk.vtkActor())
         actors[i].SetMapper(mappers[i])
-        actors[i].GetProperty().SetColor(colors.GetColor3d("Seashell"))
+        actors[i].GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
         actors[i].SetBackfaceProperty(backProperty)
 
         textmappers.append(vtk.vtkTextMapper())
@@ -76,7 +77,7 @@ def main():
         renderers.append(vtk.vtkRenderer())
 
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Source Objects Demo")
+    renderWindow.SetWindowName('SourceObjectsDemo')
     rendererSize = 300
     renderWindow.SetSize(rendererSize * gridDimensions, rendererSize * gridDimensions)
 
@@ -95,7 +96,7 @@ def main():
 
             renderers[index].AddActor(actors[index])
             renderers[index].AddActor(textactors[index])
-            renderers[index].SetBackground(colors.GetColor3d("BkgColor"))
+            renderers[index].SetBackground(colors.GetColor3d('BkgColor'))
             renderers[index].ResetCamera()
             renderers[index].GetActiveCamera().Azimuth(30)
             renderers[index].GetActiveCamera().Elevation(30)
@@ -109,5 +110,5 @@ def main():
     interactor.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

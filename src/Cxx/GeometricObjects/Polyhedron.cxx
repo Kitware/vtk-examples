@@ -6,34 +6,32 @@
 #include <vtkDataSetMapper.h>
 #include <vtkIdList.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyhedron.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkXMLUnstructuredGridWriter.h>
 
-int main( int, char*[] )
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // create polyhedron (cube)
   vtkIdType pointIds[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint(-1.0,-1.0,-1.0);
-  points->InsertNextPoint( 1.0,-1.0,-1.0);
-  points->InsertNextPoint( 1.0, 1.0,-1.0);
-  points->InsertNextPoint(-1.0, 1.0,-1.0);
-  points->InsertNextPoint(-1.0,-1.0, 1.0);
-  points->InsertNextPoint( 1.0,-1.0, 1.0);
-  points->InsertNextPoint( 1.0, 1.0, 1.0);
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(-1.0, -1.0, -1.0);
+  points->InsertNextPoint(1.0, -1.0, -1.0);
+  points->InsertNextPoint(1.0, 1.0, -1.0);
+  points->InsertNextPoint(-1.0, 1.0, -1.0);
+  points->InsertNextPoint(-1.0, -1.0, 1.0);
+  points->InsertNextPoint(1.0, -1.0, 1.0);
+  points->InsertNextPoint(1.0, 1.0, 1.0);
   points->InsertNextPoint(-1.0, 1.0, 1.0);
 
   vtkNew<vtkIdList> faces;
@@ -44,9 +42,7 @@ int main( int, char*[] )
   vtkIdType face4[4] = {0, 1, 5, 4};
   vtkIdType face5[4] = {2, 3, 7, 6};
 
-
-  auto addFace = [&](const vtkIdType face[4])
-  {
+  auto addFace = [&](const vtkIdType face[4]) {
     faces->InsertNextId(4);
     for (int i = 0; i < 4; ++i)
     {
@@ -61,41 +57,31 @@ int main( int, char*[] )
   addFace(face4);
   addFace(face5);
 
-  vtkSmartPointer<vtkUnstructuredGrid> ugrid =
-    vtkSmartPointer<vtkUnstructuredGrid>::New();
+  vtkNew<vtkUnstructuredGrid> ugrid;
   ugrid->SetPoints(points);
-  ugrid->InsertNextCell(
-    VTK_POLYHEDRON, 8, pointIds,
-    6, faces->GetPointer(0));
+  ugrid->InsertNextCell(VTK_POLYHEDRON, 8, pointIds, 6, faces->GetPointer(0));
 
   // Here we write out the cube.
-  vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer =
-    vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
+  vtkNew<vtkXMLUnstructuredGridWriter> writer;
   writer->SetInputData(ugrid);
   writer->SetFileName("polyhedron.vtu");
   writer->SetDataModeToAscii();
   writer->Update();
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputData(ugrid);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(
-    colors->GetColor3d("Silver").GetData());
+  actor->GetProperty()->SetColor(colors->GetColor3d("Silver").GetData());
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetWindowName("Polyhedron");
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);

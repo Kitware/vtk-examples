@@ -7,58 +7,52 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkShrinkFilter.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkTessellatedBoxSource.h>
 
 int main (int /* argc */, char * /* argv */ [])
 {
   double bounds[6];
-  bounds[0] = -10.0; bounds[1] = 10.0;
-  bounds[2] = 10.0; bounds[3] = 20.0;
-  bounds[4] = -5.0; bounds[5] = 5.0;
+  bounds[0] = -10.0;
+  bounds[1] = 10.0;
+  bounds[2] = 10.0;
+  bounds[3] = 20.0;
+  bounds[4] = -5.0;
+  bounds[5] = 5.0;
 
-  vtkSmartPointer<vtkTessellatedBoxSource> boxSource =
-    vtkSmartPointer<vtkTessellatedBoxSource>::New();
+  vtkNew<vtkTessellatedBoxSource> boxSource;
   boxSource->SetLevel(3);
   boxSource->QuadsOn();
   boxSource->SetBounds(bounds);
   boxSource->SetOutputPointsPrecision(vtkAlgorithm::SINGLE_PRECISION);
 
-  vtkSmartPointer<vtkShrinkFilter> shrink =
-    vtkSmartPointer<vtkShrinkFilter>::New();
+  vtkNew<vtkShrinkFilter> shrink;
   shrink->SetInputConnection(boxSource->GetOutputPort());
   shrink->SetShrinkFactor(.8);
 
-  //Create a mapper and actor
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  // Create a mapper and actor
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(shrink->GetOutputPort());
 
-  vtkSmartPointer<vtkProperty> back =
-    vtkSmartPointer<vtkProperty>::New();
+  vtkNew<vtkProperty> back;
   back->SetColor(colors->GetColor3d("Tomato").GetData());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->EdgeVisibilityOn();
   actor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
   actor->SetBackfaceProperty(back);
 
-  //Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  // Create a renderer, render window, and interactor
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  //Add the actors to the scene
+  // Add the actors to the scene
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
 
@@ -67,8 +61,9 @@ int main (int /* argc */, char * /* argv */ [])
   renderer->GetActiveCamera()->Elevation(30);
   renderer->ResetCameraClippingRange();
 
-  //Render and interact
+  // Render and interact
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("TessellatedBoxSource");
   renderWindow->Render();
   renderWindowInteractor->Start();
 

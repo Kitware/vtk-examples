@@ -25,18 +25,18 @@ def main():
     mapper.SetInputData(polydata)
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetPointSize(10)
-    actor.GetProperty().SetColor(colors.GetColor3d("Cyan"))
+    actor.GetProperty().SetPointSize(30)
+    actor.GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
 
     # Setup render window, renderer, and interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Vertex")
+    renderWindow.SetWindowName('Vertex')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("DarkGreen"))
+    renderer.SetBackground(colors.GetColor3d('DarkGreen'))
 
     renderWindow.Render()
     renderWindowInteractor.Start()

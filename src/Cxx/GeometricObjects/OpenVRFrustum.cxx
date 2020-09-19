@@ -3,6 +3,7 @@
 #include <vtkFrustumSource.h>
 #include <vtkMapper.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlanes.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -11,65 +12,54 @@
 #include <vtkOpenVRRenderer.h>
 #include <vtkOpenVRRenderWindowInteractor.h>
 #include <vtkShrinkPolyData.h>
-#include <vtkSmartPointer.h>
 
 int main(int, char *[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-  	vtkSmartPointer<vtkNamedColors>::New();
-  
-  vtkSmartPointer<vtkCamera> camera =
-  	vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkCamera> camera;
   camera->SetClippingRange(.1, .4);
   double planesArray[24];
-  
+
   camera->GetFrustumPlanes(1.0, planesArray);
-  
-  vtkSmartPointer<vtkPlanes> planes =
-  	vtkSmartPointer<vtkPlanes>::New();
+
+  vtkNew<vtkPlanes> planes;
   planes->SetFrustumPlanes(planesArray);
-  
-  vtkSmartPointer<vtkFrustumSource> frustumSource =
-  	vtkSmartPointer<vtkFrustumSource>::New();
+
+  vtkNew<vtkFrustumSource> frustumSource;
   frustumSource->ShowLinesOff();
   frustumSource->SetPlanes(planes);
-  
-  vtkSmartPointer<vtkShrinkPolyData> shrink =
-  	vtkSmartPointer<vtkShrinkPolyData>::New();
+
+  vtkNew<vtkShrinkPolyData> shrink;
   shrink->SetInputConnection(frustumSource->GetOutputPort());
   shrink->SetShrinkFactor(.9);
-  
+
   // Create a mapper and actor
-  
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-  	vtkSmartPointer<vtkPolyDataMapper>::New();
+
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(shrink->GetOutputPort());
-  
-  vtkSmartPointer<vtkProperty> back =
-  	vtkSmartPointer<vtkProperty>::New();
+
+  vtkNew<vtkProperty> back;
   back->SetColor(colors->GetColor3d("Tomato").GetData());
-  
-  vtkSmartPointer<vtkActor> actor =
-  	vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->EdgeVisibilityOn();
   actor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
   actor->SetBackfaceProperty(back);
-  
+
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkOpenVRRenderer> renderer =
-  	vtkSmartPointer<vtkOpenVRRenderer>::New();
-  vtkSmartPointer<vtkOpenVRRenderWindow> renderWindow =
-  	vtkSmartPointer<vtkOpenVRRenderWindow>::New();
+  vtkNew<vtkOpenVRRenderer> renderer;
+  vtkNew<vtkOpenVRRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkOpenVRRenderWindowInteractor> renderWindowInteractor =
-  	vtkSmartPointer<vtkOpenVRRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("OpenVRFrustum");
+  vtkNew<vtkOpenVRRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
-  
+
   // Add the actors to the scene
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
-  
+
   // Position the camera so that we can see the frustum
   renderer->GetActiveCamera()->SetPosition(1, 0, 0);
   renderer->GetActiveCamera()->SetFocalPoint(0, 0, 0);

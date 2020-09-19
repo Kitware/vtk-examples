@@ -14,6 +14,6 @@ Five solids satisfy the above criteria:
 
 The relationship between vertices, edges and faces is given by Euler's formula:
 
-```
+``` text
 V - E + F = 2
 ```

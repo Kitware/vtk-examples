@@ -1,48 +1,41 @@
-#include <vtkCylinderSource.h>
-#include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkCylinderSource.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkOpenVRRenderWindow.h>
 #include <vtkOpenVRRenderer.h>
 #include <vtkOpenVRRenderWindowInteractor.h>
-#include <vtkNamedColors.h>
 
 int main(int, char *argv[])
 {
   // Create a sphere
-  vtkSmartPointer<vtkCylinderSource> cylinderSource =
-    vtkSmartPointer<vtkCylinderSource>::New();
+  vtkNew<vtkCylinderSource> cylinderSource;
   cylinderSource->SetCenter(0.0, 0.0, 0.0);
   cylinderSource->SetRadius(5.0);
   cylinderSource->SetHeight(7.0);
   cylinderSource->SetResolution(100);
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkNamedColors> colors = 
-    vtkSmartPointer<vtkNamedColors>::New();
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkNamedColors> colors;
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(cylinderSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   //Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkOpenVRRenderer> renderer =
-    vtkSmartPointer<vtkOpenVRRenderer>::New();
-  vtkSmartPointer<vtkOpenVRRenderWindow> renderWindow =
-    vtkSmartPointer<vtkOpenVRRenderWindow>::New();
+  vtkNew<vtkOpenVRRenderer> renderer;
+  vtkNew<vtkOpenVRRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkOpenVRRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkOpenVRRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("OpenVRCylinder");
+  vtkNew<vtkOpenVRRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("ForestGreen").GetData());
   // Render and interact
-  renderWindow->SetWindowName(argv[0]);
   renderWindow->Render();
   renderWindowInteractor->Start();
 

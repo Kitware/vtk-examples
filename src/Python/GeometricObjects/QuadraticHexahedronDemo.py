@@ -34,9 +34,9 @@ def main():
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetDiffuseColor(
-        namedColors.GetColor3d("Tomato"))
+        namedColors.GetColor3d('Tomato'))
     actor.GetProperty().SetEdgeColor(
-        namedColors.GetColor3d("IvoryBlack"))
+        namedColors.GetColor3d('IvoryBlack'))
     actor.GetProperty().EdgeVisibilityOn()
 
     sphereSource = vtk.vtkSphereSource()
@@ -55,12 +55,12 @@ def main():
     glyph3DActor = vtk.vtkActor()
     glyph3DActor.SetMapper(glyph3DMapper)
     glyph3DActor.GetProperty().SetColor(
-        namedColors.GetColor3d("Banana"))
+        namedColors.GetColor3d('Banana'))
 
     textProperty = vtk.vtkTextProperty()
     textProperty.SetFontSize(24)
 
-    ss = "# of Tetras: " + str(numTets)
+    ss = '# of Tetras: ' + str(numTets)
     textMapper = vtk.vtkTextMapper()
     textMapper.SetInput(ss)
     textMapper.SetTextProperty(textProperty)
@@ -72,7 +72,7 @@ def main():
     # Visualize
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Quadratic Hexahedron Demo")
+    renderWindow.SetWindowName('QuadraticHexahedronDemo')
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 512)
     interactor = vtk.vtkRenderWindowInteractor()
@@ -84,7 +84,7 @@ def main():
     renderer.AddActor(actor)
     renderer.AddActor(glyph3DActor)
     renderer.AddViewProp(textActor)
-    renderer.SetBackground(namedColors.GetColor3d("SlateGray"))
+    renderer.SetBackground(namedColors.GetColor3d('SlateGray'))
 
     renderWindow.Render()
 
@@ -114,7 +114,7 @@ class SliderCallbackChordError():
             cellMap[cell.GetRepresentativeCell().GetClassName()] = numTets
             numTets += 1
             it.GoToNextCell()
-        ss = "# of Tetras: " + str(numTets)
+        ss = '# of Tetras: ' + str(numTets)
         self.textMapper.SetInput(ss)
 
 
@@ -130,7 +130,7 @@ def MakeWidget(widget, tessellate, textMapper, interactor):
     sliderRepChordError.SetMinimumValue(0.0)
     sliderRepChordError.SetMaximumValue(0.07)
     sliderRepChordError.SetValue(tessellate.GetChordError())
-    sliderRepChordError.SetTitleText("Chord error")
+    sliderRepChordError.SetTitleText('Chord error')
 
     sliderRepChordError.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
     sliderRepChordError.GetPoint1Coordinate().SetValue(0.1, 0.1)

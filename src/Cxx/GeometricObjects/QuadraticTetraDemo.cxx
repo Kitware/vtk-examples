@@ -7,15 +7,15 @@
 #include <vtkGlyph3D.h>
 #include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkProperty.h>
 #include <vtkQuadraticTetra.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSliderRepresentation2D.h>
 #include <vtkSliderWidget.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkTessellatorFilter.h>
 #include <vtkTextMapper.h>
@@ -25,40 +25,34 @@
 #include <map>
 #include <sstream>
 
-namespace
-{
+namespace {
 vtkSmartPointer<vtkUnstructuredGrid> MakeQuadraticTetra();
-void MakeWidget(vtkSmartPointer<vtkSliderWidget> &,
-                vtkSmartPointer<vtkTessellatorFilter> &,
-                vtkSmartPointer<vtkTextMapper> &,
-                vtkSmartPointer<vtkRenderWindowInteractor> &);
-}
 
-int main (int, char *[])
+void MakeWidget(vtkSmartPointer<vtkSliderWidget>& widget,
+                vtkSmartPointer<vtkTessellatorFilter>& tessellate,
+                vtkSmartPointer<vtkTextMapper>& textMapper,
+                vtkSmartPointer<vtkRenderWindowInteractor>& interactor);
+} // namespace
+
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> namedColors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> namedColors;
 
-  vtkSmartPointer<vtkUnstructuredGrid> uGrid =
-    MakeQuadraticTetra();
+  auto uGrid = MakeQuadraticTetra();
 
   vtkSmartPointer<vtkTessellatorFilter> tessellate =
-    vtkSmartPointer<vtkTessellatorFilter>::New();
+      vtkSmartPointer<vtkTessellatorFilter>::New();
   tessellate->SetInputData(uGrid);
   tessellate->SetChordError(.035);
   tessellate->Update();
 
-  typedef std::map<const char *,int> CellContainer;
+  typedef std::map<const char*, int> CellContainer;
   CellContainer cellMap;
 
   int numTets = 0;
-  vtkSmartPointer<vtkGenericCell> cell =
-    vtkSmartPointer<vtkGenericCell>::New();
-  vtkSmartPointer<vtkCellIterator> it =
-    tessellate->GetOutput()->NewCellIterator();
-  for (it->InitTraversal();
-       !it->IsDoneWithTraversal();
-       it->GoToNextCell())
+  vtkNew<vtkGenericCell> cell;
+  auto it = tessellate->GetOutput()->NewCellIterator();
+  for (it->InitTraversal(); !it->IsDoneWithTraversal(); it->GoToNextCell())
   {
     it->GetCell(cell);
     cellMap[cell->GetRepresentativeCell()->GetClassName()]++;
@@ -66,75 +60,66 @@ int main (int, char *[])
   }
   it->Delete();
 
-  vtkSmartPointer<vtkDataSetMapper> mapper = 
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkSmartPointer<vtkDataSetMapper> mapper =
+      vtkSmartPointer<vtkDataSetMapper>::New();
   mapper->SetInputConnection(tessellate->GetOutputPort());
   mapper->ScalarVisibilityOff();
- 
+
   // Create an actor for the grid
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetDiffuseColor(
-    namedColors->GetColor3d("Tomato").GetData());
+      namedColors->GetColor3d("Tomato").GetData());
   actor->GetProperty()->SetEdgeColor(
-    namedColors->GetColor3d("IvoryBlack").GetData());
+      namedColors->GetColor3d("IvoryBlack").GetData());
   actor->GetProperty()->EdgeVisibilityOn();
 
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetRadius(0.02);
 
-  vtkSmartPointer<vtkGlyph3D> glyph3D =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> glyph3D;
   glyph3D->SetInputData(uGrid);
   glyph3D->SetSourceConnection(sphereSource->GetOutputPort());
   glyph3D->ScalingOff();
   glyph3D->Update();
 
-  vtkSmartPointer<vtkDataSetMapper> glyph3DMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> glyph3DMapper;
   glyph3DMapper->SetInputConnection(glyph3D->GetOutputPort());
   glyph3DMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> glyph3DActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> glyph3DActor;
   glyph3DActor->SetMapper(glyph3DMapper);
   glyph3DActor->GetProperty()->SetColor(
-    namedColors->GetColor3d("Banana").GetData());
+      namedColors->GetColor3d("Banana").GetData());
 
-  vtkSmartPointer<vtkTextProperty> textProperty =
-    vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkTextProperty> textProperty;
   textProperty->SetFontSize(24);
 
   std::stringstream ss;
   ss << "# of Tetras: " << numTets << std::endl;
   vtkSmartPointer<vtkTextMapper> textMapper =
-    vtkSmartPointer<vtkTextMapper>::New();  
+      vtkSmartPointer<vtkTextMapper>::New();
   textMapper->SetInput(ss.str().c_str());
   textMapper->SetTextProperty(textProperty);
 
-  vtkSmartPointer<vtkActor2D> textActor =
-    vtkSmartPointer<vtkActor2D>::New();
+  vtkNew<vtkActor2D> textActor;
   textActor->SetMapper(textMapper);
   textActor->SetPosition(10, 400);
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetWindowName("Quadratic Tetra Demo");
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetWindowName("QuadraticTetraDemo");
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 512);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
+      vtkSmartPointer<vtkRenderWindowInteractor>::New();
   interactor->SetRenderWindow(renderWindow);
 
   vtkSmartPointer<vtkSliderWidget> widget =
-    vtkSmartPointer<vtkSliderWidget>::New();
+      vtkSmartPointer<vtkSliderWidget>::New();
   MakeWidget(widget, tessellate, textMapper, interactor);
- 
+
   renderer->AddActor(actor);
   renderer->AddActor(glyph3DActor);
   renderer->AddViewProp(textActor);
@@ -143,40 +128,37 @@ int main (int, char *[])
   renderWindow->Render();
 
   interactor->Start();
- 
+
   return EXIT_SUCCESS;
 }
 
-namespace
-{
+namespace {
 // These callbacks do the actual work.
 // Callbacks for the interactions
 class SliderCallbackChordError : public vtkCommand
 {
 public:
-  static SliderCallbackChordError *New()
+  static SliderCallbackChordError* New()
   {
     return new SliderCallbackChordError;
   }
-  virtual void Execute(vtkObject *caller, unsigned long, void*)
+  virtual void Execute(vtkObject* caller, unsigned long, void*)
   {
-    vtkSliderWidget *sliderWidget =
-      reinterpret_cast<vtkSliderWidget*>(caller);
-    double value = static_cast<vtkSliderRepresentation2D *>(sliderWidget->GetRepresentation())->GetValue();
+    vtkSliderWidget* sliderWidget = reinterpret_cast<vtkSliderWidget*>(caller);
+    double value = static_cast<vtkSliderRepresentation2D*>(
+                       sliderWidget->GetRepresentation())
+                       ->GetValue();
     this->Tessellator->SetChordError(value);
     this->Tessellator->SetMaximumNumberOfSubdivisions(5);
     this->Tessellator->Update();
 
-    typedef std::map<const char *,int> CellContainer;
+    typedef std::map<const char*, int> CellContainer;
     CellContainer cellMap;
 
     int numTets = 0;
-    vtkSmartPointer<vtkGenericCell> cell =
-      vtkSmartPointer<vtkGenericCell>::New();
-    vtkSmartPointer<vtkCellIterator> it = this->Tessellator->GetOutput()->NewCellIterator();
-    for (it->InitTraversal();
-         !it->IsDoneWithTraversal();
-         it->GoToNextCell())
+    vtkNew<vtkGenericCell> cell;
+    auto it = this->Tessellator->GetOutput()->NewCellIterator();
+    for (it->InitTraversal(); !it->IsDoneWithTraversal(); it->GoToNextCell())
     {
       it->GetCell(cell);
       cellMap[cell->GetRepresentativeCell()->GetClassName()]++;
@@ -185,18 +167,18 @@ public:
     std::stringstream ss;
     ss << "# of Tetras: " << numTets << std::endl;
     TextMapper->SetInput(ss.str().c_str());
-
   }
-  SliderCallbackChordError():Tessellator(0),TextMapper(0) {}
-  vtkTessellatorFilter *Tessellator;
-  vtkTextMapper *TextMapper;
+  SliderCallbackChordError() : Tessellator(0), TextMapper(0)
+  {
+  }
+  vtkTessellatorFilter* Tessellator;
+  vtkTextMapper* TextMapper;
 };
 
-void
-MakeWidget(vtkSmartPointer<vtkSliderWidget> &widget,
-           vtkSmartPointer<vtkTessellatorFilter> &tessellate,
-           vtkSmartPointer<vtkTextMapper> &textMapper,
-           vtkSmartPointer<vtkRenderWindowInteractor> &interactor)
+void MakeWidget(vtkSmartPointer<vtkSliderWidget>& widget,
+                vtkSmartPointer<vtkTessellatorFilter>& tessellate,
+                vtkSmartPointer<vtkTextMapper>& textMapper,
+                vtkSmartPointer<vtkRenderWindowInteractor>& interactor)
 {
   // Setup a slider widget for each varying parameter
   double tubeWidth(0.008);
@@ -204,17 +186,18 @@ MakeWidget(vtkSmartPointer<vtkSliderWidget> &widget,
   double titleHeight(0.04);
   double labelHeight(0.04);
 
-  vtkSmartPointer<vtkSliderRepresentation2D> sliderRepChordError =
-    vtkSmartPointer<vtkSliderRepresentation2D>::New();
+  vtkNew<vtkSliderRepresentation2D> sliderRepChordError;
 
   sliderRepChordError->SetMinimumValue(0.0);
   sliderRepChordError->SetMaximumValue(0.07);
   sliderRepChordError->SetValue(tessellate->GetChordError());
   sliderRepChordError->SetTitleText("Chord error");
 
-  sliderRepChordError->GetPoint1Coordinate()->SetCoordinateSystemToNormalizedDisplay();
+  sliderRepChordError->GetPoint1Coordinate()
+      ->SetCoordinateSystemToNormalizedDisplay();
   sliderRepChordError->GetPoint1Coordinate()->SetValue(0.1, 0.1);
-  sliderRepChordError->GetPoint2Coordinate()->SetCoordinateSystemToNormalizedDisplay();
+  sliderRepChordError->GetPoint2Coordinate()
+      ->SetCoordinateSystemToNormalizedDisplay();
   sliderRepChordError->GetPoint2Coordinate()->SetValue(0.9, 0.1);
 
   sliderRepChordError->SetTubeWidth(tubeWidth);
@@ -227,24 +210,20 @@ MakeWidget(vtkSmartPointer<vtkSliderWidget> &widget,
   widget->SetAnimationModeToAnimate();
   widget->EnabledOn();
 
-  vtkSmartPointer<SliderCallbackChordError> callbackChordError =
-    vtkSmartPointer<SliderCallbackChordError>::New();
+  vtkNew<SliderCallbackChordError> callbackChordError;
   callbackChordError->Tessellator = tessellate;
   callbackChordError->TextMapper = textMapper;
 
-  widget->AddObserver(vtkCommand::InteractionEvent,callbackChordError);
+  widget->AddObserver(vtkCommand::InteractionEvent, callbackChordError);
 }
 
 vtkSmartPointer<vtkUnstructuredGrid> MakeQuadraticTetra()
 {
-  vtkSmartPointer<vtkQuadraticTetra> aTetra =
-    vtkSmartPointer<vtkQuadraticTetra>::New();
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkQuadraticTetra> aTetra;
+  vtkNew<vtkPoints> points;
 
-  double *pcoords = aTetra->GetParametricCoords();
-  vtkSmartPointer<vtkMinimalStandardRandomSequence> rng =
-    vtkSmartPointer<vtkMinimalStandardRandomSequence>::New();
+  double* pcoords = aTetra->GetParametricCoords();
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
   points->SetNumberOfPoints(aTetra->GetNumberOfPoints());
   rng->SetSeed(5070); // for testing
   for (auto i = 0; i < aTetra->GetNumberOfPoints(); ++i)
@@ -256,18 +235,17 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeQuadraticTetra()
       perturbation[j] = rng->GetRangeValue(-0.2, 0.2);
     }
     aTetra->GetPointIds()->SetId(i, i);
-    points->SetPoint(i,
-                     *(pcoords + 3 * i) + perturbation[0],
+    points->SetPoint(i, *(pcoords + 3 * i) + perturbation[0],
                      *(pcoords + 3 * i + 1) + perturbation[1],
                      *(pcoords + 3 * i + 2) + perturbation[2]);
   }
 
   // Add the points and tetra to an unstructured grid
   vtkSmartPointer<vtkUnstructuredGrid> uGrid =
-    vtkSmartPointer<vtkUnstructuredGrid>::New();
+      vtkSmartPointer<vtkUnstructuredGrid>::New();
   uGrid->SetPoints(points);
   uGrid->InsertNextCell(aTetra->GetCellType(), aTetra->GetPointIds());
 
   return uGrid;
 }
-}
+} // namespace

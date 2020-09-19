@@ -3,13 +3,13 @@
 #include <vtkMath.h>
 #include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
@@ -18,28 +18,24 @@
 
 #define USER_MATRIX
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
-  std::array<unsigned char , 4> bkg{{26, 51, 77, 255}};
-    colors->SetColor("BkgColor", bkg.data());
-
+  std::array<unsigned char, 4> bkg{{26, 51, 77, 255}};
+  colors->SetColor("BkgColor", bkg.data());
 
   // Create a cylinder.
   // Cylinder height vector is (0,1,0).
   // Cylinder center is in the middle of the cylinder
-  vtkSmartPointer<vtkCylinderSource> cylinderSource =
-    vtkSmartPointer<vtkCylinderSource>::New();
+  vtkNew<vtkCylinderSource> cylinderSource;
   cylinderSource->SetResolution(15);
 
   // Generate a random start and end point
   double startPoint[3];
   double endPoint[3];
-  vtkSmartPointer<vtkMinimalStandardRandomSequence> rng =
-    vtkSmartPointer<vtkMinimalStandardRandomSequence>::New();
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
   rng->SetSeed(8775070); // For testing.
   for (auto i = 0; i < 3; ++i)
   {
@@ -71,8 +67,7 @@ int main(int, char *[])
 
   // The Y axis is Z cross X
   vtkMath::Cross(normalizedZ, normalizedX, normalizedY);
-  vtkSmartPointer<vtkMatrix4x4> matrix =
-    vtkSmartPointer<vtkMatrix4x4>::New();
+  vtkNew<vtkMatrix4x4> matrix;
 
   // Create the direction cosine matrix
   matrix->Identity();
@@ -84,8 +79,7 @@ int main(int, char *[])
   }
 
   // Apply the transforms
-  vtkSmartPointer<vtkTransform> transform =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform;
   transform->Translate(startPoint);   // translate to starting point
   transform->Concatenate(matrix);     // apply direction cosines
   transform->RotateZ(-90.0);          // align cylinder to x axis
@@ -93,16 +87,13 @@ int main(int, char *[])
   transform->Translate(0, .5, 0);     // translate to start of cylinder
 
   // Transform the polydata
-  vtkSmartPointer<vtkTransformPolyDataFilter> transformPD =
-    vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> transformPD;
   transformPD->SetTransform(transform);
   transformPD->SetInputConnection(cylinderSource->GetOutputPort());
 
-  //Create a mapper and actor for the cylinder
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  // Create a mapper and actor for the cylinder
+  vtkNew<vtkPolyDataMapper> mapper;
+  vtkNew<vtkActor> actor;
 #ifdef USER_MATRIX
   mapper->SetInputConnection(cylinderSource->GetOutputPort());
   actor->SetUserMatrix(transform->GetMatrix());
@@ -113,48 +104,39 @@ int main(int, char *[])
   actor->GetProperty()->SetColor(colors->GetColor3d("Cyan").GetData());
 
   // Create spheres for start and end point
-  vtkSmartPointer<vtkSphereSource> sphereStartSource =
-    vtkSmartPointer<vtkSphereSource>::New();
-    sphereStartSource->SetCenter(startPoint);
-    sphereStartSource->SetRadius(0.8);
-  vtkSmartPointer<vtkPolyDataMapper> sphereStartMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkSphereSource> sphereStartSource;
+  sphereStartSource->SetCenter(startPoint);
+  sphereStartSource->SetRadius(0.8);
+  vtkNew<vtkPolyDataMapper> sphereStartMapper;
   sphereStartMapper->SetInputConnection(sphereStartSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> sphereStart =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereStart;
   sphereStart->SetMapper(sphereStartMapper);
   sphereStart->GetProperty()->SetColor(colors->GetColor3d("Yellow").GetData());
 
-  vtkSmartPointer<vtkSphereSource> sphereEndSource =
-    vtkSmartPointer<vtkSphereSource>::New();
-    sphereEndSource->SetCenter(endPoint);
-    sphereEndSource->SetRadius(0.8);
-  vtkSmartPointer<vtkPolyDataMapper> sphereEndMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkSphereSource> sphereEndSource;
+  sphereEndSource->SetCenter(endPoint);
+  sphereEndSource->SetRadius(0.8);
+  vtkNew<vtkPolyDataMapper> sphereEndMapper;
   sphereEndMapper->SetInputConnection(sphereEndSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> sphereEnd =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereEnd;
   sphereEnd->SetMapper(sphereEndMapper);
   sphereEnd->GetProperty()->SetColor(colors->GetColor3d("Magenta").GetData());
 
-  //Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  // Create a renderer, render window, and interactor
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  renderWindow->SetWindowName("Oriented Cylinder");
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("OrientedCylinder");
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  //Add the actor to the scene
+  // Add the actor to the scene
   renderer->AddActor(actor);
   renderer->AddActor(sphereStart);
   renderer->AddActor(sphereEnd);
   renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
 
-  //Render and interact
+  // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();
 

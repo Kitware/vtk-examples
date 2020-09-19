@@ -33,5 +33,8 @@ planesIntersection = vtk.vtkPlanesIntersection()
 planesIntersection.SetBounds(bounds)
 
 intersects = planesIntersection.IntersectsRegion(box)
-
-print("Intersects? ", intersects == 1)
+if intersects == 1:
+    res = 'Yes'
+else:
+    res = 'No'
+print('Intersects? ', res)

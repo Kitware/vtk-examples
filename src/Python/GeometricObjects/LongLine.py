@@ -47,12 +47,12 @@ def main():
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetLineWidth(4)
-    actor.GetProperty().SetColor(colors.GetColor3d("Peacock"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Peacock'))
 
     # Setup render window, renderer, and interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Long Line")
+    renderWindow.SetWindowName('LongLine')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
@@ -63,7 +63,7 @@ def main():
     renderer.GetActiveCamera().Elevation(30)
     renderer.ResetCameraClippingRange()
 
-    renderer.SetBackground(colors.GetColor3d("Silver"))
+    renderer.SetBackground(colors.GetColor3d('Silver'))
     renderWindow.Render()
     renderWindowInteractor.Start()
 

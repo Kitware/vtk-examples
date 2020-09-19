@@ -3,20 +3,19 @@
 #include <vtkCellData.h>
 #include <vtkDoubleArray.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPolyLine.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create five points.
   double origin[3] = {0.0, 0.0, 0.0};
@@ -26,30 +25,26 @@ int main(int, char *[])
   double p3[3] = {1.0, 2.0, 3.0};
 
   // Create a vtkPoints object and store the points in it
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(origin);
   points->InsertNextPoint(p0);
   points->InsertNextPoint(p1);
   points->InsertNextPoint(p2);
   points->InsertNextPoint(p3);
 
-  vtkSmartPointer<vtkPolyLine> polyLine =
-    vtkSmartPointer<vtkPolyLine>::New();
+  vtkNew<vtkPolyLine> polyLine;
   polyLine->GetPointIds()->SetNumberOfIds(5);
-  for(unsigned int i = 0; i < 5; i++)
+  for (unsigned int i = 0; i < 5; i++)
   {
-    polyLine->GetPointIds()->SetId(i,i);
+    polyLine->GetPointIds()->SetId(i, i);
   }
 
   // Create a cell array to store the lines in and add the lines to it
-  vtkSmartPointer<vtkCellArray> cells =
-    vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkCellArray> cells;
   cells->InsertNextCell(polyLine);
 
   // Create a polydata to store everything in
-  vtkSmartPointer<vtkPolyData> polyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polyData;
 
   // Add the points to the dataset
   polyData->SetPoints(points);
@@ -58,24 +53,19 @@ int main(int, char *[])
   polyData->SetLines(cells);
 
   // Setup actor and mapper
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polyData);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
 
   // Setup render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetWindowName("PolyLine");
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("DarkOliveGreen").GetData());

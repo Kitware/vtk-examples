@@ -12,53 +12,43 @@
 
 int main(int , char *[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create a triangle
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint ( 1.0, 0.0, 0.0 );
-  points->InsertNextPoint ( 0.0, 0.0, 0.0 );
-  points->InsertNextPoint ( 0.0, 1.0, 0.0 );
-  
-  vtkSmartPointer<vtkTriangle> triangle =
-    vtkSmartPointer<vtkTriangle>::New();
-  triangle->GetPointIds()->SetId ( 0, 0 );
-  triangle->GetPointIds()->SetId ( 1, 1 );
-  triangle->GetPointIds()->SetId ( 2, 2 );
-  
-  vtkSmartPointer<vtkCellArray> triangles =
-    vtkSmartPointer<vtkCellArray>::New();
-  triangles->InsertNextCell ( triangle );
-  
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(1.0, 0.0, 0.0);
+  points->InsertNextPoint(0.0, 0.0, 0.0);
+  points->InsertNextPoint(0.0, 1.0, 0.0);
+
+  vtkNew<vtkTriangle> triangle;
+  triangle->GetPointIds()->SetId(0, 0);
+  triangle->GetPointIds()->SetId(1, 1);
+  triangle->GetPointIds()->SetId(2, 2);
+
+  vtkNew<vtkCellArray> triangles;
+  triangles->InsertNextCell(triangle);
+
   // Create a polydata object
-  vtkSmartPointer<vtkPolyData> trianglePolyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> trianglePolyData;
 
   // Add the geometry and topology to the polydata
-  trianglePolyData->SetPoints ( points );
-  trianglePolyData->SetPolys ( triangles );
-  
+  trianglePolyData->SetPoints(points);
+  trianglePolyData->SetPolys(triangles);
+
   // Create mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(trianglePolyData);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
-  actor->GetProperty()->SetColor(colors->GetColor3d("Cyan").GetData());
+  vtkNew<vtkActor> actor;
+  actor->GetProperty()->SetColor(colors->GetColor3d("PeachPuff").GetData());
   actor->SetMapper(mapper);
 
   // Create a renderer, render window, and an interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetWindowName("Triangle");
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
@@ -68,5 +58,6 @@ int main(int , char *[])
   // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();
+
   return EXIT_SUCCESS;
 }

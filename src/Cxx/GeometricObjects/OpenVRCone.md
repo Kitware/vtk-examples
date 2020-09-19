@@ -1,3 +1,3 @@
 ### Description
 
-This example demonstrates rendering of a Coner in OpenVR.
+This example demonstrates rendering of a Cone in OpenVR.

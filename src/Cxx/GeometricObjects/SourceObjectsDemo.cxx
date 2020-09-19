@@ -8,15 +8,16 @@
 #include <vtkLineSource.h>
 #include <vtkMath.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlaneSource.h>
-#include <vtkPoints.h>
 #include <vtkPointSource.h>
+#include <vtkPoints.h>
 #include <vtkPolyDataAlgorithm.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkTextMapper.h>
@@ -26,45 +27,43 @@
 #include <array>
 #include <vector>
 
-int main(int, char* [])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
-  std::array<unsigned char , 4> bkg{{51, 77, 102, 255}};
-    colors->SetColor("BkgColor", bkg.data());
+  std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
+  colors->SetColor("BkgColor", bkg.data());
 
   std::vector<vtkSmartPointer<vtkPolyDataAlgorithm>> sourceObjects;
   sourceObjects.push_back(vtkSmartPointer<vtkSphereSource>::New());
-  static_cast<vtkSphereSource *>(sourceObjects.back().GetPointer())
-    ->SetPhiResolution(21);
-  static_cast<vtkSphereSource *>(sourceObjects.back().GetPointer())
-    ->SetThetaResolution(21);
+  static_cast<vtkSphereSource*>(sourceObjects.back().GetPointer())
+      ->SetPhiResolution(21);
+  static_cast<vtkSphereSource*>(sourceObjects.back().GetPointer())
+      ->SetThetaResolution(21);
 
   sourceObjects.push_back(vtkSmartPointer<vtkConeSource>::New());
-  static_cast<vtkConeSource *>(sourceObjects.back().GetPointer())
-    ->SetResolution(51);
+  static_cast<vtkConeSource*>(sourceObjects.back().GetPointer())
+      ->SetResolution(51);
 
   sourceObjects.push_back(vtkSmartPointer<vtkCylinderSource>::New());
-  static_cast<vtkCylinderSource *>(sourceObjects.back().GetPointer())
-    ->SetResolution(51);
+  static_cast<vtkCylinderSource*>(sourceObjects.back().GetPointer())
+      ->SetResolution(51);
 
   sourceObjects.push_back(vtkSmartPointer<vtkCubeSource>::New());
   sourceObjects.push_back(vtkSmartPointer<vtkPlaneSource>::New());
   sourceObjects.push_back(vtkSmartPointer<vtkTextSource>::New());
-  static_cast<vtkTextSource *>(sourceObjects.back().GetPointer())
-    ->SetText("Hello");
-  static_cast<vtkTextSource *>(sourceObjects.back().GetPointer())
-    ->BackingOff();
+  static_cast<vtkTextSource*>(sourceObjects.back().GetPointer())
+      ->SetText("Hello");
+  static_cast<vtkTextSource*>(sourceObjects.back().GetPointer())->BackingOff();
 
   sourceObjects.push_back(vtkSmartPointer<vtkPointSource>::New());
-  static_cast<vtkPointSource *>(sourceObjects.back().GetPointer())
-    ->SetNumberOfPoints(500);
+  static_cast<vtkPointSource*>(sourceObjects.back().GetPointer())
+      ->SetNumberOfPoints(500);
 
   sourceObjects.push_back(vtkSmartPointer<vtkDiskSource>::New());
-  static_cast<vtkDiskSource *>(sourceObjects.back().GetPointer())
-    ->SetCircumferentialResolution(51);
+  static_cast<vtkDiskSource*>(sourceObjects.back().GetPointer())
+      ->SetCircumferentialResolution(51);
 
   sourceObjects.push_back(vtkSmartPointer<vtkLineSource>::New());
 
@@ -75,26 +74,25 @@ int main(int, char* [])
   std::vector<vtkSmartPointer<vtkActor2D>> textactors;
 
   // Create one text property for all
-  vtkSmartPointer<vtkTextProperty> textProperty =
-    vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkTextProperty> textProperty;
   textProperty->SetFontSize(16);
   textProperty->SetJustificationToCentered();
+  textProperty->SetColor(colors->GetColor3d("LightGoldenrodYellow").GetData());
 
-  vtkSmartPointer<vtkProperty> backProperty =
-    vtkSmartPointer<vtkProperty>::New();
-  backProperty->SetColor(colors->GetColor3d("Red").GetData());
+  vtkNew<vtkProperty> backProperty;
+  backProperty->SetColor(colors->GetColor3d("Tomato").GetData());
 
   // Create a source, renderer, mapper, and actor
   // for each object
   for (unsigned int i = 0; i < sourceObjects.size(); i++)
   {
     mappers.push_back(vtkSmartPointer<vtkPolyDataMapper>::New());
-    mappers[i]->SetInputConnection(
-      sourceObjects[i]->GetOutputPort());
+    mappers[i]->SetInputConnection(sourceObjects[i]->GetOutputPort());
 
     actors.push_back(vtkSmartPointer<vtkActor>::New());
     actors[i]->SetMapper(mappers[i]);
-    actors[i]->GetProperty()->SetColor(colors->GetColor3d("Seashell").GetData());
+    actors[i]->GetProperty()->SetColor(
+        colors->GetColor3d("PeachPuff").GetData());
     actors[i]->SetBackfaceProperty(backProperty);
 
     textmappers.push_back(vtkSmartPointer<vtkTextMapper>::New());
@@ -116,9 +114,8 @@ int main(int, char* [])
     renderers.push_back(vtkSmartPointer<vtkRenderer>::New());
   }
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetWindowName("Source Objects Demo");
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetWindowName("SourceObjectsDemo");
 
   int rendererSize = 300;
   renderWindow->SetSize(rendererSize * gridDimensions,
@@ -152,8 +149,7 @@ int main(int, char* [])
     }
   }
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();

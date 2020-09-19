@@ -11,7 +11,7 @@ def main():
 
     shrink = vtk.vtkShrinkFilter()
     shrink.SetInputConnection(cubeSource.GetOutputPort())
-    shrink.SetShrinkFactor(.9)
+    shrink.SetShrinkFactor(0.9)
 
     # Create a mapper and actor.
 
@@ -19,12 +19,12 @@ def main():
     mapper.SetInputConnection(shrink.GetOutputPort())
 
     back = vtk.vtkProperty()
-    back.SetColor(colors.GetColor3d("Tomato"))
+    back.SetColor(colors.GetColor3d('Tomato'))
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
-    actor.GetProperty().SetColor(colors.GetColor3d("Banana"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Banana'))
     actor.SetBackfaceProperty(back)
 
     # Create a renderer, render window, and interactor.
@@ -36,7 +36,7 @@ def main():
 
     # Add the actors to the scene
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("Silver"))
+    renderer.SetBackground(colors.GetColor3d('Silver'))
 
     renderer.ResetCamera()
     renderer.GetActiveCamera().Azimuth(30)
@@ -44,9 +44,10 @@ def main():
     renderer.ResetCameraClippingRange()
 
     # Render and interact
+    renderWindow.SetWindowName('ShrinkCube')
     renderWindow.Render()
     renderWindowInteractor.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
