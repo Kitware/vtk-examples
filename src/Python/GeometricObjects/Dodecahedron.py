@@ -16,17 +16,17 @@ def main():
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(
-        colors.GetColor3d("PapayaWhip"))
+        colors.GetColor3d('PapayaWhip'))
 
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Dodecahedron")
+    renderWindow.SetWindowName('Dodecahedron')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("CadetBlue"))
+    renderer.SetBackground(colors.GetColor3d('CadetBlue'))
     renderer.GetActiveCamera().Azimuth(30)
     renderer.GetActiveCamera().Elevation(30)
 

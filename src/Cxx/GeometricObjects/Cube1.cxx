@@ -46,6 +46,7 @@ int main(int, char *[])
     ren->SetBackground(colors->GetColor3d("Silver").GetData());
 
     renWin->SetSize(300, 300);
+    renWin->SetWindowName("Cube1");
 
     // Enable user interface interactor.
     iren->Initialize();

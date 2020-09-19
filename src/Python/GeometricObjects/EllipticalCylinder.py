@@ -66,7 +66,7 @@ def main():
     ren.AddActor(lineActor)
 
     renWin = vtk.vtkRenderWindow()
-    renWin.SetWindowName("Elliptical Cylinder")
+    renWin.SetWindowName("EllipticalCylinder")
     renWin.AddRenderer(ren)
     renWin.SetSize(600, 600)
 

@@ -5,7 +5,6 @@ import vtk
 
 def main():
     colors = vtk.vtkNamedColors()
-    colors.SetColor("bkg", [77, 51, 26, 255])
 
     coneSource = vtk.vtkConeSource()
     # coneSource.SetResolution(60)
@@ -14,8 +13,10 @@ def main():
     # Create a mapper and actor
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(coneSource.GetOutputPort())
+
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
+    actor.GetProperty().SetDiffuseColor(colors.GetColor3d('bisque'))
 
     # Visualize
     renderer = vtk.vtkRenderer()
@@ -25,10 +26,13 @@ def main():
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("bkg"))
+    renderer.SetBackground(colors.GetColor3d('Salmon'))
+
+    renderWindow.SetSize(640, 480)
+    renderWindow.SetWindowName('Cone')
     renderWindow.Render()
     renderWindowInteractor.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -7,7 +7,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [51, 77, 102, 255])
+    colors.SetColor('BkgColor', [51, 77, 102, 255])
 
     titles = list()
     textMappers = list()
@@ -60,7 +60,7 @@ def main():
         mappers[i].SetInputData(uGrids[i])
         actors[i].SetMapper(mappers[i])
         actors[i].GetProperty().SetColor(
-            colors.GetColor3d("Seashell"))
+            colors.GetColor3d('Seashell'))
         renderers[i].AddViewProp(actors[i])
 
         textMappers[i].SetInput(titles[i])
@@ -97,13 +97,13 @@ def main():
                 # Add a renderer even if there is no actor.
                 # This makes the render window background all the same color.
                 ren = vtk.vtkRenderer()
-                ren.SetBackground(colors.GetColor3d("BkgColor"))
+                ren.SetBackground(colors.GetColor3d('BkgColor'))
                 ren.SetViewport(viewport)
                 renWin.AddRenderer(ren)
                 continue
 
             renderers[index].SetViewport(viewport)
-            renderers[index].SetBackground(colors.GetColor3d("BkgColor"))
+            renderers[index].SetBackground(colors.GetColor3d('BkgColor'))
             renderers[index].ResetCamera()
             renderers[index].GetActiveCamera().Azimuth(30)
             renderers[index].GetActiveCamera().Elevation(-30)
@@ -111,6 +111,7 @@ def main():
             renderers[index].ResetCameraClippingRange()
 
     iRen.Initialize()
+    renWin.SetWindowName('Cell3DDemonstration')
     renWin.Render()
     iRen.Start()
 

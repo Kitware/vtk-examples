@@ -75,7 +75,7 @@ def main():
     renderer.SetBackground(namedColors.GetColor3d("SlateGray"))
 
     window = vtk.vtkRenderWindow()
-    window.SetWindowName("Colored Lines")
+    window.SetWindowName("ColoredLines")
     window.AddRenderer(renderer)
 
     interactor = vtk.vtkRenderWindowInteractor()

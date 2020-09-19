@@ -1,22 +1,3 @@
-/*=========================================================================
-
-  Program:   Visualization Toolkit
-  Module:    Cube.cxx
-
-  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen
-  All rights reserved.
-  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-     PURPOSE.  See the above copyright notice for more information.
-
-=========================================================================*/
-// This example shows how to manually create vtkPolyData.
-
-// For a python version, please see:
-// [Cube](https://lorensen.github.io/VTKExamples/site/Python/GeometricObjects/Cube/)
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkCellArray.h>
@@ -33,7 +14,7 @@
 
 #include <array>
 
-int main(int, char *[])
+int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
@@ -90,6 +71,7 @@ int main(int, char *[])
   vtkNew<vtkRenderer> renderer;
   vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(renderer);
+  renWin->SetWindowName("Cube");
 
   vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);

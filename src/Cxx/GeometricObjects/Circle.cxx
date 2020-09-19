@@ -1,50 +1,50 @@
 // Classes specific to this example
-#include <vtkRegularPolygonSource.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkRegularPolygonSource.h>
 // Generic VTK pipeline elements
 #include <vtkActor.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 // Auxiliary class
-#include <vtkSmartPointer.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a circle
-  vtkSmartPointer<vtkRegularPolygonSource> polygonSource =
-    vtkSmartPointer<vtkRegularPolygonSource>::New();
-  
-  //polygonSource->GeneratePolygonOff(); // Uncomment this line to generate only the outline of the circle
+  vtkNew<vtkRegularPolygonSource> polygonSource;
+  // Comment this line to generate a disk instead of a circle.
+  polygonSource->GeneratePolygonOff();
   polygonSource->SetNumberOfSides(50);
   polygonSource->SetRadius(5);
   polygonSource->SetCenter(0, 0, 0);
-  
+
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  mapper->SetInputConnection(polygonSource->GetOutputPort());;
-  
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
+  mapper->SetInputConnection(polygonSource->GetOutputPort());
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  actor->GetProperty()->SetColor(colors->GetColor3d("Cornsilk").GetData());
+
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
-  renderer->SetBackground(.3,.3,.5); // Background color purple
-  
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  renderer->SetBackground(colors->GetColor3d("DarkGreen").GetData());
+
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
-  
+
+  renderWindow->SetWindowName("Circle");
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

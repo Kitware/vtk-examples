@@ -9,7 +9,7 @@ def main():
     # Create a rendering window and renderer.
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
-    renWin.SetWindowName("Cube")
+    renWin.SetWindowName('Cube1')
     renWin.AddRenderer(ren)
 
     # Create a renderwindowinteractor.
@@ -27,7 +27,7 @@ def main():
     # Actor.
     cubeActor = vtk.vtkActor()
     cubeActor.SetMapper(cubeMapper)
-    cubeActor.GetProperty().SetColor(colors.GetColor3d("Banana"))
+    cubeActor.GetProperty().SetColor(colors.GetColor3d('Banana'))
 
     # Assign actor to the renderer.
     ren.AddActor(cubeActor)
@@ -36,7 +36,7 @@ def main():
     ren.GetActiveCamera().Azimuth(30)
     ren.GetActiveCamera().Elevation(30)
     ren.ResetCameraClippingRange()
-    ren.SetBackground(colors.GetColor3d("Silver"))
+    ren.SetBackground(colors.GetColor3d('Silver'))
 
     # Enable user interface interactor.
     iren.Initialize()
@@ -44,5 +44,5 @@ def main():
     iren.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

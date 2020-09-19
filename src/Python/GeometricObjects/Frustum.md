@@ -1,2 +1,3 @@
 ### Description
-This is a Python version of the C++ example for viewing a Frustum
+
+This example gets the frustum from a camera and displays it on the screen.

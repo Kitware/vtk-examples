@@ -85,9 +85,9 @@ def main():
     renderer.SetActiveCamera(camera)
     renderer.ResetCamera()
     renderer.SetBackground(colors.GetColor3d("Cornsilk"))
-    # renderer.SetBackground(1.0, 0.9688, 0.8594)
 
     renWin.SetSize(600, 600)
+    renWin.SetWindowName("Cube")
 
     # interact with data
     renWin.Render()

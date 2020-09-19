@@ -22,7 +22,7 @@ def main():
     # a renderer and render window
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Axes")
+    renderWindow.SetWindowName('Axes')
     renderWindow.AddRenderer(renderer)
 
     # an interactor
@@ -31,7 +31,7 @@ def main():
 
     # add the actors to the scene
     renderer.AddActor(sphereActor)
-    renderer.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
     transform = vtk.vtkTransform()
     transform.Translate(1.0, 0.0, 0.0)
@@ -42,10 +42,10 @@ def main():
 
     # properties of the axes labels can be set as follows
     # this sets the x axis label to red
-    # axes.GetXAxisCaptionActor2D().GetCaptionTextProperty().SetColor(colors.GetColor3d("Red"));
+    # axes.GetXAxisCaptionActor2D().GetCaptionTextProperty().SetColor(colors.GetColor3d('Red'));
 
     # the actual text of the axis label can be changed:
-    # axes->SetXAxisLabelText("test");
+    # axes->SetXAxisLabelText('test');
 
     renderer.AddActor(axes)
 
@@ -53,11 +53,12 @@ def main():
     renderer.GetActiveCamera().Elevation(-30)
 
     renderer.ResetCamera()
+    renderWindow.SetWindowName('Axes')
     renderWindow.Render()
 
     # begin mouse interaction
     renderWindowInteractor.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
