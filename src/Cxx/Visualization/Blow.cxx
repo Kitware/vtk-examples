@@ -1,4 +1,3 @@
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkConnectivityFilter.h>
