@@ -1,4 +1,3 @@
-
 #include <vtkActor.h>
 #include <vtkAxes.h>
 #include <vtkCamera.h>

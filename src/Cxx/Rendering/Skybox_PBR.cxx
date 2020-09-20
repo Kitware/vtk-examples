@@ -1,4 +1,3 @@
-
 #include <vtkActor.h>
 #include <vtkAxesActor.h>
 #include <vtkCubeSource.h>

@@ -1,4 +1,3 @@
-
 #include <vtkActor.h>
 #include <vtkNamedColors.h>
 #include <vtkPolyDataMapper.h>

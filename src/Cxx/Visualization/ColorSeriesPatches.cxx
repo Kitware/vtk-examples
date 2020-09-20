@@ -1,4 +1,3 @@
-
 /*
  * Produce a HTML page called VTKColorSeriesPatches.html showing the available
  * color series in vtkColorSeries.

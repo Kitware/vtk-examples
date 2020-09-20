@@ -1,4 +1,3 @@
-
 /*
  * Produce a HTML page called VTKNamedColorPatches.html showing the available
  * colors in vtkNamedColors.

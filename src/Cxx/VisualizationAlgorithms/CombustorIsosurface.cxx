@@ -1,4 +1,3 @@
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkContourFilter.h>
@@ -48,12 +47,12 @@ int main (int argc, char *argv[])
     vtkSmartPointer<vtkContourFilter>::New();
   iso->SetInputData(pl3d->GetOutput()->GetBlock(0));
   iso->SetValue(0, .38);
-  
+
   vtkSmartPointer<vtkPolyDataNormals> normals =
     vtkSmartPointer<vtkPolyDataNormals>::New();
   normals->SetInputConnection(iso->GetOutputPort());
   normals->SetFeatureAngle(45);
-  
+
   vtkSmartPointer<vtkPolyDataMapper> isoMapper =
     vtkSmartPointer<vtkPolyDataMapper>::New();
   isoMapper->SetInputConnection(normals->GetOutputPort());
@@ -67,11 +66,11 @@ int main (int argc, char *argv[])
   vtkSmartPointer<vtkStructuredGridOutlineFilter> outline =
     vtkSmartPointer<vtkStructuredGridOutlineFilter>::New();
   outline->SetInputConnection(pl3d->GetOutputPort());
-  
+
   vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
     vtkSmartPointer<vtkPolyDataMapper>::New();
   outlineMapper->SetInputConnection(outline->GetOutputPort());
-  
+
   vtkSmartPointer<vtkActor> outlineActor =
     vtkSmartPointer<vtkActor>::New();
   outlineActor->SetMapper(outlineMapper);
