@@ -8,7 +8,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [26, 51, 77, 255])
+    colors.SetColor('BkgColor', [26, 51, 77, 255])
 
     # Create a plane
     planeSource = vtk.vtkPlaneSource()
@@ -24,19 +24,19 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("Cyan"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Banana'))
 
     # Create a renderer, render window and interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Plane")
+    renderWindow.SetWindowName('Plane')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actors to the scene
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("BkgColor"))
+    renderer.SetBackground(colors.GetColor3d('BkgColor'))
 
     # Render and interact
     renderWindow.Render()

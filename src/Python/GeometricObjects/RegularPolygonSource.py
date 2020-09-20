@@ -15,30 +15,30 @@ def main():
 
     shrink = vtk.vtkShrinkPolyData()
     shrink.SetInputConnection(polygonSource.GetOutputPort())
-    shrink.SetShrinkFactor(.9)
+    shrink.SetShrinkFactor(0.9)
 
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(shrink.GetOutputPort())
 
     back = vtk.vtkProperty()
-    back.SetColor(colors.GetColor3d("Tomato"))
+    back.SetColor(colors.GetColor3d('Tomato'))
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
     actor.GetProperty().SetLineWidth(5)
-    actor.GetProperty().SetColor(colors.GetColor3d("Banana"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Banana'))
     actor.SetBackfaceProperty(back)
 
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Regular Polygon Source")
+    renderWindow.SetWindowName('RegularPolygonSource')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("Silver"))
+    renderer.SetBackground(colors.GetColor3d('Silver'))
 
     renderWindow.Render()
     renderWindowInteractor.Start()

@@ -48,7 +48,7 @@ def main():
 
     # Create the render window and interactor.
     renWin = vtk.vtkRenderWindow()
-    renWin.SetWindowName("Platonic Solids")
+    renWin.SetWindowName('PlatonicSolids')
 
     iRen = vtk.vtkRenderWindowInteractor()
     iRen.SetRenderWindow(renWin)
@@ -57,7 +57,7 @@ def main():
     # and actor for each object.
     PlatonicSolids = list()
     # There are five Platonic solids.
-    names = ["Tetrahedron", "Cube", "Octahedron", "Icosahedron", "Dodecahedron"]
+    names = ['Tetrahedron', 'Cube', 'Octahedron', 'Icosahedron', 'Dodecahedron']
     for i in range(0, len(names)):
         PlatonicSolids.append(vtk.vtkPlatonicSolidSource())
         PlatonicSolids[i].SetSolidType(i)
@@ -103,13 +103,13 @@ def main():
                 # Add a renderer even if there is no actor.
                 # This makes the render window background all the same color.
                 ren = vtk.vtkRenderer()
-                ren.SetBackground(colors.GetColor3d("SlateGray"))
+                ren.SetBackground(colors.GetColor3d('SlateGray'))
                 ren.SetViewport(viewport)
                 renWin.AddRenderer(ren)
                 continue
 
             renderers[index].SetViewport(viewport)
-            renderers[index].SetBackground(colors.GetColor3d("SlateGray"))
+            renderers[index].SetBackground(colors.GetColor3d('SlateGray'))
             renderers[index].ResetCamera()
             renderers[index].GetActiveCamera().Azimuth(4.5)
             renderers[index].GetActiveCamera().Elevation(-18)
@@ -120,5 +120,5 @@ def main():
     iRen.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

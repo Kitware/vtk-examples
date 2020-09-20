@@ -46,17 +46,17 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("Tomato"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
 
     # Setup render window, renderer, and interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("PolyLine")
+    renderWindow.SetWindowName('PolyLine')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("DarkOliveGreen"))
+    renderer.SetBackground(colors.GetColor3d('DarkOliveGreen'))
 
     renderWindow.Render()
     renderWindowInteractor.Start()

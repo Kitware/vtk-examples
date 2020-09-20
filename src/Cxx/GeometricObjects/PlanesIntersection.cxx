@@ -1,26 +1,27 @@
+#include <vtkNew.h>
 #include <vtkPlanesIntersection.h>
 #include <vtkPoints.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
   double bounds[6];
   sphereSource->GetOutput()->GetBounds(bounds);
 
-  vtkSmartPointer<vtkPoints> box =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> box;
 
   box->SetNumberOfPoints(8);
 
   double xMin, xMax, yMin, yMax, zMin, zMax;
-  xMin = bounds[0]; xMax = bounds[1];
-  yMin = bounds[2]; yMax = bounds[3];
-  zMin = bounds[4]; zMax = bounds[5];
+  xMin = bounds[0];
+  xMax = bounds[1];
+  yMin = bounds[2];
+  yMax = bounds[3];
+  zMin = bounds[4];
+  zMax = bounds[5];
 
   box->SetPoint(0, xMax, yMin, zMax);
   box->SetPoint(1, xMax, yMin, zMin);
@@ -31,13 +32,13 @@ int main(int, char *[])
   box->SetPoint(6, xMin, yMax, zMin);
   box->SetPoint(7, xMin, yMax, zMax);
 
-  vtkSmartPointer<vtkPlanesIntersection> planesIntersection =
-      vtkSmartPointer<vtkPlanesIntersection>::New();
+  vtkNew<vtkPlanesIntersection> planesIntersection;
   planesIntersection->SetBounds(bounds);
-  
-  int intersects = planesIntersection->IntersectsRegion(box);
 
-  std::cout << "Intersects? " << intersects << std::endl;
-  
+  int intersects = planesIntersection->IntersectsRegion(box);
+  auto res = (intersects == 1) ? "Yes" : "No";
+
+  std::cout << "Intersects? " << res << std::endl;
+
   return EXIT_SUCCESS;
 }

@@ -8,7 +8,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [26, 51, 102, 255])
+    colors.SetColor('BkgColor', [26, 51, 102, 255])
 
     surface = vtk.vtkParametricSuperEllipsoid()
     source = vtk.vtkParametricFunctionSource()
@@ -18,7 +18,7 @@ def main():
     actor = vtk.vtkActor()
 
     backProperty = vtk.vtkProperty()
-    backProperty.SetColor(colors.GetColor3d("Tomato"))
+    backProperty.SetColor(colors.GetColor3d('Tomato'))
 
     # Create a parametric function source, renderer, mapper, and actor
     source.SetParametricFunction(surface)
@@ -27,16 +27,16 @@ def main():
 
     actor.SetMapper(mapper)
     actor.SetBackfaceProperty(backProperty)
-    actor.GetProperty().SetDiffuseColor(colors.GetColor3d("Banana"))
+    actor.GetProperty().SetDiffuseColor(colors.GetColor3d('Banana'))
     actor.GetProperty().SetSpecular(.5)
     actor.GetProperty().SetSpecularPower(20)
 
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Parametric Objects Super Ellipsoid Demo")
+    renderWindow.SetWindowName('ParametricSuperEllipsoidDemo')
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("BkgColor"))
+    renderer.SetBackground(colors.GetColor3d('BkgColor'))
     renderer.ResetCamera()
     renderer.GetActiveCamera().Azimuth(30)
     renderer.GetActiveCamera().Elevation(-30)
@@ -57,7 +57,7 @@ def main():
     sliderRepN1.SetMinimumValue(0.0)
     sliderRepN1.SetMaximumValue(4.0)
     sliderRepN1.SetValue(1.0)
-    sliderRepN1.SetTitleText("Z squareness")
+    sliderRepN1.SetTitleText('Z squareness')
 
     sliderRepN1.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
     sliderRepN1.GetPoint1Coordinate().SetValue(.1, .1)
@@ -82,7 +82,7 @@ def main():
     sliderRepN2.SetMinimumValue(0.0001)
     sliderRepN2.SetMaximumValue(4.0)
     sliderRepN2.SetValue(1.0)
-    sliderRepN2.SetTitleText("XY squareness")
+    sliderRepN2.SetTitleText('XY squareness')
 
     sliderRepN2.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
     sliderRepN2.GetPoint1Coordinate().SetValue(.1, .9)
@@ -107,7 +107,7 @@ def main():
     sliderRepN1.SetMinimumValue(.0001)
     sliderRepMinimumV.SetMaximumValue(.9999 * vtk.vtkMath.Pi())
     sliderRepMinimumV.SetValue(.0001)
-    sliderRepMinimumV.SetTitleText("V min")
+    sliderRepMinimumV.SetTitleText('V min')
 
     sliderRepMinimumV.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
     sliderRepMinimumV.GetPoint1Coordinate().SetValue(.1, .1)
@@ -132,6 +132,7 @@ def main():
     interactor.Initialize()
 
     interactor.Start()
+
 
 # These callbacks do the actual work.
 # Callbacks for the interactions

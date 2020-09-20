@@ -3,7 +3,6 @@
 """
     Demonstrate all the parametric objects.
 """
-from __future__ import print_function
 
 import collections
 

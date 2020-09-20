@@ -3,15 +3,16 @@
 
 # This example demonstrates how to create a polyline through several ordered points.
 
+import math
+
 import vtk
 
-import math
 
 def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [26, 51, 102, 255])
+    colors.SetColor('BkgColor', [26, 51, 102, 255])
 
     # vtkPoints represents 3D points. The data model for vtkPoints is an array of
     # vx-vy-vz triplets accessible by (point or cell) id.
@@ -19,11 +20,11 @@ def main():
     points.SetNumberOfPoints(6)
     c = math.cos(math.pi / 6)  # helper variable
     points.SetPoint(0, 0.0, -1.0, 0.0)
-    points.SetPoint(1,   c, -0.5, 0.0)
-    points.SetPoint(2,   c,  0.5, 0.0)
-    points.SetPoint(3, 0.0,  1.0, 0.0)
-    points.SetPoint(4,  -c,  0.5, 0.0)
-    points.SetPoint(5,  -c, -0.5, 0.0)
+    points.SetPoint(1, c, -0.5, 0.0)
+    points.SetPoint(2, c, 0.5, 0.0)
+    points.SetPoint(3, 0.0, 1.0, 0.0)
+    points.SetPoint(4, -c, 0.5, 0.0)
+    points.SetPoint(5, -c, -0.5, 0.0)
 
     # vtkCellArray is a supporting object that explicitly represents cell connectivity.
     # The cell array structure is a raw integer list of the form:
@@ -58,7 +59,7 @@ def main():
     # set this actor's mapper to be polygonMapper which we created above.
     polygonActor = vtk.vtkActor()
     polygonActor.SetMapper(polygonMapper)
-    polygonActor.GetProperty().SetColor(colors.GetColor3d("AliceBlue"))
+    polygonActor.GetProperty().SetColor(colors.GetColor3d('AliceBlue'))
 
     # Create the Renderer and assign actors to it. A renderer is like a
     # viewport. It is part or all of a window on the screen and it is
@@ -66,7 +67,7 @@ def main():
     # background color here.
     ren = vtk.vtkRenderer()
     ren.AddActor(polygonActor)
-    ren.SetBackground(colors.GetColor3d("BkgColor"))
+    ren.SetBackground(colors.GetColor3d('BkgColor'))
 
     # Automatically set up the camera based on the visible actors.
     # The camera will reposition itself to view the center point of the actors,
@@ -79,7 +80,7 @@ def main():
     # We put our renderer into the render window using AddRenderer. We
     # also set the size to be 300 pixels by 300.
     renWin = vtk.vtkRenderWindow()
-    renWin.SetWindowName("PolyLine1")
+    renWin.SetWindowName('PolyLine1')
     renWin.AddRenderer(ren)
     renWin.SetSize(300, 300)
 
@@ -92,9 +93,6 @@ def main():
     iren.SetRenderWindow(renWin)
     iren.Initialize()
     iren.Start()
-
-    # There is no explicit need to free any objects at this point.
-    # Once Python exits, memory is automatically freed.
 
 
 if __name__ == '__main__':

@@ -1,38 +1,32 @@
-#include <vtkSmartPointer.h>
 #include <vtkActor.h>
 #include <vtkCubeSource.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkOpenVRRenderWindow.h>
 #include <vtkOpenVRRenderWindowInteractor.h>
 #include <vtkOpenVRRenderer.h>
-#include <vtkNamedColors.h>
 
 int main(int, char *[])
 {
   // Create a cube.
-  vtkSmartPointer<vtkCubeSource> cubeSource =
-    vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkCubeSource> cubeSource;
 
   // Create a mapper and actor.
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkNamedColors> colors;
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(cubeSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkOpenVRRenderer> renderer =
-    vtkSmartPointer<vtkOpenVRRenderer>::New();
-  vtkSmartPointer<vtkOpenVRRenderWindow> renderWindow =
-    vtkSmartPointer<vtkOpenVRRenderWindow>::New();
+  vtkNew<vtkOpenVRRenderer> renderer;
+  vtkNew<vtkOpenVRRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkOpenVRRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkOpenVRRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("OpenVRCube");
+  vtkNew<vtkOpenVRRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene

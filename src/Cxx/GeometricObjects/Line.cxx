@@ -7,7 +7,7 @@
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 
 int main(int, char *[])
 {
@@ -15,37 +15,30 @@ int main(int, char *[])
   double p0[3] = {1.0, 0.0, 0.0};
   double p1[3] = {0.0, 1.0, 0.0};
 
-  vtkSmartPointer<vtkLineSource> lineSource = 
-    vtkSmartPointer<vtkLineSource>::New();
+  vtkNew<vtkLineSource> lineSource;
   lineSource->SetPoint1(p0);
   lineSource->SetPoint2(p1);
 
   // Visualize
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(lineSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetLineWidth(4);
   actor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
- 
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetWindowName("Line");
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
-                                 
-  renderer->SetBackground(colors->GetColor3d("Silver").GetData());                                 
+
+  renderer->SetBackground(colors->GetColor3d("Silver").GetData());
   renderer->AddActor(actor);
- 
+
   renderWindow->Render();
   renderWindowInteractor->Start();
 

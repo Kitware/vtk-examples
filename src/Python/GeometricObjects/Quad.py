@@ -42,18 +42,18 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("Silver"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Silver'))
 
     # Setup render window, renderer, and interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Quad")
+    renderWindow.SetWindowName('Quad')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("Salmon"))
+    renderer.SetBackground(colors.GetColor3d('Salmon'))
     renderWindow.Render()
     renderWindowInteractor.Start()
 

@@ -40,7 +40,7 @@ def main():
 
     renWin = vtk.vtkRenderWindow()
     renWin.SetSize(600, 600)
-    renWin.SetWindowName("Planes")
+    renWin.SetWindowName('Planes')
 
     iRen = vtk.vtkRenderWindowInteractor()
     iRen.SetRenderWindow(renWin)
@@ -69,7 +69,7 @@ def main():
 
         actors.append(vtk.vtkActor())
         actors[i].SetMapper(mappers[i])
-        actors[i].GetProperty().SetColor(colors.GetColor3d("Moccasin"))
+        actors[i].GetProperty().SetColor(colors.GetColor3d('Moccasin'))
         actors[i].GetProperty().SetSpecular(0.8)
         actors[i].GetProperty().SetSpecularPower(30)
 
@@ -106,13 +106,13 @@ def main():
                 # Add a renderer even if there is no actor.
                 # This makes the render window background all the same color.
                 ren = vtk.vtkRenderer()
-                ren.SetBackground(colors.GetColor3d("DarkSlateGray"))
+                ren.SetBackground(colors.GetColor3d('DarkSlateGray'))
                 ren.SetViewport(viewport)
                 renWin.AddRenderer(ren)
                 continue
 
             renderers[index].SetViewport(viewport)
-            renderers[index].SetBackground(colors.GetColor3d("DarkSlateGray"))
+            renderers[index].SetBackground(colors.GetColor3d('DarkSlateGray'))
             renderers[index].ResetCamera()
             renderers[index].GetActiveCamera().Azimuth(30)
             renderers[index].GetActiveCamera().Elevation(-30)

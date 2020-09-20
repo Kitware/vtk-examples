@@ -31,18 +31,18 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("Tomato"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
     actor.GetProperty().SetPointSize(20)
 
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Point")
+    renderWindow.SetWindowName('Point')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("DarkGreen"))
+    renderer.SetBackground(colors.GetColor3d('DarkGreen'))
 
     renderWindow.Render()
     renderWindowInteractor.Start()

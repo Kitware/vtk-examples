@@ -3,7 +3,7 @@
 
 import vtk
 
-'''
+"""
 There are two alternative ways to apply the transform.
  1) Use vtkTransformPolyDataFilter to create a new transformed polydata.
     This method is useful if the transformed polydata is needed
@@ -12,7 +12,7 @@ There are two alternative ways to apply the transform.
  2) Apply the transform directly to the actor using vtkProp3D's SetUserMatrix.
     No new data is produced.
     To do this, set USER_MATRIX = False
-'''
+"""
 USER_MATRIX = True
 
 
@@ -20,8 +20,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [26, 51, 77, 255])
-
+    colors.SetColor('BkgColor', [26, 51, 77, 255])
 
     # Create an arrow.
     arrowSource = vtk.vtkArrowSource()
@@ -86,7 +85,7 @@ def main():
     else:
         mapper.SetInputConnection(transformPD.GetOutputPort())
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("Cyan"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Cyan'))
 
     # Create spheres for start and end point
     sphereStartSource = vtk.vtkSphereSource()
@@ -96,7 +95,7 @@ def main():
     sphereStartMapper.SetInputConnection(sphereStartSource.GetOutputPort())
     sphereStart = vtk.vtkActor()
     sphereStart.SetMapper(sphereStartMapper)
-    sphereStart.GetProperty().SetColor(colors.GetColor3d("Yellow"))
+    sphereStart.GetProperty().SetColor(colors.GetColor3d('Yellow'))
 
     sphereEndSource = vtk.vtkSphereSource()
     sphereEndSource.SetCenter(endPoint)
@@ -105,12 +104,12 @@ def main():
     sphereEndMapper.SetInputConnection(sphereEndSource.GetOutputPort())
     sphereEnd = vtk.vtkActor()
     sphereEnd.SetMapper(sphereEndMapper)
-    sphereEnd.GetProperty().SetColor(colors.GetColor3d("Magenta"))
+    sphereEnd.GetProperty().SetColor(colors.GetColor3d('Magenta'))
 
     # Create a renderer, render window, and interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Oriented Arrow")
+    renderWindow.SetWindowName('OrientedArrow')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
@@ -119,7 +118,7 @@ def main():
     renderer.AddActor(actor)
     renderer.AddActor(sphereStart)
     renderer.AddActor(sphereEnd)
-    renderer.SetBackground(colors.GetColor3d("BkgColor"))
+    renderer.SetBackground(colors.GetColor3d('BkgColor'))
 
     # Render and interact
     renderWindow.Render()

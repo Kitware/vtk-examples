@@ -21,9 +21,9 @@ def main():
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetDiffuseColor(
-        namedColors.GetColor3d("Tomato"))
+        namedColors.GetColor3d('Tomato'))
     actor.GetProperty().SetEdgeColor(
-        namedColors.GetColor3d("IvoryBlack"))
+        namedColors.GetColor3d('IvoryBlack'))
     actor.GetProperty().EdgeVisibilityOn()
 
     sphereSource = vtk.vtkSphereSource()
@@ -42,19 +42,19 @@ def main():
     glyph3DActor = vtk.vtkActor()
     glyph3DActor.SetMapper(glyph3DMapper)
     glyph3DActor.GetProperty().SetColor(
-        namedColors.GetColor3d("Banana"))
+        namedColors.GetColor3d('Banana'))
 
     # Visualize
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Quadratic Hexahedron")
+    renderWindow.SetWindowName('QuadraticHexahedron')
     renderWindow.AddRenderer(renderer)
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
     renderer.AddActor(glyph3DActor)
-    renderer.SetBackground(namedColors.GetColor3d("SlateGray"))
+    renderer.SetBackground(namedColors.GetColor3d('SlateGray'))
 
     renderWindow.Render()
     interactor.Start()

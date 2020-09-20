@@ -3,52 +3,43 @@
 #include <vtkCubeSource.h>
 #include <vtkDataSetMapper.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkShrinkFilter.h>
-#include <vtkSmartPointer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
   // Create a cube.
-  vtkSmartPointer<vtkCubeSource> cubeSource = 
-    vtkSmartPointer<vtkCubeSource>::New();
-  
-  vtkSmartPointer<vtkShrinkFilter> shrink =
-    vtkSmartPointer<vtkShrinkFilter>::New();
+  vtkNew<vtkCubeSource> cubeSource;
+
+  vtkNew<vtkShrinkFilter> shrink;
   shrink->SetInputConnection(cubeSource->GetOutputPort());
   shrink->SetShrinkFactor(.9);
 
   // Create a mapper and actor.
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkDataSetMapper> mapper = 
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(shrink->GetOutputPort());
 
-  vtkSmartPointer<vtkProperty> back =
-    vtkSmartPointer<vtkProperty>::New();
+  vtkNew<vtkProperty> back;
   back->SetColor(colors->GetColor3d("Tomato").GetData());
 
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->EdgeVisibilityOn();
   actor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
   actor->SetBackfaceProperty(back);
 
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
@@ -61,8 +52,9 @@ int main(int, char *[])
   renderer->ResetCameraClippingRange();
 
   // Render and interact
+  renderWindow->SetWindowName("ShrinkCube");
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

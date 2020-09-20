@@ -47,7 +47,7 @@ def main():
     mapper.SetInputData(uGrid)
 
     actor = vtk.vtkActor()
-    actor.GetProperty().SetColor(colors.GetColor3d("Cornsilk"))
+    actor.GetProperty().SetColor(colors.GetColor3d("PeachPuff"))
     actor.SetMapper(mapper)
 
     renderer = vtk.vtkRenderer()

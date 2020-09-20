@@ -1,68 +1,57 @@
 #include <vtkActor.h>
 #include <vtkCellArray.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPolygon.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Setup four points
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(0.0, 0.0, 0.0);
   points->InsertNextPoint(1.0, 0.0, 0.0);
   points->InsertNextPoint(1.0, 1.0, 0.0);
   points->InsertNextPoint(0.0, 1.0, 0.0);
-  
+
   // Create the polygon
-  vtkSmartPointer<vtkPolygon> polygon =
-    vtkSmartPointer<vtkPolygon>::New();
-  polygon->GetPointIds()->SetNumberOfIds(4); //make a quad
+  vtkNew<vtkPolygon> polygon;
+  polygon->GetPointIds()->SetNumberOfIds(4); // make a quad
   polygon->GetPointIds()->SetId(0, 0);
   polygon->GetPointIds()->SetId(1, 1);
   polygon->GetPointIds()->SetId(2, 2);
   polygon->GetPointIds()->SetId(3, 3);
-  
+
   // Add the polygon to a list of polygons
-  vtkSmartPointer<vtkCellArray> polygons =
-    vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkCellArray> polygons;
   polygons->InsertNextCell(polygon);
 
   // Create a PolyData
-  vtkSmartPointer<vtkPolyData> polygonPolyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polygonPolyData;
   polygonPolyData->SetPoints(points);
   polygonPolyData->SetPolys(polygons);
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polygonPolyData);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(
-    colors->GetColor3d("Silver").GetData());
+  actor->GetProperty()->SetColor(colors->GetColor3d("Silver").GetData());
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetWindowName("Polygon");
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);

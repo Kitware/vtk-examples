@@ -1,102 +1,86 @@
-#include <vtkSmartPointer.h>
-#include <vtkPlaneSource.h>
-#include <vtkSphereSource.h>
-#include <vtkArrowSource.h>
-
 #include <vtkActor.h>
+#include <vtkArrowSource.h>
 #include <vtkCamera.h>
+#include <vtkColor.h>
+#include <vtkLegendBoxActor.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPlaneSource.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
-#include <vtkNamedColors.h>
-#include <vtkColor.h>
-#include <vtkLegendBoxActor.h>
-
-#include <vtkMinimalStandardRandomSequence.h>
 
 #include <array>
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> CreateArrow(
-  double &length,
-  std::array<double,3> &startPoint,
-  std::array<double,3> &endPoint);
+namespace {
+vtkSmartPointer<vtkPolyData> CreateArrow(double& length,
+                                         std::array<double, 3>& startPoint,
+                                         std::array<double, 3>& endPoint);
 }
 
-int main(int, char *argv[])
+int main(int, char* argv[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-  vtkColor3d backgroundColor = colors->GetColor3d("SlateGray");
-  vtkColor3d legendBackgroundColor = colors->GetColor3d("Black");
-  vtkColor3d originColor = colors->GetColor3d("Tomato");
-  vtkColor3d centerColor = colors->GetColor3d("Banana");
-  vtkColor3d point1Color = colors->GetColor3d("Peru");
-  vtkColor3d point2Color = colors->GetColor3d("Bisque");
+  vtkNew<vtkNamedColors> colors;
+  vtkColor3d backgroundColor = colors->GetColor3d("DarkSlateGray");
+  vtkColor3d legendBackgroundColor = colors->GetColor3d("SlateGray");
+  vtkColor3d originColor = colors->GetColor3d("OrangeRed");
+  vtkColor3d centerColor = colors->GetColor3d("Gold");
+  vtkColor3d point1Color = colors->GetColor3d("MediumSpringGreen");
+  vtkColor3d point2Color = colors->GetColor3d("Brown");
   vtkColor3d xAxisColor = colors->GetColor3d("lime");
   vtkColor3d yAxisColor = colors->GetColor3d("orange");
   vtkColor3d normalColor = colors->GetColor3d("Raspberry");
 
-// Create actors
-  vtkSmartPointer<vtkPlaneSource> planeSource =
-    vtkSmartPointer<vtkPlaneSource>::New();
+  // Create actors
+  vtkNew<vtkPlaneSource> planeSource;
   planeSource->SetOrigin(0.0, 0.0, 0.0);
-  planeSource->SetPoint1(1,0, 0);
-  planeSource->SetPoint2(0,1.0, 0);
+  planeSource->SetPoint1(1, 0, 0);
+  planeSource->SetPoint2(0, 1.0, 0);
   planeSource->Update();
 
   std::array<double, 6> bounds;
   planeSource->GetOutput()->GetBounds(bounds.data());
   double length = std::max(bounds[1] - bounds[0], bounds[3] - bounds[2]);
 
-  vtkSmartPointer<vtkPolyDataMapper> planeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> planeMapper;
   planeMapper->SetInputConnection(planeSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> planeActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> planeActor;
   planeActor->SetMapper(planeMapper);
 
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetRadius(length * .04);
-  vtkSmartPointer<vtkPolyDataMapper> originMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> originMapper;
   originMapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> originActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> originActor;
   originActor->SetPosition(planeSource->GetOrigin());
   originActor->SetMapper(originMapper);
   originActor->GetProperty()->SetDiffuseColor(originColor.GetData());
 
-  vtkSmartPointer<vtkPolyDataMapper> centerMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> centerMapper;
   centerMapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> centerActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> centerActor;
   centerActor->SetPosition(planeSource->GetCenter());
   centerActor->SetMapper(centerMapper);
   centerActor->GetProperty()->SetDiffuseColor(centerColor.GetData());
 
-  vtkSmartPointer<vtkPolyDataMapper> point1Mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> point1Mapper;
   point1Mapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> point1Actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> point1Actor;
   point1Actor->SetPosition(planeSource->GetPoint1());
   point1Actor->SetMapper(point1Mapper);
   point1Actor->GetProperty()->SetDiffuseColor(point1Color.GetData());
 
-  vtkSmartPointer<vtkPolyDataMapper> point2Mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> point2Mapper;
   point2Mapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> point2Actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> point2Actor;
   point2Actor->SetPosition(planeSource->GetPoint2());
   point2Actor->SetMapper(point2Mapper);
   point2Actor->GetProperty()->SetDiffuseColor(point2Color.GetData());
@@ -114,43 +98,32 @@ int main(int, char *argv[])
     center[i] = planeSource->GetCenter()[i];
     normal[i] = planeSource->GetNormal()[i] * length;
   }
-  vtkSmartPointer<vtkPolyData> xAxisPolyData =
-    CreateArrow(length, origin, point1);
-  vtkSmartPointer<vtkPolyDataMapper> xAxisMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  auto xAxisPolyData = CreateArrow(length, origin, point1);
+  vtkNew<vtkPolyDataMapper> xAxisMapper;
   xAxisMapper->SetInputData(xAxisPolyData);
-  vtkSmartPointer<vtkActor> xAxisActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> xAxisActor;
   xAxisActor->SetMapper(xAxisMapper);
   xAxisActor->GetProperty()->SetDiffuseColor(xAxisColor.GetData());
 
-  vtkSmartPointer<vtkPolyData> yAxisPolyData =
-    CreateArrow(length, origin, point2);
-  vtkSmartPointer<vtkPolyDataMapper> yAxisMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  auto yAxisPolyData = CreateArrow(length, origin, point2);
+  vtkNew<vtkPolyDataMapper> yAxisMapper;
   yAxisMapper->SetInputData(yAxisPolyData);
-  vtkSmartPointer<vtkActor> yAxisActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> yAxisActor;
   yAxisActor->SetMapper(yAxisMapper);
   yAxisActor->GetProperty()->SetDiffuseColor(yAxisColor.GetData());
 
-  vtkSmartPointer<vtkPolyData> normalPolyData =
-    CreateArrow(length, origin, normal);
-  vtkSmartPointer<vtkPolyDataMapper> normalMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  auto normalPolyData = CreateArrow(length, origin, normal);
+  vtkNew<vtkPolyDataMapper> normalMapper;
   normalMapper->SetInputData(normalPolyData);
-  vtkSmartPointer<vtkActor> normalActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> normalActor;
   normalActor->SetMapper(normalMapper);
   normalActor->GetProperty()->SetDiffuseColor(normalColor.GetData());
 
-// Create the RenderWindow, Renderer
-//
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  // Create the RenderWindow, Renderer
+  //
+  vtkNew<vtkRenderer> renderer;
 
-  vtkSmartPointer<vtkLegendBoxActor> legend =
-      vtkSmartPointer<vtkLegendBoxActor>::New();
+  vtkNew<vtkLegendBoxActor> legend;
   legend->SetNumberOfEntries(7);
   legend->UseBackgroundOn();
   legend->SetBackgroundColor(legendBackgroundColor.GetData());
@@ -165,20 +138,16 @@ int main(int, char *argv[])
                    point1Color.GetData());
   legend->SetEntry(entry++, sphereSource->GetOutput(), "point2",
                    point2Color.GetData());
-  legend->SetEntry(entry++, xAxisPolyData, "xAxis",
-                   xAxisColor.GetData());
-  legend->SetEntry(entry++, xAxisPolyData, "yAxis",
-                   yAxisColor.GetData());
-  legend->SetEntry(entry++, xAxisPolyData, "normal",
-                   normalColor.GetData());
+  legend->SetEntry(entry++, xAxisPolyData, "xAxis", xAxisColor.GetData());
+  legend->SetEntry(entry++, xAxisPolyData, "yAxis", yAxisColor.GetData());
+  legend->SetEntry(entry++, xAxisPolyData, "normal", normalColor.GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("PlaneSourceDemo");
   renderWindow->SetSize(640, 480);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer->SetBackground(backgroundColor.GetData());
@@ -205,18 +174,15 @@ int main(int, char *argv[])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> CreateArrow(
-  double &pdLength,
-  std::array<double,3> &startPoint,
-  std::array<double,3> &endPoint)
+namespace {
+vtkSmartPointer<vtkPolyData> CreateArrow(double& pdLength,
+                                         std::array<double, 3>& startPoint,
+                                         std::array<double, 3>& endPoint)
 {
   vtkSmartPointer<vtkPolyData> polyData;
 
-  //Create an arrow.
-  vtkSmartPointer<vtkArrowSource> arrowSource =
-    vtkSmartPointer<vtkArrowSource>::New();
+  // Create an arrow.
+  vtkNew<vtkArrowSource> arrowSource;
   arrowSource->SetShaftRadius(pdLength * .01);
   arrowSource->SetShaftResolution(20);
   arrowSource->SetTipLength(pdLength * .1);
@@ -234,8 +200,7 @@ vtkSmartPointer<vtkPolyData> CreateArrow(
   vtkMath::Normalize(normalizedX.data());
 
   // The Z axis is an arbitrary vector cross X
-  vtkSmartPointer<vtkMinimalStandardRandomSequence> rng =
-    vtkSmartPointer<vtkMinimalStandardRandomSequence>::New();
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
   rng->SetSeed(8775070); // For testing.
 
   std::array<double, 3> arbitrary;
@@ -249,8 +214,7 @@ vtkSmartPointer<vtkPolyData> CreateArrow(
 
   // The Y axis is Z cross X
   vtkMath::Cross(normalizedZ.data(), normalizedX.data(), normalizedY.data());
-  vtkSmartPointer<vtkMatrix4x4> matrix =
-    vtkSmartPointer<vtkMatrix4x4>::New();
+  vtkNew<vtkMatrix4x4> matrix;
 
   // Create the direction cosine matrix
   matrix->Identity();
@@ -262,19 +226,17 @@ vtkSmartPointer<vtkPolyData> CreateArrow(
   }
 
   // Apply the transforms
-  vtkSmartPointer<vtkTransform> transform =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform;
   transform->Translate(startPoint.data());
   transform->Concatenate(matrix);
   transform->Scale(length, length, length);
 
   // Transform the polydata
-  vtkSmartPointer<vtkTransformPolyDataFilter> transformPD =
-    vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> transformPD;
   transformPD->SetTransform(transform);
   transformPD->SetInputConnection(arrowSource->GetOutputPort());
   transformPD->Update();
   polyData = transformPD->GetOutput();
   return polyData;
 }
-}
+} // namespace

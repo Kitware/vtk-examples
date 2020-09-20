@@ -38,7 +38,7 @@ def main():
     titles.append('Wedge')
 
     renWin = vtk.vtkRenderWindow()
-    renWin.SetWindowName('Cell3D Demonstration')
+    renWin.SetWindowName('Cell3DDemonstration')
 
     iRen = vtk.vtkRenderWindowInteractor()
     iRen.SetRenderWindow(renWin)
@@ -47,6 +47,7 @@ def main():
     textProperty = vtk.vtkTextProperty()
     textProperty.SetFontSize(16)
     textProperty.SetJustificationToCentered()
+    textProperty.SetColor(colors.GetColor3d('LightGoldenrodYellow'))
 
     # Create and link the mappers actors and renderers together.
     for i in range(0, len(uGrids)):
@@ -59,8 +60,7 @@ def main():
 
         mappers[i].SetInputData(uGrids[i])
         actors[i].SetMapper(mappers[i])
-        actors[i].GetProperty().SetColor(
-            colors.GetColor3d('Seashell'))
+        actors[i].GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
         renderers[i].AddViewProp(actors[i])
 
         textMappers[i].SetInput(titles[i])

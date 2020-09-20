@@ -1,35 +1,36 @@
-#include <vtkSphereSource.h>
-#include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkOpenVRRenderWindow.h>
 #include <vtkOpenVRRenderer.h>
 #include <vtkOpenVRRenderWindowInteractor.h>
-//Author: Chethana B
-//Organisation: Virtual Environments Lab, Chung Ang University, Seoul, South Korea. 
+#include <vtkSphereSource.h>
+
+
 int main(int, char *[])
 {
   // Create a Sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+  vtkSmartPointer<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(0.0, 0.0, 0.0);
   sphereSource->SetRadius(5.0);
-  
+
   //Create a Mapper
-  vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkSmartPointer<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
-  
+
   //Create an Actor
-  vtkSmartPointer<vtkNamedColors> colors = vtkSmartPointer<vtkNamedColors>::New();
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkSmartPointer<vtkNamedColors> colors;
+  vtkSmartPointer<vtkActor> actor;
   actor->SetMapper(mapper);
 
   //Create a Renderer, RenderWindow, RenderWindowInteractor
-  vtkSmartPointer<vtkOpenVRRenderer> renderer = vtkSmartPointer<vtkOpenVRRenderer>::New();
-  vtkSmartPointer<vtkOpenVRRenderWindow> renderWindow = vtkSmartPointer<vtkOpenVRRenderWindow>::New();
+  vtkSmartPointer<vtkOpenVRRenderer> renderer;
+  vtkSmartPointer<vtkOpenVRRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkOpenVRRenderWindowInteractor> renderWindowInteractor =  vtkSmartPointer<vtkOpenVRRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("OpenVRSphere");
+  vtkSmartPointer<vtkOpenVRRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   //Add actor to the scene

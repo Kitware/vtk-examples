@@ -33,6 +33,7 @@ def main():
     textProperty = vtk.vtkTextProperty()
     textProperty.SetFontSize(16)
     textProperty.SetJustificationToCentered()
+    textProperty.SetColor(colors.GetColor3d('LightGoldenrodYellow'))
 
     # Create a mapper and actor for each object and the corresponding text label
     for i in range(0, len(geometricObjectSources)):
@@ -43,8 +44,7 @@ def main():
 
         actors.append(vtk.vtkActor())
         actors[i].SetMapper(mappers[i])
-        actors[i].GetProperty().SetColor(
-            colors.GetColor3d("Seashell"))
+        actors[i].GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
 
         textmappers.append(vtk.vtkTextMapper())
         textmappers[i].SetInput(
@@ -62,7 +62,7 @@ def main():
     rendererSize = 300
 
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Geometric Objects Demo")
+    renderWindow.SetWindowName('GeometricObjectsDemo')
     renderWindow.SetSize(rendererSize * gridCols, rendererSize * gridRows)
 
     # Set up a grid of viewports for each renderer
@@ -72,7 +72,7 @@ def main():
 
             # Create a renderer for this grid cell
             renderer = vtk.vtkRenderer()
-            renderer.SetBackground(colors.GetColor3d("BkgColor"))
+            renderer.SetBackground(colors.GetColor3d('BkgColor'))
 
             # Set the renderer's viewport dimensions (xmin, ymin, xmax, ymax) within the render window.
             # Note that for the Y values, we need to subtract the row index from gridRows

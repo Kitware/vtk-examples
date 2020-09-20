@@ -3,6 +3,7 @@
 #include <vtkCamera.h>
 #include <vtkHull.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlanes.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -18,10 +19,9 @@
 #include <string>
 #include <vector>
 
-int main(int, char* [])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // These are the two methods we will use.
   std::vector<std::string> titles{"Using frustum planes", "Using bounds"};
@@ -32,15 +32,13 @@ int main(int, char* [])
   }
 
   // Using frustum planes.
-  vtkSmartPointer<vtkCamera> camera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
   double planesArray[24];
   camera->GetFrustumPlanes(1, planesArray);
   planes[0]->SetFrustumPlanes(planesArray);
 
   // Using bounds.
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
   double bounds[6];
   sphereSource->GetOutput()->GetBounds(bounds);
@@ -53,17 +51,14 @@ int main(int, char* [])
   // and visualise it.
 
   // Create a common text property.
-  vtkSmartPointer<vtkTextProperty> textProperty =
-    vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkTextProperty> textProperty;
   textProperty->SetFontSize(16);
   textProperty->SetJustificationToCentered();
 
   // Create the render window and interactor.
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->SetWindowName("Planes");
-  vtkSmartPointer<vtkRenderWindowInteractor> iRen =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iRen;
   iRen->SetRenderWindow(renWin);
 
   std::vector<vtkSmartPointer<vtkHull>> hulls;
@@ -95,7 +90,7 @@ int main(int, char* [])
     actors.push_back(vtkSmartPointer<vtkActor>::New());
     actors[i]->SetMapper(mappers[i]);
     actors[i]->GetProperty()->SetColor(
-      colors->GetColor3d("Moccasin").GetData());
+        colors->GetColor3d("Moccasin").GetData());
     actors[i]->GetProperty()->SetSpecular(0.8);
     actors[i]->GetProperty()->SetSpecularPower(30);
 
@@ -128,10 +123,10 @@ int main(int, char* [])
 
       // (xmin, ymin, xmax, ymax)
       double viewport[4] = {
-        static_cast<double>(col) / xGridDimensions,
-        static_cast<double>(yGridDimensions - (row + 1)) / yGridDimensions,
-        static_cast<double>(col + 1) / xGridDimensions,
-        static_cast<double>(yGridDimensions - row) / yGridDimensions};
+          static_cast<double>(col) / xGridDimensions,
+          static_cast<double>(yGridDimensions - (row + 1)) / yGridDimensions,
+          static_cast<double>(col + 1) / xGridDimensions,
+          static_cast<double>(yGridDimensions - row) / yGridDimensions};
       if (index > (actors.size() - 1))
       {
         // Add a renderer even if there is no actor.
@@ -145,7 +140,7 @@ int main(int, char* [])
 
       renderers[index]->SetViewport(viewport);
       renderers[index]->SetBackground(
-        colors->GetColor3d("DarkSlateGray").GetData());
+          colors->GetColor3d("DarkSlateGray").GetData());
       renderers[index]->ResetCamera();
       renderers[index]->GetActiveCamera()->Azimuth(30);
       renderers[index]->GetActiveCamera()->Elevation(-30);

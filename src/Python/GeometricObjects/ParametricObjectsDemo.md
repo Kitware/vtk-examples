@@ -32,4 +32,3 @@ Will write out a file with no other options enabled called `ParametricObjectsDem
 
 !!! Cite
     See: [Parametric Equations for Surfaces](http://www.vtk.org/wp-content/uploads/2015/11/ParametricSurfaces.pdf), for more information. This paper gives a description of the first fifteen surfaces, including their parametric equations and derivatives. Also provided is an example of how to create your own surface, namely the Figure-8 Torus.
-

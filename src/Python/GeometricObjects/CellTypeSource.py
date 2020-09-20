@@ -28,19 +28,18 @@ def main():
     cellMap[vtk.vtkCellTypes.GetClassNameFromTypeId(vtk.VTK_QUADRATIC_TETRA)] = vtk.VTK_QUADRATIC_TETRA
 
     if cellName not in cellMap:
-        print("Cell type ", cellName, " is not supported.")
+        print('Cell type ', cellName, ' is not supported.')
         return
     source = vtk.vtkCellTypeSource()
     source.SetCellType(cellMap[cellName])
     source.Update()
-    print("Cell: ", cellName)
+    print('Cell: ', cellName)
 
     originalPoints = source.GetOutput().GetPoints()
     points = vtk.vtkPoints()
     points.SetNumberOfPoints(source.GetOutput().GetNumberOfPoints())
     rng = vtk.vtkMinimalStandardRandomSequence()
     rng.SetSeed(5070)  # for testing
-    vtk.vtkMath.RandomSeed(5070)  # for testing
     for i in range(0, points.GetNumberOfPoints()):
         perturbation = [0.0] * 3
         for j in range(0, 3):
@@ -54,14 +53,14 @@ def main():
     source.GetOutput().SetPoints(points)
 
     numCells = source.GetOutput().GetNumberOfCells()
-    print("Number of cells: ", numCells)
+    print('Number of cells: ', numCells)
     idArray = vtk.vtkIntArray()
     idArray.SetNumberOfTuples(numCells)
     for i in range(0, numCells):
         idArray.InsertTuple1(i, i + 1)
-    idArray.SetName("Ids")
+    idArray.SetName('Ids')
     source.GetOutput().GetCellData().AddArray(idArray)
-    source.GetOutput().GetCellData().SetActiveScalars("Ids")
+    source.GetOutput().GetCellData().SetActiveScalars('Ids')
 
     shrink = vtk.vtkShrinkFilter()
     shrink.SetInputConnection(source.GetOutputPort())
@@ -103,7 +102,7 @@ def main():
     textProperty = vtk.vtkTextProperty()
     textProperty.SetFontSize(20)
     textProperty.SetJustificationToCentered()
-    textProperty.SetColor(colors.GetColor3d("Lamp_Black"))
+    textProperty.SetColor(colors.GetColor3d('Lamp_Black'))
 
     textMapper = vtk.vtkTextMapper()
     textMapper.SetInput(cellName)
@@ -116,7 +115,7 @@ def main():
     # Create a renderer, render window, and interactor.
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Cell Type Source")
+    renderWindow.SetWindowName('CellTypeSource')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
@@ -124,7 +123,7 @@ def main():
     # Add the actors to the scene.
     renderer.AddViewProp(textActor)
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("Silver"))
+    renderer.SetBackground(colors.GetColor3d('Silver'))
 
     renderer.ResetCamera()
     renderer.GetActiveCamera().Azimuth(30)
@@ -146,7 +145,7 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('cell_name', nargs='?', const="vtkTetra", default="vtkTetra", type=str, help="The cell name.")
+    parser.add_argument('cell_name', nargs='?', const='vtkTetra', default='vtkTetra', type=str, help='The cell name.')
     args = parser.parse_args()
     return args.cell_name
 

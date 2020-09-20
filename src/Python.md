@@ -242,7 +242,7 @@ It would be appreciated if there are any Python VTK experts who could convert an
 
 | Example Name | Classes Demonstrated | Description | Image |
 | -------------- | ---------------------- | ------------- | ------- |
-[PointSource](/Python/GeometricObjects/PointSource) | vtkPointSource |
+[PointSource](/Python/PolyData/PointSource) | vtkPointSource | Generate a random point cloud.
 
 ### Working with Meshes
 

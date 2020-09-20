@@ -7,7 +7,7 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor("BkgColor", [26, 51, 102, 255])
+    colors.SetColor('BkgColor', [26, 51, 102, 255])
 
     surface = vtk.vtkParametricKuen()
     source = vtk.vtkParametricFunctionSource()
@@ -17,7 +17,7 @@ def main():
     actor = vtk.vtkActor()
 
     backProperty = vtk.vtkProperty()
-    backProperty.SetColor(colors.GetColor3d("Tomato"))
+    backProperty.SetColor(colors.GetColor3d('Tomato'))
 
     # Create a parametric function source, renderer, mapper, and actor
     source.SetParametricFunction(surface)
@@ -26,17 +26,17 @@ def main():
 
     actor.SetMapper(mapper)
     actor.SetBackfaceProperty(backProperty)
-    actor.GetProperty().SetDiffuseColor(colors.GetColor3d("Banana"))
+    actor.GetProperty().SetDiffuseColor(colors.GetColor3d('Banana'))
     actor.GetProperty().SetSpecular(.5)
     actor.GetProperty().SetSpecularPower(20)
 
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Parametric Kuen Demonstration")
+    renderWindow.SetWindowName('ParametricKuenDemo')
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("BkgColor"))
+    renderer.SetBackground(colors.GetColor3d('BkgColor'))
     renderer.ResetCamera()
     renderer.GetActiveCamera().Azimuth(30)
     renderer.GetActiveCamera().Elevation(-30)
@@ -57,7 +57,7 @@ def main():
     sliderRepMinimumU.SetMinimumValue(-4.5)
     sliderRepMinimumU.SetMaximumValue(4.5)
     sliderRepMinimumU.SetValue(-4.5)
-    sliderRepMinimumU.SetTitleText("U min")
+    sliderRepMinimumU.SetTitleText('U min')
 
     sliderRepMinimumU.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
     sliderRepMinimumU.GetPoint1Coordinate().SetValue(.1, .1)
@@ -82,7 +82,7 @@ def main():
     sliderRepMaximumU.SetMinimumValue(-4.5)
     sliderRepMaximumU.SetMaximumValue(4.5)
     sliderRepMaximumU.SetValue(4.5)
-    sliderRepMaximumU.SetTitleText("U max")
+    sliderRepMaximumU.SetTitleText('U max')
 
     sliderRepMaximumU.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
     sliderRepMaximumU.GetPoint1Coordinate().SetValue(.1, .9)
@@ -107,7 +107,7 @@ def main():
     sliderRepMinimumV.SetMinimumValue(0.05)
     sliderRepMinimumV.SetMaximumValue(vtk.vtkMath.Pi())
     sliderRepMinimumV.SetValue(0.0)
-    sliderRepMinimumV.SetTitleText("V min")
+    sliderRepMinimumV.SetTitleText('V min')
 
     sliderRepMinimumV.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
     sliderRepMinimumV.GetPoint1Coordinate().SetValue(.1, .1)
@@ -132,7 +132,7 @@ def main():
     sliderRepMaximumV.SetMinimumValue(0.05)
     sliderRepMaximumV.SetMaximumValue(vtk.vtkMath.Pi() - .05)
     sliderRepMaximumV.SetValue(vtk.vtkMath.Pi())
-    sliderRepMaximumV.SetTitleText("V max")
+    sliderRepMaximumV.SetTitleText('V max')
 
     sliderRepMaximumV.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
     sliderRepMaximumV.GetPoint1Coordinate().SetValue(.9, .1)

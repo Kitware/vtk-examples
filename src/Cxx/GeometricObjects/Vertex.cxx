@@ -8,52 +8,41 @@
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkVertex.h>
 
 int main(int, char *[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint(0,0,0);
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(0, 0, 0);
 
-  vtkSmartPointer<vtkVertex> vertex = 
-    vtkSmartPointer<vtkVertex>::New();
+  vtkNew<vtkVertex> vertex;
   vertex->GetPointIds()->SetId(0, 0);
-  
-  vtkSmartPointer<vtkCellArray> vertices =
-    vtkSmartPointer<vtkCellArray>::New();
+
+  vtkNew<vtkCellArray> vertices;
   vertices->InsertNextCell(vertex);
-  
-  vtkSmartPointer<vtkPolyData> polydata =
-    vtkSmartPointer<vtkPolyData>::New();
+
+  vtkNew<vtkPolyData> polydata;
   polydata->SetPoints(points);
   polydata->SetVerts(vertices);
-  
-  
+
   // Setup actor and mapper
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polydata);
- 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetPointSize(10);
-  actor->GetProperty()->SetColor(colors->GetColor3d("Cyan").GetData());
+  actor->GetProperty()->SetPointSize(30);
+  actor->GetProperty()->SetColor(colors->GetColor3d("PeachPuff").GetData());
 
   // Setup render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetWindowName("Vertex");
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("DarkGreen").GetData());

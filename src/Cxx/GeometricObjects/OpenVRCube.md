@@ -1,3 +1,3 @@
 ### Description
 
-This example demonstrates rendering of a Cuber in OpenVR.
+This example demonstrates rendering of a Cube in OpenVR.

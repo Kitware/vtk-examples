@@ -32,19 +32,19 @@ def main():
     mapper.SetInputData(polydata)
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("Cyan"))
+    actor.GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
     actor.GetProperty().SetRepresentationToWireframe()
 
     # Create a renderer, render window, and interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Triangle Strip")
+    renderWindow.SetWindowName('TriangleStrip')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("DarkGreen"))
+    renderer.SetBackground(colors.GetColor3d('DarkGreen'))
     renderWindow.Render()
     renderWindowInteractor.Start()
 

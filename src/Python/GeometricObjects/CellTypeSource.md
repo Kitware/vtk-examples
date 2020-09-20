@@ -7,5 +7,3 @@ The example takes an optonal argument, a vtkCell name.
 For example, to generate vtkTriangles, run
 
 ```CellTypeSource``` vtkTriangle
-
-

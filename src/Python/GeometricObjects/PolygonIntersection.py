@@ -30,8 +30,8 @@ def main():
     subId = vtk.mutable(0)
     iD = polygon.IntersectWithLine(p1, p2, tolerance, t, x, pcoords, subId)
 
-    print("intersected? ", 'Yes' if iD == 1 else 'No')
-    print("intersection: ", x)
+    print('intersected? ', 'Yes' if iD == 1 else 'No')
+    print('intersection: ', x)
 
 
 if __name__ == '__main__':

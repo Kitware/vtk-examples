@@ -4,26 +4,25 @@
 #include <vtkDataSetMapper.h>
 #include <vtkHexahedron.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
 
 #include <array>
 #include <vector>
 
-int main(int, char* [])
+int main(int, char*[])
 {
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
-  std::array<unsigned char , 4> bkg{{51, 77, 102, 255}};
-    colors->SetColor("BkgColor", bkg.data());
+  std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
+  colors->SetColor("BkgColor", bkg.data());
 
   // For the hexahedron; setup the coordinates of eight points.
   // The two faces must be in counter clockwise order as viewed from the
@@ -39,12 +38,10 @@ int main(int, char* [])
   pointCoordinates.push_back({{0.0, 1.0, 1.0}});
 
   // Create the points.
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
 
   // Create a hexahedron from the points.
-  vtkSmartPointer<vtkHexahedron> hex =
-    vtkSmartPointer<vtkHexahedron>::New();
+  vtkNew<vtkHexahedron> hex;
 
   for (auto i = 0; i < pointCoordinates.size(); ++i)
   {
@@ -53,34 +50,27 @@ int main(int, char* [])
   }
 
   // Add the hexahedron to a cell array.
-  vtkSmartPointer<vtkCellArray> hexs =
-    vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkCellArray> hexs;
   hexs->InsertNextCell(hex);
 
   // Add the points and hexahedron to an unstructured grid.
-  vtkSmartPointer<vtkUnstructuredGrid> uGrid =
-    vtkSmartPointer<vtkUnstructuredGrid>::New();
+  vtkNew<vtkUnstructuredGrid> uGrid;
   uGrid->SetPoints(points);
   uGrid->InsertNextCell(hex->GetCellType(), hex->GetPointIds());
 
   // Visualize.
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputData(uGrid);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
-  actor->GetProperty()->SetColor(colors->GetColor3d("Cornsilk").GetData());
+  vtkNew<vtkActor> actor;
+  actor->GetProperty()->SetColor(colors->GetColor3d("PeachPuff").GetData());
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetWindowName("Hexahedron");
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
