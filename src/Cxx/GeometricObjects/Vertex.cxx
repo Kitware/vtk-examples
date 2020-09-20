@@ -1,17 +1,17 @@
 #include <vtkActor.h>
 #include <vtkCellArray.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkNew.h>
+#include <vtkRenderer.h>
 #include <vtkVertex.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
@@ -49,6 +49,6 @@ int main(int, char *[])
 
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }
