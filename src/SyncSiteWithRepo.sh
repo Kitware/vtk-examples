@@ -58,6 +58,11 @@ rm -rf build/docs/*
 rm -rf build/site/*
 src/Admin/ScrapeRepo.py src ${SITE_URL} ${WEB_SITE_URL} ${WEB_REPO_URL} ${WEB_REPO_DIR} ${VTK_SOURCE_DIR}
 
+echo "3.1) Scrape the repo again (fixes a bug where the CMakeLists file is bad on the first run)"
+rm -rf build/docs/*
+rm -rf build/site/*
+src/Admin/ScrapeRepo.py src ${SITE_URL} ${WEB_SITE_URL} ${WEB_REPO_URL} ${WEB_REPO_DIR} ${VTK_SOURCE_DIR}
+
 echo "4) Check for a successful scrape"
 pushd ${WEB_REPO_DIR}/docs
 count=$((`find . -name \*.md | wc -l`))
