@@ -1,5 +1,3 @@
 ### Description
 
-Draws an interactive compass.
-
-* Contributed by Jothy
+This example creates a compass in the top right corner of the window.

@@ -1,24 +1,18 @@
 #!/usr/bin/env python
-
 import vtk
 
 
 def main():
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor('bkg', [0.2, 0.3, 0.7, 1.0])
-
-    # sphere
-    sphereSource = vtk.vtkSphereSource()
-    sphereSource.SetCenter(0.0, 0.0, 0.0)
-    sphereSource.SetRadius(4.0)
+    arrowSource = vtk.vtkArrowSource()
 
     mapper = vtk.vtkPolyDataMapper()
-    mapper.SetInputConnection(sphereSource.GetOutputPort())
+    mapper.SetInputConnection(arrowSource.GetOutputPort())
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("BurlyWood"))
+    actor.GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
 
     # a renderer and render window
     renderer = vtk.vtkRenderer()
@@ -38,7 +32,11 @@ def main():
 
     # add the actors to the scene
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d('bkg'))
+    renderer.SetBackground(colors.GetColor3d('MidnightBlue'))
+
+    renderWindow.SetSize(640, 480)
+    renderWindow.SetWindowName('CompassWidget')
+
     renderWindow.Render()
     compassWidget.EnabledOn()
 
@@ -46,8 +44,6 @@ def main():
     renderWindowInteractor.SetInteractorStyle(style)
 
     # begin interaction
-    renderWindowInteractor.Initialize()
-    renderWindow.Render()
     renderWindowInteractor.Start()
 
 

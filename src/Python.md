@@ -129,6 +129,7 @@ It would be appreciated if there are any Python VTK experts who could convert an
 [Cube1](/Python/GeometricObjects/Cube1) | vtkCubeSource | A nice simple example that demonstrates the operation of the VTK pipeline.
 [Cylinder](/Python/GeometricObjects/Cylinder) | vtkCylinderSource |
 [Disk](/Python/GeometricObjects/Disk) | vtkDiskSource | A circle with a hole in it.
+[EarthSource](/Python/GeometricObjects/EarthSource) | vtkEarthSource | Create the Earth.
 [Frustum](/Python/GeometricObjects/Frustum) | vtkFrustumSource |
 [Line](/Python/GeometricObjects/Line) | vtkLineSource |
 [OrientedArrow](/Python/GeometricObjects/OrientedArrow) | vtkArrowSource | Orient an arrow along an arbitrary vector.
@@ -599,6 +600,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 | -------------- | ---------------------- | ------------- | ------- |
 [BalloonWidget](/Python/Widgets/BalloonWidget) | vtkBalloonWidget vtkBalloonRepresentation | Uses a vtkBalloonWidget to draw labels when the mouse stays above an actor.
 [BoxWidget](/Python/Widgets/BoxWidget) | vtkBoxWidget | This 3D widget defines a region of interest that is represented by an arbitrarily oriented hexahedron with interior face angles of 90 degrees (orthogonal faces). The object creates 7 handles that can be moused on and manipulated.
+[CompassWidget](/Python/Widgets/CompassWidget) | vtkCompassWidget vtkCompassRepresentation | Draws an interactive compass.
 [ContourWidget](/Python/Widgets/ContourWidget) | vtkContourWidget vtkOrientedGlyphContourRepresentation | Draw a contour (line) which can be deformed by the user
 [OrientationMarkerWidget](/Python/Widgets/OrientationMarkerWidget) | vtkAnnotatedCubeActor vtkOrientationWidget | Draws two cubes. One of them can be clicked to be rotated, and will rotate the second one. The second one has annotations on it, and can also be moved.
 [ScalarBarWidget](/Python/Widgets/ScalarBarWidget) | vtkScalarBarWidget | The ScalarBarWidget displays a scalar bar that is movable and changes orientation automatically when close to the borders of the image. It needs a ScalarBarActor
@@ -625,17 +627,6 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 | -------------- | ---------------------- | ------------- | ------- |
 [MultiLineText](/Python/Annotation/MultiLineText) | vtkTextMapper | Display multiline text.
 [TextOrigin](/Python/Annotation/TextOrigin) |  | This example demonstrates the use of vtkVectorText and vtkFollower. vtkVectorText is used to create 3D annotation.
-
-## Geographic Visualization (Geovis)
-
-| Example Name | Classes Demonstrated | Description | Image |
-| -------------- | ---------------------- | ------------- | ------- |
-[CompassWidget](/Python/Widgets/CompassWidget) | vtkCompassWidget vtkCompassRepresentation | Draws an interactive compass.
-[CompassWidget](/Python/Geovis/CompassWidget) | vtkCompassWidget | Compass Widget.
-[EarthSource](/Python/Geovis/EarthSource) | vtkEarthSource | Create the Earth.
-[GeoGraticle](/Python/Geovis/GeoGraticle) | vtkGeoGraticle | Show lat/long lines that have been distorted.
-[GeoAssignCoordinates](/Python/Geovis/GeoAssignCoordinates) | vtkGeoAssignCoordinates vtkMutableDirectedGraph vtkGraphMapper | Draws a sphere, based on longituds and latitudes.
-[ParallelCoordinatesView](/Python/InfoVis/ParallelCoordinatesView) | vtkRTAnalyticSource vtkParallelCoordinatesView vtkParallelCoordinatesRepresentation | Plotting data attributes in a Parallel Coordinates View
 
 ## InfoVis
 
