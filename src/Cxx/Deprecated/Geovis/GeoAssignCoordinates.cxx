@@ -1,9 +1,8 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkDataSetAttributes.h>
 #include <vtkGeoAssignCoordinates.h>
 #include <vtkDoubleArray.h>
 #include <vtkGraphMapper.h>
+#include <vtkNew.h>
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
@@ -12,15 +11,12 @@
 int main(int, char* [])
 {
 
-  vtkSmartPointer<vtkMutableDirectedGraph> g =
-    vtkSmartPointer<vtkMutableDirectedGraph>::New();
+  vtkNew<vtkMutableDirectedGraph> g;
 
-  vtkSmartPointer<vtkDoubleArray> latitude =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> latitude;
   latitude->SetName("latitude");
 
-  vtkSmartPointer<vtkDoubleArray> longitude =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> longitude;
   longitude->SetName("longitude");
 
   for(int lat = -90; lat <= 90; lat += 10)
@@ -36,30 +32,24 @@ int main(int, char* [])
   g->GetVertexData()->AddArray(latitude);
   g->GetVertexData()->AddArray(longitude);
 
-  vtkSmartPointer<vtkGeoAssignCoordinates> assign =
-    vtkSmartPointer<vtkGeoAssignCoordinates>::New();
+  vtkNew<vtkGeoAssignCoordinates> assign;
   assign->SetInputData(g);
   assign->SetLatitudeArrayName("latitude");
   assign->SetLongitudeArrayName("longitude");
   assign->SetGlobeRadius(1.0);
   assign->Update();
 
-  vtkSmartPointer<vtkGraphMapper> mapper =
-    vtkSmartPointer<vtkGraphMapper>::New();
+  vtkNew<vtkGraphMapper> mapper;
   mapper->SetInputConnection(assign->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderer> ren =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren;
   ren->AddActor(actor);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
 
-  vtkSmartPointer<vtkRenderWindow> win =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> win;
   win->AddRenderer(ren);
   win->SetInteractor(iren);
   ren->ResetCamera();

@@ -1,8 +1,9 @@
-#include <vtkSmartPointer.h>
-#include <vtkGeoGraticule.h>
 #include <vtkActor.h>
+#include <vtkGeoGraticule.h>
 #include <vtkGeoProjection.h>
 #include <vtkGeoTransform.h>
+#include <vtkNew.h>
+#include <vtkNamedColors.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
@@ -10,39 +11,25 @@
 #include <vtkTransformFilter.h>
 #include <vtkXMLPolyDataReader.h>
 
-#include <vtkNamedColors.h>
-
 int main( int argc, char* argv[] )
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   int latLevel = 2;
   int lngLevel = 2;
   const char* pname = "rouss";
 
-  vtkSmartPointer<vtkGeoGraticule> geoGraticle =
-    vtkSmartPointer<vtkGeoGraticule>::New();
-  vtkSmartPointer<vtkGeoTransform> transformProjection =
-    vtkSmartPointer<vtkGeoTransform>::New();
-  vtkSmartPointer<vtkGeoProjection> destinationProjection =
-    vtkSmartPointer<vtkGeoProjection>::New();
-  vtkSmartPointer<vtkGeoProjection> sourceProjection =
-    vtkSmartPointer<vtkGeoProjection>::New();
-  vtkSmartPointer<vtkTransformFilter> transformGraticle =
-    vtkSmartPointer<vtkTransformFilter>::New();
-  vtkSmartPointer<vtkXMLPolyDataReader> reader =
-    vtkSmartPointer<vtkXMLPolyDataReader>::New();
-  vtkSmartPointer<vtkTransformFilter> transformReader =
-    vtkSmartPointer<vtkTransformFilter>::New();
-  vtkSmartPointer<vtkPolyDataMapper> graticleMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  vtkSmartPointer<vtkPolyDataMapper> readerMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  vtkSmartPointer<vtkActor> graticleActor =
-    vtkSmartPointer<vtkActor>::New();
-  vtkSmartPointer<vtkActor> readerActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkGeoGraticule> geoGraticle;
+  vtkNew<vtkGeoTransform> transformProjection;
+  vtkNew<vtkGeoProjection> destinationProjection;
+  vtkNew<vtkGeoProjection> sourceProjection;
+  vtkNew<vtkTransformFilter> transformGraticle;
+  vtkNew<vtkXMLPolyDataReader> reader;
+  vtkNew<vtkTransformFilter> transformReader;
+  vtkNew<vtkPolyDataMapper> graticleMapper;
+  vtkNew<vtkPolyDataMapper> readerMapper;
+  vtkNew<vtkActor> graticleActor;
+  vtkNew<vtkActor> readerActor;
 
   geoGraticle->SetGeometryType( vtkGeoGraticule::POLYLINES );
   geoGraticle->SetLatitudeLevel( latLevel );
@@ -66,12 +53,9 @@ int main( int argc, char* argv[] )
   readerMapper->SetInputConnection( transformReader->GetOutputPort() );
   readerActor->SetMapper( readerMapper );
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindowInteractor> interactor;
   renderWindow->SetInteractor( interactor );
   renderWindow->AddRenderer( renderer );
   renderWindow->SetSize(640, 480);
@@ -84,5 +68,6 @@ int main( int argc, char* argv[] )
 
   interactor->Initialize();
   interactor->Start();
+
   return EXIT_SUCCESS;
-};
+}

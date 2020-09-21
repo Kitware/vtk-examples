@@ -207,6 +207,7 @@ These are fully independent, compilable examples. There is significant overlap i
 [ConeDemo](/Cxx/GeometricObjects/ConeDemo) | vtkConeSource | Disolay four different resolution cones.
 [Cylinder](/Cxx/GeometricObjects/Cylinder) | vtkCylinderSource |
 [Disk](/Cxx/GeometricObjects/Disk) | vtkDiskSource | A circle with a hole in it.
+[EarthSource](/Cxx/GeometricObjects/EarthSource) | vtkEarthSource | Create the Earth.
 [Frustum](/Cxx/GeometricObjects/Frustum) | vtkFrustumSource |
 [Line](/Cxx/GeometricObjects/Line) | vtkLineSource |
 [OrientedArrow](/Cxx/GeometricObjects/OrientedArrow) | vtkArrowSource | Orient an arrow along an arbitrary vector.
@@ -1290,6 +1291,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [BoxWidget2](/Cxx/Widgets/BoxWidget2) | vtkBoxWidget2 |
 [CaptionWidget](/Cxx/Widgets/CaptionWidget) | vtkCaptionWidget |
 [CheckerboardWidget](/Cxx/Widgets/CheckerboardWidget) | vtkCheckerboardWidget vtkCheckerboardRepresentation | Compare two images using a checkerboard.
+[CompassWidget](/Cxx/Widgets/CompassWidget) | vtkCompassWidget vtkCompassRepresentation | Draws an interactive compass.
 [ContourWidget](/Cxx/Widgets/ContourWidget) | vtkContourWidget | Create a contour from a set of points and dynamically change the contour using the points as control points.
 [Cursor2D](/Cxx/Visualization/Cursor2D) | vtkCursor2D |
 [DistanceWidget](/Cxx/Widgets/DistanceWidget) | vtkDistanceWidget |
@@ -1353,14 +1355,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [DataAnimationSubclass](/Cxx/Utilities/DataAnimationSubclass) | vtkCommand vtkProgrammableFilter | Update points in a dataset every specified interval (using a vtkCommand subclass instead of a callback function.
 [RotatingSphere](/Cxx/Animation/RotatingSphere) | vtkSphereSource | A rotating sphere.
 
-## Geographic Visualization (Geovis)
-
-| Example Name | Classes Demonstrated | Description | Image |
-| -------------- | ---------------------- | ------------- | ------- |
-[CompassWidget](/Cxx/Geovis/CompassWidget) | vtkCompassWidget | Compass Widget.
-[EarthSource](/Cxx/Geovis/EarthSource) | vtkEarthSource | Create the Earth.
-[GeoAssignCoordinates](/Cxx/Geovis/GeoAssignCoordinates) | vtkGeoAssignCoordinates | Convert lat/long coordinates to world coordinates.
-[GeoGraticle](/Cxx/Geovis/GeoGraticle) | vtkGeoGraticle | Show lat/long lines that have been distorted.
+## InfoVis
 
 | Example Name | Classes Demonstrated | Description | Image |
 | -------------- | ---------------------- | ------------- | ------- |

@@ -9,6 +9,7 @@ if(NOT VTK_BINARY_DIR)
     vtkCommonTransforms
     vtkFiltersCore
     vtkFiltersSources
+    vtkGeovisCore
     vtkIOImage
     vtkIOXML
     vtkImagingGeneral

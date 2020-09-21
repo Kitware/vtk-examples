@@ -11,6 +11,7 @@ if(NOT VTK_BINARY_DIR)
     vtkCommonTransforms
     vtkFiltersCore
     vtkFiltersGeneral
+    vtkFiltersHybrid
     vtkFiltersModeling
     vtkFiltersSources
     vtkIOImage
