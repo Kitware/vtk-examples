@@ -1,63 +1,62 @@
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
-#include <vtkSphereSource.h>
-#include <vtkCompassWidget.h>
+#include <vtkArrowSource.h>
 #include <vtkCompassRepresentation.h>
-#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkCompassWidget.h>
 #include <vtkInteractorStyleTrackball.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
 
-  //sphere 1
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource->SetCenter(0.0, 0.0, 0.0);
-  sphereSource->SetRadius(4.0);
-    
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  mapper->SetInputConnection(sphereSource->GetOutputPort());
+  vtkNew<vtkArrowSource> arrowSource;
 
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
+  mapper->SetInputConnection(arrowSource->GetOutputPort());
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  
+  actor->GetProperty()->SetColor(colors->GetColor3d("PeachPuff").GetData());
+
   // a renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
   // an interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
-  
+
   // Create the widget and its representation
-  vtkSmartPointer<vtkCompassRepresentation> compassRepresentation = vtkSmartPointer<vtkCompassRepresentation>::New();
-  
-  vtkSmartPointer<vtkCompassWidget> compassWidget = 
-    vtkSmartPointer<vtkCompassWidget>::New();
+  vtkNew<vtkCompassRepresentation> compassRepresentation;
+
+  vtkNew<vtkCompassWidget> compassWidget;
   compassWidget->SetInteractor(renderWindowInteractor);
   compassWidget->SetRepresentation(compassRepresentation);
-  
+
   // add the actors to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
+
+  renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("CompassWidget");
+
   renderWindow->Render();
   compassWidget->EnabledOn();
-      
-  vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = 
-      vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();   
-  renderWindowInteractor->SetInteractorStyle( style );
-  
+
+  vtkNew<vtkInteractorStyleTrackballCamera> style;
+  renderWindowInteractor->SetInteractorStyle(style);
+
   // begin interaction
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

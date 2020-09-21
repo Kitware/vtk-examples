@@ -1,6 +1,5 @@
 #include <vtkSmartPointer.h>
 #include <vtkGeoGraticule.h>
-
 #include <vtkActor.h>
 #include <vtkGeoProjection.h>
 #include <vtkGeoTransform.h>
@@ -82,7 +81,7 @@ int main( int argc, char* argv[] )
   renderer->AddActor( graticleActor );
 
   renderWindow->Render();
-  
+
   interactor->Initialize();
   interactor->Start();
   return EXIT_SUCCESS;

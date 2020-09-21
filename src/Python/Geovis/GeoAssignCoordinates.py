@@ -8,9 +8,9 @@ def main():
 
     g = vtk.vtkMutableDirectedGraph()
     latitude = vtk.vtkDoubleArray()
-    latitude.SetName("latitude")
+    latitude.SetName('latitude')
     longitude = vtk.vtkDoubleArray()
-    longitude.SetName("longitude")
+    longitude.SetName('longitude')
     for i in range(-90, 90, 10):
         for j in range(-180, 180, 20):
             g.AddVertex()
@@ -22,8 +22,8 @@ def main():
     assign = vtk.vtkGeoAssignCoordinates()
     assign.SetInputData(g)
 
-    assign.SetLatitudeArrayName("latitude")
-    assign.SetLongitudeArrayName("longitude")
+    assign.SetLatitudeArrayName('latitude')
+    assign.SetLongitudeArrayName('longitude')
     assign.SetGlobeRadius(1.0)
     assign.Update()
 
