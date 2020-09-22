@@ -34,11 +34,11 @@ set(KIT_LIBS ${VTK_LIBRARIES})
 #
 # Build all .cxx files in the directory
 file(GLOB ALL_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cxx)
-message("All files: ${ALL_FILES}")
 
 set(BOOST_SRCS)
 if(NOT VTK_USE_BOOST)
   list(APPEND BOOST_SRCS
+    AdjacentVertexIterator.cxx
     BreadthFirstDistance.cxx
     BoostBreadthFirstSearchTree.cxx
     ConnectedComponents.cxx
@@ -46,14 +46,13 @@ if(NOT VTK_USE_BOOST)
     MinimumSpanningTree.cxx
     )
 endif()
-message("Boost needed files: ${BOOST_SRCS}")
 
 if (BOOST_SRCS)
   list(REMOVE_ITEM ALL_FILES ${BOOST_SRCS})
 endif()
-message("Boost needed files: ${ALL_FILES}")
 
 if(VTK_USE_BOOST)
+  Requires_Module(AdjacentVertexIterator vtkInfovisBoostGraphAlgorithms)
   Requires_Module(BreadthFirstDistance vtkInfovisBoostGraphAlgorithms)
   Requires_Module(BoostBreadthFirstSearchTree vtkInfovisBoostGraphAlgorithms)
   Requires_Module(ConnectedComponents vtkInfovisBoostGraphAlgorithms)

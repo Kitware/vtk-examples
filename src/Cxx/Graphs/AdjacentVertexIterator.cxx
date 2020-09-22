@@ -1,14 +1,16 @@
-#include <vtkMutableUndirectedGraph.h>
-#include <vtkSmartPointer.h>
 #include <vtkAdjacentVertexIterator.h>
-#include <vtkUnsignedCharArray.h>
-#include <vtkLookupTable.h>
-#include <vtkMutableDirectedGraph.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkViewTheme.h>
 #include <vtkDataSetAttributes.h>
 #include <vtkGraphLayoutView.h>
+#include <vtkLookupTable.h>
+#include <vtkMutableUndirectedGraph.h>
+#include <vtkMutableDirectedGraph.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkUnsignedCharArray.h>
+#include <vtkViewTheme.h>
+
 
 // For compatibility with new VTK generic data arrays
 #ifdef vtkGenericDataArray_h
@@ -17,8 +19,9 @@
 
 int main(int, char *[])
 {
-  vtkSmartPointer<vtkMutableUndirectedGraph> g =
-    vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkMutableUndirectedGraph> g;
 
   //create 3 vertices
   vtkIdType v0 = g->AddVertex();
@@ -32,48 +35,38 @@ int main(int, char *[])
   g->AddEdge(v2, v3);
 
   // Create the color array
-  vtkSmartPointer<vtkUnsignedCharArray> vertexColors =
-    vtkSmartPointer<vtkUnsignedCharArray>::New();
+  vtkNew<vtkUnsignedCharArray> vertexColors;
   vertexColors->SetNumberOfComponents(3);
   vertexColors->SetName("color");
 
   //setup colors
-  unsigned char red[3] = {255, 0, 0};
-  unsigned char green[3] = {0, 255, 0};
-  unsigned char blue[3] = {0, 0, 255};
+   vertexColors->InsertNextTypedTuple(
+        colors->GetColor3ub("Blue").GetData()); // unconnected vertices
 
-  for(unsigned int i = 0; i < 4; i++)
-  {
-    vertexColors->InsertNextTupleValue(blue);//not connected vertices
-  }
+  vertexColors->InsertNextTypedTuple(colors->GetColor3ub("Red").GetData()); // origin
 
-
-  vtkSmartPointer<vtkAdjacentVertexIterator> iterator =
-    vtkSmartPointer<vtkAdjacentVertexIterator>::New();
+  vtkNew<vtkAdjacentVertexIterator> iterator;
   g->GetAdjacentVertices(0, iterator);
-
-  vertexColors->SetTypedTuple(0, red); // origin
 
   while(iterator->HasNext())
   {
     vtkIdType nextVertex = iterator->Next();
     std::cout << "Next vertex: " << nextVertex << std::endl;
-    vertexColors->SetTypedTuple(nextVertex, green);//connected vertices
+    vertexColors->InsertNextTypedTuple(
+        colors->GetColor3ub("Green").GetData()); // connected vertices
   }
 
   // Add the color array to the graph
   g->GetVertexData()->AddArray(vertexColors);
 
-  vtkSmartPointer<vtkGraphLayoutView> graphLayoutView =
-    vtkSmartPointer<vtkGraphLayoutView>::New();
+  vtkNew<vtkGraphLayoutView> graphLayoutView;
   graphLayoutView->AddRepresentationFromInput(g);
   graphLayoutView->SetLayoutStrategyToTree();
 
   graphLayoutView->SetVertexColorArrayName("color");
   graphLayoutView->ColorVerticesOn();
 
-  vtkSmartPointer<vtkViewTheme> theme =
-    vtkSmartPointer<vtkViewTheme>::New();
+  vtkNew<vtkViewTheme> theme;
   //theme->SetPointLookupTable(lookupTable);
   theme->ScalePointLookupTableOff();
   graphLayoutView->ApplyViewTheme(theme);
