@@ -52,13 +52,13 @@ int main(int, char *[])
     vtkSmartPointer<vtkAdjacentVertexIterator>::New();
   g->GetAdjacentVertices(0, iterator);
 
-  vertexColors->SetTupleValue(0, red);//origin
+  vertexColors->SetTypedTuple(0, red); // origin
 
   while(iterator->HasNext())
   {
     vtkIdType nextVertex = iterator->Next();
     std::cout << "Next vertex: " << nextVertex << std::endl;
-    vertexColors->SetTupleValue(nextVertex, green);//connected vertices
+    vertexColors->SetTypedTuple(nextVertex, green);//connected vertices
   }
 
   // Add the color array to the graph

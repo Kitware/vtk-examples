@@ -1,17 +1,15 @@
-#include <vtkSmartPointer.h>
-
-#include <vtkMutableUndirectedGraph.h>
-#include <vtkBoostPrimMinimumSpanningTree.h>
 #include <vtkBoostBreadthFirstSearch.h>
-#include <vtkTree.h>
-#include <vtkDoubleArray.h>
+#include <vtkBoostPrimMinimumSpanningTree.h>
 #include <vtkDataSetAttributes.h>
+#include <vtkDoubleArray.h>
+#include <vtkMutableUndirectedGraph.h>
+#include <vtkNew.h>
+#include <vtkTree.h>
 #include <vtkTreeDFSIterator.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkMutableUndirectedGraph> g =
-    vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkMutableUndirectedGraph> g;
 
   // Create 3 vertices
   vtkIdType v1 = g->AddVertex();
@@ -24,8 +22,7 @@ int main(int, char *[])
   g->AddEdge(v1, v3);
 
   // Create the edge weight array
-  vtkSmartPointer<vtkDoubleArray> weights =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> weights;
   weights->SetNumberOfComponents(1);
   weights->SetName("Weights");
 
@@ -39,14 +36,11 @@ int main(int, char *[])
 
   // Output original graph info
   std::cout << "Original Graph" << std::endl << "----------" << std::endl;
-  std::cout << "Number of vertices: "
-            << g->GetNumberOfVertices() << std::endl;
-  std::cout << "Number of edges: "
-            << g->GetNumberOfEdges() << std::endl;
+  std::cout << "Number of vertices: " << g->GetNumberOfVertices() << std::endl;
+  std::cout << "Number of edges: " << g->GetNumberOfEdges() << std::endl;
 
   // Setup the minimum spanning tree filter
-  vtkSmartPointer<vtkBoostPrimMinimumSpanningTree> minimumSpanningTreeFilter =
-    vtkSmartPointer<vtkBoostPrimMinimumSpanningTree>::New();
+  vtkNew<vtkBoostPrimMinimumSpanningTree> minimumSpanningTreeFilter;
   minimumSpanningTreeFilter->SetOriginVertex(v1);
   minimumSpanningTreeFilter->SetInput(g);
   minimumSpanningTreeFilter->SetEdgeWeightArrayName("Weights");
@@ -55,8 +49,7 @@ int main(int, char *[])
   minimumSpanningTreeFilter->Update();
 
   // Get the output tree
-  vtkSmartPointer<vtkTree> minimumSpanningTree =
-    vtkSmartPointer<vtkTree>::New();
+  vtkNew<vtkTree> minimumSpanningTree;
   minimumSpanningTree->ShallowCopy(minimumSpanningTreeFilter->GetOutput());
 
   // Output information about the minimum spanning tree
@@ -65,25 +58,22 @@ int main(int, char *[])
             << "----------" << std::endl;
   std::cout << "Number of vertices: "
             << minimumSpanningTree->GetNumberOfVertices() << std::endl;
-  std::cout << "Number of edges: "
-            << minimumSpanningTree->GetNumberOfEdges() << std::endl;
+  std::cout << "Number of edges: " << minimumSpanningTree->GetNumberOfEdges()
+            << std::endl;
 
   vtkIdType root = minimumSpanningTree->GetRoot();
   std::cout << "Root: " << root << std::endl;
 
-  vtkSmartPointer<vtkTreeDFSIterator> dFS =
-    vtkSmartPointer<vtkTreeDFSIterator>::New();
+  vtkNew<vtkTreeDFSIterator> dFS;
   dFS->SetStartVertex(root);
   dFS->SetTree(minimumSpanningTree);
 
   // Traverse the tree in a depth first fashion
-  while(dFS->HasNext())
+  while (dFS->HasNext())
   {
     vtkIdType NextVertex = dFS->Next();
-    std::cout << "Next vertex: "
-              << NextVertex
-              << " level: "
-              << minimumSpanningTree->GetLevel(NextVertex)
+    std::cout << "Next vertex: " << NextVertex
+              << " level: " << minimumSpanningTree->GetLevel(NextVertex)
               << std::endl;
   }
 

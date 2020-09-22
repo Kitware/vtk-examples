@@ -11,7 +11,7 @@ if(NOT VTK_BINARY_DIR)
     vtkFiltersSources
     vtkIOLegacy
     vtkIOXML
-    vtkInfovisBoostGraphAlgorithms
+    # vtkInfovisBoostGraphAlgorithms
     vtkInfovisCore
     vtkInfovisLayout
     vtkInteractionStyle
@@ -33,7 +33,34 @@ set(KIT_LIBS ${VTK_LIBRARIES})
 
 #
 # Build all .cxx files in the directory
-file(GLOB ALL_FILES *.cxx)
+file(GLOB ALL_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cxx)
+message("All files: ${ALL_FILES}")
+
+set(BOOST_SRCS)
+if(NOT VTK_USE_BOOST)
+  list(APPEND BOOST_SRCS
+    BreadthFirstDistance.cxx
+    BoostBreadthFirstSearchTree.cxx
+    ConnectedComponents.cxx
+    DepthFirstSearchIterator.cxx
+    MinimumSpanningTree.cxx
+    )
+endif()
+message("Boost needed files: ${BOOST_SRCS}")
+
+if (BOOST_SRCS)
+  list(REMOVE_ITEM ALL_FILES ${BOOST_SRCS})
+endif()
+message("Boost needed files: ${ALL_FILES}")
+
+if(VTK_USE_BOOST)
+  Requires_Module(BreadthFirstDistance vtkInfovisBoostGraphAlgorithms)
+  Requires_Module(BoostBreadthFirstSearchTree vtkInfovisBoostGraphAlgorithms)
+  Requires_Module(ConnectedComponents vtkInfovisBoostGraphAlgorithms)
+  Requires_Module(DepthFirstSearchIterator vtkInfovisBoostGraphAlgorithms)
+  Requires_Module(MinimumSpanningTree vtkInfovisBoostGraphAlgorithms)
+endif()
+
 foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ".cxx" "" TMP ${SOURCE_FILE})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
@@ -44,7 +71,8 @@ foreach(SOURCE_FILE ${ALL_FILES})
       TARGETS ${WIKI}${EXAMPLE}
       MODULES ${VTK_LIBRARIES}
       )
-  endforeach()
+  endif()
+endforeach()
 
   if (BUILD_TESTING)
     # Testing

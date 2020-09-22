@@ -1,16 +1,14 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkBoostBreadthFirstSearch.h>
 #include <vtkDataSetAttributes.h>
 #include <vtkDoubleArray.h>
 #include <vtkIntArray.h>
 #include <vtkMutableUndirectedGraph.h>
+#include <vtkNew.h>
 #include <vtkTree.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkMutableUndirectedGraph> g =
-    vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkMutableUndirectedGraph> g;
 
   // Create 3 vertices
   vtkIdType v1 = g->AddVertex();
@@ -23,15 +21,14 @@ int main(int, char *[])
   g->AddEdge(v1, v3);
   g->AddEdge(v2, v4);
 
-  vtkSmartPointer<vtkBoostBreadthFirstSearch> BFS =
-    vtkSmartPointer<vtkBoostBreadthFirstSearch>::New();
+  vtkNew<vtkBoostBreadthFirstSearch> BFS;
   BFS->SetOriginVertex(v1);
   BFS->SetInput(g);
   BFS->Update();
 
   vtkIntArray* level = dynamic_cast<vtkIntArray*>(
-    BFS->GetOutput()->GetVertexData()->GetArray("BFS"));
-  for(vtkIdType i = 0; i < level->GetNumberOfTuples(); i++)
+      BFS->GetOutput()->GetVertexData()->GetArray("BFS"));
+  for (vtkIdType i = 0; i < level->GetNumberOfTuples(); i++)
   {
     std::cout << "id " << i << " : " << level->GetValue(i) << std::endl;
   }
