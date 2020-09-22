@@ -19,49 +19,49 @@
 +-----------------+------------------+
 
 The first column is the column index of the item in the 'value' column.
-The row index is given by the number of times we've previously seen the column index.
-For some reason, zeros in the matrix are not reported in the table.
+The row index is given by the number of times we've previously seen the column
+index. For some reason, zeros in the matrix are not reported in the table.
 
-For example, the first row says that the value '30' is in column 2 of the matrix (0-based indexing).
-Since we have not previously seen an item in column 2, it is in row 0 of the matrix.
+For example, the first row says that the value '30' is in column 2 of the matrix
+(0-based indexing). Since we have not previously seen an item in column 2, it is
+in row 0 of the matrix.
 
-The fourth row says that the value '60' is also in column 2. We infer that '60' is row 1 of the
-matrix because we have already seen one item (the '30') in column 2.
+The fourth row says that the value '60' is also in column 2. We infer that '60'
+is row 1 of the matrix because we have already seen one item (the '30') in
+column 2.
 */
 
-#include <vtkSmartPointer.h>
-#include <vtkDenseArray.h>
-#include <vtkArrayToTable.h>
-#include <vtkTable.h>
-#include <vtkArrayData.h>
 #include <vtkAdjacencyMatrixToEdgeTable.h>
+#include <vtkArrayData.h>
 #include <vtkArrayPrint.h>
+#include <vtkArrayToTable.h>
+#include <vtkDenseArray.h>
+#include <vtkNew.h>
+#include <vtkTable.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkDenseArray<double> > array =
-    vtkSmartPointer<vtkDenseArray<double> >::New();
+  vtkNew<vtkDenseArray<double>> array;
 
-  array->Resize(3,3);
+  array->Resize(3, 3);
 
-  unsigned int counter = 1;
-  for(vtkIdType i = 0; i < array->GetExtents()[0].GetEnd(); i++)
+  unsigned int counter{1};
+  unsigned int scale{10};
+  for (vtkIdType i = 0; i < array->GetExtents()[0].GetEnd(); i++)
   {
-    for(vtkIdType j = 0; j < array->GetExtents()[1].GetEnd(); j++)
+    for (vtkIdType j = 0; j < array->GetExtents()[1].GetEnd(); j++)
     {
-      array->SetValue(i, j, counter*10);
+      array->SetValue(i, j, counter * scale);
       counter++;
     }
   }
 
   vtkPrintMatrixFormat(std::cout, array.GetPointer());
 
-  vtkSmartPointer<vtkArrayData> arrayData =
-    vtkSmartPointer<vtkArrayData>::New();
+  vtkNew<vtkArrayData> arrayData;
   arrayData->AddArray(array);
 
-  vtkSmartPointer<vtkAdjacencyMatrixToEdgeTable> adjacencyMatrixToEdgeTable =
-    vtkSmartPointer<vtkAdjacencyMatrixToEdgeTable>::New();
+  vtkNew<vtkAdjacencyMatrixToEdgeTable> adjacencyMatrixToEdgeTable;
   adjacencyMatrixToEdgeTable->SetInputData(arrayData);
   adjacencyMatrixToEdgeTable->Update();
 

@@ -3,6 +3,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkGraphLayoutView.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderWindow.h>
 
 int main(int, char *[])
 {
@@ -31,6 +32,7 @@ int main(int, char *[])
   graphLayoutView->AddRepresentationFromInput(g);
   graphLayoutView->SetLayoutStrategy("Pass Through");
   graphLayoutView->ResetCamera();
+  graphLayoutView->GetRenderWindow()->SetWindowName("GraphPoints");
   graphLayoutView->Render();
   graphLayoutView->GetInteractor()->Start();
   

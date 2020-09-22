@@ -2,6 +2,8 @@
 import vtk
 
 def main():
+    colors = vtk.vtkNamedColors()
+
     graph = vtk.vtkMutableDirectedGraph()
     # Create a graph
     v1 = graph.AddVertex()
@@ -18,8 +20,8 @@ def main():
     
     lookupTable = vtk.vtkLookupTable()
     lookupTable.SetNumberOfTableValues(2)
-    lookupTable.SetTableValue(0, 1.0, 0.0, 0.0) # red
-    lookupTable.SetTableValue(1, 0.0, 1.0, 0.0) # green
+    lookupTable.SetTableValue(0, colors.GetColor4d('Red'))
+    lookupTable.SetTableValue(1, colors.GetColor4d('Green'))
     lookupTable.Build()
     
     edgeColors.InsertNextValue(0)
@@ -42,6 +44,7 @@ def main():
     
     graphLayoutView.ApplyViewTheme(theme)
     graphLayoutView.ResetCamera()
+    graphLayoutView.GetRenderer().GetActiveCamera().Zoom(0.8)
     graphLayoutView.Render()
     graphLayoutView.GetLayoutStrategy().SetRandomSeed(0)
     graphLayoutView.GetInteractor().Initialize()
