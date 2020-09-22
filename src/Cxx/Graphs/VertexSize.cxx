@@ -43,7 +43,7 @@ int main(int, char *[])
 
   vtkSmartPointer<CustomRepresentation> representation =
     vtkSmartPointer<CustomRepresentation>::New();
-  representation->SetInputConnection(g->GetProducerPort());
+  representation->SetInputData(g);
   representation->SetVertexSize(100);
   representation->SetGlyphType(vtkGraphToGlyphs::CIRCLE);
 
