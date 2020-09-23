@@ -1,17 +1,16 @@
-#include <vtkHyperTreeGridSource.h>
-#include <vtkHyperTreeGridToUnstructuredGrid.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkDataSetMapper.h>
+#include <vtkHyperTreeGridSource.h>
+#include <vtkHyperTreeGridToUnstructuredGrid.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkShrinkFilter.h>
-#include <vtkSmartPointer.h>
 #include <vtkVersion.h>
 
 #include <cstdlib>
@@ -19,7 +18,7 @@
 int main(int, char*[])
 {
   // Create hyper tree grid source
-  auto source = vtkSmartPointer<vtkHyperTreeGridSource>::New();
+  vtkNew<vtkHyperTreeGridSource> source;
 #if VTK_VERSION_NUMBER >= 89000000000ULL
   source->SetMaxDepth(6);
 #else
@@ -52,31 +51,31 @@ int main(int, char*[])
   source->Update();
 
   // Hyper tree grid to unstructured grid filter
-  auto htg2ug = vtkSmartPointer<vtkHyperTreeGridToUnstructuredGrid>::New();
+  vtkNew<vtkHyperTreeGridToUnstructuredGrid> htg2ug;
   htg2ug->SetInputConnection(source->GetOutputPort());
   htg2ug->Update();
 
-  auto shrink = vtkSmartPointer<vtkShrinkFilter>::New();
+  vtkNew<vtkShrinkFilter> shrink;
   shrink->SetInputConnection(htg2ug->GetOutputPort());
   shrink->SetShrinkFactor(0.8);
 
-  auto mapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(shrink->GetOutputPort());
   mapper->ScalarVisibilityOff();
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetDiffuseColor(
       colors->GetColor3d("Burlywood").GetData());
 
   // Create the RenderWindow, Renderer and Interactor
   //
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
@@ -90,5 +89,6 @@ int main(int, char*[])
   renderWindow->Render();
   renderWindow->SetWindowName("HyperTreeGridSource");
   interactor->Start();
+
   return EXIT_SUCCESS;
 }
