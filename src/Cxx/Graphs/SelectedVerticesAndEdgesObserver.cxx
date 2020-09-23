@@ -1,27 +1,33 @@
-#include <vtkSmartPointer.h>
-#include <vtkCallbackCommand.h>
 #include <vtkAnnotationLink.h>
-#include <vtkRenderedGraphRepresentation.h>
-#include <vtkRenderer.h>
+#include <vtkCallbackCommand.h>
 #include <vtkDoubleArray.h>
-#include <vtkSelectionNode.h>
-#include <vtkIdTypeArray.h>
-#include <vtkSelection.h>
-#include <vtkRenderWindow.h>
-#include <vtkUnsignedCharArray.h>
-#include <vtkObjectFactory.h>
 #include <vtkGraphLayoutStrategy.h>
 #include <vtkGraphLayoutView.h>
 #include <vtkGraphWriter.h>
+#include <vtkIdTypeArray.h>
 #include <vtkMutableUndirectedGraph.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkObjectFactory.h>
+#include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderedGraphRepresentation.h>
+#include <vtkRenderer.h>
+#include <vtkSelection.h>
+#include <vtkSelectionNode.h>
+#include <vtkUnsignedCharArray.h>
 
-void SelectionCallbackFunction(vtkObject* caller, long unsigned int eventId, void* clientData, void* callData);
+namespace {
 
-int main(int, char *[])
+void SelectionCallbackFunction(vtkObject* caller, long unsigned int eventId,
+                               void* clientData, void* callData);
+}
+
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkMutableUndirectedGraph> g =
-    vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkMutableUndirectedGraph> g;
 
   vtkIdType v1 = g->AddVertex();
   vtkIdType v2 = g->AddVertex();
@@ -29,16 +35,19 @@ int main(int, char *[])
   g->AddEdge(v1, v2);
   g->AddEdge(v1, v2);
 
-  vtkSmartPointer<vtkCallbackCommand> selectionCallback =
-    vtkSmartPointer<vtkCallbackCommand>::New();
-  selectionCallback->SetCallback (SelectionCallbackFunction);
+  vtkNew<vtkCallbackCommand> selectionCallback;
+  selectionCallback->SetCallback(SelectionCallbackFunction);
 
-  vtkSmartPointer<vtkGraphLayoutView> view =
-    vtkSmartPointer<vtkGraphLayoutView>::New();
+  vtkNew<vtkGraphLayoutView> view;
   view->AddRepresentationFromInput(g);
   view->SetLayoutStrategy("Simple 2D");
-  view->GetRepresentation()->GetAnnotationLink()->AddObserver("AnnotationChangedEvent", selectionCallback);
+  view->GetRepresentation()->GetAnnotationLink()->AddObserver(
+      "AnnotationChangedEvent", selectionCallback);
 
+  view->GetRenderer()->SetBackground(colors->GetColor3d("Navy").GetData());
+  view->GetRenderer()->SetBackground2(
+      colors->GetColor3d("MidnightBlue").GetData());
+  view->GetRenderWindow()->SetWindowName("SelectedVerticesAndEdges");
   view->ResetCamera();
   view->Render();
 
@@ -47,57 +56,64 @@ int main(int, char *[])
   return EXIT_SUCCESS;
 }
 
-void SelectionCallbackFunction(vtkObject* caller, long unsigned int eventId, void* clientData, void* callData)
+namespace {
+
+void SelectionCallbackFunction(vtkObject* caller, long unsigned int eventId,
+                               void* clientData, void* callData)
 {
 
-  vtkAnnotationLink* annotationLink =
-    static_cast<vtkAnnotationLink*>(caller);
+  vtkAnnotationLink* annotationLink = static_cast<vtkAnnotationLink*>(caller);
 
   vtkSelection* selection = annotationLink->GetCurrentSelection();
   vtkSelectionNode* vertices;
   vtkSelectionNode* edges;
-  if(selection->GetNode(0)->GetFieldType() == vtkSelectionNode::VERTEX)
+  if (selection->GetNode(0)->GetFieldType() == vtkSelectionNode::VERTEX)
   {
     vertices = selection->GetNode(0);
   }
-  else if(selection->GetNode(0)->GetFieldType() == vtkSelectionNode::EDGE)
+  else if (selection->GetNode(0)->GetFieldType() == vtkSelectionNode::EDGE)
   {
     edges = selection->GetNode(0);
   }
 
-  if(selection->GetNode(1)->GetFieldType() == vtkSelectionNode::VERTEX)
+  if (selection->GetNode(1)->GetFieldType() == vtkSelectionNode::VERTEX)
   {
     vertices = selection->GetNode(1);
   }
-  else if(selection->GetNode(1)->GetFieldType() == vtkSelectionNode::EDGE)
+  else if (selection->GetNode(1)->GetFieldType() == vtkSelectionNode::EDGE)
   {
     edges = selection->GetNode(1);
   }
 
-  vtkIdTypeArray* vertexList = dynamic_cast<vtkIdTypeArray*>(vertices->GetSelectionList());
-  std::cout << "There are " << vertexList->GetNumberOfTuples() << " vertices selected." << std::endl;
+  vtkIdTypeArray* vertexList =
+      dynamic_cast<vtkIdTypeArray*>(vertices->GetSelectionList());
+  std::cout << "There are " << vertexList->GetNumberOfTuples()
+            << " vertices selected." << std::endl;
 
-  if(vertexList->GetNumberOfTuples() > 0)
+  if (vertexList->GetNumberOfTuples() > 0)
   {
     std::cout << "Vertex Ids: ";
   }
-  for(vtkIdType i = 0; i < vertexList->GetNumberOfTuples(); i++)
+  for (vtkIdType i = 0; i < vertexList->GetNumberOfTuples(); i++)
   {
     std::cout << vertexList->GetValue(i) << " ";
   }
 
   std::cout << std::endl;
-  vtkIdTypeArray* edgeList = dynamic_cast<vtkIdTypeArray*>(edges->GetSelectionList());
-  std::cout << "There are " << edgeList->GetNumberOfTuples() << " edges selected." << std::endl;
-  if(edgeList->GetNumberOfTuples() > 0)
+  vtkIdTypeArray* edgeList =
+      dynamic_cast<vtkIdTypeArray*>(edges->GetSelectionList());
+  std::cout << "There are " << edgeList->GetNumberOfTuples()
+            << " edges selected." << std::endl;
+  if (edgeList->GetNumberOfTuples() > 0)
   {
     std::cout << "Edge Ids: ";
   }
 
-  for(vtkIdType i = 0; i < edgeList->GetNumberOfTuples(); i++)
+  for (vtkIdType i = 0; i < edgeList->GetNumberOfTuples(); i++)
   {
     std::cout << edgeList->GetValue(i) << " ";
   }
   std::cout << std::endl;
-
 }
+
+} // namespace

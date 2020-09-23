@@ -1,32 +1,39 @@
-#include <vtkSmartPointer.h>
-#include <vtkRenderedGraphRepresentation.h>
-#include <vtkObjectFactory.h>
-#include <vtkFloatArray.h>
-#include <vtkMutableUndirectedGraph.h>
-#include <vtkGraphWriter.h>
-#include <vtkGraphLayoutView.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkDataSetAttributes.h>
+#include <vtkFloatArray.h>
+#include <vtkGraphLayoutView.h>
 #include <vtkGraphToGlyphs.h>
+#include <vtkGraphWriter.h>
+#include <vtkMutableUndirectedGraph.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkObjectFactory.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderedGraphRepresentation.h>
+#include <vtkRenderer.h>
+
+namespace {
 
 class CustomRepresentation : public vtkRenderedGraphRepresentation
 {
- public:
-    static CustomRepresentation* New();
-    vtkTypeMacro(CustomRepresentation, vtkRenderedGraphRepresentation);
+public:
+  static CustomRepresentation* New();
+  vtkTypeMacro(CustomRepresentation, vtkRenderedGraphRepresentation);
 
-    void SetVertexSize(int vertexSize)
-    {
-      this->VertexGlyph->SetScreenSize(vertexSize);
-      this->VertexGlyph->Modified();
-    }
+  void SetVertexSize(int vertexSize)
+  {
+    this->VertexGlyph->SetScreenSize(vertexSize);
+    this->VertexGlyph->Modified();
+  }
 };
 vtkStandardNewMacro(CustomRepresentation);
+} // namespace
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkMutableUndirectedGraph> g =
-    vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkMutableUndirectedGraph> g;
 
   vtkIdType v1 = g->AddVertex();
   vtkIdType v2 = g->AddVertex();
@@ -35,22 +42,24 @@ int main(int, char *[])
   g->AddEdge(v1, v2);
 
   // Specify coordinates so the graph is always the same for testing
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint(0,0,0);
-  points->InsertNextPoint(1,0,0);
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(0, 0, 0);
+  points->InsertNextPoint(1, 0, 0);
   g->SetPoints(points);
 
-  vtkSmartPointer<CustomRepresentation> representation =
-    vtkSmartPointer<CustomRepresentation>::New();
+  vtkNew<CustomRepresentation> representation;
   representation->SetInputData(g);
   representation->SetVertexSize(100);
   representation->SetGlyphType(vtkGraphToGlyphs::CIRCLE);
 
-  vtkSmartPointer<vtkGraphLayoutView> layoutView =
-    vtkSmartPointer<vtkGraphLayoutView>::New();
+  vtkNew<vtkGraphLayoutView> layoutView;
   layoutView->AddRepresentation(representation);
   layoutView->SetLayoutStrategy("Pass Through");
+  layoutView->GetRenderer()->SetBackground(
+      colors->GetColor3d("SaddleBrown").GetData());
+  layoutView->GetRenderer()->SetBackground2(
+      colors->GetColor3d("Wheat").GetData());
+  layoutView->GetRenderWindow()->SetWindowName("VertexSize");
   layoutView->ResetCamera();
   layoutView->GetInteractor()->Start();
 

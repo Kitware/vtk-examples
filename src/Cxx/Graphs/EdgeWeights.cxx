@@ -1,18 +1,20 @@
-#include <vtkSmartPointer.h>
-#include <vtkDataSetAttributes.h>
-#include <vtkDoubleArray.h>
-#include <vtkMutableUndirectedGraph.h>
 #include <vtkCircularLayoutStrategy.h>
+#include <vtkDataSetAttributes.h>
 #include <vtkDoubleArray.h>
 #include <vtkGraphLayoutView.h>
 #include <vtkIntArray.h>
 #include <vtkMutableUndirectedGraph.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkMutableUndirectedGraph> g =
-    vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkMutableUndirectedGraph> g;
 
   // Create 3 vertices
   vtkIdType v1 = g->AddVertex();
@@ -25,8 +27,7 @@ int main(int, char *[])
   g->AddEdge(v1, v3);
 
   // Create the edge weight array
-  vtkSmartPointer<vtkDoubleArray> weights =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> weights;
   weights->SetNumberOfComponents(1);
   weights->SetName("Weights");
 
@@ -40,21 +41,26 @@ int main(int, char *[])
 
   std::cout << "Number of Weights: "
             << dynamic_cast<vtkDoubleArray*>(
-              g->GetEdgeData()->GetArray("Weights"))->GetNumberOfTuples()
+                   g->GetEdgeData()->GetArray("Weights"))
+                   ->GetNumberOfTuples()
             << std::endl;
 
-  for(vtkIdType i = 0; i < weights->GetNumberOfTuples(); i++)
+  for (vtkIdType i = 0; i < weights->GetNumberOfTuples(); i++)
   {
     double w = weights->GetValue(i);
     std::cout << "Weight " << i << " : " << w << std::endl;
   }
 
-  vtkSmartPointer<vtkGraphLayoutView> graphLayoutView =
-    vtkSmartPointer<vtkGraphLayoutView>::New();
+  vtkNew<vtkGraphLayoutView> graphLayoutView;
   graphLayoutView->AddRepresentationFromInput(g);
   graphLayoutView->SetEdgeLabelVisibility(true);
   graphLayoutView->SetEdgeLabelArrayName("Weights");
   graphLayoutView->ResetCamera();
+  graphLayoutView->GetRenderer()->SetBackground(
+      colors->GetColor3d("Navy").GetData());
+  graphLayoutView->GetRenderer()->SetBackground2(
+      colors->GetColor3d("MidnightBlue").GetData());
+  graphLayoutView->GetRenderWindow()->SetWindowName("EdgeWeights");
   graphLayoutView->Render();
   graphLayoutView->GetInteractor()->Start();
 

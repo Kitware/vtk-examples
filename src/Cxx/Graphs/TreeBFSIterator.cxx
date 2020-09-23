@@ -1,13 +1,12 @@
-#include <vtkSmartPointer.h>
 #include <vtkMutableDirectedGraph.h>
+#include <vtkNew.h>
 #include <vtkTree.h>
 #include <vtkTreeBFSIterator.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  //create a tree
-  vtkSmartPointer<vtkMutableDirectedGraph> g =
-    vtkSmartPointer<vtkMutableDirectedGraph>::New();
+  // create a tree
+  vtkNew<vtkMutableDirectedGraph> g;
 
   vtkIdType v1 = g->AddVertex();
   vtkIdType v2 = g->AddVertex();
@@ -16,20 +15,18 @@ int main(int argc, char *argv[])
   g->AddEdge(v1, v2);
   g->AddEdge(v1, v3);
 
-  vtkSmartPointer<vtkTree> tree =
-    vtkSmartPointer<vtkTree>::New();
+  vtkNew<vtkTree> tree;
   tree->CheckedShallowCopy(g);
 
-  //setup the iterator
+  // setup the iterator
   vtkIdType root = 0;
 
-  vtkSmartPointer<vtkTreeBFSIterator> bfsIterator =
-      vtkSmartPointer<vtkTreeBFSIterator>::New();
+  vtkNew<vtkTreeBFSIterator> bfsIterator;
   bfsIterator->SetStartVertex(root);
   bfsIterator->SetTree(tree);
 
-  //traverse the tree in a breadth first fashion
-  while(bfsIterator->HasNext())
+  // traverse the tree in a breadth first fashion
+  while (bfsIterator->HasNext())
   {
     vtkIdType nextVertex = bfsIterator->Next();
     std::cout << "Next vertex: " << nextVertex << std::endl;

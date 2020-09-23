@@ -1,4 +1,5 @@
 ### Description
+
 This example shows how to find the minimum spanning tree. The input graph is:
 
 <img style="float:middle" src="http://www.vtk.org/Wiki/images/0/0b/3_vertex_fully_connected_graph.svg">

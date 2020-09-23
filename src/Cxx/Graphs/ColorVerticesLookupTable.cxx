@@ -5,11 +5,11 @@
 #include <vtkLookupTable.h>
 #include <vtkMutableDirectedGraph.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkViewTheme.h>
 
 int main(int, char*[])
@@ -41,8 +41,8 @@ int main(int, char*[])
   vtkNew<vtkLookupTable> lookupTable;
   lookupTable->SetNumberOfTableValues(3);
   lookupTable->SetTableValue(0, colors->GetColor4d("Red").GetData());
-  lookupTable->SetTableValue(1, 1.0, 1.0, 1.0); // white
-  lookupTable->SetTableValue(2, 0.0, 1.0, 0.0); // green
+  lookupTable->SetTableValue(1, colors->GetColor4d("White").GetData());
+  lookupTable->SetTableValue(2, colors->GetColor4d("Lime").GetData());
   lookupTable->Build();
 
   vertexColors->InsertNextValue(0);

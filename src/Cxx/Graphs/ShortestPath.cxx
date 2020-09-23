@@ -3,19 +3,20 @@
 #include <vtkGraphLayoutView.h>
 #include <vtkGraphToPolyData.h>
 #include <vtkMutableDirectedGraph.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkTree.h>
 
 /*
    O v0
   /|\
-5/ |5\5
+ / |5\
 v1-v2-v3
   1  1
 
@@ -24,8 +25,9 @@ v1-v2-v3
 
 int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkMutableDirectedGraph> graph =
-      vtkSmartPointer<vtkMutableDirectedGraph>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkMutableDirectedGraph> graph;
   vtkIdType v0 = graph->AddVertex();
   vtkIdType v1 = graph->AddVertex();
   vtkIdType v2 = graph->AddVertex();
@@ -38,7 +40,7 @@ int main(int argc, char* argv[])
   graph->AddEdge(v2, v3);
 
   // Associate physical locations with the vertices
-  vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(0.0, 0.0, 0.0);
   points->InsertNextPoint(-1.0, -5.0, 0.0);
   points->InsertNextPoint(0.0, -5.0, 0.0);
@@ -47,49 +49,48 @@ int main(int argc, char* argv[])
   graph->SetPoints(points);
 
   // Convert the graph to a polydata
-  vtkSmartPointer<vtkGraphToPolyData> graphToPolyData =
-      vtkSmartPointer<vtkGraphToPolyData>::New();
+  vtkNew<vtkGraphToPolyData> graphToPolyData;
   graphToPolyData->SetInputData(graph);
   graphToPolyData->Update();
 
-  vtkSmartPointer<vtkDijkstraGraphGeodesicPath> dijkstra =
-      vtkSmartPointer<vtkDijkstraGraphGeodesicPath>::New();
+  vtkNew<vtkDijkstraGraphGeodesicPath> dijkstra;
   dijkstra->SetInputConnection(graphToPolyData->GetOutputPort());
   dijkstra->SetStartVertex(0);
   dijkstra->SetEndVertex(2);
   dijkstra->Update();
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> pathMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> pathMapper;
   pathMapper->SetInputConnection(dijkstra->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> pathActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> pathActor;
   pathActor->SetMapper(pathMapper);
-  pathActor->GetProperty()->SetColor(1, 0, 0); // Red
+  pathActor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
   pathActor->GetProperty()->SetLineWidth(4);
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(graphToPolyData->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  pathActor->GetProperty()->SetColor(
+      colors->GetColor3d("NavajoWhite").GetData());
 
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
   renderer->AddActor(actor);
   renderer->AddActor(pathActor);
-  renderer->SetBackground(.3, .6, .3); // Background color green
+  renderer->SetBackground(colors->GetColor3d("DarkGreen").GetData());
+  renderer->SetBackground2(colors->GetColor3d("ForestGreen").GetData());
+  renderer->GradientBackgroundOn();
+  renderWindow->SetWindowName("ShortestPath");
 
   // Render and interact
   renderWindow->Render();

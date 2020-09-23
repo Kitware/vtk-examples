@@ -13,7 +13,7 @@ def get_program_parameters():
    '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue)
     parser.add_argument('filename', help='A required vtk filename, e.g. vertex.vtu.', nargs='?', const='vertex.vtu',
-                        type=str, default='vertex.vtu')
+                        type=str, default='testVertex.vtu')
     args = parser.parse_args()
     return args.filename
 
@@ -27,7 +27,7 @@ def main():
     # Create an integer array to store vertex id data & link it with its degree value as a scalar.
     degree = vtk.vtkIntArray()
     degree.SetNumberOfComponents(1)
-    degree.SetName("degree")
+    degree.SetName('degree')
     degree.SetNumberOfTuples(7)
     degree.SetValue(0, 2)
     degree.SetValue(1, 1)
@@ -90,7 +90,7 @@ def main():
     gw.Write()
     print('---> ')
 
-    print("Feed the vertex.vtu file in ParaView/VisIt.")
+    print('Feed the vertex.vtu file in ParaView/VisIt.')
 
 
 if __name__ == '__main__':

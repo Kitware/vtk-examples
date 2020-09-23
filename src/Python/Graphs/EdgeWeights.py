@@ -21,7 +21,7 @@ def main():
     # Create the edge weight array
     weights = vtk.vtkDoubleArray()
     weights.SetNumberOfComponents(1)
-    weights.SetName("Weights")
+    weights.SetName('Weights')
 
     # Set the edge weights
     weights.InsertNextValue(1.0)
@@ -33,10 +33,10 @@ def main():
 
     graphLayoutView = vtk.vtkGraphLayoutView()
     graphLayoutView.AddRepresentationFromInput(g)
-    graphLayoutView.SetLayoutStrategy("Simple 2D")
-    graphLayoutView.GetLayoutStrategy().SetEdgeWeightField("Weights")
+    graphLayoutView.SetLayoutStrategy('Simple 2D')
+    graphLayoutView.GetLayoutStrategy().SetEdgeWeightField('Weights')
     graphLayoutView.GetLayoutStrategy().SetWeightEdges(1)
-    graphLayoutView.SetEdgeLabelArrayName("Weights")
+    graphLayoutView.SetEdgeLabelArrayName('Weights')
     graphLayoutView.SetEdgeLabelVisibility(1)
     graphLayoutView.ResetCamera()
     graphLayoutView.Render()

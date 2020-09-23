@@ -16,7 +16,7 @@ def main():
     # Create an array for the vertex labels
     vertexIDs = vtk.vtkIntArray()
     vertexIDs.SetNumberOfComponents(1)
-    vertexIDs.SetName("VertexIDs")
+    vertexIDs.SetName('VertexIDs')
 
     # Set the vertex labels
     vertexIDs.InsertNextValue(0)
@@ -33,7 +33,8 @@ def main():
     rGraph.SafeDownCast(graphLayoutView.GetRepresentation()).GetVertexLabelTextProperty().SetColor(
         colors.GetColor3d('Red'))
     graphLayoutView.SetLayoutStrategyToSimple2D()
-    graphLayoutView.SetVertexLabelArrayName("VertexIDs")
+    graphLayoutView.SetVertexLabelArrayName('VertexIDs')
+    graphLayoutView.SetVertexLabelVisibility(True)
     graphLayoutView.ResetCamera()
     graphLayoutView.GetRenderer().GetActiveCamera().Zoom(0.8)
     graphLayoutView.Render()
