@@ -14,7 +14,7 @@ def main():
 
     graphLayoutView = vtk.vtkGraphLayoutView()
     graphLayoutView.AddRepresentationFromInput(g)
-    graphLayoutView.SetLayoutStrategy("Simple 2D")
+    graphLayoutView.SetLayoutStrategy('Simple 2D')
     graphLayoutView.ResetCamera()
     graphLayoutView.Render()
 

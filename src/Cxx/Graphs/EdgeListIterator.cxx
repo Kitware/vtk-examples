@@ -1,11 +1,10 @@
-#include <vtkMutableUndirectedGraph.h>
-#include <vtkSmartPointer.h>
 #include <vtkEdgeListIterator.h>
+#include <vtkMutableUndirectedGraph.h>
+#include <vtkNew.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkMutableUndirectedGraph> g =
-    vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkMutableUndirectedGraph> g;
 
   // Create a graph
   vtkIdType v0 = g->AddVertex();
@@ -16,15 +15,15 @@ int main(int, char *[])
   g->AddEdge(v1, v2);
   g->AddEdge(v0, v2);
 
-  vtkSmartPointer<vtkEdgeListIterator> edgeListIterator =
-      vtkSmartPointer<vtkEdgeListIterator>::New();
+  vtkNew<vtkEdgeListIterator> edgeListIterator;
   g->GetEdges(edgeListIterator);
 
-  while(edgeListIterator->HasNext())
+  while (edgeListIterator->HasNext())
   {
     vtkEdgeType edge = edgeListIterator->Next();
     std::cout << "Edge: " << edge.Id << " is from "
-	      << "Source: " << edge.Source << " to Target: " << edge.Target << std::endl;
+              << "Source: " << edge.Source << " to Target: " << edge.Target
+              << std::endl;
   }
 
   return EXIT_SUCCESS;

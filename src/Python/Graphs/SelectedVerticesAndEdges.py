@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
 
 import vtk
 
@@ -27,23 +26,23 @@ def selectionCallback(caller, event):
     if (sel_list0.GetNumberOfTuples() > 0):
         printFieldType(node0_field_type)
         for ii in range(sel_list0.GetNumberOfTuples()):
-            print("\t", sel_list0.GetValue(ii))
+            print('\t', sel_list0.GetValue(ii))
 
     if (sel_list1.GetNumberOfTuples() > 0):
         printFieldType(node1_field_type)
         for ii in range(sel_list1.GetNumberOfTuples()):
-            print("\t", sel_list1.GetValue(ii))
+            print('\t', sel_list1.GetValue(ii))
 
-        print("- - -")
+        print('- - -')
 
 
 def printFieldType(field_type):
     if field_type == 3:
-        print("Vertices Selected:")
+        print('Vertices Selected:')
     elif field_type == 4:
-        print("Edges Selected:")
+        print('Edges Selected:')
     else:
-        print("Unknown type:")
+        print('Unknown type:')
 
 
 def main():
@@ -53,7 +52,7 @@ def main():
     # so we just want to grab it and add an observer with our callback function
     # attached
     link = rep.GetAnnotationLink()
-    link.AddObserver("AnnotationChangedEvent", selectionCallback)
+    link.AddObserver('AnnotationChangedEvent', selectionCallback)
 
     view.GetRenderWindow().SetSize(600, 600)
     view.ResetCamera()

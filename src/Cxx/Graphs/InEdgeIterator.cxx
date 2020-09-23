@@ -1,12 +1,17 @@
-#include <vtkMutableUndirectedGraph.h>
-#include <vtkMutableDirectedGraph.h>
-#include <vtkSmartPointer.h>
 #include <vtkInEdgeIterator.h>
+#include <vtkMutableDirectedGraph.h>
+#include <vtkMutableUndirectedGraph.h>
+#include <vtkNew.h>
 
-static void Undirected();
-static void Directed();
+namespace {
 
-int main(int, char *[])
+void Undirected();
+
+void Directed();
+
+} // namespace
+
+int main(int, char*[])
 {
   Undirected();
   Directed();
@@ -14,10 +19,10 @@ int main(int, char *[])
   return EXIT_SUCCESS;
 }
 
+namespace {
 void Undirected()
 {
-  vtkSmartPointer<vtkMutableUndirectedGraph> g =
-    vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkMutableUndirectedGraph> g;
 
   // Create a graph
   vtkIdType v0 = g->AddVertex();
@@ -29,21 +34,20 @@ void Undirected()
   g->AddEdge(v0, v2);
 
   // Find all incoming edges connected to a vertex
-  vtkSmartPointer<vtkInEdgeIterator> it =
-    vtkSmartPointer<vtkInEdgeIterator>::New();
+  vtkNew<vtkInEdgeIterator> it;
   g->GetInEdges(0, it);
 
-  while(it->HasNext())
+  while (it->HasNext())
   {
     vtkInEdgeType edge = it->Next();
-    std::cout << "Edge id: " << edge.Id << " Source: " << edge.Source << std::endl;
+    std::cout << "Edge id: " << edge.Id << " Source: " << edge.Source
+              << std::endl;
   }
 }
 
 void Directed()
 {
-  vtkSmartPointer<vtkMutableDirectedGraph> g =
-    vtkSmartPointer<vtkMutableDirectedGraph>::New();
+  vtkNew<vtkMutableDirectedGraph> g;
 
   // Create a graph
   vtkIdType v0 = g->AddVertex();
@@ -54,31 +58,33 @@ void Directed()
   g->AddEdge(v0, v2);
 
   {
-  std::cout << "Finding edges connected to vertex 0" << std::endl;
-  vtkSmartPointer<vtkInEdgeIterator> it =
-    vtkSmartPointer<vtkInEdgeIterator>::New();
-  g->GetInEdges(0, it);
+    std::cout << "Finding edges connected to vertex 0" << std::endl;
+    vtkNew<vtkInEdgeIterator> it;
+    g->GetInEdges(0, it);
 
-  while(it->HasNext())
+    while (it->HasNext())
+    {
+      vtkInEdgeType edge = it->Next();
+      std::cout << "Edge id: " << edge.Id << " "
+                << "Source: " << edge.Source << std::endl;
+    }
+
+    std::cout << "Nothing should be output, vertex 0 has no incoming edges!"
+              << std::endl;
+  }
+
   {
-    vtkInEdgeType edge = it->Next();
-    std::cout << "Edge id: " << edge.Id << " " << "Source: " << edge.Source << std::endl;
-  }
+    std::cout << "Finding edges connected to vertex 1" << std::endl;
+    vtkNew<vtkInEdgeIterator> it;
+    g->GetInEdges(1, it);
 
-  std::cout << "Nothing should be output, vertex 0 has no incoming edges!" << std::endl;
+    while (it->HasNext())
+    {
+      vtkInEdgeType edge = it->Next();
+      std::cout << "Edge id: " << edge.Id << " "
+                << "Source: " << edge.Source << std::endl;
+    }
   }
-
-  {
-  std::cout << "Finding edges connected to vertex 1" << std::endl;
-  vtkSmartPointer<vtkInEdgeIterator> it =
-    vtkSmartPointer<vtkInEdgeIterator>::New();
-  g->GetInEdges(1, it);
-
-  while(it->HasNext())
-  {
-    vtkInEdgeType edge = it->Next();
-    std::cout << "Edge id: " << edge.Id << " " << "Source: " << edge.Source << std::endl;
-  }
-  }
-
 }
+
+} // namespace

@@ -1,18 +1,20 @@
 #include <vtkActor.h>
 #include <vtkGraphToPolyData.h>
 #include <vtkMutableUndirectedGraph.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a graph
-  vtkSmartPointer<vtkMutableUndirectedGraph> g =
-      vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkMutableUndirectedGraph> g;
 
   // Add 4 vertices to the graph
   vtkIdType v1 = g->AddVertex();
@@ -26,7 +28,7 @@ int main(int, char*[])
   g->AddEdge(v1, v4);
 
   // Create 4 points - one for each vertex
-  vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(0.0, 0.0, 0.0);
   points->InsertNextPoint(1.0, 0.0, 0.0);
   points->InsertNextPoint(0.0, 1.0, 0.0);
@@ -36,33 +38,30 @@ int main(int, char*[])
   g->SetPoints(points);
 
   // Convert the graph to a polydata
-  vtkSmartPointer<vtkGraphToPolyData> graphToPolyData =
-      vtkSmartPointer<vtkGraphToPolyData>::New();
+  vtkNew<vtkGraphToPolyData> graphToPolyData;
   graphToPolyData->SetInputData(g);
   graphToPolyData->Update();
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(graphToPolyData->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(.3, .6, .3); // Background color green
+  renderer->SetBackground(colors->GetColor3d("Green").GetData());
 
   // Render and interact
+  renderWindow->SetWindowName("GraphToPolyData");
   renderWindow->Render();
   renderWindowInteractor->Start();
 

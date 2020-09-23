@@ -1,5 +1,3 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkGlyph3D.h>
 #include <vtkGlyphSource2D.h>
@@ -7,15 +5,19 @@
 #include <vtkGraphLayoutView.h>
 #include <vtkGraphToPolyData.h>
 #include <vtkMutableDirectedGraph.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSimple2DLayoutStrategy.h>
 
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkMutableDirectedGraph> g =
-      vtkSmartPointer<vtkMutableDirectedGraph>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkMutableDirectedGraph> g;
 
   vtkIdType v1 = g->AddVertex();
   vtkIdType v2 = g->AddVertex();
@@ -27,13 +29,10 @@ int main(int, char*[])
 
   // Do layout manually before handing graph to the view.
   // This allows us to know the positions of edge arrows.
-  vtkSmartPointer<vtkGraphLayoutView> graphLayoutView =
-      vtkSmartPointer<vtkGraphLayoutView>::New();
+  vtkNew<vtkGraphLayoutView> graphLayoutView;
 
-  vtkSmartPointer<vtkGraphLayout> layout =
-      vtkSmartPointer<vtkGraphLayout>::New();
-  vtkSmartPointer<vtkSimple2DLayoutStrategy> strategy =
-      vtkSmartPointer<vtkSimple2DLayoutStrategy>::New();
+  vtkNew<vtkGraphLayout> layout;
+  vtkNew<vtkSimple2DLayoutStrategy> strategy;
   layout->SetInputData(g);
   layout->SetLayoutStrategy(strategy);
 
@@ -49,8 +48,7 @@ int main(int, char*[])
       layout->GetOutputPort());
 
   // Manually create an actor containing the glyphed arrows.
-  vtkSmartPointer<vtkGraphToPolyData> graphToPoly =
-      vtkSmartPointer<vtkGraphToPolyData>::New();
+  vtkNew<vtkGraphToPolyData> graphToPoly;
   graphToPoly->SetInputConnection(layout->GetOutputPort());
   graphToPoly->EdgeGlyphOutputOn();
 
@@ -59,25 +57,28 @@ int main(int, char*[])
   graphToPoly->SetEdgeGlyphPosition(0.98);
 
   // Make a simple edge arrow for glyphing.
-  vtkSmartPointer<vtkGlyphSource2D> arrowSource =
-      vtkSmartPointer<vtkGlyphSource2D>::New();
+  vtkNew<vtkGlyphSource2D> arrowSource;
   arrowSource->SetGlyphTypeToEdgeArrow();
   arrowSource->SetScale(0.1);
   arrowSource->Update();
 
   // Use Glyph3D to repeat the glyph on all edges.
-  vtkSmartPointer<vtkGlyph3D> arrowGlyph = vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> arrowGlyph;
   arrowGlyph->SetInputConnection(0, graphToPoly->GetOutputPort(1));
   arrowGlyph->SetInputConnection(1, arrowSource->GetOutputPort());
 
   // Add the edge arrow actor to the view.
-  vtkSmartPointer<vtkPolyDataMapper> arrowMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> arrowMapper;
   arrowMapper->SetInputConnection(arrowGlyph->GetOutputPort());
-  vtkSmartPointer<vtkActor> arrowActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> arrowActor;
   arrowActor->SetMapper(arrowMapper);
   graphLayoutView->GetRenderer()->AddActor(arrowActor);
 
+  graphLayoutView->GetRenderer()->SetBackground(
+      colors->GetColor3d("SaddleBrown").GetData());
+  graphLayoutView->GetRenderer()->SetBackground2(
+      colors->GetColor3d("Wheat").GetData());
+  graphLayoutView->GetRenderWindow()->SetWindowName("VisualizeDirectedGraph");
   graphLayoutView->ResetCamera();
   graphLayoutView->Render();
   graphLayoutView->GetInteractor()->Start();

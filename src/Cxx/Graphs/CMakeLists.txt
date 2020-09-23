@@ -11,7 +11,6 @@ if(NOT VTK_BINARY_DIR)
     vtkFiltersSources
     vtkIOLegacy
     vtkIOXML
-    # vtkInfovisBoostGraphAlgorithms
     vtkInfovisCore
     vtkInfovisLayout
     vtkInteractionStyle
@@ -73,10 +72,10 @@ foreach(SOURCE_FILE ${ALL_FILES})
   endif()
 endforeach()
 
-  if (BUILD_TESTING)
-    # Testing
-    set(KIT Graphs)
-    set(NEEDS_ARGS
-      )
+if (BUILD_TESTING)
+  # Testing
+  set(KIT Graphs)
+  set(NEEDS_ARGS
+    )
   endif()
   include(${WikiExamples_SOURCE_DIR}/CMake/ExamplesTesting.cmake)
