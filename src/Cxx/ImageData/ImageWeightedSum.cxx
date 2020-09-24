@@ -8,41 +8,29 @@
 #include <vtkImageWeightedSum.h>
 #include <vtkInteractorStyleImage.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 
-#include <array>
-
-int main(int, char *[]) {
+int main(int, char*[])
+{
   vtkNew<vtkNamedColors> colors;
 
-  std::array<double, 4> bkgL = {{0.6, 0.5, 0.4, 1.0}};
-  std::array<double, 4> bkgC = {{0.1, 0.5, 0.4, 1.0}};
-  std::array<double, 4> bkgR = {{0.4, 0.5, 0.6, 1.0}};
-  colors->SetColor("leftBkg", bkgL.data());
-  colors->SetColor("centreBkg", bkgC.data());
-  colors->SetColor("rightBkg", bkgR.data());
-
   // create an image
-  vtkSmartPointer<vtkImageMandelbrotSource> source1 =
-      vtkSmartPointer<vtkImageMandelbrotSource>::New();
+  vtkNew<vtkImageMandelbrotSource> source1;
   source1->SetWholeExtent(0, 255, 0, 255, 0, 0);
   source1->Update();
 
-  vtkSmartPointer<vtkImageCast> source1Double =
-      vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> source1Double;
   source1Double->SetInputConnection(0, source1->GetOutputPort());
   source1Double->SetOutputScalarTypeToDouble();
 
-  vtkSmartPointer<vtkImageSinusoidSource> source2 =
-      vtkSmartPointer<vtkImageSinusoidSource>::New();
+  vtkNew<vtkImageSinusoidSource> source2;
   source2->SetWholeExtent(0, 255, 0, 255, 0, 0);
   source2->Update();
 
-  vtkSmartPointer<vtkImageWeightedSum> sumFilter =
-      vtkSmartPointer<vtkImageWeightedSum>::New();
+  vtkNew<vtkImageWeightedSum> sumFilter;
   sumFilter->SetWeight(0, .8);
   sumFilter->SetWeight(1, .2);
   sumFilter->AddInputConnection(source1Double->GetOutputPort());
@@ -50,48 +38,40 @@ int main(int, char *[]) {
 
   sumFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> source1CastFilter =
-      vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> source1CastFilter;
   source1CastFilter->SetInputConnection(source1->GetOutputPort());
   source1CastFilter->SetOutputScalarTypeToUnsignedChar();
   source1CastFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> source2CastFilter =
-      vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> source2CastFilter;
   source2CastFilter->SetInputConnection(source2->GetOutputPort());
   source2CastFilter->SetOutputScalarTypeToUnsignedChar();
   source2CastFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> summedCastFilter =
-      vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> summedCastFilter;
   summedCastFilter->SetInputConnection(sumFilter->GetOutputPort());
   summedCastFilter->SetOutputScalarTypeToUnsignedChar();
   summedCastFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> source1Actor =
-      vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> source1Actor;
   source1Actor->GetMapper()->SetInputConnection(
       source1CastFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> source2Actor =
-      vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> source2Actor;
   source2Actor->GetMapper()->SetInputConnection(
       source2CastFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> summedActor =
-      vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> summedActor;
   summedActor->GetMapper()->SetInputConnection(
       summedCastFilter->GetOutputPort());
 
   // There will be one render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
 
   // And one interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Define viewport ranges
@@ -101,23 +81,20 @@ int main(int, char *[]) {
   double rightViewport[4] = {0.66, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  leftRenderer->SetBackground(colors->GetColor3d("leftBkg").GetData());
+  leftRenderer->SetBackground(colors->GetColor3d("Peru").GetData());
 
-  vtkSmartPointer<vtkRenderer> centerRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> centerRenderer;
   renderWindow->AddRenderer(centerRenderer);
   centerRenderer->SetViewport(centerViewport);
-  centerRenderer->SetBackground(colors->GetColor3d("centreBkg").GetData());
+  centerRenderer->SetBackground(colors->GetColor3d("DarkTurquoise").GetData());
 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  rightRenderer->SetBackground(colors->GetColor3d("rightBkg").GetData());
+  rightRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
   leftRenderer->AddActor(source1Actor);
   centerRenderer->AddActor(source2Actor);
@@ -127,6 +104,7 @@ int main(int, char *[]) {
   centerRenderer->ResetCamera();
   rightRenderer->ResetCamera();
 
+  renderWindow->SetWindowName("ImageWeightedSum");
   renderWindow->Render();
   interactor->Start();
 

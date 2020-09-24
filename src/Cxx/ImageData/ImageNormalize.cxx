@@ -1,59 +1,53 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
-#include <vtkImageSinusoidSource.h>
-#include <vtkImageNormalize.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkRenderer.h>
 #include <vtkImageActor.h>
 #include <vtkImageCast.h>
+#include <vtkImageData.h>
+#include <vtkImageMapper3D.h>
+#include <vtkImageNormalize.h>
+#include <vtkImageSinusoidSource.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageSinusoidSource> source =
-    vtkSmartPointer<vtkImageSinusoidSource>::New();
+  vtkNew<vtkImageSinusoidSource> source;
   source->Update();
 
-  vtkSmartPointer<vtkImageNormalize> normalizeFilter =
-    vtkSmartPointer<vtkImageNormalize>::New();
+  vtkNew<vtkImageNormalize> normalizeFilter;
 
   normalizeFilter->SetInputConnection(source->GetOutputPort());
   normalizeFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> inputCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> inputCastFilter;
   inputCastFilter->SetInputConnection(source->GetOutputPort());
   inputCastFilter->SetOutputScalarTypeToUnsignedChar();
   inputCastFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> normalizeCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> normalizeCastFilter;
   normalizeCastFilter->SetInputConnection(normalizeFilter->GetOutputPort());
   normalizeCastFilter->SetOutputScalarTypeToUnsignedChar();
   normalizeCastFilter->Update();
-  
-  // Create actors
-  vtkSmartPointer<vtkImageActor> inputActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  inputActor->GetMapper()->SetInputConnection(
-    inputCastFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> normalizedActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  // Create actors
+  vtkNew<vtkImageActor> inputActor;
+  inputActor->GetMapper()->SetInputConnection(inputCastFilter->GetOutputPort());
+
+  vtkNew<vtkImageActor> normalizedActor;
   normalizedActor->GetMapper()->SetInputConnection(
-    normalizeCastFilter->GetOutputPort());
+      normalizeCastFilter->GetOutputPort());
 
   // There will be one render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
 
   // And one interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Define viewport ranges
@@ -62,17 +56,15 @@ int main(int, char *[])
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup both renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  leftRenderer->SetBackground(.6, .5, .4);
+  leftRenderer->SetBackground(colors->GetColor3d("Sienna").GetData());
 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  rightRenderer->SetBackground(.4, .5, .6);
+  rightRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
   leftRenderer->AddActor(inputActor);
   rightRenderer->AddActor(normalizedActor);
@@ -81,8 +73,9 @@ int main(int, char *[])
 
   rightRenderer->ResetCamera();
 
+  renderWindow->SetWindowName("ImageNormalize");
   renderWindow->Render();
   interactor->Start();
- 
+
   return EXIT_SUCCESS;
 }

@@ -6,10 +6,6 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor('leftBkg', [0.6, 0.5, 0.4, 1.0])
-    colors.SetColor('centreBkg', [0.1, 0.5, 0.4, 1.0])
-    colors.SetColor('rightBkg', [0.4, 0.5, 0.6, 1.0])
-
     # Create image 1
     source1 = vtk.vtkImageMandelbrotSource()
     source1.SetWholeExtent(0, 255, 0, 255, 0, 0)
@@ -76,17 +72,17 @@ def main():
     leftRenderer = vtk.vtkRenderer()
     renderWindow.AddRenderer(leftRenderer)
     leftRenderer.SetViewport(leftViewport)
-    leftRenderer.SetBackground(colors.GetColor3d('leftBkg'))
+    leftRenderer.SetBackground(colors.GetColor3d('Peru'))
 
     centerRenderer = vtk.vtkRenderer()
     renderWindow.AddRenderer(centerRenderer)
     centerRenderer.SetViewport(centerViewport)
-    centerRenderer.SetBackground(colors.GetColor3d('centreBkg'))
+    centerRenderer.SetBackground(colors.GetColor3d('DarkTurquoise'))
 
     rightRenderer = vtk.vtkRenderer()
     renderWindow.AddRenderer(rightRenderer)
     rightRenderer.SetViewport(rightViewport)
-    rightRenderer.SetBackground(colors.GetColor3d('rightBkg'))
+    rightRenderer.SetBackground(colors.GetColor3d('SteelBlue'))
 
     leftRenderer.AddActor(source1Actor)
     centerRenderer.AddActor(source2Actor)
@@ -96,6 +92,7 @@ def main():
     centerRenderer.ResetCamera()
     rightRenderer.ResetCamera()
 
+    renderWindow.SetWindowName('ImageWeightedSum')
     renderWindow.Render()
     interactor.Start()
 
