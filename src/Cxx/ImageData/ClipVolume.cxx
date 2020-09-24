@@ -14,6 +14,7 @@
 #include <vtkLookupTable.h>
 #include <vtkMapper.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlanes.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
@@ -22,25 +23,20 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
-
-#define IMAGESIZE 64  // number of checkerboard squares on a side
-#define CUBESIZE 20.0 // physical linear dimension of entire system
-
-// Color for the checkerboard image
-#define IMAGE_R 0.7
-#define IMAGE_G 0.7
-#define IMAGE_B 0.7
-#define IMAGE_A 1.0
-#define DIM 0.5 // amount to dim the dark squares by
-
-// Offsets for clipping planes with normals in the X and Y directions
-#define XOFFSET 8
-#define YOFFSET 8
-
-///////////////////
 
 namespace {
+
+constexpr auto IMAGESIZE{64};  // number of checkerboard squares on a side
+constexpr auto CUBESIZE{20.0}; // physical linear dimension of entire system
+
+// Color for the checkerboard image
+constexpr auto DIM{0.5}; // amount to dim the dark squares by
+
+// Offsets for clipping planes with normals in the X and Y directions
+constexpr auto XOFFSET{8};
+constexpr auto YOFFSET{8};
+
+///////////////////
 
 // Make the image data. A checkerboard pattern is used for
 // simplicity.
@@ -54,28 +50,28 @@ int main(int, char*[])
   vtkMapper::SetResolveCoincidentTopologyToPolygonOffset();
 
   // Define colors
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   vtkColor3d backgroundColor = colors->GetColor3d("Wheat");
   vtkColor3d checkerColor = colors->GetColor3d("Tomato");
   vtkColor3d fillColor = colors->GetColor3d("Banana");
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(backgroundColor.GetData());
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  auto style = vtkSmartPointer<vtkInteractorStyleSwitch>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
+  vtkNew<vtkInteractorStyleSwitch> style;
   interactor->SetInteractorStyle(style);
   interactor->SetRenderWindow(renderWindow);
 
   auto image = makeImage(IMAGESIZE, fillColor, checkerColor);
 
   // Clipping planes in the X and Y direction.
-  auto normals = vtkSmartPointer<vtkDoubleArray>::New();
-  auto clipPts = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkDoubleArray> normals;
+  vtkNew<vtkPoints> clipPts;
   normals->SetNumberOfComponents(3);
   double xnorm[3] = {-1., 0., 0.};
   double ynorm[3] = {0., -1., 0.};
@@ -85,16 +81,16 @@ int main(int, char*[])
   normals->InsertNextTuple(ynorm);
   clipPts->InsertNextPoint(xpt);
   clipPts->InsertNextPoint(ypt);
-  auto clipPlanes = vtkSmartPointer<vtkPlanes>::New();
+  vtkNew<vtkPlanes> clipPlanes;
   clipPlanes->SetNormals(normals);
   clipPlanes->SetPoints(clipPts);
 
-  auto clipper = vtkSmartPointer<vtkClipVolume>::New();
+  vtkNew<vtkClipVolume> clipper;
   clipper->SetClipFunction(clipPlanes);
   clipper->SetInputData(image);
 
-  auto imageMapper = vtkSmartPointer<vtkDataSetMapper>::New();
-  auto imageActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkDataSetMapper> imageMapper;
+  vtkNew<vtkActor> imageActor;
   imageActor->SetMapper(imageMapper);
   renderer->AddViewProp(imageActor);
   imageMapper->SetInputConnection(clipper->GetOutputPort());
@@ -103,10 +99,13 @@ int main(int, char*[])
   renderer->GetActiveCamera()->Azimuth(120);
   renderer->GetActiveCamera()->Elevation(30);
   renderer->ResetCameraClippingRange();
+  renderWindow->SetWindowName("ClipVolume");
   renderWindow->Render();
 
   interactor->Start();
-  return 0;
+
+  return EXIT_SUCCESS;
+  ;
 }
 
 namespace {
@@ -115,7 +114,7 @@ namespace {
 vtkSmartPointer<vtkImageData> makeImage(int n, vtkColor3d fillColor,
                                         vtkColor3d checkerColor)
 {
-  auto image0 = vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> image0;
   image0->SetDimensions(n, n, n);
   image0->AllocateScalars(VTK_UNSIGNED_CHAR, 1);
   image0->SetSpacing(CUBESIZE / n, CUBESIZE / n, CUBESIZE / n);
@@ -133,7 +132,7 @@ vtkSmartPointer<vtkImageData> makeImage(int n, vtkColor3d fillColor,
     }
   }
 
-  auto lut = vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   lut->SetNumberOfTableValues(2);
   lut->SetTableRange(0, 1);
   lut->SetTableValue(0, fillColor.GetRed(), fillColor.GetGreen(),
@@ -147,6 +146,7 @@ vtkSmartPointer<vtkImageData> makeImage(int n, vtkColor3d fillColor,
   map->SetInputData(image0);
   map->GetExecutive()->Update();
 
-  return  map->GetOutput();
+  return map->GetOutput();
 }
+
 } // namespace

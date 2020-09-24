@@ -1,14 +1,15 @@
-#include <vtkSmartPointer.h>
 #include <vtkImageData.h>
+#include <vtkNew.h>
 #include <vtkStructuredData.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
 
-  vtkSmartPointer<vtkImageData> grid = vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> grid;
   grid->SetOrigin(0, 0, 0);
 
-  unsigned int numVoxelsPerDimension = 2; //the number of voxels in each dimension
+  unsigned int numVoxelsPerDimension =
+      2; // the number of voxels in each dimension
   grid->SetSpacing(1, 1, 1);
 
   int extent[6];
@@ -19,13 +20,13 @@ int main(int, char *[])
   extent[4] = 0;
   extent[5] = numVoxelsPerDimension;
   grid->SetExtent(extent);
-  grid->AllocateScalars(VTK_INT,1);
+  grid->AllocateScalars(VTK_INT, 1);
 
-  for(unsigned int i = 0; i < numVoxelsPerDimension; ++i)
+  for (unsigned int i = 0; i < numVoxelsPerDimension; ++i)
   {
-    for(unsigned int j = 0; j < numVoxelsPerDimension; ++j)
+    for (unsigned int j = 0; j < numVoxelsPerDimension; ++j)
     {
-      for(unsigned int k = 0; k < numVoxelsPerDimension; ++k)
+      for (unsigned int k = 0; k < numVoxelsPerDimension; ++k)
       {
         int pos[3];
         pos[0] = i;
@@ -33,7 +34,8 @@ int main(int, char *[])
         pos[2] = k;
 
         vtkIdType id = vtkStructuredData::ComputeCellIdForExtent(extent, pos);
-        std::cout << "Cell " << i << " " << j << " " << k << " has id : " << id << std::endl;
+        std::cout << "Cell " << i << " " << j << " " << k << " has id : " << id
+                  << std::endl;
       }
     }
   }

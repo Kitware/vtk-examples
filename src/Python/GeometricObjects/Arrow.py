@@ -21,18 +21,18 @@ def main():
     # Visualize
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Arrow")
+    renderWindow.SetWindowName('Arrow')
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("MidnightBlue"))
+    renderer.SetBackground(colors.GetColor3d('MidnightBlue'))
 
     renderWindow.SetWindowName('Arrow')
     renderWindow.Render()
     renderWindowInteractor.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

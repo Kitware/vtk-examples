@@ -1,31 +1,33 @@
 #include <vtkImageData.h>
 #include <vtkPoints.h>
 #include <vtkImageDataToPointSet.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkXMLStructuredGridWriter.h>
 #include <vtkStructuredGrid.h>
 
-static void CreateImage(vtkImageData* image);
+namespace {
+
+void CreateImage(vtkImageData* image);
+}
 
 int main(int, char *[])
 {
-  vtkSmartPointer<vtkImageData> image =
-    vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> image;
   CreateImage(image);
 
-  vtkSmartPointer<vtkImageDataToPointSet> imageDataToPointSet =
-    vtkSmartPointer<vtkImageDataToPointSet>::New();
+  vtkNew<vtkImageDataToPointSet> imageDataToPointSet;
   imageDataToPointSet->SetInputData(image);
   imageDataToPointSet->Update();
 
-  vtkSmartPointer<vtkXMLStructuredGridWriter> writer =
-    vtkSmartPointer<vtkXMLStructuredGridWriter>::New();
+  vtkNew<vtkXMLStructuredGridWriter> writer;
   writer->SetInputConnection(imageDataToPointSet->GetOutputPort());
   writer->SetFileName("Test.vts");
   writer->Write();
 
   return EXIT_SUCCESS;
 }
+
+namespace {
 
 void CreateImage(vtkImageData* image)
 {
@@ -43,4 +45,6 @@ void CreateImage(vtkImageData* image)
       pixel[0] = 1;
     }
   }
+}
+
 }

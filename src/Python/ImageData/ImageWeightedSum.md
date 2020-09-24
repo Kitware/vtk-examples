@@ -1,3 +1,3 @@
 ### Description
 
-*Translated to python from the c++ examples by Michka Popoff
+Sum multiple images. Images must be of the same size and type.

@@ -13,7 +13,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkShrinkFilter.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkThreshold.h>
 #include <vtkUnstructuredGrid.h>
 
@@ -29,12 +29,11 @@ std::vector<vtkIdType> IntersectImage(vtkImageData* image, double p0[3],
 
 int main(int, char*[])
 {
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
-  colors->SetColor("Bkg", 0.2, 0.3, 0.4);
+  vtkNew<vtkNamedColors> colors;
 
   // Create a 3x4x5 grid of points (60), which will define a 2x3x4
   // (24) grid of cubes
-  auto grid = vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> grid;
 
   // Create the grid data structure
   grid->SetDimensions(3, 4, 5);
@@ -58,14 +57,14 @@ int main(int, char*[])
   std::vector<vtkIdType> intersectedCells =
       IntersectImage(grid, rayOrigin, rayEndPoint);
 
-  auto shrinkFilter = vtkSmartPointer<vtkShrinkFilter>::New();
+  vtkNew<vtkShrinkFilter> shrinkFilter;
   shrinkFilter->SetInputData(grid);
   shrinkFilter->SetShrinkFactor(.8);
   shrinkFilter->Update();
 
   // Setup visibility array. Cells with visibility > 1 will be
   // visible, and < 1 will be invisible.
-  auto visibilityArray = vtkSmartPointer<vtkIntArray>::New();
+  vtkNew<vtkIntArray> visibilityArray;
   visibilityArray->SetNumberOfComponents(1);
   visibilityArray->SetName("Visibility");
 
@@ -85,7 +84,7 @@ int main(int, char*[])
   shrinkFilter->GetOutput()->GetCellData()->AddArray(visibilityArray);
 
   // Threshold
-  auto threshold = vtkSmartPointer<vtkThreshold>::New();
+  vtkNew<vtkThreshold> threshold;
   threshold->SetInputData(shrinkFilter->GetOutput());
   threshold->ThresholdByUpper(
       1); // Criterion is cells whose scalars are greater or equal to threshold.
@@ -100,25 +99,24 @@ int main(int, char*[])
 
   /////////// Standard visualization setup //////////////
   // Create a mapper and actor
-  auto mapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(threshold->GetOutputPort());
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(colors->GetColor3d("Peru").GetData());
+  actor->GetProperty()->SetColor(colors->GetColor3d("BurlyWood").GetData());
 
   // Create a renderer, render window, and interactor
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetMultiSamples(0);
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(colors->GetColor3d("Bkg").GetData());
+  renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
   renderer->GetActiveCamera()->SetPosition(-6, 7, 6);
   renderer->GetActiveCamera()->SetFocalPoint(1, 1.5, 2);
@@ -127,7 +125,7 @@ int main(int, char*[])
 
   // Render and interact
   renderWindow->Render();
-  renderWindow->SetWindowName("Space Carving");
+  renderWindow->SetWindowName("IntersectLine");
   renderWindow->Render();
   renderWindowInteractor->Start();
 

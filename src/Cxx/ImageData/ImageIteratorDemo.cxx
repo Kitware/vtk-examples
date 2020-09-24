@@ -1,38 +1,37 @@
-#include <vtkSmartPointer.h>
+#include <vtkImageActor.h>
 #include <vtkImageData.h>
 #include <vtkImageIterator.h>
-
 #include <vtkImageViewer2.h>
-#include <vtkImageActor.h>
-#include <vtkRenderWindow.h>
 #include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkNamedColors.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image data
-  vtkSmartPointer<vtkImageData> imageData =
-      vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> imageData;
 
   // Specify the size of the image data
-  imageData->SetDimensions(100,200,30);
-  imageData->AllocateScalars(VTK_UNSIGNED_CHAR,3);
+  imageData->SetDimensions(100, 200, 30);
+  imageData->AllocateScalars(VTK_UNSIGNED_CHAR, 3);
 
   // Fill every entry of the image data with a color
   int* dims = imageData->GetDimensions();
 
-  unsigned char *ptr = static_cast<unsigned char *>(imageData->GetScalarPointer(0, 0, 0));
+  unsigned char* ptr =
+      static_cast<unsigned char*>(imageData->GetScalarPointer(0, 0, 0));
   unsigned char r, g, b, a;
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
   colors->GetColor("Banana", r, g, b, a);
-  for (int z=0; z<dims[2]; z++)
+  for (int z = 0; z < dims[2]; z++)
   {
-    for (int y=0; y<dims[1]; y++)
+    for (int y = 0; y < dims[1]; y++)
     {
-      for (int x=0; x<dims[0]; x++)
+      for (int x = 0; x < dims[0]; x++)
       {
         *ptr++ = r;
         *ptr++ = g;
@@ -43,18 +42,21 @@ int main(int, char *[])
 
   // Define the extent to be modified
   int extent[6];
-  extent[0] = 20; extent[1] = 50;
-  extent[2] = 30; extent[3] = 60;
-  extent[4] = 10; extent[5] = 20;
+  extent[0] = 20;
+  extent[1] = 50;
+  extent[2] = 30;
+  extent[3] = 60;
+  extent[4] = 10;
+  extent[5] = 20;
 
   // Set the entries in the region to another color
   colors->GetColor("Tomato", r, g, b, a);
   vtkImageIterator<unsigned char> it(imageData, extent);
   unsigned int counter = 0;
-  while(!it.IsAtEnd())
+  while (!it.IsAtEnd())
   {
-    unsigned char *valIt = it.BeginSpan();
-    unsigned char *valEnd = it.EndSpan();
+    unsigned char* valIt = it.BeginSpan();
+    unsigned char* valEnd = it.EndSpan();
     while (valIt != valEnd)
     {
       // Increment for each component
@@ -67,35 +69,34 @@ int main(int, char *[])
   }
   std::cout << "# of spans: " << counter << std::endl;
 
-  std::cout << "Increments: "
-            << imageData->GetIncrements()[0] << ", "
+  std::cout << "Increments: " << imageData->GetIncrements()[0] << ", "
             << imageData->GetIncrements()[1] << ", "
             << imageData->GetIncrements()[2] << std::endl;
   vtkIdType incX, incY, incZ;
   imageData->GetContinuousIncrements(extent, incX, incY, incZ);
-  std::cout << "ContinuousIncrements: "
-            << incX << ", " << incY << ", " << incZ << std::endl;
+  std::cout << "ContinuousIncrements: " << incX << ", " << incY << ", " << incZ
+            << std::endl;
 
   // Visualize
-  vtkSmartPointer<vtkImageViewer2> imageViewer =
-    vtkSmartPointer<vtkImageViewer2>::New();
-  imageViewer->SetInputData( imageData );
+  vtkNew<vtkImageViewer2> imageViewer;
+  imageViewer->SetInputData(imageData);
 
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkInteractorStyleImage> style;
   style->SetInteractionModeToImageSlicing();
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetInteractorStyle(style);
   imageViewer->SetupInteractor(renderWindowInteractor);
   imageViewer->SetSlice((extent[5] - extent[4]) / 2 + extent[4]);
 
-  imageViewer->GetRenderer()->SetBackground(colors->GetColor3d("Slate_grey").GetData());
+  imageViewer->GetRenderer()->SetBackground(
+      colors->GetColor3d("Slate_grey").GetData());
   imageViewer->GetImageActor()->InterpolateOff();
 
   imageViewer->Render();
   imageViewer->GetRenderer()->ResetCamera();
+  imageViewer->GetRenderWindow()->SetWindowName("ImageIteratorDemo");
+
   imageViewer->Render();
 
   renderWindowInteractor->Start();
