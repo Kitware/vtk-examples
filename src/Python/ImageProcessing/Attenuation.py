@@ -77,6 +77,7 @@ def main():
     renderWindow.SetSize(600, 300)
     renderWindow.AddRenderer(originalRenderer)
     renderWindow.AddRenderer(filteredRenderer)
+    renderWindow.SetWindowName('Attenuation')
 
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     style = vtk.vtkInteractorStyleImage()

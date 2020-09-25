@@ -106,6 +106,7 @@ def main():
                         float(col + 1) / xGridDimensions, float(yGridDimensions - row) / yGridDimensions]
             renderers[index].SetViewport(viewport)
             renderWindow.AddRenderer(renderers[index])
+    renderWindow.SetWindowName('HybridMedianComparison')
 
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     style = vtk.vtkInteractorStyleImage()
@@ -115,6 +116,8 @@ def main():
 
     # The renderers share one camera.
     renderWindow.Render()
+    renderers[0].GetActiveCamera().Dolly(1.5)
+    renderers[0].ResetCameraClippingRange()
     for r in range(1, len(renderers)):
         renderers[r].SetActiveCamera(renderers[0].GetActiveCamera())
     renderWindowInteractor.Initialize()

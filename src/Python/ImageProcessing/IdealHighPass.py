@@ -78,6 +78,7 @@ def main():
 
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.SetSize(600, 300)
+    renderWindow.SetWindowName('IdealHighPass')
     renderWindow.AddRenderer(idealRenderer)
     renderWindow.AddRenderer(butterworthRenderer)
 

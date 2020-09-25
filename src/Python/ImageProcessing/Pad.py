@@ -63,6 +63,7 @@ def main():
 
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.SetSize(600, 300)
+    renderWindow.SetWindowName('Pad')
     renderWindow.AddRenderer(constantPadRenderer)
     renderWindow.AddRenderer(mirrorPadRenderer)
 
