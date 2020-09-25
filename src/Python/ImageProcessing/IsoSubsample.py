@@ -8,9 +8,7 @@ import vtk
 
 def main():
     colors = vtk.vtkNamedColors()
-
-    colors.SetColor("ActorColor", [235, 235, 235, 255])
-
+    # colors.SetColor("ActorColor", [235, 235, 235, 255])
 
     fileName = get_program_parameters()
 
@@ -41,7 +39,7 @@ def main():
 
     isoSmoothedActor = vtk.vtkActor()
     isoSmoothedActor.SetMapper(isoSmoothedMapper)
-    isoSmoothedActor.GetProperty().SetColor(colors.GetColor3d("ActorColor"))
+    isoSmoothedActor.GetProperty().SetColor(colors.GetColor3d("Ivory"))
 
     # Unsmoothed pipeline.
     # Sub sample the data.
@@ -59,7 +57,7 @@ def main():
 
     isoActor = vtk.vtkActor()
     isoActor.SetMapper(isoMapper)
-    isoActor.GetProperty().SetColor(colors.GetColor3d("ActorColor"))
+    isoActor.GetProperty().SetColor(colors.GetColor3d("Ivory"))
 
     # The rendering Pipeline.
 
@@ -96,6 +94,7 @@ def main():
     rendererRight.SetActiveCamera(rendererLeft.GetActiveCamera())
 
     renderWindow.SetSize(640, 480)
+    renderWindow.SetWindowName('IsoSubsample')
     renderWindow.Render()
 
     renderWindowInteractor.Start()

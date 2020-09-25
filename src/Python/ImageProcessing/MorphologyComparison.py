@@ -128,6 +128,7 @@ def main():
                         float(col + 1) / xGridDimensions, float(yGridDimensions - row) / yGridDimensions]
             renderers[index].SetViewport(viewport)
             renderWindow.AddRenderer(renderers[index])
+    renderWindow.SetWindowName('MorphologyComparison')
 
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     style = vtk.vtkInteractorStyleImage()

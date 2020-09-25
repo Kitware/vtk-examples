@@ -1,3 +1,4 @@
+#include <vtkCamera.h>
 #include <vtkDataArray.h>
 #include <vtkImageActor.h>
 #include <vtkImageCast.h>
@@ -12,75 +13,65 @@
 #include <vtkImageReader2Factory.h>
 #include <vtkImageThreshold.h>
 #include <vtkInteractorStyleImage.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 
 #include <vector>
 
-namespace
-{
-void AddShotNoise(vtkSmartPointer<vtkImageData> &inputImage,
-                  vtkSmartPointer<vtkImageData> &outputImage,
-                  double amplitude,
-                  double noiseFraction,
-                  int extent[6]);
+namespace {
+void AddShotNoise(vtkImageData* inputImage, vtkImageData* outputImage,
+                  double noiseAmplitude, double noiseFraction, int extent[6]);
 }
-int main (int argc, char *argv[])
+
+int main(int argc, char* argv[])
 {
   // Verify input arguments
-  if ( argc != 2 )
+  if (argc != 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " Filename" << std::endl;
+    std::cout << "Usage: " << argv[0] << " Filename e.g. FullHead.mhd" << std::endl;
     return EXIT_FAILURE;
   }
 
   // Read the image
-  vtkSmartPointer<vtkImageReader2Factory> readerFactory =
-    vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> reader;
-  reader.TakeReference(
-    readerFactory->CreateImageReader2(argv[1]));
+  reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
   reader->SetFileName(argv[1]);
   reader->Update();
 
   int scalarRange[2];
   scalarRange[0] =
-    reader->GetOutput()->GetPointData()->GetScalars()->GetRange()[0];
+      reader->GetOutput()->GetPointData()->GetScalars()->GetRange()[0];
   scalarRange[1] =
-    reader->GetOutput()->GetPointData()->GetScalars()->GetRange()[1];
-  std::cout << "Range: "
-            << scalarRange[0] << ", " << scalarRange[1]
+      reader->GetOutput()->GetPointData()->GetScalars()->GetRange()[1];
+  std::cout << "Range: " << scalarRange[0] << ", " << scalarRange[1]
             << std::endl;
   int middleSlice = (reader->GetOutput()->GetExtent()[5] -
-                     reader->GetOutput()->GetExtent()[4]) / 2;
+                     reader->GetOutput()->GetExtent()[4]) /
+      2;
 
   // Work with double images
-  vtkSmartPointer<vtkImageCast> cast =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> cast;
   cast->SetInputConnection(reader->GetOutputPort());
   cast->SetOutputScalarTypeToDouble();
   cast->Update();
 
-  vtkSmartPointer<vtkImageData> originalData =
-    vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> originalData;
   originalData->DeepCopy(cast->GetOutput());
 
-  vtkSmartPointer<vtkImageData> noisyData =
-    vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> noisyData;
 
-  AddShotNoise(originalData, noisyData,
-               2000.0, .1, reader->GetOutput()->GetExtent());
-  vtkSmartPointer<vtkImageMedian3D> median =
-    vtkSmartPointer<vtkImageMedian3D>::New();
+  AddShotNoise(originalData, noisyData, 2000.0, .1,
+               reader->GetOutput()->GetExtent());
+  vtkNew<vtkImageMedian3D> median;
   median->SetInputData(noisyData);
   median->SetKernelSize(5, 5, 1);
 
-  vtkSmartPointer<vtkImageGaussianSmooth> gaussian =
-    vtkSmartPointer<vtkImageGaussianSmooth>::New();
+  vtkNew<vtkImageGaussianSmooth> gaussian;
   gaussian->SetDimensionality(2);
   gaussian->SetInputData(noisyData);
   gaussian->SetStandardDeviations(2.0, 2.0);
@@ -88,32 +79,28 @@ int main (int argc, char *argv[])
 
   int colorWindow = (scalarRange[1] - scalarRange[0]) * .8;
   int colorLevel = colorWindow / 2;
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputData(originalData);
   originalActor->GetProperty()->SetColorWindow(colorWindow);
   originalActor->GetProperty()->SetColorLevel(colorLevel);
   originalActor->GetProperty()->SetInterpolationTypeToNearest();
   originalActor->SetZSlice(middleSlice);
 
-  vtkSmartPointer<vtkImageActor> noisyActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> noisyActor;
   noisyActor->GetMapper()->SetInputData(noisyData);
   noisyActor->GetProperty()->SetColorWindow(colorWindow);
   noisyActor->GetProperty()->SetColorLevel(colorLevel);
   noisyActor->GetProperty()->SetInterpolationTypeToNearest();
   noisyActor->SetZSlice(middleSlice);
 
-  vtkSmartPointer<vtkImageActor> gaussianActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> gaussianActor;
   gaussianActor->GetMapper()->SetInputConnection(gaussian->GetOutputPort());
   gaussianActor->GetProperty()->SetColorWindow(colorWindow);
   gaussianActor->GetProperty()->SetColorLevel(colorLevel);
   gaussianActor->GetProperty()->SetInterpolationTypeToNearest();
   gaussianActor->SetZSlice(middleSlice);
 
-  vtkSmartPointer<vtkImageActor> medianActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> medianActor;
   medianActor->GetMapper()->SetInputConnection(median->GetOutputPort());
   medianActor->GetProperty()->SetColorWindow(colorWindow);
   medianActor->GetProperty()->SetColorLevel(colorLevel);
@@ -121,20 +108,16 @@ int main (int argc, char *argv[])
   medianActor->SetZSlice(middleSlice);
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->AddActor(originalActor);
-  vtkSmartPointer<vtkRenderer> noisyRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> noisyRenderer;
   noisyRenderer->AddActor(noisyActor);
-  vtkSmartPointer<vtkRenderer> gaussRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> gaussRenderer;
   gaussRenderer->AddActor(gaussianActor);
-  vtkSmartPointer<vtkRenderer> medianRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> medianRenderer;
   medianRenderer->AddActor(medianActor);
 
-  std::vector<vtkSmartPointer<vtkRenderer> > renderers;
+  std::vector<vtkSmartPointer<vtkRenderer>> renderers;
   renderers.push_back(originalRenderer);
   renderers.push_back(noisyRenderer);
   renderers.push_back(gaussRenderer);
@@ -145,10 +128,9 @@ int main (int argc, char *argv[])
   unsigned int xGridDimensions = 2;
   unsigned int yGridDimensions = 2;
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetSize(
-    rendererSize * xGridDimensions, rendererSize * yGridDimensions);
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetSize(rendererSize * xGridDimensions,
+                        rendererSize * yGridDimensions);
   for (int row = 0; row < static_cast<int>(yGridDimensions); row++)
   {
     for (int col = 0; col < static_cast<int>(xGridDimensions); col++)
@@ -156,25 +138,26 @@ int main (int argc, char *argv[])
       int index = row * xGridDimensions + col;
       // (xmin, ymin, xmax, ymax)
       double viewport[4] = {
-        static_cast<double>(col) / xGridDimensions,
-        static_cast<double>(yGridDimensions - (row + 1)) / yGridDimensions,
-        static_cast<double>(col + 1) / xGridDimensions,
-        static_cast<double>(yGridDimensions - row) / yGridDimensions};
+          static_cast<double>(col) / xGridDimensions,
+          static_cast<double>(yGridDimensions - (row + 1)) / yGridDimensions,
+          static_cast<double>(col + 1) / xGridDimensions,
+          static_cast<double>(yGridDimensions - row) / yGridDimensions};
       renderers[index]->SetViewport(viewport);
       renderWindow->AddRenderer(renderers[index]);
     }
   }
+  renderWindow->SetWindowName("MedianComparison");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Renderers share one camera
   renderWindow->Render();
+  renderers[0]->GetActiveCamera()->Dolly(1.5);
+  renderers[0]->ResetCameraClippingRange();
   for (size_t r = 1; r < renderers.size(); ++r)
   {
     renderers[r]->SetActiveCamera(renderers[0]->GetActiveCamera());
@@ -184,46 +167,37 @@ int main (int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
-namespace
+namespace {
+void AddShotNoise(vtkImageData* inputImage, vtkImageData* outputImage,
+                  double noiseAmplitude, double noiseFraction, int extent[6])
 {
-void AddShotNoise(vtkSmartPointer<vtkImageData> &inputImage,
-                  vtkSmartPointer<vtkImageData> &outputImage,
-                  double noiseAmplitude,
-                  double noiseFraction,
-                  int extent[6])
-{
-  vtkSmartPointer<vtkImageNoiseSource> shotNoiseSource =
-    vtkSmartPointer<vtkImageNoiseSource>::New();
+  vtkNew<vtkImageNoiseSource> shotNoiseSource;
   shotNoiseSource->SetWholeExtent(extent);
   shotNoiseSource->SetMinimum(0.0);
   shotNoiseSource->SetMaximum(1.0);
-  
-  vtkSmartPointer<vtkImageThreshold> shotNoiseThresh1 =
-    vtkSmartPointer<vtkImageThreshold>::New();
+
+  vtkNew<vtkImageThreshold> shotNoiseThresh1;
   shotNoiseThresh1->SetInputConnection(shotNoiseSource->GetOutputPort());
   shotNoiseThresh1->ThresholdByLower(1.0 - noiseFraction);
   shotNoiseThresh1->SetInValue(0);
   shotNoiseThresh1->SetOutValue(noiseAmplitude);
 
-  vtkSmartPointer<vtkImageThreshold> shotNoiseThresh2 =
-    vtkSmartPointer<vtkImageThreshold>::New();
+  vtkNew<vtkImageThreshold> shotNoiseThresh2;
   shotNoiseThresh2->SetInputConnection(shotNoiseSource->GetOutputPort());
   shotNoiseThresh2->ThresholdByLower(noiseFraction);
   shotNoiseThresh2->SetInValue(1.0 - noiseAmplitude);
   shotNoiseThresh2->SetOutValue(0.0);
 
-  vtkSmartPointer<vtkImageMathematics> shotNoise =
-    vtkSmartPointer<vtkImageMathematics>::New();
+  vtkNew<vtkImageMathematics> shotNoise;
   shotNoise->SetInputConnection(0, shotNoiseThresh1->GetOutputPort());
   shotNoise->SetInputConnection(1, shotNoiseThresh2->GetOutputPort());
   shotNoise->SetOperationToAdd();
 
-  vtkSmartPointer<vtkImageMathematics> add =
-    vtkSmartPointer<vtkImageMathematics>::New();
+  vtkNew<vtkImageMathematics> add;
   add->SetInputData(0, inputImage);
   add->SetInputConnection(1, shotNoise->GetOutputPort());
   add->SetOperationToAdd();
   add->Update();
   outputImage->DeepCopy(add->GetOutput());
 }
-}
+} // namespace

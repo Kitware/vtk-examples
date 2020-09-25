@@ -13,6 +13,7 @@
 #include <vtkImageReader2Factory.h>
 #include <vtkImageThreshold.h>
 #include <vtkInteractorStyleImage.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
@@ -24,12 +25,12 @@ int main(int argc, char* argv[])
   // Verify input arguments
   if (argc != 2)
   {
-    std::cout << "Usage: " << argv[0] << " Filename" << std::endl;
+    std::cout << "Usage: " << argv[0] << " Filename e.g. FullHead.mhd" << std::endl;
     return EXIT_FAILURE;
   }
 
   // Read the image
-  auto readerFactory = vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> reader;
   reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
   reader->SetFileName(argv[1]);
@@ -50,16 +51,16 @@ int main(int argc, char* argv[])
   auto middleSlice = 22;
 
   // Work with triple images
-  auto cast = vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> cast;
   cast->SetInputConnection(reader->GetOutputPort());
   cast->SetOutputScalarTypeToDouble();
   cast->Update();
 
-  auto laplacian = vtkSmartPointer<vtkImageLaplacian>::New();
+  vtkNew<vtkImageLaplacian> laplacian;
   laplacian->SetInputConnection(cast->GetOutputPort());
   laplacian->SetDimensionality(3);
 
-  auto enhance = vtkSmartPointer<vtkImageMathematics>::New();
+  vtkNew<vtkImageMathematics> enhance;
   enhance->SetInputConnection(0, cast->GetOutputPort());
   enhance->SetInputConnection(1, laplacian->GetOutputPort());
   enhance->SetOperationToSubtract();
@@ -68,12 +69,12 @@ int main(int argc, char* argv[])
   int colorLevel = colorWindow / 2;
 
   // Map the image through the lookup table
-  auto originalColor = vtkSmartPointer<vtkImageMapToWindowLevelColors>::New();
+  vtkNew<vtkImageMapToWindowLevelColors> originalColor;
   originalColor->SetWindow(colorWindow);
   originalColor->SetLevel(colorLevel);
   originalColor->SetInputConnection(reader->GetOutputPort());
 
-  auto originalActor = vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(
       originalColor->GetOutputPort());
   originalActor->GetProperty()->SetInterpolationTypeToNearest();
@@ -82,34 +83,34 @@ int main(int argc, char* argv[])
       reader->GetDataExtent()[2], reader->GetDataExtent()[3], middleSlice,
       middleSlice);
 
-  auto laplacianColor = vtkSmartPointer<vtkImageMapToWindowLevelColors>::New();
+  vtkNew<vtkImageMapToWindowLevelColors> laplacianColor;
   laplacianColor->SetWindow(1000);
   laplacianColor->SetLevel(0);
   laplacianColor->SetInputConnection(laplacian->GetOutputPort());
 
-  auto laplacianActor = vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> laplacianActor;
   laplacianActor->GetMapper()->SetInputConnection(
       laplacianColor->GetOutputPort());
   laplacianActor->GetProperty()->SetInterpolationTypeToNearest();
   laplacianActor->SetDisplayExtent(originalActor->GetDisplayExtent());
 
-  auto enhancedColor = vtkSmartPointer<vtkImageMapToWindowLevelColors>::New();
+  vtkNew<vtkImageMapToWindowLevelColors> enhancedColor;
   enhancedColor->SetWindow(colorWindow);
   enhancedColor->SetLevel(colorLevel);
   enhancedColor->SetInputConnection(enhance->GetOutputPort());
 
-  auto enhancedActor = vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> enhancedActor;
   enhancedActor->GetMapper()->SetInputConnection(
       enhancedColor->GetOutputPort());
   enhancedActor->GetProperty()->SetInterpolationTypeToNearest();
   enhancedActor->SetDisplayExtent(originalActor->GetDisplayExtent());
 
   // Setup renderers
-  auto originalRenderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->AddActor(originalActor);
-  auto laplacianRenderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> laplacianRenderer;
   laplacianRenderer->AddActor(laplacianActor);
-  auto enhancedRenderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> enhancedRenderer;
   enhancedRenderer->AddActor(enhancedActor);
 
   std::vector<vtkSmartPointer<vtkRenderer>> renderers;
@@ -122,7 +123,7 @@ int main(int argc, char* argv[])
   unsigned int xGridDimensions = 3;
   unsigned int yGridDimensions = 1;
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(rendererSize * xGridDimensions,
                         rendererSize * yGridDimensions);
   for (int row = 0; row < static_cast<int>(yGridDimensions); row++)
@@ -140,10 +141,10 @@ int main(int argc, char* argv[])
       renderWindow->AddRenderer(renderers[index]);
     }
   }
+  renderWindow->SetWindowName("EnhanceEdges");
 
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  auto style = vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
   renderWindowInteractor->SetRenderWindow(renderWindow);

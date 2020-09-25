@@ -61,6 +61,7 @@ def main():
 
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.SetSize(600, 300)
+    renderWindow.SetWindowName('VTKSpectrum')
     renderWindow.AddRenderer(originalRenderer)
     renderWindow.AddRenderer(compressedRenderer)
 

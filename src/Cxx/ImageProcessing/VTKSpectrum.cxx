@@ -4,74 +4,65 @@
 #include <vtkImageFourierCenter.h>
 #include <vtkImageLogarithmicScale.h>
 #include <vtkImageMagnitude.h>
-#include <vtkImageMapper3D.h>
 #include <vtkImageMapToColors.h>
+#include <vtkImageMapper3D.h>
 #include <vtkImageProperty.h>
 #include <vtkImageReader2.h>
 #include <vtkImageReader2Factory.h>
 #include <vtkInteractorStyleImage.h>
 #include <vtkNamedColors.h>
-#include <vtkRenderer.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkWindowLevelLookupTable.h>
 
-namespace
-{
-void CreateImageActor(vtkSmartPointer<vtkImageActor> &actor,
-                      double colorWindow, double colorLevel);
+namespace {
+
+void CreateImageActor(vtkImageActor* actor, double colorWindow,
+                      double colorLevel);
 }
- int main (int argc, char *argv[])
+
+int main(int argc, char* argv[])
 {
   // Verify input arguments
-  if ( argc != 2 )
+  if (argc != 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " Filename" << std::endl;
+    std::cout << "Usage: " << argv[0] << " Filename e.g. vtks.pgm" << std::endl;
     return EXIT_FAILURE;
   }
 
   // Read the image
-  vtkSmartPointer<vtkImageReader2Factory> readerFactory =
-    vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> reader;
-  reader.TakeReference(
-    readerFactory->CreateImageReader2(argv[1]));
+  reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
   reader->SetFileName(argv[1]);
   reader->Update();
 
-
-  vtkSmartPointer<vtkImageFFT> fft =
-    vtkSmartPointer<vtkImageFFT>::New();
-//  fft->SetFilteredAxes $VTK_IMAGE_X_AXIS $VTK_IMAGE_Y_AXIS
+  vtkNew<vtkImageFFT> fft;
+  //  fft->SetFilteredAxes $VTK_IMAGE_X_AXIS $VTK_IMAGE_Y_AXIS
   fft->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkImageMagnitude> mag =
-    vtkSmartPointer<vtkImageMagnitude>::New();
+  vtkNew<vtkImageMagnitude> mag;
   mag->SetInputConnection(fft->GetOutputPort());
 
-  vtkSmartPointer<vtkImageFourierCenter> center =
-    vtkSmartPointer<vtkImageFourierCenter>::New();
+  vtkNew<vtkImageFourierCenter> center;
   center->SetInputConnection(mag->GetOutputPort());
- 
-  vtkSmartPointer<vtkImageLogarithmicScale> compress =
-    vtkSmartPointer<vtkImageLogarithmicScale>::New();
+
+  vtkNew<vtkImageLogarithmicScale> compress;
   compress->SetInputConnection(center->GetOutputPort());
   compress->SetConstant(15);
   compress->Update();
 
   // Create actors
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(reader->GetOutputPort());
   originalActor->GetProperty()->SetInterpolationTypeToNearest();
 
-  vtkSmartPointer<vtkImageActor> compressedActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> compressedActor;
   compressedActor->GetMapper()->SetInputConnection(compress->GetOutputPort());
   compressedActor->GetProperty()->SetInterpolationTypeToNearest();
   CreateImageActor(compressedActor, 160, 120);
@@ -82,30 +73,27 @@ void CreateImageActor(vtkSmartPointer<vtkImageActor> &actor,
   double compressedViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
   originalRenderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  vtkSmartPointer<vtkRenderer> compressedRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> compressedRenderer;
   compressedRenderer->SetViewport(compressedViewport);
   compressedRenderer->AddActor(compressedActor);
   compressedRenderer->ResetCamera();
-  compressedRenderer->SetBackground(colors->GetColor3d("LightSlateGray").GetData());
+  compressedRenderer->SetBackground(
+      colors->GetColor3d("LightSlateGray").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
+  renderWindow->SetWindowName("VTKSpectrum");
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(compressedRenderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -118,24 +106,23 @@ void CreateImageActor(vtkSmartPointer<vtkImageActor> &actor,
   return EXIT_SUCCESS;
 }
 
-namespace
+namespace {
+
+void CreateImageActor(vtkImageActor* actor, double colorWindow,
+                      double colorLevel)
 {
-void CreateImageActor(vtkSmartPointer<vtkImageActor> &actor,
-                      double colorWindow, double colorLevel)
-{
-  vtkSmartPointer<vtkWindowLevelLookupTable> wlut =
-    vtkSmartPointer<vtkWindowLevelLookupTable>::New();
+  vtkNew<vtkWindowLevelLookupTable> wlut;
   wlut->SetWindow(colorWindow);
   wlut->SetLevel(colorLevel);
   wlut->Build();
 
   // Map the image through the lookup table
-  vtkSmartPointer<vtkImageMapToColors> color =
-    vtkSmartPointer<vtkImageMapToColors>::New();
+  vtkNew<vtkImageMapToColors> color;
   color->SetLookupTable(wlut);
   color->SetInputData(actor->GetMapper()->GetInput());
 
   actor->GetMapper()->SetInputConnection(color->GetOutputPort());
   return;
 }
-}
+
+} // namespace

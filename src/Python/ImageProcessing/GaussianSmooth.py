@@ -57,6 +57,7 @@ def main():
 
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.SetSize(600, 300)
+    renderWindow.SetWindowName('GaussianSmooth')
     renderWindow.AddRenderer(originalRenderer)
     renderWindow.AddRenderer(filteredRenderer)
 
