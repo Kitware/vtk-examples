@@ -1,91 +1,99 @@
-#include <vtkSmartPointer.h>
-#include <vtkProperty.h>
-#include <vtkDataSetMapper.h>
-#include <vtkImageData.h>
-#include <vtkImageContinuousDilate3D.h>
-#include <vtkImageCanvasSource2D.h>
-#include <vtkPNGReader.h>
 #include <vtkActor.h>
+#include <vtkDataSetMapper.h>
+#include <vtkImageActor.h>
+#include <vtkImageCanvasSource2D.h>
+#include <vtkImageContinuousDilate3D.h>
+#include <vtkImageData.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPNGReader.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
+#include <vtkSmartPointer.h>
 
-int main(int argc, char *argv[])
+#include <array>
+
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkImageData> image =
-    vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  if(argc < 2)
+  vtkNew<vtkImageData> image;
+
+  if (argc < 2)
   {
+    std::array<double, 4> drawColor1{0, 0, 0, 0};
+    std::array<double, 4> drawColor2{0, 0, 0, 0};
+    auto color1 = colors->GetColor4ub("Black").GetData();
+    auto color2 = colors->GetColor4ub("Red").GetData();
+    for (auto i = 0; i < 4; ++i)
+    {
+      drawColor1[i] = color1[i];
+      drawColor2[i] = color2[i];
+    }
+    // Set the alpha to 0 (actually alpha doesn't seem to be used)
+    drawColor1[3] = 0;
+    drawColor2[3] = 0;
+
     // Create an image
-    vtkSmartPointer<vtkImageCanvasSource2D> source =
-      vtkSmartPointer<vtkImageCanvasSource2D>::New();
+    vtkNew<vtkImageCanvasSource2D> source;
     source->SetScalarTypeToUnsignedChar();
     source->SetExtent(0, 200, 0, 200, 0, 0);
-    source->SetDrawColor(0,0,0);
-    source->FillBox(0,200,0,200);
-    source->SetDrawColor(255,0,0);
-    source->FillBox(100,150,100,150);
+    source->SetDrawColor(drawColor1.data());
+    source->FillBox(0, 200, 0, 200);
+    source->SetDrawColor(drawColor2.data());
+    source->FillBox(100, 150, 100, 150);
     source->Update();
     image->ShallowCopy(source->GetOutput());
   }
   else
   {
-    vtkSmartPointer<vtkPNGReader> reader =
-      vtkSmartPointer<vtkPNGReader>::New();
+    vtkNew<vtkPNGReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
     image->ShallowCopy(reader->GetOutput());
   }
 
-  vtkSmartPointer<vtkImageContinuousDilate3D> dilateFilter =
-    vtkSmartPointer<vtkImageContinuousDilate3D>::New();
+  vtkNew<vtkImageContinuousDilate3D> dilateFilter;
   dilateFilter->SetInputData(image);
-  dilateFilter->SetKernelSize(10,10,1);
+  dilateFilter->SetKernelSize(10, 10, 1);
   dilateFilter->Update();
 
-  vtkSmartPointer<vtkDataSetMapper> originalMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> originalMapper;
   originalMapper->SetInputData(image);
   originalMapper->Update();
 
-  vtkSmartPointer<vtkActor> originalActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> originalActor;
   originalActor->SetMapper(originalMapper);
 
-  vtkSmartPointer<vtkDataSetMapper> dilatedMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> dilatedMapper;
   dilatedMapper->SetInputConnection(dilateFilter->GetOutputPort());
   dilatedMapper->Update();
 
-  vtkSmartPointer<vtkActor> dilatedActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> dilatedActor;
   dilatedActor->SetMapper(dilatedMapper);
 
   // Visualize
   double leftViewport[4] = {0.0, 0.0, 0.5, 1.0};
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
+  renderWindow->SetWindowName("ImageContinuousDilate3D");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  leftRenderer->SetBackground(.6, .5, .4);
+  leftRenderer->SetBackground(colors->GetColor3d("Sienna").GetData());
 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  rightRenderer->SetBackground(.4, .5, .6);
+  rightRenderer->SetBackground(colors->GetColor3d("RoyalBlue").GetData());
 
   leftRenderer->AddActor(originalActor);
   rightRenderer->AddActor(dilatedActor);

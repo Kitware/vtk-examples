@@ -1,79 +1,70 @@
-#include <vtkImageData.h>
+#include <vtkImageActor.h>
 #include <vtkImageCast.h>
-#include <vtkSmartPointer.h>
-#include <vtkImageMapper3D.h>
+#include <vtkImageData.h>
 #include <vtkImageFlip.h>
+#include <vtkImageMandelbrotSource.h>
+#include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageMandelbrotSource.h>
-#include <vtkImageActor.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageMandelbrotSource> source =
-    vtkSmartPointer<vtkImageMandelbrotSource>::New();
+  vtkNew<vtkImageMandelbrotSource> source;
   source->Update();
 
-  vtkSmartPointer<vtkImageCast> castSource =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> castSource;
   castSource->SetOutputScalarTypeToUnsignedChar();
   castSource->SetInputConnection(source->GetOutputPort());
   castSource->Update();
-  
-  vtkSmartPointer<vtkImageFlip> flipXFilter =
-    vtkSmartPointer<vtkImageFlip>::New();
+
+  vtkNew<vtkImageFlip> flipXFilter;
   flipXFilter->SetFilteredAxis(0); // flip x axis
   flipXFilter->SetInputConnection(source->GetOutputPort());
   flipXFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> castXFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> castXFilter;
   castXFilter->SetOutputScalarTypeToUnsignedChar();
   castXFilter->SetInputConnection(flipXFilter->GetOutputPort());
   castXFilter->Update();
 
-  vtkSmartPointer<vtkImageFlip> flipYFilter =
-    vtkSmartPointer<vtkImageFlip>::New();
+  vtkNew<vtkImageFlip> flipYFilter;
   flipYFilter->SetFilteredAxis(1); // flip y axis
   flipYFilter->SetInputConnection(source->GetOutputPort());
   flipYFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> castYFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> castYFilter;
   castYFilter->SetOutputScalarTypeToUnsignedChar();
   castYFilter->SetInputConnection(flipYFilter->GetOutputPort());
   castYFilter->Update();
 
-  vtkSmartPointer<vtkImageFlip> flipZFilter =
-    vtkSmartPointer<vtkImageFlip>::New();
+  vtkNew<vtkImageFlip> flipZFilter;
   flipZFilter->SetFilteredAxis(2); // flip z axis
   flipZFilter->SetInputConnection(source->GetOutputPort());
   flipZFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> castZFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> castZFilter;
   castZFilter->SetOutputScalarTypeToUnsignedChar();
   castZFilter->SetInputConnection(flipZFilter->GetOutputPort());
   castZFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> inputActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> inputActor;
   inputActor->GetMapper()->SetInputConnection(castSource->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> xActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> xActor;
   xActor->GetMapper()->SetInputConnection(castXFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> yActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> yActor;
   yActor->GetMapper()->SetInputConnection(castYFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> zActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> zActor;
   zActor->GetMapper()->SetInputConnection(castZFilter->GetOutputPort());
 
   // Define viewport ranges
@@ -84,48 +75,42 @@ int main(int, char *[])
   double zViewport[4] = {0.75, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> inputRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> inputRenderer;
   inputRenderer->SetViewport(inputViewport);
   inputRenderer->AddActor(inputActor);
   inputRenderer->ResetCamera();
-  inputRenderer->SetBackground(.4, .5, .9);
+  inputRenderer->SetBackground(colors->GetColor3d("Snow").GetData());
 
-  vtkSmartPointer<vtkRenderer> xRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> xRenderer;
   xRenderer->SetViewport(xViewport);
   xRenderer->AddActor(xActor);
   xRenderer->ResetCamera();
-  xRenderer->SetBackground(.4, .5, .6);
+  xRenderer->SetBackground(colors->GetColor3d("Tomato").GetData());
 
-  vtkSmartPointer<vtkRenderer> yRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> yRenderer;
   yRenderer->SetViewport(yViewport);
   yRenderer->AddActor(yActor);
   yRenderer->ResetCamera();
-  yRenderer->SetBackground(.4, .5, .7);
+  yRenderer->SetBackground(colors->GetColor3d("Mint").GetData());
 
-  vtkSmartPointer<vtkRenderer> zRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> zRenderer;
   zRenderer->SetViewport(zViewport);
   zRenderer->AddActor(zActor);
   zRenderer->ResetCamera();
-  zRenderer->SetBackground(.4, .5, .8);
+  zRenderer->SetBackground(colors->GetColor3d("Peacock").GetData());
 
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(1000, 250);
   renderWindow->AddRenderer(inputRenderer);
   renderWindow->AddRenderer(xRenderer);
   renderWindow->AddRenderer(yRenderer);
   renderWindow->AddRenderer(zRenderer);
+  renderWindow->SetWindowName("Flip");
 
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -135,6 +120,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

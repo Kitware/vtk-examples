@@ -1,66 +1,62 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageCityBlockDistance.h>
-
-#include <vtkImageReader2Factory.h>
-#include <vtkImageReader2.h>
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
+#include <vtkImageActor.h>
 #include <vtkImageCast.h>
-#include <vtkImageThreshold.h>
+#include <vtkImageCityBlockDistance.h>
+#include <vtkImageData.h>
 #include <vtkImageExtractComponents.h>
+#include <vtkImageMapper3D.h>
+#include <vtkImageReader2.h>
+#include <vtkImageReader2Factory.h>
+#include <vtkImageThreshold.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
+#include <vtkSmartPointer.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Verify command line arguments
-  if (argc < 2 )
+  if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0] << " BinaryImage" << std::endl;
+    std::cout << "Usage: " << argv[0] << " BinaryImage e.g. Yinyang.jpg" << std::endl;
     return EXIT_FAILURE;
   }
 
   // Read file
-  vtkSmartPointer<vtkImageReader2Factory> readerFactory =
-    vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> reader;
-  reader.TakeReference(
-    readerFactory->CreateImageReader2(argv[1]));
+  reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
   reader->SetFileName(argv[1]);
 
-  vtkSmartPointer<vtkImageCast> castFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> castFilter;
   castFilter->SetOutputScalarTypeToShort();
   castFilter->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkImageCityBlockDistance> cityBlockDistanceFilter =
-    vtkSmartPointer<vtkImageCityBlockDistance>::New();
+  vtkNew<vtkImageCityBlockDistance> cityBlockDistanceFilter;
   cityBlockDistanceFilter->SetInputConnection(castFilter->GetOutputPort());
   cityBlockDistanceFilter->SetDimensionality(2);
   cityBlockDistanceFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageCast> inputCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> inputCastFilter;
   inputCastFilter->SetOutputScalarTypeToUnsignedChar();
   inputCastFilter->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> inputActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> inputActor;
   inputActor->GetMapper()->SetInputConnection(inputCastFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageCast> distanceCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> distanceCastFilter;
   distanceCastFilter->SetOutputScalarTypeToUnsignedChar();
-  distanceCastFilter->SetInputConnection(cityBlockDistanceFilter->GetOutputPort());
+  distanceCastFilter->SetInputConnection(
+      cityBlockDistanceFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> distanceActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> distanceActor;
   distanceActor->GetMapper()->SetInputConnection(
-    distanceCastFilter->GetOutputPort());
+      distanceCastFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -68,32 +64,28 @@ int main(int argc, char *argv[])
   double distanceViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> inputRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> inputRenderer;
   inputRenderer->SetViewport(inputViewport);
   inputRenderer->AddActor(inputActor);
   inputRenderer->ResetCamera();
-  inputRenderer->SetBackground(.4, .5, .9);
+  inputRenderer->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> distanceRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> distanceRenderer;
   distanceRenderer->SetViewport(distanceViewport);
   distanceRenderer->AddActor(distanceActor);
   distanceRenderer->ResetCamera();
-  distanceRenderer->SetBackground(.4, .5, .7);
+  distanceRenderer->SetBackground(colors->GetColor3d("LightSkyBlue").GetData());
 
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(inputRenderer);
   renderWindow->AddRenderer(distanceRenderer);
+  renderWindow->SetWindowName("ImageCityBlockDistance");
 
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 

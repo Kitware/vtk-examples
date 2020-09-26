@@ -17,6 +17,7 @@
 #include <vtkImageShiftScale.h>
 #include <vtkMaskPoints.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -25,9 +26,11 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 
+#include <array>
+
 int main(int argc, char* argv[])
 {
-  auto namedColors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> namedColors;
   namedColors->SetColor("Bkg", 0.2, 0.3, 0.6);
 
   vtkSmartPointer<vtkImageData> originalImage;
@@ -37,14 +40,27 @@ int main(int argc, char* argv[])
   double scaleFactor = 1.0;
   if (argc < 2)
   {
+    std::array<double, 4> drawColor1{0, 0, 0, 0};
+    auto color1 = namedColors->GetColor4ub("Gray").GetData();
+    std::array<double, 4> drawColor2{0, 0, 0, 0};
+    auto color2 = namedColors->GetColor4ub("Snow").GetData();
+    for (auto i = 0; i < 4; ++i)
+    {
+      drawColor1[i] = color1[i];
+      drawColor2[i] = color2[i];
+    }
+    // Set the alpha to 0 (actually alpha doesn't seem to be used)
+    drawColor1[3] = 0;
+    drawColor2[3] = 0;
+
     // Create an image
-    auto imageSource = vtkSmartPointer<vtkImageCanvasSource2D>::New();
+    vtkNew<vtkImageCanvasSource2D> imageSource;
     imageSource->SetScalarTypeToDouble();
     imageSource->SetNumberOfScalarComponents(1);
     imageSource->SetExtent(0, 6, 0, 6, 0, 0);
-    imageSource->SetDrawColor(127, 127, 127); // Gray
+    imageSource->SetDrawColor(drawColor1.data());
     imageSource->FillBox(0, 6, 0, 6);
-    imageSource->SetDrawColor(255, 255, 255); // White
+    imageSource->SetDrawColor(drawColor2.data());
     imageSource->FillBox(2, 4, 2, 4);
     imageSource->Update();
 
@@ -58,16 +74,16 @@ int main(int argc, char* argv[])
   else
   {
     // Read an image
-    auto readerFactory = vtkSmartPointer<vtkImageReader2Factory>::New();
+    vtkNew<vtkImageReader2Factory> readerFactory;
     vtkSmartPointer<vtkImageReader2> reader;
     reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
     reader->SetFileName(argv[1]);
 
     // Convert to HSV and extract the Value
-    auto hsvFilter = vtkSmartPointer<vtkImageRGBToHSV>::New();
+    vtkNew<vtkImageRGBToHSV> hsvFilter;
     hsvFilter->SetInputConnection(reader->GetOutputPort());
 
-    auto extractValue = vtkSmartPointer<vtkImageExtractComponents>::New();
+    vtkNew<vtkImageExtractComponents> extractValue;
     extractValue->SetInputConnection(hsvFilter->GetOutputPort());
     extractValue->SetComponents(2);
     extractValue->Update();
@@ -82,13 +98,13 @@ int main(int argc, char* argv[])
   }
 
   // Compute the gradient of the Value
-  auto gradientFilter = vtkSmartPointer<vtkImageGradient>::New();
+  vtkNew<vtkImageGradient> gradientFilter;
   gradientFilter->SetInputData(image);
   gradientFilter->SetDimensionality(2);
   gradientFilter->Update();
 
   // Extract the x component of the gradient
-  auto extractXFilter = vtkSmartPointer<vtkImageExtractComponents>::New();
+  vtkNew<vtkImageExtractComponents> extractXFilter;
   extractXFilter->SetComponents(0);
   extractXFilter->SetInputConnection(gradientFilter->GetOutputPort());
 
@@ -98,18 +114,18 @@ int main(int argc, char* argv[])
   extractXFilter->GetOutput()->GetPointData()->GetScalars()->GetRange(xRange);
 
   // Gradient could be negative, so take the absolute value
-  auto imageAbsX = vtkSmartPointer<vtkImageMathematics>::New();
+  vtkNew<vtkImageMathematics> imageAbsX;
   imageAbsX->SetOperationToAbsoluteValue();
   imageAbsX->SetInputConnection(extractXFilter->GetOutputPort());
 
   // Scale the output (0,255)
-  auto shiftScaleX = vtkSmartPointer<vtkImageShiftScale>::New();
+  vtkNew<vtkImageShiftScale> shiftScaleX;
   shiftScaleX->SetOutputScalarTypeToUnsignedChar();
   shiftScaleX->SetScale(255 / xRange[1]);
   shiftScaleX->SetInputConnection(imageAbsX->GetOutputPort());
 
   // Extract the y component of the gradient
-  auto extractYFilter = vtkSmartPointer<vtkImageExtractComponents>::New();
+  vtkNew<vtkImageExtractComponents> extractYFilter;
   extractYFilter->SetComponents(1);
   extractYFilter->SetInputConnection(gradientFilter->GetOutputPort());
 
@@ -118,23 +134,23 @@ int main(int argc, char* argv[])
   extractYFilter->GetOutput()->GetPointData()->GetScalars()->GetRange(yRange);
 
   // Gradient could be negative, so take the absolute value
-  auto imageAbsY = vtkSmartPointer<vtkImageMathematics>::New();
+  vtkNew<vtkImageMathematics> imageAbsY;
   imageAbsY->SetOperationToAbsoluteValue();
   imageAbsY->SetInputConnection(extractYFilter->GetOutputPort());
 
   // Scale the output (0,255)
-  auto shiftScaleY = vtkSmartPointer<vtkImageShiftScale>::New();
+  vtkNew<vtkImageShiftScale> shiftScaleY;
   shiftScaleY->SetOutputScalarTypeToUnsignedChar();
   shiftScaleY->SetScale(255 / yRange[1]);
   shiftScaleY->SetInputConnection(imageAbsY->GetOutputPort());
 
   // Create the Glyphs for the gradient
-  auto arrowSource = vtkSmartPointer<vtkArrowSource>::New();
+  vtkNew<vtkArrowSource> arrowSource;
 
   // The gradient is 2D but Glyph3D needs 3D vectors. Add a 0 z-component
   // Also, ImageGradient generates a 2-component scalar for the
   // gradient, but Glyph3D needs normals or vectors
-  auto zeroes = vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> zeroes;
   zeroes->SetNumberOfComponents(1);
   zeroes->SetName("Zero");
   zeroes->SetNumberOfTuples(gradientFilter->GetOutput()
@@ -147,8 +163,7 @@ int main(int argc, char* argv[])
   std::string scalarName =
       gradientFilter->GetOutput()->GetPointData()->GetScalars()->GetName();
 
-  auto scalarsToVectors =
-      vtkSmartPointer<vtkFieldDataToAttributeDataFilter>::New();
+  vtkNew<vtkFieldDataToAttributeDataFilter> scalarsToVectors;
   scalarsToVectors->SetInputConnection(gradientFilter->GetOutputPort());
   scalarsToVectors->SetInputFieldToPointDataField();
   scalarsToVectors->SetOutputAttributeDataToPointData();
@@ -157,12 +172,12 @@ int main(int argc, char* argv[])
   scalarsToVectors->SetVectorComponent(2, "Zero", 0);
 
   // Select a small percentage of the gradients
-  auto maskPoints = vtkSmartPointer<vtkMaskPoints>::New();
+  vtkNew<vtkMaskPoints> maskPoints;
   maskPoints->SetInputConnection(scalarsToVectors->GetOutputPort());
   maskPoints->RandomModeOff();
   maskPoints->SetOnRatio(onRatio);
 
-  auto vectorGradientGlyph = vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> vectorGradientGlyph;
   vectorGradientGlyph->SetSourceConnection(arrowSource->GetOutputPort());
   vectorGradientGlyph->SetInputConnection(maskPoints->GetOutputPort());
   vectorGradientGlyph->SetScaleModeToScaleByVector();
@@ -177,57 +192,56 @@ int main(int argc, char* argv[])
   double yGradientViewport[4] = {0.5, 0.0, 0.75, 1.0};
   double vectorGradientViewport[4] = {0.75, 0.0, 1.0, 1.0};
 
-  auto vectorGradientMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> vectorGradientMapper;
   vectorGradientMapper->SetInputConnection(
       vectorGradientGlyph->GetOutputPort());
   vectorGradientMapper->ScalarVisibilityOff();
 
-  auto vectorGradientActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> vectorGradientActor;
   vectorGradientActor->SetMapper(vectorGradientMapper);
   vectorGradientActor->GetProperty()->SetColor(
       namedColors->GetColor3d("Tomato").GetData());
 
   // Create a renderer, render window, and interactor
-  // vtkSmartPointer<vtkCamera> sharedCamera =
-  //  vtkSmartPointer<vtkCamera>::New();
-  auto originalRenderer = vtkSmartPointer<vtkRenderer>::New();
+  // vtkNew<vtkCamera> sharedCamera;
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->SetBackground(namedColors->GetColor3d("Bkg").GetData());
 
-  auto xGradientRenderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> xGradientRenderer;
   xGradientRenderer->SetViewport(xGradientViewport);
   xGradientRenderer->SetBackground(namedColors->GetColor3d("Bkg").GetData());
 
-  auto yGradientRenderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> yGradientRenderer;
   yGradientRenderer->SetViewport(yGradientViewport);
   yGradientRenderer->SetBackground(namedColors->GetColor3d("Bkg").GetData());
 
-  auto vectorGradientRenderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> vectorGradientRenderer;
   vectorGradientRenderer->SetViewport(vectorGradientViewport);
   vectorGradientRenderer->SetBackground(
       namedColors->GetColor3d("Bkg").GetData());
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(1000, 250);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(xGradientRenderer);
   renderWindow->AddRenderer(yGradientRenderer);
   renderWindow->AddRenderer(vectorGradientRenderer);
+  renderWindow->SetWindowName("Gradient");
 
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  auto originalActor = vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputData(originalImage);
   originalActor->InterpolateOff();
 
-  auto xGradientActor = vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> xGradientActor;
   xGradientActor->InterpolateOff();
 
   xGradientActor->GetMapper()->SetInputConnection(shiftScaleX->GetOutputPort());
 
-  auto yGradientActor = vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> yGradientActor;
 
   yGradientActor->GetMapper()->SetInputConnection(shiftScaleY->GetOutputPort());
   yGradientActor->InterpolateOff();

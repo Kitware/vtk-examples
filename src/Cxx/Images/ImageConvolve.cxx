@@ -1,82 +1,77 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
-#include <vtkImageConvolve.h>
-#include <vtkImageMandelbrotSource.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkRenderer.h>
 #include <vtkImageActor.h>
 #include <vtkImageCast.h>
+#include <vtkImageConvolve.h>
+#include <vtkImageData.h>
+#include <vtkImageMandelbrotSource.h>
+#include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageMandelbrotSource> source =
-    vtkSmartPointer<vtkImageMandelbrotSource>::New();
+  vtkNew<vtkImageMandelbrotSource> source;
   source->Update();
 
-  vtkSmartPointer<vtkImageCast> originalCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> originalCastFilter;
   originalCastFilter->SetInputConnection(source->GetOutputPort());
   originalCastFilter->SetOutputScalarTypeToUnsignedChar();
   originalCastFilter->Update();
-  
-  vtkSmartPointer<vtkImageConvolve> convolveFilter =
-    vtkSmartPointer<vtkImageConvolve>::New();
+
+  vtkNew<vtkImageConvolve> convolveFilter;
   convolveFilter->SetInputConnection(source->GetOutputPort());
-  double kernel[9] = {1,1,1,1,1,1,1,1,1};
+  double kernel[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
   convolveFilter->SetKernel3x3(kernel);
   convolveFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> convolvedCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> convolvedCastFilter;
   convolvedCastFilter->SetInputConnection(convolveFilter->GetOutputPort());
   convolvedCastFilter->SetOutputScalarTypeToUnsignedChar();
   convolvedCastFilter->Update();
 
   // Create an actor
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(
-    originalCastFilter->GetOutputPort());
+      originalCastFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> convolvedActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> convolvedActor;
   convolvedActor->GetMapper()->SetInputConnection(
-    convolvedCastFilter->GetOutputPort());
+      convolvedCastFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
   double leftViewport[4] = {0.0, 0.0, 0.5, 1.0};
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
-  
+
   // Setup renderer
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(leftViewport);
   originalRenderer->AddActor(originalActor);
+  originalRenderer->SetBackground(colors->GetColor3d("Sienna").GetData());
   originalRenderer->ResetCamera();
 
-  vtkSmartPointer<vtkRenderer> convolvedRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> convolvedRenderer;
   convolvedRenderer->SetViewport(rightViewport);
   convolvedRenderer->AddActor(convolvedActor);
+  convolvedRenderer->SetBackground(colors->GetColor3d("RoyalBlue").GetData());
   convolvedRenderer->ResetCamera();
 
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetSize(600,300);
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(convolvedRenderer);
+  renderWindow->SetWindowName("ImageConvolve");
 
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -86,6 +81,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

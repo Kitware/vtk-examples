@@ -1,61 +1,72 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageShiftScale.h>
-#include <vtkImageCast.h>
-#include <vtkImageMapper3D.h>
-#include <vtkMath.h>
-#include <vtkImageData.h>
-#include <vtkPointData.h>
-#include <vtkDataArray.h>
-#include <vtkImageCanvasSource2D.h>
-#include <vtkImageCorrelation.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkImageActor.h>
 #include <vtkActor.h>
+#include <vtkDataArray.h>
+#include <vtkImageActor.h>
+#include <vtkImageCanvasSource2D.h>
+#include <vtkImageCast.h>
+#include <vtkImageCorrelation.h>
+#include <vtkImageData.h>
+#include <vtkImageMapper3D.h>
+#include <vtkImageShiftScale.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkMath.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+#include <array>
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
+  std::array<double, 4> drawColor1{0, 0, 0, 0};
+  std::array<double, 4> drawColor2{0, 0, 0, 0};
+  auto color1 = colors->GetColor4ub("Black").GetData();
+  auto color2 = colors->GetColor4ub("Wheat").GetData();
+  for (auto i = 0; i < 4; ++i)
+  {
+    drawColor1[i] = color1[i];
+    drawColor2[i] = color2[i];
+  }
+  // Set the alpha to 0 (actually alpha doesn't seem to be used)
+  drawColor1[3] = 0;
+  drawColor2[3] = 0;
+
   // Create an image
-  vtkSmartPointer<vtkImageCanvasSource2D> imageSource = 
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> imageSource;
   imageSource->SetNumberOfScalarComponents(3);
   imageSource->SetScalarTypeToUnsignedChar();
   imageSource->SetExtent(0, 300, 0, 300, 0, 0);
-  imageSource->SetDrawColor(0, 0, 0);
+  imageSource->SetDrawColor(drawColor1.data());
   imageSource->FillBox(0, 300, 0, 300);
-  imageSource->SetDrawColor(255, 0, 0); //red
-  imageSource->FillTriangle(10, 100,  190, 150,  40, 250);
+  imageSource->SetDrawColor(drawColor2.data());
+  imageSource->FillTriangle(10, 100, 190, 150, 40, 250);
   imageSource->Update();
 
   // Create an actor
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  originalActor->GetMapper()->SetInputConnection(
-    imageSource->GetOutputPort());
- 
+  vtkNew<vtkImageActor> originalActor;
+  originalActor->GetMapper()->SetInputConnection(imageSource->GetOutputPort());
+
   // Create a kernel
-  vtkSmartPointer<vtkImageCanvasSource2D> kernelSource = 
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> kernelSource;
   kernelSource->SetNumberOfScalarComponents(3);
   kernelSource->SetScalarTypeToUnsignedChar();
   kernelSource->SetExtent(0, 30, 0, 30, 0, 0);
-  kernelSource->SetDrawColor(0, 0, 0);
+  kernelSource->SetDrawColor(drawColor1.data());
   kernelSource->FillBox(0, 30, 0, 30);
-  kernelSource->SetDrawColor(255, 0, 0); //red
-  kernelSource->FillTriangle(10, 1,  25, 10,  1, 5);
+  kernelSource->SetDrawColor(drawColor2.data());
+  kernelSource->FillTriangle(10, 1, 25, 10, 1, 5);
   kernelSource->Update();
 
   // Create an actor
-  vtkSmartPointer<vtkImageActor> kernelActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  kernelActor->GetMapper()->SetInputConnection(
-    kernelSource->GetOutputPort());
+  vtkNew<vtkImageActor> kernelActor;
+  kernelActor->GetMapper()->SetInputConnection(kernelSource->GetOutputPort());
 
   // Compute the correlation
-  vtkSmartPointer<vtkImageCorrelation> correlationFilter = 
-    vtkSmartPointer<vtkImageCorrelation>::New();
+  vtkNew<vtkImageCorrelation> correlationFilter;
   correlationFilter->SetInputConnection(0, imageSource->GetOutputPort());
   correlationFilter->SetInputConnection(1, kernelSource->GetOutputPort());
   correlationFilter->Update();
@@ -64,28 +75,25 @@ int main(int, char *[])
   // So, get the scalar range
   vtkImageData* corr = correlationFilter->GetOutput();
   double corrRange[2];
-  corr->GetPointData()->GetScalars()->GetRange( corrRange );
- 
+  corr->GetPointData()->GetScalars()->GetRange(corrRange);
+
   // Rescale the correlation filter output. note that it implies
   // that minimum correlation is always zero.
-  vtkSmartPointer<vtkImageShiftScale> imageScale =
-    vtkSmartPointer<vtkImageShiftScale>::New();
-  imageScale->SetInputConnection( correlationFilter->GetOutputPort( ));
-  imageScale->SetScale( 255 / corrRange[1] );
-  imageScale->SetOutputScalarTypeToUnsignedChar( );
+  vtkNew<vtkImageShiftScale> imageScale;
+  imageScale->SetInputConnection(correlationFilter->GetOutputPort());
+  imageScale->SetScale(255 / corrRange[1]);
+  imageScale->SetOutputScalarTypeToUnsignedChar();
   imageScale->Update();
 
-  vtkSmartPointer<vtkImageCast> correlationCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> correlationCastFilter;
   correlationCastFilter->SetInputConnection(imageScale->GetOutputPort());
   correlationCastFilter->SetOutputScalarTypeToUnsignedChar();
   correlationCastFilter->Update();
 
   // Create an actor
-  vtkSmartPointer<vtkImageActor> correlationActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> correlationActor;
   correlationActor->GetMapper()->SetInputConnection(
-    correlationCastFilter->GetOutputPort());
+      correlationCastFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -94,37 +102,35 @@ int main(int, char *[])
   double correlationViewport[4] = {0.66, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
+  originalRenderer->SetBackground(colors->GetColor3d("Mint").GetData());
 
-  vtkSmartPointer<vtkRenderer> kernelRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> kernelRenderer;
   kernelRenderer->SetViewport(kernelViewport);
   kernelRenderer->AddActor(kernelActor);
   kernelRenderer->ResetCamera();
+  kernelRenderer->SetBackground(colors->GetColor3d("Mint").GetData());
 
-  vtkSmartPointer<vtkRenderer> correlationRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> correlationRenderer;
   correlationRenderer->SetViewport(correlationViewport);
   correlationRenderer->AddActor(correlationActor);
   correlationRenderer->ResetCamera();
+  correlationRenderer->SetBackground(colors->GetColor3d("Peacock").GetData());
 
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetSize(900,300);
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetSize(900, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(kernelRenderer);
   renderWindow->AddRenderer(correlationRenderer);
+  renderWindow->SetWindowName("ImageCorrelation");
 
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -134,6 +140,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }
