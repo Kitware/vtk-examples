@@ -1,27 +1,29 @@
 #include <vtkCamera.h>
 #include <vtkImageActor.h>
 #include <vtkImageConstantPad.h>
-#include <vtkImageMapper3D.h>
 #include <vtkImageMapToWindowLevelColors.h>
+#include <vtkImageMapper3D.h>
 #include <vtkImageMirrorPad.h>
 #include <vtkImageProperty.h>
 #include <vtkImageReader2.h>
 #include <vtkImageReader2Factory.h>
 #include <vtkInteractorStyleImage.h>
 #include <vtkNamedColors.h>
-#include <vtkRenderer.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
-#include <vtkNew.h>
 
- int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Verify input arguments
-  if ( argc < 2 )
+  if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " Filename e.g. FullHead.mhd" << std::endl;
+    std::cout << "Usage: " << argv[0] << " Filename e.g. FullHead.mhd"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -43,7 +45,6 @@
   mirrorPad->SetOutputWholeExtent(constantPad->GetOutputWholeExtent());
 
   // Create actors
-  vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkImageMapToWindowLevelColors> constantPadColor;
   constantPadColor->SetWindow(2000);
