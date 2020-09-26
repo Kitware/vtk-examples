@@ -6,8 +6,10 @@
 #include <vtkImageReader2.h>
 #include <vtkImageReader2Factory.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
@@ -16,74 +18,76 @@
 
 #include <array>
 
-int main(int argc, char *argv[]) {
-
+int main(int argc, char* argv[])
+{
   vtkNew<vtkNamedColors> colors;
-
-  std::array<unsigned char, 4> lgtCyan = {{100, 255, 255, 255}};
-  std::array<unsigned char, 4> lgtMagenta = {{255, 100, 255, 255}};
-  colors->SetColor("light_cyan", lgtCyan.data());
-  colors->SetColor("light_magenta", lgtMagenta.data());
 
   vtkSmartPointer<vtkImageData> imageData;
 
   // Verify input arguments
-  if (argc > 1) {
+  if (argc > 1)
+  {
     // Read the image
-    vtkSmartPointer<vtkImageReader2Factory> readerFactory =
-        vtkSmartPointer<vtkImageReader2Factory>::New();
+    vtkNew<vtkImageReader2Factory> readerFactory;
     vtkSmartPointer<vtkImageReader2> imageReader;
-    imageReader.TakeReference(
-      readerFactory->CreateImageReader2(argv[1]));
+    imageReader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
     imageReader->SetFileName(argv[1]);
     imageReader->Update();
     imageData = imageReader->GetOutput();
   }
   else
   {
-    vtkSmartPointer<vtkImageCanvasSource2D> canvasSource =
-        vtkSmartPointer<vtkImageCanvasSource2D>::New();
+
+    std::array<double, 4> drawColor1{0, 0, 0, 0};
+    std::array<double, 4> drawColor2{0, 0, 0, 0};
+    std::array<double, 4> drawColor3{0, 0, 0, 0};
+    auto color1 = colors->GetColor4ub("warm_grey").GetData();
+    auto color2 = colors->GetColor4ub("DarkCyan").GetData();
+    auto color3 = colors->GetColor4ub("LightCoral").GetData();
+    for (auto i = 0; i < 4; ++i)
+    {
+      drawColor1[i] = color1[i];
+      drawColor2[i] = color2[i];
+      drawColor3[i] = color3[i];
+    }
+
+    vtkNew<vtkImageCanvasSource2D> canvasSource;
     canvasSource->SetExtent(0, 100, 0, 100, 0, 0);
     canvasSource->SetScalarTypeToUnsignedChar();
     canvasSource->SetNumberOfScalarComponents(3);
-    canvasSource->SetDrawColor(128,  128,  105);
+    canvasSource->SetDrawColor(drawColor1.data());
     canvasSource->FillBox(0, 100, 0, 100);
-    canvasSource->SetDrawColor(100, 255, 255);
+    canvasSource->SetDrawColor(drawColor2.data());
     canvasSource->FillTriangle(10, 10, 25, 10, 25, 25);
-    canvasSource->SetDrawColor(255, 100, 255);
+    canvasSource->SetDrawColor(drawColor3.data());
     canvasSource->FillTube(75, 75, 0, 75, 5.0);
     canvasSource->Update();
     imageData = canvasSource->GetOutput();
   }
   // Create an image actor to display the image
-  vtkSmartPointer<vtkImageActor> imageActor =
-      vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> imageActor;
   imageActor->SetInputData(imageData);
 
   // Create a renderer to display the image in the background
-  vtkSmartPointer<vtkRenderer> backgroundRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> backgroundRenderer;
 
   // Create a superquadric
-  vtkSmartPointer<vtkSuperquadricSource> superquadricSource =
-      vtkSmartPointer<vtkSuperquadricSource>::New();
+  vtkNew<vtkSuperquadricSource> superquadricSource;
   superquadricSource->SetPhiRoundness(1.1);
   superquadricSource->SetThetaRoundness(.2);
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> superquadricMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> superquadricMapper;
   superquadricMapper->SetInputConnection(superquadricSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> superquadricActor =
-      vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> superquadricActor;
   superquadricActor->SetMapper(superquadricMapper);
+  superquadricActor->GetProperty()->SetColor(
+      colors->GetColor3d("NavajoWhite").GetData());
 
-  vtkSmartPointer<vtkRenderer> sceneRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> sceneRenderer;
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
 
   // Set up the render window and renderers such that there is
   // a background layer and a foreground layer
@@ -93,9 +97,9 @@ int main(int argc, char *argv[]) {
   renderWindow->SetNumberOfLayers(2);
   renderWindow->AddRenderer(backgroundRenderer);
   renderWindow->AddRenderer(sceneRenderer);
+  renderWindow->SetWindowName("BackgroundImage");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add actors to the renderers
@@ -113,7 +117,7 @@ int main(int argc, char *argv[]) {
   imageData->GetSpacing(spacing);
   imageData->GetExtent(extent);
 
-  vtkCamera *camera = backgroundRenderer->GetActiveCamera();
+  vtkCamera* camera = backgroundRenderer->GetActiveCamera();
   camera->ParallelProjectionOn();
 
   double xc = origin[0] + 0.5 * (extent[0] + extent[1]) * spacing[0];

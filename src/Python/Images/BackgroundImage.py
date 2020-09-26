@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-
 import vtk
 
 
@@ -20,16 +18,13 @@ def get_program_parameters():
 def main():
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor('light_cyan', [100, 255, 255, 255])
-    colors.SetColor('light_magenta', [255, 100, 255, 255])
-
     #  Verify input arguments
     fn = get_program_parameters()
     if fn:
         # Read the image
         jpeg_reader = vtk.vtkJPEGReader()
         if not jpeg_reader.CanReadFile(fn):
-            print("Error reading file:", fn)
+            print('Error reading file:', fn)
             return
 
         jpeg_reader.SetFileName(fn)
@@ -42,9 +37,9 @@ def main():
         canvas_source.SetNumberOfScalarComponents(3)
         canvas_source.SetDrawColor(colors.GetColor4ub('warm_grey'))
         canvas_source.FillBox(0, 100, 0, 100)
-        canvas_source.SetDrawColor(colors.GetColor4ub('light_cyan'))
+        canvas_source.SetDrawColor(colors.GetColor4ub('DarkCyan'))
         canvas_source.FillTriangle(10, 10, 25, 10, 25, 25)
-        canvas_source.SetDrawColor(colors.GetColor4ub('light_magenta'))
+        canvas_source.SetDrawColor(colors.GetColor4ub('LightCoral'))
         canvas_source.FillTube(75, 75, 0, 75, 5.0)
         canvas_source.Update()
         image_data = canvas_source.GetOutput()
@@ -67,6 +62,7 @@ def main():
 
     superquadric_actor = vtk.vtkActor()
     superquadric_actor.SetMapper(superquadric_mapper)
+    superquadric_actor.GetProperty().SetColor(colors.GetColor3d('NavajoWhite'))
 
     scene_renderer = vtk.vtkRenderer()
     render_window = vtk.vtkRenderWindow()
@@ -79,6 +75,7 @@ def main():
     render_window.SetNumberOfLayers(2)
     render_window.AddRenderer(background_renderer)
     render_window.AddRenderer(scene_renderer)
+    render_window.SetWindowName('BackgroundImage')
 
     render_window_interactor = vtk.vtkRenderWindowInteractor()
     render_window_interactor.SetRenderWindow(render_window)

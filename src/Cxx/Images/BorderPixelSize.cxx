@@ -1,41 +1,47 @@
 #include <vtkImageData.h>
-#include <vtkSmartPointer.h>
+#include <vtkImageMapper.h>
+#include <vtkImageProperty.h>
+#include <vtkImageSlice.h>
+#include <vtkImageSliceMapper.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageMapper.h>
-#include <vtkImageSliceMapper.h>
-#include <vtkImageSlice.h>
-#include <vtkImageProperty.h>
 
-static void CreateRandomImage(vtkImageData* image, const unsigned int dimension);
+namespace {
+void CreateRandomImage(vtkImageData* image, const unsigned int dimension);
+}
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Big image
-  vtkSmartPointer<vtkImageData> image = vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> image;
   CreateRandomImage(image, 50);
 
-  vtkSmartPointer<vtkImageSliceMapper> imageSliceMapper = vtkSmartPointer<vtkImageSliceMapper>::New();
+  vtkNew<vtkImageSliceMapper> imageSliceMapper;
   imageSliceMapper->SetInputData(image);
-  imageSliceMapper->BorderOn(); // This line tells the mapper to draw the full border pixels.
-  vtkSmartPointer<vtkImageSlice> imageSlice = vtkSmartPointer<vtkImageSlice>::New();
+  imageSliceMapper->BorderOn(); // This line tells the mapper to draw the full
+                                // border pixels.
+  vtkNew<vtkImageSlice> imageSlice;
   imageSlice->SetMapper(imageSliceMapper);
   imageSlice->GetProperty()->SetInterpolationTypeToNearest();
 
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddViewProp(imageSlice);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
   renderer->ResetCamera();
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("BorderPixelSize");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
 
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -48,22 +54,25 @@ int main(int, char *[])
   return EXIT_SUCCESS;
 }
 
+namespace {
+
 void CreateRandomImage(vtkImageData* image, const unsigned int dimension)
 {
   image->SetDimensions(dimension, dimension, 1);
-  image->SetOrigin(.5,.5,0);
-  image->AllocateScalars(VTK_UNSIGNED_CHAR,3);
+  image->SetOrigin(.5, .5, 0);
+  image->AllocateScalars(VTK_UNSIGNED_CHAR, 3);
 
-  for(unsigned int x = 0; x < dimension; x++)
+  for (unsigned int x = 0; x < dimension; x++)
   {
-    for(unsigned int y = 0; y < dimension; y++)
+    for (unsigned int y = 0; y < dimension; y++)
     {
-      unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(x,y,0));
+      unsigned char* pixel =
+          static_cast<unsigned char*>(image->GetScalarPointer(x, y, 0));
       pixel[0] = rand() % 255;
       pixel[1] = rand() % 255;
       pixel[2] = rand() % 255;
     }
   }
-
   image->Modified();
 }
+} // namespace
