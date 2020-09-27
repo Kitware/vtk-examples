@@ -38,7 +38,7 @@ If You are using HTTPS:
 
 ``` bash
     cd __REPO_NAME__
-    git remote add upstream __SITE_REPOSITORY__
+    git remote add upstream __SITE_REPOSITORY__.git
 ```
 
 ### Now build it
