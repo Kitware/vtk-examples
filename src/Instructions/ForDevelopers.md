@@ -25,7 +25,7 @@ A fork is a copy of a project. Forking a repository allows you to make changes w
 If you are using SSH:
 
 ``` bash
-    git clone git@gitlab.kitware.com:<username>vtk-examples.git
+    git clone git@gitlab.kitware.com:<username>/vtk-examples.git
 ```
 
 If You are using HTTPS:
@@ -37,6 +37,7 @@ If You are using HTTPS:
 ### Add the vtk-examples repository as a *remote* called *upstream*
 
 ``` bash
+    cd __REPO_NAME__
     git remote add upstream __SITE_REPOSITORY__
 ```
 
