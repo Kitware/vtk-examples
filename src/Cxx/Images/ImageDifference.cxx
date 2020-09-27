@@ -1,96 +1,112 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
+#include <vtkImageActor.h>
 #include <vtkImageCanvasSource2D.h>
+#include <vtkImageData.h>
 #include <vtkImageDifference.h>
+#include <vtkImageMapper3D.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkProperty.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
 
-int main(int, char *[])
+#include <array>
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
+  std::array<double, 4> drawColor1{0, 0, 0, 0};
+  std::array<double, 4> drawColor2{0, 0, 0, 0};
+  auto color1 = colors->GetColor4ub("Black").GetData();
+  auto color2 = colors->GetColor4ub("Wheat").GetData();
+  for (auto i = 0; i < 4; ++i)
+  {
+    drawColor1[i] = color1[i];
+    drawColor2[i] = color2[i];
+  }
+  // Set the alpha to 1
+  drawColor1[3] = 1;
+  drawColor2[3] = 1;
+
   // Create an image
-  vtkSmartPointer<vtkImageCanvasSource2D> source1 = 
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> source1;
   source1->SetScalarTypeToUnsignedChar();
   source1->SetNumberOfScalarComponents(3);
   source1->SetExtent(0, 100, 0, 100, 0, 0);
-  source1->SetDrawColor(0,0,0,1);
+  source1->SetDrawColor(drawColor1.data());
   source1->FillBox(0, 100, 0, 100);
-  source1->SetDrawColor(255,0,0,1);
+  source1->SetDrawColor(drawColor2.data());
   source1->FillBox(10, 90, 10, 90);
   source1->Update();
 
   // Create another image
-  vtkSmartPointer<vtkImageCanvasSource2D> source2 = 
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> source2;
   source2->SetScalarTypeToUnsignedChar();
   source2->SetNumberOfScalarComponents(3);
   source2->SetExtent(0, 100, 0, 100, 0, 0);
-  source2->SetDrawColor(0,0,0,1);
+  source2->SetDrawColor(drawColor1.data());
   source2->FillBox(0, 100, 0, 100);
-  source2->SetDrawColor(255,0,0,1);
+  source2->SetDrawColor(drawColor2.data());
   source2->FillBox(20, 80, 20, 80);
   source2->Update();
 
-  vtkSmartPointer<vtkImageDifference> differenceFilter = 
-    vtkSmartPointer<vtkImageDifference>::New();
-      
+  vtkNew<vtkImageDifference> differenceFilter;
+
   differenceFilter->SetInputConnection(source1->GetOutputPort());
   differenceFilter->SetImageConnection(source2->GetOutputPort());
   differenceFilter->Update();
-    
+
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
   double leftViewport[4] = {0.0, 0.0, 0.33, 1.0};
   double centerViewport[4] = {0.33, 0.0, 0.66, 1.0};
   double rightViewport[4] = {0.66, 0.0, 1.0, 1.0};
- 
+
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
-  
+  vtkNew<vtkRenderWindow> renderWindow;
+
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer = 
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  vtkSmartPointer<vtkImageActor> leftActor = 
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> leftActor;
   leftActor->GetMapper()->SetInputConnection(source1->GetOutputPort());
+
   leftRenderer->AddActor(leftActor);
-  
-  vtkSmartPointer<vtkRenderer> centerRenderer = 
-    vtkSmartPointer<vtkRenderer>::New();
+  leftRenderer->SetBackground(colors->GetColor3d("Mint").GetData());
+
+  vtkNew<vtkRenderer> centerRenderer;
   renderWindow->AddRenderer(centerRenderer);
   centerRenderer->SetViewport(centerViewport);
-  vtkSmartPointer<vtkImageActor> centerActor = 
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> centerActor;
   centerActor->GetMapper()->SetInputConnection(source2->GetOutputPort());
+
   centerRenderer->AddActor(centerActor);
-  
-  vtkSmartPointer<vtkRenderer> rightRenderer = 
-    vtkSmartPointer<vtkRenderer>::New();
+  centerRenderer->SetBackground(colors->GetColor3d("Mint").GetData());
+
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  vtkSmartPointer<vtkImageActor> rightActor = 
-    vtkSmartPointer<vtkImageActor>::New();
-  rightActor->GetMapper()->SetInputConnection(differenceFilter->GetOutputPort());
+  rightRenderer->SetBackground(colors->GetColor3d("Peacock").GetData());
+  vtkNew<vtkImageActor> rightActor;
+  rightActor->GetMapper()->SetInputConnection(
+      differenceFilter->GetOutputPort());
   rightRenderer->AddActor(rightActor);
-  
+
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
- 
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+
   // Render and start interaction
-  renderWindowInteractor->SetRenderWindow ( renderWindow );
+  renderWindowInteractor->SetRenderWindow(renderWindow);
+
+  renderWindow->SetSize(300, 100);
+  renderWindow->SetWindowName("ImageDifference");
   renderWindow->Render();
 
   renderWindowInteractor->Initialize();
- 
+
   renderWindowInteractor->Start();
- 
+
   return EXIT_SUCCESS;
 }
