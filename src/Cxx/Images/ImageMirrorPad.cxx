@@ -1,19 +1,22 @@
-#include <vtkSmartPointer.h>
+#include <vtkImageActor.h>
+#include <vtkImageCanvasSource2D.h>
 #include <vtkImageData.h>
 #include <vtkImageMapper3D.h>
-#include <vtkImageCanvasSource2D.h>
 #include <vtkImageMirrorPad.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkProperty.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
+#include <vtkType.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageCanvasSource2D> source = 
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> source;
   source->SetExtent(0, 20, 0, 20, 0, 0);
   source->SetScalarTypeToUnsignedChar();
   source->SetDrawColor(0.0, 0.0, 0.0, 1.0);
@@ -21,37 +24,33 @@ int main(int, char *[])
   source->SetDrawColor(255.0, 0.0, 0.0, 0.5);
   source->DrawCircle(10, 10, 5);
   source->Update();
-  
-  vtkSmartPointer<vtkImageMirrorPad> mirrorPadFilter = 
-    vtkSmartPointer<vtkImageMirrorPad>::New();
+
+  vtkNew<vtkImageMirrorPad> mirrorPadFilter;
   mirrorPadFilter->SetInputConnection(source->GetOutputPort());
   mirrorPadFilter->SetOutputWholeExtent(-10, 30, -10, 30, 0, 0);
   mirrorPadFilter->Update();
-  
+
   // Create an actor
-  vtkSmartPointer<vtkImageActor> actor = 
-    vtkSmartPointer<vtkImageActor>::New();
-  actor->GetMapper()->SetInputConnection(
-    mirrorPadFilter->GetOutputPort());
- 
+  vtkNew<vtkImageActor> actor;
+  actor->GetMapper()->SetInputConnection(mirrorPadFilter->GetOutputPort());
+
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer = 
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
   renderer->ResetCamera();
- 
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->AddRenderer ( renderer );
- 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
- 
-  renderWindowInteractor->SetRenderWindow ( renderWindow );
+  renderer->SetBackground(colors->GetColor3d("Salmon").GetData());
+
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ImageMirrorPad");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+
+  renderWindowInteractor->SetRenderWindow(renderWindow);
   renderWindow->Render();
   renderWindowInteractor->Initialize();
- 
+
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

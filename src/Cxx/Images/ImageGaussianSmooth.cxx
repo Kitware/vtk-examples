@@ -1,70 +1,67 @@
-#include <vtkSmartPointer.h>
+#include <vtkImageActor.h>
+#include <vtkImageCast.h>
 #include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
+#include <vtkImageEllipsoidSource.h>
 #include <vtkImageGaussianSmooth.h>
+#include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
-#include <vtkImageEllipsoidSource.h>
-#include <vtkImageCast.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageEllipsoidSource> source =
-    vtkSmartPointer<vtkImageEllipsoidSource>::New();
+  vtkNew<vtkImageEllipsoidSource> source;
   source->SetWholeExtent(0, 20, 0, 20, 0, 0);
-  source->SetCenter(10,10,0);
-  source->SetRadius(3,4,0);
+  source->SetCenter(10, 10, 0);
+  source->SetRadius(3, 4, 0);
   source->Update();
-  
-  vtkSmartPointer<vtkImageGaussianSmooth> gaussianSmoothFilter = 
-    vtkSmartPointer<vtkImageGaussianSmooth>::New();
+
+  vtkNew<vtkImageGaussianSmooth> gaussianSmoothFilter;
   gaussianSmoothFilter->SetInputConnection(source->GetOutputPort());
   gaussianSmoothFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> smoothedActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> smoothedActor;
   smoothedActor->GetMapper()->SetInputConnection(
-    gaussianSmoothFilter->GetOutputPort());
+      gaussianSmoothFilter->GetOutputPort());
 
-   // Define viewport ranges
+  // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
   double originalViewport[4] = {0.0, 0.0, 0.5, 1.0};
   double smoothedViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> gradientMagnitudeRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> gradientMagnitudeRenderer;
   gradientMagnitudeRenderer->SetViewport(smoothedViewport);
   gradientMagnitudeRenderer->AddActor(smoothedActor);
   gradientMagnitudeRenderer->ResetCamera();
-  gradientMagnitudeRenderer->SetBackground(.4, .5, .7);
+  gradientMagnitudeRenderer->SetBackground(
+      colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(gradientMagnitudeRenderer);
+  renderWindow->SetWindowName("ImageGaussianSmooth");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -73,6 +70,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

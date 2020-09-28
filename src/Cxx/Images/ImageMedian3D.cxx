@@ -1,20 +1,22 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageData.h>
+#include <vtkImageActor.h>
 #include <vtkImageCanvasSource2D.h>
-#include <vtkImageMedian3D.h>
+#include <vtkImageCast.h>
+#include <vtkImageData.h>
 #include <vtkImageMapper3D.h>
+#include <vtkImageMedian3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
-#include <vtkImageCast.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageCanvasSource2D> imageSource =
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> imageSource;
   imageSource->SetNumberOfScalarComponents(1);
   imageSource->SetScalarTypeToUnsignedChar();
   unsigned int xmin = 0;
@@ -22,7 +24,7 @@ int main(int, char *[])
   unsigned int ymin = 0;
   unsigned int ymax = 20;
   imageSource->SetExtent(xmin, xmax, ymin, ymax, 0, 0);
-  
+
   // Make the image all black
   imageSource->SetDrawColor(0.0);
   imageSource->FillBox(xmin, xmax, ymin, ymax);
@@ -37,23 +39,18 @@ int main(int, char *[])
   imageSource->FillBox(17, 17, 17, 17);
 
   imageSource->Update();
-  
-  vtkSmartPointer<vtkImageMedian3D> medianFilter = 
-    vtkSmartPointer<vtkImageMedian3D>::New();
+
+  vtkNew<vtkImageMedian3D> medianFilter;
   medianFilter->SetInputConnection(imageSource->GetOutputPort());
-  medianFilter->SetKernelSize(3,3,1);
+  medianFilter->SetKernelSize(3, 3, 1);
   medianFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  originalActor->GetMapper()->SetInputConnection(
-    imageSource->GetOutputPort());
+  vtkNew<vtkImageActor> originalActor;
+  originalActor->GetMapper()->SetInputConnection(imageSource->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> medianActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  medianActor->GetMapper()->SetInputConnection(
-    medianFilter->GetOutputPort());
+  vtkNew<vtkImageActor> medianActor;
+  medianActor->GetMapper()->SetInputConnection(medianFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -61,30 +58,28 @@ int main(int, char *[])
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(leftViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> gradientMagnitudeRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> gradientMagnitudeRenderer;
   gradientMagnitudeRenderer->SetViewport(rightViewport);
   gradientMagnitudeRenderer->AddActor(medianActor);
   gradientMagnitudeRenderer->ResetCamera();
-  gradientMagnitudeRenderer->SetBackground(.4, .5, .7);
+  gradientMagnitudeRenderer->SetBackground(
+      colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(gradientMagnitudeRenderer);
+  renderWindow->SetWindowName("ImageMedian3D");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -93,6 +88,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

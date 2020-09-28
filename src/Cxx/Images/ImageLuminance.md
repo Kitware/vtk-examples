@@ -1,4 +1,5 @@
 ### Description
+
 There are two ways to convert images to greyscale:
 
 * vtkImageLuminance uses the [luminance equation](http://www.wikipedia.org/wiki/Luma_(video)) for properly weighting the R, G, and B components;

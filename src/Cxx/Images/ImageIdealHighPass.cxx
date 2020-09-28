@@ -1,93 +1,88 @@
-#include <vtkImageExtractComponents.h>
+#include <vtkImageCast.h>
 #include <vtkImageData.h>
+#include <vtkImageEllipsoidSource.h>
+#include <vtkImageExtractComponents.h>
 #include <vtkImageFFT.h>
-#include <vtkImageMandelbrotSource.h>
 #include <vtkImageIdealHighPass.h>
+#include <vtkImageMandelbrotSource.h>
+#include <vtkImageRFFT.h>
 #include <vtkImageShiftScale.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkImageSlice.h>
 #include <vtkImageSliceMapper.h>
-#include <vtkImageEllipsoidSource.h>
-#include <vtkImageCast.h>
-#include <vtkImageRFFT.h>
-#include <vtkRenderer.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageMandelbrotSource> mandelbrotSource =
-          vtkSmartPointer<vtkImageMandelbrotSource>::New();
+  vtkNew<vtkImageMandelbrotSource> mandelbrotSource;
   mandelbrotSource->Update();
 
   // Display the original image
-  vtkSmartPointer<vtkImageCast> originalCastFilter =
-          vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> originalCastFilter;
   originalCastFilter->SetInputConnection(mandelbrotSource->GetOutputPort());
   originalCastFilter->SetOutputScalarTypeToUnsignedChar();
   originalCastFilter->Update();
-  
-  vtkSmartPointer<vtkImageSliceMapper> originalSliceMapper =
-          vtkSmartPointer<vtkImageSliceMapper>::New();
+
+  vtkNew<vtkImageSliceMapper> originalSliceMapper;
   originalSliceMapper->SetInputConnection(originalCastFilter->GetOutputPort());
-  
-  vtkSmartPointer<vtkImageSlice> originalSlice =
-          vtkSmartPointer<vtkImageSlice>::New();
+
+  vtkNew<vtkImageSlice> originalSlice;
   originalSlice->SetMapper(originalSliceMapper);
 
   // Compute the FFT of the image
-  vtkSmartPointer<vtkImageFFT> fftFilter =
-          vtkSmartPointer<vtkImageFFT>::New();
+  vtkNew<vtkImageFFT> fftFilter;
   fftFilter->SetInputConnection(originalCastFilter->GetOutputPort());
   fftFilter->Update();
 
   // High pass filter the FFT
-  vtkSmartPointer<vtkImageIdealHighPass> highPassFilter =
-          vtkSmartPointer<vtkImageIdealHighPass>::New();
+  vtkNew<vtkImageIdealHighPass> highPassFilter;
   highPassFilter->SetInputConnection(fftFilter->GetOutputPort());
   highPassFilter->SetXCutOff(.1);
   highPassFilter->SetYCutOff(.1);
   highPassFilter->Update();
 
   // Compute the IFFT of the high pass filtered image
-  vtkSmartPointer<vtkImageRFFT> rfftFilter =
-          vtkSmartPointer<vtkImageRFFT>::New();
+  vtkNew<vtkImageRFFT> rfftFilter;
   rfftFilter->SetInputConnection(highPassFilter->GetOutputPort());
   rfftFilter->Update();
 
-  vtkSmartPointer<vtkImageExtractComponents> extractRealFilter =
-    vtkSmartPointer<vtkImageExtractComponents>::New();
+  vtkNew<vtkImageExtractComponents> extractRealFilter;
   extractRealFilter->SetInputConnection(rfftFilter->GetOutputPort());
   extractRealFilter->SetComponents(0);
   extractRealFilter->Update();
 
-  vtkSmartPointer<vtkImageShiftScale> shiftScaleFilter =
-    vtkSmartPointer<vtkImageShiftScale>::New();
+  vtkNew<vtkImageShiftScale> shiftScaleFilter;
   shiftScaleFilter->SetOutputScalarTypeToUnsignedChar();
   shiftScaleFilter->SetInputConnection(extractRealFilter->GetOutputPort());
-  shiftScaleFilter->SetShift(-1.0f * extractRealFilter->GetOutput()->GetScalarRange()[0]); // brings the lower bound to 0
+  shiftScaleFilter->SetShift(
+      -1.0f *
+      extractRealFilter->GetOutput()
+          ->GetScalarRange()[0]); // brings the lower bound to 0
   float oldRange = extractRealFilter->GetOutput()->GetScalarRange()[1] -
-          extractRealFilter->GetOutput()->GetScalarRange()[0];
-  float newRange = 100; // We want the output [0,100] (the same as the original image)
-  shiftScaleFilter->SetScale(newRange/oldRange);
+      extractRealFilter->GetOutput()->GetScalarRange()[0];
+  float newRange =
+      100; // We want the output [0,100] (the same as the original image)
+  shiftScaleFilter->SetScale(newRange / oldRange);
   shiftScaleFilter->Update();
 
   // Cast the output back to unsigned char
-  vtkSmartPointer<vtkImageCast> outputCastFilter =
-          vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> outputCastFilter;
   outputCastFilter->SetInputConnection(shiftScaleFilter->GetOutputPort());
   outputCastFilter->SetOutputScalarTypeToUnsignedChar();
   outputCastFilter->Update();
 
   // Display the high pass filtered image
-  vtkSmartPointer<vtkImageSliceMapper> highPassSliceMapper =
-          vtkSmartPointer<vtkImageSliceMapper>::New();
+  vtkNew<vtkImageSliceMapper> highPassSliceMapper;
   highPassSliceMapper->SetInputConnection(outputCastFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageSlice> highPassSlice =
-          vtkSmartPointer<vtkImageSlice>::New();
+  vtkNew<vtkImageSlice> highPassSlice;
   highPassSlice->SetMapper(highPassSliceMapper);
 
   // Define viewport ranges
@@ -96,30 +91,28 @@ int main(int, char *[])
   double highPassViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddViewProp(originalSlice);
   originalRenderer->ResetCamera();
   originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(colors->GetColor3d("Sienna").GetData());
 
-  vtkSmartPointer<vtkRenderer> highPassRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> highPassRenderer;
   highPassRenderer->SetViewport(highPassViewport);
   highPassRenderer->AddViewProp(highPassSlice);
   highPassRenderer->ResetCamera();
   highPassRenderer->SetBackground(.4, .5, .7);
+  highPassRenderer->SetBackground(colors->GetColor3d("RoyalBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(highPassRenderer);
+  renderWindow->SetWindowName("ImageIdealHighPass");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -128,6 +121,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

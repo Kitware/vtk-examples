@@ -1,76 +1,70 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
-#include <vtkImageMandelbrotSource.h>
-#include <vtkImageLaplacian.h>
 #include <vtkImageActor.h>
-#include <vtkRenderer.h>
+#include <vtkImageCast.h>
+#include <vtkImageData.h>
+#include <vtkImageLaplacian.h>
+#include <vtkImageMandelbrotSource.h>
+#include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkImageCast.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageMandelbrotSource> source = 
-    vtkSmartPointer<vtkImageMandelbrotSource>::New();
+  vtkNew<vtkImageMandelbrotSource> source;
   source->Update();
 
-  vtkSmartPointer<vtkImageCast> castOriginal =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> castOriginal;
   castOriginal->SetInputConnection(source->GetOutputPort());
   castOriginal->SetOutputScalarTypeToFloat();
   castOriginal->Update();
-  
-  vtkSmartPointer<vtkImageLaplacian> laplacianFilter = 
-    vtkSmartPointer<vtkImageLaplacian>::New();
+
+  vtkNew<vtkImageLaplacian> laplacianFilter;
   laplacianFilter->SetInputConnection(source->GetOutputPort());
   laplacianFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> castLaplacian =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> castLaplacian;
   castLaplacian->SetInputConnection(laplacianFilter->GetOutputPort());
   castLaplacian->SetOutputScalarTypeToFloat();
   castLaplacian->Update();
-  
+
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
   double leftViewport[4] = {0.0, 0.0, 0.5, 1.0};
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
-  
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  originalActor->GetMapper()->SetInputConnection(
-    castOriginal->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> laplacianActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
+  originalActor->GetMapper()->SetInputConnection(castOriginal->GetOutputPort());
+
+  vtkNew<vtkImageActor> laplacianActor;
   laplacianActor->GetMapper()->SetInputConnection(
-    castLaplacian->GetOutputPort());
-  
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetSize(600,300);
-  
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+      castLaplacian->GetOutputPort());
 
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
-  interactor->SetInteractorStyle( style );
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetSize(600, 300);
+  renderWindow->SetWindowName("ImageLaplacian");
+
+  vtkNew<vtkRenderWindowInteractor> interactor;
+
+  vtkNew<vtkInteractorStyleImage> style;
+  interactor->SetInteractorStyle(style);
 
   interactor->SetRenderWindow(renderWindow);
 
   // Setup both renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(leftViewport);
+  originalRenderer->SetBackground(colors->GetColor3d("Sienna").GetData());
 
-  vtkSmartPointer<vtkRenderer> laplacianRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> laplacianRenderer;
   laplacianRenderer->SetViewport(rightViewport);
-  
+  laplacianRenderer->SetBackground(colors->GetColor3d("RoyalBlue").GetData());
+
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(laplacianRenderer);
 
@@ -82,6 +76,6 @@ int main(int, char *[])
 
   renderWindow->Render();
   interactor->Start();
-  
+
   return EXIT_SUCCESS;
 }

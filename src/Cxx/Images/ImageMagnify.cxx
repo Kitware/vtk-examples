@@ -1,55 +1,52 @@
 #include <vtkImageActor.h>
-#include <vtkInteractorStyleImage.h>
+#include <vtkImageChangeInformation.h>
 #include <vtkImageData.h>
+#include <vtkImageMagnify.h>
 #include <vtkImageMapper3D.h>
-#include <vtkRenderer.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPNGReader.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
-#include <vtkPNGReader.h>
-#include <vtkImageMagnify.h>
-#include <vtkImageChangeInformation.h>
+#include <vtkRenderer.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Handle the arguments
-  if(argc < 2)
+  if (argc < 2)
   {
-    std::cout << "Required arguments: filename.png" << std::endl;
+    std::cout << "Required arguments: filename.png e.g. Gourds.png"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   // Read the image
-  vtkSmartPointer<vtkPNGReader> reader =
-    vtkSmartPointer<vtkPNGReader>::New();
+  vtkNew<vtkPNGReader> reader;
   reader->SetFileName(argv[1]);
 
   // Increase the dimensions of the image
-  vtkSmartPointer<vtkImageMagnify> magnifyFilter =
-    vtkSmartPointer<vtkImageMagnify>::New();
+  vtkNew<vtkImageMagnify> magnifyFilter;
   magnifyFilter->SetInputConnection(reader->GetOutputPort());
-  magnifyFilter->SetMagnificationFactors(2,1,1);
+  magnifyFilter->SetMagnificationFactors(2, 1, 1);
   magnifyFilter->Update();
 
   // Adjust the spacing of the magnified image. This will stretch the
   // image
-  vtkSmartPointer<vtkImageChangeInformation> changeFilter =
-    vtkSmartPointer<vtkImageChangeInformation>::New();
+  vtkNew<vtkImageChangeInformation> changeFilter;
   changeFilter->SetInputConnection(magnifyFilter->GetOutputPort());
-  changeFilter->SetSpacingScale(
-    magnifyFilter->GetMagnificationFactors()[0],
-    magnifyFilter->GetMagnificationFactors()[1],
-    magnifyFilter->GetMagnificationFactors()[2]);
+  changeFilter->SetSpacingScale(magnifyFilter->GetMagnificationFactors()[0],
+                                magnifyFilter->GetMagnificationFactors()[1],
+                                magnifyFilter->GetMagnificationFactors()[2]);
 
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  originalActor->GetMapper()->SetInputConnection(
-    reader->GetOutputPort());
+  vtkNew<vtkImageActor> originalActor;
+  originalActor->GetMapper()->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> magnifiedActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> magnifiedActor;
   magnifiedActor->GetMapper()->SetInputConnection(
-    changeFilter->GetOutputPort());
+      changeFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -57,30 +54,27 @@ int main(int argc, char *argv[])
   double magnifiedViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> magnifiedRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> magnifiedRenderer;
   magnifiedRenderer->SetViewport(magnifiedViewport);
   magnifiedRenderer->AddActor(magnifiedActor);
   magnifiedRenderer->ResetCamera();
-  magnifiedRenderer->SetBackground(.4, .5, .7);
+  magnifiedRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(magnifiedRenderer);
+  renderWindow->SetWindowName("ImageMagnify");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -90,5 +84,5 @@ int main(int argc, char *argv[])
 
   renderWindowInteractor->Start();
 
-  return  EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }

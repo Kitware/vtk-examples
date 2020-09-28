@@ -5,22 +5,25 @@
 //
 #include <vtkImageActor.h>
 #include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
 #include <vtkImageMapToColors.h>
+#include <vtkImageMapper3D.h>
 #include <vtkImageProperty.h>
 #include <vtkInteractorStyleImage.h>
 #include <vtkLookupTable.h>
-#include <vtkRenderer.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a "grayscale" 16x16 image, 1-component pixels of type "double"
-  vtkSmartPointer<vtkImageData> image =
-    vtkSmartPointer<vtkImageData>::New();
-  int imageExtent[6] = { 0, 15, 0, 15, 0, 0 };
+  vtkNew<vtkImageData> image;
+  int imageExtent[6] = {0, 15, 0, 15, 0, 0};
   image->SetExtent(imageExtent);
   image->AllocateScalars(VTK_DOUBLE, 1);
 
@@ -37,41 +40,36 @@ int main(int, char*[])
   }
 
   // Map the scalar values in the image to colors with a lookup table:
-  vtkSmartPointer<vtkLookupTable> lookupTable =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lookupTable;
   lookupTable->SetNumberOfTableValues(256);
   lookupTable->SetRange(0.0, 255.0);
   lookupTable->Build();
 
   // Pass the original image and the lookup table to a filter to create
   // a color image:
-  vtkSmartPointer<vtkImageMapToColors> scalarValuesToColors =
-    vtkSmartPointer<vtkImageMapToColors>::New();
+  vtkNew<vtkImageMapToColors> scalarValuesToColors;
   scalarValuesToColors->SetLookupTable(lookupTable);
   scalarValuesToColors->PassAlphaToOutputOn();
   scalarValuesToColors->SetInputData(image);
 
   // Create an image actor
-  vtkSmartPointer<vtkImageActor> imageActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> imageActor;
   imageActor->GetMapper()->SetInputConnection(
-    scalarValuesToColors->GetOutputPort());
+      scalarValuesToColors->GetOutputPort());
   imageActor->GetProperty()->SetInterpolationTypeToNearest();
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(imageActor);
   renderer->ResetCamera();
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ImageMapToColors");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 

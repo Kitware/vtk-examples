@@ -1,73 +1,66 @@
-#include <vtkSmartPointer.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkImageActor.h>
+#include <vtkImageCast.h>
+#include <vtkImageGradient.h>
+#include <vtkImageGradientMagnitude.h>
 #include <vtkImageMapper3D.h>
+#include <vtkImageNonMaximumSuppression.h>
 #include <vtkImageSinusoidSource.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkImageGradient.h>
-#include <vtkImageGradientMagnitude.h>
-#include <vtkImageNonMaximumSuppression.h>
-#include <vtkImageCast.h>
 
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkImageSinusoidSource> source =
-    vtkSmartPointer<vtkImageSinusoidSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkImageSinusoidSource> source;
   source->Update();
 
-  vtkSmartPointer<vtkImageCast> sourceCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> sourceCastFilter;
   sourceCastFilter->SetOutputScalarTypeToUnsignedChar();
   sourceCastFilter->SetInputConnection(source->GetOutputPort());
   sourceCastFilter->Update();
 
-  vtkSmartPointer<vtkImageGradient> gradientFilter =
-    vtkSmartPointer<vtkImageGradient>::New();
+  vtkNew<vtkImageGradient> gradientFilter;
   gradientFilter->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkImageGradientMagnitude> gradientMagnitudeFilter =
-    vtkSmartPointer<vtkImageGradientMagnitude>::New();
+  vtkNew<vtkImageGradientMagnitude> gradientMagnitudeFilter;
   gradientMagnitudeFilter->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkImageCast> gradientMagnitudeCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> gradientMagnitudeCastFilter;
   gradientMagnitudeCastFilter->SetOutputScalarTypeToUnsignedChar();
-  gradientMagnitudeCastFilter->SetInputConnection(gradientMagnitudeFilter->GetOutputPort());
+  gradientMagnitudeCastFilter->SetInputConnection(
+      gradientMagnitudeFilter->GetOutputPort());
   gradientMagnitudeCastFilter->Update();
-  
-  vtkSmartPointer<vtkImageNonMaximumSuppression> suppressionFilter =
-    vtkSmartPointer<vtkImageNonMaximumSuppression>::New();
+
+  vtkNew<vtkImageNonMaximumSuppression> suppressionFilter;
   suppressionFilter->SetInputConnection(
-    0, gradientMagnitudeFilter->GetOutputPort());
-  suppressionFilter->SetInputConnection(
-    1, gradientFilter->GetOutputPort());
+      0, gradientMagnitudeFilter->GetOutputPort());
+  suppressionFilter->SetInputConnection(1, gradientFilter->GetOutputPort());
   suppressionFilter->SetDimensionality(2);
   suppressionFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> suppressionCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> suppressionCastFilter;
   suppressionCastFilter->SetOutputScalarTypeToUnsignedChar();
   suppressionCastFilter->SetInputConnection(suppressionFilter->GetOutputPort());
   suppressionCastFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(
-    sourceCastFilter->GetOutputPort());
+      sourceCastFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> gradientMagnitudeActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> gradientMagnitudeActor;
   gradientMagnitudeActor->GetMapper()->SetInputConnection(
-    gradientMagnitudeCastFilter->GetOutputPort());
+      gradientMagnitudeCastFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> suppressionActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> suppressionActor;
   suppressionActor->GetMapper()->SetInputConnection(
-    suppressionCastFilter->GetOutputPort());
-  
+      suppressionCastFilter->GetOutputPort());
+
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
   double originalViewport[4] = {0.0, 0.0, 0.33, 1.0};
@@ -75,38 +68,35 @@ int main(int, char*[])
   double suppressionViewport[4] = {0.66, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(colors->GetColor3d("Mint").GetData());
 
-  vtkSmartPointer<vtkRenderer> gradientMagnitudeRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> gradientMagnitudeRenderer;
   gradientMagnitudeRenderer->SetViewport(gradientMagnitudeViewport);
   gradientMagnitudeRenderer->AddActor(gradientMagnitudeActor);
   gradientMagnitudeRenderer->ResetCamera();
-  gradientMagnitudeRenderer->SetBackground(.4, .5, .7);
+  gradientMagnitudeRenderer->SetBackground(
+      colors->GetColor3d("Peacock").GetData());
 
-  vtkSmartPointer<vtkRenderer> suppressionRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> suppressionRenderer;
   suppressionRenderer->SetViewport(suppressionViewport);
   suppressionRenderer->AddActor(suppressionActor);
   suppressionRenderer->ResetCamera();
-  suppressionRenderer->SetBackground(.3, .5, .8);
+  suppressionRenderer->SetBackground(
+      colors->GetColor3d("BlanchedAlmond").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(900, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(gradientMagnitudeRenderer);
   renderWindow->AddRenderer(suppressionRenderer);
+  renderWindow->SetWindowName("ImageNonMaximumSuppression");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -115,7 +105,6 @@ int main(int, char*[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
- 
 
   return EXIT_SUCCESS;
 }
