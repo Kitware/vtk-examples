@@ -25,7 +25,7 @@ int main(int, char*[])
     drawColor1[i] = color1[i];
     drawColor2[i] = color2[i];
   }
-  // Set the alpha to 0 (actually alpha doesn't seem to be used)
+  // Set the alpha to 0
   drawColor1[3] = 0;
   drawColor2[3] = 0;
 

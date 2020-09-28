@@ -1,118 +1,120 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageMathematics.h>
-#include <vtkPointData.h>
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
+#include <vtkArrowSource.h>
+#include <vtkGlyph3DMapper.h>
+#include <vtkImageActor.h>
 #include <vtkImageCanvasSource2D.h>
-#include <vtkImageSobel2D.h>
-#include <vtkImageMagnitude.h>
+#include <vtkImageCast.h>
+#include <vtkImageData.h>
+#include <vtkImageEllipsoidSource.h>
 #include <vtkImageExtractComponents.h>
+#include <vtkImageMagnitude.h>
+#include <vtkImageMapper3D.h>
+#include <vtkImageMathematics.h>
 #include <vtkImageShiftScale.h>
+#include <vtkImageSobel2D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
-#include <vtkImageEllipsoidSource.h>
-#include <vtkImageCast.h>
-#include <vtkGlyph3DMapper.h>
-#include <vtkArrowSource.h>
 
-int main(int, char *[])
+#include <array>
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
+  std::array<double, 3> drawColor1{0, 0, 0};
+  std::array<double, 3> drawColor2{0, 0, 0};
+  std::array<double, 3> drawColor3{0, 0, 0};
+  auto color1 = colors->GetColor3ub("Black").GetData();
+  auto color2 = colors->GetColor3ub("Red").GetData();
+  for (auto i = 0; i < 3; ++i)
+  {
+    drawColor1[i] = color1[i];
+    drawColor2[i] = color2[i];
+  }
   // Create an image of a rectangle
-  vtkSmartPointer<vtkImageCanvasSource2D> source = 
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> source;
   source->SetScalarTypeToUnsignedChar();
   source->SetExtent(0, 200, 0, 200, 0, 0);
-  source->SetDrawColor(0,0,0);
-  source->FillBox(0,200,0,200);
-  source->SetDrawColor(255,0,0);
-  source->FillBox(100,120,100,120);
+  source->SetDrawColor(drawColor1.data());
+  source->FillBox(0, 200, 0, 200);
+  source->SetDrawColor(drawColor2.data());
+  source->FillBox(100, 120, 100, 120);
   source->Update();
 
   // Find the x and y gradients using a sobel filter
-  vtkSmartPointer<vtkImageSobel2D> sobelFilter = 
-    vtkSmartPointer<vtkImageSobel2D>::New();
+  vtkNew<vtkImageSobel2D> sobelFilter;
   sobelFilter->SetInputConnection(source->GetOutputPort());
   sobelFilter->Update();
-  
+
   // Extract the x component of the gradient
-  vtkSmartPointer<vtkImageExtractComponents> extractXFilter = 
-    vtkSmartPointer<vtkImageExtractComponents>::New();
+  vtkNew<vtkImageExtractComponents> extractXFilter;
   extractXFilter->SetComponents(0);
   extractXFilter->SetInputConnection(sobelFilter->GetOutputPort());
   extractXFilter->Update();
-  
-  double xRange[2];
-  extractXFilter->GetOutput()->GetPointData()->GetScalars()->GetRange( xRange );
 
-  vtkSmartPointer<vtkImageMathematics> xImageAbs =
-  vtkSmartPointer<vtkImageMathematics>::New();
+  double xRange[2];
+  extractXFilter->GetOutput()->GetPointData()->GetScalars()->GetRange(xRange);
+
+  vtkNew<vtkImageMathematics> xImageAbs;
   xImageAbs->SetOperationToAbsoluteValue();
   xImageAbs->SetInputConnection(extractXFilter->GetOutputPort());
   xImageAbs->Update();
-  
-  vtkSmartPointer<vtkImageShiftScale> xShiftScale =
-    vtkSmartPointer<vtkImageShiftScale>::New();
+
+  vtkNew<vtkImageShiftScale> xShiftScale;
   xShiftScale->SetOutputScalarTypeToUnsignedChar();
-  xShiftScale->SetScale( 255 / xRange[1] );
+  xShiftScale->SetScale(255 / xRange[1]);
   xShiftScale->SetInputConnection(xImageAbs->GetOutputPort());
   xShiftScale->Update();
 
   // Extract the y component of the gradient
-  vtkSmartPointer<vtkImageExtractComponents> extractYFilter = 
-    vtkSmartPointer<vtkImageExtractComponents>::New();
+  vtkNew<vtkImageExtractComponents> extractYFilter;
   extractYFilter->SetComponents(1);
   extractYFilter->SetInputConnection(sobelFilter->GetOutputPort());
   extractYFilter->Update();
-  
+
   double yRange[2];
   extractYFilter->GetOutput()->GetPointData()->GetScalars()->GetRange(yRange);
-  
-  vtkSmartPointer<vtkImageMathematics> yImageAbs =
-    vtkSmartPointer<vtkImageMathematics>::New();
+
+  vtkNew<vtkImageMathematics> yImageAbs;
   yImageAbs->SetOperationToAbsoluteValue();
   yImageAbs->SetInputConnection(extractYFilter->GetOutputPort());
   yImageAbs->Update();
-  
-  vtkSmartPointer<vtkImageShiftScale> yShiftScale =
-      vtkSmartPointer<vtkImageShiftScale>::New();
+
+  vtkNew<vtkImageShiftScale> yShiftScale;
   yShiftScale->SetOutputScalarTypeToUnsignedChar();
-  yShiftScale->SetScale( 255 / yRange[1] );
+  yShiftScale->SetScale(255 / yRange[1]);
   yShiftScale->SetInputConnection(yImageAbs->GetOutputPort());
   yShiftScale->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> xActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> xActor;
   xActor->GetMapper()->SetInputConnection(xShiftScale->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> yActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> yActor;
   yActor->GetMapper()->SetInputConnection(yShiftScale->GetOutputPort());
 
-  vtkSmartPointer<vtkArrowSource> arrowSource =
-    vtkSmartPointer<vtkArrowSource>::New();
-  sobelFilter->GetOutput()->GetPointData()->SetActiveVectors("ImageScalarsGradient");
+  vtkNew<vtkArrowSource> arrowSource;
+  sobelFilter->GetOutput()->GetPointData()->SetActiveVectors(
+      "ImageScalarsGradient");
 
-  vtkSmartPointer<vtkGlyph3DMapper> sobelMapper =
-    vtkSmartPointer<vtkGlyph3DMapper>::New();
+  vtkNew<vtkGlyph3DMapper> sobelMapper;
   sobelMapper->ScalingOn();
   sobelMapper->SetScaleFactor(.05);
   sobelMapper->SetSourceConnection(arrowSource->GetOutputPort());
   sobelMapper->SetInputConnection(sobelFilter->GetOutputPort());
   sobelMapper->Update();
 
-  vtkSmartPointer<vtkActor> sobelActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sobelActor;
   sobelActor->SetMapper(sobelMapper);
 
-   // Define viewport ranges
+  // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
   double originalViewport[4] = {0.0, 0.0, 0.25, 1.0};
   double xViewport[4] = {0.25, 0.0, 0.5, 1.0};
@@ -120,46 +122,40 @@ int main(int, char *[])
   double sobelViewport[4] = {0.75, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(colors->GetColor3d("DodgerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> xRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> xRenderer;
   xRenderer->SetViewport(xViewport);
   xRenderer->AddActor(xActor);
   xRenderer->ResetCamera();
-  xRenderer->SetBackground(.4, .5, .7);
+  xRenderer->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> yRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> yRenderer;
   yRenderer->SetViewport(yViewport);
   yRenderer->AddActor(yActor);
   yRenderer->ResetCamera();
-  yRenderer->SetBackground(.4, .5, .7);
+  yRenderer->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> sobelRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> sobelRenderer;
   sobelRenderer->SetViewport(sobelViewport);
   sobelRenderer->AddActor(sobelActor);
   sobelRenderer->ResetCamera();
-  sobelRenderer->SetBackground(.4, .5, .7);
+  sobelRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetSize(1000,250);
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetSize(1000, 250);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(xRenderer);
   renderWindow->AddRenderer(yRenderer);
   renderWindow->AddRenderer(sobelRenderer);
+  renderWindow->SetWindowName("ImageSobel2D");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 

@@ -2,7 +2,7 @@
  * This example shows how to combine data from both the imaging
  *  and graphics pipelines. The vtkMergeData filter is used to
  *  merge the data from each together.
-*/
+ */
 #include <vtkActor.h>
 #include <vtkBMPReader.h>
 #include <vtkCamera.h>
@@ -11,10 +11,10 @@
 #include <vtkImageLuminance.h>
 #include <vtkMergeFilter.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkWarpScalar.h>
 
 #include <array>
@@ -24,6 +24,7 @@
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
 
   if (argc < 2)
   {
@@ -34,53 +35,44 @@ int main(int argc, char* argv[])
 
   std::string fileName = argv[1];
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-
   // Set the background color.
-  std::array<unsigned char , 4> bkg{{60, 93, 144, 255}};
-    colors->SetColor("BkgColor", bkg.data());
+  std::array<unsigned char, 4> bkg{{60, 93, 144, 255}};
+  colors->SetColor("BkgColor", bkg.data());
 
   // Read in an image and compute a luminance value-> The image is extracted
   // as a set of polygons (vtkImageDataGeometryFilter). We then will
   // warp the plane using the scalar (luminance) values.
   //
-  vtkSmartPointer<vtkBMPReader> reader = vtkSmartPointer<vtkBMPReader>::New();
+  vtkNew<vtkBMPReader> reader;
   reader->SetFileName(fileName.c_str());
   // Convert the image to a grey scale.
-  vtkSmartPointer<vtkImageLuminance> luminance =
-    vtkSmartPointer<vtkImageLuminance>::New();
+  vtkNew<vtkImageLuminance> luminance;
   luminance->SetInputConnection(reader->GetOutputPort());
   // Pass the data to the pipeline as polygons.
-  vtkSmartPointer<vtkImageDataGeometryFilter> geometry =
-    vtkSmartPointer<vtkImageDataGeometryFilter>::New();
+  vtkNew<vtkImageDataGeometryFilter> geometry;
   geometry->SetInputConnection(luminance->GetOutputPort());
   // Warp the data in a direction perpendicular to the image plane.
-  vtkSmartPointer<vtkWarpScalar> warp = vtkSmartPointer<vtkWarpScalar>::New();
+  vtkNew<vtkWarpScalar> warp;
   warp->SetInputConnection(geometry->GetOutputPort());
   warp->SetScaleFactor(-0.1);
 
   // Use vtkMergeFilter to combine the original image with the warped geometry.
-  vtkSmartPointer<vtkMergeFilter> merge =
-    vtkSmartPointer<vtkMergeFilter>::New();
+  vtkNew<vtkMergeFilter> merge;
   merge->SetGeometryConnection(warp->GetOutputPort());
   merge->SetScalarsConnection(reader->GetOutputPort());
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(merge->GetOutputPort());
   mapper->SetScalarRange(0, 255);
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   // Create the rendering window, renderer, and interactive renderer.
   //
-  vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Add the actors to the renderer, set the background and size.
@@ -97,6 +89,7 @@ int main(int argc, char* argv[])
   ren->ResetCameraClippingRange();
 
   renWin->SetSize(512, 512);
+  renWin->SetWindowName("ImageWarp");
 
   // Render the image.
   renWin->Render();

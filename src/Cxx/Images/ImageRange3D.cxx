@@ -1,87 +1,81 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageRange3D.h>
-
-#include <vtkImageReader2Factory.h>
-#include <vtkImageReader2.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkRenderer.h>
-#include <vtkImageMapper3D.h>
 #include <vtkImageActor.h>
 #include <vtkImageCast.h>
+#include <vtkImageMapper3D.h>
+#include <vtkImageRange3D.h>
+#include <vtkImageReader2.h>
+#include <vtkImageReader2Factory.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Parse input arguments
-  if ( argc != 2 )
+  if (argc != 2)
   {
-    std::cout << "Required parameters: Filename.jpg" << std::endl;
+    std::cout << "Required parameters: Filename.jpg e.g. Gourds2.jpg"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   // Read the image
-  vtkSmartPointer<vtkImageReader2Factory> readerFactory =
-    vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> reader;
-  reader.TakeReference(
-    readerFactory->CreateImageReader2(argv[1]));
+  reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
   reader->SetFileName(argv[1]);
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  originalActor->GetMapper()->SetInputConnection(
-    reader->GetOutputPort());
+  vtkNew<vtkImageActor> originalActor;
+  originalActor->GetMapper()->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkImageRange3D> rangeFilter =
-    vtkSmartPointer<vtkImageRange3D>::New();
+  vtkNew<vtkImageRange3D> rangeFilter;
   rangeFilter->SetInputConnection(reader->GetOutputPort());
-  rangeFilter->SetKernelSize(5,5,5);
+  rangeFilter->SetKernelSize(5, 5, 5);
   rangeFilter->Update();
 
-
-  vtkSmartPointer<vtkImageCast> rangeCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> rangeCastFilter;
   rangeCastFilter->SetInputConnection(rangeFilter->GetOutputPort());
   rangeCastFilter->SetOutputScalarTypeToUnsignedChar();
   rangeCastFilter->Update();
 
-  vtkSmartPointer<vtkImageActor> rangeActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  rangeActor->GetMapper()->SetInputConnection(
-    rangeCastFilter->GetOutputPort());
+  vtkNew<vtkImageActor> rangeActor;
+  rangeActor->GetMapper()->SetInputConnection(rangeCastFilter->GetOutputPort());
 
-   // Define viewport ranges
+  // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
   double originalViewport[4] = {0.0, 0.0, 0.5, 1.0};
   double rangeViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> rangeRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rangeRenderer;
   rangeRenderer->SetViewport(rangeViewport);
   rangeRenderer->AddActor(rangeActor);
   rangeRenderer->ResetCamera();
-  rangeRenderer->SetBackground(.4, .5, .7);
+  rangeRenderer->SetBackground(
+      colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(rangeRenderer);
+  renderWindow->SetWindowName("ImageRange3D");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 

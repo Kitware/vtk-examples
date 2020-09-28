@@ -1,41 +1,38 @@
-#include <vtkSmartPointer.h>
+#include <vtkImageActor.h>
+#include <vtkImageCast.h>
 #include <vtkImageData.h>
+#include <vtkImageEllipsoidSource.h>
 #include <vtkImageMapper3D.h>
 #include <vtkImageShrink3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
-#include <vtkImageEllipsoidSource.h>
-#include <vtkImageCast.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageEllipsoidSource> source =
-    vtkSmartPointer<vtkImageEllipsoidSource>::New();
+  vtkNew<vtkImageEllipsoidSource> source;
   source->SetWholeExtent(0, 20, 0, 20, 0, 0);
-  source->SetCenter(10,10,0);
-  source->SetRadius(3,4,0);
+  source->SetCenter(10, 10, 0);
+  source->SetRadius(3, 4, 0);
   source->Update();
-  
-  vtkSmartPointer<vtkImageShrink3D> shrinkFilter = 
-    vtkSmartPointer<vtkImageShrink3D>::New();
+
+  vtkNew<vtkImageShrink3D> shrinkFilter;
   shrinkFilter->SetInputConnection(source->GetOutputPort());
-  shrinkFilter->SetShrinkFactors(2,1,1);
+  shrinkFilter->SetShrinkFactors(2, 1, 1);
   shrinkFilter->Update();
 
-   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  originalActor->GetMapper()->SetInputConnection(
-    source->GetOutputPort());
+  // Create actors
+  vtkNew<vtkImageActor> originalActor;
+  originalActor->GetMapper()->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> shrunkActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  shrunkActor->GetMapper()->SetInputConnection(
-    shrinkFilter->GetOutputPort());
+  vtkNew<vtkImageActor> shrunkActor;
+  shrunkActor->GetMapper()->SetInputConnection(shrinkFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -43,30 +40,27 @@ int main(int, char *[])
   double shrunkViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> shrunkRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> shrunkRenderer;
   shrunkRenderer->SetViewport(shrunkViewport);
   shrunkRenderer->AddActor(shrunkActor);
   shrunkRenderer->ResetCamera();
-  shrunkRenderer->SetBackground(.4, .5, .7);
+  shrunkRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(shrunkRenderer);
+  renderWindow->SetWindowName("ImageShrink3D");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -75,6 +69,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

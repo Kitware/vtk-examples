@@ -1,64 +1,61 @@
-#include <vtkImageActor.h>
 #include <vtkFloatArray.h>
-#include <vtkImageCast.h>
-#include <vtkImageMapper3D.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkImageAccumulate.h>
+#include <vtkImageActor.h>
+#include <vtkImageCast.h>
 #include <vtkImageData.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
-#include <vtkPNGReader.h>
+#include <vtkImageMapper3D.h>
 #include <vtkImageSeparableConvolution.h>
 #include <vtkImageThreshold.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPNGReader.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Handle the arguments
-  if( argc < 2 )
+  if (argc < 2)
   {
-    std::cout << "Required arguments: BinaryImage.png" << std::endl;
+    std::cout << "Required arguments: BinaryImage.png e.g. Yinyang.png"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   // Read the image
-  vtkSmartPointer<vtkPNGReader> reader =
-    vtkSmartPointer<vtkPNGReader>::New();
+  vtkNew<vtkPNGReader> reader;
   reader->SetFileName(argv[1]);
   reader->Update();
 
-  vtkSmartPointer<vtkFloatArray> xKernel =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> xKernel;
   xKernel->SetNumberOfTuples(5);
   xKernel->SetNumberOfComponents(1);
-  xKernel->SetValue(0,1);
-  xKernel->SetValue(1,1);
-  xKernel->SetValue(2,1);
-  xKernel->SetValue(3,1);
-  xKernel->SetValue(4,1);
+  xKernel->SetValue(0, 1);
+  xKernel->SetValue(1, 1);
+  xKernel->SetValue(2, 1);
+  xKernel->SetValue(3, 1);
+  xKernel->SetValue(4, 1);
 
-  vtkSmartPointer<vtkImageSeparableConvolution> convolutionFilter =
-    vtkSmartPointer<vtkImageSeparableConvolution>::New();
+  vtkNew<vtkImageSeparableConvolution> convolutionFilter;
   convolutionFilter->SetInputConnection(reader->GetOutputPort());
   convolutionFilter->SetXKernel(xKernel);
   convolutionFilter->Update();
 
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  originalActor->GetMapper()->SetInputConnection(
-    reader->GetOutputPort());
+  vtkNew<vtkImageActor> originalActor;
+  originalActor->GetMapper()->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkImageCast> convolutionCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> convolutionCastFilter;
   convolutionCastFilter->SetInputConnection(convolutionFilter->GetOutputPort());
   convolutionCastFilter->SetOutputScalarTypeToUnsignedChar();
   convolutionCastFilter->Update();
 
-  vtkSmartPointer<vtkImageActor> convolutionActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> convolutionActor;
   convolutionActor->GetMapper()->SetInputConnection(
-    convolutionCastFilter->GetOutputPort());
+      convolutionCastFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -66,30 +63,27 @@ int main(int argc, char *argv[])
   double convolutionViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> convolutionRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> convolutionRenderer;
   convolutionRenderer->SetViewport(convolutionViewport);
   convolutionRenderer->AddActor(convolutionActor);
   convolutionRenderer->ResetCamera();
-  convolutionRenderer->SetBackground(.4, .5, .7);
+  convolutionRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(convolutionRenderer);
+  renderWindow->SetWindowName("ImageSeparableConvolution");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -99,5 +93,5 @@ int main(int argc, char *argv[])
 
   renderWindowInteractor->Start();
 
-  return  EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }
