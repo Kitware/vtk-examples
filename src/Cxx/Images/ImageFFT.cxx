@@ -1,45 +1,42 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageFFT.h>
-
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
+#include <vtkImageActor.h>
 #include <vtkImageCanvasSource2D.h>
+#include <vtkImageCast.h>
+#include <vtkImageData.h>
+#include <vtkImageEllipsoidSource.h>
+#include <vtkImageFFT.h>
+#include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
-#include <vtkImageEllipsoidSource.h>
-#include <vtkImageCast.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageEllipsoidSource> source =
-    vtkSmartPointer<vtkImageEllipsoidSource>::New();
+  vtkNew<vtkImageEllipsoidSource> source;
   source->SetWholeExtent(0, 20, 0, 20, 0, 0);
-  source->SetCenter(10,10,0);
-  source->SetRadius(3,4,0);
+  source->SetCenter(10, 10, 0);
+  source->SetRadius(3, 4, 0);
   source->Update();
-  
-  vtkSmartPointer<vtkImageFFT> fftFilter = 
-    vtkSmartPointer<vtkImageFFT>::New();
+
+  vtkNew<vtkImageFFT> fftFilter;
   fftFilter->SetInputConnection(source->GetOutputPort());
   fftFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> fftCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> fftCastFilter;
   fftCastFilter->SetInputConnection(fftFilter->GetOutputPort());
   fftCastFilter->SetOutputScalarTypeToUnsignedChar();
   fftCastFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> fftActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> fftActor;
   fftActor->GetMapper()->SetInputConnection(fftCastFilter->GetOutputPort());
 
   // Define viewport ranges
@@ -48,30 +45,29 @@ int main(int, char *[])
   double fftViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
   originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> fftRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> fftRenderer;
   fftRenderer->SetViewport(fftViewport);
   fftRenderer->AddActor(fftActor);
   fftRenderer->ResetCamera();
   fftRenderer->SetBackground(.4, .5, .7);
+  fftRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(fftRenderer);
+  renderWindow->SetWindowName("ImageFFT");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -80,6 +76,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

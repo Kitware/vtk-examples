@@ -1,57 +1,55 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageGridSource.h>
-#include <vtkImageMapper3D.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkRenderer.h>
 #include <vtkImageActor.h>
 #include <vtkImageCast.h>
- 
-int main(int, char *[])
+#include <vtkImageGridSource.h>
+#include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageGridSource> source =
-    vtkSmartPointer<vtkImageGridSource>::New();
+  vtkNew<vtkImageGridSource> source;
   source->SetFillValue(122);
   source->Update();
- 
-  vtkSmartPointer<vtkImageCast> castFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+
+  vtkNew<vtkImageCast> castFilter;
   castFilter->SetInputConnection(source->GetOutputPort());
   castFilter->SetOutputScalarTypeToUnsignedChar();
   castFilter->Update();
- 
+
   // Create an actor
-  vtkSmartPointer<vtkImageActor> actor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> actor;
   actor->GetMapper()->SetInputConnection(castFilter->GetOutputPort());
- 
+
   // Setup renderer
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
   renderer->ResetCamera();
- 
+  renderer->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
+
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
- 
+  renderWindow->SetWindowName("ImageGridSource");
+
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
- 
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
+
   renderWindowInteractor->SetInteractorStyle(style);
- 
+
   // Render and start interaction
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderWindow->Render();
   renderWindowInteractor->Initialize();
- 
+
   renderWindowInteractor->Start();
- 
+
   return EXIT_SUCCESS;
 }

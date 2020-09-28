@@ -1,76 +1,73 @@
-#include <vtkSmartPointer.h>
+#include <vtkImageActor.h>
+#include <vtkImageCast.h>
 #include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
+#include <vtkImageEllipsoidSource.h>
 #include <vtkImageGradientMagnitude.h>
+#include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
-#include <vtkImageEllipsoidSource.h>
-#include <vtkImageCast.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageEllipsoidSource> source = 
-    vtkSmartPointer<vtkImageEllipsoidSource>::New();
+  vtkNew<vtkImageEllipsoidSource> source;
   source->SetWholeExtent(0, 20, 0, 20, 0, 0);
-  source->SetCenter(10,10,0);
-  source->SetRadius(3,4,0);
+  source->SetCenter(10, 10, 0);
+  source->SetRadius(3, 4, 0);
   source->Update();
-  
-  vtkSmartPointer<vtkImageGradientMagnitude> gradientMagnitudeFilter = 
-      vtkSmartPointer<vtkImageGradientMagnitude>::New();
+
+  vtkNew<vtkImageGradientMagnitude> gradientMagnitudeFilter;
   gradientMagnitudeFilter->SetInputConnection(source->GetOutputPort());
   gradientMagnitudeFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> gradientMagnitudeCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
-  gradientMagnitudeCastFilter->SetInputConnection(gradientMagnitudeFilter->GetOutputPort());
+  vtkNew<vtkImageCast> gradientMagnitudeCastFilter;
+  gradientMagnitudeCastFilter->SetInputConnection(
+      gradientMagnitudeFilter->GetOutputPort());
   gradientMagnitudeCastFilter->SetOutputScalarTypeToUnsignedChar();
   gradientMagnitudeCastFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> gradientMagnitudeActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> gradientMagnitudeActor;
   gradientMagnitudeActor->GetMapper()->SetInputConnection(
-    gradientMagnitudeCastFilter->GetOutputPort());
+      gradientMagnitudeCastFilter->GetOutputPort());
 
-   // Define viewport ranges
+  // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
   double originalViewport[4] = {0.0, 0.0, 0.5, 1.0};
   double gradientMagnitudeViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> gradientMagnitudeRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> gradientMagnitudeRenderer;
   gradientMagnitudeRenderer->SetViewport(gradientMagnitudeViewport);
   gradientMagnitudeRenderer->AddActor(gradientMagnitudeActor);
   gradientMagnitudeRenderer->ResetCamera();
-  gradientMagnitudeRenderer->SetBackground(.4, .5, .7);
+  gradientMagnitudeRenderer->SetBackground(
+      colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(gradientMagnitudeRenderer);
+  renderWindow->SetWindowName("ImageGradientMagnitude");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 

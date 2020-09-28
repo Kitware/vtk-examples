@@ -1,91 +1,84 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageCast.h>
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
+#include <vtkActor.h>
+#include <vtkImageActor.h>
 #include <vtkImageCanvasSource2D.h>
+#include <vtkImageCast.h>
+#include <vtkImageCorrelation.h>
+#include <vtkImageData.h>
 #include <vtkImageDivergence.h>
 #include <vtkImageGradient.h>
-#include <vtkImageCanvasSource2D.h>
-#include <vtkImageCorrelation.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkImageActor.h>
-#include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkImageMandelbrotSource.h>
+#include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageMandelbrotSource> source =
-    vtkSmartPointer<vtkImageMandelbrotSource>::New();
+  vtkNew<vtkImageMandelbrotSource> source;
   source->Update();
 
-  vtkSmartPointer<vtkImageCast> originalCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> originalCastFilter;
   originalCastFilter->SetInputConnection(source->GetOutputPort());
   originalCastFilter->SetOutputScalarTypeToFloat();
   originalCastFilter->Update();
-  
+
   // Compute the gradient (to produce a vector field)
-  vtkSmartPointer<vtkImageGradient> gradientFilter =
-    vtkSmartPointer<vtkImageGradient>::New();
+  vtkNew<vtkImageGradient> gradientFilter;
   gradientFilter->SetInputConnection(source->GetOutputPort());
   gradientFilter->Update();
-  
-  vtkSmartPointer<vtkImageDivergence> divergenceFilter = 
-    vtkSmartPointer<vtkImageDivergence>::New();
+
+  vtkNew<vtkImageDivergence> divergenceFilter;
   divergenceFilter->SetInputConnection(gradientFilter->GetOutputPort());
   divergenceFilter->Update();
 
-  vtkSmartPointer<vtkImageCast> divergenceCastFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> divergenceCastFilter;
   divergenceCastFilter->SetInputConnection(divergenceFilter->GetOutputPort());
   divergenceCastFilter->SetOutputScalarTypeToFloat();
   divergenceCastFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(
-    originalCastFilter->GetOutputPort());
+      originalCastFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> divergenceActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> divergenceActor;
   divergenceActor->GetMapper()->SetInputConnection(
-    divergenceCastFilter->GetOutputPort());
+      divergenceCastFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
   double leftViewport[4] = {0.0, 0.0, 0.5, 1.0};
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
-  
+
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(leftViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
+  originalRenderer->SetBackground(colors->GetColor3d("Sienna").GetData());
 
-  vtkSmartPointer<vtkRenderer> divergenceRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> divergenceRenderer;
   divergenceRenderer->SetViewport(rightViewport);
   divergenceRenderer->AddActor(divergenceActor);
   divergenceRenderer->ResetCamera();
+  divergenceRenderer->SetBackground(colors->GetColor3d("RoyalBlue").GetData());
 
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetSize(600,300);
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(divergenceRenderer);
+  renderWindow->SetWindowName("ImageDivergence");
 
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -95,6 +88,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

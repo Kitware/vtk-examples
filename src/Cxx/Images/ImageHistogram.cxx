@@ -1,46 +1,41 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageHistogram.h>
-
-#include <vtkImageReader2Factory.h>
-#include <vtkImageReader2.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkCamera.h>
 #include <vtkImageData.h>
-#include <vtkImageSliceMapper.h>
+#include <vtkImageHistogram.h>
 #include <vtkImageProperty.h>
+#include <vtkImageReader2.h>
+#include <vtkImageReader2Factory.h>
 #include <vtkImageSlice.h>
+#include <vtkImageSliceMapper.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNew.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  if( argc < 2 )
+  if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0] << " filename" << std::endl;
+    std::cout << "Usage: " << argv[0] << " filename e.g. Pileated.jpg"
+              << std::endl;
     return EXIT_FAILURE;
   }
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyle> style =
-    vtkSmartPointer<vtkInteractorStyle>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
+  vtkNew<vtkInteractorStyle> style;
+  vtkNew<vtkRenderWindow> renWin;
   iren->SetRenderWindow(renWin);
   iren->SetInteractorStyle(style);
 
-  vtkSmartPointer<vtkImageReader2Factory> readerFactory =
-    vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> reader;
-  reader.TakeReference(
-    readerFactory->CreateImageReader2(argv[1]));
+  reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
   reader->SetFileName(argv[1]);
 
-  vtkSmartPointer<vtkImageHistogram> histogram =
-    vtkSmartPointer<vtkImageHistogram>::New();
+  vtkNew<vtkImageHistogram> histogram;
   histogram->SetInputConnection(reader->GetOutputPort());
   histogram->GenerateHistogramImageOn();
-  histogram->SetHistogramImageSize(256,256);
+  histogram->SetHistogramImageSize(256, 256);
   histogram->SetHistogramImageScaleToSqrt();
   histogram->AutomaticBinningOn();
   histogram->Update();
@@ -48,19 +43,16 @@ int main(int argc, char *argv[])
   vtkIdType nbins = histogram->GetNumberOfBins();
   double range[2];
   range[0] = histogram->GetBinOrigin();
-  range[1] = range[0] + (nbins - 1)*histogram->GetBinSpacing();
+  range[1] = range[0] + (nbins - 1) * histogram->GetBinSpacing();
 
   for (int i = 0; i < 2; i++)
   {
-    vtkSmartPointer<vtkRenderer> renderer =
-      vtkSmartPointer<vtkRenderer>::New();
-    vtkCamera *camera = renderer->GetActiveCamera();
-    renderer->SetViewport(0.5*(i&1), 0.0,
-                          0.5 + 0.5*(i&1), 1.0);
+    vtkNew<vtkRenderer> renderer;
+    vtkCamera* camera = renderer->GetActiveCamera();
+    renderer->SetViewport(0.5 * (i & 1), 0.0, 0.5 + 0.5 * (i & 1), 1.0);
     renWin->AddRenderer(renderer);
 
-    vtkSmartPointer<vtkImageSliceMapper> imageMapper =
-      vtkSmartPointer<vtkImageSliceMapper>::New();
+    vtkNew<vtkImageSliceMapper> imageMapper;
     // compute y range
     double yd;
     if ((i & 1) == 0)
@@ -79,11 +71,11 @@ int main(int argc, char *argv[])
       yd = (extent[3] - extent[2] + 1);
     }
 
-    const double *bounds = imageMapper->GetBounds();
+    const double* bounds = imageMapper->GetBounds();
     double point[3];
-    point[0] = 0.5*(bounds[0] + bounds[1]);
-    point[1] = 0.5*(bounds[2] + bounds[3]);
-    point[2] = 0.5*(bounds[4] + bounds[5]);
+    point[0] = 0.5 * (bounds[0] + bounds[1]);
+    point[1] = 0.5 * (bounds[2] + bounds[3]);
+    point[2] = 0.5 * (bounds[4] + bounds[5]);
 
     camera->SetFocalPoint(point);
     point[imageMapper->GetOrientation()] += 1000;
@@ -93,8 +85,7 @@ int main(int argc, char *argv[])
     // Set scale so that vertical dimension fills the window
     camera->SetParallelScale(0.5 * yd);
 
-    vtkSmartPointer<vtkImageSlice> image =
-      vtkSmartPointer<vtkImageSlice>::New();
+    vtkNew<vtkImageSlice> image;
     image->SetMapper(imageMapper);
 
     renderer->AddViewProp(image);
@@ -102,7 +93,7 @@ int main(int argc, char *argv[])
     if ((i & 1) == 0)
     {
       image->GetProperty()->SetColorWindow(range[1] - range[0]);
-      image->GetProperty()->SetColorLevel(0.5*(range[0] + range[1]));
+      image->GetProperty()->SetColorLevel(0.5 * (range[0] + range[1]));
     }
     else
     {
@@ -113,6 +104,7 @@ int main(int argc, char *argv[])
   }
 
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("ImageHistogram");
 
   iren->Initialize();
   renWin->Render();

@@ -1,79 +1,78 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
-#include <vtkJPEGWriter.h>
+#include <vtkImageActor.h>
 #include <vtkImageCanvasSource2D.h>
+#include <vtkImageCast.h>
+#include <vtkImageData.h>
+#include <vtkImageEllipsoidSource.h>
+#include <vtkImageMapper3D.h>
 #include <vtkImageMask.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkJPEGWriter.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
-#include <vtkImageEllipsoidSource.h>
-#include <vtkImageCast.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image of a rectangle
-  vtkSmartPointer<vtkImageCanvasSource2D> source = 
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> source;
   source->SetScalarTypeToUnsignedChar();
   source->SetNumberOfScalarComponents(3);
   source->SetExtent(0, 200, 0, 200, 0, 0);
-  
+
   // Create a red image
-  source->SetDrawColor(255,0,0);
-  source->FillBox(0,200,0,200);
-  
+  source->SetDrawColor(255, 0, 0);
+  source->FillBox(0, 200, 0, 200);
+
   source->Update();
-  
+
   // Create a rectanglular mask
-  vtkSmartPointer<vtkImageCanvasSource2D> maskSource = 
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> maskSource;
   maskSource->SetScalarTypeToUnsignedChar();
   maskSource->SetNumberOfScalarComponents(1);
   maskSource->SetExtent(0, 200, 0, 200, 0, 0);
-  
+
   // Initialize the mask to black
-  maskSource->SetDrawColor(0,0,0);
-  maskSource->FillBox(0,200,0,200);
-  
+  maskSource->SetDrawColor(0, 0, 0);
+  maskSource->FillBox(0, 200, 0, 200);
+
   // Create a square
-  maskSource->SetDrawColor(255,255,255); //anything non-zero means "make the output pixel equal the input pixel." If the mask is zero, the output pixel is set to MaskedValue
-  maskSource->FillBox(100,120,100,120);
+  maskSource->SetDrawColor(255, 255,
+                           255); // anything non-zero means "make the output
+                                 // pixel equal the input pixel." If the mask is
+                                 // zero, the output pixel is set to MaskedValue
+  maskSource->FillBox(100, 120, 100, 120);
   maskSource->Update();
 
-  vtkSmartPointer<vtkImageMask> maskFilter = 
-    vtkSmartPointer<vtkImageMask>::New();
+  vtkNew<vtkImageMask> maskFilter;
   maskFilter->SetInputConnection(0, source->GetOutputPort());
   maskFilter->SetInputConnection(1, maskSource->GetOutputPort());
-  maskFilter->SetMaskedOutputValue(0,1,0);
+  maskFilter->SetMaskedOutputValue(0, 1, 0);
   maskFilter->Update();
 
-  vtkSmartPointer<vtkImageMask> inverseMaskFilter =
-    vtkSmartPointer<vtkImageMask>::New();
+  vtkNew<vtkImageMask> inverseMaskFilter;
   inverseMaskFilter->SetInputConnection(0, source->GetOutputPort());
   inverseMaskFilter->SetInputConnection(1, maskSource->GetOutputPort());
-  inverseMaskFilter->SetMaskedOutputValue(0,1,0);
+  inverseMaskFilter->SetMaskedOutputValue(0, 1, 0);
   inverseMaskFilter->NotMaskOn();
   inverseMaskFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> maskActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> maskActor;
   maskActor->GetMapper()->SetInputConnection(maskSource->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> maskedActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> maskedActor;
   maskedActor->GetMapper()->SetInputConnection(maskFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> inverseMaskedActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  inverseMaskedActor->GetMapper()->SetInputConnection(inverseMaskFilter->GetOutputPort());
+  vtkNew<vtkImageActor> inverseMaskedActor;
+  inverseMaskedActor->GetMapper()->SetInputConnection(
+      inverseMaskFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -83,46 +82,40 @@ int main(int, char *[])
   double inverseMaskedViewport[4] = {0.75, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(colors->GetColor3d("SandyBrown").GetData());
 
-  vtkSmartPointer<vtkRenderer> maskRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> maskRenderer;
   maskRenderer->SetViewport(maskViewport);
   maskRenderer->AddActor(maskActor);
   maskRenderer->ResetCamera();
-  maskRenderer->SetBackground(.4, .5, .6);
+  maskRenderer->SetBackground(colors->GetColor3d("Peru").GetData());
 
-  vtkSmartPointer<vtkRenderer> maskedRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> maskedRenderer;
   maskedRenderer->SetViewport(maskedViewport);
   maskedRenderer->AddActor(maskedActor);
   maskedRenderer->ResetCamera();
-  maskedRenderer->SetBackground(.4, .5, .6);
+  maskedRenderer->SetBackground(colors->GetColor3d("SandyBrown").GetData());
 
-  vtkSmartPointer<vtkRenderer> inverseMaskedRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> inverseMaskedRenderer;
   inverseMaskedRenderer->SetViewport(inverseMaskedViewport);
   inverseMaskedRenderer->AddActor(inverseMaskedActor);
   inverseMaskedRenderer->ResetCamera();
-  inverseMaskedRenderer->SetBackground(.4, .5, .7);
+  inverseMaskedRenderer->SetBackground(colors->GetColor3d("Peru").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(1000, 250);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(maskRenderer);
   renderWindow->AddRenderer(maskedRenderer);
   renderWindow->AddRenderer(inverseMaskedRenderer);
+  renderWindow->SetWindowName("ImageMask");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -131,6 +124,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

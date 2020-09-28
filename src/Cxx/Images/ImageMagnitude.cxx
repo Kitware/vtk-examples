@@ -1,47 +1,45 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
+#include <vtkImageActor.h>
 #include <vtkImageCanvasSource2D.h>
+#include <vtkImageData.h>
 #include <vtkImageMagnitude.h>
+#include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image of a rectangle
-  vtkSmartPointer<vtkImageCanvasSource2D> source =
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> source;
   source->SetScalarTypeToUnsignedChar();
   source->SetNumberOfScalarComponents(3);
   source->SetExtent(0, 200, 0, 200, 0, 0);
 
   // Clear the image
-  source->SetDrawColor(0,0,0);
-  source->FillBox(0,200,0,200);
+  source->SetDrawColor(0, 0, 0);
+  source->FillBox(0, 200, 0, 200);
 
   // Draw a red box
-  source->SetDrawColor(255,0,0);
-  source->FillBox(100,120,100,120);
+  source->SetDrawColor(255, 0, 0);
+  source->FillBox(100, 120, 100, 120);
   source->Update();
 
-  vtkSmartPointer<vtkImageMagnitude> magnitudeFilter =
-      vtkSmartPointer<vtkImageMagnitude>::New();
+  vtkNew<vtkImageMagnitude> magnitudeFilter;
   magnitudeFilter->SetInputConnection(source->GetOutputPort());
   magnitudeFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  originalActor->GetMapper()->SetInputConnection(
-    source->GetOutputPort());
+  vtkNew<vtkImageActor> originalActor;
+  originalActor->GetMapper()->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> magnitudeActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> magnitudeActor;
   magnitudeActor->GetMapper()->SetInputConnection(
-    magnitudeFilter->GetOutputPort());
+      magnitudeFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -49,30 +47,28 @@ int main(int, char *[])
   double magnitudeViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> magnitudeRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> magnitudeRenderer;
   magnitudeRenderer->SetViewport(magnitudeViewport);
   magnitudeRenderer->AddActor(magnitudeActor);
   magnitudeRenderer->ResetCamera();
   magnitudeRenderer->SetBackground(.4, .5, .7);
+  magnitudeRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(magnitudeRenderer);
+  renderWindow->SetWindowName("ImageMagnitude");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 

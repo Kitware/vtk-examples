@@ -1,28 +1,30 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
+#include <vtkImageActor.h>
 #include <vtkImageCanvasSource2D.h>
+#include <vtkImageCast.h>
+#include <vtkImageData.h>
+#include <vtkImageEllipsoidSource.h>
 #include <vtkImageIslandRemoval2D.h>
+#include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
-#include <vtkImageEllipsoidSource.h>
-#include <vtkImageCast.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageCanvasSource2D> imageSource =
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> imageSource;
   imageSource->SetScalarTypeToUnsignedChar();
   imageSource->SetNumberOfScalarComponents(1);
   imageSource->SetExtent(0, 200, 0, 200, 0, 0);
-  
+
   // Blank the image
   imageSource->SetDrawColor(0.0);
-  imageSource->FillBox(0,200,0,200);
+  imageSource->FillBox(0, 200, 0, 200);
 
   // Draw a small box
   imageSource->SetDrawColor(255.0);
@@ -31,11 +33,10 @@ int main(int, char *[])
   // Draw a large box
   imageSource->SetDrawColor(255.0);
   imageSource->FillBox(150, 170, 150, 170);
-  
+
   imageSource->Update();
 
-  vtkSmartPointer<vtkImageIslandRemoval2D> islandRemovalFilter = 
-    vtkSmartPointer<vtkImageIslandRemoval2D>::New();
+  vtkNew<vtkImageIslandRemoval2D> islandRemovalFilter;
   islandRemovalFilter->SetAreaThreshold(50);
   islandRemovalFilter->SetIslandValue(255.0);
   islandRemovalFilter->SetReplaceValue(0.0);
@@ -43,14 +44,12 @@ int main(int, char *[])
   islandRemovalFilter->Update();
 
   // Visualize
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(imageSource->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> islandRemovalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> islandRemovalActor;
   islandRemovalActor->GetMapper()->SetInputConnection(
-    islandRemovalFilter->GetOutputPort());
+      islandRemovalFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -58,30 +57,28 @@ int main(int, char *[])
   double islandRemovalViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> islandRemovalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> islandRemovalRenderer;
   islandRemovalRenderer->SetViewport(islandRemovalViewport);
   islandRemovalRenderer->AddActor(islandRemovalActor);
   islandRemovalRenderer->ResetCamera();
-  islandRemovalRenderer->SetBackground(.4, .5, .7);
+  islandRemovalRenderer->SetBackground(
+      colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(islandRemovalRenderer);
+  renderWindow->SetWindowName("ImageIslandRemoval2D");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -90,6 +87,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

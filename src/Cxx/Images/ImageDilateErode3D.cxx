@@ -1,46 +1,46 @@
+#include <vtkImageAccumulate.h>
 #include <vtkImageActor.h>
 #include <vtkImageCast.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkImageAccumulate.h>
 #include <vtkImageData.h>
+#include <vtkImageDilateErode3D.h>
 #include <vtkImageMapper3D.h>
-#include <vtkRenderer.h>
+#include <vtkImageThreshold.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPNGReader.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
-#include <vtkPNGReader.h>
-#include <vtkImageDilateErode3D.h>
-#include <vtkImageThreshold.h>
+#include <vtkRenderer.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Handle the arguments
-  if( argc < 2 )
+  if (argc < 2)
   {
-    std::cout << "Required arguments: filename.png" << std::endl;
+    std::cout << "Required arguments: filename.png e.g. Yinyang.png"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   // Read the image
-  vtkSmartPointer<vtkPNGReader> reader =
-    vtkSmartPointer<vtkPNGReader>::New();
+  vtkNew<vtkPNGReader> reader;
   reader->SetFileName(argv[1]);
   reader->Update();
 
-  vtkSmartPointer<vtkImageDilateErode3D> dilateErode =
-    vtkSmartPointer<vtkImageDilateErode3D>::New();
+  vtkNew<vtkImageDilateErode3D> dilateErode;
   dilateErode->SetInputConnection(reader->GetOutputPort());
   dilateErode->SetDilateValue(0);
   dilateErode->SetErodeValue(255);
   dilateErode->SetKernelSize(5, 5, 3);
   dilateErode->ReleaseDataFlagOff();
 
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> originalActor;
   originalActor->GetMapper()->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> openCloseActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> openCloseActor;
   openCloseActor->GetMapper()->SetInputConnection(dilateErode->GetOutputPort());
 
   // Define viewport ranges
@@ -49,30 +49,26 @@ int main(int argc, char *argv[])
   double openCloseViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(colors->GetColor3d("Sienna").GetData());
 
-  vtkSmartPointer<vtkRenderer> dilateErodeRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> dilateErodeRenderer;
   dilateErodeRenderer->SetViewport(openCloseViewport);
   dilateErodeRenderer->AddActor(openCloseActor);
   dilateErodeRenderer->ResetCamera();
-  dilateErodeRenderer->SetBackground(.4, .5, .7);
+  dilateErodeRenderer->SetBackground(colors->GetColor3d("RoyalBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(dilateErodeRenderer);
+  renderWindow->SetWindowName("ImageDilateErode3D");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -82,5 +78,5 @@ int main(int argc, char *argv[])
 
   renderWindowInteractor->Start();
 
-  return  EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }

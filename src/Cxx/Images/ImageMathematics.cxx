@@ -1,44 +1,41 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageMapper3D.h>
-#include <vtkMath.h>
-#include <vtkImageData.h>
+#include <vtkImageActor.h>
 #include <vtkImageCanvasSource2D.h>
+#include <vtkImageData.h>
+#include <vtkImageMapper3D.h>
 #include <vtkImageMathematics.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkMath.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageCanvasSource2D> imageSource = 
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> imageSource;
   imageSource->SetNumberOfScalarComponents(3);
   imageSource->SetScalarTypeToUnsignedChar();
   imageSource->SetExtent(0, 4, 0, 4, 0, 0);
   imageSource->SetDrawColor(100.0, 0, 0);
   imageSource->FillBox(0, 4, 0, 4);
   imageSource->Update();
-  
-  vtkSmartPointer<vtkImageMathematics> imageMath = 
-    vtkSmartPointer<vtkImageMathematics>::New();
+
+  vtkNew<vtkImageMathematics> imageMath;
   imageMath->SetOperationToMultiplyByK();
   imageMath->SetConstantK(2.0);
   imageMath->SetInputConnection(imageSource->GetOutputPort());
   imageMath->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  originalActor->GetMapper()->SetInputConnection(
-    imageSource->GetOutputPort());
+  vtkNew<vtkImageActor> originalActor;
+  originalActor->GetMapper()->SetInputConnection(imageSource->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> mathActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  mathActor->GetMapper()->SetInputConnection(
-    imageMath->GetOutputPort());
+  vtkNew<vtkImageActor> mathActor;
+  mathActor->GetMapper()->SetInputConnection(imageMath->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -46,35 +43,33 @@ int main(int, char *[])
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(leftViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> mathRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> mathRenderer;
   mathRenderer->SetViewport(rightViewport);
   mathRenderer->AddActor(mathActor);
   mathRenderer->ResetCamera();
-  mathRenderer->SetBackground(.4, .5, .7);
+  mathRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(mathRenderer);
+  renderWindow->SetWindowName("ImageMathematics");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkInteractorStyleImage> style;
   renderWindowInteractor->SetInteractorStyle(style);
 
   renderWindow->Render();
   renderWindowInteractor->Start();
+
   return EXIT_SUCCESS;
 }
