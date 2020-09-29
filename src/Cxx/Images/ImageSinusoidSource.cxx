@@ -1,28 +1,31 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageViewer2.h>
 #include <vtkImageSinusoidSource.h>
+#include <vtkImageViewer2.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkImageSinusoidSource> sinusoidSource =
-    vtkSmartPointer<vtkImageSinusoidSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkImageSinusoidSource> sinusoidSource;
   sinusoidSource->Update();
 
   // Visualize
-  vtkSmartPointer<vtkImageViewer2> imageViewer =
-    vtkSmartPointer<vtkImageViewer2>::New();
+  vtkNew<vtkImageViewer2> imageViewer;
   imageViewer->SetInputConnection(sinusoidSource->GetOutputPort());
-  imageViewer->GetRenderWindow()->SetSize( 500, 500 );
+  imageViewer->GetRenderWindow()->SetSize(500, 500);
   imageViewer->GetRenderer()->ResetCamera();
+  imageViewer->GetRenderer()->SetBackground(
+      colors->GetColor3d("DimGray").GetData());
+  imageViewer->GetRenderWindow()->SetWindowName("ImageSinusoidSource");
 
   // Set up an interactor that does not respond to mouse events
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  imageViewer->GetRenderWindow()->SetInteractor( renderWindowInteractor );
-  renderWindowInteractor->SetInteractorStyle( 0 );
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  imageViewer->GetRenderWindow()->SetInteractor(renderWindowInteractor);
+  renderWindowInteractor->SetInteractorStyle(0);
   imageViewer->Render();
 
   // Start the event loop

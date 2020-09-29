@@ -38,13 +38,13 @@ int main(int argc, char* argv[])
   else
   {
 
-    std::array<double, 4> drawColor1{0, 0, 0, 0};
-    std::array<double, 4> drawColor2{0, 0, 0, 0};
-    std::array<double, 4> drawColor3{0, 0, 0, 0};
-    auto color1 = colors->GetColor4ub("warm_grey").GetData();
-    auto color2 = colors->GetColor4ub("DarkCyan").GetData();
-    auto color3 = colors->GetColor4ub("LightCoral").GetData();
-    for (auto i = 0; i < 4; ++i)
+    std::array<double, 3> drawColor1{0, 0, 0};
+    std::array<double, 3> drawColor2{0, 0, 0};
+    std::array<double, 3> drawColor3{0, 0, 0};
+    auto color1 = colors->GetColor3ub("warm_grey").GetData();
+    auto color2 = colors->GetColor3ub("DarkCyan").GetData();
+    auto color3 = colors->GetColor3ub("LightCoral").GetData();
+    for (auto i = 0; i < 3; ++i)
     {
       drawColor1[i] = color1[i];
       drawColor2[i] = color2[i];

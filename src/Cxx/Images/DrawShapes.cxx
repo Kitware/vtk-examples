@@ -13,18 +13,15 @@ int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
-  std::array<double, 4> drawColor1{0, 0, 0, 0};
-  auto color1 = colors->GetColor4ub("DimGray").GetData();
-  std::array<double, 4> drawColor2{0, 0, 0, 0};
-  auto color2 = colors->GetColor4ub("HotPink").GetData();
-  for (auto i = 0; i < 4; ++i)
+  std::array<double, 3> drawColor1{0, 0, 0};
+  auto color1 = colors->GetColor3ub("DimGray").GetData();
+  std::array<double, 3> drawColor2{0, 0, 0};
+  auto color2 = colors->GetColor3ub("HotPink").GetData();
+  for (auto i = 0; i < 3; ++i)
   {
     drawColor1[i] = color1[i];
     drawColor2[i] = color2[i];
   }
-  // Set the alpha to 0 (actually alpha doesn't seem to be used)
-  drawColor1[3] = 0;
-  drawColor2[3] = 0;
 
   // Create a blank, colored image
   vtkNew<vtkImageCanvasSource2D> drawing;

@@ -11,8 +11,6 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
-#include <array>
-
 int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;

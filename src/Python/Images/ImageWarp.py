@@ -9,7 +9,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [60, 93, 144, 255])
+    colors.SetColor('BkgColor', [60, 93, 144, 255])
 
     # Read in an image and compute a luminance value. The image is extracted
     # as a set of polygons (vtkImageDataGeometryFilter). We then will
@@ -48,7 +48,7 @@ def main():
     # Add the actors to the renderer, set the background and size.
     ren.AddActor(actor)
     ren.ResetCamera()
-    ren.SetBackground(colors.GetColor3d("BkgColor"))
+    ren.SetBackground(colors.GetColor3d('BkgColor'))
     # ren.GetActiveCamera().Azimuth(20)
     # ren.GetActiveCamera().Elevation(30)
     # ren.ResetCameraClippingRange()
@@ -59,6 +59,7 @@ def main():
     ren.ResetCameraClippingRange()
 
     renWin.SetSize(512, 512)
+    renWin.SetWindowName('ImageWarp')
 
     # Render the image.
     iren.Initialize()

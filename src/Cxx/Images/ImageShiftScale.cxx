@@ -1,27 +1,33 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageData.h>
 #include <vtkImageCanvasSource2D.h>
-#include <vtkImageShiftScale.h>
+#include <vtkImageData.h>
 #include <vtkImageEllipsoidSource.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkRenderer.h>
+#include <vtkImageProperty.h>
+#include <vtkImageShiftScale.h>
 #include <vtkImageSlice.h>
 #include <vtkImageSliceMapper.h>
-#include <vtkImageProperty.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPNGWriter.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-static void CreateImage(vtkImageData*);
+namespace {
 
-int main(int, char *[])
+void CreateImage(vtkImageData*);
+
+}
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageData> image = vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> image;
   CreateImage(image);
 
-  vtkSmartPointer<vtkImageShiftScale> shiftScaleFilter =
-    vtkSmartPointer<vtkImageShiftScale>::New();
+  vtkNew<vtkImageShiftScale> shiftScaleFilter;
   shiftScaleFilter->SetOutputScalarTypeToUnsignedChar();
   shiftScaleFilter->SetInputData(image);
   shiftScaleFilter->SetShift(100);
@@ -29,17 +35,17 @@ int main(int, char *[])
   shiftScaleFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageSliceMapper> originalSliceMapper = vtkSmartPointer<vtkImageSliceMapper>::New();
+  vtkNew<vtkImageSliceMapper> originalSliceMapper;
   originalSliceMapper->SetInputData(image);
 
-  vtkSmartPointer<vtkImageSlice> originalSlice = vtkSmartPointer<vtkImageSlice>::New();
+  vtkNew<vtkImageSlice> originalSlice;
   originalSlice->SetMapper(originalSliceMapper);
   originalSlice->GetProperty()->SetInterpolationTypeToNearest();
 
-  vtkSmartPointer<vtkImageSliceMapper> shiftScaleMapper = vtkSmartPointer<vtkImageSliceMapper>::New();
+  vtkNew<vtkImageSliceMapper> shiftScaleMapper;
   shiftScaleMapper->SetInputConnection(shiftScaleFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageSlice> shiftScaleSlice = vtkSmartPointer<vtkImageSlice>::New();
+  vtkNew<vtkImageSlice> shiftScaleSlice;
   shiftScaleSlice->SetMapper(shiftScaleMapper);
   shiftScaleSlice->GetProperty()->SetInterpolationTypeToNearest();
 
@@ -49,30 +55,27 @@ int main(int, char *[])
   double shiftScaleViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddViewProp(originalSlice);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> shiftScaleRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> shiftScaleRenderer;
   shiftScaleRenderer->SetViewport(shiftScaleViewport);
   shiftScaleRenderer->AddViewProp(shiftScaleSlice);
   shiftScaleRenderer->ResetCamera();
-  shiftScaleRenderer->SetBackground(.4, .5, .7);
+  shiftScaleRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(shiftScaleRenderer);
+  renderWindow->SetWindowName("ImageShiftScale");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -85,29 +88,33 @@ int main(int, char *[])
   return EXIT_SUCCESS;
 }
 
+namespace {
 
 void CreateImage(vtkImageData* image)
 {
   unsigned int dim = 20;
 
   image->SetDimensions(dim, dim, 1);
-  image->AllocateScalars(VTK_UNSIGNED_CHAR,1);
+  image->AllocateScalars(VTK_UNSIGNED_CHAR, 1);
 
-  for(unsigned int x = 0; x < dim; x++)
+  for (unsigned int x = 0; x < dim; x++)
   {
-    for(unsigned int y = 0; y < dim; y++)
+    for (unsigned int y = 0; y < dim; y++)
     {
-      unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(x,y,0));
-      if(x < dim/2)
+      unsigned char* pixel =
+          static_cast<unsigned char*>(image->GetScalarPointer(x, y, 0));
+      if (x < dim / 2)
       {
-	pixel[0] = 50;
+        pixel[0] = 50;
       }
       else
       {
-	pixel[0] = 150;
+        pixel[0] = 150;
       }
     }
   }
 
   image->Modified();
 }
+
+} // namespace

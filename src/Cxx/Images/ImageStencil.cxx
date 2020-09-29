@@ -1,39 +1,41 @@
+#include <vtkImageActor.h>
 #include <vtkImageData.h>
 #include <vtkImageMapper3D.h>
 #include <vtkImageStencil.h>
 #include <vtkImageStencilData.h>
 #include <vtkImageToImageStencil.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
-#include <vtkSmartPointer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
 
-namespace
-{
+namespace {
 void CreateColorImage(vtkImageData*, unsigned int channel);
 void CreateMask(vtkImageData*);
-}
+} // namespace
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkImageData> image1 = vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkImageData> image1;
   CreateColorImage(image1, 0); // Create a red image
 
-  vtkSmartPointer<vtkImageData> image2 = vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> image2;
   CreateColorImage(image2, 1); // Create a green image
 
-  vtkSmartPointer<vtkImageData> mask = vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> mask;
   CreateMask(mask);
 
-  //vtkSmartPointer<vtkImageStencilData> stencilData = vtkSmartPointer<vtkImageStencilData>::New();
-  vtkSmartPointer<vtkImageToImageStencil> imageToImageStencil = vtkSmartPointer<vtkImageToImageStencil>::New();
+  // vtkNew<vtkImageStencilData> stencilData;
+  vtkNew<vtkImageToImageStencil> imageToImageStencil;
   imageToImageStencil->SetInputData(mask);
   imageToImageStencil->ThresholdByUpper(122);
 
-  vtkSmartPointer<vtkImageStencil> stencil = vtkSmartPointer<vtkImageStencil>::New();
+  vtkNew<vtkImageStencil> stencil;
   stencil->SetInputConnection(2, imageToImageStencil->GetOutputPort());
   stencil->ReverseStencilOn();
   stencil->SetBackgroundInputData(image2);
@@ -41,50 +43,50 @@ int main(int, char *[])
   stencil->Update();
 
   // Create an actor
-  vtkSmartPointer<vtkImageActor> actor = vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> actor;
   actor->GetMapper()->SetInputConnection(stencil->GetOutputPort());
 
   // Setup renderer
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
   renderer->ResetCamera();
+  renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ImageStencil");
 
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
   // Render and start interaction
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  renderWindow->Render();;
+  renderWindow->Render();
+  ;
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
 }
 
-
-namespace
-{
+namespace {
 void CreateColorImage(vtkImageData* image, const unsigned int channel)
 {
   unsigned int dim = 20;
 
   image->SetDimensions(dim, dim, 1);
-  image->AllocateScalars(VTK_UNSIGNED_CHAR,3);
+  image->AllocateScalars(VTK_UNSIGNED_CHAR, 3);
 
-  for(unsigned int x = 0; x < dim; x++)
+  for (unsigned int x = 0; x < dim; x++)
   {
-    for(unsigned int y = 0; y < dim; y++)
+    for (unsigned int y = 0; y < dim; y++)
     {
-      unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(x,y,0));
+      unsigned char* pixel =
+          static_cast<unsigned char*>(image->GetScalarPointer(x, y, 0));
       pixel[0] = 0;
       pixel[1] = 0;
       pixel[2] = 0;
@@ -103,12 +105,13 @@ void CreateMask(vtkImageData* image)
   image->SetDimensions(dim, dim, 1);
   image->AllocateScalars(VTK_UNSIGNED_CHAR, 1);
 
-  for(unsigned int x = 0; x < dim; x++)
+  for (unsigned int x = 0; x < dim; x++)
   {
-    for(unsigned int y = 0; y < dim; y++)
+    for (unsigned int y = 0; y < dim; y++)
     {
-      unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(x,y,0));
-      if(x < dim/2)
+      unsigned char* pixel =
+          static_cast<unsigned char*>(image->GetScalarPointer(x, y, 0));
+      if (x < dim / 2)
       {
         pixel[0] = 0;
       }
@@ -121,4 +124,4 @@ void CreateMask(vtkImageData* image)
 
   image->Modified();
 }
-}
+} // namespace
