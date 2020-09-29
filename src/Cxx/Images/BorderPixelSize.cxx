@@ -4,6 +4,7 @@
 #include <vtkImageSlice.h>
 #include <vtkImageSliceMapper.h>
 #include <vtkInteractorStyleImage.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkRenderWindow.h>
@@ -11,7 +12,9 @@
 #include <vtkRenderer.h>
 
 namespace {
+
 void CreateRandomImage(vtkImageData* image, const unsigned int dimension);
+
 }
 
 int main(int, char*[])
@@ -62,17 +65,25 @@ void CreateRandomImage(vtkImageData* image, const unsigned int dimension)
   image->SetOrigin(.5, .5, 0);
   image->AllocateScalars(VTK_UNSIGNED_CHAR, 3);
 
+  unsigned int seed = 0;
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->Initialize(seed);
+
   for (unsigned int x = 0; x < dimension; x++)
   {
     for (unsigned int y = 0; y < dimension; y++)
     {
       unsigned char* pixel =
           static_cast<unsigned char*>(image->GetScalarPointer(x, y, 0));
-      pixel[0] = rand() % 255;
-      pixel[1] = rand() % 255;
-      pixel[2] = rand() % 255;
+      pixel[0] = static_cast<unsigned char>(randomSequence->GetValue() * 255);
+      randomSequence->Next();
+      pixel[1] = static_cast<unsigned char>(randomSequence->GetValue() * 255);
+      randomSequence->Next();
+      pixel[2] = static_cast<unsigned char>(randomSequence->GetValue() * 255);
+      randomSequence->Next();
     }
   }
   image->Modified();
 }
+
 } // namespace
