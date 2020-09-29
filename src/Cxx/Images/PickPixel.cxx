@@ -9,6 +9,8 @@
 #include <vtkImageReader2Factory.h>
 #include <vtkImageViewer2.h>
 #include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPropPicker.h>
 #include <vtkRenderWindow.h>
@@ -16,6 +18,8 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkTextProperty.h>
+
+namespace {
 
 // The mouse motion callback, to pick the image and recover pixel values
 class vtkImageInteractionCallback1 : public vtkCommand
@@ -170,8 +174,12 @@ private:
   vtkPointData* PointData;
 };
 
+} // namespace
+
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Verify input arguments
   if (argc != 2)
   {
@@ -181,45 +189,46 @@ int main(int argc, char* argv[])
   }
 
   // Read the image
-  auto readerFactory = vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> reader;
   reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
   reader->SetFileName(argv[1]);
 
   // Picker to pick pixels
-  auto propPicker = vtkSmartPointer<vtkPropPicker>::New();
+  vtkNew<vtkPropPicker> propPicker;
   propPicker->PickFromListOn();
 
   // Give the picker a prop to pick
-  auto imageViewer = vtkSmartPointer<vtkImageViewer2>::New();
+  vtkNew<vtkImageViewer2> imageViewer;
   propPicker->AddPickList(imageViewer->GetImageActor());
 
   // Visualize
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   imageViewer->SetInputConnection(reader->GetOutputPort());
   imageViewer->SetupInteractor(renderWindowInteractor);
   imageViewer->SetSize(600, 600);
+  imageViewer->GetRenderWindow()->SetWindowName("PickPixel");
 
   vtkRenderer* renderer = imageViewer->GetRenderer();
   renderer->ResetCamera();
   renderer->GradientBackgroundOn();
-  renderer->SetBackground(0, 0, 0);
-  renderer->SetBackground2(1, 1, 1);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
+  renderer->SetBackground2(colors->GetColor3d("LightSlateGray").GetData());
 
   // Annotate the image with window/level and mouse over pixel information
-  auto cornerAnnotation = vtkSmartPointer<vtkCornerAnnotation>::New();
+  vtkNew<vtkCornerAnnotation> cornerAnnotation;
   cornerAnnotation->SetLinearFontScaleFactor(2);
   cornerAnnotation->SetNonlinearFontScaleFactor(1);
   cornerAnnotation->SetMaximumFontSize(20);
   cornerAnnotation->SetText(0, "Off Image");
   cornerAnnotation->SetText(3, "<window>\n<level>");
-  cornerAnnotation->GetTextProperty()->SetColor(1, 0, 0);
+  cornerAnnotation->GetTextProperty()->SetColor(
+      colors->GetColor3d("LightGoldenrodYellow").GetData());
 
   imageViewer->GetRenderer()->AddViewProp(cornerAnnotation);
 
   // Callback listens to MouseMoveEvents invoked by the interactor's style
-  auto callback = vtkSmartPointer<vtkImageInteractionCallback1>::New();
+  vtkNew<vtkImageInteractionCallback1> callback;
   callback->SetViewer(imageViewer);
   callback->SetAnnotation(cornerAnnotation);
   callback->SetPicker(propPicker);

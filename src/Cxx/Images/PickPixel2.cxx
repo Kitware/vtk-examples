@@ -9,6 +9,8 @@
 #include <vtkImageViewer2.h>
 #include <vtkInteractorStyleImage.h>
 #include <vtkMath.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPropPicker.h>
 #include <vtkRenderWindow.h>
@@ -17,6 +19,8 @@
 #include <vtkSmartPointer.h>
 #include <vtkTIFFReader.h>
 #include <vtkTextProperty.h>
+
+namespace {
 
 // Template for image value reading
 template <typename T>
@@ -170,25 +174,31 @@ private:
   vtkCornerAnnotation* Annotation; // Pointer to the annotation
 };
 
+} // namespace
+
 int main(int argc, char* argv[])
 {
-  auto imageViewer = vtkSmartPointer<vtkImageViewer2>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkImageViewer2> imageViewer;
 
   // Verify input arguments
   if (argc != 2)
   {
-    std::cout << argv[0] << " Required parameters: (tif) Filename" << std::endl
+    std::cout << argv[0]
+              << " Required parameters: (tif) Filename e.g. ColorCells.tif"
+              << std::endl
               << "missing..." << std::endl;
     std::cout << "A noise image will be created!" << std::endl;
 
     // create a noise image
-    auto noiseSource = vtkSmartPointer<vtkImageNoiseSource>::New();
+    vtkNew<vtkImageNoiseSource> noiseSource;
     noiseSource->SetWholeExtent(0, 512, 0, 512, 0, 0);
     noiseSource->SetMinimum(0.0);
     noiseSource->SetMaximum(65535.0);
 
     // cast noise image to unsigned short
-    auto imageCast = vtkSmartPointer<vtkImageCast>::New();
+    vtkNew<vtkImageCast> imageCast;
     imageCast->SetInputConnection(noiseSource->GetOutputPort());
     imageCast->SetOutputScalarTypeToUnsignedShort();
     imageCast->Update();
@@ -202,7 +212,7 @@ int main(int argc, char* argv[])
     std::string inputFilename = argv[1];
 
     // Read the image
-    auto tiffReader = vtkSmartPointer<vtkTIFFReader>::New();
+    vtkNew<vtkTIFFReader> tiffReader;
     if (!tiffReader->CanReadFile(inputFilename.c_str()))
     {
       std::cout << argv[0] << ": Error reading file " << inputFilename
@@ -216,7 +226,7 @@ int main(int argc, char* argv[])
   }
 
   // Picker to pick pixels
-  auto propPicker = vtkSmartPointer<vtkPropPicker>::New();
+  vtkNew<vtkPropPicker> propPicker;
   propPicker->PickFromListOn();
 
   // Give the picker a prop to pick
@@ -227,31 +237,32 @@ int main(int argc, char* argv[])
   imageActor->InterpolateOff();
 
   // Visualize
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   imageViewer->SetupInteractor(renderWindowInteractor);
   imageViewer->SetSize(600, 600);
+  imageViewer->GetRenderWindow()->SetWindowName("PickPixel2");
 
   vtkRenderer* renderer = imageViewer->GetRenderer();
   renderer->ResetCamera();
   renderer->GradientBackgroundOn();
-  renderer->SetBackground(0.6, 0.6, 0.5);
-  renderer->SetBackground2(0.3, 0.3, 0.2);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
+  renderer->SetBackground2(colors->GetColor3d("LightSlateGray").GetData());
 
   // Annotate the image with window/level and mouse over pixel
   // information
-  auto cornerAnnotation = vtkSmartPointer<vtkCornerAnnotation>::New();
+  vtkNew<vtkCornerAnnotation> cornerAnnotation;
   cornerAnnotation->SetLinearFontScaleFactor(2);
   cornerAnnotation->SetNonlinearFontScaleFactor(1);
   cornerAnnotation->SetMaximumFontSize(20);
   cornerAnnotation->SetText(0, "Off Image");
   cornerAnnotation->SetText(3, "<window>\n<level>");
-  cornerAnnotation->GetTextProperty()->SetColor(1, 0, 0);
+  cornerAnnotation->GetTextProperty()->SetColor(
+      colors->GetColor3d("LightGoldenrodYellow").GetData());
 
   imageViewer->GetRenderer()->AddViewProp(cornerAnnotation);
 
   // Callback listens to MouseMoveEvents invoked by the interactor's style
-  auto callback = vtkSmartPointer<vtkImageInteractionCallback>::New();
+  vtkNew<vtkImageInteractionCallback> callback;
   callback->SetViewer(imageViewer);
   callback->SetAnnotation(cornerAnnotation);
   callback->SetPicker(propPicker);

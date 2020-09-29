@@ -42,9 +42,12 @@ int main(int, char*[])
   vtkNew<vtkImageViewer2> imageViewer;
   imageViewer->SetInputConnection(drawing->GetOutputPort());
   imageViewer->SetupInteractor(renderWindowInteractor);
-  imageViewer->GetRenderer()->ResetCamera();
+  imageViewer->GetRenderer()->GradientBackgroundOn();
   imageViewer->GetRenderer()->SetBackground(
-      colors->GetColor3d("DarkSlateGray").GetData());
+      colors->GetColor3d("SkyBlue").GetData());
+  imageViewer->GetRenderer()->SetBackground2(
+      colors->GetColor3d("MidnightBlue").GetData());
+  imageViewer->GetRenderer()->ResetCamera();
   imageViewer->GetRenderWindow()->SetWindowName("DrawShapes");
   imageViewer->GetRenderWindow()->Render();
   renderWindowInteractor->Initialize();

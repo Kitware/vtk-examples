@@ -1,42 +1,45 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageResize.h>
-#include <vtkImageSincInterpolator.h>
-
-#include <vtkImageReader2Factory.h>
-#include <vtkImageReader2.h>
 #include <vtkCamera.h>
 #include <vtkImageActor.h>
 #include <vtkImageCanvasSource2D.h>
 #include <vtkImageData.h>
 #include <vtkImageMapper3D.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkImageReader2.h>
+#include <vtkImageReader2Factory.h>
+#include <vtkImageResize.h>
+#include <vtkImageSincInterpolator.h>
 #include <vtkInteractorStyleImage.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 
-int main(int argc, char *argv[])
+#include <array>
+
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   vtkSmartPointer<vtkImageData> imageData;
 
   int newSize[2] = {200, 10};
   int windowFunction = 0;
 
   // Verify input arguments
-  if ( argc > 1 )
+  // e.g. Gourds2.jpg 1280 1024 5
+  if (argc > 1)
   {
     // Read the image
-    vtkSmartPointer<vtkImageReader2Factory> readerFactory =
-      vtkSmartPointer<vtkImageReader2Factory>::New();
+    vtkNew<vtkImageReader2Factory> readerFactory;
     vtkSmartPointer<vtkImageReader2> reader;
-    reader.TakeReference(
-      readerFactory->CreateImageReader2(argv[1]));
+    reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
     reader->SetFileName(argv[1]);
     reader->Update();
 
     imageData = reader->GetOutput();
 
-    if (argc >3)
+    if (argc > 3)
     {
       newSize[0] = atoi(argv[2]);
       newSize[1] = atoi(argv[3]);
@@ -48,31 +51,41 @@ int main(int argc, char *argv[])
   }
   else
   {
-    vtkSmartPointer<vtkImageCanvasSource2D> canvasSource =
-      vtkSmartPointer<vtkImageCanvasSource2D>::New();
+    std::array<double, 3> drawColor1{0, 0, 0};
+    auto color1 = colors->GetColor3ub("Gray").GetData();
+    std::array<double, 3> drawColor2{0, 0, 0};
+    auto color2 = colors->GetColor3ub("Aquamarine").GetData();
+    std::array<double, 3> drawColor3{0, 0, 0};
+    auto color3 = colors->GetColor3ub("Violet").GetData();
+    for (auto i = 0; i < 3; ++i)
+    {
+      drawColor1[i] = color1[i];
+      drawColor2[i] = color2[i];
+      drawColor3[i] = color3[i];
+    }
+
+    vtkNew<vtkImageCanvasSource2D> canvasSource;
     canvasSource->SetExtent(0, 100, 0, 100, 0, 0);
     canvasSource->SetScalarTypeToUnsignedChar();
     canvasSource->SetNumberOfScalarComponents(3);
-    canvasSource->SetDrawColor(127, 127, 100);
+    canvasSource->SetDrawColor(drawColor1.data());
     canvasSource->FillBox(0, 100, 0, 100);
-    canvasSource->SetDrawColor(100, 255, 255);
+    canvasSource->SetDrawColor(drawColor2.data());
     canvasSource->FillTriangle(10, 10, 25, 10, 25, 25);
-    canvasSource->SetDrawColor(255, 100, 255);
+    canvasSource->SetDrawColor(drawColor3.data());
     canvasSource->FillTube(75, 75, 0, 75, 5.0);
     canvasSource->Update();
     imageData = canvasSource->GetOutput();
   }
 
-  vtkSmartPointer<vtkImageSincInterpolator> interpolator =
-    vtkSmartPointer<vtkImageSincInterpolator>::New();
+  vtkNew<vtkImageSincInterpolator> interpolator;
   interpolator->UseWindowParameterOn();
   if (windowFunction >= 0 && windowFunction <= 10)
   {
     interpolator->SetWindowFunction(windowFunction);
   }
 
-  vtkSmartPointer<vtkImageResize> resize =
-    vtkSmartPointer<vtkImageResize>::New();
+  vtkNew<vtkImageResize> resize;
   resize->SetInputData(imageData);
   resize->SetInterpolator(interpolator);
   resize->SetOutputDimensions(newSize[0], newSize[1], 1);
@@ -81,26 +94,23 @@ int main(int argc, char *argv[])
   if (windowFunction < 0)
   {
     resize->InterpolateOff();
-    std::cout << "Using nearest neighbor interpolation" << std::endl;;
+    std::cout << "Using nearest neighbor interpolation" << std::endl;
+    ;
   }
   else
   {
     std::cout << "Using window function : "
-              << interpolator->GetWindowFunctionAsString() << std::endl;;
+              << interpolator->GetWindowFunctionAsString() << std::endl;
+    ;
   }
 
   // Create an image actor to display the image
-  vtkSmartPointer<vtkImageActor> imageActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> imageActor;
   imageActor->GetMapper()->SetInputConnection(resize->GetOutputPort());
   imageActor->InterpolateOff();
 
   // Setup renderer
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(imageActor);
   renderer->SetBackground(colors->GetColor3d("Burlywood").GetData());
   renderer->ResetCamera();
@@ -108,16 +118,14 @@ int main(int argc, char *argv[])
   renderer->ResetCameraClippingRange();
 
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(1280, 1024);
+  renderWindow->SetWindowName("ResizeImage");
 
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 

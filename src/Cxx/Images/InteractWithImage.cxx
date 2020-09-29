@@ -4,6 +4,7 @@
 #include <vtkImageReader2Factory.h>
 #include <vtkInteractorStyleImage.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
@@ -11,6 +12,8 @@
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Parse input arguments
   if (argc != 2)
   {
@@ -19,34 +22,33 @@ int main(int argc, char* argv[])
   }
 
   // Read the image
-  auto readerFactory = vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> reader;
   reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
   reader->SetFileName(argv[1]);
 
   // Create an actor
-  auto actor = vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> actor;
   actor->GetMapper()->SetInputConnection(reader->GetOutputPort());
 
   // Setup renderer
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
-
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
   renderer->ResetCamera();
-  renderer->SetBackground(colors->GetColor3d("Burlywood").GetData());
+  renderer->SetBackground(colors->GetColor3d("Peru").GetData());
 
   // Setup render window
-  auto window = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> window;
   window->AddRenderer(renderer);
+  window->SetWindowName("InteractWithImage");
 
   // Setup render window interactor
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(window);
 
   // Setup interactor style (this is what implements the zooming, panning and
   // brightness adjustment functionality)
-  auto style = vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkInteractorStyleImage> style;
   interactor->SetInteractorStyle(style);
 
   // Render and start interaction

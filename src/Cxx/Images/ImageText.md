@@ -1,4 +1,5 @@
 ### Description
+
 This example demonstrates how to draw text onto an image vtkImageData. It uses vtkImageBlend to blend the text and the image. For another example using vtkImageBlend, see [CombineImages](/Cxx/Images/CombineImages).
 
 !!! seealso

@@ -1,7 +1,3 @@
-#include <vtkImageResize.h>
-#include <vtkImageSincInterpolator.h>
-#include <vtkSmartPointer.h>
-
 #include <vtkActor2D.h>
 #include <vtkCamera.h>
 #include <vtkImageActor.h>
@@ -10,19 +6,26 @@
 #include <vtkImageMapper3D.h>
 #include <vtkImageReader2.h>
 #include <vtkImageReader2Factory.h>
+#include <vtkImageResize.h>
+#include <vtkImageSincInterpolator.h>
 #include <vtkInteractorStyleImage.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkTextMapper.h>
 #include <vtkTextProperty.h>
 
+#include <array>
 #include <string>
 #include <vector>
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   vtkSmartPointer<vtkImageData> imageData;
 
   double factor = .5;
@@ -32,7 +35,8 @@ int main(int argc, char* argv[])
   if (argc > 1)
   {
     // Read the image
-    auto readerFactory = vtkSmartPointer<vtkImageReader2Factory>::New();
+    // e.g. Pileated.jpg 3
+    vtkNew<vtkImageReader2Factory> readerFactory;
     vtkSmartPointer<vtkImageReader2> reader;
     reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
     reader->SetFileName(argv[1]);
@@ -46,16 +50,28 @@ int main(int argc, char* argv[])
   }
   else
   {
-    vtkSmartPointer<vtkImageCanvasSource2D> canvasSource =
-        vtkSmartPointer<vtkImageCanvasSource2D>::New();
+    std::array<double, 3> drawColor1{0, 0, 0};
+    auto color1 = colors->GetColor3ub("Gray").GetData();
+    std::array<double, 3> drawColor2{0, 0, 0};
+    auto color2 = colors->GetColor3ub("Aquamarine").GetData();
+    std::array<double, 3> drawColor3{0, 0, 0};
+    auto color3 = colors->GetColor3ub("Violet").GetData();
+    for (auto i = 0; i < 3; ++i)
+    {
+      drawColor1[i] = color1[i];
+      drawColor2[i] = color2[i];
+      drawColor3[i] = color3[i];
+    }
+
+    vtkNew<vtkImageCanvasSource2D> canvasSource;
     canvasSource->SetExtent(0, 100, 0, 100, 0, 0);
     canvasSource->SetScalarTypeToUnsignedChar();
     canvasSource->SetNumberOfScalarComponents(3);
-    canvasSource->SetDrawColor(127, 127, 100);
+    canvasSource->SetDrawColor(drawColor1.data());
     canvasSource->FillBox(0, 100, 0, 100);
-    canvasSource->SetDrawColor(100, 255, 255);
+    canvasSource->SetDrawColor(drawColor2.data());
     canvasSource->FillTriangle(10, 10, 25, 10, 25, 25);
-    canvasSource->SetDrawColor(255, 100, 255);
+    canvasSource->SetDrawColor(drawColor3.data());
     canvasSource->FillTube(75, 75, 0, 75, 5.0);
     canvasSource->Update();
     imageData = canvasSource->GetOutput();
@@ -68,40 +84,39 @@ int main(int argc, char* argv[])
   std::cout << "New dimensions: " << newSize[0] << ", " << newSize[1]
             << std::endl;
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
-
   // One camera for all
-  auto camera = vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
 
   // Create one text property for all
-  auto textProperty = vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkTextProperty> textProperty;
   textProperty->SetFontSize(20);
   textProperty->SetJustificationToCentered();
-  textProperty->SetColor(0.3, 0.3, 0.3);
+  textProperty->SetColor(colors->GetColor3d("MidnightBlue").GetData());
 
   // Setup render window
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetWindowName("ResizeImageDemo");
 
   std::vector<vtkSmartPointer<vtkRenderer>> renderers;
   for (int i = -1; i <= 10; ++i)
   {
-    auto interpolator = vtkSmartPointer<vtkImageSincInterpolator>::New();
+    vtkNew<vtkImageSincInterpolator> interpolator;
     auto windowFunction = i;
     interpolator->UseWindowParameterOn();
 
-    auto resize = vtkSmartPointer<vtkImageResize>::New();
+    vtkNew<vtkImageResize> resize;
     resize->SetInputData(imageData);
     resize->SetInterpolator(interpolator);
     resize->SetOutputDimensions(newSize[0], newSize[1], 1);
     resize->InterpolateOn();
 
     // Create an image actor to display the image
-    auto imageActor = vtkSmartPointer<vtkImageActor>::New();
+    vtkNew<vtkImageActor> imageActor;
     imageActor->GetMapper()->SetInputConnection(resize->GetOutputPort());
     imageActor->InterpolateOff();
 
     // Create textActors
-    auto textMapper = vtkSmartPointer<vtkTextMapper>::New();
+    vtkNew<vtkTextMapper> textMapper;
     textMapper->SetTextProperty(textProperty);
     if (windowFunction < 0)
     {
@@ -115,11 +130,11 @@ int main(int argc, char* argv[])
       textMapper->SetInput(interpolator->GetWindowFunctionAsString());
     }
 
-    auto textActor = vtkSmartPointer<vtkActor2D>::New();
+    vtkNew<vtkActor2D> textActor;
     textActor->SetMapper(textMapper);
     textActor->SetPosition(100, 16);
     // Setup renderer
-    auto renderer = vtkSmartPointer<vtkRenderer>::New();
+    vtkNew<vtkRenderer> renderer;
     renderer->AddActor(imageActor);
     renderer->AddActor(textActor);
     ;
@@ -158,9 +173,8 @@ int main(int argc, char* argv[])
   }
 
   // Setup render window interactor
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  auto style = vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
