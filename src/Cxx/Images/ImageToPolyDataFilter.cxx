@@ -1,36 +1,37 @@
 #include <vtkActor.h>
+#include <vtkCamera.h>
+#include <vtkImageQuantizeRGBToIndex.h>
+#include <vtkImageToPolyDataFilter.h>
 #include <vtkLookupTable.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPNGReader.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
-#include <vtkImageToPolyDataFilter.h>
-#include <vtkImageQuantizeRGBToIndex.h>
-#include <vtkCamera.h>
-#include <vtkPNGReader.h>
+#include <vtkRenderer.h>
 #include <vtkTriangleFilter.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  if(argc < 2)
+  vtkNew<vtkNamedColors> colors;
+
+  if (argc < 2)
   {
-    std::cerr << "Required arguments: filename.png" << std::endl;
+    std::cerr << "Required arguments: filename.png e.g. Gourds.png"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
-  vtkSmartPointer<vtkPNGReader> reader =
-    vtkSmartPointer<vtkPNGReader>::New();
+  vtkNew<vtkPNGReader> reader;
   reader->SetFileName(argv[1]);
 
-  vtkSmartPointer<vtkImageQuantizeRGBToIndex> quant =
-    vtkSmartPointer<vtkImageQuantizeRGBToIndex>::New();
+  vtkNew<vtkImageQuantizeRGBToIndex> quant;
   quant->SetInputConnection(reader->GetOutputPort());
   quant->SetNumberOfColors(16);
 
-  vtkSmartPointer<vtkImageToPolyDataFilter> i2pd =
-    vtkSmartPointer<vtkImageToPolyDataFilter>::New();
+  vtkNew<vtkImageToPolyDataFilter> i2pd;
   i2pd->SetInputConnection(quant->GetOutputPort());
   i2pd->SetLookupTable(quant->GetLookupTable());
   i2pd->SetColorModeToLUT();
@@ -41,33 +42,28 @@ int main(int argc, char *argv[])
   i2pd->SetSubImageSize(25);
 
   // Need a triangle filter because the polygons are complex and concave
-  vtkSmartPointer<vtkTriangleFilter> tf =
-    vtkSmartPointer<vtkTriangleFilter>::New();
+  vtkNew<vtkTriangleFilter> tf;
   tf->SetInputConnection(i2pd->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(tf->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetRepresentationToWireframe();
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
 
-  renderer->SetBackground(1, 1, 1);
   renderWindow->SetSize(300, 250);
+  renderWindow->SetWindowName("ImageToPolyDataFilter");
 
   renderWindow->Render();
   interactor->Initialize();

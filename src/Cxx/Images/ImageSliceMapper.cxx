@@ -10,7 +10,11 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 
+namespace {
+
 void CreateColorImage(vtkImageData*);
+
+}
 
 int main(int, char*[])
 {
@@ -29,7 +33,7 @@ int main(int, char*[])
   vtkNew<vtkRenderer> renderer;
   renderer->AddViewProp(imageSlice);
   renderer->ResetCamera();
-  renderer->SetBackground(colors->GetColor3d("Mint").GetData());
+  renderer->SetBackground(colors->GetColor3d("NavajoWhite").GetData());
 
   // Setup render window
   vtkNew<vtkRenderWindow> renderWindow;
@@ -54,10 +58,15 @@ int main(int, char*[])
   return EXIT_SUCCESS;
 }
 
+namespace {
+
 void CreateColorImage(vtkImageData* image)
 {
   image->SetDimensions(10, 10, 1);
   image->AllocateScalars(VTK_UNSIGNED_CHAR, 3);
+
+  vtkNew<vtkNamedColors> colors;
+  auto pixelColor = colors->GetColor3ub("Turquoise").GetData();
 
   for (unsigned int x = 0; x < 10; x++)
   {
@@ -65,9 +74,12 @@ void CreateColorImage(vtkImageData* image)
     {
       unsigned char* pixel =
           static_cast<unsigned char*>(image->GetScalarPointer(x, y, 0));
-      pixel[0] = 255;
-      pixel[1] = 0;
-      pixel[2] = 255;
+      for (auto j = 0; j < 3; ++j)
+      {
+        pixel[j] = pixelColor[j];
+      }
     }
   }
 }
+
+} // namespace

@@ -1,80 +1,77 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageData.h>
-#include <vtkImageThreshold.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkRenderer.h>
-#include <vtkImageMapper3D.h>
 #include <vtkImageActor.h>
 #include <vtkImageCast.h>
+#include <vtkImageData.h>
 #include <vtkImageMandelbrotSource.h>
- 
-int main(int, char *[])
+#include <vtkImageMapper3D.h>
+#include <vtkImageThreshold.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageMandelbrotSource> imageSource =
-    vtkSmartPointer<vtkImageMandelbrotSource>::New();
+  vtkNew<vtkImageMandelbrotSource> imageSource;
   imageSource->Update();
- 
-  vtkSmartPointer<vtkImageThreshold> imageThreshold = 
-    vtkSmartPointer<vtkImageThreshold>::New();
+
+  vtkNew<vtkImageThreshold> imageThreshold;
   imageThreshold->SetInputConnection(imageSource->GetOutputPort());
   unsigned char lower = 100;
   unsigned char upper = 200;
- 
+
   imageThreshold->ThresholdBetween(lower, upper);
   imageThreshold->ReplaceInOn();
   imageThreshold->SetInValue(255);
   imageThreshold->Update();
- 
+
   // Create actors
-  vtkSmartPointer<vtkImageActor> inputActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  inputActor->GetMapper()->SetInputConnection(
-    imageSource->GetOutputPort());
- 
-  vtkSmartPointer<vtkImageActor> thresholdedActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> inputActor;
+  inputActor->GetMapper()->SetInputConnection(imageSource->GetOutputPort());
+
+  vtkNew<vtkImageActor> thresholdedActor;
   thresholdedActor->GetMapper()->SetInputConnection(
-    imageThreshold->GetOutputPort());
- 
+      imageThreshold->GetOutputPort());
+
   // There will be one render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
- 
+  renderWindow->SetWindowName("ImageThreshold");
+
   // And one interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
- 
+
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
   double leftViewport[4] = {0.0, 0.0, 0.5, 1.0};
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
- 
+
   // Setup both renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
   leftRenderer->SetBackground(.6, .5, .4);
- 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  leftRenderer->SetBackground(colors->GetColor3d("Sienna").GetData());
+
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
   rightRenderer->SetBackground(.4, .5, .6);
- 
+  rightRenderer->SetBackground(colors->GetColor3d("RoyalBlue").GetData());
+
   leftRenderer->AddActor(inputActor);
   rightRenderer->AddActor(thresholdedActor);
- 
+
   leftRenderer->ResetCamera();
   rightRenderer->ResetCamera();
- 
+
   renderWindow->Render();
   interactor->Start();
- 
+
   return EXIT_SUCCESS;
 }

@@ -27,7 +27,6 @@ int main(int, char*[])
 
   std::array<double, 3> drawColor1{0, 0, 0};
   std::array<double, 3> drawColor2{0, 0, 0};
-  std::array<double, 3> drawColor3{0, 0, 0};
   auto color1 = colors->GetColor3ub("Black").GetData();
   auto color2 = colors->GetColor3ub("Red").GetData();
   for (auto i = 0; i < 3; ++i)
