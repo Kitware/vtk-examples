@@ -1,75 +1,63 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageRGBToHSI.h>
-
-#include <vtkImageReader2Factory.h>
-#include <vtkImageReader2.h>
-#include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
 #include <vtkCamera.h>
+#include <vtkImageActor.h>
+#include <vtkImageData.h>
+#include <vtkImageExtractComponents.h>
+#include <vtkImageMapper3D.h>
+#include <vtkImageRGBToHSI.h>
+#include <vtkImageReader2.h>
+#include <vtkImageReader2Factory.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
-#include <vtkImageExtractComponents.h>
-#include <vtkNamedColors.h>
+#include <vtkSmartPointer.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Verify command line arguments
-  if(argc != 2)
+  if (argc != 2)
   {
-    std::cerr << "Usage: " << argv[0] << "image" << std::endl;
+    std::cerr << "Usage: " << argv[0] << "image e.g. Gourds2.jpg" << std::endl;
     return EXIT_FAILURE;
   }
 
   // Read the image
-  vtkSmartPointer<vtkImageReader2Factory> readerFactory =
-    vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> reader;
-  reader.TakeReference(
-    readerFactory->CreateImageReader2(argv[1]));
+  reader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
   reader->SetFileName(argv[1]);
 
-  vtkSmartPointer<vtkImageRGBToHSI> hsiFilter =
-    vtkSmartPointer<vtkImageRGBToHSI>::New();
+  vtkNew<vtkImageRGBToHSI> hsiFilter;
   hsiFilter->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkImageExtractComponents> extractHFilter =
-    vtkSmartPointer<vtkImageExtractComponents>::New();
+  vtkNew<vtkImageExtractComponents> extractHFilter;
   extractHFilter->SetInputConnection(hsiFilter->GetOutputPort());
   extractHFilter->SetComponents(0);
 
-  vtkSmartPointer<vtkImageExtractComponents> extractSFilter =
-    vtkSmartPointer<vtkImageExtractComponents>::New();
+  vtkNew<vtkImageExtractComponents> extractSFilter;
   extractSFilter->SetInputConnection(hsiFilter->GetOutputPort());
   extractSFilter->SetComponents(1);
 
-  vtkSmartPointer<vtkImageExtractComponents> extractIFilter =
-    vtkSmartPointer<vtkImageExtractComponents>::New();
+  vtkNew<vtkImageExtractComponents> extractIFilter;
   extractIFilter->SetInputConnection(hsiFilter->GetOutputPort());
   extractIFilter->SetComponents(2);
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> inputActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  inputActor->GetMapper()->SetInputConnection(
-    reader->GetOutputPort());
+  vtkNew<vtkImageActor> inputActor;
+  inputActor->GetMapper()->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> hActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  hActor->GetMapper()->SetInputConnection(
-    extractHFilter->GetOutputPort());
+  vtkNew<vtkImageActor> hActor;
+  hActor->GetMapper()->SetInputConnection(extractHFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> sActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  sActor->GetMapper()->SetInputConnection(
-    extractSFilter->GetOutputPort());
+  vtkNew<vtkImageActor> sActor;
+  sActor->GetMapper()->SetInputConnection(extractSFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> iActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  iActor->GetMapper()->SetInputConnection(
-    extractIFilter->GetOutputPort());
+  vtkNew<vtkImageActor> iActor;
+  iActor->GetMapper()->SetInputConnection(extractIFilter->GetOutputPort());
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -79,44 +67,37 @@ int main(int argc, char *argv[])
   double iViewport[4] = {0.75, 0.0, 1.0, 1.0};
 
   // Shared camera
-  vtkSmartPointer<vtkCamera> sharedCamera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> sharedCamera;
 
   // Setup renderers
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-  vtkSmartPointer<vtkRenderer> inputRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> inputRenderer;
   inputRenderer->SetViewport(inputViewport);
   inputRenderer->AddActor(inputActor);
   inputRenderer->SetActiveCamera(sharedCamera);
-  inputRenderer->SetBackground(colors->GetColor3d("Tomato").GetData());
+  inputRenderer->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> hRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> hRenderer;
   hRenderer->SetViewport(hViewport);
   hRenderer->AddActor(hActor);
   hRenderer->SetActiveCamera(sharedCamera);
-  hRenderer->SetBackground(colors->GetColor3d("Gainsboro").GetData());
+  hRenderer->SetBackground(colors->GetColor3d("MistyRose").GetData());
 
-  vtkSmartPointer<vtkRenderer> sRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> sRenderer;
   sRenderer->SetViewport(sViewport);
   sRenderer->AddActor(sActor);
   sRenderer->SetActiveCamera(sharedCamera);
-  sRenderer->SetBackground(colors->GetColor3d("LightGrey").GetData());
+  sRenderer->SetBackground(colors->GetColor3d("LavenderBlush").GetData());
 
-  vtkSmartPointer<vtkRenderer> iRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> iRenderer;
   iRenderer->SetViewport(iViewport);
   iRenderer->AddActor(iActor);
   iRenderer->SetActiveCamera(sharedCamera);
-  iRenderer->SetBackground(colors->GetColor3d("Silver").GetData());
+  iRenderer->SetBackground(colors->GetColor3d("Lavender").GetData());
 
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(1000, 250);
+  renderWindow->SetWindowName("RGBToHSI");
   renderWindow->AddRenderer(inputRenderer);
   renderWindow->AddRenderer(hRenderer);
   renderWindow->AddRenderer(sRenderer);
@@ -124,10 +105,8 @@ int main(int argc, char *argv[])
   inputRenderer->ResetCamera();
 
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 

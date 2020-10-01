@@ -1,41 +1,38 @@
-#include <vtkSmartPointer.h>
 #include <vtkActor.h>
 #include <vtkImageActor.h>
-#include <vtkImageMapper3D.h>
 #include <vtkImageData.h>
+#include <vtkImageMapper3D.h>
 #include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkRTAnalyticSource.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkRTAnalyticSource.h>
 
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkRTAnalyticSource> analyticSource =
-    vtkSmartPointer<vtkRTAnalyticSource>::New();
-  analyticSource->SetWholeExtent(-10,10, -10,10, 0,0);
-  
-  vtkSmartPointer<vtkImageActor> imageActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  imageActor->GetMapper()->SetInputConnection(
-    analyticSource->GetOutputPort());
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRTAnalyticSource> analyticSource;
+  analyticSource->SetWholeExtent(-10, 10, -10, 10, 0, 0);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkImageActor> imageActor;
+  imageActor->GetMapper()->SetInputConnection(analyticSource->GetOutputPort());
 
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
-  interactor->SetInteractorStyle( style );
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetWindowName("RTAnalyticSource");
+
+  vtkNew<vtkRenderWindowInteractor> interactor;
+
+  vtkNew<vtkInteractorStyleImage> style;
+  interactor->SetInteractorStyle(style);
 
   interactor->SetRenderWindow(renderWindow);
 
   // Setup both renderers
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  renderer->SetBackground(1,0,0);
+  vtkNew<vtkRenderer> renderer;
+  renderer->SetBackground(colors->GetColor3d("Wheat").GetData());
   renderWindow->AddRenderer(renderer);
 
   renderer->AddActor(imageActor);
