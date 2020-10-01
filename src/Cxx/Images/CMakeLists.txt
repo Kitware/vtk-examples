@@ -64,8 +64,6 @@ endforeach()
 if (BUILD_TESTING)
   # Testing
   set(NEEDS_ARGS
-    #  HistogramBarChart
-    #  HistogramXYPlot
     CannyEdgeDetector
     Cast
     CenterAnImage
@@ -92,17 +90,17 @@ if (BUILD_TESTING)
     ImageToPolyDataFilter
     ImageToStructuredPoints
     ImageWarp
-    Transparency
     InteractWithImage
     PickPixel
     PickPixel2
+    ResizeImage
+    ResizeImageDemo
     RGBToHSI
     RGBToHSV
     RGBToYIQ
     RTAnalyticSource
-    ResizeImage
-    ResizeImageDemo
     StaticImage
+    Transparency
     )
 
   set(DATA ${WikiExamples_SOURCE_DIR}/src/Testing/Data)
@@ -131,12 +129,6 @@ if (BUILD_TESTING)
 
   add_test(${KIT}-Flip ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestFlip  ${DATA}/Gourds2.jpg ${TEMP}/Flip.jpg )
-
-  #add_test(${KIT}-HistogramBarChart ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-  #  TestHistogramBarChart ${DATA}/Gourds2.jpg)
-
-  #add_test(${KIT}-HistogramXYPlot ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-  #  TestHistogramXYPlot  ${DATA}/Gourds2.jpg)
 
   add_test(${KIT}-ImageAccumulateGreyscale ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestImageAccumulateGreyscale  ${DATA}/Ox.jpg)
@@ -178,11 +170,8 @@ if (BUILD_TESTING)
   add_test(${KIT}-ImageOpenClose3D ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestImageOpenClose3D ${DATA}/Yinyang.png -E 25)
 
-  add_test(${KIT}-InteractWithImage ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestInteractWithImage ${DATA}/Ox.jpg)
-
-  add_test(${KIT}-ImageToPolyDataFilter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestImageToPolyDataFilter ${DATA}/Gourds.png)
+  add_test(${KIT}-ImageRange3D ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestImageRange3D  ${DATA}/Gourds2.jpg)
 
   add_test(${KIT}-ImageRotate ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestImageRotate ${DATA}/Gourds.png 45)
@@ -190,14 +179,17 @@ if (BUILD_TESTING)
   add_test(${KIT}-ImageSeparableConvolution ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestImageSeparableConvolution ${DATA}/Yinyang.png -E 25)
 
+  add_test(${KIT}-ImageToPolyDataFilter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestImageToPolyDataFilter ${DATA}/Gourds.png)
+
   add_test(${KIT}-ImageToStructuredPoints ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestImageToStructuredPoints -E 25)
 
   add_test(${KIT}-ImageWarp ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestImageWarp ${DATA}/masonry.bmp)
 
-  add_test(${KIT}-Transparency ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestTransparency  ${DATA}/Ox.jpg)
+  add_test(${KIT}-InteractWithImage ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestInteractWithImage ${DATA}/Ox.jpg)
 
   add_test(${KIT}-PickPixel ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestPickPixel  ${DATA}/Gourds2.jpg)
@@ -205,8 +197,14 @@ if (BUILD_TESTING)
   add_test(${KIT}-PickPixel2 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestPickPixel2  ${DATA}/ColorCells.tif)
 
-  add_test(${KIT}-ImageRange3D ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestImageRange3D  ${DATA}/Gourds2.jpg)
+  add_test(${KIT}-ResizeImage ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestResizeImage ${DATA}/Gourds2.jpg 1280 1024 5)
+
+  add_test(${KIT}-ResizeImageDemo ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestResizeImageDemo ${DATA}/Pileated.jpg 3)
+
+  add_test(${KIT}-Transparency ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestTransparency ${DATA}/Gourds2.jpg)
 
   add_test(${KIT}-RGBToHSI ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestRGBToHSI ${DATA}/Gourds2.jpg)
@@ -220,17 +218,8 @@ if (BUILD_TESTING)
   add_test(${KIT}-StaticImage ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestStaticImage ${DATA}/Ox.jpg)
 
-  add_test(${KIT}-Transparency ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestTransparency ${DATA}/Gourds2.jpg)
-
   add_test(${KIT}-RTAnalyticSource ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestRTAnalyticSource -E 20)
-
-  add_test(${KIT}-ResizeImage ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestResizeImage ${DATA}/Gourds2.jpg 1280 1024 5)
-
-  add_test(${KIT}-ResizeImageDemo ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestResizeImageDemo ${DATA}/Pileated.jpg 3)
 
   include(${WikiExamples_SOURCE_DIR}/CMake/ExamplesTesting.cmake)
 endif()
