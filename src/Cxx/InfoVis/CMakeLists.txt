@@ -40,7 +40,22 @@ set(KIT_LIBS ${VTK_LIBRARIES})
 
 #
 # Build all .cxx files in the directory
-file(GLOB ALL_FILES *.cxx)
+file(GLOB ALL_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cxx)
+
+set(BOOST_SRCS)
+if(NOT VTK_USE_BOOST)
+  list(APPEND BOOST_SRCS
+    MutableGraphHelper.cxx
+    )
+endif()
+
+if (BOOST_SRCS)
+  list(REMOVE_ITEM ALL_FILES ${BOOST_SRCS})
+endif()
+
+if(VTK_USE_BOOST)
+  Requires_Module(MutableGraphHelper vtkInfovisBoostGraphAlgorithms)
+endif()
 
 set(VERSION_MIN "6.0")
 Requires_Version(TreeMapView ${VERSION_MIN})

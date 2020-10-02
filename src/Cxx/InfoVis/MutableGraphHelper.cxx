@@ -1,17 +1,15 @@
-#include <vtkSmartPointer.h>
-#include <vtkMutableDirectedGraph.h>
-#include <vtkMutableUndirectedGraph.h>
-#include <vtkMutableGraphHelper.h>
 #include <vtkGraphLayoutView.h>
+#include <vtkMutableDirectedGraph.h>
+#include <vtkMutableGraphHelper.h>
+#include <vtkMutableUndirectedGraph.h>
+#include <vtkNew.h>
 #include <vtkRenderWindowInteractor.h>
 
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkMutableUndirectedGraph> g =
-    vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkMutableUndirectedGraph> g;
 
-  vtkSmartPointer<vtkMutableGraphHelper> graphHelper =
-    vtkSmartPointer<vtkMutableGraphHelper>::New();
+  vtkNew<vtkMutableGraphHelper> graphHelper;
   graphHelper->SetGraph(g);
   vtkIdType v0 = graphHelper->AddVertex();
   vtkIdType v1 = graphHelper->AddVertex();
@@ -20,9 +18,8 @@ int main(int, char*[])
 
   // Can also do this:
   graphHelper->RemoveEdge(0);
-  
-  vtkSmartPointer<vtkGraphLayoutView> treeLayoutView =
-    vtkSmartPointer<vtkGraphLayoutView>::New();
+
+  vtkNew<vtkGraphLayoutView> treeLayoutView;
   treeLayoutView->AddRepresentationFromInput(graphHelper->GetGraph());
   treeLayoutView->SetLayoutStrategyToTree();
   treeLayoutView->ResetCamera();
