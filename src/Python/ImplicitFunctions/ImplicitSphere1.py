@@ -4,29 +4,16 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    # create a sphere
     sphere = vtk.vtkSphere()
-    sphere.SetRadius(1)
-    sphere.SetCenter(1, 0, 0)
-
-    # create a box
-    box = vtk.vtkBox()
-    box.SetBounds(-1, 1, -1, 1, -1, 1)
-
-    # combine the two implicit functions
-    boolean = vtk.vtkImplicitBoolean()
-    boolean.SetOperationTypeToDifference()
-    # boolean.SetOperationTypeToUnion()
-    # boolean.SetOperationTypeToIntersection()
-    boolean.AddFunction(box)
-    boolean.AddFunction(sphere)
+    sphere.SetCenter(0, 0, 0)
+    sphere.SetRadius(0.5)
 
     # The sample function generates a distance function from the implicit
     # function. This is then contoured to get a polygonal surface.
     sample = vtk.vtkSampleFunction()
-    sample.SetImplicitFunction(boolean)
-    sample.SetModelBounds(-1, 2, -1, 1, -1, 1)
-    sample.SetSampleDimensions(40, 40, 40)
+    sample.SetImplicitFunction(sphere)
+    sample.SetModelBounds(-.5, .5, -.5, .5, -.5, .5)
+    sample.SetSampleDimensions(20, 20, 20)
     sample.ComputeNormalsOff()
 
     # contour
@@ -54,6 +41,7 @@ def main():
     # render window
     renwin = vtk.vtkRenderWindow()
     renwin.AddRenderer(renderer)
+    renwin.SetWindowName('ImplicitSphere1')
 
     # An interactor
     interactor = vtk.vtkRenderWindowInteractor()
@@ -61,11 +49,6 @@ def main():
 
     # Start
     interactor.Initialize()
-    renwin.Render()
-    # renderer.GetActiveCamera().AddObserver('ModifiedEvent', CameraModifiedCallback)
-    renderer.GetActiveCamera().SetPosition(5.0, -4.0, 1.6)
-    renderer.GetActiveCamera().SetViewUp(0.1, 0.5, 0.9)
-    renderer.GetActiveCamera().SetDistance(6.7)
     renwin.Render()
     interactor.Start()
 

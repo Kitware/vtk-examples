@@ -166,21 +166,20 @@ It would be appreciated if there are any Python VTK experts who could convert an
 
 | Example Name | Classes Demonstrated | Description | Image |
 | -------------- | ---------------------- | ------------- | ------- |
-[Boolean](/Python/ImplicitFunctions/Boolean) | vtkImplicitBoolean | Demonstrate booleans of two different implicit functions
+[BooleanOperationImplicitFunctions](/Python/ImplicitFunctions/BooleanOperationImplicitFunctions) | vtkImplicitBoolean | Demonstrate booleans of two different implicit functions
 [CutWithScalars](/Python/VisualizationAlgorithms/CutWithScalars) | vtkContourFilter | Cut a surface with scalars.
 [ExtractData](/Python/VisualizationAlgorithms/ExtractData) | vtkSampleFunction | Implicit functions used to select data: Two ellipsoids are combined using the union operation used to select voxels from a volume. Voxels are shrunk 50 percent.
 [Hello](/Python/VisualizationAlgorithms/Hello) | vtkImplicitModeller | Implicit modelling used to thicken a stroked font.
 [IceCream](/Python/VisualizationAlgorithms/IceCream) | vtkImplicitBoolean vtkSampleFunction | How to use boolean combinations of implicit functions to create a model of an ice cream cone.
-[ImplicitDataSet](/Python/ImplicitFunctions/ImplicitDataSet) | vtkImplicitDataSet | A cube is used to define an implicit function (through vtkImplicitDataSet) which is then used to clip a sphere.
-[ImplicitSphere](/Python/ImplicitFunctions/ImplicitSphere) | vtkSphere | An implicit representation of a sphere.
+[ImplicitQuadric](/Python/ImplicitFunctions/ImplicitQuadric) | vtkQuadric | Create an ellipsoid using an implicit quadric
+[ImplicitSphere](/Python/ImplicitFunctions/ImplicitSphere) | vtkSphere | Demonstrate sampling of a sphere implicit function
+[ImplicitSphere1](/Python/ImplicitFunctions/ImplicitSphere1) | vtkSphere | Demonstrate sampling of a sphere implicit function
 [Lorenz](/Python/Visualization/Lorenz) | vtkContourFilter | Visualizing a Lorenz strange attractor by integrating the Lorenz equations in a volume.
 [MarchingCases](/Python/VisualizationAlgorithms/MarchingCases) | vtkMarchingCubes | Explore the Marching Cubes cases.
 [MarchingCasesA](/Python/VisualizationAlgorithms/MarchingCasesA) | vtkMarchingCubes | The 256 possible cases have been reduced to 15 cases using symmetry.
 [MarchingCasesB](/Python/VisualizationAlgorithms/MarchingCasesB) | vtkMarchingCubes | Marching cubes complementary cases. Cases 3c, 6c, 7c, 10c, 12c and 13c are displayed.
 [MarchingCasesC](/Python/VisualizationAlgorithms/MarchingCasesC) | vtkMarchingCubes | Marching cubes, case 3 is rotated 90 degrees about the y-axis with no label.
 [MarchingCasesD](/Python/VisualizationAlgorithms/MarchingCasesD) | vtkMarchingCubes | Marching cubes, case 7 is rotated 180 degrees about the y-axis with no label.
-[Quadric](/Python/ImplicitFunctions/Quadric) | vtkQuadric | Create an ellipsoid using an implicit quadric
-[Sphere](/Python/ImplicitFunctions/Sphere) | vtkSphere | Demonstrate sampling of a sphere implicit function
 [SampleFunction](/Python/ImplicitFunctions/SampleFunction) | vtkSampleFunction | Sample and visualize an implicit function.
 
 ## Working with 3D Data
@@ -641,9 +640,3 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 | -------------- | ---------------------- | ------------- | ------- |
 [EmbedInPyQt](/Python/Widgets/EmbedInPyQt) | vtkRenderWindowInteractor | Shows how to easily embed VTK in PyQt with QVTKRenderWindowInteractor, first example
 [EmbedInPyQt2](/Python/Widgets/EmbedInPyQt2) | vtkRenderWindowInteractor | Shows how to embed VTK in PyQt with QVTKRenderWindowInteractor, second example
-
-## Has Bugs
-
-| Example Name | Classes Demonstrated | Description | Image |
-| -------------- | ---------------------- | ------------- | ------- |
-[UnstructuredTransientVolumeRendering](/Python/Untested/HasBugs/UnstructuredTransientVolumeRendering) | vtkUnstructuredGridVolumeRayCastMapper |
