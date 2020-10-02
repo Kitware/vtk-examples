@@ -1,24 +1,24 @@
-#include <vtkSmartPointer.h>
-#include <vtkSampleFunction.h>
+#include <vtkActor.h>
 #include <vtkContourFilter.h>
+#include <vtkImageData.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkImageData.h>
+#include <vtkRenderer.h>
+#include <vtkSampleFunction.h>
 #include <vtkSuperquadric.h>
-#include <vtkNamedColors.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkSuperquadric> implicitFunction;
   implicitFunction->SetPhiRoundness(2.5);
-  implicitFunction->SetThetaRoundness(.5);
+  implicitFunction->SetThetaRoundness(0.5);
 
   // Sample the function
   vtkNew<vtkSampleFunction> sample;
@@ -71,6 +71,6 @@ int main (int, char *[])
 
   renderWindow->Render();
   interactor->Start();
-    
+
   return EXIT_SUCCESS;
 }
