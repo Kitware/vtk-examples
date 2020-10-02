@@ -4,16 +4,16 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    sphere = vtk.vtkSphere()
-    sphere.SetCenter(0, 0, 0)
-    sphere.SetRadius(0.5)
+    # create an ellipsoid using a implicit quadric
+    quadric = vtk.vtkQuadric()
+    quadric.SetCoefficients(0.5, 1, 0.2, 0, 0.1, 0, 0, 0.2, 0, 0)
 
     # The sample function generates a distance function from the implicit
     # function. This is then contoured to get a polygonal surface.
     sample = vtk.vtkSampleFunction()
-    sample.SetImplicitFunction(sphere)
-    sample.SetModelBounds(-.5, .5, -.5, .5, -.5, .5)
-    sample.SetSampleDimensions(20, 20, 20)
+    sample.SetImplicitFunction(quadric)
+    sample.SetModelBounds(-0.5, 0.5, -0.5, 0.5, -0.5, 0.5)
+    sample.SetSampleDimensions(40, 40, 40)
     sample.ComputeNormalsOff()
 
     # contour
@@ -41,6 +41,7 @@ def main():
     # render window
     renwin = vtk.vtkRenderWindow()
     renwin.AddRenderer(renderer)
+    renwin.SetWindowName('ImplicitQuadric')
 
     # An interactor
     interactor = vtk.vtkRenderWindowInteractor()

@@ -1,106 +1,96 @@
-#include <vtkSmartPointer.h>
-#include <vtkContourFilter.h>
-
-#include <vtkInteractorStyleUser.h>
-#include <vtkProperty.h>
-#include <vtkOutlineFilter.h>
-#include <vtkCommand.h>
-#include <vtkSliderWidget.h>
-#include <vtkSliderRepresentation.h>
-#include <vtkSliderRepresentation3D.h>
-#include <vtkImageData.h>
+#include <vtkActor.h>
 #include <vtkCellArray.h>
+#include <vtkCommand.h>
+#include <vtkContourFilter.h>
 #include <vtkFloatArray.h>
+#include <vtkImageData.h>
+#include <vtkInteractorStyleUser.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkOutlineFilter.h>
 #include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
-#include <vtkRenderer.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSliderRepresentation.h>
+#include <vtkSliderRepresentation3D.h>
+#include <vtkSliderWidget.h>
 #include <vtkXMLImageDataWriter.h>
-#include <vtkNamedColors.h>
 
-
-namespace
-{
+namespace {
 void CreateData(vtkImageData* data);
 
 class vtkSliderCallback : public vtkCommand
 {
 public:
-  static vtkSliderCallback *New()
+  static vtkSliderCallback* New()
   {
     return new vtkSliderCallback;
   }
-  virtual void Execute(vtkObject *caller, unsigned long, void*)
+  virtual void Execute(vtkObject* caller, unsigned long, void*)
   {
-    vtkSliderWidget *sliderWidget =
-      reinterpret_cast<vtkSliderWidget*>(caller);
-    double value = static_cast<vtkSliderRepresentation *>(sliderWidget->GetRepresentation())->GetValue();
+    vtkSliderWidget* sliderWidget = reinterpret_cast<vtkSliderWidget*>(caller);
+    double value =
+        static_cast<vtkSliderRepresentation*>(sliderWidget->GetRepresentation())
+            ->GetValue();
     this->ContourFilter->GenerateValues(1, value, value);
-
   }
-  vtkSliderCallback():ContourFilter(NULL) {}
+  vtkSliderCallback() : ContourFilter(NULL)
+  {
+  }
   vtkContourFilter* ContourFilter;
 };
-}
+} // namespace
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkImageData> data =
-    vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> data;
   CreateData(data);
 
   // Create an isosurface
-  vtkSmartPointer<vtkContourFilter> contourFilter =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> contourFilter;
   contourFilter->SetInputData(data);
-  contourFilter->GenerateValues(1, 10, 10); // (numContours, rangeStart, rangeEnd)
+  contourFilter->GenerateValues(1, 10,
+                                10); // (numContours, rangeStart, rangeEnd)
 
   // Map the contours to graphical primitives
-  vtkSmartPointer<vtkPolyDataMapper> contourMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> contourMapper;
   contourMapper->SetInputConnection(contourFilter->GetOutputPort());
 
   // Create an actor for the contours
-  vtkSmartPointer<vtkActor> contourActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> contourActor;
   contourActor->SetMapper(contourMapper);
   contourActor->GetProperty()->SetLineWidth(5);
 
   // Create the outline
-  vtkSmartPointer<vtkOutlineFilter> outlineFilter =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outlineFilter;
   outlineFilter->SetInputData(data);
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outlineFilter->GetOutputPort());
-  vtkSmartPointer<vtkActor> outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Gray").GetData());
   outlineActor->GetProperty()->SetLineWidth(3);
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("IsoContours");
+
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(contourActor);
   renderer->AddActor(outlineActor);
   renderer->SetBackground(colors->GetColor3d("Burlywood").GetData());
 
-  vtkSmartPointer<vtkSliderRepresentation3D> sliderRep =
-    vtkSmartPointer<vtkSliderRepresentation3D>::New();
+  vtkNew<vtkSliderRepresentation3D> sliderRep;
   sliderRep->SetMinimumValue(0.0);
   sliderRep->SetMaximumValue(30.0);
   sliderRep->SetValue(10.0);
@@ -110,51 +100,48 @@ int main(int, char *[])
   sliderRep->SetSliderWidth(.2);
   sliderRep->SetLabelHeight(.1);
 
-  vtkSmartPointer<vtkSliderWidget> sliderWidget =
-    vtkSmartPointer<vtkSliderWidget>::New();
+  vtkNew<vtkSliderWidget> sliderWidget;
   sliderWidget->SetInteractor(interactor);
   sliderWidget->SetRepresentation(sliderRep);
   sliderWidget->SetAnimationModeToAnimate();
   sliderWidget->EnabledOn();
 
-  vtkSmartPointer<vtkSliderCallback> callback =
-    vtkSmartPointer<vtkSliderCallback>::New();
+  vtkNew<vtkSliderCallback> callback;
   callback->ContourFilter = contourFilter;
 
-  sliderWidget->AddObserver(vtkCommand::InteractionEvent,callback);
+  sliderWidget->AddObserver(vtkCommand::InteractionEvent, callback);
 
-  vtkSmartPointer<vtkInteractorStyleUser> style =
-    vtkSmartPointer<vtkInteractorStyleUser>::New();
+  vtkNew<vtkInteractorStyleUser> style;
   interactor->SetInteractorStyle(style);
 
-  renderWindow->SetSize(500,500);
+  renderWindow->SetSize(500, 500);
   renderWindow->Render();
   renderWindow->Render();
   interactor->Start();
 
   return EXIT_SUCCESS;
+
+  return EXIT_SUCCESS;
 }
-namespace
-{
+namespace {
 void CreateData(vtkImageData* data)
 {
-  data->SetExtent(-25,25,-25,25,0,0);
-  data->AllocateScalars(VTK_DOUBLE,1);
+  data->SetExtent(-25, 25, -25, 25, 0, 0);
+  data->AllocateScalars(VTK_DOUBLE, 1);
   int* extent = data->GetExtent();
 
   for (int y = extent[2]; y <= extent[3]; y++)
   {
     for (int x = extent[0]; x <= extent[1]; x++)
     {
-      double* pixel = static_cast<double*>(data->GetScalarPointer(x,y,0));
-      pixel[0] = sqrt(pow(x,2.0) + pow(y,2.0));
+      double* pixel = static_cast<double*>(data->GetScalarPointer(x, y, 0));
+      pixel[0] = sqrt(pow(x, 2.0) + pow(y, 2.0));
     }
   }
 
-  vtkSmartPointer<vtkXMLImageDataWriter> writer =
-    vtkSmartPointer<vtkXMLImageDataWriter>::New();
+  vtkNew<vtkXMLImageDataWriter> writer;
   writer->SetFileName("data.vti");
   writer->SetInputData(data);
   writer->Write();
 }
-}
+} // namespace

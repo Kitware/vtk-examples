@@ -1,17 +1,31 @@
 import vtk
 
+
 def main():
     colors = vtk.vtkNamedColors()
 
-    # create an ellipsoid using a implicit quadric
-    quadric = vtk.vtkQuadric()
-    quadric.SetCoefficients(0.5, 1, 0.2, 0, 0.1, 0, 0, 0.2, 0, 0)
+    # create a sphere
+    sphere = vtk.vtkSphere()
+    sphere.SetRadius(1)
+    sphere.SetCenter(1, 0, 0)
+
+    # create a box
+    box = vtk.vtkBox()
+    box.SetBounds(-1, 1, -1, 1, -1, 1)
+
+    # combine the two implicit functions
+    boolean = vtk.vtkImplicitBoolean()
+    boolean.SetOperationTypeToDifference()
+    # boolean.SetOperationTypeToUnion()
+    # boolean.SetOperationTypeToIntersection()
+    boolean.AddFunction(box)
+    boolean.AddFunction(sphere)
 
     # The sample function generates a distance function from the implicit
     # function. This is then contoured to get a polygonal surface.
     sample = vtk.vtkSampleFunction()
-    sample.SetImplicitFunction(quadric)
-    sample.SetModelBounds(-0.5, 0.5, -0.5, 0.5, -0.5, 0.5)
+    sample.SetImplicitFunction(boolean)
+    sample.SetModelBounds(-1, 2, -1, 1, -1, 1)
     sample.SetSampleDimensions(40, 40, 40)
     sample.ComputeNormalsOff()
 
@@ -40,6 +54,7 @@ def main():
     # render window
     renwin = vtk.vtkRenderWindow()
     renwin.AddRenderer(renderer)
+    renwin.SetWindowName('BooleanOperationImplicitFunctions')
 
     # An interactor
     interactor = vtk.vtkRenderWindowInteractor()
@@ -48,7 +63,13 @@ def main():
     # Start
     interactor.Initialize()
     renwin.Render()
+    # renderer.GetActiveCamera().AddObserver('ModifiedEvent', CameraModifiedCallback)
+    renderer.GetActiveCamera().SetPosition(5.0, -4.0, 1.6)
+    renderer.GetActiveCamera().SetViewUp(0.1, 0.5, 0.9)
+    renderer.GetActiveCamera().SetDistance(6.7)
+    renwin.Render()
     interactor.Start()
+
 
 if __name__ == '__main__':
     main()

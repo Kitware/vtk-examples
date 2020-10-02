@@ -13,12 +13,15 @@ def main():
 
     # Sample the function
     sample = vtk.vtkSampleFunction()
-    sample.SetSampleDimensions(50,50,50)
+    sample.SetSampleDimensions(50, 50, 50)
     sample.SetImplicitFunction(sphere)
     value = 2.0
-    xmin = -value; xmax = value
-    ymin = -value; ymax = value
-    zmin = -value; zmax = value
+    xmin = -value;
+    xmax = value
+    ymin = -value;
+    ymax = value
+    zmin = -value;
+    zmax = value
     sample.SetModelBounds(xmin, xmax, ymin, ymax, zmin, zmax)
 
     # Create the 0 isosurface
@@ -27,7 +30,7 @@ def main():
     contours.GenerateValues(1, 1, 1)
 
     # Map the contours to graphical primitives
-    contourMapper =  vtk.vtkPolyDataMapper()
+    contourMapper = vtk.vtkPolyDataMapper()
     contourMapper.SetInputConnection(contours.GetOutputPort())
     contourMapper.ScalarVisibilityOff()
 
@@ -39,6 +42,8 @@ def main():
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
+    renderWindow.SetWindowName('ImplicitSphere')
+
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
@@ -48,7 +53,6 @@ def main():
     renderWindow.Render()
     interactor.Start()
 
+
 if __name__ == '__main__':
     main()
-
-

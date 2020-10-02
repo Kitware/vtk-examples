@@ -1,7 +1,6 @@
 #include <vtkSmartPointer.h>
 #include <vtkSampleFunction.h>
 #include <vtkContourFilter.h>
-
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
@@ -10,78 +9,66 @@
 #include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkImageData.h>
-
 #include <vtkSuperquadric.h>
 #include <vtkNamedColors.h>
 
 int main (int, char *[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkSuperquadric> implicitFunction = 
-    vtkSmartPointer<vtkSuperquadric>::New();
+  vtkNew<vtkSuperquadric> implicitFunction;
   implicitFunction->SetPhiRoundness(2.5);
   implicitFunction->SetThetaRoundness(.5);
-  
+
   // Sample the function
-  vtkSmartPointer<vtkSampleFunction> sample = 
-    vtkSmartPointer<vtkSampleFunction>::New();
-  sample->SetSampleDimensions(50,50,50);
+  vtkNew<vtkSampleFunction> sample;
+  sample->SetSampleDimensions(50, 50, 50);
   sample->SetImplicitFunction(implicitFunction);
   double value = 2.0;
-  double xmin = -value, xmax = value, ymin = -value, ymax = value, zmin = -value, zmax = value;
+  double xmin = -value, xmax = value, ymin = -value, ymax = value,
+         zmin = -value, zmax = value;
   sample->SetModelBounds(xmin, xmax, ymin, ymax, zmin, zmax);
-    
+
   // Create the 0 isosurface
-  vtkSmartPointer<vtkContourFilter> contours = 
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> contours;
   contours->SetInputConnection(sample->GetOutputPort());
   contours->GenerateValues(1, 2.0, 2.0);
-  
+
   // Map the contours to graphical primitives
-  vtkSmartPointer<vtkPolyDataMapper> contourMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> contourMapper;
   contourMapper->SetInputConnection(contours->GetOutputPort());
   contourMapper->SetScalarRange(0.0, 1.2);
-  
+
   // Create an actor for the contours
-  vtkSmartPointer<vtkActor> contourActor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> contourActor;
   contourActor->SetMapper(contourMapper);
-  
+
   // -- create a box around the function to indicate the sampling volume --
-  
+
   // Create outline
-  vtkSmartPointer<vtkOutlineFilter> outline = 
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(sample->GetOutputPort());
-  
+
   // Map it to graphics primitives
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
-  
+
   // Create an actor for it
-  vtkSmartPointer<vtkActor> outlineActor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
-  outlineActor->GetProperty()->SetColor(0,0,0);
-  
+  outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
+
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
-  
+
   renderer->AddActor(contourActor);
   renderer->AddActor(outlineActor);
   renderer->SetBackground(colors->GetColor3d("Tan").GetData());
-  
+
   renderWindow->Render();
   interactor->Start();
     
