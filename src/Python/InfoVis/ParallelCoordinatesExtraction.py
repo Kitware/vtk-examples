@@ -12,6 +12,8 @@ import vtk
 
 
 def main():
+    colors = vtk.vtkNamedColors()
+
     # Generate an image data set with multiple attribute arrays to probe and view
     rt = vtk.vtkRTAnalyticSource()
     rt.SetWholeExtent(-3, 3, -3, 3, -3, 3)
@@ -40,6 +42,8 @@ def main():
     rep.SetInputArrayToProcess(3, 0, 0, 0, 'BrownianVectors')
     rep.SetUseCurves(0)  # set to 1 to use smooth curves
     rep.SetLineOpacity(0.5)
+    rep.SetAxisColor(colors.GetColor3d("Gold"))
+    rep.SetLineColor(colors.GetColor3d("MistyRose"))
 
     # Set up the Parallel Coordinates View and hook in representation
     view = vtk.vtkParallelCoordinatesView()
@@ -128,8 +132,11 @@ def main():
     ren = vtk.vtkRenderer()
     ren.AddActor(outlineActor)
     ren.AddActor(dataActor)
+
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
+    renWin.SetWindowName('ParallelCoordinatesExtraction')
+
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     ren.ResetCamera()
@@ -137,6 +144,11 @@ def main():
 
     # Finalize parallel coordinates view and start interaction event loop
     view.GetRenderWindow().SetSize(600, 300)
+    view.GetRenderWindow().SetWindowName('ParallelCoordinatesExtraction')
+    view.GetRenderer().GradientBackgroundOn()
+    view.GetRenderer().SetBackground2(colors.GetColor3d("DarkBlue"))
+    view.GetRenderer().SetBackground(colors.GetColor3d("MidnightBlue"))
+
     view.ResetCamera()
     view.Render()
     view.GetInteractor().Start()

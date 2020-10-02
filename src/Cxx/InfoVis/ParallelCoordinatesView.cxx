@@ -3,12 +3,10 @@
 #include <vtkDelimitedTextReader.h>
 #include <vtkTable.h>
 #include <vtkPointData.h>
-
 #include <vtkParallelCoordinatesView.h>
 #include <vtkParallelCoordinatesRepresentation.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-
 #include <vtkStringArray.h>
 #include <vtkDoubleArray.h>
 #include <vtkFloatArray.h>

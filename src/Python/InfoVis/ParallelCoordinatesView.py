@@ -10,6 +10,8 @@ import vtk
 
 
 def main():
+    colors = vtk.vtkNamedColors()
+
     # Generate an example image data set with multiple attribute arrays to probe
     # and view.
     # This is where you would put your reader instead of this rt->elev pipeline...
@@ -41,6 +43,8 @@ def main():
 
     rep.SetUseCurves(0)  # set to 1 to use smooth curves
     rep.SetLineOpacity(0.5)
+    rep.SetAxisColor(colors.GetColor3d("Gold"))
+    rep.SetLineColor(colors.GetColor3d("MistyRose"))
 
     # Set up the Parallel Coordinates View and hook in the Representation
     view = vtk.vtkParallelCoordinatesView()
@@ -77,6 +81,10 @@ def main():
 
     # Set up render window
     view.GetRenderWindow().SetSize(600, 300)
+    view.GetRenderWindow().SetWindowName('ParallelCoordinatesView')
+    view.GetRenderer().GradientBackgroundOn()
+    view.GetRenderer().SetBackground2(colors.GetColor3d("DarkBlue"))
+    view.GetRenderer().SetBackground(colors.GetColor3d("MidnightBlue"))
     view.ResetCamera()
     view.Render()
 
