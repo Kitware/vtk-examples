@@ -257,7 +257,7 @@ These examples demonstrate how to create an display one of the many vtkParametri
 [Hello](/Cxx/VisualizationAlgorithms/Hello) | vtkImplicitModeller | Implicit modelling used to thicken a stroked font.
 [IceCream](/Cxx/VisualizationAlgorithms/IceCream) | vtkImplicitBoolean vtkSampleFunction | How to use boolean combinations of implicit functions to create a model of an ice cream cone.
 [ImplicitDataSet](/Cxx/ImplicitFunctions/ImplicitDataSet) | vtkImplicitDataSet | Convert an imagedata to an implicit function.
-[ImplicitQuadric](/Cxx/ImplicitFunctions/ImplicitQuadric | vtkQuadric | Create an ellipsoid using an implicit quadric.
+[ImplicitQuadric](/Cxx/ImplicitFunctions/ImplicitQuadric) | vtkQuadric | Create an ellipsoid using an implicit quadric.
 [ImplicitSphere](/Cxx/ImplicitFunctions/ImplicitSphere) | vtkSphere | An implicit representation of a sphere.
 [ImplicitSphere1](/Cxx/ImplicitFunctions/ImplicitSphere1) | vtkSphere | Demonstrate sampling of a sphere implicit function.
 [IsoContours](/Cxx/ImplicitFunctions/IsoContours) | vtkContourFunction | Visualize different isocontours using a slider.
