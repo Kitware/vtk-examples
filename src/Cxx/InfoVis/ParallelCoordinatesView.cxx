@@ -1,31 +1,34 @@
-#include <vtkSmartPointer.h>
-#include <vtkPolyData.h>
 #include <vtkDelimitedTextReader.h>
-#include <vtkTable.h>
-#include <vtkPointData.h>
-#include <vtkParallelCoordinatesView.h>
-#include <vtkParallelCoordinatesRepresentation.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkStringArray.h>
 #include <vtkDoubleArray.h>
 #include <vtkFloatArray.h>
 #include <vtkIntArray.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkParallelCoordinatesRepresentation.h>
+#include <vtkParallelCoordinatesView.h>
+#include <vtkPointData.h>
+#include <vtkPolyData.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkStringArray.h>
+#include <vtkTable.h>
 
 #include <vtksys/SystemTools.hxx>
 
 int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkTable> table =
-    vtkSmartPointer<vtkTable>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkSmartPointer<vtkTable> table = vtkSmartPointer<vtkTable>::New();
   std::string title;
 
-  if(argc > 1)
+  if (argc > 1)
   {
     std::string inputFilename;
     inputFilename = argv[1];
-    vtkSmartPointer<vtkDelimitedTextReader> reader =
-      vtkSmartPointer<vtkDelimitedTextReader>::New();
+    vtkNew<vtkDelimitedTextReader> reader;
     reader->SetFileName(inputFilename.c_str());
     reader->SetHaveHeaders(1);
     reader->DetectNumericColumnsOn();
@@ -33,13 +36,12 @@ int main(int argc, char* argv[])
     reader->Update();
     table = reader->GetOutput();
     title = vtksys::SystemTools::GetFilenameWithoutExtension(
-      vtksys::SystemTools::GetFilenameName(inputFilename));
+        vtksys::SystemTools::GetFilenameName(inputFilename));
   }
   else
   {
     title = "Generated Data";
-    vtkSmartPointer<vtkIntArray> array1 =
-      vtkSmartPointer<vtkIntArray>::New();
+    vtkNew<vtkIntArray> array1;
     array1->SetName("Array1");
     array1->SetNumberOfComponents(1);
     array1->InsertNextValue(0);
@@ -48,8 +50,7 @@ int main(int argc, char* argv[])
     array1->InsertNextValue(3);
     array1->InsertNextValue(4);
 
-    vtkSmartPointer<vtkFloatArray> array2 =
-      vtkSmartPointer<vtkFloatArray>::New();
+    vtkNew<vtkFloatArray> array2;
     array2->SetName("Array2");
     array2->SetNumberOfComponents(1);
     array2->InsertNextValue(-0);
@@ -58,8 +59,7 @@ int main(int argc, char* argv[])
     array2->InsertNextValue(-3);
     array2->InsertNextValue(-4);
 
-    vtkSmartPointer<vtkDoubleArray> array3 =
-      vtkSmartPointer<vtkDoubleArray>::New();
+    vtkNew<vtkDoubleArray> array3;
     array3->SetName("Array3");
     array3->SetNumberOfComponents(1);
     array3->InsertNextValue(0);
@@ -73,8 +73,7 @@ int main(int argc, char* argv[])
     table->AddColumn(array3);
   }
 
-  vtkSmartPointer<vtkPolyData> polydata =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
 
   for (vtkIdType i = 0; i < table->GetNumberOfColumns(); ++i)
   {
@@ -106,11 +105,9 @@ int main(int argc, char* argv[])
     std::cout << "\"" << table->GetColumn(i)->GetName() << "\"" << std::endl;
 
     polydata->GetPointData()->AddArray(table->GetColumn(i));
-
   }
 
-  vtkSmartPointer<vtkParallelCoordinatesRepresentation> rep =
-    vtkSmartPointer<vtkParallelCoordinatesRepresentation>::New();
+  vtkNew<vtkParallelCoordinatesRepresentation> rep;
   rep->SetInputData(polydata);
 
   // List all of the attribute arrays you want plotted in parallel coordinates
@@ -130,13 +127,12 @@ int main(int argc, char* argv[])
   rep->SetFontSize(.5);
   rep->SetPlotTitle(title.c_str());
   rep->SetLineOpacity(0.5);
-  rep->SetLineColor(0.89, 0.81, 0.3);
-  rep->SetAxisColor(1.0, 0.3882, 0.2784);
-  rep->SetAxisLabelColor(1, 1, 1);
+  rep->SetLineColor(colors->GetColor3d("Gold").GetData());
+  rep->SetAxisColor(colors->GetColor3d("OrangeRed").GetData());
+  rep->SetAxisLabelColor(colors->GetColor3d("Yellow").GetData());
 
   // Set up the Parallel Coordinates View and hook in the Representation
-  vtkSmartPointer<vtkParallelCoordinatesView> view =
-    vtkSmartPointer<vtkParallelCoordinatesView>::New();
+  vtkNew<vtkParallelCoordinatesView> view;
   view->SetRepresentation(rep);
   view->SetInspectMode(1);
   view->SetDisplayHoverText(1);
@@ -146,11 +142,17 @@ int main(int argc, char* argv[])
   view->SetBrushOperatorToReplace();
 
   // Set up render window
-  view->GetRenderWindow()->SetSize(600,300);
+  view->GetRenderWindow()->SetSize(600, 300);
+  view->GetRenderer()->SetBackground2(
+      colors->GetColor3d("MidnightBlue").GetData());
+  view->GetRenderer()->SetBackground(colors->GetColor3d("Indigo").GetData());
+
+  view->GetRenderWindow()->SetWindowName("ParallelCoordinatesView");
   view->ResetCamera();
   view->Render();
 
   // Start interaction event loop
   view->GetInteractor()->Start();
+
   return EXIT_SUCCESS;
 }

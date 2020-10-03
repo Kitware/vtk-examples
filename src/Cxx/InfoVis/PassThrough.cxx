@@ -1,25 +1,24 @@
-#include <vtkSmartPointer.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyData.h>
+#include <vtkNew.h>
 #include <vtkPassThrough.h>
+#include <vtkPolyData.h>
+#include <vtkSphereSource.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
-  
-  std::cout << "Points before: " << sphereSource->GetOutput()->GetNumberOfPoints() << std::endl;
-  
-  vtkSmartPointer<vtkPassThrough> passThrough = 
-    vtkSmartPointer<vtkPassThrough>::New();
+
+  std::cout << "Points before: "
+            << sphereSource->GetOutput()->GetNumberOfPoints() << std::endl;
+
+  vtkNew<vtkPassThrough> passThrough;
   passThrough->SetInputConnection(sphereSource->GetOutputPort());
   passThrough->Update();
-  
-  vtkSmartPointer<vtkPolyData> output = dynamic_cast<vtkPolyData*>(passThrough->GetOutput());
-  
+
+  auto output = dynamic_cast<vtkPolyData*>(passThrough->GetOutput());
+
   std::cout << "Points after: " << output->GetNumberOfPoints() << std::endl;
-  
+
   return EXIT_SUCCESS;
 }

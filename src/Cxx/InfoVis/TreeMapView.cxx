@@ -1,4 +1,5 @@
 #include <vtkDataRepresentation.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRegressionTestImage.h>
 #include <vtkRenderer.h>
@@ -7,13 +8,11 @@
 #include <vtkTreeMapView.h>
 #include <vtkViewTheme.h>
 #include <vtkXMLTreeReader.h>
-#include <vtkSmartPointer.h>
 #include <vtkTesting.h>
 
 int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkTesting> testHelper =
-    vtkSmartPointer<vtkTesting>::New();
+  vtkNew<vtkTesting> testHelper;
   testHelper->AddArguments(argc,const_cast<const char **>(argv));
   std::string dataRoot = testHelper->GetDataRoot();
   std::string treeFileName = dataRoot + "/Data/Infovis/XML/vtkclasses.xml";
@@ -26,15 +25,13 @@ int main(int argc, char* argv[])
   }
 
   // We need to put the graph and tree edges in different domains.
-  vtkSmartPointer<vtkXMLTreeReader> reader1 =
-    vtkSmartPointer<vtkXMLTreeReader>::New();
+  vtkNew<vtkXMLTreeReader> reader1;
   reader1->SetFileName(treeFileName.c_str());
   reader1->SetEdgePedigreeIdArrayName("tree edge");
   reader1->GenerateVertexPedigreeIdsOff();
   reader1->SetVertexPedigreeIdArrayName("id");
 
-  vtkSmartPointer<vtkXMLTreeReader> reader2 =
-    vtkSmartPointer<vtkXMLTreeReader>::New();
+  vtkNew<vtkXMLTreeReader> reader2;
   reader2->SetFileName(graphFileName.c_str());
   reader2->SetEdgePedigreeIdArrayName("graph edge");
   reader2->GenerateVertexPedigreeIdsOff();
@@ -43,8 +40,7 @@ int main(int argc, char* argv[])
   reader1->Update();
   reader2->Update();
 
-  vtkSmartPointer<vtkTreeMapView> view =
-    vtkSmartPointer<vtkTreeMapView>::New();
+  vtkNew<vtkTreeMapView> view;
   view->DisplayHoverTextOff();
   view->SetTreeFromInputConnection(reader2->GetOutputPort());
   view->SetGraphFromInputConnection(reader1->GetOutputPort());
@@ -67,6 +63,7 @@ int main(int argc, char* argv[])
   view->Update();
   view->ResetCamera();
 
+  view->GetRenderWindow()->SetWindowName("TreeMapView");
   view->GetRenderWindow()->Render();
   view->GetInteractor()->Initialize();
   view->GetInteractor()->Start();

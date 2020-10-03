@@ -1,4 +1,4 @@
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkPointSource.h>
 #include <vtkPoints.h>
 #include <vtkSCurveSpline.h>
@@ -10,54 +10,53 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
+
 
 int main(int, char *[])
 {
-  vtkSmartPointer<vtkPointSource> pointSource = 
-    vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(5);
   pointSource->Update();
-  
-  vtkPoints* points = pointSource->GetOutput()->GetPoints();
-    
-  vtkSmartPointer<vtkSCurveSpline> xSpline = 
-    vtkSmartPointer<vtkSCurveSpline>::New();
-  vtkSmartPointer<vtkSCurveSpline> ySpline = 
-    vtkSmartPointer<vtkSCurveSpline>::New();
-  vtkSmartPointer<vtkSCurveSpline> zSpline = 
-    vtkSmartPointer<vtkSCurveSpline>::New();
 
-  vtkSmartPointer<vtkParametricSpline> spline = 
-    vtkSmartPointer<vtkParametricSpline>::New();
+  vtkPoints* points = pointSource->GetOutput()->GetPoints();
+
+  vtkNew<vtkSCurveSpline> xSpline;
+  vtkNew<vtkSCurveSpline> ySpline;
+  vtkNew<vtkSCurveSpline> zSpline;
+
+  vtkNew<vtkParametricSpline> spline;
   spline->SetXSpline(xSpline);
   spline->SetYSpline(ySpline);
   spline->SetZSpline(zSpline);
   spline->SetPoints(points);
-  
-  vtkSmartPointer<vtkParametricFunctionSource> functionSource = 
-    vtkSmartPointer<vtkParametricFunctionSource>::New();
+
+  vtkNew<vtkParametricFunctionSource> functionSource;
   functionSource->SetParametricFunction(spline);
   functionSource->Update();
 
   // Setup actor and mapper
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(functionSource->GetOutputPort());
-  
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  
+  actor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
+
   // Setup render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("SCurveSpline");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();

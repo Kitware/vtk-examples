@@ -4,12 +4,12 @@
 # which shows how to use a vtkAnnotationLink to view the contents
 # of a selection from a vtkGraphLayoutView
 
-from __future__ import print_function
-
 import vtk
 
 
 def main():
+    colors = vtk.vtkNamedColors()
+
     source = vtk.vtkRandomGraphSource()
     source.DirectedOff()
     source.SetNumberOfVertices(100)
@@ -25,11 +25,11 @@ def main():
     # Create a graph layout view
     view = vtk.vtkGraphLayoutView()
     view.AddRepresentationFromInputConnection(source.GetOutputPort())
-    view.SetVertexLabelArrayName("vertex id")
+    view.SetVertexLabelArrayName('vertex id')
     view.SetVertexLabelVisibility(True)
-    view.SetVertexColorArrayName("vertex id")
+    view.SetVertexColorArrayName('vertex id')
     view.SetColorVertices(True)
-    view.SetEdgeColorArrayName("edge weight")
+    view.SetEdgeColorArrayName('edge weight')
     view.SetColorEdges(True)
     view.SetLayoutStrategy(strategy)
 
@@ -41,7 +41,7 @@ def main():
     view.GetRepresentation(0).SetAnnotationLink(annotationLink)
 
     def select_callback(caller, event):
-        """
+        '''
         In this particular data representation the current selection in the
          annotation link should always contain two nodes: one for the edges and
          one for the vertices. Which is which is not consistent, so you need to
@@ -50,7 +50,7 @@ def main():
         :param caller:
         :param event:
         :return:
-        """
+        '''
 
         sel = caller.GetCurrentSelection()
 
@@ -58,34 +58,34 @@ def main():
             sel_ids = sel.GetNode(nn).GetSelectionList()
             field_type = sel.GetNode(nn).GetFieldType()
             if field_type == 3:
-                print("Vertex selection Pedigree IDs")
+                print('Vertex selection Pedigree IDs')
             if field_type == 4:
-                print("Edge selection Pedigree IDs")
+                print('Edge selection Pedigree IDs')
             if sel_ids.GetNumberOfTuples() > 0:
                 for ii in range(sel_ids.GetNumberOfTuples()):
                     print(int(sel_ids.GetTuple1(ii)))
             else:
-                print("-- empty")
+                print('-- empty')
 
-        print("")
+        print('')
 
     # AnnotationChangedEvent will fire when the selection is changed
-    annotationLink.AddObserver("AnnotationChangedEvent", select_callback)
+    annotationLink.AddObserver('AnnotationChangedEvent', select_callback)
 
     # Set the theme on the view
     theme = vtk.vtkViewTheme.CreateMellowTheme()
     theme.SetLineWidth(5)
     theme.SetPointSize(10)
     theme.SetCellOpacity(0.99)
-    theme.SetOutlineColor(0.6, 0.6, 0.6)
+    theme.SetOutlineColor(colors.GetColor3d('Gray'))
     # Vertices
-    theme.SetSelectedPointColor(0, 0.5, 1)
+    theme.SetSelectedPointColor(colors.GetColor3d('DodgerBlue'))
     theme.SetPointHueRange(1.0, 1.0)
     theme.SetPointSaturationRange(1.0, 1.0)
     theme.SetPointValueRange(0.0, 1.0)
     # theme.SetPointAlphaRange(0.2, 0.8)
     # Edges
-    theme.SetSelectedCellColor(1.0, 0.95, 0.75)
+    theme.SetSelectedCellColor(colors.GetColor3d('LavenderBlush'))
     theme.SetCellHueRange(0.1, 0.1)
     theme.SetCellSaturationRange(0.2, 1.0)
     theme.SetCellValueRange(0.5, 1.0)
@@ -94,9 +94,9 @@ def main():
     theme.FastDelete()
 
     view.GetRenderWindow().SetSize(600, 600)
+    view.GetRenderWindow().SetWindowName('SelectedGraphIDs')
     view.ResetCamera()
     view.Render()
-
     view.GetInteractor().Start()
 
 

@@ -3,7 +3,7 @@
 # Example of how to use Parallel Coordinates View to plot and compare
 # data set attributes, and then to use selections in the parallel coordinates
 # view to extract and view data points associated with those selections
-# Use the "u" character to toggle between "inspect modes" on the parallel
+# Use the 'u' character to toggle between 'inspect modes' on the parallel
 # coordinates view (i.e. between selecting data and manipulating axes)
 # Note that no points will show up inside of the 3d box outline until you
 # select some lines/curves in the parallel coordinates view
@@ -42,8 +42,8 @@ def main():
     rep.SetInputArrayToProcess(3, 0, 0, 0, 'BrownianVectors')
     rep.SetUseCurves(0)  # set to 1 to use smooth curves
     rep.SetLineOpacity(0.5)
-    rep.SetAxisColor(colors.GetColor3d("Gold"))
-    rep.SetLineColor(colors.GetColor3d("MistyRose"))
+    rep.SetAxisColor(colors.GetColor3d('Gold'))
+    rep.SetLineColor(colors.GetColor3d('MistyRose'))
 
     # Set up the Parallel Coordinates View and hook in representation
     view = vtk.vtkParallelCoordinatesView()
@@ -70,20 +70,20 @@ def main():
     extract.SetInputConnection(1, annotationLink.GetOutputPort(2))
 
     def update_render_windows(obj, event):
-        """
-        Handle updating of RenderWindow since it's not a "View"
+        '''
+        Handle updating of RenderWindow since it's not a 'View'
         and so not covered by vtkViewUpdater
 
         :param obj:
         :param event:
         :return:
-        """
+        '''
         # ren.ResetCamera()
         renWin.Render()
 
     # Set up callback to update 3d render window when selections are changed in
     # parallel coordinates view
-    annotationLink.AddObserver("AnnotationChangedEvent", update_render_windows)
+    annotationLink.AddObserver('AnnotationChangedEvent', update_render_windows)
 
     def toggle_inspectors(obj, event):
 
@@ -93,7 +93,7 @@ def main():
             view.SetInspectMode(0)
 
     # Set up callback to toggle between inspect modes (manip axes & select data)
-    view.GetInteractor().AddObserver("UserEvent", toggle_inspectors)
+    view.GetInteractor().AddObserver('UserEvent', toggle_inspectors)
 
     # 3D outline of image data bounds
     outline = vtk.vtkOutlineFilter()
@@ -146,8 +146,8 @@ def main():
     view.GetRenderWindow().SetSize(600, 300)
     view.GetRenderWindow().SetWindowName('ParallelCoordinatesExtraction')
     view.GetRenderer().GradientBackgroundOn()
-    view.GetRenderer().SetBackground2(colors.GetColor3d("DarkBlue"))
-    view.GetRenderer().SetBackground(colors.GetColor3d("MidnightBlue"))
+    view.GetRenderer().SetBackground2(colors.GetColor3d('DarkBlue'))
+    view.GetRenderer().SetBackground(colors.GetColor3d('MidnightBlue'))
 
     view.ResetCamera()
     view.Render()

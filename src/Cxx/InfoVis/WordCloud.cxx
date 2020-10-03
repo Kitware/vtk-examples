@@ -1,26 +1,27 @@
+#include <vtkNew.h>
 #include <vtkSmartPointer.h>
 
 #include <vtkFreeTypeTools.h>
 #include <vtkImageBlend.h>
-#include <vtkImageIterator.h>
 #include <vtkImageData.h>
+#include <vtkImageIterator.h>
 
-#include <vtkTextProperty.h>
+#include <vtkCamera.h>
+#include <vtkColorSeries.h>
+#include <vtkImageCanvasSource2D.h>
+#include <vtkImageViewer2.h>
+#include <vtkMath.h>
+#include <vtkNamedColors.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkCamera.h>
-#include <vtkImageViewer2.h>
-#include <vtkImageCanvasSource2D.h>
-#include <vtkMath.h>
-#include <vtkNamedColors.h>
-#include <vtkColorSeries.h>
+#include <vtkTextProperty.h>
 
+#include <vtkImageAppendComponents.h>
+#include <vtkImageExtractComponents.h>
 #include <vtkImageReader2.h>
 #include <vtkImageReader2Factory.h>
 #include <vtkImageResize.h>
-#include <vtkImageExtractComponents.h>
-#include <vtkImageAppendComponents.h>
 
 #include <vtksys/CommandLineArguments.hxx>
 
@@ -38,20 +39,33 @@
 #include <string>
 #include <vector>
 
-namespace
-{
+namespace {
 // Cloud Parameters
 struct CloudParameters
 {
-  CloudParameters() : FontFile(""), MaskFile(""), DPI(200), MaxFontSize(48), MinFontSize(12), MinFrequency(1), FontMultiplier(6), ColorSchemeName(""),  BackgroundColorName("MidnightBlue"), MaskColorName("black"), BWMask(false), WordColorName(""), Gap(2), KeptCount(0)
-  {};
+  CloudParameters()
+    : FontFile(""),
+      MaskFile(""),
+      DPI(200),
+      MaxFontSize(48),
+      MinFontSize(12),
+      MinFrequency(1),
+      FontMultiplier(6),
+      ColorSchemeName(""),
+      BackgroundColorName("MidnightBlue"),
+      MaskColorName("black"),
+      BWMask(false),
+      WordColorName(""),
+      Gap(2),
+      KeptCount(0){};
   void Print(ostream& os)
   {
     os << "Cloud Parameters" << std::endl;
     os << "  BackgroundColorName: " << BackgroundColorName << std::endl;
     os << "  BWMask: " << (BWMask ? "true" : "false") << std::endl;
-    os << "  ColorDistribution: " << ColorDistribution[0] << " " << ColorDistribution[1] << std::endl;
-    os << "  ColorSchemeName: " <<  ColorSchemeName << std::endl;
+    os << "  ColorDistribution: " << ColorDistribution[0] << " "
+       << ColorDistribution[1] << std::endl;
+    os << "  ColorSchemeName: " << ColorSchemeName << std::endl;
     os << "  DPI: " << DPI << std::endl;
     os << "  FontFile: " << FontFile << std::endl;
     os << "  FontMultiplier: " << FontMultiplier << std::endl;
@@ -61,8 +75,10 @@ struct CloudParameters
     os << "  MinFontSize: " << MinFontSize << std::endl;
     os << "  MaxFontSize: " << MaxFontSize << std::endl;
     os << "  MinFrequency: " << MinFrequency << std::endl;
-    os << "  OffsetDistribution: " << OffsetDistribution[0] << " " << OffsetDistribution[1] << std::endl;
-    os << "  OrientationDistribution: " << OrientationDistribution[0] << " " << OrientationDistribution[1] << std::endl;
+    os << "  OffsetDistribution: " << OffsetDistribution[0] << " "
+       << OffsetDistribution[1] << std::endl;
+    os << "  OrientationDistribution: " << OrientationDistribution[0] << " "
+       << OrientationDistribution[1] << std::endl;
     os << "  Orientations: ";
     for (auto o : Orientations)
     {
@@ -85,66 +101,66 @@ struct CloudParameters
     os << "  Title: " << Title << std::endl;
     os << "  WordColorName: " << WordColorName << std::endl;
   }
-  std::vector<int>         AdjustedSizes;
-  std::string              BackgroundColorName;
-  bool                     BWMask;
-  std::string              ColorSchemeName;
-  int                      DPI;
-  std::string              FontFile;
-  int                      Gap;
-  int                      KeptCount;
-  std::string              MaskColorName;
-  std::string              MaskFile;
-  int                      MaxFontSize;
-  int                      MinFontSize;
-  int                      MinFrequency;
-  int                      FontMultiplier;
-  std::vector<double>      ColorDistribution;
-  std::vector<int>         OffsetDistribution;
-  std::vector<double>      OrientationDistribution;
-  std::vector<double>      Orientations;
+  std::vector<int> AdjustedSizes;
+  std::string BackgroundColorName;
+  bool BWMask;
+  std::string ColorSchemeName;
+  int DPI;
+  std::string FontFile;
+  int Gap;
+  int KeptCount;
+  std::string MaskColorName;
+  std::string MaskFile;
+  int MaxFontSize;
+  int MinFontSize;
+  int MinFrequency;
+  int FontMultiplier;
+  std::vector<double> ColorDistribution;
+  std::vector<int> OffsetDistribution;
+  std::vector<double> OrientationDistribution;
+  std::vector<double> Orientations;
   std::vector<std::string> ReplacementPairs;
-  std::vector<int>         Sizes;
+  std::vector<int> Sizes;
   std::vector<std::string> StopWords;
-  std::string              Title;
-  std::string              WordColorName;
+  std::string Title;
+  std::string WordColorName;
 };
-bool ProcessCommandLine(vtksys::CommandLineArguments &arg,
-                        CloudParameters &cloudParameters);
+bool ProcessCommandLine(vtksys::CommandLineArguments& arg,
+                        CloudParameters& cloudParameters);
 
 // Declaring the type of Predicate that accepts 2 pairs and return a bool
-typedef std::function<bool(
-    std::pair<std::string, int>,
-    std::pair<std::string, int>)> Comparator;
+typedef std::function<bool(std::pair<std::string, int>,
+                           std::pair<std::string, int>)>
+    Comparator;
 
-std::multiset<std::pair<std::string, int>, Comparator > FindWordsSortedByFrequency(std::string &, CloudParameters &cloudParameters);
+std::multiset<std::pair<std::string, int>, Comparator>
+FindWordsSortedByFrequency(std::string&, CloudParameters& cloudParameters);
 struct ExtentOffset
 {
-   ExtentOffset(int _x = 0.0, int _y = 0.0) : x(_x), y(_y) {}
-   int x,y;
+  ExtentOffset(int _x = 0.0, int _y = 0.0) : x(_x), y(_y)
+  {
+  }
+  int x, y;
 };
 struct ArchimedesValue
 {
-   ArchimedesValue(double _x = 0.0, double _y = 0.0) : x(_x), y(_y) {}
-   double x,y;
+  ArchimedesValue(double _x = 0.0, double _y = 0.0) : x(_x), y(_y)
+  {
+  }
+  double x, y;
 };
-bool AddWordToFinal(const std::string,
-                    const int,
-                    CloudParameters &,
-                    std::mt19937 &, 
-                    double orientation,
-                    std::vector<ExtentOffset> &,
-                    vtkImageBlend *,
-                    std::array<int, 6> &);
+bool AddWordToFinal(const std::string, const int, CloudParameters&,
+                    std::mt19937&, double orientation,
+                    std::vector<ExtentOffset>&, vtkImageBlend*,
+                    std::array<int, 6>&);
 
-
-void ArchimedesSpiral (std::vector<ExtentOffset>&, std::vector<int>&);
-void ReplaceMaskColorWithBackgroundColor(vtkImageData*, CloudParameters &);
-void CreateStopList(std::vector<std::string> &StopList);
+void ArchimedesSpiral(std::vector<ExtentOffset>&, std::vector<int>&);
+void ReplaceMaskColorWithBackgroundColor(vtkImageData*, CloudParameters&);
+void CreateStopList(std::vector<std::string>& StopList);
 void ShowColorSeriesNames(ostream& os);
-}
+} // namespace
 
-int main (int argc,  char *argv[])
+int main(int argc, char* argv[])
 {
   // Process command line argumemts
   CloudParameters cloudParameters;
@@ -161,7 +177,8 @@ int main (int argc,  char *argv[])
   arg.GetUnusedArguments(&newArgc, &newArgv);
   if (newArgc < 2)
   {
-    std::cout << "Usage: " << argv[0] << " textFileName " << arg.GetHelp() << std::endl;
+    std::cout << "Usage: " << argv[0] << " textFileName " << arg.GetHelp()
+              << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -177,26 +194,26 @@ int main (int argc,  char *argv[])
   ArchimedesSpiral(offset, cloudParameters.Sizes);
 
   // Sort the word by frequency
-  std::multiset<std::pair<std::string, int>, Comparator> sortedWords = FindWordsSortedByFrequency(s, cloudParameters);
+  std::multiset<std::pair<std::string, int>, Comparator> sortedWords =
+      FindWordsSortedByFrequency(s, cloudParameters);
 
   // Create a mask image
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
-  vtkColor3ub maskColor = colors->GetColor3ub(cloudParameters.MaskColorName.c_str());
-  auto maskImage = vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkNamedColors> colors;
+  vtkColor3ub maskColor =
+      colors->GetColor3ub(cloudParameters.MaskColorName.c_str());
+  vtkSmartPointer<vtkImageData> maskImage;
   // If a mask file is not defined, create a square mask
   if (cloudParameters.MaskFile == "")
   {
-    auto defaultMask = vtkSmartPointer<vtkImageCanvasSource2D>::New();
+    vtkNew<vtkImageCanvasSource2D> defaultMask;
     defaultMask->SetScalarTypeToUnsignedChar();
     defaultMask->SetNumberOfScalarComponents(3);
-    defaultMask->SetExtent(0, cloudParameters.Sizes[0] - 1,
-                           0, cloudParameters.Sizes[1] - 1,
-                           0, 0);
-    defaultMask->SetDrawColor(maskColor.GetData()[0],
-                              maskColor.GetData()[1],
+    defaultMask->SetExtent(0, cloudParameters.Sizes[0] - 1, 0,
+                           cloudParameters.Sizes[1] - 1, 0, 0);
+    defaultMask->SetDrawColor(maskColor.GetData()[0], maskColor.GetData()[1],
                               maskColor.GetData()[2]);
-    defaultMask->FillBox(0, cloudParameters.Sizes[0] - 1,
-                         0, cloudParameters.Sizes[1] - 1);
+    defaultMask->FillBox(0, cloudParameters.Sizes[0] - 1, 0,
+                         cloudParameters.Sizes[1] - 1);
     defaultMask->Update();
     maskImage = defaultMask->GetOutput();
     cloudParameters.AdjustedSizes.push_back(cloudParameters.Sizes[0]);
@@ -205,28 +222,28 @@ int main (int argc,  char *argv[])
   else
   {
     // Read the mask file
-    auto readerFactory =
-      vtkSmartPointer<vtkImageReader2Factory>::New();
+    vtkNew<vtkImageReader2Factory> readerFactory;
     vtkSmartPointer<vtkImageReader2> reader;
     reader.TakeReference(
-      readerFactory->CreateImageReader2(cloudParameters.MaskFile.c_str()));
-      reader->SetFileName(cloudParameters.MaskFile.c_str());
+        readerFactory->CreateImageReader2(cloudParameters.MaskFile.c_str()));
+    reader->SetFileName(cloudParameters.MaskFile.c_str());
     reader->Update();
     int dimensions[3];
     reader->GetOutput()->GetDimensions(dimensions);
-    auto resize = vtkSmartPointer<vtkImageResize>::New();
+    vtkNew<vtkImageResize> resize;
     resize->SetInputData(reader->GetOutput());
     resize->InterpolateOff();
-    double aspect = static_cast<double>(dimensions[1]) / static_cast<double>(dimensions[0]) *
-      static_cast<double>(cloudParameters.Sizes[0]) / static_cast<double>(cloudParameters.Sizes[1]);
+    double aspect = static_cast<double>(dimensions[1]) /
+        static_cast<double>(dimensions[0]) *
+        static_cast<double>(cloudParameters.Sizes[0]) /
+        static_cast<double>(cloudParameters.Sizes[1]);
     cloudParameters.AdjustedSizes.push_back(cloudParameters.Sizes[0]);
     cloudParameters.AdjustedSizes.push_back(aspect * cloudParameters.Sizes[1]);
     resize->SetOutputDimensions(cloudParameters.AdjustedSizes[0],
-                                cloudParameters.AdjustedSizes[1],
-                                1);
+                                cloudParameters.AdjustedSizes[1], 1);
     if (cloudParameters.BWMask)
     {
-      auto appendFilter = vtkSmartPointer<vtkImageAppendComponents>::New();
+      vtkNew<vtkImageAppendComponents> appendFilter;
       appendFilter->SetInputConnection(0, resize->GetOutputPort());
       appendFilter->AddInputConnection(0, resize->GetOutputPort());
       appendFilter->AddInputConnection(0, resize->GetOutputPort());
@@ -235,17 +252,16 @@ int main (int argc,  char *argv[])
     }
     else
     {
-      auto rgbImage = vtkSmartPointer<vtkImageExtractComponents>::New();
+      vtkNew<vtkImageExtractComponents> rgbImage;
       rgbImage->SetInputConnection(resize->GetOutputPort());
       rgbImage->SetComponents(0, 1, 2);
       rgbImage->Update();
       maskImage = rgbImage->GetOutput();
     }
-
-    }
+  }
 
   // Create an image that will hold the final image
-  auto final = vtkSmartPointer<vtkImageBlend>::New();
+  vtkNew<vtkImageBlend> final;
   final->AddInputData(maskImage);
   final->SetOpacity(0, .5);
   final->Update();
@@ -256,7 +272,7 @@ int main (int argc,  char *argv[])
   std::array<int, 6> extent;
   bool added;
   // Create a vector of orientations to try.
-  std::mt19937 mt(4355412); //Standard mersenne twister engine
+  std::mt19937 mt(4355412); // Standard mersenne twister engine
   for (auto element : sortedWords)
   {
     std::vector<double> orientations;
@@ -267,31 +283,27 @@ int main (int argc,  char *argv[])
     else
     {
       std::uniform_real_distribution<> orientationDist(
-        cloudParameters.OrientationDistribution[0], cloudParameters.OrientationDistribution[1]);
+          cloudParameters.OrientationDistribution[0],
+          cloudParameters.OrientationDistribution[1]);
       orientations.push_back(orientationDist(mt));
     }
     std::shuffle(std::begin(orientations), std::end(orientations), mt);
     for (auto o : orientations)
     {
-      added = AddWordToFinal(
-        element.first,
-        element.second,
-        cloudParameters,
-        mt,
-        o,
-        offset,
-        final,
-        extent);
+      added = AddWordToFinal(element.first, element.second, cloudParameters, mt,
+                             o, offset, final, extent);
       if (added)
       {
-//      std::cout << element.first << ": " << element.second << std::endl;
+        //      std::cout << element.first << ": " << element.second <<
+        //      std::endl;
         keep++;
         break;
       }
       else
       {
         numberSkipped++;
-//      std::cout << "skipped: " << element.first << ": " << element.second << std::endl;
+        //      std::cout << "skipped: " << element.first << ": " <<
+        //      element.second << std::endl;
       }
     }
   }
@@ -302,12 +314,13 @@ int main (int argc,  char *argv[])
   ReplaceMaskColorWithBackgroundColor(final->GetOutput(), cloudParameters);
 
   // Display the final image
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
 
-  auto imageViewer = vtkSmartPointer<vtkImageViewer2>::New();
+  vtkNew<vtkImageViewer2> imageViewer;
   imageViewer->SetInputData(final->GetOutput());
   imageViewer->SetupInteractor(interactor);
-  imageViewer->GetRenderer()->SetBackground(colors->GetColor3d("Wheat").GetData());
+  imageViewer->GetRenderer()->SetBackground(
+      colors->GetColor3d("Wheat").GetData());
   imageViewer->SetSize(cloudParameters.Sizes[0], cloudParameters.Sizes[1]);
   imageViewer->GetRenderer()->ResetCamera();
 
@@ -315,6 +328,7 @@ int main (int argc,  char *argv[])
   vtkCamera* camera = imageViewer->GetRenderer()->GetActiveCamera();
   camera->ParallelProjectionOn();
   camera->SetParallelScale(cloudParameters.AdjustedSizes[0] * .4);
+  imageViewer->GetRenderWindow()->SetWindowName("WordCloud");
   imageViewer->GetRenderWindow()->Render();
 
   interactor->Start();
@@ -322,9 +336,9 @@ int main (int argc,  char *argv[])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-std::multiset<std::pair<std::string, int>, Comparator > FindWordsSortedByFrequency(std::string &s, CloudParameters &cloudParameters)
+namespace {
+std::multiset<std::pair<std::string, int>, Comparator>
+FindWordsSortedByFrequency(std::string& s, CloudParameters& cloudParameters)
 {
   // Make replacements
   // Create a stop list
@@ -336,14 +350,13 @@ std::multiset<std::pair<std::string, int>, Comparator > FindWordsSortedByFrequen
   {
     stopList.push_back(stop);
   }
-  
+
   // Drop the case of all words
   std::transform(s.begin(), s.end(), s.begin(), ::tolower);
 
   // Extract words
   std::regex wordRegex("(\\w+)");
-  auto wordsBegin = 
-    std::sregex_iterator(s.begin(), s.end(), wordRegex);
+  auto wordsBegin = std::sregex_iterator(s.begin(), s.end(), wordRegex);
   auto wordsEnd = std::sregex_iterator();
 
   // Store the words in a map that will contain frequencies
@@ -357,7 +370,8 @@ std::multiset<std::pair<std::string, int>, Comparator > FindWordsSortedByFrequen
   const int N = 1;
   int stop = 0;
   for (std::sregex_iterator i = wordsBegin; i != wordsEnd; ++i)
-  {    std::string matchStr = (*i).str();
+  {
+    std::string matchStr = (*i).str();
 
     // Replace words with another
     for (auto p = 0; p < cloudParameters.ReplacementPairs.size(); p += 2)
@@ -374,9 +388,9 @@ std::multiset<std::pair<std::string, int>, Comparator > FindWordsSortedByFrequen
     }
 
     // Skip the word if it is in the stop list or contains a digit
-    auto it = std::find (stopList.begin(), stopList.end() - 1, matchStr);
+    auto it = std::find(stopList.begin(), stopList.end() - 1, matchStr);
     const auto digit = (*i).str().find_first_of("0123456789");
-    if (*it != *(stopList.end() - 1)|| digit != std::string::npos)
+    if (*it != *(stopList.end() - 1) || digit != std::string::npos)
     {
       stop++;
       continue;
@@ -386,7 +400,8 @@ std::multiset<std::pair<std::string, int>, Comparator > FindWordsSortedByFrequen
     if (matchStr.size() > N)
     {
       // Raise the case of he first letter in the word
-      std::transform(matchStr.begin(), matchStr.begin() + 1, matchStr.begin(), ::toupper);
+      std::transform(matchStr.begin(), matchStr.begin() + 1, matchStr.begin(),
+                     ::toupper);
       wordContainer[matchStr]++;
     }
   }
@@ -394,30 +409,26 @@ std::multiset<std::pair<std::string, int>, Comparator > FindWordsSortedByFrequen
 
   // Defining a lambda function to compare two pairs. It will compare
   // two pairs using second field
-  Comparator compFunctor =
-    [](std::pair<std::string, int> elem1 ,std::pair<std::string, int> elem2)
+  Comparator compFunctor = [](std::pair<std::string, int> elem1,
+                              std::pair<std::string, int> elem2) {
+    if (elem1.second == elem2.second)
     {
-      if (elem1.second == elem2.second)
-      {
-        return elem1.first.length() > elem2.first.length();
-      }
-      return elem1.second  > elem2.second;
-    };
- 
-  // Declaring a multiset that will store the pairs using above comparision logic
+      return elem1.first.length() > elem2.first.length();
+    }
+    return elem1.second > elem2.second;
+  };
+
+  // Declaring a multiset that will store the pairs using above comparision
+  // logic
   std::multiset<std::pair<std::string, int>, Comparator> setOfWords(
-    wordContainer.begin(), wordContainer.end(), compFunctor);
+      wordContainer.begin(), wordContainer.end(), compFunctor);
 
   return setOfWords;
 }
-bool AddWordToFinal(const std::string word,
-                    const int frequency,
-                    CloudParameters &cloudParameters,
-                    std::mt19937 &mt,
-                    double orientation,
-                    std::vector<ExtentOffset> &offset,
-                    vtkImageBlend *final,
-                    std::array<int, 6> &extent)
+bool AddWordToFinal(const std::string word, const int frequency,
+                    CloudParameters& cloudParameters, std::mt19937& mt,
+                    double orientation, std::vector<ExtentOffset>& offset,
+                    vtkImageBlend* final, std::array<int, 6>& extent)
 {
   // Skip single character words
   if (frequency < cloudParameters.MinFrequency)
@@ -426,36 +437,43 @@ bool AddWordToFinal(const std::string word,
   }
 
   // Create an image of the string
-  vtkFreeTypeTools *freeType = vtkFreeTypeTools::GetInstance();
+  vtkFreeTypeTools* freeType = vtkFreeTypeTools::GetInstance();
   freeType->ScaleToPowerTwoOff();
 
   // Create random distributions
   std::uniform_real_distribution<> colorDist(
-    cloudParameters.ColorDistribution[0], cloudParameters.ColorDistribution[1]);
+      cloudParameters.ColorDistribution[0],
+      cloudParameters.ColorDistribution[1]);
   bool discreteOrientations = cloudParameters.Orientations.size() != 0;
 
   // Setup a property for the strings containing fixed parameters
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
-  auto textProperty = vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkNamedColors> colors;
+  vtkNew<vtkTextProperty> textProperty;
   if (cloudParameters.WordColorName.length() > 0)
   {
-    textProperty->SetColor(colors->GetColor3d(cloudParameters.WordColorName).GetData());
+    textProperty->SetColor(
+        colors->GetColor3d(cloudParameters.WordColorName).GetData());
   }
   else if (cloudParameters.ColorSchemeName.length() > 0)
   {
-    auto colorScheme = vtkSmartPointer<vtkColorSeries>::New();
-    int index = colorScheme->SetColorSchemeByName(cloudParameters.ColorSchemeName);
-    vtkColor3ub color = colorScheme->GetColorRepeating(cloudParameters.KeptCount);
-    if (color.Compare(colors->GetColor3ub("black"), 1) && cloudParameters.KeptCount == 0)
-      {
-        std::cout << "The color scheme " << cloudParameters.ColorSchemeName << " does not exist." << std::endl;
-        ShowColorSeriesNames(std::cout);
-      }
-    textProperty->SetColor(color.GetRed() * 255.0, color.GetGreen() * 255.0 , color.GetBlue() * 255.0);
+    vtkNew<vtkColorSeries> colorScheme;
+    int index =
+        colorScheme->SetColorSchemeByName(cloudParameters.ColorSchemeName);
+    vtkColor3ub color =
+        colorScheme->GetColorRepeating(cloudParameters.KeptCount);
+    if (color.Compare(colors->GetColor3ub("black"), 1) &&
+        cloudParameters.KeptCount == 0)
+    {
+      std::cout << "The color scheme " << cloudParameters.ColorSchemeName
+                << " does not exist." << std::endl;
+      ShowColorSeriesNames(std::cout);
+    }
+    textProperty->SetColor(color.GetRed() * 255.0, color.GetGreen() * 255.0,
+                           color.GetBlue() * 255.0);
   }
   else
   {
-  textProperty->SetColor(colorDist(mt), colorDist(mt), colorDist(mt));
+    textProperty->SetColor(colorDist(mt), colorDist(mt), colorDist(mt));
   }
   textProperty->SetVerticalJustificationToCentered();
   textProperty->SetJustificationToCentered();
@@ -484,7 +502,8 @@ bool AddWordToFinal(const std::string word,
   }
   if (frequency == 1000)
   {
-    fontSize *= 1.2;;
+    fontSize *= 1.2;
+    ;
   }
   textProperty->SetFontSize(fontSize);
   textProperty->SetOrientation(orientation);
@@ -499,30 +518,25 @@ bool AddWordToFinal(const std::string word,
   // For each string, create an image and see if it overlaps with other images,
   // if so, skip it
   int accepted = 0;
-  auto textImage = vtkSmartPointer<vtkImageData>::New();
-  freeType->RenderString(textProperty,
-                         spaces + word + spaces,
-                         cloudParameters.DPI,
-                         textImage.GetPointer());
+  vtkNew<vtkImageData> textImage;
+  freeType->RenderString(textProperty, spaces + word + spaces,
+                         cloudParameters.DPI, textImage.GetPointer());
 
   // Set the extent of the text image
   std::array<int, 4> bb;
-  freeType->GetBoundingBox(textProperty,
-                           spaces + word + spaces,
-                           cloudParameters.DPI,
-                           bb.data());
-  vtkColor3ub maskColor = colors->GetColor3ub(cloudParameters.MaskColorName.c_str());
+  freeType->GetBoundingBox(textProperty, spaces + word + spaces,
+                           cloudParameters.DPI, bb.data());
+  vtkColor3ub maskColor =
+      colors->GetColor3ub(cloudParameters.MaskColorName.c_str());
   unsigned char maskR = maskColor.GetData()[0];
   unsigned char maskG = maskColor.GetData()[1];
   unsigned char maskB = maskColor.GetData()[2];
 
   std::uniform_real_distribution<> offsetDist(
-    cloudParameters.OffsetDistribution[0],
-    cloudParameters.OffsetDistribution[1]);
+      cloudParameters.OffsetDistribution[0],
+      cloudParameters.OffsetDistribution[1]);
 
-  for (auto it = offset.begin();
-       it < offset.end();
-       ++it)
+  for (auto it = offset.begin(); it < offset.end(); ++it)
   {
     int offsetX = (*it).x + offsetDist(mt); // add some noise to the offset
     int offsetY = (*it).y + offsetDist(mt);
@@ -531,27 +545,27 @@ bool AddWordToFinal(const std::string word,
         offsetY + bb[3] - bb[2] < cloudParameters.AdjustedSizes[1] - 1 &&
         offsetX >= 0 && offsetY >= 0)
     {
-      textImage->SetExtent(offsetX, offsetX + bb[1] - bb[0],
-                           offsetY, offsetY + bb[3] - bb[2],
-                           0, 0);
-      auto image = vtkSmartPointer<vtkImageData>::New();
+      textImage->SetExtent(offsetX, offsetX + bb[1] - bb[0], offsetY,
+                           offsetY + bb[3] - bb[2], 0, 0);
+      vtkNew<vtkImageData> image;
       final->Update();
 
-      // Does the text image overlap with images on the final image 
+      // Does the text image overlap with images on the final image
       vtkImageIterator<unsigned char> finalIt(final->GetOutput(),
                                               textImage->GetExtent());
       textImage->GetExtent(extent.data());
       bool good = true;
-      while( !finalIt.IsAtEnd())
+      while (!finalIt.IsAtEnd())
       {
         auto finalSpan = finalIt.BeginSpan();
-        while(finalSpan != finalIt.EndSpan())
+        while (finalSpan != finalIt.EndSpan())
         {
           unsigned char R, G, B;
           R = *finalSpan++;
           G = *finalSpan++;
           B = *finalSpan++;
-          // If the pixel does not contain the background color, the word will not fit
+          // If the pixel does not contain the background color, the word will
+          // not fit
           if (R != maskR && G != maskG && B != maskB)
           {
             good = false;
@@ -578,104 +592,129 @@ bool AddWordToFinal(const std::string word,
   return false;
 }
 
-void ArchimedesSpiral(std::vector<ExtentOffset> &offset, std::vector<int> &sizes)
+void ArchimedesSpiral(std::vector<ExtentOffset>& offset,
+                      std::vector<int>& sizes)
 {
-   const int centerX = sizes[0] / 2.0;
-   const int centerY = sizes[1] / 2.0;
+  const int centerX = sizes[0] / 2.0;
+  const int centerY = sizes[1] / 2.0;
 
-   const std::size_t N = 10000;
-   constexpr auto pi = 3.141592653589793238462643383279502884L; /* pi */
-   const double deltaAngle = pi * 20 / N;
-   double maxX = -1000.0;
-   double minX = 1000.0;
-   double maxY = -1000.0;
-   double minY = 1000.0;
-   double range = -1000;
-   double e = sizes[0] / sizes[1];
-   std::vector<ArchimedesValue> archimedes;
-   for (std::size_t i = 0; i < N; i += 10)
-   {
-     double x, y;
-     double angle = deltaAngle * i;
-     x = e * angle * std::cos(angle);
-     y = e * angle * std::sin(angle);
-     archimedes.push_back(ArchimedesValue(x, y));     
-     maxX = std::max(maxX, x);
-     minX = std::min(minX, x);
-     maxY = std::max(maxY, y);
-     minY = std::min(minY, y);
-     range = std::max(maxX - minX, maxY - minY);
-   }
-   double scaleX = 1.0 / range * sizes[0];
-   double scaleY = 1.0 / range * sizes[1];
-   int j = 0;
-   for (auto it = archimedes.begin();
-        it < archimedes.end();
-        ++it)
-   {
+  const std::size_t N = 10000;
+  constexpr auto pi = 3.141592653589793238462643383279502884L; /* pi */
+  const double deltaAngle = pi * 20 / N;
+  double maxX = -1000.0;
+  double minX = 1000.0;
+  double maxY = -1000.0;
+  double minY = 1000.0;
+  double range = -1000;
+  double e = sizes[0] / sizes[1];
+  std::vector<ArchimedesValue> archimedes;
+  for (std::size_t i = 0; i < N; i += 10)
+  {
+    double x, y;
+    double angle = deltaAngle * i;
+    x = e * angle * std::cos(angle);
+    y = e * angle * std::sin(angle);
+    archimedes.push_back(ArchimedesValue(x, y));
+    maxX = std::max(maxX, x);
+    minX = std::min(minX, x);
+    maxY = std::max(maxY, y);
+    minY = std::min(minY, y);
+    range = std::max(maxX - minX, maxY - minY);
+  }
+  double scaleX = 1.0 / range * sizes[0];
+  double scaleY = 1.0 / range * sizes[1];
+  int j = 0;
+  for (auto it = archimedes.begin(); it < archimedes.end(); ++it)
+  {
 
-     if ((*it).y * scaleX + centerY < 0
-         || (*it).x * scaleX + centerX - 50 < 0) continue;
-     offset.push_back(ExtentOffset((*it).x * scaleX + centerX - 50,
-                                   (*it).y * scaleX + centerY));
-   }
+    if ((*it).y * scaleX + centerY < 0 || (*it).x * scaleX + centerX - 50 < 0)
+      continue;
+    offset.push_back(ExtentOffset((*it).x * scaleX + centerX - 50,
+                                  (*it).y * scaleX + centerY));
+  }
 }
-bool ProcessCommandLine(vtksys::CommandLineArguments &arg, CloudParameters &cloudParameters)
+bool ProcessCommandLine(vtksys::CommandLineArguments& arg,
+                        CloudParameters& cloudParameters)
 {
   typedef vtksys::CommandLineArguments argT;
 
   // Need this to get arguments without --'s
   arg.StoreUnusedArguments(true);
 
-  arg.AddArgument("--backgroundColorName",
-                  argT::SPACE_ARGUMENT, &cloudParameters.BackgroundColorName, "Name of the color for the background(MignightBlue)");
-  arg.AddArgument("--colorDistribution",
-                  argT::MULTI_ARGUMENT, &cloudParameters.ColorDistribution, "Distribution of random colors(.6 1.0). If wordColorName is not empty, random colors are generated with this distribution");
-  arg.AddArgument("--colorSchemeName",
-                  argT::SPACE_ARGUMENT, &cloudParameters.ColorSchemeName, "Color scheme name()");
-  arg.AddArgument("--dpi",
-                  argT::SPACE_ARGUMENT, &cloudParameters.DPI, "Dots per inch(200)");
-  arg.AddArgument("--fontFile",
-                  argT::SPACE_ARGUMENT, &cloudParameters.FontFile, "Font file name(\"\"). If fontFileName is empty, the built-in Arial font is used.");
-  arg.AddArgument("--fontMultiplier",
-                  argT::SPACE_ARGUMENT, &cloudParameters.FontMultiplier, "Font multiplier(6). This final FontSize is this value * the word frequency.");
-  arg.AddArgument("--gap",
-                  argT::SPACE_ARGUMENT, &cloudParameters.Gap, "Space gap of words (2). The gap is the number of spaces added to the beginning and end of each word");
-  arg.AddArgument("--maskColorName",
-                  argT::SPACE_ARGUMENT, &cloudParameters.MaskColorName, "Name of the color for the mask (black). This is the name of the color that defines the foreground of the mask. Usually black or white");
-  arg.AddArgument("--maskFile",
-                  argT::SPACE_ARGUMENT, &cloudParameters.MaskFile, "Mask file name(\"\"). If the mask file is specified, if will be used as the mask, otherwise a black square is used as the mask.");
-  arg.AddArgument("--minFontSize",
-                  argT::SPACE_ARGUMENT, &cloudParameters.MinFontSize, "Minimum font size(8)");
-  arg.AddArgument("--minFrequency",
-                  argT::SPACE_ARGUMENT, &cloudParameters.MinFrequency, "Minimum word frequency accepted(2)");
-  arg.AddArgument("--maxFontSize",
-                  argT::SPACE_ARGUMENT, &cloudParameters.MaxFontSize, "Maximum font size(48)");
-  arg.AddArgument("--offsetDistribution",
-                  argT::MULTI_ARGUMENT, &cloudParameters.OffsetDistribution, "Range of random offsets(-size[0]/100.0 -size{1]/100.0)(-20 20).");
-  arg.AddArgument("--orientationDistribution",
-                  argT::MULTI_ARGUMENT, &cloudParameters.OrientationDistribution, "Ranges of random orientations(-20 20)");
-  arg.AddArgument("--orientations",
-                  argT::MULTI_ARGUMENT, &cloudParameters.Orientations, "List of discrete orientations (). If non-empty, these will be used instead of the orientations distribution");
-  arg.AddArgument("--stopWords",
-                  argT::MULTI_ARGUMENT, &cloudParameters.StopWords, "User provided stop words(). These will ba added to the built-in stop list.");
-  arg.AddArgument("--bwMask"
-                  , argT::NO_ARGUMENT, &cloudParameters.BWMask, "Mask image has a single channel(false). Mask images normally have three channels (r,g,b).");
-  arg.AddArgument("--size"
-                  , argT::MULTI_ARGUMENT, &cloudParameters.Sizes, "Size of image(640 480)");
-  arg.AddArgument("--wordColorName",
-                  argT::SPACE_ARGUMENT, &cloudParameters.WordColorName, "Name of the color for the words(). If the name is empty, the colorDistribution will generate random colors.");
-  arg.AddArgument("--replacementPairs",
-                  argT::MULTI_ARGUMENT, &cloudParameters.ReplacementPairs, "Replace word with another word ().");
-  arg.AddArgument("--title",
-                  argT::SPACE_ARGUMENT, &cloudParameters.Title, "Use this word and set a high frequency().");
+  arg.AddArgument("--backgroundColorName", argT::SPACE_ARGUMENT,
+                  &cloudParameters.BackgroundColorName,
+                  "Name of the color for the background(MignightBlue)");
+  arg.AddArgument(
+      "--colorDistribution", argT::MULTI_ARGUMENT,
+      &cloudParameters.ColorDistribution,
+      "Distribution of random colors(.6 1.0). If wordColorName is not empty, "
+      "random colors are generated with this distribution");
+  arg.AddArgument("--colorSchemeName", argT::SPACE_ARGUMENT,
+                  &cloudParameters.ColorSchemeName, "Color scheme name()");
+  arg.AddArgument("--dpi", argT::SPACE_ARGUMENT, &cloudParameters.DPI,
+                  "Dots per inch(200)");
+  arg.AddArgument("--fontFile", argT::SPACE_ARGUMENT, &cloudParameters.FontFile,
+                  "Font file name(\"\"). If fontFileName is empty, the "
+                  "built-in Arial font is used.");
+  arg.AddArgument("--fontMultiplier", argT::SPACE_ARGUMENT,
+                  &cloudParameters.FontMultiplier,
+                  "Font multiplier(6). This final FontSize is this value * the "
+                  "word frequency.");
+  arg.AddArgument("--gap", argT::SPACE_ARGUMENT, &cloudParameters.Gap,
+                  "Space gap of words (2). The gap is the number of spaces "
+                  "added to the beginning and end of each word");
+  arg.AddArgument(
+      "--maskColorName", argT::SPACE_ARGUMENT, &cloudParameters.MaskColorName,
+      "Name of the color for the mask (black). This is the name of the color "
+      "that defines the foreground of the mask. Usually black or white");
+  arg.AddArgument(
+      "--maskFile", argT::SPACE_ARGUMENT, &cloudParameters.MaskFile,
+      "Mask file name(\"\"). If the mask file is specified, if will be used as "
+      "the mask, otherwise a black square is used as the mask.");
+  arg.AddArgument("--minFontSize", argT::SPACE_ARGUMENT,
+                  &cloudParameters.MinFontSize, "Minimum font size(8)");
+  arg.AddArgument("--minFrequency", argT::SPACE_ARGUMENT,
+                  &cloudParameters.MinFrequency,
+                  "Minimum word frequency accepted(2)");
+  arg.AddArgument("--maxFontSize", argT::SPACE_ARGUMENT,
+                  &cloudParameters.MaxFontSize, "Maximum font size(48)");
+  arg.AddArgument(
+      "--offsetDistribution", argT::MULTI_ARGUMENT,
+      &cloudParameters.OffsetDistribution,
+      "Range of random offsets(-size[0]/100.0 -size{1]/100.0)(-20 20).");
+  arg.AddArgument("--orientationDistribution", argT::MULTI_ARGUMENT,
+                  &cloudParameters.OrientationDistribution,
+                  "Ranges of random orientations(-20 20)");
+  arg.AddArgument("--orientations", argT::MULTI_ARGUMENT,
+                  &cloudParameters.Orientations,
+                  "List of discrete orientations (). If non-empty, these will "
+                  "be used instead of the orientations distribution");
+  arg.AddArgument("--stopWords", argT::MULTI_ARGUMENT,
+                  &cloudParameters.StopWords,
+                  "User provided stop words(). These will ba added to the "
+                  "built-in stop list.");
+  arg.AddArgument("--bwMask", argT::NO_ARGUMENT, &cloudParameters.BWMask,
+                  "Mask image has a single channel(false). Mask images "
+                  "normally have three channels (r,g,b).");
+  arg.AddArgument("--size", argT::MULTI_ARGUMENT, &cloudParameters.Sizes,
+                  "Size of image(640 480)");
+  arg.AddArgument("--wordColorName", argT::SPACE_ARGUMENT,
+                  &cloudParameters.WordColorName,
+                  "Name of the color for the words(). If the name is empty, "
+                  "the colorDistribution will generate random colors.");
+  arg.AddArgument("--replacementPairs", argT::MULTI_ARGUMENT,
+                  &cloudParameters.ReplacementPairs,
+                  "Replace word with another word ().");
+  arg.AddArgument("--title", argT::SPACE_ARGUMENT, &cloudParameters.Title,
+                  "Use this word and set a high frequency().");
   bool help = false;
-  arg.AddArgument("--help"
-                  , argT::NO_ARGUMENT, &help, "Show help(false)");
+  arg.AddArgument("--help", argT::NO_ARGUMENT, &help, "Show help(false)");
   arg.Parse();
   if (help)
   {
-    std::cout << "Usage: " << "WordCloud" << " textFileName " << arg.GetHelp() << std::endl;
+    std::cout << "Usage: "
+              << "WordCloud"
+              << " textFileName " << arg.GetHelp() << std::endl;
     return false;
   }
 
@@ -697,39 +736,44 @@ bool ProcessCommandLine(vtksys::CommandLineArguments &arg, CloudParameters &clou
   }
   if (cloudParameters.OffsetDistribution.size() == 0)
   {
-    cloudParameters.OffsetDistribution.push_back(-cloudParameters.Sizes[0] / 100.0);
-    cloudParameters.OffsetDistribution.push_back( cloudParameters.Sizes[1] / 100.0);
+    cloudParameters.OffsetDistribution.push_back(-cloudParameters.Sizes[0] /
+                                                 100.0);
+    cloudParameters.OffsetDistribution.push_back(cloudParameters.Sizes[1] /
+                                                 100.0);
   }
 
   cloudParameters.Print(std::cout);
   return true;
 }
-void ReplaceMaskColorWithBackgroundColor(vtkImageData* finalImage, CloudParameters &cloudParameters)
+void ReplaceMaskColorWithBackgroundColor(vtkImageData* finalImage,
+                                         CloudParameters& cloudParameters)
 {
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkColor3ub maskColor = colors->GetColor3ub(cloudParameters.MaskColorName.c_str());
+  vtkColor3ub maskColor =
+      colors->GetColor3ub(cloudParameters.MaskColorName.c_str());
   unsigned char maskR = maskColor.GetData()[0];
   unsigned char maskG = maskColor.GetData()[1];
   unsigned char maskB = maskColor.GetData()[2];
 
-  vtkColor3ub backgroundColor = colors->GetColor3ub(cloudParameters.BackgroundColorName.c_str());
+  vtkColor3ub backgroundColor =
+      colors->GetColor3ub(cloudParameters.BackgroundColorName.c_str());
   unsigned char bkgR = backgroundColor.GetData()[0];
   unsigned char bkgG = backgroundColor.GetData()[1];
   unsigned char bkgB = backgroundColor.GetData()[2];
 
-  vtkImageIterator<unsigned char> finalIt(finalImage,
-                                          finalImage->GetExtent());
-  while( !finalIt.IsAtEnd())
+  vtkImageIterator<unsigned char> finalIt(finalImage, finalImage->GetExtent());
+  while (!finalIt.IsAtEnd())
   {
     auto finalSpan = finalIt.BeginSpan();
-    while(finalSpan != finalIt.EndSpan())
+    while (finalSpan != finalIt.EndSpan())
     {
       unsigned char R, G, B;
       R = *finalSpan;
       G = *(finalSpan + 1);
       B = *(finalSpan + 2);
-      // If the pixel does not contain the background color, the word will not fit
+      // If the pixel does not contain the background color, the word will not
+      // fit
       if (R != maskR && G != maskG && B != maskB)
       {
         finalSpan += 3;
@@ -743,13 +787,13 @@ void ReplaceMaskColorWithBackgroundColor(vtkImageData* finalImage, CloudParamete
       }
       finalSpan += 3;
     }
-  finalIt.NextSpan();
+    finalIt.NextSpan();
   }
 }
 
 void ShowColorSeriesNames(ostream& os)
 {
-  auto colorSeries = vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> colorSeries;
   os << "Valid schemes" << std::endl;
   for (auto i = 0; i < colorSeries->GetNumberOfColorSchemes(); ++i)
   {
@@ -758,7 +802,7 @@ void ShowColorSeriesNames(ostream& os)
   }
 }
 
-void CreateStopList(std::vector<std::string> &stopList)
+void CreateStopList(std::vector<std::string>& stopList)
 {
   stopList.push_back("a");
   stopList.push_back("able");
@@ -1424,5 +1468,4 @@ void CreateStopList(std::vector<std::string> &stopList)
   stopList.push_back("z");
   stopList.push_back("zero");
 }
-}
-  
+} // namespace
