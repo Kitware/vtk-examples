@@ -2,7 +2,7 @@
 
 # Example of how to use Parallel Coordinates View to plot and compare
 # data set attributes.
-# Use the "u" character to toggle between "inspect modes" on the parallel
+# Use the 'u' character to toggle between 'inspect modes' on the parallel
 # coordinates view (i.e. between selecting data and manipulating axes).
 # Lines which are commented out show alternative options.
 
@@ -43,8 +43,8 @@ def main():
 
     rep.SetUseCurves(0)  # set to 1 to use smooth curves
     rep.SetLineOpacity(0.5)
-    rep.SetAxisColor(colors.GetColor3d("Gold"))
-    rep.SetLineColor(colors.GetColor3d("MistyRose"))
+    rep.SetAxisColor(colors.GetColor3d('Gold'))
+    rep.SetLineColor(colors.GetColor3d('MistyRose'))
 
     # Set up the Parallel Coordinates View and hook in the Representation
     view = vtk.vtkParallelCoordinatesView()
@@ -69,7 +69,7 @@ def main():
     view.SetBrushOperatorToReplace()
 
     def ToggleInspectors(obj, event):
-        # Define the callback routine which toggles between "Inspect Modes"
+        # Define the callback routine which toggles between 'Inspect Modes'
         if view.GetInspectMode() == 0:
             view.SetInspectMode(1)
         else:
@@ -77,14 +77,14 @@ def main():
 
     # Hook up the callback to toggle between inspect modes
     # (manip axes & select data)
-    view.GetInteractor().AddObserver("UserEvent", ToggleInspectors)
+    view.GetInteractor().AddObserver('UserEvent', ToggleInspectors)
 
     # Set up render window
     view.GetRenderWindow().SetSize(600, 300)
     view.GetRenderWindow().SetWindowName('ParallelCoordinatesView')
     view.GetRenderer().GradientBackgroundOn()
-    view.GetRenderer().SetBackground2(colors.GetColor3d("DarkBlue"))
-    view.GetRenderer().SetBackground(colors.GetColor3d("MidnightBlue"))
+    view.GetRenderer().SetBackground2(colors.GetColor3d('DarkBlue'))
+    view.GetRenderer().SetBackground(colors.GetColor3d('MidnightBlue'))
     view.ResetCamera()
     view.Render()
 
