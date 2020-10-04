@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-"""
+'''
 Demonstrate the use of a callback.
 
 We also add call data.
-"""
+'''
 
 import vtk
 
@@ -36,7 +36,7 @@ def main():
     mapper.SetInputConnection(source.GetOutputPort())
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("peacock"))
+    actor.GetProperty().SetColor(colors.GetColor3d('peacock'))
     # Lighting
     actor.GetProperty().SetAmbient(0.3)
     actor.GetProperty().SetDiffuse(0.0)
@@ -49,13 +49,13 @@ def main():
     outlineMapper = vtk.vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
     outlineActor = vtk.vtkActor()
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
     outlineActor.SetMapper(outlineMapper)
 
     # Add the actors to the renderer, set the background and size.
     ren.AddActor(actor)
     ren.AddActor(outlineActor)
-    ren.SetBackground(colors.GetColor3d("AliceBlue"))
+    ren.SetBackground(colors.GetColor3d('AliceBlue'))
     renWin.SetSize(512, 512)
 
     # Set up a nice camera position.
@@ -67,7 +67,7 @@ def main():
     ren.SetActiveCamera(camera)
 
     renWin.Render()
-    renWin.SetWindowName("CallBack")
+    renWin.SetWindowName('CallBack')
 
     axes1 = MakeAxesActor()
     om1 = vtk.vtkOrientationMarkerWidget()
@@ -96,7 +96,7 @@ def main():
 
 
 def GetOrientation(caller, ev):
-    """
+    '''
     Print out the orientation.
 
     We must do this before we register the callback in the calling function.
@@ -105,9 +105,9 @@ def GetOrientation(caller, ev):
     :param caller:
     :param ev: The event.
     :return:
-    """
+    '''
     # Just do this to demonstrate who called callback and the event that triggered it.
-    print(caller.GetClassName(), "Event Id:", ev)
+    print(caller.GetClassName(), 'Event Id:', ev)
     # Now print the camera orientation.
     CameraOrientation(GetOrientation.cam)
 
@@ -118,19 +118,19 @@ class OrientationObserver(object):
 
     def __call__(self, caller, ev):
         # Just do this to demonstrate who called callback and the event that triggered it.
-        print(caller.GetClassName(), "Event Id:", ev)
+        print(caller.GetClassName(), 'Event Id:', ev)
         # Now print the camera orientation.
         CameraOrientation(self.cam)
 
 
 def CameraOrientation(cam):
-    fmt1 = "{:>15s}"
-    fmt2 = "{:9.6g}"
-    print(fmt1.format("Position:"), ', '.join(map(fmt2.format, cam.GetPosition())))
-    print(fmt1.format("Focal point:"), ', '.join(map(fmt2.format, cam.GetFocalPoint())))
-    print(fmt1.format("Clipping range:"), ', '.join(map(fmt2.format, cam.GetClippingRange())))
-    print(fmt1.format("View up:"), ', '.join(map(fmt2.format, cam.GetViewUp())))
-    print(fmt1.format("Distance:"), fmt2.format(cam.GetDistance()))
+    fmt1 = '{:>15s}'
+    fmt2 = '{:9.6g}'
+    print(fmt1.format('Position:'), ', '.join(map(fmt2.format, cam.GetPosition())))
+    print(fmt1.format('Focal point:'), ', '.join(map(fmt2.format, cam.GetFocalPoint())))
+    print(fmt1.format('Clipping range:'), ', '.join(map(fmt2.format, cam.GetClippingRange())))
+    print(fmt1.format('View up:'), ', '.join(map(fmt2.format, cam.GetViewUp())))
+    print(fmt1.format('Distance:'), fmt2.format(cam.GetDistance()))
 
 
 def MakeAxesActor():

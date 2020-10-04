@@ -1,14 +1,17 @@
+#include <vtkActor.h>
+#include <vtkCamera.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointPicker.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSphereSource.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
-#include <vtkSmartPointer.h>
-#include <vtkPointPicker.h>
-#include <vtkCamera.h>
-#include <vtkInteractorStyleTrackballCamera.h>
-#include <vtkNamedColors.h>
+
+namespace {
 
 // Define interaction style
 class customMouseInteractorStyle : public vtkInteractorStyleTrackballCamera
@@ -23,65 +26,59 @@ public:
     // Forward events
     vtkInteractorStyleTrackballCamera::OnLeftButtonDown();
   }
-    
+
   virtual void OnMiddleButtonDown() override
   {
     std::cout << "Pressed middle mouse button." << std::endl;
     // Forward events
     vtkInteractorStyleTrackballCamera::OnMiddleButtonDown();
   }
-  
+
   virtual void OnRightButtonDown() override
   {
     std::cout << "Pressed right mouse button." << std::endl;
     // Forward events
     vtkInteractorStyleTrackballCamera::OnRightButtonDown();
   }
-
 };
 
 vtkStandardNewMacro(customMouseInteractorStyle);
 
-int main(int, char *[])
+} // namespace
+
+int main(int, char*[])
 {
-  
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(0.0, 0.0, 0.0);
   sphereSource->SetRadius(5.0);
   sphereSource->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
-  
-  vtkSmartPointer<vtkActor> actor = 
-      vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  renderer->SetBackground(colors->GetColor3d("Slate_grey").GetData());
+  vtkNew<vtkRenderer> renderer;
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
   renderer->AddActor(actor);
-  
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->AddRenderer(renderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  renderWindowInteractor->SetRenderWindow ( renderWindow );
-  
-  vtkSmartPointer<customMouseInteractorStyle> style =
-    vtkSmartPointer<customMouseInteractorStyle>::New();
-  renderWindowInteractor->SetInteractorStyle( style );
-  
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("MouseEvents");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  renderWindowInteractor->SetRenderWindow(renderWindow);
+
+  vtkNew<customMouseInteractorStyle> style;
+  renderWindowInteractor->SetInteractorStyle(style);
+
   renderWindow->Render();
   renderWindowInteractor->Initialize();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

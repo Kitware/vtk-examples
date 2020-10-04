@@ -1,25 +1,32 @@
-#include <vtkObjectFactory.h>
-#include <vtkCommand.h>
-#include <vtkCallbackCommand.h>
-#include <vtkStreamingDemandDrivenPipeline.h>
-#include <vtkInformationVector.h>
-#include <vtkInformation.h>
-#include <vtkDataObject.h>
-#include <vtkSmartPointer.h>
+#include <vtkActor.h>
 #include <vtkAppendPolyData.h>
-#include <vtkSphereSource.h>
+#include <vtkCallbackCommand.h>
+#include <vtkCommand.h>
+#include <vtkDataObject.h>
+#include <vtkInformation.h>
+#include <vtkInformationVector.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkObjectFactory.h>
 #include <vtkPolyDataAlgorithm.h>
-#include <vtkRenderer.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+#include <vtkStreamingDemandDrivenPipeline.h>
 
+namespace {
 class vtkMyTestFilter : public vtkPolyDataAlgorithm
 {
 public:
-  vtkTypeMacro(vtkMyTestFilter,vtkPolyDataAlgorithm);
-  static vtkMyTestFilter *New();
+  vtkTypeMacro(vtkMyTestFilter, vtkPolyDataAlgorithm);
+  static vtkMyTestFilter* New();
 
   int RefreshEvent;
+
+  unsigned int Counter;
 
 protected:
   vtkMyTestFilter()
@@ -31,92 +38,110 @@ protected:
     this->Counter = 0;
   }
 
-  int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *)
+  int RequestData(vtkInformation*, vtkInformationVector**,
+                  vtkInformationVector*)
   {
-      this->InvokeEvent(this->RefreshEvent, &this->Counter);
-      this->Counter++;
-      return 1;
+    this->InvokeEvent(this->RefreshEvent, &this->Counter);
+    this->Counter++;
+    return 1;
   }
 
 private:
-  vtkMyTestFilter(const vtkMyTestFilter&);  // Not implemented.
-  void operator=(const vtkMyTestFilter&);  // Not implemented.
-
-  unsigned int Counter;
+  vtkMyTestFilter(const vtkMyTestFilter&) = delete;
+  void operator=(const vtkMyTestFilter&) = delete;
 };
 
 vtkStandardNewMacro(vtkMyTestFilter);
 
-static void CallbackFunction(vtkObject* caller,
-                long unsigned int eventId,
-                void* clientData,
-                void* callData );
+void CallbackFunction(vtkObject* caller, long unsigned int eventId,
+                      void* clientData, void* callData);
 
 class vtkTimerCallback : public vtkCommand
 {
-  public:
-    static vtkTimerCallback *New()
+public:
+  static vtkTimerCallback* New()
+  {
+    vtkTimerCallback* cb = new vtkTimerCallback;
+
+    return cb;
+  }
+
+  virtual void Execute(vtkObject* caller, unsigned long vtkNotUsed(eventId),
+                       void* vtkNotUsed(callData))
+  {
+    TestFilter->Modified();
+    TestFilter->Update();
+    auto iren = vtkRenderWindowInteractor::SafeDownCast(caller);
+    if (TestFilter->Counter > 10)
     {
-      vtkTimerCallback *cb = new vtkTimerCallback;
-
-      return cb;
+      std::cout << "Timer Destroyed: " << iren->DestroyTimer(this->timerId)
+                << endl;
     }
+  }
 
-    virtual void Execute(vtkObject *vtkNotUsed(caller),
-                         unsigned long vtkNotUsed(eventId),
-                         void *vtkNotUsed(callData))
-    {
-        TestFilter->Modified();
-        TestFilter->Update();
-    }
+  int timerId;
 
-    vtkMyTestFilter* TestFilter;
-
+  vtkMyTestFilter* TestFilter;
 };
+} // namespace
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
+  // Add an object to make the scene interesting
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetCenter(0.0, 0.0, 0.0);
+  sphereSource->SetRadius(5.0);
+  sphereSource->Update();
+
+  vtkNew<vtkPolyDataMapper> mapper;
+  mapper->SetInputConnection(sphereSource->GetOutputPort());
+
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Goldenrod").GetData());
+
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkMyTestFilter> testFilter =
-    vtkSmartPointer<vtkMyTestFilter>::New();
+  vtkNew<vtkMyTestFilter> testFilter;
 
-  vtkSmartPointer<vtkCallbackCommand> callback =
-    vtkSmartPointer<vtkCallbackCommand>::New();
-  callback->SetCallback(CallbackFunction );
+  vtkNew<vtkCallbackCommand> callback;
+  callback->SetCallback(CallbackFunction);
   testFilter->AddObserver(testFilter->RefreshEvent, callback);
   testFilter->Update();
 
+  renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
+  renderWindow->SetWindowName("CallData");
   renderWindow->Render();
   renderWindowInteractor->Initialize();
 
   // Sign up to receive TimerEvent
-  vtkSmartPointer<vtkTimerCallback> timerCallback =
-    vtkSmartPointer<vtkTimerCallback>::New();
+  vtkNew<vtkTimerCallback> timerCallback;
   timerCallback->TestFilter = testFilter;
 
   renderWindowInteractor->AddObserver(vtkCommand::TimerEvent, timerCallback);
-
-  renderWindowInteractor->CreateRepeatingTimer(100);
+  timerCallback->timerId = renderWindowInteractor->CreateRepeatingTimer(100);
+  std::cout << "timerId: " << timerCallback->timerId << std::endl;
 
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
 }
 
+namespace {
 void CallbackFunction(vtkObject* vtkNotUsed(caller),
                       long unsigned int vtkNotUsed(eventId),
-                      void* vtkNotUsed(clientData),
-                      void* callData )
+                      void* vtkNotUsed(clientData), void* callData)
 {
   unsigned int* callDataCasted = reinterpret_cast<unsigned int*>(callData);
   std::cout << *callDataCasted << std::endl;
 }
+} // namespace

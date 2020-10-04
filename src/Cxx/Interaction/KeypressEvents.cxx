@@ -1,13 +1,17 @@
-#include <vtkPolyDataMapper.h>
-#include <vtkObjectFactory.h>
 #include <vtkActor.h>
-#include <vtkSmartPointer.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkSphereSource.h>
 #include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkObjectFactory.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+
+namespace {
 
 // Define interaction style
 class KeyPressInteractorStyle : public vtkInteractorStyleTrackballCamera
@@ -19,20 +23,20 @@ public:
   virtual void OnKeyPress() override
   {
     // Get the keypress
-    vtkRenderWindowInteractor *rwi = this->Interactor;
+    vtkRenderWindowInteractor* rwi = this->Interactor;
     std::string key = rwi->GetKeySym();
 
     // Output the key that was pressed
     std::cout << "Pressed " << key << std::endl;
 
     // Handle an arrow key
-    if(key == "Up")
+    if (key == "Up")
     {
       std::cout << "The up arrow was pressed." << std::endl;
     }
 
     // Handle a "normal" key
-    if(key == "a")
+    if (key == "a")
     {
       std::cout << "The a key was pressed." << std::endl;
     }
@@ -43,41 +47,41 @@ public:
 };
 vtkStandardNewMacro(KeyPressInteractorStyle);
 
-int main(int, char *[])
+} // namespace
+
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(0.0, 0.0, 0.0);
   sphereSource->SetRadius(5.0);
   sphereSource->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
 
   // Create an actor
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("KeypressEvents");
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<KeyPressInteractorStyle> style =
-    vtkSmartPointer<KeyPressInteractorStyle>::New();
+  vtkNew<KeyPressInteractorStyle> style;
   renderWindowInteractor->SetInteractorStyle(style);
   style->SetCurrentRenderer(renderer);
 
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   renderWindow->Render();
 
