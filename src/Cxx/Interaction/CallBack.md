@@ -1,6 +1,6 @@
 ### Description
 
-#### Demonstrate how to set up a callback with client data.
+#### Demonstrate how to set up a callback with client data
 
 Getting the camera orientation after interacting with the image is used as an example.
 

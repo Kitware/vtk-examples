@@ -11,6 +11,7 @@ We also add call data.
 #include <vtkCamera.h>
 #include <vtkConeSource.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
@@ -27,8 +28,7 @@ We also add call data.
 // Uncomment this if you want to use the function instead.
 //#undef USE_CALLBACKCOMMAND_CLASS
 
-namespace
-{
+namespace {
 void PrintCameraOrientation(vtkCamera* cam);
 void MakeAxesActor(vtkAxesActor* axesActor);
 
@@ -41,13 +41,15 @@ When the class is implemented, it becomes the callback function.
 class CameraModifiedCallback : public vtkCallbackCommand
 {
 public:
-  static CameraModifiedCallback* New() { return new CameraModifiedCallback; }
+  static CameraModifiedCallback* New()
+  {
+    return new CameraModifiedCallback;
+  }
   // Here we Create a vtkCallbackCommand and reimplement it.
   void Execute(vtkObject* caller, unsigned long evId, void*) override
   {
     // Note the use of reinterpret_cast to cast the caller to the expected type.
-    vtkRenderWindowInteractor* interactor =
-      reinterpret_cast<vtkRenderWindowInteractor*>(caller);
+    auto interactor = reinterpret_cast<vtkRenderWindowInteractor*>(caller);
     // Just do this to demonstrate who called callback and the event that
     // triggered it.
     std::cout << interactor->GetClassName() << "  Event Id: " << evId
@@ -56,8 +58,7 @@ public:
     // Now print the camera orientation.
     PrintCameraOrientation(this->cam);
   }
-  CameraModifiedCallback()
-    : cam(nullptr)
+  CameraModifiedCallback() : cam(nullptr)
   {
   }
   // Set pointers to any clientData or callData here.
@@ -81,35 +82,31 @@ void vtkCallbackFunc(vtkObject* caller, long unsigned int evId,
 {
   // Note the use of reinterpret_cast to cast the caller and callData to the
   // expected types.
-  vtkRenderWindowInteractor* interactor =
-    reinterpret_cast<vtkRenderWindowInteractor*>(caller);
+  auto interactor = reinterpret_cast<vtkRenderWindowInteractor*>(caller);
   std::cout << interactor->GetClassName() << "  Event Id: " << evId
             << std::endl;
-  vtkSmartPointer<vtkCamera> cam = reinterpret_cast<vtkCamera*>(clientData);
+  auto cam = reinterpret_cast<vtkCamera*>(clientData);
 
   // Now print the camera orientation.
   PrintCameraOrientation(cam);
 };
 #endif
-}
+} // namespace
 
-int main(int, char* [])
+int main(int, char*[])
 {
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create the Renderer, RenderWindow and RenderWindowInteractor.
-  vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Use a cone as a source.
-  vtkSmartPointer<vtkConeSource> source = vtkSmartPointer<vtkConeSource>::New();
+  vtkNew<vtkConeSource> source;
   source->SetCenter(0, 0, 0);
   source->SetRadius(1);
   // Use the golden ratio for the height. Because we can!
@@ -118,10 +115,9 @@ int main(int, char* [])
   source->Update();
 
   // Pipeline
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(source->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetColor(colors->GetColor3d("peacock").GetData());
   // Lighting
@@ -131,13 +127,11 @@ int main(int, char* [])
   actor->GetProperty()->SetSpecularPower(20.0);
 
   // Get an outline of the data set for context.
-  vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputData(source->GetOutput());
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
-  vtkSmartPointer<vtkActor> outlineActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
@@ -149,7 +143,7 @@ int main(int, char* [])
   renWin->SetSize(512, 512);
 
   // Set up a nice camera position.
-  vtkSmartPointer<vtkCamera> camera = vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
   camera->SetPosition(4.6, -2.0, 3.8);
   camera->SetFocalPoint(0.0, 0.0, 0.0);
   camera->SetClippingRange(3.2, 10.2);
@@ -159,10 +153,9 @@ int main(int, char* [])
   renWin->Render();
   renWin->SetWindowName("CallBack");
 
-  vtkSmartPointer<vtkAxesActor> axes = vtkSmartPointer<vtkAxesActor>::New();
+  vtkNew<vtkAxesActor> axes;
   MakeAxesActor(axes);
-  vtkSmartPointer<vtkOrientationMarkerWidget> om =
-    vtkSmartPointer<vtkOrientationMarkerWidget>::New();
+  vtkNew<vtkOrientationMarkerWidget> om;
   om->SetOrientationMarker(axes);
   // Position lower left in the viewport.
   om->SetViewport(0, 0, 0.2, 0.2);
@@ -173,14 +166,12 @@ int main(int, char* [])
 #if defined(USE_CALLBACKCOMMAND_CLASS)
   // When we implement the class, it automatically becomes the callback
   // function.
-  vtkSmartPointer<CameraModifiedCallback> getOrientation =
-    vtkSmartPointer<CameraModifiedCallback>::New();
+  vtkNew<CameraModifiedCallback> getOrientation;
   // Set the camera to use.
   getOrientation->cam = ren->GetActiveCamera();
 #else
   // Create the vtkCallbackCommand.
-  vtkSmartPointer<vtkCallbackCommand> getOrientation =
-    vtkSmartPointer<vtkCallbackCommand>::New();
+  vtkNew<vtkCallbackCommand> getOrientation;
   // Set the callback to the function we created.
   getOrientation->SetCallback(vtkCallbackFunc);
   // Set the client data.
@@ -193,8 +184,7 @@ int main(int, char* [])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
+namespace {
 void MakeAxesActor(vtkAxesActor* axes)
 {
   axes->SetShaftTypeToCylinder();
@@ -210,8 +200,7 @@ void MakeAxesActor(vtkAxesActor* axes)
 /**
 Get a comma separated list.
 */
-template <typename T>
-std::string CommaSeparatedList(std::vector<T> v)
+template <typename T> std::string CommaSeparatedList(std::vector<T> v)
 {
   std::ostringstream os;
   std::copy(v.begin(), v.end() - 1, std::ostream_iterator<T>(os, ", "));
@@ -244,4 +233,4 @@ void PrintCameraOrientation(vtkCamera* cam)
             << CommaSeparatedList(std::vector<double>(vu, vu + 3)) << std::endl;
   std::cout << setw(width) << "Distance: " << cam->GetDistance() << std::endl;
 };
-}
+} // namespace

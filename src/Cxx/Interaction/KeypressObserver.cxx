@@ -1,69 +1,78 @@
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkSmartPointer.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkSphereSource.h>
 #include <vtkCallbackCommand.h>
 #include <vtkCommand.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 
-void KeypressCallbackFunction (
-  vtkObject* caller,
-  long unsigned int eventId,
-  void* clientData,
-  void* callData );
+namespace {
 
-int main(int, char *[])
+void KeypressCallbackFunction(vtkObject* caller, long unsigned int eventId,
+                              void* clientData, void* callData);
+
+}
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-      vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(0.0, 0.0, 0.0);
   sphereSource->SetRadius(5.0);
   sphereSource->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
 
   // Create an actor
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
-  
-  vtkSmartPointer<vtkCallbackCommand> keypressCallback = 
-    vtkSmartPointer<vtkCallbackCommand>::New();
-  keypressCallback->SetCallback ( KeypressCallbackFunction );
-  renderWindowInteractor->AddObserver ( vtkCommand::KeyPressEvent, keypressCallback );
-  
+  renderWindow->SetWindowName("KeypressObserver");
+
+  vtkNew<vtkCallbackCommand> keypressCallback;
+  keypressCallback->SetCallback(KeypressCallbackFunction);
+  renderWindowInteractor->AddObserver(vtkCommand::KeyPressEvent,
+                                      keypressCallback);
+
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
   renderWindow->Render();
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
 }
 
-void KeypressCallbackFunction ( vtkObject* caller, long unsigned int vtkNotUsed(eventId), void* vtkNotUsed(clientData), void* vtkNotUsed(callData) )
+namespace {
+
+void KeypressCallbackFunction(vtkObject* caller,
+                              long unsigned int vtkNotUsed(eventId),
+                              void* vtkNotUsed(clientData),
+                              void* vtkNotUsed(callData))
 {
   std::cout << "Keypress callback" << std::endl;
-  
-  vtkRenderWindowInteractor *iren = 
-    static_cast<vtkRenderWindowInteractor*>(caller);
+
+  vtkRenderWindowInteractor* iren =
+      static_cast<vtkRenderWindowInteractor*>(caller);
 
   std::cout << "Pressed: " << iren->GetKeySym() << std::endl;
 }
+
+} // namespace

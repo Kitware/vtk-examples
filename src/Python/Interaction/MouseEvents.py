@@ -1,22 +1,20 @@
 #!/usr/bin/env python
-from __future__ import print_function
-
 import vtk
 
 
 class MyInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
 
     def __init__(self, parent=None):
-        self.AddObserver("MiddleButtonPressEvent", self.middle_button_press_event)
-        self.AddObserver("MiddleButtonReleaseEvent", self.middle_button_release_event)
+        self.AddObserver('MiddleButtonPressEvent', self.middle_button_press_event)
+        self.AddObserver('MiddleButtonReleaseEvent', self.middle_button_release_event)
 
     def middle_button_press_event(self, obj, event):
-        print("Middle Button pressed")
+        print('Middle Button pressed')
         self.OnMiddleButtonDown()
         return
 
     def middle_button_release_event(self, obj, event):
-        print("Middle Button released")
+        print('Middle Button released')
         self.OnMiddleButtonUp()
         return
 
@@ -34,14 +32,15 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d('AliceBlue'))
+    actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     renderer = vtk.vtkRenderer()
-    renderer.SetBackground(colors.GetColor3d('Silver'))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
     renderer.AddActor(actor)
 
     renwin = vtk.vtkRenderWindow()
     renwin.AddRenderer(renderer)
+    renwin.SetWindowName('MouseEvents')
 
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetInteractorStyle(MyInteractorStyle())
