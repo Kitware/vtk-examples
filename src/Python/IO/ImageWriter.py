@@ -7,7 +7,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [26, 51, 102, 255])
+    colors.SetColor('BkgColor', [26, 51, 102, 255])
 
     # create a rendering window and renderer
     ren = vtk.vtkRenderer()
@@ -32,13 +32,15 @@ def main():
     actor.SetMapper(mapper)
 
     # color the actor
-    actor.GetProperty().SetColor(colors.GetColor3d("Yellow"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Yellow'))
 
     # assign actor to the renderer
     ren.AddActor(actor)
-    ren.SetBackground(colors.GetColor3d("BkgColor"))
+    ren.SetBackground(colors.GetColor3d('BkgColor'))
 
+    renWin.SetWindowName('ImageWriter')
     renWin.Render()
+
     ext = ['', '.png', '.jpg', '.ps', '.tiff', '.bmp', '.pnm']
     filenames = list(map(lambda x: 'ImageWriter' + x, ext))
     filenames[0] = filenames[0] + '1'
@@ -50,7 +52,7 @@ def main():
 
 
 def WriteImage(fileName, renWin, rgba=True):
-    """
+    '''
     Write the render window view to an image file.
 
     Image types supported are:
@@ -61,7 +63,7 @@ def WriteImage(fileName, renWin, rgba=True):
     :param renWin: The render window.
     :param rgba: Used to set the buffer type.
     :return:
-    """
+    '''
 
     import os
 

@@ -1,3 +1,3 @@
 ### Description
 
-A simple Python script for reading and displaying ExodusII data with VTK.
+The exmaple uses vtkExodusIIReader to read an ExodusII file. The nodal variable to read is the second argument. The nodal variable is displayed with a color map.

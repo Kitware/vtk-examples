@@ -1,5 +1,6 @@
-#include <vtkSmartPointer.h>
 #include <vtkImageViewer2.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPNGReader.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
@@ -7,28 +8,30 @@
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Verify input arguments
-  if ( argc < 2 )
+  if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " Filename(.png) e.g. Gourds.png" << std::endl;
+    std::cout << "Usage: " << argv[0] << " Filename(.png) e.g. Gourds.png"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   // Read the image
-  vtkSmartPointer<vtkPNGReader> reader =
-    vtkSmartPointer<vtkPNGReader>::New();
+  vtkNew<vtkPNGReader> reader;
   reader->SetFileName(argv[1]);
 
   // Visualize
-  vtkSmartPointer<vtkImageViewer2> imageViewer =
-    vtkSmartPointer<vtkImageViewer2>::New();
+  vtkNew<vtkImageViewer2> imageViewer;
   imageViewer->SetInputConnection(reader->GetOutputPort());
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   imageViewer->SetupInteractor(renderWindowInteractor);
   imageViewer->Render();
   imageViewer->GetRenderer()->ResetCamera();
+  imageViewer->GetRenderer()->SetBackground(
+      colors->GetColor3d("DarkSlateGray").GetData());
+  imageViewer->GetRenderWindow()->SetWindowName("PNGReader");
   imageViewer->Render();
 
   renderWindowInteractor->Start();

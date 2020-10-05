@@ -1,31 +1,33 @@
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOBJImporter.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkTexture.h>
 
 int main(int argc, char* argv[])
 {
   if (argc < 4)
   {
-    std::cout << "Usage: " << argv[0] << " objfile mtlfile texturepath"
-              << std::endl;
+    std::cout
+        << "Usage: " << argv[0]
+        << " objfile mtlfile texturepath e.g. doorman.obj doorman.mtl doorman"
+        << std::endl;
     return EXIT_FAILURE;
   }
-  auto importer = vtkSmartPointer<vtkOBJImporter>::New();
+  vtkNew<vtkOBJImporter> importer;
   importer->SetFileName(argv[1]);
   importer->SetFileNameMTL(argv[2]);
   importer->SetTexturePath(argv[3]);
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
-  auto iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
+  vtkNew<vtkRenderWindowInteractor> iren;
 
   renderer->SetBackground2(colors->GetColor3d("Silver").GetData());
   renderer->SetBackground(colors->GetColor3d("Gold").GetData());
@@ -34,6 +36,7 @@ int main(int argc, char* argv[])
   renderer->UseHiddenLineRemovalOn();
   renWin->AddRenderer(renderer);
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("OBJImporter");
 
   iren->SetRenderWindow(renWin);
   importer->SetRenderWindow(renWin);

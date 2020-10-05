@@ -1,5 +1,6 @@
 #include <vtkCellData.h>
 #include <vtkCubeSource.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
 #include <vtkSmartPointer.h>
@@ -10,16 +11,18 @@
 #include <string>
 #include <vector>
 
+namespace {
 void FindAllData(vtkPolyData* polydata);
+}
 
 int main(int argc, char* argv[])
 {
   vtkSmartPointer<vtkPolyData> polydata;
   if (argc < 2)
   {
-    auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->Update();
-    auto writer = vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+    vtkNew<vtkXMLPolyDataWriter> writer;
     writer->SetFileName("test.vtp");
     writer->SetInputConnection(sphereSource->GetOutputPort());
     writer->Write();
@@ -28,7 +31,7 @@ int main(int argc, char* argv[])
   }
   else
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
     polydata = reader->GetOutput();
@@ -39,6 +42,7 @@ int main(int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 
+namespace {
 void FindAllData(vtkPolyData* polydata)
 {
   std::cout << "Normals: " << polydata->GetPointData()->GetNormals()
@@ -81,3 +85,4 @@ void FindAllData(vtkPolyData* polydata)
               << " (type: " << dataTypeID << ")" << std::endl;
   }
 }
+} // namespace

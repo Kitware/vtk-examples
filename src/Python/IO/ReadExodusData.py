@@ -49,7 +49,7 @@ def main():
     # Renderer
     renderer = vtk.vtkRenderer()
     renderer.AddViewProp(actor)
-    renderer.SetBackground(colors.GetColor3d("DimGray"))
+    renderer.SetBackground(colors.GetColor3d('DimGray'))
 
     renderer.GetActiveCamera().SetPosition(9.0, 9.0, 7.0)
     renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
@@ -60,6 +60,7 @@ def main():
     window = vtk.vtkRenderWindow()
     window.AddRenderer(renderer)
     window.SetSize(600, 600)
+    window.SetWindowName('ReadExodusData')
 
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(window)

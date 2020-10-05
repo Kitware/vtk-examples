@@ -2,11 +2,11 @@
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 
 int main(int argc, char* argv[])
 {
@@ -17,15 +17,15 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  auto importer = vtkSmartPointer<vtk3DSImporter>::New();
+  vtkNew<vtk3DSImporter> importer;
   importer->SetFileName(argv[1]);
   importer->ComputeNormalsOn();
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
-  auto iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
+  vtkNew<vtkRenderWindowInteractor> iren;
 
   renWin->AddRenderer(renderer);
   renderer->SetBackground2(colors->GetColor3d("Gold").GetData());
@@ -37,11 +37,14 @@ int main(int argc, char* argv[])
   importer->Update();
 
   auto actors = renderer->GetActors();
-  std::cout << "There are " << actors->GetNumberOfItems() << " actors"
+  std::cout << "There are " << actors->GetNumberOfItems() << " actors."
             << std::endl;
 
+  renWin->SetWindowName("3DSImporter");
+
   renWin->Render();
-  auto camera = vtkSmartPointer<vtkCamera>::New();
+
+  vtkNew<vtkCamera> camera;
   camera->SetPosition(0, -1, 0);
   camera->SetFocalPoint(0, 0, 0);
   camera->SetViewUp(0, 0, 1);

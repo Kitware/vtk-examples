@@ -17,8 +17,8 @@ def main():
     iren = vtk.vtkRenderWindowInteractor()
 
     renWin.AddRenderer(renderer)
-    renderer.SetBackground2(colors.GetColor3d("Gold"))
-    renderer.SetBackground(colors.GetColor3d("Wheat"))
+    renderer.SetBackground2(colors.GetColor3d('Gold'))
+    renderer.SetBackground(colors.GetColor3d('Wheat'))
     renderer.GradientBackgroundOn()
 
     iren.SetRenderWindow(renWin)
@@ -27,8 +27,9 @@ def main():
 
     # actors = vtk.vtkActorCollection()
     actors = renderer.GetActors()
-    print("There are", actors.GetNumberOfItems(), "actors")
+    print('There are', actors.GetNumberOfItems(), 'actors.')
 
+    renWin.SetWindowName('3DSImporter')
     renWin.Render()
     camera = vtk.vtkCamera()
     camera.SetPosition(0, -1, 0)

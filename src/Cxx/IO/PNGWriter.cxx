@@ -1,13 +1,16 @@
-#include <vtkImageData.h>
-#include <vtkPNGWriter.h>
-#include <vtkSmartPointer.h>
 #include <vtkImageCanvasSource2D.h>
 #include <vtkImageCast.h>
+#include <vtkImageData.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPNGWriter.h>
 
-int main(int argc, char *argv[])
+#include <array>
+
+int main(int argc, char* argv[])
 {
   std::string outputFilename;
-  if( argc > 1)
+  if (argc > 1)
   {
     outputFilename = argv[1];
   }
@@ -16,26 +19,35 @@ int main(int argc, char *argv[])
     outputFilename = "output.png";
   }
 
+  vtkNew<vtkNamedColors> colors;
+
+  std::array<double, 3> drawColor1{0, 0, 0};
+  std::array<double, 3> drawColor2{0, 0, 0};
+  auto color1 = colors->GetColor3ub("MediumOrchid").GetData();
+  auto color2 = colors->GetColor3ub("DarkGreen").GetData();
+  for (auto i = 0; i < 3; ++i)
+  {
+    drawColor1[i] = color1[i];
+    drawColor2[i] = color2[i];
+  }
+
   int extent[6] = {0, 99, 0, 99, 0, 0};
-  vtkSmartPointer<vtkImageCanvasSource2D> imageSource =
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> imageSource;
   imageSource->SetExtent(extent);
   imageSource->SetScalarTypeToUnsignedChar();
   imageSource->SetNumberOfScalarComponents(3);
-  imageSource->SetDrawColor(127, 45, 255);
+  imageSource->SetDrawColor(drawColor1.data());
   imageSource->FillBox(0, 99, 0, 99);
-  imageSource->SetDrawColor(255,255,255);
+  imageSource->SetDrawColor(drawColor2.data());
   imageSource->FillBox(40, 70, 20, 50);
   imageSource->Update();
 
-  vtkSmartPointer<vtkImageCast> castFilter =
-    vtkSmartPointer<vtkImageCast>::New();
-  castFilter->SetOutputScalarTypeToUnsignedChar ();
+  vtkNew<vtkImageCast> castFilter;
+  castFilter->SetOutputScalarTypeToUnsignedChar();
   castFilter->SetInputConnection(imageSource->GetOutputPort());
   castFilter->Update();
 
-  vtkSmartPointer<vtkPNGWriter> writer =
-    vtkSmartPointer<vtkPNGWriter>::New();
+  vtkNew<vtkPNGWriter> writer;
   writer->SetFileName(outputFilename.c_str());
   writer->SetInputConnection(castFilter->GetOutputPort());
   writer->Write();

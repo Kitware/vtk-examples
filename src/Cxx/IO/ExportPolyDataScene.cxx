@@ -9,6 +9,7 @@
 #include <vtkLookupTable.h>
 #include <vtkMultiBlockDataSet.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -55,13 +56,12 @@ int main(int argc, char* argv[])
   auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
   // Visualize
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   double bounds[6];
@@ -76,13 +76,13 @@ int main(int argc, char* argv[])
     {
       for (int a = 0; a < 4; ++a)
       {
-        auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+        vtkNew<vtkPolyDataMapper> mapper;
         mapper->SetInputData(polyData);
 
-        auto backProperty = vtkSmartPointer<vtkProperty>::New();
+        vtkNew<vtkProperty> backProperty;
         backProperty->SetColor(colors->GetColor3d("peacock").GetData());
 
-        auto actor = vtkSmartPointer<vtkActor>::New();
+        vtkNew<vtkActor> actor;
         actor->SetMapper(mapper);
         actor->SetBackfaceProperty(backProperty);
         if (b == 1)
@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
         }
         if (c == 3)
         {
-          auto rotateTransform = vtkSmartPointer<vtkTransform>::New();
+          vtkNew<vtkTransform> rotateTransform;
           rotateTransform->RotateZ(30.0);
           actor->GetProperty()->SetInterpolationToGouraud();
           actor->SetUserTransform(rotateTransform);
@@ -156,6 +156,7 @@ int main(int argc, char* argv[])
   renderer->ResetCamera();
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("ExportPolyDataScene");
   renderWindow->Render();
   renderWindowInteractor->Start();
 
@@ -187,7 +188,7 @@ void ExportMultiBlockScene(vtkRenderer* renderer, std::string fileName,
             << std::endl;
   actors->InitTraversal();
   // Initialize dataset to write
-  auto multiBlockDataset = vtkSmartPointer<vtkMultiBlockDataSet>::New();
+  vtkNew<vtkMultiBlockDataSet> multiBlockDataset;
   multiBlockDataset->SetNumberOfBlocks(actors->GetNumberOfItems());
 
   for (vtkIdType a = 0; a < actors->GetNumberOfItems(); ++a)
@@ -195,7 +196,7 @@ void ExportMultiBlockScene(vtkRenderer* renderer, std::string fileName,
     vtkActor* actor = actors->GetNextActor();
 
     // Deep copy the polydata because it may be shared with other actors
-    auto pd = vtkSmartPointer<vtkPolyData>::New();
+    vtkNew<vtkPolyData> pd;
     pd->DeepCopy(dynamic_cast<vtkPolyData*>(actor->GetMapper()->GetInput()));
 
     // Set metadata for block
@@ -217,7 +218,7 @@ void ExportMultiBlockScene(vtkRenderer* renderer, std::string fileName,
   }
 
   // Write multiblock dataset to disk
-  auto writer = vtkSmartPointer<vtkXMLMultiBlockDataWriter>::New();
+  vtkNew<vtkXMLMultiBlockDataWriter> writer;
   if (binary)
   {
     writer->SetDataModeToBinary();
@@ -384,42 +385,42 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
                  ::tolower);
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
+    vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
+    vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
+    vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
+    vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
+    vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
@@ -427,7 +428,7 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
   else
   {
     // Return a polydata sphere if the extension is unknown.
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->SetThetaResolution(20);
     source->SetPhiResolution(11);
     source->Update();

@@ -1,6 +1,5 @@
 #include <vtkNew.h>
 #include <vtkCMLMoleculeReader.h>
-
 #include <vtkActor.h>
 #include <vtkProperty.h>
 #include <vtkCamera.h>
@@ -9,7 +8,6 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
-
 #include <vtkNamedColors.h>
 
 int main(int argc, char *argv[])
@@ -28,19 +26,20 @@ int main(int argc, char *argv[])
 
   vtkNew<vtkActor> actor;
   actor->SetMapper(molmapper);
-  actor->GetProperty()->SetDiffuse(.7);
-  actor->GetProperty()->SetSpecular(.5);
+  actor->GetProperty()->SetDiffuse(0.7);
+  actor->GetProperty()->SetSpecular(0.5);
   actor->GetProperty()->SetSpecularPower(20.0);
 
   vtkNew<vtkRenderer> ren;
   vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(ren);
+  renderWindow->SetWindowName("ReadCML");
+
   vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renderWindow);
 
   ren->AddActor(actor);
 
-  ren->SetBackground(0.0,0.0,0.0);
   renderWindow->SetSize(640, 480);
   renderWindow->Render();
   ren->GetActiveCamera()->Zoom(2.0);

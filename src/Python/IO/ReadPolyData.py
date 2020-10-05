@@ -30,7 +30,7 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("BurlyWood"))
+    actor.GetProperty().SetColor(colors.GetColor3d('BurlyWood'))
 
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()

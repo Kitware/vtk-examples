@@ -1,4 +1,5 @@
 ###Description
+
 This example selects the vtkPolyData reader by inspecting the extension of the file. The example processes every file passed as an argument. This assumes all of the files are modeled in the same coordinate system.
 
 

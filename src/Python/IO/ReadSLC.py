@@ -45,7 +45,7 @@ def main():
 
     # Assign actor to the renderer.
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("lemon_chiffon"))
+    renderer.SetBackground(colors.GetColor3d('lemon_chiffon'))
 
     # Pick a good view
     renderer.GetActiveCamera().SetPosition(-382.606608, -3.308563, 223.475751)

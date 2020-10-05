@@ -1,35 +1,41 @@
-#include <vtkRenderer.h>
+#include <vtkAxesActor.h>
+#include <vtkCamera.h>
+#include <vtkDataSet.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkVRMLImporter.h>
-#include <vtkDataSet.h>
-#include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
-#include <vtkProperty.h>
+#include <vtkRenderer.h>
 #include <vtkTransform.h>
-#include <vtkAxesActor.h>
+#include <vtkVRMLImporter.h>
 
-int main ( int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  if(argc != 3)
+  vtkNew<vtkNamedColors> colors;
+
+  if (argc != 3)
   {
-    std::cout << "Required arguments: Filename Actorname" << std::endl;
+    std::cout << "Required arguments: Filename Actorname e.g. teapot.wrl teapot"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   std::string filename = argv[1];
   std::cout << "Showing " << argv[2] << " from " << filename << std::endl;
 
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("IndividualVRML");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // VRML Import
-  vtkSmartPointer<vtkVRMLImporter> importer = vtkSmartPointer<vtkVRMLImporter>::New();
-  importer->SetFileName ( filename.c_str() );
+  vtkNew<vtkVRMLImporter> importer;
+  importer->SetFileName(filename.c_str());
   importer->Read();
   importer->SetRenderWindow(renderWindow);
   importer->Update();
@@ -38,25 +44,23 @@ int main ( int argc, char *argv[])
   vtkObject* defActor = importer->GetVRMLDEFObject(argv[2]);
   if (defActor == NULL)
   {
-    std::cout << "Cannot locate actor " << argv[2]
-              << " in " << filename << std::endl;
+    std::cout << "Cannot locate actor " << argv[2] << " in " << filename
+              << std::endl;
     importer->Print(std::cout);
     return EXIT_FAILURE;
   }
 
-  vtkActor* actor = static_cast <vtkActor*> (defActor);
-  double color[3] = {0.89,0.81,0.34};
-  actor->GetProperty()->SetColor(color);
+  vtkActor* actor = static_cast<vtkActor*>(defActor);
+  double color[3] = {0.89, 0.81, 0.34};
+  actor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
   actor->GetProperty()->SetRepresentationToWireframe();
 
-  vtkSmartPointer<vtkTransform> transform =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform;
 
-  transform->Translate(actor->GetCenter()[0],
-                       actor->GetCenter()[1],
+  transform->Translate(actor->GetCenter()[0], actor->GetCenter()[1],
                        actor->GetCenter()[2]);
   // axes
-  vtkSmartPointer<vtkAxesActor> axes = vtkSmartPointer<vtkAxesActor>::New();
+  vtkNew<vtkAxesActor> axes;
 
   double l[3];
   l[0] = (actor->GetBounds()[1] - actor->GetBounds()[0]) * 1.5;
@@ -66,7 +70,14 @@ int main ( int argc, char *argv[])
   axes->SetTotalLength(l);
   axes->SetUserTransform(transform);
   renderer->AddActor(axes);
-  renderer->SetBackground( .2, .3, .7);
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
+  renderWindow->Render();
+
+  renderer->GetActiveCamera()->SetPosition(-14.8296, 18.1304, 12.3352);
+  renderer->GetActiveCamera()->SetFocalPoint(2.09905, 0.0832915, 2.47961);
+  renderer->GetActiveCamera()->SetViewUp(0.262918, -0.260671, 0.928937);
+  renderer->GetActiveCamera()->SetDistance(26.6348);
+  renderer->ResetCameraClippingRange();
 
   renderWindow->Render();
   renderWindowInteractor->Start();

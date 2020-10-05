@@ -33,17 +33,18 @@ def main():
     actor.SetMapper(mapper)
     # show the edges of the image grid
     actor.GetProperty().SetRepresentationToWireframe()
-    actor.GetProperty().SetColor(colors.GetColor3d("DarkSalmon"))
 
     # Create the Renderer
     renderer = vtk.vtkRenderer()
     renderer.AddActor(actor)
     renderer.ResetCamera()
-    renderer.SetBackground(colors.GetColor3d("Silver"))
+    renderer.SetBackground(colors.GetColor3d('Silver'))
 
     # Create the RendererWindow
     renderer_window = vtk.vtkRenderWindow()
     renderer_window.AddRenderer(renderer)
+    renderer_window.SetWindowName('ReadImageData')
+
 
     # Create the RendererWindowInteractor and display the vti file
     interactor = vtk.vtkRenderWindowInteractor()

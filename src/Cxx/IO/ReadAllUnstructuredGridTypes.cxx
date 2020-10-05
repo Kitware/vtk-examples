@@ -1,43 +1,41 @@
-#include <vtkSmartPointer.h>
-
+#include <vtkAppendFilter.h>
+#include <vtkSphereSource.h>
+#include <vtkUnstructuredGrid.h>
 #include <vtkUnstructuredGridReader.h>
 #include <vtkXMLUnstructuredGridReader.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkSphereSource.h>
-#include <vtkAppendFilter.h>
 
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkDataSetMapper.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkCamera.h>
+#include <vtkSmartPointer.h>
 
-#include <vtkNamedColors.h>
-
-#include <string>
 #include <algorithm>
 #include <array>
+#include <string>
 
-namespace
-{
-vtkSmartPointer<vtkUnstructuredGrid> ReadUnstructuredGrid(std::string const& fileName);
+namespace {
+vtkSmartPointer<vtkUnstructuredGrid>
+ReadUnstructuredGrid(std::string const& fileName);
 }
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   // Vis Pipeline
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer->SetBackground(colors->GetColor3d("Wheat").GetData());
@@ -47,16 +45,16 @@ int main (int argc, char *argv[])
   auto unstructuredGrid = ReadUnstructuredGrid(std::string(argv[1]));
 
   // Visualize
-  auto mapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputData(unstructuredGrid);
   mapper->ScalarVisibilityOff();
 
-  auto backProp = vtkSmartPointer<vtkProperty>::New();
+  vtkNew<vtkProperty> backProp;
   backProp->SetDiffuseColor(colors->GetColor3d("Banana").GetData());
   backProp->SetSpecular(.6);
   backProp->SetSpecularPower(30);
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->SetBackfaceProperty(backProp);
   actor->GetProperty()->SetDiffuseColor(colors->GetColor3d("Tomato").GetData());
@@ -67,15 +65,16 @@ int main (int argc, char *argv[])
   renderer->GetActiveCamera()->Azimuth(45);
   renderer->GetActiveCamera()->Elevation(45);
   renderer->ResetCamera();
+  renderWindow->SetWindowName("ReadAllUnstructuredGridTypes");
   renderWindow->Render();
   interactor->Start();
 
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-vtkSmartPointer<vtkUnstructuredGrid> ReadUnstructuredGrid(std::string const& fileName)
+namespace {
+vtkSmartPointer<vtkUnstructuredGrid>
+ReadUnstructuredGrid(std::string const& fileName)
 {
   vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid;
   std::string extension = "";
@@ -85,33 +84,34 @@ vtkSmartPointer<vtkUnstructuredGrid> ReadUnstructuredGrid(std::string const& fil
   }
 
   // Drop the case of the extension
-  std::transform(extension.begin(), extension.end(),
-                 extension.begin(), ::tolower);
+  std::transform(extension.begin(), extension.end(), extension.begin(),
+                 ::tolower);
 
   if (extension == ".vtu")
   {
-    auto reader = vtkSmartPointer<vtkXMLUnstructuredGridReader>::New();
-    reader->SetFileName (fileName.c_str());
+    vtkNew<vtkXMLUnstructuredGridReader> reader;
+    reader->SetFileName(fileName.c_str());
     reader->Update();
     unstructuredGrid = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkUnstructuredGridReader>::New();
-    reader->SetFileName (fileName.c_str());
+    vtkNew<vtkUnstructuredGridReader> reader;
+    reader->SetFileName(fileName.c_str());
     reader->Update();
     unstructuredGrid = reader->GetOutput();
   }
   else
   {
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->Update();
-    auto appendFilter =
-      vtkSmartPointer<vtkAppendFilter>::New();
+    vtkNew<vtkAppendFilter> appendFilter;
     appendFilter->AddInputData(source->GetOutput());
     appendFilter->Update();
     unstructuredGrid = appendFilter->GetOutput();
   }
+
   return unstructuredGrid;
 }
-}
+
+} // namespace

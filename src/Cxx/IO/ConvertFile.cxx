@@ -1,24 +1,26 @@
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
+#include <vtkPLYWriter.h>
 #include <vtkPolyData.h>
 #include <vtkXMLPolyDataReader.h>
-#include <vtkPLYWriter.h>
-	
-int main(int argc, char *argv[])
+
+int main(int argc, char* argv[])
 {
-  if(argc < 3)
+  if (argc < 3)
   {
-    std::cerr << "Required arguments: input.vtp output.ply" << std::endl;
+    std::cerr << "Required arguments: input.vtp output.ply e.g. Bunny.vtp "
+                 "ConvertFile.ply"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   std::string inputFileName = argv[1];
   std::string outputFileName = argv[2];
 
-  vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+  vtkNew<vtkXMLPolyDataReader> reader;
   reader->SetFileName(inputFileName.c_str());
   reader->Update();
 
-  vtkSmartPointer<vtkPLYWriter> writer = vtkSmartPointer<vtkPLYWriter>::New();
+  vtkNew<vtkPLYWriter> writer;
   writer->SetFileName(outputFileName.c_str());
   writer->SetInputConnection(reader->GetOutputPort());
   writer->Update();

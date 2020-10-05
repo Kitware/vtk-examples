@@ -1,5 +1,6 @@
 #include <vtkActor.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
@@ -42,30 +43,30 @@ void WriteImage(std::string const& fileName, vtkRenderWindow* renWin,
 int main(int, char*[])
 {
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
   std::array<unsigned char, 4> bkg{{26, 51, 102, 255}};
   colors->SetColor("BkgColor", bkg.data());
 
   // Create the rendering window, renderer, and interactive renderer.
-  auto ren = vtkSmartPointer<vtkRenderer>::New();
-  auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
-  auto iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Create the source.
-  auto source = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> source;
   source->SetCenter(0, 0, 0);
   source->SetRadius(5.0);
 
   // mapper
-  auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(source->GetOutputPort());
 
   // actor
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   // color the actor
@@ -75,6 +76,7 @@ int main(int, char*[])
   ren->AddActor(actor);
   ren->SetBackground(colors->GetColor3d("BkgColor").GetData());
 
+  renWin->SetWindowName("ImageWriter");
   renWin->Render();
 
   std::vector<std::string> ext = {{""},      {".png"}, {".jpg"}, {".ps"},
@@ -144,8 +146,7 @@ void WriteImage(std::string const& fileName, vtkRenderWindow* renWin, bool rgba)
     {
       writer = vtkSmartPointer<vtkPNGWriter>::New();
     }
-    auto window_to_image_filter =
-        vtkSmartPointer<vtkWindowToImageFilter>::New();
+    vtkNew<vtkWindowToImageFilter> window_to_image_filter;
     window_to_image_filter->SetInput(renWin);
     window_to_image_filter->SetScale(1); // image quality
     if (rgba)

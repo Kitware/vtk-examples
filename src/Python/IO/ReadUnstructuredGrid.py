@@ -41,14 +41,14 @@ def main():
     actor.GetProperty().SetLineWidth(2.0)
 
     backface = vtk.vtkProperty()
-    backface.SetColor(colors.GetColor3d("tomato"))
+    backface.SetColor(colors.GetColor3d('tomato'))
     actor.SetBackfaceProperty(backface)
 
     # Create the Renderer
     renderer = vtk.vtkRenderer()
     renderer.AddActor(actor)
     renderer.SetBackground(1, 1, 1)  # Set background to white
-    renderer.SetBackground(colors.GetColor3d("Wheat"))
+    renderer.SetBackground(colors.GetColor3d('Wheat'))
 
     # Create the RendererWindow
     renderer_window = vtk.vtkRenderWindow()
