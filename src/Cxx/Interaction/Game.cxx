@@ -116,8 +116,8 @@ public:
     vtkInteractorStyleTrackballActor::OnRightButtonDown();
   }
 
-  vtkPolyData* Sphere;
-  vtkActor* CubeActor;
+  vtkPolyData* Sphere = nullptr;
+  vtkActor* CubeActor = nullptr;
 };
 vtkStandardNewMacro(MouseInteractorStyle6);
 

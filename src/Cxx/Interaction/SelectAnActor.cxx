@@ -1,18 +1,22 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
+#include <vtkCamera.h>
 #include <vtkCellArray.h>
-#include <vtkInteractorStyleTrackballActor.h>
-#include <vtkObjectFactory.h>
 #include <vtkCubeSource.h>
-#include <vtkSphereSource.h>
+#include <vtkInteractorStyleTrackballActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkObjectFactory.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPropPicker.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+
+namespace {
 
 // Handle mouse events
 class MouseInteractorStyle5 : public vtkInteractorStyleTrackballActor
@@ -26,11 +30,11 @@ public:
     // Forward events
     vtkInteractorStyleTrackballActor::OnLeftButtonDown();
 
-    if(this->InteractionProp == this->Cube)
+    if (this->InteractionProp == this->Cube)
     {
       std::cout << "Picked cube." << std::endl;
     }
-    else if(this->InteractionProp == this->Sphere)
+    else if (this->InteractionProp == this->Sphere)
     {
       std::cout << "Picked sphere." << std::endl;
     }
@@ -42,52 +46,50 @@ public:
 
 vtkStandardNewMacro(MouseInteractorStyle5);
 
-int main(int, char *[])
+} // namespace
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a cube
-  vtkSmartPointer<vtkCubeSource> cubeSource =
-    vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkCubeSource> cubeSource;
   cubeSource->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> cubeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cubeMapper;
   cubeMapper->SetInputConnection(cubeSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> cubeActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cubeActor;
   cubeActor->SetMapper(cubeMapper);
+  cubeActor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource->SetCenter(5,0,0);
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetCenter(2, 0, 0);
   sphereSource->Update();
 
   // Create a mapper
-  vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
 
   // Create an actor
-  vtkSmartPointer<vtkActor> sphereActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
+  sphereActor->GetProperty()->SetColor(
+      colors->GetColor3d("LightGoldenrodYellow").GetData());
 
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("SelectAnActor");
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Set the custom stype to use for interaction.
-  vtkSmartPointer<MouseInteractorStyle5> style =
-    vtkSmartPointer<MouseInteractorStyle5>::New();
+  vtkNew<MouseInteractorStyle5> style;
   style->SetDefaultRenderer(renderer);
   style->Cube = cubeActor;
   style->Sphere = sphereActor;
@@ -96,7 +98,9 @@ int main(int, char *[])
 
   renderer->AddActor(cubeActor);
   renderer->AddActor(sphereActor);
-  renderer->SetBackground(0,0,1);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+  renderer->ResetCamera();
+  renderer->GetActiveCamera()->Zoom(0.9);
 
   // Render and interact
   renderWindow->Render();

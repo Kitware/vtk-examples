@@ -1,39 +1,58 @@
-#include <vtkSphereSource.h>
+#include <vtkActor.h>
 #include <vtkCallbackCommand.h>
 #include <vtkCommand.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
 #include "vtkTestFilter.h"
 
-static void CallbackFunction(vtkObject* caller,
-                long unsigned int eventId,
-                void* clientData,
-                void* callData );
+namespace {
 
-int main(int, char *[])
+void CallbackFunction(vtkObject* caller, long unsigned int eventId,
+                      void* clientData, void* callData);
+
+}
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetCenter(0.0, 0.0, 0.0);
+  sphereSource->SetRadius(5.0);
+  sphereSource->Update();
+
+  vtkNew<vtkPolyDataMapper> mapper;
+  mapper->SetInputConnection(sphereSource->GetOutputPort());
+
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
+
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+  renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("UserEvent");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkTestFilter> filter =
-    vtkSmartPointer<vtkTestFilter>::New();
+  vtkNew<vtkTestFilter> filter;
 
-  vtkSmartPointer<vtkCallbackCommand> callback =
-    vtkSmartPointer<vtkCallbackCommand>::New();
-  callback->SetCallback(CallbackFunction );
+  vtkNew<vtkCallbackCommand> callback;
+  callback->SetCallback(CallbackFunction);
   filter->AddObserver(filter->RefreshEvent, callback);
 
   filter->Update();
@@ -44,9 +63,12 @@ int main(int, char *[])
   return EXIT_SUCCESS;
 }
 
-void CallbackFunction(vtkObject* /* caller */,
-                long unsigned int /* eventId */,
-                void* /* clientData */, void* /* callData */)
+namespace {
+
+void CallbackFunction(vtkObject* /* caller */, long unsigned int /* eventId */,
+                      void* /* clientData */, void* /* callData */)
 {
   std::cout << "CallbackFunction called." << std::endl;
 }
+
+} // namespace

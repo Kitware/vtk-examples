@@ -49,9 +49,9 @@ int vtkTestFilter::RequestData(vtkInformation *vtkNotUsed(request),
  vtkInformationVector *)
 {
   // Get the info object
-//  vtkInformation *outInfo = outputVector->GetInformationObject(0);
+//  auto outInfo = outputVector->GetInformationObject(0);
 
-//  vtkPolyData *output = vtkPolyData::SafeDownCast(
+//  auto output = vtkPolyData::SafeDownCast(
 //      outInfo->Get(vtkDataObject::DATA_OBJECT()));
   this->InvokeEvent(this->RefreshEvent, nullptr);
 

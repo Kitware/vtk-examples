@@ -1,52 +1,56 @@
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkSphereSource.h>
+#include <vtkCamera.h>
 #include <vtkInteractorStyleRubberBandZoom.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
-  
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
+
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("RubberBandZoom");
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderWindow->SetWindowName("RubberBandZoom");
+
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   renderWindow->Render();
 
-  vtkSmartPointer<vtkInteractorStyleRubberBandZoom> style = 
-    vtkSmartPointer<vtkInteractorStyleRubberBandZoom>::New();
-  
-  renderWindowInteractor->SetInteractorStyle( style );
-  
+  vtkNew<vtkInteractorStyleRubberBandZoom> style;
+
+  renderWindowInteractor->SetInteractorStyle(style);
+
+  renderer->GetActiveCamera()->Zoom(0.5);
+
   // Begin mouse interaction
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }
