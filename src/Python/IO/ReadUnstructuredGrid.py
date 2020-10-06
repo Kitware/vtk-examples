@@ -39,20 +39,22 @@ def main():
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
     actor.GetProperty().SetLineWidth(2.0)
+    actor.GetProperty().SetColor(colors.GetColor3d("MistyRose"))
 
     backface = vtk.vtkProperty()
-    backface.SetColor(colors.GetColor3d('tomato'))
+    backface.SetColor(colors.GetColor3d('Tomato'))
     actor.SetBackfaceProperty(backface)
 
     # Create the Renderer
     renderer = vtk.vtkRenderer()
     renderer.AddActor(actor)
-    renderer.SetBackground(1, 1, 1)  # Set background to white
     renderer.SetBackground(colors.GetColor3d('Wheat'))
 
     # Create the RendererWindow
     renderer_window = vtk.vtkRenderWindow()
+    renderer_window.SetSize(640, 480)
     renderer_window.AddRenderer(renderer)
+    renderer_window.SetWindowName('ReadUnstructuredGrid')
 
     # Create the RendererWindowInteractor and display the vtk_file
     interactor = vtk.vtkRenderWindowInteractor()

@@ -1,16 +1,19 @@
-#include <vtkSmartPointer.h>
-#include <vtkProperty.h>
 #include <vtkDataSetMapper.h>
-#include <vtkXMLRectilinearGridReader.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRectilinearGridGeometryFilter.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkXMLRectilinearGridReader.h>
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Verify input arguments
-  if(argc < 2)
+  if (argc < 2)
   {
     std::cout << "Usage: " << argv[0]
               << " Filename.vtr e.g. RectilinearGrid.vtr" << std::endl;
@@ -21,38 +24,33 @@ int main(int argc, char* argv[])
   std::string inputFilename = argv[1];
 
   // Read the file
-  vtkSmartPointer<vtkXMLRectilinearGridReader> reader =
-    vtkSmartPointer<vtkXMLRectilinearGridReader>::New();
+  vtkNew<vtkXMLRectilinearGridReader> reader;
   reader->SetFileName(inputFilename.c_str());
   reader->Update();
-/*
-  vtkSmartPointer<vtkRectilinearGridGeometryFilter> geometryFilter =
-    vtkSmartPointer<vtkRectilinearGridGeometryFilter>::New();
-  geometryFilter->SetInputConnection(reader->GetOutputPort());
-  geometryFilter->Update();
-*/
+
+  // vtkNew<vtkRectilinearGridGeometryFilter> geometryFilter;
+  // geometryFilter->SetInputConnection(reader->GetOutputPort());
+  // geometryFilter->Update();
+
   // Visualize
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
-  //mapper->SetInputConnection(geometryFilter->GetOutputPort());
+  vtkNew<vtkDataSetMapper> mapper;
+  // mapper->SetInputConnection(geometryFilter->GetOutputPort());
   mapper->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetRepresentationToWireframe();
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("ReadRectilinearGrid");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
-  renderer->SetBackground(.3, .6, .3); // Background color green
+  renderer->SetBackground(colors->GetColor3d("LightSteelBlue").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();

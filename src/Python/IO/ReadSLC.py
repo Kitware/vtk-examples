@@ -4,7 +4,7 @@ import vtk
 
 
 def main():
-    InputFilename = get_program_parameters()
+    InputFilename, iso_value = get_program_parameters()
 
     colors = vtk.vtkNamedColors()
 
@@ -20,7 +20,10 @@ def main():
     # Implementing Marching Cubes Algorithm to create the surface using vtkContourFilter object.
     contourFilter = vtk.vtkContourFilter()
     contourFilter.SetInputConnection(reader.GetOutputPort())
-    contourFilter.SetValue(0, 72.0)
+    # Change the range(2nd and 3rd Paramater) based on your
+    # requirement. recomended value for 1st parameter is above 1
+    # contourFilter.GenerateValues(5, 80.0, 100.0)
+    contourFilter.SetValue(0, iso_value)
 
     outliner = vtk.vtkOutlineFilter()
     outliner.SetInputConnection(reader.GetOutputPort())
@@ -32,6 +35,10 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
+    actor.GetProperty().SetDiffuse(0.8)
+    actor.GetProperty().SetDiffuseColor(colors.GetColor3d('Ivory'))
+    actor.GetProperty().SetSpecular(0.8)
+    actor.GetProperty().SetSpecularPower(120.0)
 
     # Create a rendering window and renderer.
     renderer = vtk.vtkRenderer()
@@ -45,14 +52,19 @@ def main():
 
     # Assign actor to the renderer.
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d('lemon_chiffon'))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
     # Pick a good view
-    renderer.GetActiveCamera().SetPosition(-382.606608, -3.308563, 223.475751)
-    renderer.GetActiveCamera().SetFocalPoint(77.311562, 72.821162, 100.000000)
-    renderer.GetActiveCamera().SetViewUp(0.235483, 0.137775, 0.962063)
-    renderer.GetActiveCamera().SetDistance(482.25171)
-    renderer.GetActiveCamera().SetClippingRange(27.933848, 677.669341)
+    cam1 = renderer.GetActiveCamera()
+    cam1.SetFocalPoint(0.0, 0.0, 0.0)
+    cam1.SetPosition(0.0, -1.0, 0.0)
+    cam1.SetViewUp(0.0, 0.0, -1.0)
+    cam1.Azimuth(-90.0)
+    renderer.ResetCamera()
+    renderer.ResetCameraClippingRange()
+
+    renderWindow.SetWindowName('ReadSLC')
+    renderWindow.SetSize(640, 512)
     renderWindow.Render()
 
     # Enable user interface interactor.
@@ -68,8 +80,9 @@ def get_program_parameters():
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('filename', help='vw_knee.slc.')
+    parser.add_argument('iso_value', nargs='?', type=float, default=72.0, help='Defaullt 72.')
     args = parser.parse_args()
-    return args.filename
+    return args.filename, args.iso_value
 
 
 if __name__ == '__main__':

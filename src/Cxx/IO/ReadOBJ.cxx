@@ -1,49 +1,44 @@
-#include <vtkSmartPointer.h>
-#include <vtkOBJReader.h>
-
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkProperty.h>
 #include <vtkCamera.h>
-#include <vtkRenderer.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkOBJReader.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkNamedColors.h>
+#include <vtkRenderer.h>
 
 #include <string>
 
 int main(int argc, char* argv[])
 {
   // Parse command line arguments
-  if(argc != 2)
+  if (argc != 2)
   {
-    std::cout << "Usage: " << argv[0] << "Filename(.obj) e.g trumpet.obj " << std::endl;
+    std::cout << "Usage: " << argv[0] << "Filename(.obj) e.g trumpet.obj"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   std::string filename = argv[1];
-  vtkSmartPointer<vtkOBJReader> reader =
-    vtkSmartPointer<vtkOBJReader>::New();
+  vtkNew<vtkOBJReader> reader;
   reader->SetFileName(filename.c_str());
   reader->Update();
 
   // Visualize
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   vtkColor3d backgroundColor = colors->GetColor3d("SpringGreen");
-  vtkColor3d actorColor      = colors->GetColor3d("HoneyDew");
+  vtkColor3d actorColor = colors->GetColor3d("HoneyDew");
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetDiffuseColor(actorColor.GetData());
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
   renderer->SetBackground(backgroundColor.GetData());
   renderer->ResetCamera();
@@ -52,12 +47,11 @@ int main(int argc, char* argv[])
   renderer->GetActiveCamera()->Dolly(1.5);
   renderer->ResetCameraClippingRange();
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ReadOBJ");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderWindow->SetSize(640, 480);

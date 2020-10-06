@@ -32,7 +32,7 @@ def main():
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
-    ren.SetBackground(colors.GetColor3d('AliceBlue'))
+    renWin.SetWindowName('ReadVTP')
 
     # Create a renderwindowinteractor
     iren = vtk.vtkRenderWindowInteractor()
@@ -44,6 +44,8 @@ def main():
     # Enable user interface interactor
     iren.Initialize()
     renWin.Render()
+
+    ren.SetBackground(colors.GetColor3d('AliceBlue'))
     ren.GetActiveCamera().SetPosition(-0.5, 0.1, 0.0)
     ren.GetActiveCamera().SetViewUp(0.1, 0.0, 1.0)
     renWin.Render()

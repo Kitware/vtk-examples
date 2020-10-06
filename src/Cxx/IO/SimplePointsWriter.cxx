@@ -1,15 +1,13 @@
-#include <vtkSmartPointer.h>
-#include <vtkSphereSource.h>
+#include <vtkNew.h>
 #include <vtkSimplePointsWriter.h>
+#include <vtkSphereSource.h>
 
 int main(int vtkNotUsed(argc), char* vtkNotUsed(argv)[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
-  vtkSmartPointer<vtkSimplePointsWriter> writer =
-    vtkSmartPointer<vtkSimplePointsWriter>::New();
+  vtkNew<vtkSimplePointsWriter> writer;
   writer->SetFileName("test.xyz");
   writer->SetInputConnection(sphereSource->GetOutputPort());
   writer->Write();

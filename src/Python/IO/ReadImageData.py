@@ -45,7 +45,6 @@ def main():
     renderer_window.AddRenderer(renderer)
     renderer_window.SetWindowName('ReadImageData')
 
-
     # Create the RendererWindowInteractor and display the vti file
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderer_window)

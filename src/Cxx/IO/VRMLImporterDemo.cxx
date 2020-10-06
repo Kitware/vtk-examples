@@ -2,6 +2,8 @@
 #include <vtkCamera.h>
 #include <vtkLookupTable.h>
 #include <vtkMapper.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -10,35 +12,32 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkUnsignedCharArray.h>
 #include <vtkVRMLImporter.h>
-
-#include <vtkNamedColors.h>
 
 int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    std::cout << "Required arguments: Filename" << std::endl;
+    std::cout << "Required arguments: Filename e.g. grasshop.wrl" << std::endl;
     return EXIT_FAILURE;
   }
 
   std::string filename = argv[1];
   std::cout << "Reading " << filename << std::endl;
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("VRMLImporterDemo");
 
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // VRML Import
-  auto importer = vtkSmartPointer<vtkVRMLImporter>::New();
+  vtkNew<vtkVRMLImporter> importer;
   importer->SetFileName(filename.c_str());
   importer->SetRenderWindow(renderWindow);
   importer->Update();
@@ -79,7 +78,7 @@ int main(int argc, char* argv[])
       vtkPolyData* dataSet = dynamic_cast<vtkPolyData*>(mapper->GetInput());
       if (!dataSet->GetPointData()->GetNormals())
       {
-        auto normals = vtkSmartPointer<vtkPolyDataNormals>::New();
+        vtkNew<vtkPolyDataNormals> normals;
         normals->SetInputData(dataSet);
         normals->SplittingOff();
         normals->Update();
@@ -91,7 +90,7 @@ int main(int argc, char* argv[])
           dynamic_cast<vtkLookupTable*>(mapper->GetLookupTable());
       if (lut && mapper->GetScalarVisibility())
       {
-        auto pc = vtkSmartPointer<vtkUnsignedCharArray>::New();
+        vtkNew<vtkUnsignedCharArray> pc;
         pc->SetNumberOfComponents(4);
         pc->SetNumberOfTuples(lut->GetNumberOfColors());
         for (int t = 0; t < lut->GetNumberOfColors(); ++t)
@@ -113,7 +112,7 @@ int main(int argc, char* argv[])
   renderer->GetActiveCamera()->Dolly(1.4);
   renderer->ResetCameraClippingRange();
 
-  renderer->SetBackground(colors->GetColor3d("PaleGreen").GetData());
+  renderer->SetBackground(colors->GetColor3d("SpringGreen").GetData());
   renderWindow->SetSize(640, 480);
   renderWindow->Render();
   renderWindowInteractor->Start();

@@ -3,7 +3,8 @@
 Here is an example of a custom file-format reader that produces a VTK XML PolyData file from a plain-text input format.  
 
 #### Input Format
-```
+
+``` text
 number_of_points
 number_of_triangles
 point[point[0]Y point[0](0]X)Z
@@ -18,7 +19,7 @@ triangle[triangle[M]B triangle[M](M]A)C
 
 #### Example Input
 
-```
+``` text
 3
 1
 0.0 0.0 0.0

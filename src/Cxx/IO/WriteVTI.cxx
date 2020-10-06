@@ -1,4 +1,4 @@
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkProperty.h>
 #include <vtkXMLImageDataWriter.h>
 #include <vtkXMLImageDataReader.h>
@@ -9,11 +9,15 @@
 #include <vtkRenderWindow.h>
 #include <vtkActor.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 
 int main(int argc, char *argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Parse command line arguments
-  if(argc != 2)
+  if (argc != 2)
   {
     std::cout << "Required arguments: filename.vti" << std::endl;
     return EXIT_FAILURE;
@@ -21,9 +25,8 @@ int main(int argc, char *argv[])
 
   std::string filename = argv[1];
 
-  vtkSmartPointer<vtkImageData> imageData =
-    vtkSmartPointer<vtkImageData>::New();
-  imageData->SetDimensions(3,4,5);
+  vtkNew<vtkImageData> imageData;
+  imageData->SetDimensions(3, 4, 5);
   imageData->AllocateScalars(VTK_DOUBLE, 1);
 
   int* dims = imageData->GetDimensions();
@@ -35,52 +38,48 @@ int main(int argc, char *argv[])
     {
       for (int x = 0; x < dims[0]; x++)
       {
-        double* pixel = static_cast<double*>(imageData->GetScalarPointer(x,y,z));
+        double* pixel =
+            static_cast<double*>(imageData->GetScalarPointer(x, y, z));
         pixel[0] = 2.0;
       }
     }
   }
 
-  vtkSmartPointer<vtkXMLImageDataWriter> writer =
-    vtkSmartPointer<vtkXMLImageDataWriter>::New();
+  vtkNew<vtkXMLImageDataWriter> writer;
   writer->SetFileName(filename.c_str());
   writer->SetInputData(imageData);
   writer->Write();
 
   // Read the file (to test that it was written correctly)
-  vtkSmartPointer<vtkXMLImageDataReader> reader =
-    vtkSmartPointer<vtkXMLImageDataReader>::New();
+  vtkNew<vtkXMLImageDataReader> reader;
   reader->SetFileName(filename.c_str());
   reader->Update();
 
   // Convert the image to a polydata
-  vtkSmartPointer<vtkImageDataGeometryFilter> imageDataGeometryFilter =
-    vtkSmartPointer<vtkImageDataGeometryFilter>::New();
+  vtkNew<vtkImageDataGeometryFilter> imageDataGeometryFilter;
   imageDataGeometryFilter->SetInputConnection(reader->GetOutputPort());
   imageDataGeometryFilter->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(imageDataGeometryFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetPointSize(3);
 
+
   // Setup rendering
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1);
+  renderer->SetBackground(colors->GetColor3d("AliceBlue").GetData());
   renderer->ResetCamera();
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("WriteVTI");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
 
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderWindow->Render();

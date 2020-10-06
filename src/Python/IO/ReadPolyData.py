@@ -30,7 +30,7 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d('BurlyWood'))
+    actor.GetProperty().SetColor(colors.GetColor3d('NavajoWhite'))
 
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
@@ -39,7 +39,7 @@ def main():
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d('Teal'))
+    renderer.SetBackground(colors.GetColor3d('DarkOliveGreen'))
     renderer.GetActiveCamera().Pitch(90)
     renderer.GetActiveCamera().SetViewUp(0, 0, 1)
     renderer.ResetCamera()

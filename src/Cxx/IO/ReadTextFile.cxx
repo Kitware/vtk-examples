@@ -1,21 +1,25 @@
-#include <vtkSmartPointer.h>
-#include <vtkPoints.h>
-#include <vtkVertexGlyphFilter.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderer.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPoints.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkVertexGlyphFilter.h>
 
 #include <sstream>
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Verify input arguments
-  if ( argc != 2 )
+  if (argc != 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " Filename(.xyz)" << std::endl;
+    std::cout << "Usage: " << argv[0] << " Filename(.txt) e.g. TeapotPoints.txt"
+              << std::endl;
     return EXIT_FAILURE;
   }
   // Get all data from the file
@@ -23,10 +27,9 @@ int main(int argc, char* argv[])
   std::ifstream filestream(filename.c_str());
 
   std::string line;
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
 
-  while(std::getline(filestream, line))
+  while (std::getline(filestream, line))
   {
     double x, y, z;
     std::stringstream linestream;
@@ -38,37 +41,32 @@ int main(int argc, char* argv[])
 
   filestream.close();
 
-  vtkSmartPointer<vtkPolyData> polyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polyData;
 
   polyData->SetPoints(points);
 
-  vtkSmartPointer<vtkVertexGlyphFilter> glyphFilter =
-    vtkSmartPointer<vtkVertexGlyphFilter>::New();
+  vtkNew<vtkVertexGlyphFilter> glyphFilter;
   glyphFilter->SetInputData(polyData);
   glyphFilter->Update();
 
   // Visualize
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(glyphFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MidnightBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
-  renderer->SetBackground(.3, .6, .3); // Background color green
+  renderer->SetBackground(colors->GetColor3d("Gainsboro").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ReadTextFile");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();

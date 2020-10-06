@@ -1,6 +1,6 @@
 ### Description
 
-In this example you will familiarize yourself with the stages required to read a .slc file and create a visualization pipeline in VTK. 
+In this example you will familiarize yourself with the stages required to read a .slc file and create a visualization pipeline in VTK.
 Following is the three step procedure:
 
 1. Read the data from .slc file using vtkSLCReader
