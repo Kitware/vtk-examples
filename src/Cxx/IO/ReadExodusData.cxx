@@ -1,22 +1,22 @@
-#include <vtkNew.h>
-#include <vtkNamedColors.h>
-#include <vtkExodusIIReader.h>
-#include <vtkCompositeDataGeometryFilter.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
 #include <vtkCamera.h>
-#include <vtkRenderer.h>
+#include <vtkCompositeDataGeometryFilter.h>
+#include <vtkExodusIIReader.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkCompositeDataGeometryFilter.h>
+#include <vtkRenderer.h>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  vtkNew<vtkNamedColors>  colors;
+  vtkNew<vtkNamedColors> colors;
 
   if (argc < 3)
   {
-    std::cout << "Ysage: " << argv[0] << " exodus_file.e nodal_variable";
+    std::cout << "Usage: " << argv[0]
+              << " exodus_file.e nodal_variable e.g mug.e convected";
     return EXIT_FAILURE;
   }
 
@@ -25,7 +25,8 @@ int main (int argc, char *argv[])
   reader->SetFileName(argv[1]);
   reader->UpdateInformation();
   reader->SetTimeStep(10);
-  reader->SetAllArrayStatus(vtkExodusIIReader::NODAL, 1);  // enables all NODAL variables
+  reader->SetAllArrayStatus(vtkExodusIIReader::NODAL,
+                            1); // enables all NODAL variables
 
   // Create Geometry
   vtkNew<vtkCompositeDataGeometryFilter> geometry;
@@ -53,9 +54,10 @@ int main (int argc, char *argv[])
   renderer->GetActiveCamera()->SetDistance(14.5);
 
   // Window and Interactor
-  vtkNew<vtkRenderWindow>  window;
+  vtkNew<vtkRenderWindow> window;
   window->AddRenderer(renderer);
   window->SetSize(600, 600);
+  window->SetWindowName("ReadExodusData");
 
   vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(window);

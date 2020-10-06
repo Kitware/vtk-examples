@@ -10,7 +10,7 @@ def main():
     filename = get_program_parameters()
 
     # Create the reader for the data.
-    print("Loading ", filename)
+    print('Loading ', filename)
     reader = vtk.vtkUnstructuredGridReader()
     reader.SetFileName(filename)
     reader.Update()
@@ -25,7 +25,7 @@ def main():
         cell = vtk.vtkGenericCell()
         it.GetCell(cell)
         cellName = vtk.vtkCellTypes.GetClassNameFromTypeId(cell.GetCellType())
-        print(cellName, "NumberOfPoints:", cell.GetNumberOfPoints(), "CellDimension:", cell.GetCellDimension())
+        print(cellName, 'NumberOfPoints:', cell.GetNumberOfPoints(), 'CellDimension:', cell.GetCellDimension())
         legendValues.InsertNextValue(cellName)
         it.GoToNextCell()
 
@@ -41,14 +41,14 @@ def main():
 
     edgeActor = vtk.vtkActor()
     edgeActor.SetMapper(edgeMapper)
-    edgeActor.GetProperty().SetSpecular(.6)
+    edgeActor.GetProperty().SetSpecular(0.6)
     edgeActor.GetProperty().SetSpecularPower(30)
 
     # Glyph the points
     sphere = vtk.vtkSphereSource()
     sphere.SetPhiResolution(21)
     sphere.SetThetaResolution(21)
-    sphere.SetRadius(.08)
+    sphere.SetRadius(0.08)
 
     pointMapper = vtk.vtkGlyph3DMapper()
     pointMapper.SetInputConnection(reader.GetOutputPort())
@@ -58,8 +58,8 @@ def main():
 
     pointActor = vtk.vtkActor()
     pointActor.SetMapper(pointMapper)
-    pointActor.GetProperty().SetDiffuseColor(colors.GetColor3d("Banana"))
-    pointActor.GetProperty().SetSpecular(.6)
+    pointActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Banana'))
+    pointActor.GetProperty().SetSpecular(0.6)
     pointActor.GetProperty().SetSpecularColor(1.0, 1.0, 1.0)
     pointActor.GetProperty().SetSpecularPower(100)
 
@@ -72,7 +72,7 @@ def main():
     # The geometry
     geometryShrink = vtk.vtkShrinkFilter()
     geometryShrink.SetInputConnection(reader.GetOutputPort())
-    geometryShrink.SetShrinkFactor(.8)
+    geometryShrink.SetShrinkFactor(0.8)
 
     # NOTE: We must copy the originalLut because the CategoricalLegend
     # needs an indexed lookup table, but the geometryMapper uses a
@@ -100,8 +100,8 @@ def main():
     legend = vtk.vtkCategoryLegend()
     legend.SetScalarsToColors(categoricalLut)
     legend.SetValues(legendValues)
-    legend.SetTitle("Cell Type")
-    legend.GetBrush().SetColor(colors.GetColor4ub("Silver"))
+    legend.SetTitle('Cell Type')
+    legend.GetBrush().SetColor(colors.GetColor4ub('Silver'))
 
     placeLegend = vtk.vtkContextTransform()
     placeLegend.AddItem(legend)
@@ -121,7 +121,7 @@ def main():
     renderer.AddActor(labelActor)
     renderer.AddActor(edgeActor)
     renderer.AddActor(pointActor)
-    renderer.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
     aCamera = vtk.vtkCamera()
     aCamera.Azimuth(-40.0)
@@ -131,6 +131,7 @@ def main():
     renderer.ResetCamera()
 
     renderWindow.SetSize(640, 480)
+    renderWindow.SetWindowName('ReadLegacyUnstructuredGrid')
     renderWindow.Render()
 
     renderWindowInteractor.Start()

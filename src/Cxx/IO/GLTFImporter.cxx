@@ -1,53 +1,47 @@
-#include <vtkSmartPointer.h>
-#include <vtkGLTFImporter.h>
-
 #include <vtkCamera.h>
+#include <vtkGLTFImporter.h>
+#include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkLight.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkRenderer.h>
-#include <vtkNamedColors.h>
 
 int main(int argc, char* argv[])
 {
   if (argc <= 1)
   {
-    std::cout << "Usage: " << argv[0] << " <gltf file>" << std::endl;
+    std::cout << "Usage: " << argv[0] << " <gltf file> e.g. FlightHelmet.gltf"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   vtkColor3d backgroundColor = colors->GetColor3d("SlateGray");
 
-  auto importer =
-    vtkSmartPointer<vtkGLTFImporter>::New();
+  vtkNew<vtkGLTFImporter> importer;
   importer->SetFileName(argv[1]);
 
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(backgroundColor.GetData());
   renderer->UseHiddenLineRemovalOn();
 
-  auto renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 512);
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("GLTFImporter");
 
-  auto renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
-  auto style =
-    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+  vtkNew<vtkInteractorStyleTrackballCamera> style;
   renderWindowInteractor->SetInteractorStyle(style);
 
   importer->SetRenderWindow(renderWindow);
   importer->Update();
 
-  auto headLight =
-    vtkSmartPointer<vtkLight>::New();
+  vtkNew<vtkLight> headLight;
   headLight->SetLightTypeToHeadlight();
   headLight->SwitchOn();
   renderer->AddLight(headLight);

@@ -149,11 +149,8 @@ if (BUILD_TESTING)
   add_test(${KIT}-ExportPolyDataScene ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestExportPolyDataScene ${DATA}/Bunny.vtp)
 
-  add_test(${KIT}-ImportPolyDataScene ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestImportPolyDataScene ${DATA}/ExportBunny.vtp)
-
   add_test(${KIT}-GenericDataObjectReader ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestGenericDataObjectReader ${DATA}/Bunny.vtp)
+    TestGenericDataObjectReader ${DATA}/blow.vtk)
 
   add_test(${KIT}-GLTFImporterExporter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
      TestGLTFImporter ${TEMP}/GLTFExporter.gltf -V ${DATA}/../Baseline/Cxx/IO/TestGLTFImporterExporter.png)
@@ -165,6 +162,9 @@ if (BUILD_TESTING)
     add_test(${KIT}-GLTFImporter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
       TestGLTFImporter ${DATA}/glTF/FlightHelmet/glTF/FlightHelmet.gltf)
     endif()
+
+  add_test(${KIT}-ImportPolyDataScene ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestImportPolyDataScene ${DATA}/ExportBunny.vtp)
 
   add_test(${KIT}-ImportToExport ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestImportToExport ${DATA}/iflamingo.3ds iflamingo.obj)

@@ -5,13 +5,13 @@
 #include <vtkFieldData.h>
 #include <vtkMultiBlockDataSet.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkVersion.h>
 #include <vtkXMLMultiBlockDataReader.h>
 
@@ -23,28 +23,32 @@
 namespace {
 void ImportMultiBlockScene(vtkRenderer* renderer, std::string fileName);
 void RestoreCameraFromFieldData(std::string const&, vtkCamera*, vtkPolyData*);
-void RestorePropertyFromFieldData(std::string const&, vtkProperty*, vtkPolyData*);
+void RestorePropertyFromFieldData(std::string const&, vtkProperty*,
+                                  vtkPolyData*);
 void RestoreActorFromFieldData(std::string const&, vtkActor*, vtkPolyData*);
-// void RestoreMapperFromFieldData(std::string const&, vtkPolyDataMapper *, vtkPolyData
-// *); void RestoreLookupTableFromFieldData(std::string const&, vtkScalarsToColors *,
-// vtkPolyData *);
+// These functions need to be written.
+// void RestoreMapperFromFieldData(std::string const&, vtkPolyDataMapper*,
+//                                vtkPolyData*);
+// void RestoreLookupTableFromFieldData(std::string const&, vtkScalarsToColors*,
+//                                     vtkPolyData*);
 } // namespace
 
 int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0] << " file.vtp" << std::endl;
+    std::cout << "Usage: " << argv[0] << " file.vtp e.g ExportBunny.vtp"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   // Visualization
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkNamedColors> colors;
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("ImportPolyDataScene");
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   ImportMultiBlockScene(renderer.GetPointer(), std::string(argv[1]));
@@ -65,11 +69,13 @@ void ImportMultiBlockScene(vtkRenderer* renderer, std::string fileName)
   vtkCamera* camera = renderer->GetActiveCamera();
 
   // Read the multiblock data
-  auto reader = vtkSmartPointer<vtkXMLMultiBlockDataReader>::New();
+  // auto reader = vtkSmartPointer<vtkXMLMultiBlockDataReader>::New();
+  vtkNew<vtkXMLMultiBlockDataReader> reader;
   reader->SetFileName(fileName.c_str());
   reader->Update();
   std::cout << "Importing "
-            << dynamic_cast<vtkMultiBlockDataSet*>(reader->GetOutput())->GetNumberOfBlocks()
+            << dynamic_cast<vtkMultiBlockDataSet*>(reader->GetOutput())
+                   ->GetNumberOfBlocks()
             << " actors" << std::endl;
 
 #if VTK890
@@ -82,13 +88,13 @@ void ImportMultiBlockScene(vtkRenderer* renderer, std::string fileName)
   {
     vtkPolyData* pd = dynamic_cast<vtkPolyData*>(dso);
     RestoreCameraFromFieldData("Camera", camera, pd);
-    auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputData(pd);
 
-    auto actor = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> actor;
     actor->SetMapper(mapper);
     RestorePropertyFromFieldData("Property", actor->GetProperty(), pd);
-    auto backProperty = vtkSmartPointer<vtkProperty>::New();
+    vtkNew<vtkProperty> backProperty;
     actor->SetBackfaceProperty(backProperty);
     RestorePropertyFromFieldData("BackfaceProperty",
                                  actor->GetBackfaceProperty(), pd);
@@ -99,7 +105,7 @@ void ImportMultiBlockScene(vtkRenderer* renderer, std::string fileName)
   vtkCompositeDataSet* input =
       dynamic_cast<vtkCompositeDataSet*>(reader->GetOutput());
 
-  auto iter = vtkSmartPointer<vtkDataObjectTreeIterator>::New();
+  vtkNew<vtkDataObjectTreeIterator> iter;
   iter->SetDataSet(input);
   iter->SkipEmptyNodesOn();
   iter->VisitOnlyLeavesOn();
@@ -109,13 +115,13 @@ void ImportMultiBlockScene(vtkRenderer* renderer, std::string fileName)
     vtkDataObject* dso = iter->GetCurrentDataObject();
     vtkPolyData* pd = dynamic_cast<vtkPolyData*>(dso);
     RestoreCameraFromFieldData("Camera", camera, pd);
-    auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputData(pd);
 
-    auto actor = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> actor;
     actor->SetMapper(mapper);
     RestorePropertyFromFieldData("Property", actor->GetProperty(), pd);
-    auto backProperty = vtkSmartPointer<vtkProperty>::New();
+    vtkNew<vtkProperty> backProperty;
     actor->SetBackfaceProperty(backProperty);
     RestorePropertyFromFieldData("BackfaceProperty",
                                  actor->GetBackfaceProperty(), pd);
@@ -124,8 +130,8 @@ void ImportMultiBlockScene(vtkRenderer* renderer, std::string fileName)
   }
 #endif
 }
-void RestoreCameraFromFieldData(std::string const& arrayPrefix, vtkCamera* camera,
-                                vtkPolyData* pd)
+void RestoreCameraFromFieldData(std::string const& arrayPrefix,
+                                vtkCamera* camera, vtkPolyData* pd)
 {
   vtkFieldData* fd = pd->GetFieldData();
   camera->SetFocalPoint(

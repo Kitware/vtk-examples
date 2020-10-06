@@ -1,54 +1,54 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkBYUReader.h>
 #include <vtkOBJReader.h>
 #include <vtkPLYReader.h>
 #include <vtkPolyDataReader.h>
 #include <vtkSTLReader.h>
 #include <vtkXMLPolyDataReader.h>
-#include <vtkSphereSource.h>
 
 #include <vtkActor.h>
+#include <vtkCamera.h>
+#include <vtkNamedColors.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkCamera.h>
-
-#include <vtkNamedColors.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 #include <vtkTimerLog.h>
 #include <vtksys/SystemTools.hxx>
 
-#include <string>
 #include <algorithm>
-#include <random>
 #include <array>
+#include <random>
+#include <string>
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
 }
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   // Vis Pipeline
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer->SetBackground(colors->GetColor3d("Wheat").GetData());
   renderer->UseHiddenLineRemovalOn();
 
-  std::mt19937 mt(4355412); //Standard mersenne_twister_engine
-  std::uniform_real_distribution<double> distribution(.6, 1.0);
+  // Note: If a Python version is written, it is probably best to use
+  //       vtkMinimalStandardRandomSequence in it and here, to ensure
+  //       that the randomnumber generation is the same.
+  std::mt19937 mt(4355412); // Standard mersenne_twister_engine
+  std::uniform_real_distribution<double> distribution(0.6, 1.0);
 
   // PolyData file pipeline
   for (int i = 1; i < argc; ++i)
@@ -57,93 +57,94 @@ int main (int argc, char *argv[])
     auto polyData = ReadPolyData(argv[i]);
 
     // Visualize
-    auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputData(polyData);
 
     std::array<double, 3> randomColor;
     randomColor[0] = distribution(mt);
     randomColor[1] = distribution(mt);
     randomColor[2] = distribution(mt);
-    auto backProp = vtkSmartPointer<vtkProperty>::New();
+    vtkNew<vtkProperty> backProp;
     backProp->SetDiffuseColor(colors->GetColor3d("Banana").GetData());
-    backProp->SetSpecular(.6);
+    backProp->SetSpecular(0.6);
     backProp->SetSpecularPower(30);
 
-    auto actor = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> actor;
     actor->SetMapper(mapper);
     actor->SetBackfaceProperty(backProp);
     actor->GetProperty()->SetDiffuseColor(randomColor.data());
-    actor->GetProperty()->SetSpecular(.3);
+    actor->GetProperty()->SetSpecular(0.3);
     actor->GetProperty()->SetSpecularPower(30);
     renderer->AddActor(actor);
   }
 
+  renderWindow->SetWindowName("ReadAllPolyDataTypes");
   renderWindow->Render();
   interactor->Start();
 
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
   std::string extension =
-    vtksys::SystemTools::GetFilenameLastExtension(std::string(fileName));
+      vtksys::SystemTools::GetFilenameLastExtension(std::string(fileName));
 
   // Drop the case of the extension
-  std::transform(extension.begin(), extension.end(),
-                 extension.begin(), ::tolower);
+  std::transform(extension.begin(), extension.end(), extension.begin(),
+                 ::tolower);
 
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPLYReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkOBJReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkSTLReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
-    reader->SetGeometryFileName (fileName);
+    vtkNew<vtkBYUReader> reader;
+    reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->Update();
     polyData = source->GetOutput();
   }
+
   return polyData;
 }
-}
+} // namespace

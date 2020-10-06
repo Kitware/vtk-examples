@@ -2,19 +2,26 @@
 #include <vtkActor2D.h>
 #include <vtkBYUReader.h>
 #include <vtkCamera.h>
+#include <vtkCellArray.h>
 #include <vtkCoordinate.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOBJReader.h>
 #include <vtkPLYReader.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkPolyDataMapper2D.h>
 #include <vtkPolyDataReader.h>
+#include <vtkPolyLine.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
+#include <vtkProperty2D.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSTLReader.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
-#include <vtkSTLReader.h>
 #include <vtkTextMapper.h>
 #include <vtkTextProperty.h>
 #include <vtkTimerLog.h>
@@ -22,57 +29,54 @@
 
 #include <vtksys/SystemTools.hxx>
 
-#include <string>
 #include <algorithm>
+#include <string>
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
-}
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
 
-namespace
-{
-void ViewportBorder(vtkSmartPointer<vtkRenderer> &renderer,
-                    double *color,
+void ViewportBorder(vtkSmartPointer<vtkRenderer>& renderer, double* color,
                     bool last = false);
-}
-int main (int argc, char *argv[])
+} // namespace
+
+int main(int argc, char* argv[])
 {
   // Visualize
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create one text property for all
-  auto textProperty = vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkTextProperty> textProperty;
   textProperty->SetFontSize(16);
   textProperty->SetColor(0.3, 0.3, 0.3);
 
   // Setup render window
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   std::vector<vtkSmartPointer<vtkRenderer>> renderers;
   for (auto i = 1; i < argc; ++i)
   {
     std::cout << argv[i] << std::endl;
     auto polyData = ReadPolyData(argv[i]);
-    auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputData(polyData);
 
-    auto actor = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> actor;
     actor->SetMapper(mapper);
-    actor->GetProperty()->SetDiffuseColor(colors->GetColor3d("Light_salmon").GetData());
-    actor->GetProperty()->SetSpecular(.6);
+    actor->GetProperty()->SetDiffuseColor(
+        colors->GetColor3d("Light_salmon").GetData());
+    actor->GetProperty()->SetSpecular(0.6);
     actor->GetProperty()->SetSpecularPower(30);
 
     // Create textActors
-    auto textMapper = vtkSmartPointer<vtkTextMapper>::New();
+    vtkNew<vtkTextMapper> textMapper;
     textMapper->SetTextProperty(textProperty);
     textMapper->SetInput(vtksys::SystemTools::GetFilenameName(argv[i]).c_str());
 
-    auto textActor = vtkSmartPointer<vtkActor2D>::New();
+    vtkNew<vtkActor2D> textActor;
     textActor->SetMapper(textMapper);
     textActor->SetPosition(20, 20);
 
     // Setup renderer
-    auto renderer = vtkSmartPointer<vtkRenderer>::New();
+    vtkNew<vtkRenderer> renderer;
     renderer->AddActor(actor);
     renderer->AddActor(textActor);
     renderer->SetBackground(colors->GetColor3d("mint").GetData());
@@ -85,12 +89,12 @@ int main (int argc, char *argv[])
   auto xGridDimensions = 3;
   auto yGridDimensions = 2;
   yGridDimensions = argc / xGridDimensions;
-  renderWindow->SetSize(
-    rendererSize * xGridDimensions, rendererSize * yGridDimensions);
+  renderWindow->SetSize(rendererSize * xGridDimensions,
+                        rendererSize * yGridDimensions);
   auto blank = argc - 1 + ((argc - 1) % xGridDimensions);
   for (auto i = argc; i < blank; ++i)
   {
-    auto renderer = vtkSmartPointer<vtkRenderer>::New();
+    vtkNew<vtkRenderer> renderer;
     renderer->SetBackground(colors->GetColor3d("White").GetData());
     renderers.push_back(renderer);
     renderWindow->AddRenderer(renderer);
@@ -103,112 +107,100 @@ int main (int argc, char *argv[])
       auto index = row * xGridDimensions + col;
 
       // (xmin, ymin, xmax, ymax)
-      double viewport[4] = {
-        static_cast<double>(col) * rendererSize /
-        (xGridDimensions * rendererSize),
-        static_cast<double>(yGridDimensions - (row + 1)) * rendererSize /
-        (yGridDimensions * rendererSize),
-        static_cast<double>(col + 1) * rendererSize /
-        (xGridDimensions * rendererSize),
-        static_cast<double>(yGridDimensions - row) * rendererSize /
-        (yGridDimensions * rendererSize)};
+      double viewport[4] = {static_cast<double>(col) * rendererSize /
+                                (xGridDimensions * rendererSize),
+                            static_cast<double>(yGridDimensions - (row + 1)) *
+                                rendererSize / (yGridDimensions * rendererSize),
+                            static_cast<double>(col + 1) * rendererSize /
+                                (xGridDimensions * rendererSize),
+                            static_cast<double>(yGridDimensions - row) *
+                                rendererSize /
+                                (yGridDimensions * rendererSize)};
       renderers[index]->SetViewport(viewport);
       ViewportBorder(renderers[index],
                      colors->GetColor3d("SlateGray").GetData(),
                      col == static_cast<int>(xGridDimensions));
     }
   }
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
+  renderWindow->SetWindowName("ReadAllPolyDataTypesDemo");
   renderWindow->Render();
   interactor->Start();
 
   return EXIT_SUCCESS;
 }
 
+namespace {
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
   std::string extension =
-    vtksys::SystemTools::GetFilenameLastExtension(std::string(fileName));
+      vtksys::SystemTools::GetFilenameLastExtension(std::string(fileName));
 
   // Drop the case of the extension
-  std::transform(extension.begin(), extension.end(),
-                 extension.begin(), ::tolower);
+  std::transform(extension.begin(), extension.end(), extension.begin(),
+                 ::tolower);
 
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPLYReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkOBJReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkSTLReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
-    reader->SetGeometryFileName (fileName);
+    vtkNew<vtkBYUReader> reader;
+    reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->Update();
     polyData = source->GetOutput();
   }
   return polyData;
 }
-}
-#include <vtkRenderer.h>
-#include <vtkPoints.h>
-#include <vtkCellArray.h>
-#include <vtkPolyData.h>
-#include <vtkPolyLine.h>
-#include <vtkPolyDataMapper2D.h>
-#include <vtkCoordinate.h>
-#include <vtkActor2D.h>
-#include <vtkProperty2D.h>
-namespace
-{
+
 // draw the borders of a renderer's viewport
-void ViewportBorder(vtkSmartPointer<vtkRenderer> &renderer,
-                    double *color,
+void ViewportBorder(vtkSmartPointer<vtkRenderer>& renderer, double* color,
                     bool last)
 {
   // points start at upper right and proceed anti-clockwise
-  auto points = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->SetNumberOfPoints(4);
   points->InsertPoint(0, 1, 1, 0);
   points->InsertPoint(1, 0, 1, 0);
@@ -216,10 +208,10 @@ void ViewportBorder(vtkSmartPointer<vtkRenderer> &renderer,
   points->InsertPoint(3, 1, 0, 0);
 
   // create cells, and lines
-  auto cells = vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkCellArray> cells;
   cells->Initialize();
 
-  auto lines = vtkSmartPointer<vtkPolyLine>::New();
+  vtkNew<vtkPolyLine> lines;
 
   // only draw last line if this is the last viewport
   // this prevents double vertical lines at right border
@@ -233,9 +225,9 @@ void ViewportBorder(vtkSmartPointer<vtkRenderer> &renderer,
   {
     lines->GetPointIds()->SetNumberOfIds(4);
   }
-  for(unsigned int i = 0; i < 4; ++i)
+  for (unsigned int i = 0; i < 4; ++i)
   {
-    lines->GetPointIds()->SetId(i,i);
+    lines->GetPointIds()->SetId(i, i);
   }
   if (last)
   {
@@ -243,22 +235,22 @@ void ViewportBorder(vtkSmartPointer<vtkRenderer> &renderer,
   }
   cells->InsertNextCell(lines);
 
-  // now make tge polydata and display it
-  auto poly = vtkSmartPointer<vtkPolyData>::New();
+  // now make the polydata and display it
+  vtkNew<vtkPolyData> poly;
   poly->Initialize();
   poly->SetPoints(points);
   poly->SetLines(cells);
 
   // use normalized viewport coordinates since
   // they are independent of window size
-  auto coordinate = vtkSmartPointer<vtkCoordinate>::New();
+  vtkNew<vtkCoordinate> coordinate;
   coordinate->SetCoordinateSystemToNormalizedViewport();
 
-  auto mapper = vtkSmartPointer<vtkPolyDataMapper2D>::New();
+  vtkNew<vtkPolyDataMapper2D> mapper;
   mapper->SetInputData(poly);
   mapper->SetTransformCoordinate(coordinate);
 
-  auto actor = vtkSmartPointer<vtkActor2D>::New();
+  vtkNew<vtkActor2D> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetColor(color);
 
@@ -267,4 +259,5 @@ void ViewportBorder(vtkSmartPointer<vtkRenderer> &renderer,
 
   renderer->AddViewProp(actor);
 }
-}
+
+} // namespace

@@ -1,52 +1,51 @@
-#include <vtkSmartPointer.h>
-#include <vtkNamedColors.h>
-#include <vtkProperty.h>
 #include <vtkDataSetMapper.h>
 #include <vtkImageActor.h>
 #include <vtkImageViewer2.h>
-#include <vtkXMLImageDataReader.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkNamedColors.h>
 #include <vtkRenderer.h>
+#include <vtkXMLImageDataReader.h>
 
 int main(int argc, char* argv[])
 {
   // Verify input arguments
-  if(argc != 2)
+  if (argc != 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " Filename.vti" << std::endl;
+    std::cout << "Usage: " << argv[0] << " Filename.vti e.g. vase.vti"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   std::string inputFilename = argv[1];
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Read the file
-  auto reader = vtkSmartPointer<vtkXMLImageDataReader>::New();
+  vtkNew<vtkXMLImageDataReader> reader;
   reader->SetFileName(inputFilename.c_str());
   reader->Update();
 
   // Visualize
-   auto mapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(reader->GetOutputPort());
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetRepresentationToWireframe();
-  actor->GetProperty()->SetColor(colors->GetColor3d("DarkSalmon").GetData());
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
   renderer->ResetCamera();
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ReadImageData");
 
-  auto renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderWindow->Render();
   renderWindowInteractor->Initialize();

@@ -1,48 +1,48 @@
-#include <vtkImageData.h>
-#include <vtkMetaImageReader.h>
-#include <vtkSmartPointer.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkRenderer.h>
 #include <vtkImageActor.h>
+#include <vtkImageData.h>
 #include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkMetaImageReader.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   std::string inputFilename;
 
-  if(argc < 2)
+  if (argc < 2)
   {
-    std::cerr << "Required arguments: image.mha" << std::endl;
+    std::cerr << "Required arguments: image.mha e.g. Gourds.mha" << std::endl;
     return EXIT_FAILURE;
   }
 
   inputFilename = argv[1];
 
-  vtkSmartPointer<vtkMetaImageReader> reader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
+  vtkNew<vtkMetaImageReader> reader;
   reader->SetFileName(inputFilename.c_str());
   reader->Update();
 
   // Visualize
-  vtkSmartPointer<vtkImageActor> actor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> actor;
   actor->GetMapper()->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
   renderer->ResetCamera();
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("MetaImageReader");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -51,6 +51,6 @@ int main(int argc, char *argv[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

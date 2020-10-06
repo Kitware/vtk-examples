@@ -1,34 +1,38 @@
-#include <vtkSmartPointer.h>
 #include <vtkImageViewer2.h>
 #include <vtkJPEGReader.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
 int main(int argc, char* argv[])
 {
-  //Verify input arguments
-  if ( argc != 2 )
+  vtkNew<vtkNamedColors> colors;
+
+  // Verify input arguments
+  if (argc != 2)
   {
     std::cout << "Usage: " << argv[0]
               << " Filename(.jpeg/jpg) e.g. Pileated.jpg " << std::endl;
     return EXIT_FAILURE;
   }
 
-  //Read the image
-  vtkSmartPointer<vtkJPEGReader> jpegReader =
-    vtkSmartPointer<vtkJPEGReader>::New();
-  jpegReader->SetFileName ( argv[1] );
+  // Read the image
+  vtkNew<vtkJPEGReader> jpegReader;
+  jpegReader->SetFileName(argv[1]);
 
   // Visualize
-  vtkSmartPointer<vtkImageViewer2> imageViewer =
-    vtkSmartPointer<vtkImageViewer2>::New();
-  imageViewer->SetInputConnection( jpegReader->GetOutputPort() );
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkImageViewer2> imageViewer;
+  imageViewer->SetInputConnection(jpegReader->GetOutputPort());
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   imageViewer->SetupInteractor(renderWindowInteractor);
   imageViewer->Render();
   imageViewer->GetRenderer()->ResetCamera();
+  imageViewer->GetRenderer()->SetBackground(
+      colors->GetColor3d("DarkSlateGray").GetData());
+  imageViewer->GetRenderWindow()->SetWindowName("JPEGReader");
   imageViewer->Render();
 
   renderWindowInteractor->Start();

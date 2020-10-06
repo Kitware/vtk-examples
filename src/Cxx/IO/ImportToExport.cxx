@@ -1,3 +1,4 @@
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
@@ -32,7 +33,8 @@ int main(int argc, char* argv[])
 
   if (argc < 3)
   {
-    std::cerr << "Expects input file name(s) and an output filename."
+    std::cerr << "Expects input file name(s) and an output filename e.g. "
+                 "iflamingo.3ds iflamingo.obj"
               << std::endl;
     return EXIT_FAILURE;
   }
@@ -83,7 +85,7 @@ int main(int argc, char* argv[])
 
   if (extension == "wrl")
   {
-    auto importer = vtkSmartPointer<vtkVRMLImporter>::New();
+    vtkNew<vtkVRMLImporter> importer;
     importer->SetFileName(argv[1]);
     importer->SetRenderWindow(renderWindow);
     renderWindow = importer->GetRenderWindow();
@@ -93,7 +95,7 @@ int main(int argc, char* argv[])
   }
   else if (extension == "3ds")
   {
-    auto importer = vtkSmartPointer<vtk3DSImporter>::New();
+    vtkNew<vtk3DSImporter> importer;
     importer->SetFileName(argv[1]);
     importer->SetRenderWindow(renderWindow);
     importer->ComputeNormalsOn();
@@ -104,7 +106,7 @@ int main(int argc, char* argv[])
   }
   else if (extension == "gltf" || extension == "glb")
   {
-    auto importer = vtkSmartPointer<vtkGLTFImporter>::New();
+    vtkNew<vtkGLTFImporter> importer;
     importer->SetFileName(argv[1]);
     importer->SetRenderWindow(renderWindow);
     renderWindow = importer->GetRenderWindow();
@@ -114,7 +116,7 @@ int main(int argc, char* argv[])
   }
   else if (extension == "obj")
   {
-    auto importer = vtkSmartPointer<vtkOBJImporter>::New();
+    vtkNew<vtkOBJImporter> importer;
     importer->SetFileName(argv[1]);
     importer->SetFileNameMTL(argv[2]);
     importer->SetTexturePath(argv[3]);
@@ -163,7 +165,7 @@ int main(int argc, char* argv[])
   {
     std::string exportFileName;
     exportFileName = outputFileName + "." + outputExtension;
-    auto exporter = vtkSmartPointer<vtkOBJExporter>::New();
+    vtkNew<vtkOBJExporter> exporter;
     std::stringstream comment;
     comment << "Converted by ImportExport from " << fileName;
     exporter->SetOBJFileComment(comment.str().c_str());
@@ -178,7 +180,7 @@ int main(int argc, char* argv[])
   {
     std::string exportFileName;
     exportFileName = outputFileName + "." + outputExtension;
-    auto exporter = vtkSmartPointer<vtkVRMLExporter>::New();
+    vtkNew<vtkVRMLExporter> exporter;
     exporter->SetFileName(exportFileName.c_str());
     exporter->SetActiveRenderer(renderer);
     exporter->SetRenderWindow(renderWindow);
@@ -189,7 +191,7 @@ int main(int argc, char* argv[])
   {
     std::string exportFileName;
     exportFileName = outputFileName + "." + "gltf";
-    auto exporter = vtkSmartPointer<vtkGLTFExporter>::New();
+    vtkNew<vtkGLTFExporter> exporter;
     exporter->SetFileName(exportFileName.c_str());
     exporter->SetActiveRenderer(renderer);
     exporter->SetRenderWindow(renderWindow);
@@ -200,12 +202,13 @@ int main(int argc, char* argv[])
   {
     std::string exportFileName;
     exportFileName = outputFileName + "." + outputExtension;
-    auto exporter = vtkSmartPointer<vtkX3DExporter>::New();
+    vtkNew<vtkX3DExporter> exporter;
     exporter->SetFileName(exportFileName.c_str());
     exporter->SetActiveRenderer(renderer);
     exporter->SetRenderWindow(renderWindow);
     std::cout << "Writing " << exportFileName << std::endl;
     exporter->Write();
   }
+
   return EXIT_SUCCESS;
 }

@@ -9,56 +9,56 @@ def main():
     uGrids = list()
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkVertex()))
-    filenames.append("Vertex.vtk")
+    filenames.append('Vertex.vtk')
 
     uGrids.append(MakePolyVertex())
-    filenames.append("PolyVertex.vtk")
+    filenames.append('PolyVertex.vtk')
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkLine()))
-    filenames.append("Line.vtk")
+    filenames.append('Line.vtk')
 
     uGrids.append(MakePolyLine())
-    filenames.append("PolyLine.vtk")
+    filenames.append('PolyLine.vtk')
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkTriangle()))
-    filenames.append("Triangle.vtk")
+    filenames.append('Triangle.vtk')
 
     uGrids.append(MakeTriangleStrip())
-    filenames.append("TriangleStrip.vtk")
+    filenames.append('TriangleStrip.vtk')
 
     uGrids.append(MakePolygon())
-    filenames.append("Polygon.vtk")
+    filenames.append('Polygon.vtk')
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkPixel()))
-    filenames.append("Pixel.vtk")
+    filenames.append('Pixel.vtk')
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkQuad()))
-    filenames.append("Quad.vtk")
+    filenames.append('Quad.vtk')
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkTetra()))
-    filenames.append("Tetra.vtk")
+    filenames.append('Tetra.vtk')
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkVoxel()))
-    filenames.append("Voxel.vtk")
+    filenames.append('Voxel.vtk')
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkHexahedron()))
-    filenames.append("Hexahedron.vtk")
+    filenames.append('Hexahedron.vtk')
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkWedge()))
-    filenames.append("Wedge.vtk")
+    filenames.append('Wedge.vtk')
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkPyramid()))
-    filenames.append("Pyramid.vtk")
+    filenames.append('Pyramid.vtk')
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkPentagonalPrism()))
-    filenames.append("PentagonalPrism.vtk")
+    filenames.append('PentagonalPrism.vtk')
 
     uGrids.append(MakeUnstructuredGrid(vtk.vtkHexagonalPrism()))
-    filenames.append("HexagonalPrism.vtk")
+    filenames.append('HexagonalPrism.vtk')
 
     # Write each grid into  a file
     for i in range(0, len(uGrids)):
-        print("Writing: ", filenames[i])
+        print('Writing: ', filenames[i])
         writer = vtk.vtkUnstructuredGridWriter()
         writer.SetFileName(filenames[i])
         writer.SetInputData(uGrids[i])

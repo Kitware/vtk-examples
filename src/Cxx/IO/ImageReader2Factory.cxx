@@ -1,22 +1,21 @@
-#include <vtkSmartPointer.h>
-#include <vtkImageReader2Factory.h>
-#include <vtkImageReader2.h>
+#include <vtkImageActor.h>
 #include <vtkImageData.h>
 #include <vtkImageMapper3D.h>
+#include <vtkImageReader2.h>
+#include <vtkImageReader2Factory.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
-#include <vtkNamedColors.h>
+#include <vtkSmartPointer.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   // Verify command line arguments
-  if(argc < 2)
+  if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " InputFilename" << std::endl;
+    std::cout << "Usage: " << argv[0] << " InputFilename" << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -24,40 +23,33 @@ int main(int argc, char *argv[])
   std::string inputFilename = argv[1];
 
   // Read file
-  vtkSmartPointer<vtkImageReader2Factory> readerFactory =
-    vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> imageReader;
   imageReader.TakeReference(
-    readerFactory->CreateImageReader2(inputFilename.c_str()));
+      readerFactory->CreateImageReader2(inputFilename.c_str()));
   imageReader->SetFileName(inputFilename.c_str());
   imageReader->Update();
 
   // Create an actor
-  vtkSmartPointer<vtkImageActor> actor =
-    vtkSmartPointer<vtkImageActor>::New();
-  actor->GetMapper()->SetInputConnection(
-    imageReader->GetOutputPort());
+  vtkNew<vtkImageActor> actor;
+  actor->GetMapper()->SetInputConnection(imageReader->GetOutputPort());
 
   // Setup renderer
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
   renderer->ResetCamera();
- renderer->SetBackground(colors->GetColor3d("Slate_grey").GetData());
+  renderer->SetBackground(colors->GetColor3d("Slate_grey").GetData());
 
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ImageReader2Factory");
 
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 

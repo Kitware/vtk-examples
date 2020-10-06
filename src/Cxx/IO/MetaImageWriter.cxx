@@ -1,10 +1,7 @@
-// some standard vtk headers
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-
-// headers needed for this example
 #include <vtkImageData.h>
 #include <vtkImageMapper3D.h>
 #include <vtkImageCast.h>
@@ -12,53 +9,50 @@
 #include <vtkMetaImageReader.h>
 #include <vtkImageMandelbrotSource.h>
 #include <vtkImageActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 
 int main(int, char *[])
 {
-   // adapt path !
-   std::string filePath = "julia_mha.mhd";
-   std::string filePathRaw = "julia_mha.raw";
-   // Create an image
-   vtkSmartPointer<vtkImageMandelbrotSource> source =
-      vtkSmartPointer<vtkImageMandelbrotSource>::New();
+  vtkNew<vtkNamedColors> colors;
 
-   vtkSmartPointer<vtkImageCast> castFilter = 
-      vtkSmartPointer<vtkImageCast>::New();
-   castFilter->SetOutputScalarTypeToUnsignedChar();
-   castFilter->SetInputConnection(source->GetOutputPort());
-   castFilter->Update();
+  // adapt path !
+  std::string filePath = "julia_mha.mhd";
+  std::string filePathRaw = "julia_mha.raw";
+  // Create an image
+  vtkNew<vtkImageMandelbrotSource> source;
 
-   vtkSmartPointer<vtkMetaImageWriter> writer =
-      vtkSmartPointer<vtkMetaImageWriter>::New();
-   writer->SetInputConnection(castFilter->GetOutputPort());
-   writer->SetFileName(filePath.c_str());
-   writer->SetRAWFileName(filePathRaw.c_str());
-   writer->Write();
+  vtkNew<vtkImageCast> castFilter;
+  castFilter->SetOutputScalarTypeToUnsignedChar();
+  castFilter->SetInputConnection(source->GetOutputPort());
+  castFilter->Update();
 
-   // Read and display file for verification that it was written correctly
-   vtkSmartPointer<vtkMetaImageReader> reader = 
-      vtkSmartPointer<vtkMetaImageReader>::New();
-   reader->SetFileName(filePath.c_str());
-   reader->Update();
+  vtkNew<vtkMetaImageWriter> writer;
+  writer->SetInputConnection(castFilter->GetOutputPort());
+  writer->SetFileName(filePath.c_str());
+  writer->SetRAWFileName(filePathRaw.c_str());
+  writer->Write();
 
-   vtkSmartPointer<vtkImageActor> actor =
-      vtkSmartPointer<vtkImageActor>::New();
-   actor->GetMapper()->SetInputConnection(reader->GetOutputPort());
+  // Read and display file for verification that it was written correctly
+  vtkNew<vtkMetaImageReader> reader;
+  reader->SetFileName(filePath.c_str());
+  reader->Update();
 
-   vtkSmartPointer<vtkRenderer> renderer =
-      vtkSmartPointer<vtkRenderer>::New();
-   vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
-   renderWindow->AddRenderer(renderer);
-   vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
-   renderWindowInteractor->SetRenderWindow(renderWindow);
+  vtkNew<vtkImageActor> actor;
+  actor->GetMapper()->SetInputConnection(reader->GetOutputPort());
 
-   renderer->AddActor(actor);
-   renderer->SetBackground(.2, .3, .4);
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  renderWindowInteractor->SetRenderWindow(renderWindow);
 
-   renderWindow->Render();
-   renderWindowInteractor->Start();
+  renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
+
+  renderWindow->SetWindowName("MetaImageWriter");
+  renderWindow->Render();
+  renderWindowInteractor->Start();
 
    return EXIT_SUCCESS;
 }
