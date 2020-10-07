@@ -1,45 +1,47 @@
-#include <vtkSmartPointer.h>
 #include <vtkMath.h>
 
-  /* allocate memory for an nrow x ncol matrix */
-  template<class TReal>
-      TReal **create_matrix ( long nrow, long ncol )
-  {
+namespace {
+/* allocate memory for an nrow x ncol matrix */
+template <class TReal> TReal** create_matrix(long nrow, long ncol)
+{
   typedef TReal* TRealPointer;
-  TReal **m = new TRealPointer[nrow];
+  TReal** m = new TRealPointer[nrow];
 
-  TReal* block = ( TReal* ) calloc ( nrow*ncol, sizeof ( TReal ) );
+  TReal* block = (TReal*)calloc(nrow * ncol, sizeof(TReal));
   m[0] = block;
-  for ( int row = 1; row < nrow; ++row )
+  for (int row = 1; row < nrow; ++row)
   {
-    m[ row ] = &block[ row * ncol ];
+    m[row] = &block[row * ncol];
   }
   return m;
-  }
+}
 
-  /* free a TReal matrix allocated with matrix() */
-  template<class TReal>
-      void free_matrix ( TReal **m )
-  {
-  free ( m[0] );
+/* free a TReal matrix allocated with matrix() */
+template <class TReal> void free_matrix(TReal** m)
+{
+  free(m[0]);
   delete[] m;
-  }
+}
+} // namespace
 
-int main(int, char *[])
+int main(int, char*[])
 {
 
   // Solve XM = Y;
 
   int numberOfSamples = 3;
   int numberOfVariables = 2;
-  double **x = create_matrix<double> (numberOfSamples, numberOfVariables);
-  x[0][0] = 1; x[0][1] = 4;
-  x[1][0] = 1; x[1][1] = 2;
-  x[2][0] = 2; x[2][1] = 3;
+  double** x = create_matrix<double>(numberOfSamples, numberOfVariables);
+  x[0][0] = 1;
+  x[0][1] = 4;
+  x[1][0] = 1;
+  x[1][1] = 2;
+  x[2][0] = 2;
+  x[2][1] = 3;
 
-  double **m = create_matrix<double> ( numberOfVariables, 1 );
+  double** m = create_matrix<double>(numberOfVariables, 1);
 
-  double **y = create_matrix<double> ( numberOfSamples, 1 );
+  double** y = create_matrix<double>(numberOfSamples, 1);
   y[0][0] = -2;
   y[1][0] = 6;
   y[2][0] = 1;
