@@ -1,88 +1,104 @@
-#include <cstdlib>
-
-#include <vtkLightCollection.h>
-#include <vtkProperty.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkPlaneSource.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkCamera.h>
 #include <vtkLight.h>
 #include <vtkLightActor.h>
-#include <vtkSmartPointer.h>
+#include <vtkLightCollection.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPlaneSource.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-int main(int, char *[])
+#include <cstdlib>
+
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkRenderer> renderer;
+  renderer->SetBackground(colors->GetColor3d("Black").GetData());
 
   double lightPosition[3] = {0, 0, 1};
 
   // Create a light
-  double lightFocalPoint[3] = {0,0,0};
+  double lightFocalPoint[3] = {0, 0, 0};
 
-  vtkSmartPointer<vtkLight> light = vtkSmartPointer<vtkLight>::New();
+  vtkNew<vtkLight> light;
   light->SetLightTypeToSceneLight();
   light->SetPosition(lightPosition[0], lightPosition[1], lightPosition[2]);
   light->SetPositional(true); // required for vtkLightActor below
   light->SetConeAngle(10);
-  light->SetFocalPoint(lightFocalPoint[0], lightFocalPoint[1], lightFocalPoint[2]);
-  light->SetDiffuseColor(1,0,0);
-  light->SetAmbientColor(0,1,0);
-  light->SetSpecularColor(0,0,1);
+  light->SetFocalPoint(lightFocalPoint[0], lightFocalPoint[1],
+                       lightFocalPoint[2]);
+  light->SetDiffuseColor(colors->GetColor3d("Red").GetData());
+  light->SetAmbientColor(colors->GetColor3d("Green").GetData());
+  light->SetSpecularColor(colors->GetColor3d("Blue").GetData());
 
   vtkLightCollection* originalLights = renderer->GetLights();
-  std::cout << "Originally there are " << originalLights->GetNumberOfItems() << " lights." << std::endl;
+  std::cout << "Originally there are " << originalLights->GetNumberOfItems()
+            << " lights." << std::endl;
 
-//  renderer->AddLight(light); // can't do this here - must do this after the renderWindow->Render() below
+  //  renderer->AddLight(light); // can't do this here - must do this after the
+  //  renderWindow->Render() below
 
   // Display where the light is
-  vtkSmartPointer<vtkLightActor> lightActor = vtkSmartPointer<vtkLightActor>::New();
+  vtkNew<vtkLightActor> lightActor;
   lightActor->SetLight(light);
   renderer->AddViewProp(lightActor);
 
   // Display where the light is focused
-  vtkSmartPointer<vtkSphereSource> lightFocalPointSphere = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> lightFocalPointSphere;
   lightFocalPointSphere->SetCenter(lightFocalPoint);
-  lightFocalPointSphere->SetRadius(.1);
+  lightFocalPointSphere->SetRadius(0.1);
   lightFocalPointSphere->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> lightFocalPointMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
-  lightFocalPointMapper->SetInputConnection(lightFocalPointSphere->GetOutputPort());
+  vtkNew<vtkPolyDataMapper> lightFocalPointMapper;
+  lightFocalPointMapper->SetInputConnection(
+      lightFocalPointSphere->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> lightFocalPointActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> lightFocalPointActor;
   lightFocalPointActor->SetMapper(lightFocalPointMapper);
-  lightFocalPointActor->GetProperty()->SetColor(1.0, 1.0, 0.0); //(R,G,B)
+  lightFocalPointActor->GetProperty()->SetColor(
+      colors->GetColor3d("Yellow").GetData());
   renderer->AddViewProp(lightFocalPointActor);
 
   // Create a plane for the light to shine on
-  vtkSmartPointer<vtkPlaneSource> planeSource = vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> planeSource;
   planeSource->SetResolution(100, 100);
   planeSource->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> planeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> planeMapper;
   planeMapper->SetInputData(planeSource->GetOutput());
 
-  vtkSmartPointer<vtkActor> planeActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> planeActor;
   planeActor->SetMapper(planeMapper);
   renderer->AddActor(planeActor);
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("Light");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();
-  std::cout << "Now there are " << originalLights->GetNumberOfItems() << " lights." << std::endl;
-
+  std::cout << "Now there are " << originalLights->GetNumberOfItems()
+            << " lights." << std::endl;
 
   renderer->AddLight(light); // must do this after renderWindow->Render();
-  std::cout << "Now there are " << originalLights->GetNumberOfItems() << " lights." << std::endl;
+  std::cout << "Now there are " << originalLights->GetNumberOfItems()
+            << " lights." << std::endl;
 
+  auto camera = renderer->GetActiveCamera();
+  camera->SetPosition(-2.17199, -2.50774, 2.18);
+  camera->SetFocalPoint(-0.144661, -0.146372, 0.180482);
+  camera->SetViewUp(0.0157883, 0.638203, 0.769706);
+  camera->SetDistance(3.69921);
+  camera->SetClippingRange(1.76133, 6.14753);
 
   renderWindowInteractor->Start();
 

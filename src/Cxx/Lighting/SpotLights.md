@@ -1,4 +1,5 @@
 ### Description
+
 This example places two vtkLight's with *PositionalOn()*.
 
 !!! cite
