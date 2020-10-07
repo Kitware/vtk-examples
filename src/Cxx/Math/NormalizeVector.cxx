@@ -6,6 +6,6 @@ int main(int, char*[])
   std::cout << a[0] << " " << a[1] << " " << a[2] << std::endl;
   vtkMath::Normalize(a);
   std::cout << a[0] << " " << a[1] << " " << a[2] << std::endl;
-  
+
   return EXIT_SUCCESS;
 }

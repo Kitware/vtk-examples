@@ -1,9 +1,10 @@
 ### Description
-This example solves XM = Y (an interesting way to write Ax = b). 
+
+This example solves XM = Y (an interesting way to write Ax = b).
 
 In particular, we are trying to solve
 
-```
+``` text
 
 [4]     [-2](1)
 
