@@ -1,3 +1,3 @@
 ### Description
 
-This code snippet reads an STL file and creates a PolyData output
+Read an STL file and create a PolyData output

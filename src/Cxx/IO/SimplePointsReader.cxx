@@ -1,49 +1,48 @@
-#include <vtkSmartPointer.h>
-#include <vtkSimplePointsReader.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSimplePointsReader.h>
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Verify input arguments
-  if ( argc != 2 )
+  if (argc != 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " Filename(.xyz)" << std::endl;
+    std::cout << "Usage: " << argv[0] << " Filename(.xyz) e.g coords.txt"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   // Read the file
-  vtkSmartPointer<vtkSimplePointsReader> reader =
-    vtkSmartPointer<vtkSimplePointsReader>::New();
-  reader->SetFileName ( argv[1] );
+  vtkNew<vtkSimplePointsReader> reader;
+  reader->SetFileName(argv[1]);
   reader->Update();
 
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetPointSize(4);
+  actor->GetProperty()->SetPointSize(6);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
-  renderer->SetBackground(.3, .6, .3); // Background color green
+  renderer->SetBackground(colors->GetColor3d("DarkGreen").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("SimplePointsReader");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();

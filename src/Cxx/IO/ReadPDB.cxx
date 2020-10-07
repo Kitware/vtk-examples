@@ -1,46 +1,42 @@
-#include <vtkSmartPointer.h>
-#include <vtkPDBReader.h>
-
-#include <cmath>
 #include <vtkGlyph3D.h>
 #include <vtkLODActor.h>
+#include <vtkNamedColors.h>
+#include <vtkPDBReader.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkTubeFilter.h>
-#include <vtkNamedColors.h>
 
-int main (int argc, char *argv[])
+#include <cmath>
+
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    std::cerr << "Usage: " << argv[0] << " Filename(.pdb)" << std::endl;
+    std::cerr << "Usage: " << argv[0] << " Filename(.pdb) e.g. lys.pdb"
+              << std::endl;
     return EXIT_FAILURE;
   }
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkPDBReader> pdb =
-    vtkSmartPointer<vtkPDBReader>::New();
+  vtkNew<vtkPDBReader> pdb;
   pdb->SetFileName(argv[1]);
   pdb->SetHBScale(1.0);
   pdb->SetBScale(1.0);
   pdb->Update();
-  std::cout <<"# of atoms is: " << pdb->GetNumberOfAtoms() << std::endl;
+  std::cout << "# of atoms is: " << pdb->GetNumberOfAtoms() << std::endl;
 
   double resolution = std::sqrt(300000.0 / pdb->GetNumberOfAtoms());
   if (resolution > 20)
@@ -51,33 +47,29 @@ int main (int argc, char *argv[])
   {
     resolution = 4;
   }
-  std::cout <<"Resolution is: " << resolution << std::endl;
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
+  std::cout << "Resolution is: " << resolution << std::endl;
+  vtkNew<vtkSphereSource> sphere;
   sphere->SetCenter(0, 0, 0);
   sphere->SetRadius(1);
   sphere->SetThetaResolution(static_cast<int>(resolution));
   sphere->SetPhiResolution(static_cast<int>(resolution));
 
-  vtkSmartPointer<vtkGlyph3D> glyph =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> glyph;
   glyph->SetInputConnection(pdb->GetOutputPort());
   glyph->SetOrient(1);
   glyph->SetColorMode(1);
   // glyph->ScalingOn();
   glyph->SetScaleMode(2);
-  glyph->SetScaleFactor(.25);
+  glyph->SetScaleFactor(0.25);
   glyph->SetSourceConnection(sphere->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> atomMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> atomMapper;
   atomMapper->SetInputConnection(glyph->GetOutputPort());
   atomMapper->UseLookupTableScalarRangeOff();
   atomMapper->ScalarVisibilityOn();
   atomMapper->SetScalarModeToDefault();
 
-  vtkSmartPointer<vtkLODActor> atom =
-    vtkSmartPointer<vtkLODActor>::New();
+  vtkNew<vtkLODActor> atom;
   atom->SetMapper(atomMapper);
   atom->GetProperty()->SetRepresentationToSurface();
   atom->GetProperty()->SetInterpolationToGouraud();
@@ -90,8 +82,7 @@ int main (int argc, char *argv[])
 
   renderer->AddActor(atom);
 
-  vtkSmartPointer<vtkTubeFilter> tube =
-    vtkSmartPointer<vtkTubeFilter>::New();
+  vtkNew<vtkTubeFilter> tube;
   tube->SetInputConnection(pdb->GetOutputPort());
   tube->SetNumberOfSides(static_cast<int>(resolution));
   tube->CappingOff();
@@ -99,15 +90,13 @@ int main (int argc, char *argv[])
   tube->SetVaryRadius(0);
   tube->SetRadiusFactor(10);
 
-  vtkSmartPointer<vtkPolyDataMapper> bondMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> bondMapper;
   bondMapper->SetInputConnection(tube->GetOutputPort());
   bondMapper->UseLookupTableScalarRangeOff();
   bondMapper->ScalarVisibilityOff();
   bondMapper->SetScalarModeToDefault();
 
-  vtkSmartPointer<vtkLODActor> bond =
-    vtkSmartPointer<vtkLODActor>::New();
+  vtkNew<vtkLODActor> bond;
   bond->SetMapper(bondMapper);
   bond->GetProperty()->SetRepresentationToSurface();
   bond->GetProperty()->SetInterpolationToGouraud();
@@ -119,6 +108,7 @@ int main (int argc, char *argv[])
 
   renderer->AddActor(bond);
 
+  renderWindow->SetWindowName("ReadPDB");
   renderWindow->Render();
   interactor->Initialize();
   interactor->Start();

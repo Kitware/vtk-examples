@@ -1,15 +1,19 @@
-#include <vtkPolyData.h>
-#include <vtkSTLReader.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSTLReader.h>
 
-int main ( int argc, char *argv[] )
+int main(int argc, char* argv[])
 {
-  if ( argc != 2 )
+  vtkNew<vtkNamedColors> colors;
+
+  if (argc != 2)
   {
     cout << "Required parameters: Filename(.stl) e.g 42400-IDGH.stl" << endl;
     return EXIT_FAILURE;
@@ -17,31 +21,32 @@ int main ( int argc, char *argv[] )
 
   std::string inputFilename = argv[1];
 
-  vtkSmartPointer<vtkSTLReader> reader =
-    vtkSmartPointer<vtkSTLReader>::New();
+  vtkNew<vtkSTLReader> reader;
   reader->SetFileName(inputFilename.c_str());
   reader->Update();
 
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetDiffuse(0.8);
+  actor->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("LightSteelBlue").GetData());
+  actor->GetProperty()->SetSpecular(0.3);
+  actor->GetProperty()->SetSpecularPower(60.0);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("ReadSTL");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
-  renderer->SetBackground(.3, .6, .3); // Background color green
+  renderer->SetBackground(colors->GetColor3d("DarkOliveGreen").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();

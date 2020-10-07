@@ -1,34 +1,38 @@
-#include <vtkSmartPointer.h>
 #include <vtkImageViewer2.h>
-#include <vtkTIFFReader.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkTIFFReader.h>
 
 int main(int argc, char* argv[])
 {
-  //Verify input arguments
-  if ( argc != 2 )
+  vtkNew<vtkNamedColors> colors;
+
+  // Verify input arguments
+  if (argc != 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " Filename(.tif) e.g. ColorCells.tif" << std::endl;
+    std::cout << "Usage: " << argv[0] << " Filename(.tif) e.g. ColorCells.tif"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
-  //Read the image
-  vtkSmartPointer<vtkTIFFReader> reader =
-    vtkSmartPointer<vtkTIFFReader>::New();
-  reader->SetFileName ( argv[1] );
+  // Read the image
+  vtkNew<vtkTIFFReader> reader;
+  reader->SetFileName(argv[1]);
 
   // Visualize
-  vtkSmartPointer<vtkImageViewer2> imageViewer =
-    vtkSmartPointer<vtkImageViewer2>::New();
+  vtkNew<vtkImageViewer2> imageViewer;
   imageViewer->SetInputConnection(reader->GetOutputPort());
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   imageViewer->SetupInteractor(renderWindowInteractor);
   imageViewer->Render();
+  imageViewer->GetRenderer()->SetBackground(
+      colors->GetColor3d("DarkSlateGray").GetData());
   imageViewer->GetRenderer()->ResetCamera();
+  imageViewer->GetRenderWindow()->SetWindowName("ReadTIFF");
   imageViewer->Render();
 
   renderWindowInteractor->Start();

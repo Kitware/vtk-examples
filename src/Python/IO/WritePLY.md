@@ -7,8 +7,7 @@
 
     where your color array was created/named like this:
 
-    vtkSmartPointer<vtkUnsignedCharArray> colors =
-      vtkSmartPointer<vtkUnsignedCharArray>::New();
+    vtkNew<vtkUnsignedCharArray> colors;
     colors->SetNumberOfComponents(3);
     colors->SetName("Colors");
 

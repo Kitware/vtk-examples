@@ -39,11 +39,13 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
+    actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     # Create a rendering window and renderer
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
+    renWin.SetWindowName('WriteSTL')
 
     # Create a renderwindowinteractor
     iren = vtk.vtkRenderWindowInteractor()

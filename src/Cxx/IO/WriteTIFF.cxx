@@ -9,10 +9,17 @@
 #include <vtkImageActor.h>
 #include <vtkImageMapper3D.h>
 #include <vtkTIFFReader.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
+
+#include <array>
 
 int main(int argc, char *argv[])
 {
-  if(argc != 2)
+  vtkNew<vtkNamedColors> colors;
+
+  if (argc != 2)
   {
     std::cout << "Required parameters: OutputFilename.tif" << std::endl;
     return EXIT_FAILURE;
@@ -20,49 +27,56 @@ int main(int argc, char *argv[])
 
   std::string filename = argv[1];
 
-  vtkSmartPointer<vtkImageCanvasSource2D> imageSource =
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  // Convert our unsigned char colors to doubles
+  // Set draw color needs doubles.
+  auto color1 = colors->GetColor4ub("SteelBlue").GetData();
+  auto color2 = colors->GetColor4ub("PaleGoldenrod").GetData();
+  std::array<double, 4> sourceColor1{0, 0, 0, 0};
+  std::array<double, 4> sourceColor2{0, 0, 0, 0};
+  // Leave alpha at zero
+  for (auto i = 0; i < 3; ++i)
+  {
+    sourceColor1[i] = color1[i];
+    sourceColor2[i] = color2[i];
+  }
+
+  vtkNew<vtkImageCanvasSource2D> imageSource;
   imageSource->SetScalarTypeToUnsignedChar();
-  imageSource->SetExtent(0,9,0,9,0,0);
+  imageSource->SetExtent(0, 9, 0, 9, 0, 0);
   imageSource->SetNumberOfScalarComponents(3);
-  imageSource->SetDrawColor(0, 0, 0, 0);
-  imageSource->FillBox(0,9,0,9);
-  imageSource->SetDrawColor(255, 0, 0, 0);
-  imageSource->FillBox(5,7,5,7);
+  imageSource->SetDrawColor(sourceColor1.data());
+  imageSource->FillBox(0, 9, 0, 9);
+  imageSource->SetDrawColor(sourceColor2.data());
+  imageSource->FillBox(5, 7, 5, 7);
   imageSource->Update();
 
-  vtkSmartPointer<vtkTIFFWriter> tiffWriter =
-    vtkSmartPointer<vtkTIFFWriter>::New();
+  vtkNew<vtkTIFFWriter> tiffWriter;
   tiffWriter->SetFileName(filename.c_str());
   tiffWriter->SetInputConnection(imageSource->GetOutputPort());
   tiffWriter->Write();
 
   // Read and display for verification
-  vtkSmartPointer<vtkTIFFReader> reader =
-    vtkSmartPointer<vtkTIFFReader>::New();
+  vtkNew<vtkTIFFReader> reader;
   reader->SetFileName(filename.c_str());
   reader->Update();
 
-  vtkSmartPointer<vtkImageActor> actor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> actor;
   actor->GetMapper()->SetInputConnection(reader->GetOutputPort());
 
   // Setup renderer
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
   renderer->ResetCamera();
 
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("WriteTIFF");
 
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -72,5 +86,6 @@ int main(int argc, char *argv[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
+
   return EXIT_SUCCESS;
 }

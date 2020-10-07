@@ -37,10 +37,13 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
+    actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
+    renderWindow.SetWindowName('WritePLY')
+
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 

@@ -1,54 +1,52 @@
-#include <vtkSmartPointer.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkStructuredGridReader.h>
-#include <vtkStructuredGridGeometryFilter.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkStructuredGridGeometryFilter.h>
+#include <vtkStructuredGridReader.h>
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Verify input arguments
-  if ( argc != 2 )
+  if (argc != 2)
   {
     std::cout << "Usage: " << argv[0]
-              << " Filename(.vtk)" << std::endl;
+              << " Filename(.vtk) e.g. SampleStructGrid.vtk" << std::endl;
     return EXIT_FAILURE;
   }
 
   std::string inputFilename = argv[1];
 
   // Read the file
-  vtkSmartPointer<vtkStructuredGridReader> reader =
-    vtkSmartPointer<vtkStructuredGridReader>::New();
+  vtkNew<vtkStructuredGridReader> reader;
   reader->SetFileName(inputFilename.c_str());
   reader->Update();
 
-  vtkSmartPointer<vtkStructuredGridGeometryFilter> geometryFilter =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> geometryFilter;
   geometryFilter->SetInputConnection(reader->GetOutputPort());
   geometryFilter->Update();
 
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(geometryFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("StructuredGridReader");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
-  renderer->SetBackground(.3, .6, .3); // Background color green
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();

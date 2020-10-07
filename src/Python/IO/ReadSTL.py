@@ -27,12 +27,16 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
+    actor.GetProperty().SetDiffuse(0.8)
+    actor.GetProperty().SetDiffuseColor(colors.GetColor3d('LightSteelBlue'))
+    actor.GetProperty().SetSpecular(0.3)
+    actor.GetProperty().SetSpecularPower(60.0)
 
     # Create a rendering window and renderer
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
-    ren.SetBackground(colors.GetColor3d('cobalt_green'))
+    renWin.SetWindowName('ReadSTL')
 
     # Create a renderwindowinteractor
     iren = vtk.vtkRenderWindowInteractor()
@@ -40,6 +44,7 @@ def main():
 
     # Assign actor to the renderer
     ren.AddActor(actor)
+    ren.SetBackground(colors.GetColor3d('DarkOliveGreen'))
 
     # Enable user interface interactor
     iren.Initialize()

@@ -1,17 +1,20 @@
-#include <vtkPolyData.h>
-#include <vtkSTLWriter.h>
-#include <vtkSTLReader.h>
-#include <vtkSphereSource.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSTLReader.h>
+#include <vtkSTLWriter.h>
+#include <vtkSphereSource.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  if(argc != 2)
+  vtkNew<vtkNamedColors> colors;
+  if (argc != 2)
   {
     std::cout << "Required parameters: filename.stl" << std::endl;
     return EXIT_FAILURE;
@@ -19,41 +22,36 @@ int main(int argc, char *argv[])
 
   std::string filename = argv[1];
 
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
-  vtkSmartPointer<vtkSTLWriter> stlWriter =
-    vtkSmartPointer<vtkSTLWriter>::New();
+  vtkNew<vtkSTLWriter> stlWriter;
   stlWriter->SetFileName(filename.c_str());
   stlWriter->SetInputConnection(sphereSource->GetOutputPort());
   stlWriter->Write();
 
   // Read and display for verification
-  vtkSmartPointer<vtkSTLReader> reader =
-    vtkSmartPointer<vtkSTLReader>::New();
+  vtkNew<vtkSTLReader> reader;
   reader->SetFileName(filename.c_str());
   reader->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("WriteSTL");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
-  renderer->SetBackground(.3, .6, .3); // Background color green
+  renderer->SetBackground(colors->GetColor3d("cobalt_green").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();

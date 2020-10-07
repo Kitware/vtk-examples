@@ -1,21 +1,18 @@
 #include <vtkDelaunay3D.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkSphereSource.h>
 #include <vtkXMLPUnstructuredGridWriter.h>
 
 int main(int, char *[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
-  vtkSmartPointer<vtkDelaunay3D> delaunay =
-    vtkSmartPointer<vtkDelaunay3D>::New();
+  vtkNew<vtkDelaunay3D> delaunay;
   delaunay->SetInputConnection(sphereSource->GetOutputPort());
   delaunay->Update();
 
-  vtkSmartPointer<vtkXMLPUnstructuredGridWriter> writer =
-    vtkSmartPointer<vtkXMLPUnstructuredGridWriter>::New();
+  vtkNew<vtkXMLPUnstructuredGridWriter> writer;
   writer->SetInputConnection(delaunay->GetOutputPort());
   writer->SetFileName("Test.pvtu");
   writer->SetNumberOfPieces(4);
