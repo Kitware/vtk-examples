@@ -1,34 +1,34 @@
-#include <vtkSmartPointer.h>
-
-#include <vtkRenderWindowInteractor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkActor.h>
 #include <vtkCamera.h>
-#include <vtkDataSetMapper.h>
-#include <vtkPolyData.h>
-#include <vtkActor.h>
-#include <vtkProperty.h>
 #include <vtkClipClosedSurface.h>
+#include <vtkDataSetMapper.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlane.h>
 #include <vtkPlaneCollection.h>
-#include <vtkXMLPolyDataReader.h>
-
+#include <vtkPolyData.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
+#include <vtkXMLPolyDataReader.h>
 
 //
 // Demonstrate the use of clipping of polygonal data
 //
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // PolyData to process
   vtkSmartPointer<vtkPolyData> polyData;
 
   if (argc > 1)
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
     polyData = reader->GetOutput();
@@ -36,8 +36,7 @@ int main (int argc, char *argv[])
   else
   {
     // Create a sphere
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetThetaResolution(20);
     sphereSource->SetPhiResolution(11);
     sphereSource->Update();
@@ -45,59 +44,50 @@ int main (int argc, char *argv[])
     polyData = sphereSource->GetOutput();
   }
 
-  double *center = polyData->GetCenter();
-  vtkSmartPointer<vtkPlane> plane1 =
-    vtkSmartPointer<vtkPlane>::New();
+  auto center = polyData->GetCenter();
+  vtkNew<vtkPlane> plane1;
   plane1->SetOrigin(center[0], center[1], center[2]);
   plane1->SetNormal(0.0, -1.0, 0.0);
-  vtkSmartPointer<vtkPlane> plane2 =
-    vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane2;
   plane2->SetOrigin(center[0], center[1], center[2]);
   plane2->SetNormal(0.0, 0.0, 1.0);
-  vtkSmartPointer<vtkPlane> plane3 =
-    vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane3;
   plane3->SetOrigin(center[0], center[1], center[2]);
   plane3->SetNormal(-1.0, 0.0, 0.0);
 
-  vtkSmartPointer<vtkPlaneCollection> planes =
-    vtkSmartPointer<vtkPlaneCollection>::New();
+  vtkNew<vtkPlaneCollection> planes;
   planes->AddItem(plane1);
   planes->AddItem(plane2);
   planes->AddItem(plane3);
 
-  vtkSmartPointer<vtkClipClosedSurface> clipper =
-    vtkSmartPointer<vtkClipClosedSurface>::New();
+  vtkNew<vtkClipClosedSurface> clipper;
   clipper->SetInputData(polyData);
   clipper->SetClippingPlanes(planes);
   clipper->SetActivePlaneId(2);
   clipper->SetScalarModeToColors();
-  clipper->SetClipColor(0.8900, 0.8100, 0.3400); // banana
-  clipper->SetBaseColor(1.0000, 0.3882, 0.2784); // tomato
-  clipper->SetActivePlaneColor(0.6400, 0.5800, 0.5000); // beige
+  clipper->SetClipColor(colors->GetColor3d("Banana").GetData());
+  clipper->SetBaseColor(colors->GetColor3d("Tomato").GetData());
+  clipper->SetActivePlaneColor(colors->GetColor3d("SandyBrown").GetData());
 
-  vtkSmartPointer<vtkDataSetMapper> clipMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> clipMapper;
   clipMapper->SetInputConnection(clipper->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> clipActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> clipActor;
   clipActor->SetMapper(clipMapper);
-  clipActor->GetProperty()->SetColor(1.0000,0.3882,0.2784);
+  clipActor->GetProperty()->SetColor(1.0000, 0.3882, 0.2784);
   clipActor->GetProperty()->SetInterpolationToFlat();
 
   // Create graphics stuff
   //
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
-  ren1->SetBackground(.3, .4, .6);
+  vtkNew<vtkRenderer> ren1;
+  ren1->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
-  renWin->SetSize(512,512);
+  renWin->SetSize(512, 512);
+  renWin->SetWindowName("ClipClosedSurface");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Add the actors to the renderer, set the background and size

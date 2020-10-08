@@ -4,6 +4,7 @@
 #include <vtkDataSetMapper.h>
 #include <vtkFeatureEdges.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlane.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -12,6 +13,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 #include <vtkStripper.h>
 #include <vtkXMLPolyDataReader.h>
 
@@ -22,8 +24,6 @@
 #include <vtkPolyDataReader.h>
 #include <vtkSTLReader.h>
 #include <vtkXMLPolyDataReader.h>
-
-#include <vtkSphereSource.h>
 
 namespace {
 vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName);
@@ -36,18 +36,18 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName);
 int main(int argc, char* argv[])
 {
   // Define colors
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   auto backgroundColor = colors->GetColor3d("steel_blue");
   auto boundaryColor = colors->GetColor3d("banana");
   auto clipColor = colors->GetColor3d("tomato");
   // PolyData to process
   auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
-  auto plane = vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane;
   plane->SetOrigin(polyData->GetCenter());
   plane->SetNormal(1.0, -1.0, -1.0);
 
-  auto clipper = vtkSmartPointer<vtkClipPolyData>::New();
+  vtkNew<vtkClipPolyData> clipper;
   clipper->SetInputData(polyData);
   clipper->SetClipFunction(plane);
   clipper->SetValue(0);
@@ -55,50 +55,50 @@ int main(int argc, char* argv[])
 
   polyData = clipper->GetOutput();
 
-  auto clipMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> clipMapper;
   clipMapper->SetInputData(polyData);
 
-  auto clipActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> clipActor;
   clipActor->SetMapper(clipMapper);
   clipActor->GetProperty()->SetDiffuseColor(clipColor.GetData());
   clipActor->GetProperty()->SetInterpolationToFlat();
   clipActor->GetProperty()->EdgeVisibilityOn();
 
   // Now extract feature edges
-  auto boundaryEdges = vtkSmartPointer<vtkFeatureEdges>::New();
+  vtkNew<vtkFeatureEdges> boundaryEdges;
   boundaryEdges->SetInputData(polyData);
   boundaryEdges->BoundaryEdgesOn();
   boundaryEdges->FeatureEdgesOff();
   boundaryEdges->NonManifoldEdgesOff();
   boundaryEdges->ManifoldEdgesOff();
 
-  auto boundaryStrips = vtkSmartPointer<vtkStripper>::New();
+  vtkNew<vtkStripper> boundaryStrips;
   boundaryStrips->SetInputConnection(boundaryEdges->GetOutputPort());
   boundaryStrips->Update();
 
   // Change the polylines into polygons
-  auto boundaryPoly = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> boundaryPoly;
   boundaryPoly->SetPoints(boundaryStrips->GetOutput()->GetPoints());
   boundaryPoly->SetPolys(boundaryStrips->GetOutput()->GetLines());
 
-  auto boundaryMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> boundaryMapper;
   boundaryMapper->SetInputData(boundaryPoly);
 
-  auto boundaryActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> boundaryActor;
   boundaryActor->SetMapper(boundaryMapper);
   boundaryActor->GetProperty()->SetDiffuseColor(boundaryColor.GetData());
 
   // Create graphics stuff
   //
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(backgroundColor.GetData());
   renderer->UseHiddenLineRemovalOn();
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Add the actors to the renderer, set the background and size
@@ -122,6 +122,7 @@ int main(int argc, char* argv[])
 
   return EXIT_SUCCESS;
 }
+
 namespace {
 vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
 {
@@ -136,42 +137,42 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
                  ::tolower);
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
+    vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
+    vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
+    vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
+    vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
+    vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
@@ -179,7 +180,7 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
   else
   {
     // Return a polydata sphere if the extension is unknown.
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->SetThetaResolution(20);
     source->SetPhiResolution(11);
     source->Update();

@@ -1,40 +1,38 @@
-#include <vtkSmartPointer.h>
-#include <vtkTriangle.h>
 #include <vtkCellArray.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
+#include <vtkTriangle.h>
 
-int main(int , char *[])
+int main(int, char*[])
 {
   // Create a triangle
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint ( 1.0, 0.0, 0.0 );
-  points->InsertNextPoint ( 0.0, 0.0, 0.0 );
-  points->InsertNextPoint ( 0.0, 1.0, 0.0 );
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(1.0, 0.0, 0.0);
+  points->InsertNextPoint(0.0, 0.0, 0.0);
+  points->InsertNextPoint(0.0, 1.0, 0.0);
 
-  vtkSmartPointer<vtkTriangle> triangle =
-    vtkSmartPointer<vtkTriangle>::New();
-  triangle->GetPointIds()->SetId ( 0, 0 );
-  triangle->GetPointIds()->SetId ( 1, 1 );
-  triangle->GetPointIds()->SetId ( 2, 2 );
+  vtkNew<vtkTriangle> triangle;
+  triangle->GetPointIds()->SetId(0, 0);
+  triangle->GetPointIds()->SetId(1, 1);
+  triangle->GetPointIds()->SetId(2, 2);
 
-  vtkSmartPointer<vtkCellArray> triangles =
-    vtkSmartPointer<vtkCellArray>::New();
-  triangles->InsertNextCell ( triangle );
+  vtkNew<vtkCellArray> triangles;
+  triangles->InsertNextCell(triangle);
 
   // Create a polydata object
-  vtkSmartPointer<vtkPolyData> polyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polyData;
 
   // Add the geometry and topology to the polydata
-  polyData->SetPoints ( points );
-  polyData->SetPolys ( triangles );
+  polyData->SetPoints(points);
+  polyData->SetPolys(triangles);
 
-  std::cout << "There are " << polyData->GetNumberOfCells() << " cells." << std::endl;
+  std::cout << "There are " << polyData->GetNumberOfCells() << " cells."
+            << std::endl;
 
   polyData->GetPolys()->InsertNextCell(triangle);
 
-  std::cout << "There are " << polyData->GetNumberOfCells() << " cells." << std::endl;
+  std::cout << "There are " << polyData->GetNumberOfCells() << " cells."
+            << std::endl;
 
   return EXIT_SUCCESS;
 }
