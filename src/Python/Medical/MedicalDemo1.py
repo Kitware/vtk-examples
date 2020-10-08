@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-"""
-"""
+'''
+'''
 
 import vtk
 
@@ -11,8 +11,8 @@ def main():
 
     fileName = get_program_parameters()
 
-    colors.SetColor("SkinColor", [255, 125, 64, 255])
-    colors.SetColor("BkgColor", [51, 77, 102, 255])
+    colors.SetColor('SkinColor', [255, 125, 64, 255])
+    colors.SetColor('BkgColor', [51, 77, 102, 255])
 
     # Create the renderer, the render window, and the interactor. The renderer
     # draws into the render window, the interactor enables mouse- and
@@ -40,7 +40,7 @@ def main():
 
     skin = vtk.vtkActor()
     skin.SetMapper(skinMapper)
-    skin.GetProperty().SetDiffuseColor(colors.GetColor3d("SkinColor"))
+    skin.GetProperty().SetDiffuseColor(colors.GetColor3d('SkinColor'))
 
     # An outline provides context around the data.
     #
@@ -52,7 +52,7 @@ def main():
 
     outline = vtk.vtkActor()
     outline.SetMapper(mapOutline)
-    outline.GetProperty().SetColor(colors.GetColor3d("Black"))
+    outline.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # It is convenient to create an initial view of the data. The FocalPoint
     # and Position form a vector direction. Later on (ResetCamera() method)
@@ -77,8 +77,9 @@ def main():
 
     # Set a background color for the renderer and set the size of the
     # render window (expressed in pixels).
-    aRenderer.SetBackground(colors.GetColor3d("BkgColor"))
+    aRenderer.SetBackground(colors.GetColor3d('BkgColor'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('MedicalDemo1')
 
     # Note that when camera movement occurs (as it does in the Dolly()
     # method), the clipping planes often need adjusting. Clipping planes

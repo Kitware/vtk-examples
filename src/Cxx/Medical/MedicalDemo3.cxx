@@ -8,36 +8,36 @@
 #include <vtkImageActor.h>
 #include <vtkImageData.h>
 #include <vtkImageDataGeometryFilter.h>
-#include <vtkImageMapper3D.h>
 #include <vtkImageMapToColors.h>
+#include <vtkImageMapper3D.h>
 #include <vtkLookupTable.h>
 #include <vtkMarchingCubes.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 #include <vtkStripper.h>
 
 #include <array>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    cout << "Usage: " << argv[0] << " file.mhd" << endl;
+    cout << "Usage: " << argv[0] << " file.mhd  e.g. FullHead.mhd" << endl;
     return EXIT_FAILURE;
   }
 
   vtkNew<vtkNamedColors> colors;
 
-  std::array<unsigned char , 4> skinColor{{255, 125, 64}};
+  std::array<unsigned char, 4> skinColor{{255, 125, 64}};
   colors->SetColor("SkinColor", skinColor.data());
-  std::array<unsigned char , 4> bkg{{51, 77, 102, 255}};
+  std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
   colors->SetColor("BkgColor", bkg.data());
 
   // Create the renderer, the render window, and the interactor. The
@@ -48,6 +48,8 @@ int main (int argc, char *argv[])
   vtkNew<vtkRenderer> aRenderer;
   vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(aRenderer);
+  renWin->SetWindowName("MedicalDemo3");
+
   vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
@@ -63,7 +65,7 @@ int main (int argc, char *argv[])
   // construct filenames using the format FilePrefix.%d. (In this case
   // the FilePrefix is the root name of the file: quarter.)
   vtkNew<vtkMetaImageReader> reader;
-  reader->SetFileName (argv[1]);
+  reader->SetFileName(argv[1]);
   reader->Update();
 
   // An isosurface, or contour value of 500 is known to correspond to
@@ -72,7 +74,7 @@ int main (int argc, char *argv[])
   // strips from the isosurface; these render much faster on may
   // systems.
   vtkNew<vtkMarchingCubes> skinExtractor;
-  skinExtractor->SetInputConnection( reader->GetOutputPort());
+  skinExtractor->SetInputConnection(reader->GetOutputPort());
   skinExtractor->SetValue(0, 500);
   skinExtractor->Update();
 
@@ -86,7 +88,8 @@ int main (int argc, char *argv[])
 
   vtkNew<vtkActor> skin;
   skin->SetMapper(skinMapper);
-  skin->GetProperty()->SetDiffuseColor(colors->GetColor3d("SkinColor").GetData());
+  skin->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("SkinColor").GetData());
   skin->GetProperty()->SetSpecular(.3);
   skin->GetProperty()->SetSpecularPower(20);
 
@@ -129,29 +132,29 @@ int main (int argc, char *argv[])
 
   // Start by creating a black/white lookup table.
   vtkNew<vtkLookupTable> bwLut;
-  bwLut->SetTableRange (0, 2000);
-  bwLut->SetSaturationRange (0, 0);
-  bwLut->SetHueRange (0, 0);
-  bwLut->SetValueRange (0, 1);
-  bwLut->Build(); //effective built
+  bwLut->SetTableRange(0, 2000);
+  bwLut->SetSaturationRange(0, 0);
+  bwLut->SetHueRange(0, 0);
+  bwLut->SetValueRange(0, 1);
+  bwLut->Build(); // effective built
 
   // Now create a lookup table that consists of the full hue circle
   // (from HSV).
   vtkNew<vtkLookupTable> hueLut;
-  hueLut->SetTableRange (0, 2000);
-  hueLut->SetHueRange (0, 1);
-  hueLut->SetSaturationRange (1, 1);
-  hueLut->SetValueRange (1, 1);
-  hueLut->Build(); //effective built
+  hueLut->SetTableRange(0, 2000);
+  hueLut->SetHueRange(0, 1);
+  hueLut->SetSaturationRange(1, 1);
+  hueLut->SetValueRange(1, 1);
+  hueLut->Build(); // effective built
 
   // Finally, create a lookup table with a single hue but having a range
   // in the saturation of the hue.
   vtkNew<vtkLookupTable> satLut;
-  satLut->SetTableRange (0, 2000);
-  satLut->SetHueRange (.6, .6);
-  satLut->SetSaturationRange (0, 1);
-  satLut->SetValueRange (1, 1);
-  satLut->Build(); //effective built
+  satLut->SetTableRange(0, 2000);
+  satLut->SetHueRange(.6, .6);
+  satLut->SetSaturationRange(0, 1);
+  satLut->SetValueRange(1, 1);
+  satLut->Build(); // effective built
 
   // Create the first of the three planes. The filter vtkImageMapToColors
   // maps the data through the corresponding lookup table created above.  The
@@ -168,7 +171,7 @@ int main (int argc, char *argv[])
 
   vtkNew<vtkImageActor> sagittal;
   sagittal->GetMapper()->SetInputConnection(sagittalColors->GetOutputPort());
-  sagittal->SetDisplayExtent(128, 128, 0,255, 0,92);
+  sagittal->SetDisplayExtent(128, 128, 0, 255, 0, 92);
   sagittal->ForceOpaqueOn();
 
   // Create the second (axial) plane of the three planes. We use the
@@ -180,7 +183,7 @@ int main (int argc, char *argv[])
 
   vtkNew<vtkImageActor> axial;
   axial->GetMapper()->SetInputConnection(axialColors->GetOutputPort());
-  axial->SetDisplayExtent(0,255, 0,255, 46,46);
+  axial->SetDisplayExtent(0, 255, 0, 255, 46, 46);
   axial->ForceOpaqueOn();
 
   // Create the third (coronal) plane of the three planes. We use
@@ -192,18 +195,17 @@ int main (int argc, char *argv[])
 
   vtkNew<vtkImageActor> coronal;
   coronal->GetMapper()->SetInputConnection(coronalColors->GetOutputPort());
-  coronal->SetDisplayExtent(0,255, 128,128, 0,92);
+  coronal->SetDisplayExtent(0, 255, 128, 128, 0, 92);
   coronal->ForceOpaqueOn();
-
 
   // It is convenient to create an initial view of the data. The
   // FocalPoint and Position form a vector direction. Later on
   // (ResetCamera() method) this vector is used to position the camera
   // to look at the data in this direction.
   vtkNew<vtkCamera> aCamera;
-  aCamera->SetViewUp (0, 0, -1);
-  aCamera->SetPosition (0, -1, 0);
-  aCamera->SetFocalPoint (0, 0, 0);
+  aCamera->SetViewUp(0, 0, -1);
+  aCamera->SetPosition(0, -1, 0);
+  aCamera->SetFocalPoint(0, 0, 0);
   aCamera->ComputeViewPlaneNormal();
   aCamera->Azimuth(30.0);
   aCamera->Elevation(30.0);
@@ -230,7 +232,7 @@ int main (int argc, char *argv[])
   // Only calling Render() on the vtkRenderWindow is a valid call.
   renWin->Render();
 
-  aRenderer->ResetCamera ();
+  aRenderer->ResetCamera();
   aCamera->Dolly(1.5);
 
   // Note that when camera movement occurs (as it does in the Dolly()
@@ -239,7 +241,7 @@ int main (int argc, char *argv[])
   // near plane clips out objects in front of the plane; the far plane
   // clips out objects behind the plane. This way only what is drawn
   // between the planes is actually rendered.
-  aRenderer->ResetCameraClippingRange ();
+  aRenderer->ResetCameraClippingRange();
 
   // interact with data
   iren->Initialize();

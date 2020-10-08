@@ -1,36 +1,42 @@
-#include <vtkSmartPointer.h>
-#include <vtkMarchingCubes.h>
-#include <vtkMetaImageReader.h>
-
-#include <vtkSphereSource.h>
-#include <vtkProbeFilter.h>
-#include <vtkSphere.h>
 #include <vtkClipDataSet.h>
 #include <vtkImplicitVolume.h>
-#include <vtkUnstructuredGrid.h>
 #include <vtkLookupTable.h>
+#include <vtkMarchingCubes.h>
+#include <vtkMetaImageReader.h>
+#include <vtkProbeFilter.h>
+#include <vtkSphere.h>
+#include <vtkSphereSource.h>
+#include <vtkUnstructuredGrid.h>
 
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkDataSetMapper.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkProperty.h>
 #include <vtkActor.h>
 #include <vtkCamera.h>
+#include <vtkDataSetMapper.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main (int argc, char *argv[])
+#include <array>
+
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
+  std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
+  colors->SetColor("BkgColor", bkg.data());
+
   if (argc < 2)
   {
-    cout << "Usage: " << argv[0] << " file.mhd" << endl;
+    cout << "Usage: " << argv[0] << " file.mhd e.g. FullHead.mhd" << endl;
     return EXIT_FAILURE;
   }
 
   // Read the volume data
   vtkNew<vtkMetaImageReader> reader;
-  reader->SetFileName (argv[1]);
+  reader->SetFileName(argv[1]);
   reader->Update();
 
   // An isosurface, or contour value of 500 is known to correspond to the
@@ -86,10 +92,10 @@ int main (int argc, char *argv[])
 
   // Define a suitable grayscale lut
   vtkNew<vtkLookupTable> bwLut;
-  bwLut->SetTableRange (0, 2048);
-  bwLut->SetSaturationRange (0, 0);
-  bwLut->SetHueRange (0, 0);
-  bwLut->SetValueRange (.2, 1);
+  bwLut->SetTableRange(0, 2048);
+  bwLut->SetSaturationRange(0, 0);
+  bwLut->SetHueRange(0, 0);
+  bwLut->SetValueRange(.2, 1);
   bwLut->Build();
 
   vtkNew<vtkDataSetMapper> lensMapper;
@@ -105,9 +111,9 @@ int main (int argc, char *argv[])
   // this vector is used to position the camera to look at the data in
   // this direction.
   vtkNew<vtkCamera> aCamera;
-  aCamera->SetViewUp (0, 0, -1);
-  aCamera->SetPosition (0, -1, 0);
-  aCamera->SetFocalPoint (0, 0, 0);
+  aCamera->SetViewUp(0, 0, -1);
+  aCamera->SetPosition(0, -1, 0);
+  aCamera->SetFocalPoint(0, 0, 0);
   aCamera->ComputeViewPlaneNormal();
   aCamera->Azimuth(30.0);
   aCamera->Elevation(30.0);
@@ -129,13 +135,14 @@ int main (int argc, char *argv[])
   aRenderer->AddActor(lens);
   aRenderer->AddActor(skin);
   aRenderer->SetActiveCamera(aCamera);
-  aRenderer->ResetCamera ();
+  aRenderer->ResetCamera();
   aCamera->Dolly(1.5);
 
   // Set a background color for the renderer and set the size of the
   // render window (expressed in pixels).
-  aRenderer->SetBackground(.2, .3, .4);
+  aRenderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("TissueLens");
 
   // Note that when camera movement occurs (as it does in the Dolly()
   // method), the clipping planes often need adjusting. Clipping planes
@@ -143,7 +150,7 @@ int main (int argc, char *argv[])
   // near plane clips out objects in front of the plane; the far plane
   // clips out objects behind the plane. This way only what is drawn
   // between the planes is actually rendered.
-  aRenderer->ResetCameraClippingRange ();
+  aRenderer->ResetCameraClippingRange();
 
   // Initialize the event loop and then start it.
   renWin->Render();

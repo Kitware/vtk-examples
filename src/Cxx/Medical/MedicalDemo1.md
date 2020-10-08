@@ -1,4 +1,5 @@
 ### Description
+
 The skin extracted from a CT dataset of the head.
 
 !!! example "usage"

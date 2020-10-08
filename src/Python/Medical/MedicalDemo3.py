@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-"""
-"""
+'''
+'''
 
 import vtk
 
@@ -11,8 +11,8 @@ def main():
 
     fileName = get_program_parameters()
 
-    colors.SetColor("SkinColor", [255, 125, 64, 255])
-    colors.SetColor("BkgColor", [51, 77, 102, 255])
+    colors.SetColor('SkinColor', [255, 125, 64, 255])
+    colors.SetColor('BkgColor', [51, 77, 102, 255])
 
     # Create the renderer, the render window, and the interactor. The
     # renderer draws into the render window, the interactor enables
@@ -27,7 +27,7 @@ def main():
 
     # Set a background color for the renderer and set the size of the
     # render window (expressed in pixels).
-    aRenderer.SetBackground(colors.GetColor3d("BkgColor"))
+    aRenderer.SetBackground(colors.GetColor3d('BkgColor'))
     renWin.SetSize(640, 480)
 
     # The following reader is used to read a series of 2D slices (images)
@@ -60,7 +60,7 @@ def main():
 
     skin = vtk.vtkActor()
     skin.SetMapper(skinMapper)
-    skin.GetProperty().SetDiffuseColor(colors.GetColor3d("SkinColor"))
+    skin.GetProperty().SetDiffuseColor(colors.GetColor3d('SkinColor'))
     skin.GetProperty().SetSpecular(.3)
     skin.GetProperty().SetSpecularPower(20)
 
@@ -82,7 +82,7 @@ def main():
 
     bone = vtk.vtkActor()
     bone.SetMapper(boneMapper)
-    bone.GetProperty().SetDiffuseColor(colors.GetColor3d("Ivory"))
+    bone.GetProperty().SetDiffuseColor(colors.GetColor3d('Ivory'))
 
     # An outline provides context around the data.
     #
@@ -95,7 +95,7 @@ def main():
 
     outline = vtk.vtkActor()
     outline.SetMapper(mapOutline)
-    outline.GetProperty().SetColor(colors.GetColor3d("Black"))
+    outline.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # Now we are creating three orthogonal planes passing through the
     # volume. Each plane uses a different texture map and therefore has
@@ -198,6 +198,7 @@ def main():
 
     # Calling Render() directly on a vtkRenderer is strictly forbidden.
     # Only calling Render() on the vtkRenderWindow is a valid call.
+    renWin.SetWindowName('MedicalDemo3')
     renWin.Render()
 
     aRenderer.ResetCamera()
