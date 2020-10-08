@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-"""
-"""
+'''
+'''
 
 import vtk
 
@@ -11,7 +11,7 @@ def main():
 
     fileName = get_program_parameters()
 
-    colors.SetColor("BkgColor", [51, 77, 102, 255])
+    colors.SetColor('BkgColor', [51, 77, 102, 255])
 
     # Create the renderer, the render window, and the interactor. The renderer
     # draws into the render window, the interactor enables mouse- and
@@ -55,7 +55,7 @@ def main():
     volumeScalarOpacity.AddPoint(1150, 0.85)
 
     # The gradient opacity function is used to decrease the opacity
-    # in the "flat" regions of the volume while maintaining the opacity
+    # in the 'flat' regions of the volume while maintaining the opacity
     # at the boundaries between tissue types.  The gradient is measured
     # as the amount by which the intensity changes over unit distance.
     # For most medical data, the unit distance is 1mm.
@@ -68,7 +68,7 @@ def main():
     # volume, and sets other volume properties.  The interpolation should
     # be set to linear to do a high-quality rendering.  The ShadeOn option
     # turns on directional lighting, which will usually enhance the
-    # appearance of the volume and make it look more "3D".  However,
+    # appearance of the volume and make it look more '3D'.  However,
     # the quality of the shading depends on how accurately the gradient
     # of the volume can be calculated, and for noisy data the gradient
     # estimation will be very poor.  The impact of the shading can be
@@ -106,10 +106,11 @@ def main():
     camera.Elevation(30.0)
 
     # Set a background color for the renderer
-    ren.SetBackground(colors.GetColor3d("BkgColor"))
+    ren.SetBackground(colors.GetColor3d('BkgColor'))
 
     # Increase the size of the render window
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('MedicalDemo4')
 
     # Interact with the data.
     iren.Start()

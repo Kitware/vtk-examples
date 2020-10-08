@@ -10,26 +10,29 @@
 //          not exist in the volume, it will be skipped.
 //
 //
-#include <vtkMetaImageReader.h>
-#include <vtkImageAccumulate.h>
 #include <vtkDiscreteMarchingCubes.h>
-#include <vtkWindowedSincPolyDataFilter.h>
-#include <vtkMaskFields.h>
-#include <vtkThreshold.h>
 #include <vtkGeometryFilter.h>
+#include <vtkImageAccumulate.h>
+#include <vtkMaskFields.h>
+#include <vtkMetaImageReader.h>
+#include <vtkNew.h>
+#include <vtkThreshold.h>
+#include <vtkWindowedSincPolyDataFilter.h>
 #include <vtkXMLPolyDataWriter.h>
-#include <vtkSmartPointer.h>
 
+#include <sstream>
 #include <vtkImageData.h>
 #include <vtkPointData.h>
 #include <vtkUnstructuredGrid.h>
-#include <sstream>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 4)
   {
-    std::cout << "Usage: " << argv[0] << " InputVolume StartLabel EndLabel" << std::endl;
+    std::cout
+        << "Usage: " << argv[0]
+        << " InputVolume StartLabel EndLabel  e.g. Frog/frogtissue.mhd 1 2"
+        << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -67,8 +70,8 @@ int main (int argc, char *argv[])
   histogram->Update();
 
   discreteCubes->SetInputConnection(reader->GetOutputPort());
-  discreteCubes->GenerateValues(
-    endLabel - startLabel + 1, startLabel, endLabel);
+  discreteCubes->GenerateValues(endLabel - startLabel + 1, startLabel,
+                                endLabel);
 
   smoother->SetInputConnection(discreteCubes->GetOutputPort());
   smoother->SetNumberOfIterations(smoothingIterations);
@@ -100,7 +103,7 @@ int main (int argc, char *argv[])
   {
     // see if the label exists, if not skip it
     double frequency =
-      histogram->GetOutput()->GetPointData()->GetScalars()->GetTuple1(i);
+        histogram->GetOutput()->GetPointData()->GetScalars()->GetTuple1(i);
     if (frequency == 0.0)
     {
       continue;
@@ -116,7 +119,6 @@ int main (int argc, char *argv[])
 
     writer->SetFileName(ss.str().c_str());
     writer->Write();
-
   }
   return EXIT_SUCCESS;
 }

@@ -1,4 +1,5 @@
 ### Description
+
 This example uses two vtkClipDataSet filters to achieve a "tissue lens" affect. First, a vtkSphere implicit function is used to clip a spherical hole in the isosurface extracted with vtkMarchingCubes. Then a geometric vtkSphereSource samples the original volume data using a vtkProbeFilter. vtkClipDataSet uses the resulting scalar point data to clip the sphere surface with the isosurface value.
 
 !!! example "Usage"

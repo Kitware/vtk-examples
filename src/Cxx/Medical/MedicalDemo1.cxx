@@ -8,29 +8,29 @@
 #include <vtkMarchingCubes.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 
 #include <array>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    cout << "Usage: " << argv[0] << " file.mhd" << endl;
+    cout << "Usage: " << argv[0] << " file.mhd e.g. FullHead.mhd" << endl;
     return EXIT_FAILURE;
   }
 
   vtkNew<vtkNamedColors> colors;
 
-  std::array<unsigned char , 4> skinColor{{255, 125, 64}};
+  std::array<unsigned char, 4> skinColor{{255, 125, 64}};
   colors->SetColor("SkinColor", skinColor.data());
-  std::array<unsigned char , 4> bkg{{51, 77, 102, 255}};
+  std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
   colors->SetColor("BkgColor", bkg.data());
 
   // Create the renderer, the render window, and the interactor. The renderer
@@ -45,7 +45,7 @@ int main (int argc, char *argv[])
   iren->SetRenderWindow(renWin);
 
   vtkNew<vtkMetaImageReader> reader;
-  reader->SetFileName (argv[1]);
+  reader->SetFileName(argv[1]);
 
   // An isosurface, or contour value of 500 is known to correspond to the
   // skin of the patient.
@@ -59,7 +59,8 @@ int main (int argc, char *argv[])
 
   vtkNew<vtkActor> skin;
   skin->SetMapper(skinMapper);
-  skin->GetProperty()->SetDiffuseColor(colors->GetColor3d("SkinColor").GetData());
+  skin->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("SkinColor").GetData());
 
   // An outline provides context around the data.
   //
@@ -78,9 +79,9 @@ int main (int argc, char *argv[])
   // this vector is used to position the camera to look at the data in
   // this direction.
   vtkNew<vtkCamera> aCamera;
-  aCamera->SetViewUp (0, 0, -1);
-  aCamera->SetPosition (0, -1, 0);
-  aCamera->SetFocalPoint (0, 0, 0);
+  aCamera->SetViewUp(0, 0, -1);
+  aCamera->SetPosition(0, -1, 0);
+  aCamera->SetFocalPoint(0, 0, 0);
   aCamera->ComputeViewPlaneNormal();
   aCamera->Azimuth(30.0);
   aCamera->Elevation(30.0);
@@ -91,13 +92,14 @@ int main (int argc, char *argv[])
   aRenderer->AddActor(outline);
   aRenderer->AddActor(skin);
   aRenderer->SetActiveCamera(aCamera);
-  aRenderer->ResetCamera ();
+  aRenderer->ResetCamera();
   aCamera->Dolly(1.5);
 
   // Set a background color for the renderer and set the size of the
   // render window (expressed in pixels).
   aRenderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("MedicalDemo1");
 
   // Note that when camera movement occurs (as it does in the Dolly()
   // method), the clipping planes often need adjusting. Clipping planes
@@ -105,7 +107,7 @@ int main (int argc, char *argv[])
   // near plane clips out objects in front of the plane; the far plane
   // clips out objects behind the plane. This way only what is drawn
   // between the planes is actually rendered.
-  aRenderer->ResetCameraClippingRange ();
+  aRenderer->ResetCameraClippingRange();
 
   // Initialize the event loop and then start it.
   renWin->Render();
