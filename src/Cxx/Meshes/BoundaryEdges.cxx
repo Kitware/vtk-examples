@@ -1,59 +1,61 @@
-#include <vtkSmartPointer.h>
-#include <vtkFeatureEdges.h>
-#include <vtkPolyData.h>
-#include <vtkDiskSource.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkDiskSource.h>
+#include <vtkFeatureEdges.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 
-int main(int, char *[])
+
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkDiskSource> diskSource =
-    vtkSmartPointer<vtkDiskSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkDiskSource> diskSource;
   diskSource->Update();
 
-  vtkSmartPointer<vtkFeatureEdges> featureEdges =
-    vtkSmartPointer<vtkFeatureEdges>::New();
+  vtkNew<vtkFeatureEdges> featureEdges;
   featureEdges->SetInputConnection(diskSource->GetOutputPort());
   featureEdges->BoundaryEdgesOn();
   featureEdges->FeatureEdgesOff();
   featureEdges->ManifoldEdgesOff();
   featureEdges->NonManifoldEdgesOff();
+  featureEdges->ColoringOn();
   featureEdges->Update();
 
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> edgeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> edgeMapper;
   edgeMapper->SetInputConnection(featureEdges->GetOutputPort());
-  vtkSmartPointer<vtkActor> edgeActor =
-    vtkSmartPointer<vtkActor>::New();
+  edgeMapper->SetScalarModeToUseCellData();
+  vtkNew<vtkActor> edgeActor;
   edgeActor->SetMapper(edgeMapper);
 
-  vtkSmartPointer<vtkPolyDataMapper> diskMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> diskMapper;
   diskMapper->SetInputConnection(diskSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> diskActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> diskActor;
   diskActor->SetMapper(diskMapper);
+  diskActor->GetProperty()->SetColor(colors->GetColor3d("Gray").GetData());
 
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("BoundaryEdges");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(edgeActor);
   renderer->AddActor(diskActor);
-  renderer->SetBackground(.3, .6, .3); // Background color green
+  renderer->SetBackground(colors->GetColor3d("DimGray").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

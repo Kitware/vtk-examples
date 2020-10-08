@@ -1,10 +1,8 @@
-#include <vtkSmartPointer.h>
-
-#include <vtkFrustumSource.h>
 #include <vtkClipPolyData.h>
+#include <vtkFrustumSource.h>
 
-#include <vtkPlanes.h>
 #include <vtkNamedColors.h>
+#include <vtkPlanes.h>
 #include <vtkPolyDataNormals.h>
 
 #include <vtkBYUReader.h>
@@ -12,76 +10,69 @@
 #include <vtkPLYReader.h>
 #include <vtkPolyDataReader.h>
 #include <vtkSTLReader.h>
-#include <vtkXMLPolyDataReader.h>
 #include <vtkSphereSource.h>
+#include <vtkXMLPolyDataReader.h>
 
 #include <vtksys/SystemTools.hxx>
 
-#include <vtkProperty.h>
+#include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkMapper.h>
-#include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 
-#include <vtkCamera.h>
-namespace
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
+void PositionCamera(vtkRenderer* renderer, double* viewUp,
+                    double* position);
+} // namespace
+
+int main(int argc, char* argv[])
 {
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
-void PositionCamera(vtkSmartPointer<vtkRenderer> &renderer,
-                    double *viewUp,
-                    double *position);
-}
+  auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
-int main (int argc, char *argv[])
-{
-  vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");;
-
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // a renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
   // an interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polyData);
   mapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetDiffuseColor(colors->GetColor3d("Crimson").GetData());
+  actor->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("Crimson").GetData());
   actor->GetProperty()->SetSpecular(.6);
   actor->GetProperty()->SetSpecularPower(30);
   renderer->AddActor(actor);
 
-  vtkSmartPointer<vtkPolyDataMapper> outMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outMapper;
   outMapper->SetInputData(polyData);
   outMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> outActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outActor;
   outActor->SetMapper(outMapper);
-  outActor->GetProperty()->SetDiffuseColor(colors->GetColor3d("Gold").GetData());
+  outActor->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("Gold").GetData());
   outActor->GetProperty()->SetSpecular(.6);
   outActor->GetProperty()->SetSpecularPower(30);
 
   // Position the camera so that we can see the frustum
-  double viewUp[3] = {0.0,1.0,0.0};
-  double position[3] = {1.0,0.0,0.0};
+  double viewUp[3] = {0.0, 1.0, 0.0};
+  double position[3] = {1.0, 0.0, 0.0};
   PositionCamera(renderer, viewUp, position);
   renderer->GetActiveCamera()->Elevation(30);
   renderer->GetActiveCamera()->SetViewAngle(10.0);
@@ -89,29 +80,24 @@ int main (int argc, char *argv[])
   double planesArray[24];
   renderer->GetActiveCamera()->GetFrustumPlanes(1.0, planesArray);
 
-  vtkSmartPointer<vtkPlanes> planes =
-    vtkSmartPointer<vtkPlanes>::New();
+  vtkNew<vtkPlanes> planes;
   planes->SetFrustumPlanes(planesArray);
 
-  vtkSmartPointer<vtkFrustumSource> frustumSource =
-    vtkSmartPointer<vtkFrustumSource>::New();
+  vtkNew<vtkFrustumSource> frustumSource;
   frustumSource->ShowLinesOff();
   frustumSource->SetPlanes(planes);
   frustumSource->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> frustumMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> frustumMapper;
   frustumMapper->SetInputConnection(frustumSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> frustumActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> frustumActor;
   frustumActor->SetMapper(frustumMapper);
   frustumActor->GetProperty()->EdgeVisibilityOn();
   frustumActor->GetProperty()->SetOpacity(.5);
   frustumActor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
 
-  vtkSmartPointer<vtkClipPolyData> clip =
-    vtkSmartPointer<vtkClipPolyData>::New();
+  vtkNew<vtkClipPolyData> clip;
   clip->SetInputData(polyData);
   clip->SetClipFunction(planes);
   clip->InsideOutOn();
@@ -130,82 +116,77 @@ int main (int argc, char *argv[])
   renderer->GetActiveCamera()->Elevation(30);
   renderer->GetActiveCamera()->Dolly(1.5);
   renderer->ResetCameraClippingRange();
+
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("ClipFrustum");
+
   renderWindow->Render();
 
   // begin mouse interaction
   renderWindowInteractor->Start();
+
   return EXIT_SUCCESS;
 }
 
 // Snippets
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
-  std::string extension = vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
+  std::string extension =
+      vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    vtkSmartPointer<vtkPLYReader> reader =
-      vtkSmartPointer<vtkPLYReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPLYReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    vtkSmartPointer<vtkOBJReader> reader =
-      vtkSmartPointer<vtkOBJReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkOBJReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    vtkSmartPointer<vtkSTLReader> reader =
-      vtkSmartPointer<vtkSTLReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkSTLReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    vtkSmartPointer<vtkPolyDataReader> reader =
-      vtkSmartPointer<vtkPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    vtkSmartPointer<vtkBYUReader> reader =
-      vtkSmartPointer<vtkBYUReader>::New();
-    reader->SetGeometryFileName (fileName);
+    vtkNew<vtkBYUReader> reader;
+    reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    vtkSmartPointer<vtkSphereSource> source =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->Update();
     polyData = source->GetOutput();
   }
   return polyData;
 }
 
-void PositionCamera(vtkSmartPointer<vtkRenderer> &renderer,
-                    double *viewUp,
-                    double *position)
+void PositionCamera(vtkRenderer* renderer, double* viewUp, double* position)
 {
   renderer->GetActiveCamera()->SetFocalPoint(0.0, 0.0, 0.0);
   renderer->GetActiveCamera()->SetViewUp(viewUp);
@@ -213,4 +194,4 @@ void PositionCamera(vtkSmartPointer<vtkRenderer> &renderer,
   renderer->ResetCamera();
   return;
 }
-}
+} // namespace

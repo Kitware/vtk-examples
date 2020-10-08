@@ -263,7 +263,8 @@ This section includes examples of manipulating meshes.
 | Example Name | Classes Demonstrated | Description | Image |
 | -------------- | ---------------------- | ------------- | ------- |
 [CapClip](/Python/Meshes/CapClip) | vtkClipPolyData | Cap a clipped polydata with a polygon.
-[ClipDataSetWithPolyData](/Python/Meshes/ClipDataSetWithPolyData) | vtkClipDataSet vtkImplicitPolyDataDistance vtkRectilinearGrid | clip a vtkRectilinearGrid with arbitrary polydata. In this example, use a vtkConeSource to generate polydata to slice the grid, resulting in an unstructured grid.
+[ClipDataSetWithPolyData](/Python/Meshes/ClipDataSetWithPolyData) | vtkClipDataSet vtkImplicitPolyDataDistance vtkRectilinearGrid |  Clip a vtkRectilinearGrid with arbitrary polydata. In this example, use a vtkConeSource to generate polydata to slice the grid, resulting in an unstructured grid.
+[ClipDataSetWithPolyData1](/Python/Meshes/ClipDataSetWithPolyData1) | vtkClipDataSet vtkImplicitPolyDataDistance vtkRectilinearGrid | Clip a vtkRectilinearGrid with arbitrary polydata. In this example, use a vtkConeSource to generate polydata to slice the grid, resulting in an unstructured grid.
 [SolidClip](/Python/Meshes/SolidClip) | vtkClipPolyData | Create a "solid" clip. The "ghost" of the part clipped away is also shown.
 
 ### Working with Structured 3D Data

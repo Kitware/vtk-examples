@@ -1,4 +1,5 @@
 ### Description
+
 The example uses vtkClipPolyData to clip a model with a vtkCamera's view frustum. The frustum is displayed using vtkFrustumSource.
 
 The example proceeds as follow:

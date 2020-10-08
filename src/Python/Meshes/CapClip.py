@@ -22,9 +22,9 @@ def main():
 
     # Define colors
     colors = vtk.vtkNamedColors()
-    backgroundColor = colors.GetColor3d("steel_blue")
-    boundaryColor = colors.GetColor3d("Banana")
-    clipColor = colors.GetColor3d("Tomato")
+    backgroundColor = colors.GetColor3d('steel_blue')
+    boundaryColor = colors.GetColor3d('Banana')
+    clipColor = colors.GetColor3d('Tomato')
 
     if filePath and os.path.isfile(filePath):
         polyData = ReadPolyData(filePath)
@@ -111,32 +111,32 @@ def ReadPolyData(file_name):
     import os
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
-    if extension == ".ply":
+    if extension == '.ply':
         reader = vtk.vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtp":
+    elif extension == '.vtp':
         reader = vtk.vtkXMLpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".obj":
+    elif extension == '.obj':
         reader = vtk.vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".stl":
+    elif extension == '.stl':
         reader = vtk.vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtk":
+    elif extension == '.vtk':
         reader = vtk.vtkpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".g":
+    elif extension == '.g':
         reader = vtk.vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
@@ -148,9 +148,9 @@ def ReadPolyData(file_name):
 
 
 def GetSpherePD():
-    """
+    '''
     :return: The PolyData representation of a sphere.
-    """
+    '''
     source = vtk.vtkSphereSource()
     source.SetThetaResolution(20)
     source.SetPhiResolution(11)
