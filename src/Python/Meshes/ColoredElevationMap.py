@@ -3,6 +3,7 @@
 import vtk
 
 def main():
+    named_colors = vtk.vtkNamedColors()
 
     # Create a grid points
     points = vtk.vtkPoints()
@@ -15,11 +16,11 @@ def main():
     for x in range(0, GridSize):
         for y in range(0, GridSize):
           rng.Next()
-          xx = x + rng.GetRangeValue(-.2, .2)
+          xx = x + rng.GetRangeValue(-0.2, 0.2)
           rng.Next()
-          yy = y + rng.GetRangeValue(-.2, .2)
+          yy = y + rng.GetRangeValue(-0.2, 0.2)
           rng.Next()
-          zz = rng.GetRangeValue(-.5, .5)
+          zz = rng.GetRangeValue(-0.5, 0.5)
           points.InsertNextPoint(xx, yy, zz)
          
  
@@ -40,8 +41,8 @@ def main():
     minz = bounds[4]
     maxz = bounds[5]
  
-    print("minz: " + str(minz))
-    print("maxz: " + str(maxz))
+    print('minz: {:< 6.3}'.format(minz))
+    print('maxz: {:< 6.3}'.format(maxz))
  
     # Create the color map
     colorLookupTable = vtk.vtkLookupTable()
@@ -51,9 +52,9 @@ def main():
     # Generate the colors for each point based on the color map
     colors = vtk.vtkUnsignedCharArray()
     colors.SetNumberOfComponents(3)
-    colors.SetName("Colors")
+    colors.SetName('Colors')
  
-    print( "There are "+str(outputPolyData.GetNumberOfPoints())+" points.")
+    print( 'There are '+str(outputPolyData.GetNumberOfPoints())+' points.')
  
     for i in range(0, outputPolyData.GetNumberOfPoints()):
         p= 3*[0.0]
@@ -61,18 +62,12 @@ def main():
  
         dcolor = 3*[0.0]
         colorLookupTable.GetColor(p[2], dcolor);
-        print( "dcolor: "
-                  + str(dcolor[0]) + " "
-                  + str(dcolor[1]) + " "
-                  + str(dcolor[2]))
+        # print( 'dcolor: {:<8.6} {:<8.6} {:<8.6}'.format(*dcolor))
         color=3*[0.0]
         for j in range(0,3):
           color[j] = int(255.0 * dcolor[j])
-          
-        print("color: "
-               + str(color[0]) + " "
-               + str(color[1]) + " "
-               + str(color[2]))
+        # print('color:  {:<8} {:<8} {:<8}'.format(*color))
+
         try:
             colors.InsertNextTupleValue(color)
         except AttributeError:
@@ -93,12 +88,14 @@ def main():
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
+    renderWindow.SetWindowName('ColoredElevationMap')
+
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
  
     # Add the actor to the scene
     renderer.AddActor(actor)
-    renderer.SetBackground(.1, .2, .3)
+    renderer.SetBackground(named_colors.GetColor3d('DarkSlateGray'))
  
     # Render and interact
     renderWindow.Render()

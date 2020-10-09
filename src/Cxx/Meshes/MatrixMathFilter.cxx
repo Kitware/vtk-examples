@@ -1,68 +1,75 @@
-#include <vtkSmartPointer.h>
-#include <vtkPointData.h>
-#include <vtkSphereSource.h>
-#include <vtkMatrixMathFilter.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkUnstructuredGridReader.h>
+#include <vtkCamera.h>
 #include <vtkDataSetSurfaceFilter.h>
-#include <vtkXMLUnstructuredGridWriter.h>
+#include <vtkMatrixMathFilter.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
+#include <vtkUnstructuredGridReader.h>
 #include <vtkXMLPolyDataWriter.h>
+#include <vtkXMLUnstructuredGridWriter.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  if(argc < 2)
+  vtkNew<vtkNamedColors> colors;
+
+  if (argc < 2)
   {
-    std::cerr << "Required arguments: vtkFile" << std::endl;
+    std::cerr << "Required arguments: vtkFile e.g. tensors.vtk" << std::endl;
     return EXIT_FAILURE;
   }
 
-  std::string filename = argv[1]; // "/Data/tensors.vtk";
-  
+  std::string filename = argv[1];
+
   std::cout << "filename: " << filename << std::endl;
 
-  vtkSmartPointer<vtkUnstructuredGridReader> reader =
-    vtkSmartPointer<vtkUnstructuredGridReader>::New();
+  vtkNew<vtkUnstructuredGridReader> reader;
   reader->SetFileName(filename.c_str());
   reader->Update();
 
-  vtkSmartPointer<vtkDataSetSurfaceFilter> surfaceFilter =
-    vtkSmartPointer<vtkDataSetSurfaceFilter>::New();
+  vtkNew<vtkDataSetSurfaceFilter> surfaceFilter;
   surfaceFilter->SetInputConnection(reader->GetOutputPort());
   surfaceFilter->Update();
-  
-  vtkSmartPointer<vtkMatrixMathFilter> matrixMathFilter =
-    vtkSmartPointer<vtkMatrixMathFilter>::New();
-  //matrixMathFilter->SetOperationToDeterminant();
+
+  vtkNew<vtkMatrixMathFilter> matrixMathFilter;
+  // matrixMathFilter->SetOperationToDeterminant();
   matrixMathFilter->SetOperationToEigenvalue();
   matrixMathFilter->SetInputConnection(surfaceFilter->GetOutputPort());
   matrixMathFilter->Update();
   matrixMathFilter->GetOutput()->GetPointData()->SetActiveScalars("Eigenvalue");
 
-  vtkSmartPointer<vtkXMLPolyDataWriter> writer = vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+  vtkNew<vtkXMLPolyDataWriter> writer;
   writer->SetInputConnection(matrixMathFilter->GetOutputPort());
   writer->SetFileName("output.vtp");
   writer->Write();
-  
+
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(matrixMathFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("MatrixMathFilter");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
-  renderer->SetBackground(.3, .6, .3); // Background color green
+  renderer->SetBackground(colors->GetColor3d("DimGray").GetData());
+  renderer->GetActiveCamera()->Azimuth(45);
+  renderer->GetActiveCamera()->Pitch(-22.5);
+  renderer->ResetCamera();
+  renderer->GetActiveCamera()->Zoom(0.95);
 
   renderWindow->Render();
   renderWindowInteractor->Start();

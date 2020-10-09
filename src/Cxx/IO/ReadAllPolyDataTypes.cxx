@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 
   // Note: If a Python version is written, it is probably best to use
   //       vtkMinimalStandardRandomSequence in it and here, to ensure
-  //       that the randomnumber generation is the same.
+  //       that the random number generation is the same.
   std::mt19937 mt(4355412); // Standard mersenne_twister_engine
   std::uniform_real_distribution<double> distribution(0.6, 1.0);
 
