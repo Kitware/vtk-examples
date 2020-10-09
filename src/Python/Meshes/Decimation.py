@@ -13,26 +13,32 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue)
     parser.add_argument('filename', nargs='?', default=None, help='Optional input filename e.g Torso.vtp.')
-    parser.add_argument('reduction', nargs='?', type = float, default=.9, help='Sets the decimation target reduction, (default is 0.9).')
+    parser.add_argument('reduction', nargs='?', type=float, default=.9,
+                        help='Sets the decimation target reduction, (default is 0.9).')
     args = parser.parse_args()
     return args.filename, args.reduction
 
 
 def main():
     filePath, reduction = get_program_parameters()
-    
+
     # Define colors
     colors = vtk.vtkNamedColors()
     backFaceColor = colors.GetColor3d("gold")
     inputActorColor = colors.GetColor3d("flesh")
     decimatedActorColor = colors.GetColor3d("flesh")
-    colors.SetColor('leftBkg', [0.6, 0.5, 0.4, 1.0])
-    colors.SetColor('rightBkg', [0.4, 0.5, 0.6, 1.0])
+    # colors.SetColor('leftBkg', [0.6, 0.5, 0.4, 1.0])
+    # colors.SetColor('rightBkg', [0.4, 0.5, 0.6, 1.0])
 
     if filePath and os.path.isfile(filePath):
-        inputPolyData = ReadPolyData(filePath)
-        if not inputPolyData:
+        readerPD = ReadPolyData(filePath)
+        if not readerPD:
             inputPolyData = GetSpherePD()
+        else:
+            triangles = vtk.vtkTriangleFilter()
+            triangles.SetInputData(readerPD)
+            triangles.Update()
+            inputPolyData = triangles.GetOutput()
     else:
         inputPolyData = GetSpherePD()
 
@@ -52,7 +58,8 @@ def main():
     print("After decimation")
     print(f"There are {decimated.GetNumberOfPoints()} points.")
     print(f"There are {decimated.GetNumberOfPolys()} polygons.")
-    print(f"Reduction: {(inputPolyData.GetNumberOfPolys() - decimated.GetNumberOfPolys()) / inputPolyData.GetNumberOfPolys()}")
+    print(
+        f"Reduction: {(inputPolyData.GetNumberOfPolys() - decimated.GetNumberOfPolys()) / inputPolyData.GetNumberOfPolys()}")
 
     inputMapper = vtk.vtkPolyDataMapper()
     inputMapper.SetInputData(inputPolyData)
@@ -92,12 +99,14 @@ def main():
     leftRenderer = vtk.vtkRenderer()
     renderWindow.AddRenderer(leftRenderer)
     leftRenderer.SetViewport(leftViewport)
-    leftRenderer.SetBackground((colors.GetColor3d('leftBkg')))
+    # leftRenderer.SetBackground((colors.GetColor3d('leftBkg')))
+    leftRenderer.SetBackground((colors.GetColor3d('Peru')))
 
     rightRenderer = vtk.vtkRenderer()
     renderWindow.AddRenderer(rightRenderer)
     rightRenderer.SetViewport(rightViewport)
-    rightRenderer.SetBackground((colors.GetColor3d('rightBkg')))
+    # rightRenderer.SetBackground((colors.GetColor3d('rightBkg')))
+    rightRenderer.SetBackground((colors.GetColor3d('CornflowerBlue')))
 
     # Add the sphere to the left and the cube to the right
     leftRenderer.AddActor(inputActor)
@@ -106,12 +115,12 @@ def main():
     # Shared camera
     # Shared camera looking down the -y axis
     camera = vtk.vtkCamera()
-    camera.SetPosition (0, -1, 0)
-    camera.SetFocalPoint (0, 0, 0)
-    camera.SetViewUp (0, 0, 1)
+    camera.SetPosition(0, -1, 0)
+    camera.SetFocalPoint(0, 0, 0)
+    camera.SetViewUp(0, 0, 1)
     camera.Elevation(30)
     camera.Azimuth(30)
-    
+
     leftRenderer.SetActiveCamera(camera)
     rightRenderer.SetActiveCamera(camera)
 
@@ -120,7 +129,7 @@ def main():
 
     renderWindow.Render()
     renderWindow.SetWindowName('Decimation')
-    
+
     interactor.Start()
 
 
@@ -134,7 +143,7 @@ def ReadPolyData(file_name):
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".vtp":
-        reader = vtk.vtkXMLpoly_dataReader()
+        reader = vtk.vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()

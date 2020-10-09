@@ -7,6 +7,7 @@
 #include <vtkFillHolesFilter.h>
 #include <vtkGenericCell.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -15,31 +16,31 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkXMLPolyDataReader.h>
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   if (argc < 2)
   {
     std::cout << "Usgae: " << argv[0] << " file.vtp e.g. Torso.vtp"
               << std::endl;
     return EXIT_FAILURE;
   }
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
 
-  auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+  vtkNew<vtkXMLPolyDataReader> reader;
   reader->SetFileName(argv[1]);
   reader->Update();
 
   // Fill the holes
-  auto fillHoles = vtkSmartPointer<vtkFillHolesFilter>::New();
+  vtkNew<vtkFillHolesFilter> fillHoles;
   fillHoles->SetInputConnection(reader->GetOutputPort());
   fillHoles->SetHoleSize(1000.0);
 
   // Make the triangle winding order consistent
-  auto normals = vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> normals;
   normals->SetInputConnection(fillHoles->GetOutputPort());
   normals->ConsistencyOn();
   normals->SplittingOff();
@@ -62,11 +63,11 @@ int main(int argc, char* argv[])
   std::cout << "Num original: " << numOriginalCells
             << ", Num new: " << numNewCells
             << ", Num added: " << numNewCells - numOriginalCells << std::endl;
-  auto holePolyData = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> holePolyData;
   holePolyData->Allocate(normals->GetOutput(), numNewCells - numOriginalCells);
   holePolyData->SetPoints(normals->GetOutput()->GetPoints());
 
-  auto cell = vtkSmartPointer<vtkGenericCell>::New();
+  vtkNew<vtkGenericCell> cell;
 
   // The remaining cells are the new ones from the hole filler
   for (; !it->IsDoneWithTraversal(); it->GoToNextCell())
@@ -79,7 +80,7 @@ int main(int argc, char* argv[])
   // We have to use ConnectivtyFilter and not
   // PolyDataConnectivityFilter since the later does not create
   // RegionIds cell data.
-  auto connectivity = vtkSmartPointer<vtkConnectivityFilter>::New();
+  vtkNew<vtkConnectivityFilter> connectivity;
   connectivity->SetInputData(holePolyData);
   connectivity->SetExtractionModeToAllRegions();
   connectivity->ColorRegionsOn();
@@ -90,26 +91,26 @@ int main(int argc, char* argv[])
   // Visualize
 
   // Create a mapper and actor for the fill polydata
-  auto filledMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> filledMapper;
   filledMapper->SetInputConnection(connectivity->GetOutputPort());
   filledMapper->SetScalarModeToUseCellData();
   filledMapper->SetScalarRange(connectivity->GetOutput()
                                    ->GetCellData()
                                    ->GetArray("RegionId")
                                    ->GetRange());
-  auto filledActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> filledActor;
   filledActor->SetMapper(filledMapper);
   filledActor->GetProperty()->SetDiffuseColor(
       colors->GetColor3d("Peacock").GetData());
 
   // Create a mapper and actor for the original polydata
-  auto originalMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> originalMapper;
   originalMapper->SetInputConnection(reader->GetOutputPort());
 
-  auto backfaceProp = vtkSmartPointer<vtkProperty>::New();
+  vtkNew<vtkProperty> backfaceProp;
   backfaceProp->SetDiffuseColor(colors->GetColor3d("Banana").GetData());
 
-  auto originalActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> originalActor;
   originalActor->SetMapper(originalMapper);
   originalActor->SetBackfaceProperty(backfaceProp);
   originalActor->GetProperty()->SetDiffuseColor(
@@ -117,15 +118,14 @@ int main(int argc, char* argv[])
   originalActor->GetProperty()->SetRepresentationToWireframe();
 
   // Create a renderer, render window, and interactor
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(512, 512);
-
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("IdentifyHoles");
 
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene

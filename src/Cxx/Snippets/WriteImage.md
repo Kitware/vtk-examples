@@ -49,8 +49,8 @@ void WriteImage(std::string const& fileName, vtkRenderWindow* renWin,
 
 ``` c++
 
-namespace
-{
+namespace {
+
 void WriteImage(std::string const& fileName, vtkRenderWindow* renWin, bool rgba)
 {
   if (!fileName.empty())
@@ -99,8 +99,7 @@ void WriteImage(std::string const& fileName, vtkRenderWindow* renWin, bool rgba)
     {
       writer = vtkSmartPointer<vtkPNGWriter>::New();
     }
-    auto window_to_image_filter =
-        vtkSmartPointer<vtkWindowToImageFilter>::New();
+    vtkNew<vtkWindowToImageFilter> window_to_image_filter;
     window_to_image_filter->SetInput(renWin);
     window_to_image_filter->SetScale(1); // image quality
     if (rgba)
@@ -126,8 +125,8 @@ void WriteImage(std::string const& fileName, vtkRenderWindow* renWin, bool rgba)
 
   return;
 }
-} // namespace
 
+} // namespace
 ```
 
 ### Usage

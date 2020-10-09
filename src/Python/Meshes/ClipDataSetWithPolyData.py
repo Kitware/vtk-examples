@@ -1,3 +1,4 @@
+import numpy as np
 import vtk
 
 
@@ -21,16 +22,30 @@ def main():
     # create a grid
     dimension = 51
     xCoords = vtk.vtkFloatArray()
-    for i in range(0, dimension):
-        xCoords.InsertNextValue(-1.0 + i * 2.0 / (dimension - 1))
+    for x, i in enumerate(np.linspace(-1.0, 1.0, dimension)):
+        xCoords.InsertNextValue(i)
 
     yCoords = vtk.vtkFloatArray()
-    for i in range(0, dimension):
-        yCoords.InsertNextValue(-1.0 + i * 2.0 / (dimension - 1))
+    for y, i in enumerate(np.linspace(-1.0, 1.0, dimension)):
+        yCoords.InsertNextValue(i)
 
     zCoords = vtk.vtkFloatArray()
-    for i in range(0, dimension):
-        zCoords.InsertNextValue(-1.0 + i * 2.0 / (dimension - 1))
+    for z, i in enumerate(np.linspace(-1.0, 1.0, dimension)):
+        zCoords.InsertNextValue(i)
+
+    # # create a grid - if not using numpy
+    # dimension = 51
+    # xCoords = vtk.vtkFloatArray()
+    # for i in range(0, dimension):
+    #     xCoords.InsertNextValue(-1.0 + i * 2.0 / (dimension - 1))
+    #
+    # yCoords = vtk.vtkFloatArray()
+    # for i in range(0, dimension):
+    #     yCoords.InsertNextValue(-1.0 + i * 2.0 / (dimension - 1))
+    #
+    # zCoords = vtk.vtkFloatArray()
+    # for i in range(0, dimension):
+    #     zCoords.InsertNextValue(-1.0 + i * 2.0 / (dimension - 1))
 
     # The coordinates are assigned to the rectilinear grid. Make sure that
     # the number of values in each of the XCoordinates, YCoordinates,

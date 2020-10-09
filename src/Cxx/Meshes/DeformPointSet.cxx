@@ -1,50 +1,45 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
+#include <vtkCamera.h>
+#include <vtkCellArray.h>
+#include <vtkDeformPointSet.h>
+#include <vtkElevationFilter.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkRenderer.h>
 #include <vtkSphereSource.h>
-#include <vtkElevationFilter.h>
-#include <vtkProperty.h>
-#include <vtkCellArray.h>
-#include <vtkPoints.h>
-#include <vtkDeformPointSet.h>
-#include <vtkCamera.h>
 #include <vtkXMLPolyDataReader.h>
 
-int main( int argc, char *argv[] )
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkPolyData> input =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkPolyData> input;
   double bounds[6];
 
-  if(argc == 1)
+  if (argc == 1)
   {
     // Create a sphere to warp
-    vtkSmartPointer<vtkSphereSource> sphere =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphere;
     sphere->SetThetaResolution(51);
     sphere->SetPhiResolution(17);
     sphere->Update();
     sphere->GetOutput()->GetBounds(bounds);
 
     // Generate some scalars on the polydata
-    vtkSmartPointer<vtkElevationFilter> ele =
-      vtkSmartPointer<vtkElevationFilter>::New();
+    vtkNew<vtkElevationFilter> ele;
     ele->SetInputConnection(sphere->GetOutputPort());
-    ele->SetLowPoint(0,0,-0.5);
-    ele->SetHighPoint(0,0,0.5);
+    ele->SetLowPoint(0, 0, -0.5);
+    ele->SetHighPoint(0, 0, 0.5);
     ele->SetLowPoint((bounds[1] + bounds[0]) / 2.0,
-                     (bounds[3] + bounds[2]) / 2.0,
-                     -bounds[5]);
+                     (bounds[3] + bounds[2]) / 2.0, -bounds[5]);
     ele->SetHighPoint((bounds[1] + bounds[0]) / 2.0,
-                      (bounds[3] + bounds[2]) / 2.0,
-                      bounds[5]);
-
+                      (bounds[3] + bounds[2]) / 2.0, bounds[5]);
     ele->Update();
     input->ShallowCopy(ele->GetOutput());
   }
@@ -52,8 +47,7 @@ int main( int argc, char *argv[] )
   {
     std::string inputFilename = argv[1];
 
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(inputFilename.c_str());
     reader->Update();
 
@@ -63,108 +57,89 @@ int main( int argc, char *argv[] )
 
   // Now create a control mesh, in this case a octagon that encloses
   // the point set
-  vtkSmartPointer<vtkPoints> pts =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> pts;
   pts->SetNumberOfPoints(6);
-  pts->SetPoint(0,
-                bounds[0] - .1 * (bounds[1] - bounds[0]),
-                (bounds[3] + bounds[2]) / 2.0,
-                (bounds[5] + bounds[4]) / 2.0);
-  pts->SetPoint(1,
-                bounds[1] + .1 * (bounds[1] - bounds[0]),
-                (bounds[3] + bounds[2]) / 2.0,
-                (bounds[5] + bounds[4]) / 2.0);
-  pts->SetPoint(2,
-                (bounds[1] + bounds[0]) / 2.0,
+  pts->SetPoint(0, bounds[0] - .1 * (bounds[1] - bounds[0]),
+                (bounds[3] + bounds[2]) / 2.0, (bounds[5] + bounds[4]) / 2.0);
+  pts->SetPoint(1, bounds[1] + .1 * (bounds[1] - bounds[0]),
+                (bounds[3] + bounds[2]) / 2.0, (bounds[5] + bounds[4]) / 2.0);
+  pts->SetPoint(2, (bounds[1] + bounds[0]) / 2.0,
                 bounds[2] - .1 * (bounds[3] - bounds[2]),
                 (bounds[5] + bounds[4]) / 2.0);
-  pts->SetPoint(3,
-                (bounds[1] + bounds[0]) / 2.0,
+  pts->SetPoint(3, (bounds[1] + bounds[0]) / 2.0,
                 bounds[3] + .1 * (bounds[3] - bounds[2]),
                 (bounds[5] + bounds[4]) / 2.0);
-  pts->SetPoint(4,
-                (bounds[1] + bounds[0]) / 2.0,
-                (bounds[3] + bounds[2]) / 2.0,
+  pts->SetPoint(4, (bounds[1] + bounds[0]) / 2.0, (bounds[3] + bounds[2]) / 2.0,
                 bounds[4] - .1 * (bounds[5] - bounds[4]));
-  pts->SetPoint(5,
-                (bounds[1] + bounds[0]) / 2.0,
-                (bounds[3] + bounds[2]) / 2.0,
+  pts->SetPoint(5, (bounds[1] + bounds[0]) / 2.0, (bounds[3] + bounds[2]) / 2.0,
                 bounds[5] + .1 * (bounds[5] - bounds[4]));
 
-  vtkSmartPointer<vtkCellArray> tris =
-    vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkCellArray> tris;
+  // clang-format off
   tris->InsertNextCell(3);
-  tris->InsertCellPoint(2); tris->InsertCellPoint(0); tris->InsertCellPoint(4);
+  tris->InsertCellPoint(2); tris->InsertCellPoint(0);  tris->InsertCellPoint(4);
   tris->InsertNextCell(3);
-  tris->InsertCellPoint(1); tris->InsertCellPoint(2); tris->InsertCellPoint(4);
+  tris->InsertCellPoint(1); tris->InsertCellPoint(2);  tris->InsertCellPoint(4);
   tris->InsertNextCell(3);
-  tris->InsertCellPoint(3); tris->InsertCellPoint(1); tris->InsertCellPoint(4);
+  tris->InsertCellPoint(3);  tris->InsertCellPoint(1);  tris->InsertCellPoint(4);
   tris->InsertNextCell(3);
-  tris->InsertCellPoint(0); tris->InsertCellPoint(3); tris->InsertCellPoint(4);
+  tris->InsertCellPoint(0);  tris->InsertCellPoint(3);  tris->InsertCellPoint(4);
   tris->InsertNextCell(3);
-  tris->InsertCellPoint(0); tris->InsertCellPoint(2); tris->InsertCellPoint(5);
+  tris->InsertCellPoint(0);  tris->InsertCellPoint(2);  tris->InsertCellPoint(5);
   tris->InsertNextCell(3);
-  tris->InsertCellPoint(2); tris->InsertCellPoint(1); tris->InsertCellPoint(5);
+  tris->InsertCellPoint(2);  tris->InsertCellPoint(1);  tris->InsertCellPoint(5);
   tris->InsertNextCell(3);
-  tris->InsertCellPoint(1); tris->InsertCellPoint(3); tris->InsertCellPoint(5);
+  tris->InsertCellPoint(1); tris->InsertCellPoint(3);  tris->InsertCellPoint(5);
   tris->InsertNextCell(3);
-  tris->InsertCellPoint(3); tris->InsertCellPoint(0); tris->InsertCellPoint(5);
+  tris->InsertCellPoint(3);  tris->InsertCellPoint(0);  tris->InsertCellPoint(5);
+  // clang-format on
 
-  vtkSmartPointer<vtkPolyData> pd =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> pd;
   pd->SetPoints(pts);
   pd->SetPolys(tris);
 
   // Display the control mesh
-  vtkSmartPointer<vtkPolyDataMapper> meshMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> meshMapper;
   meshMapper->SetInputData(pd);
-  vtkSmartPointer<vtkActor> meshActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> meshActor;
   meshActor->SetMapper(meshMapper);
   meshActor->GetProperty()->SetRepresentationToWireframe();
-  meshActor->GetProperty()->SetColor(0,0,0);
+  meshActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
   // Do the intitial weight generation
-  vtkSmartPointer<vtkDeformPointSet> deform =
-    vtkSmartPointer<vtkDeformPointSet>::New();
-    deform->SetInputData(input);
-    deform->SetControlMeshData(pd);
-    deform->Update(); // this creates the initial weights
+  vtkNew<vtkDeformPointSet> deform;
+  deform->SetInputData(input);
+  deform->SetControlMeshData(pd);
+  deform->Update(); // this creates the initial weights
 
   // Now move one point and deform
   double controlPoint[3];
   pts->GetPoint(5, controlPoint);
-  pts->SetPoint(5, controlPoint[0],
-                controlPoint[1],
+  pts->SetPoint(5, controlPoint[0], controlPoint[1],
                 bounds[5] + .8 * (bounds[5] - bounds[4]));
   pts->Modified();
 
   // Display the warped polydata
-  vtkSmartPointer<vtkPolyDataMapper> polyMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-    polyMapper->SetInputConnection(deform->GetOutputPort());
-  vtkSmartPointer<vtkActor> polyActor =
-    vtkSmartPointer<vtkActor>::New();
-    polyActor->SetMapper(polyMapper);
+  vtkNew<vtkPolyDataMapper> polyMapper;
+  polyMapper->SetInputConnection(deform->GetOutputPort());
+  vtkNew<vtkActor> polyActor;
+  polyActor->SetMapper(polyMapper);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   renderer->AddActor(polyActor);
   renderer->AddActor(meshActor);
 
-  renderer->GetActiveCamera()->SetPosition(1,1,1);
+  renderer->GetActiveCamera()->SetPosition(1, 1, 1);
   renderer->ResetCamera();
-  renderer->SetBackground(.2, .3, .4);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
 
-  renWin->SetSize(300,300);
+  renWin->SetSize(300, 300);
+  renWin->SetWindowName("DeformPointSet");
   renWin->Render();
 
   iren->Start();

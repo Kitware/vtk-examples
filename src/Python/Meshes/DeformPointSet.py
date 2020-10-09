@@ -5,7 +5,7 @@ def main():
     colors = vtk.vtkNamedColors()
     
     # Set the background color.
-    colors.SetColor("bkg", [0.2, 0.3, 0.4, 1.0])
+    # colors.SetColor('bkg', [0.2, 0.3, 0.4, 1.0])
 
     # Create a sphere to deform
     sphere = vtk.vtkSphereSource()
@@ -72,7 +72,7 @@ def main():
     meshActor = vtk.vtkActor()
     meshActor.SetMapper(meshMapper)
     meshActor.GetProperty().SetRepresentationToWireframe()
-    meshActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    meshActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     deform = vtk.vtkDeformPointSet()
     deform.SetInputData(ele.GetOutput())
@@ -101,9 +101,10 @@ def main():
 
     renderer.GetActiveCamera().SetPosition(1,1,1)
     renderer.ResetCamera()
-    renderer.SetBackground(colors.GetColor3d("bkg"))
+    renderer.SetBackground(colors.GetColor3d('DarkSlateGray'))
 
     renWin.SetSize(300,300)
+    renWin.SetWindowName('DeformPointSet')
     renWin.Render()
 
     iren.Start()

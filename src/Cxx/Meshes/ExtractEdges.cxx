@@ -1,69 +1,75 @@
-#include <vtkSmartPointer.h>
-#include <vtkPolyData.h>
-#include <vtkExtractEdges.h>
-#include <vtkSphereSource.h>
-#include <vtkCellArray.h>
-#include <vtkPoints.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkCellArray.h>
+#include <vtkExtractEdges.h>
 #include <vtkLine.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
   std::cout << "Sphere" << endl << "----------" << endl;
-  std::cout << "There are " << sphereSource->GetOutput()->GetNumberOfCells() << " cells." << std::endl;
-  std::cout << "There are " << sphereSource->GetOutput()->GetNumberOfPoints() << " points." << std::endl;
+  std::cout << "There are " << sphereSource->GetOutput()->GetNumberOfCells()
+            << " cells." << std::endl;
+  std::cout << "There are " << sphereSource->GetOutput()->GetNumberOfPoints()
+            << " points." << std::endl;
 
-  vtkSmartPointer<vtkExtractEdges> extractEdges =
-    vtkSmartPointer<vtkExtractEdges>::New();
+  vtkNew<vtkExtractEdges> extractEdges;
   extractEdges->SetInputConnection(sphereSource->GetOutputPort());
   extractEdges->Update();
 
-  vtkCellArray* lines= extractEdges->GetOutput()->GetLines();
+  vtkCellArray* lines = extractEdges->GetOutput()->GetLines();
   vtkPoints* points = extractEdges->GetOutput()->GetPoints();
 
   std::cout << std::endl << "Edges" << endl << "----------" << std::endl;
-  std::cout << "There are " << lines->GetNumberOfCells() << " cells." << std::endl;
-  std::cout << "There are " << points->GetNumberOfPoints() << " points." << std::endl;
+  std::cout << "There are " << lines->GetNumberOfCells() << " cells."
+            << std::endl;
+  std::cout << "There are " << points->GetNumberOfPoints() << " points."
+            << std::endl;
 
   // Traverse all of the edges
-  for(vtkIdType i = 0; i < extractEdges->GetOutput()->GetNumberOfCells(); i++)
+  for (vtkIdType i = 0; i < extractEdges->GetOutput()->GetNumberOfCells(); i++)
   {
-    //std::cout << "Type: " << extractEdges->GetOutput()->GetCell(i)->GetClassName() << std::endl;
-    vtkSmartPointer<vtkLine> line = dynamic_cast<vtkLine*>(extractEdges->GetOutput()->GetCell(i));
+    // std::cout << "Type: " <<
+    // extractEdges->GetOutput()->GetCell(i)->GetClassName() << std::endl;
+    auto line = dynamic_cast<vtkLine*>(extractEdges->GetOutput()->GetCell(i));
     std::cout << "Line " << i << " : " << *line << std::endl;
   }
 
   // Visualize the edges
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(extractEdges->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
 
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("ExtractEdges");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(
+      colors->GetColor3d("RoyalBlue").GetData()); // Background color white
 
   // Render and interact
   renderWindow->Render();

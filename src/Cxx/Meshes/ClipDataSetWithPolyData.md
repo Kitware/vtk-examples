@@ -14,10 +14,10 @@ the program exits using the "e: key, the example will report the cell
 type for both the inside and outside clips.
 
 !!! note
-    This example was translated to C++ from the Python example **ClipDataSetWithPolyData.py**.
+    This example was translated to C++ from the Python example [ClipDataSetWithPolyData1](../Python/Meshes/ClipDataSetWithPolyData1).
 
 !!! note
-    vtkClipDataSet tetrahedralizes the volume before clipping. Contrast this with the vtkTableBasedClipDataSet example: [TableBasedClipDataSetWithPolyData](/Cxx/Meshes/TableBasedClipDataSetWithPolyData).
+    vtkClipDataSet tetrahedralizes the volume before clipping. Contrast this with the vtkTableBasedClipDataSet example: [TableBasedClipDataSetWithPolyData](../Cxx/Meshes/TableBasedClipDataSetWithPolyData).
 
 Here is the summary reported when the example exits:
 <samp>

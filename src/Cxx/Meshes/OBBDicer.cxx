@@ -1,9 +1,8 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOBBDicer.h>
 #include <vtkOutlineCornerFilter.h>
 #include <vtkPolyDataMapper.h>
@@ -17,18 +16,17 @@
 #include <vtkPLYReader.h>
 #include <vtkPolyDataReader.h>
 #include <vtkSTLReader.h>
-#include <vtkXMLPolyDataReader.h>
 #include <vtkSphereSource.h>
+#include <vtkXMLPolyDataReader.h>
 #include <vtksys/SystemTools.hxx>
 
 #include <random>
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   int pieces = 4;
   if (argc > 2)
@@ -36,11 +34,11 @@ int main(int argc, char *argv[])
     pieces = std::atoi(argv[2]);
   }
 
-  auto inputPolyData = ReadPolyData(argc > 1 ? argv[1] : "");;
+  auto inputPolyData = ReadPolyData(argc > 1 ? argv[1] : "");
+  ;
 
   // Create pipeline
-  auto dicer =
-    vtkSmartPointer<vtkOBBDicer>::New();
+  vtkNew<vtkOBBDicer> dicer;
   dicer->SetInputData(inputPolyData);
   dicer->SetNumberOfPieces(pieces);
   dicer->SetDiceModeToSpecifiedNumberOfPieces();
@@ -49,11 +47,9 @@ int main(int argc, char *argv[])
   int numberOfRegions = dicer->GetNumberOfActualPieces();
 
   // Fill in a few known colors, the rest will be generated if needed
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   lut->SetNumberOfTableValues(std::max(numberOfRegions, 10));
   lut->Build();
   lut->SetTableValue(0, colors->GetColor4d("Gold").GetData());
@@ -67,62 +63,59 @@ int main(int argc, char *argv[])
   lut->SetTableValue(8, colors->GetColor4d("Mint").GetData());
   lut->SetTableValue(9, colors->GetColor4d("Peacock").GetData());
 
-  // If the number of regions os larger than the number of specified colors,
+  // If the number of regions is larger than the number of specified colors,
   // generate some random colors.
+  // Note: If a Python version is written, it is probably best to use
+  //       vtkMinimalStandardRandomSequence in it and here, to ensure
+  //       that the random number generation is the same.
   if (numberOfRegions > 9)
   {
-    std::mt19937 mt(4355412); //Standard mersenne_twister_engine
+    std::mt19937 mt(4355412); // Standard mersenne_twister_engine
     std::uniform_real_distribution<double> distribution(.6, 1.0);
     for (auto i = 10; i < numberOfRegions; ++i)
     {
-      lut->SetTableValue(i, distribution(mt), distribution(mt), distribution(mt), 1.0);
+      lut->SetTableValue(i, distribution(mt), distribution(mt),
+                         distribution(mt), 1.0);
     }
   }
 
-  auto inputMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> inputMapper;
   inputMapper->SetInputConnection(dicer->GetOutputPort());
   inputMapper->SetScalarRange(0, dicer->GetNumberOfActualPieces());
   inputMapper->SetLookupTable(lut);
 
-  std::cout << "Asked for: "
-            << dicer->GetNumberOfPieces() << " pieces, got: "
-            << dicer->GetNumberOfActualPieces() << std::endl;
+  std::cout << "Asked for: " << dicer->GetNumberOfPieces()
+            << " pieces, got: " << dicer->GetNumberOfActualPieces()
+            << std::endl;
 
-  auto inputActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> inputActor;
   inputActor->SetMapper(inputMapper);
   inputActor->GetProperty()->SetInterpolationToFlat();
 
-  auto outline =
-    vtkSmartPointer<vtkOutlineCornerFilter>::New();
+  vtkNew<vtkOutlineCornerFilter> outline;
   outline->SetInputData(inputPolyData);
 
-  auto outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  auto outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
-  outlineActor->GetProperty()->SetColor(0, 0, 0);
+  outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->UseHiddenLineRemovalOn();
 
-  auto renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("OBBDicer");
 
-  auto interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Add the actors to the renderer, set the background and size
   renderer->AddActor(outlineActor);
   renderer->AddActor(inputActor);
-  renderer->SetBackground(.2, .3, .4);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
   renderer->GetActiveCamera()->Azimuth(150);
   renderer->GetActiveCamera()->Elevation(15);
   renderer->ResetCamera();
@@ -134,8 +127,7 @@ int main(int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
-namespace
-{
+namespace {
 vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
@@ -143,49 +135,49 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
       vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
+    vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
+    vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
+    vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
+    vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
+    vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->SetPhiResolution(25);
     source->SetThetaResolution(25);
     source->Update();
