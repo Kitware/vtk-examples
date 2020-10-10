@@ -110,6 +110,7 @@ int main(int, char*[])
   renderer->AddActor(actor);
   renderer->SetBackground(namedColors->GetColor3d("ForestGreen").GetData());
 
+  // z-axis points upwards and y-axis is lower right edge
   auto camera = renderer->GetActiveCamera();
   camera->SetPosition(-13.3586, 20.7305, 22.5147);
   camera->SetFocalPoint(4.5, 4.5, 4.5);

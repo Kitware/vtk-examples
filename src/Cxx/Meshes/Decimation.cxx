@@ -1,5 +1,6 @@
 #include <vtkCamera.h>
 #include <vtkDecimatePro.h>
+#include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -11,8 +12,6 @@
 #include <vtkSphereSource.h>
 #include <vtkTriangleFilter.h>
 #include <vtkXMLPolyDataReader.h>
-
-#include <vtkNamedColors.h>
 
 int main(int argc, char* argv[])
 {
@@ -72,12 +71,13 @@ int main(int argc, char* argv[])
   inputMapper->SetInputData(inputPolyData);
 
   vtkNew<vtkProperty> backFace;
-  backFace->SetColor(colors->GetColor3d("gold").GetData());
+  backFace->SetColor(colors->GetColor3d("Gold").GetData());
 
   vtkNew<vtkActor> inputActor;
   inputActor->SetMapper(inputMapper);
   inputActor->GetProperty()->SetInterpolationToFlat();
-  inputActor->GetProperty()->SetColor(colors->GetColor3d("flesh").GetData());
+  inputActor->GetProperty()->SetColor(
+      colors->GetColor3d("NavajoWhite").GetData());
   inputActor->SetBackfaceProperty(backFace);
 
   vtkNew<vtkPolyDataMapper> decimatedMapper;
@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
   vtkNew<vtkActor> decimatedActor;
   decimatedActor->SetMapper(decimatedMapper);
   decimatedActor->GetProperty()->SetColor(
-      colors->GetColor3d("flesh").GetData());
+      colors->GetColor3d("NavajoWhite").GetData());
   decimatedActor->GetProperty()->SetInterpolationToFlat();
   decimatedActor->SetBackfaceProperty(backFace);
 
@@ -108,13 +108,11 @@ int main(int argc, char* argv[])
   vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  leftRenderer->SetBackground(.6, .5, .4);
   leftRenderer->SetBackground(colors->GetColor3d("Peru").GetData());
 
   vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  rightRenderer->SetBackground(.4, .5, .6);
   rightRenderer->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
 
   // Add the sphere to the left and the cube to the right

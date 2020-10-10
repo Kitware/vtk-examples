@@ -9,6 +9,7 @@
 #include <vtkLinearSubdivisionFilter.h>
 #include <vtkLoopSubdivisionFilter.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyDataMapper.h>
@@ -51,7 +52,7 @@ int main(int argc, char* argv[])
   if (argc > 1) // If a file name is specified, open and use the file.
   {
     // Subdivision filters only work on triangles
-    auto triangles = vtkSmartPointer<vtkTriangleFilter>::New();
+    vtkNew<vtkTriangleFilter> triangles;
     triangles->SetInputData(polyData);
     triangles->Update();
     originalMesh = triangles->GetOutput();
@@ -70,25 +71,25 @@ int main(int argc, char* argv[])
   std::cout << "    There are " << originalMesh->GetNumberOfPolys()
             << " triangles." << std::endl;
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   vtkColor3d background = colors->GetColor3d("Gray");
   vtkColor3d originalColor = colors->GetColor3d("Tomato");
   vtkColor3d loopColor = colors->GetColor3d("Banana");
   vtkColor3d butterflyColor = colors->GetColor3d("DodgerBlue");
 
   double numberOfViewports = 3.0;
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(400 * numberOfViewports, 512); //(width, height)
+  renderWindow->SetWindowName("SubdivisionDemo");
 
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  auto camera = vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
 
-  auto legend = vtkSmartPointer<vtkLegendBoxActor>::New();
+  vtkNew<vtkLegendBoxActor> legend;
   legend->SetNumberOfEntries(3);
-  auto legendRen = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> legendRen;
 
   for (unsigned i = 0; i < numberOfViewports; i++)
   {
@@ -96,11 +97,10 @@ int main(int argc, char* argv[])
     // that we can easily instantiate different types of subdivision filters.
     // Typically you would not want to do this, but rather create the pointer
     // to be the type filter you will actually use, e.g.
-    // vtkSmartPointer<vtkLinearSubdivisionFilter>  subdivisionFilter =
-    // vtkSmartPointer<vtkLinearSubdivisionFilter>::New();
+    // vtkNew<vtkLinearSubdivisionFilter>  subdivisionFilter;
     vtkSmartPointer<vtkPolyDataAlgorithm> subdivisionFilter;
-    auto renderer = vtkSmartPointer<vtkRenderer>::New();
-    auto actor = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkRenderer> renderer;
+    vtkNew<vtkActor> actor;
     switch (i)
     {
     case 0:
@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
     renderer->SetActiveCamera(camera);
     renderer->UseHiddenLineRemovalOn();
     // Create a mapper and actor
-    auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputConnection(subdivisionFilter->GetOutputPort());
     actor->SetMapper(mapper);
     renderer->AddActor(actor);
@@ -161,7 +161,6 @@ int main(int argc, char* argv[])
   renderWindow->AddRenderer(legendRen);
 
   renderWindow->Render();
-  renderWindow->SetWindowName("Multiple ViewPorts");
 
   renderWindowInteractor->Start();
 
@@ -182,42 +181,42 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
                  ::tolower);
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
+    vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
+    vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
+    vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
+    vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
+    vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
@@ -225,12 +224,12 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
   else
   {
     // Return a polydata sphere if the extension is unknown.
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->SetThetaResolution(20);
     source->SetPhiResolution(11);
     source->Update();
     polyData = source->GetOutput();
   }
   return polyData;
-}
+} // namespace
 } // namespace
