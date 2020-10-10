@@ -71,6 +71,7 @@ def main():
     renderer.AddActor(spring)
     renderer.SetBackground(colors.GetColor3d("Burlywood"))
     renWin.SetSize(640, 512)
+    renWin.SetWindowName('Spring')
 
     renderer.ResetCamera()
     renderer.GetActiveCamera().Azimuth(90)

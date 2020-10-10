@@ -1,25 +1,26 @@
-#include <vtkSmartPointer.h>
-#include <vtkMarchingCubes.h>
-#include <vtkVoxelModeller.h>
-#include <vtkSphereSource.h>
-#include <vtkImageData.h>
-#include <vtkDICOMImageReader.h>
-
 #include <vtkActor.h>
+#include <vtkDICOMImageReader.h>
+#include <vtkImageData.h>
+#include <vtkMarchingCubes.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+#include <vtkVoxelModeller.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkImageData> volume =
-    vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkImageData> volume;
   double isoValue;
   if (argc < 3)
   {
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetPhiResolution(20);
     sphereSource->SetThetaResolution(20);
     sphereSource->Update();
@@ -28,16 +29,15 @@ int main(int argc, char *argv[])
     sphereSource->GetOutput()->GetBounds(bounds);
     for (unsigned int i = 0; i < 6; i += 2)
     {
-      double range = bounds[i+1] - bounds[i];
-      bounds[i]   = bounds[i] - .1 * range;
-      bounds[i+1] = bounds[i+1] + .1 * range;
+      double range = bounds[i + 1] - bounds[i];
+      bounds[i] = bounds[i] - .1 * range;
+      bounds[i + 1] = bounds[i + 1] + .1 * range;
     }
-    vtkSmartPointer<vtkVoxelModeller> voxelModeller =
-      vtkSmartPointer<vtkVoxelModeller>::New();
-    voxelModeller->SetSampleDimensions(50,50,50);
+    vtkNew<vtkVoxelModeller> voxelModeller;
+    voxelModeller->SetSampleDimensions(50, 50, 50);
     voxelModeller->SetModelBounds(bounds);
     voxelModeller->SetScalarTypeToFloat();
-    voxelModeller->SetMaximumDistance(.1);
+    voxelModeller->SetMaximumDistance(0.1);
 
     voxelModeller->SetInputConnection(sphereSource->GetOutputPort());
     voxelModeller->Update();
@@ -46,43 +46,40 @@ int main(int argc, char *argv[])
   }
   else
   {
-    vtkSmartPointer<vtkDICOMImageReader> reader =
-      vtkSmartPointer<vtkDICOMImageReader>::New();
+    vtkNew<vtkDICOMImageReader> reader;
     reader->SetDirectoryName(argv[1]);
     reader->Update();
     volume->DeepCopy(reader->GetOutput());
     isoValue = atof(argv[2]);
   }
 
-  vtkSmartPointer<vtkMarchingCubes> surface =
-    vtkSmartPointer<vtkMarchingCubes>::New();
+  vtkNew<vtkMarchingCubes> surface;
   surface->SetInputData(volume);
   surface->ComputeNormalsOn();
   surface->SetValue(0, isoValue);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  renderer->SetBackground(.1, .2, .3);
+  vtkNew<vtkRenderer> renderer;
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("MarchingCubes");
+
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(surface->GetOutputPort());
   mapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   renderer->AddActor(actor);
 
   renderWindow->Render();
   interactor->Start();
+
   return EXIT_SUCCESS;
 }

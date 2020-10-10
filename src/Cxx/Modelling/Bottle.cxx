@@ -2,6 +2,7 @@
 #include <vtkCamera.h>
 #include <vtkCellArray.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -13,27 +14,22 @@
 #include <vtkStripper.h>
 #include <vtkTubeFilter.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
-// Create the RenderWindow, Renderer and both Actors
-//
-  vtkSmartPointer<vtkNamedColors> colors = 
-    vtkSmartPointer<vtkNamedColors>::New();
+  // Create the RenderWindow, Renderer and both Actors
+  //
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(renderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-// create bottle profile
-//
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  // create bottle profile
+  //
+  vtkNew<vtkPoints> points;
   points->InsertPoint(0, 0.01, 0.0, 0.0);
   points->InsertPoint(1, 1.5, 0.0, 0.0);
   points->InsertPoint(2, 1.5, 0.0, 3.5);
@@ -44,10 +40,9 @@ int main (int, char *[])
   points->InsertPoint(7, 1.0, 0.0, 4.75);
   points->InsertPoint(8, 1.0, 0.0, 5.0);
   points->InsertPoint(9, 0.2, 0.0, 5.0);
-  
-  vtkSmartPointer<vtkCellArray> lines =
-    vtkSmartPointer<vtkCellArray>::New();
-  lines->InsertNextCell(10);//number of points
+
+  vtkNew<vtkCellArray> lines;
+  lines->InsertNextCell(10); // number of points
   lines->InsertCellPoint(0);
   lines->InsertCellPoint(1);
   lines->InsertCellPoint(2);
@@ -59,54 +54,47 @@ int main (int, char *[])
   lines->InsertCellPoint(8);
   lines->InsertCellPoint(9);
 
-  vtkSmartPointer<vtkPolyData> profile =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> profile;
   profile->SetPoints(points);
   profile->SetLines(lines);
 
-// extrude profile to make bottle
-//
-  vtkSmartPointer<vtkRotationalExtrusionFilter> extrude =
-    vtkSmartPointer<vtkRotationalExtrusionFilter>::New();
+  // extrude profile to make bottle
+  //
+  vtkNew<vtkRotationalExtrusionFilter> extrude;
   extrude->SetInputData(profile);
   extrude->SetResolution(60);
-    
-  vtkSmartPointer<vtkPolyDataMapper> map =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+
+  vtkNew<vtkPolyDataMapper> map;
   map->SetInputConnection(extrude->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> bottle =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bottle;
   bottle->SetMapper(map);
   bottle->GetProperty()->SetColor(colors->GetColor3d("Mint").GetData());
 
-// display the profile
-  vtkSmartPointer<vtkStripper> stripper =
-    vtkSmartPointer<vtkStripper>::New();
+  // display the profile
+  vtkNew<vtkStripper> stripper;
   stripper->SetInputData(profile);
 
-  vtkSmartPointer<vtkTubeFilter> tubes =
-    vtkSmartPointer<vtkTubeFilter>::New();
+  vtkNew<vtkTubeFilter> tubes;
   tubes->SetInputConnection(stripper->GetOutputPort());
   tubes->SetNumberOfSides(11);
-  tubes->SetRadius(.05);
+  tubes->SetRadius(0.05);
 
-  vtkSmartPointer<vtkPolyDataMapper> profileMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> profileMapper;
   profileMapper->SetInputConnection(tubes->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> profileActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> profileActor;
   profileActor->SetMapper(profileMapper);
   profileActor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
 
-// Add the actors to the renderer, set the background and size
-//
+  // Add the actors to the renderer, set the background and size
+  //
   renderer->AddActor(bottle);
   renderer->AddActor(profileActor);
   renderer->SetBackground(colors->GetColor3d("Burlywood").GetData());
 
-  renWin->SetSize(640,480);
+  renWin->SetSize(640, 480);
+  renWin->SetWindowName("Bottle");
   renWin->Render();
 
   renderer->GetActiveCamera()->SetPosition(1, 0, 0);
@@ -116,13 +104,8 @@ int main (int, char *[])
   renderer->GetActiveCamera()->Azimuth(30);
   renderer->GetActiveCamera()->Elevation(30);
 
-//$cam1 SetClippingRange 3.95297 50
-//$cam1 SetFocalPoint 9.71821 0.458166 29.3999
-//$cam1 SetPosition 2.7439 -37.3196 38.7167
-//$cam1 SetViewUp -0.16123 0.264271 0.950876
-
-// render the image
-//
+  // render the image
+  //
   iren->Start();
 
   return EXIT_SUCCESS;

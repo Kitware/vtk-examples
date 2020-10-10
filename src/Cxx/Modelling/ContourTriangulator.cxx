@@ -1,22 +1,28 @@
-#include <vtkSmartPointer.h>
-#include <vtkContourTriangulator.h>
-#include <vtkMarchingSquares.h>
-
 #include <vtkActor.h>
-#include <vtkRenderer.h>
+#include <vtkCamera.h>
+#include <vtkContourTriangulator.h>
+#include <vtkDataSetMapper.h>
+#include <vtkMarchingSquares.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPNGReader.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkPNGReader.h>
-#include <vtkDataSetMapper.h>
-#include <vtkCamera.h>
-#include <vtkProperty.h>
+#include <vtkRenderer.h>
 
 int main(int argc, char* argv[])
 {
   std::string inputFileName;
-  if (argc > 1 )
+  if (argc > 1)
   {
     inputFileName = argv[1];
+  }
+  else
+  {
+    cout << "Usage: " << argv[0]
+         << " png_file [iso value] e.g. fullhead15.png 500" << endl;
+    return EXIT_FAILURE;
   }
   int isoValue = 500;
   if (argc > 2)
@@ -24,8 +30,9 @@ int main(int argc, char* argv[])
     isoValue = atoi(argv[2]);
   }
 
-  vtkSmartPointer<vtkPNGReader> reader =
-    vtkSmartPointer<vtkPNGReader>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkPNGReader> reader;
   if (!reader->CanReadFile(inputFileName.c_str()))
   {
     std::cerr << "Error: Could not read " << inputFileName << ".\n";
@@ -34,54 +41,46 @@ int main(int argc, char* argv[])
   reader->SetFileName(inputFileName.c_str());
   reader->Update();
 
-  vtkSmartPointer<vtkMarchingSquares> iso =
-    vtkSmartPointer<vtkMarchingSquares>::New();
+  vtkNew<vtkMarchingSquares> iso;
   iso->SetInputConnection(reader->GetOutputPort());
   iso->SetValue(0, isoValue);
 
-  vtkSmartPointer<vtkDataSetMapper> isoMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> isoMapper;
   isoMapper->SetInputConnection(iso->GetOutputPort());
   isoMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> isoActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> isoActor;
   isoActor->SetMapper(isoMapper);
-  isoActor->GetProperty()->SetColor(0.8900, 0.8100, 0.3400);
+  isoActor->GetProperty()->SetColor(
+      colors->GetColor3d("MediumOrchid").GetData());
 
-  vtkSmartPointer<vtkContourTriangulator> poly =
-    vtkSmartPointer<vtkContourTriangulator>::New();
+  vtkNew<vtkContourTriangulator> poly;
   poly->SetInputConnection(iso->GetOutputPort());
 
-  vtkSmartPointer<vtkDataSetMapper> polyMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> polyMapper;
   polyMapper->SetInputConnection(poly->GetOutputPort());
   polyMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> polyActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> polyActor;
   polyActor->SetMapper(polyMapper);
-  polyActor->GetProperty()->SetColor(1.0000, 0.3882, 0.2784);
+  polyActor->GetProperty()->SetColor(colors->GetColor3d("Gray").GetData());
 
   // Standard rendering classes
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->SetMultiSamples(0);
   renWin->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renWin->SetWindowName("ContourTriangulator");
+
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   renderer->AddActor(polyActor);
   renderer->AddActor(isoActor);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
+  renWin->SetSize(300, 300);
 
-  // Standard testing code.
-  renderer->SetBackground(0.5,0.5,0.5);
-  renWin->SetSize(300,300);
-
-  vtkCamera *camera = renderer->GetActiveCamera();
+  vtkCamera* camera = renderer->GetActiveCamera();
   renderer->ResetCamera();
   camera->Azimuth(180);
 

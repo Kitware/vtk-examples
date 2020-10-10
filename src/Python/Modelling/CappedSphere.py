@@ -63,7 +63,7 @@ def main():
     lineActor = vtk.vtkActor()
     lineActor.SetMapper(lineMapper)
     lineActor.GetProperty().SetLineWidth(4)
-    lineActor.GetProperty().SetColor(colors.GetColor3d("Red"))
+    lineActor.GetProperty().SetColor(colors.GetColor3d('Red'))
 
     # To see the surface
     surfaceMapper = vtk.vtkPolyDataMapper()
@@ -96,7 +96,7 @@ def main():
 
 
 def get_line(angle, step, radius, uncapped, start):
-    """
+    '''
     Get the points for a line.
 
     :param angle: Length of the arc in degrees.
@@ -105,7 +105,7 @@ def get_line(angle, step, radius, uncapped, start):
     :param uncapped: True if uncapped.
     :param start: Starting angle.
     :return: A vector of points.
-    """
+    '''
     precision = 1.0e-6
     pts = list()
     # Do the curved line

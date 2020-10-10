@@ -1,85 +1,74 @@
-#include <vtkDelaunay3D.h>
-#include <vtkSmartPointer.h>
-
-#include <vtkCellArray.h>
-#include <vtkProperty.h>
-#include <vtkDataSetMapper.h>
 #include <vtkActor.h>
+#include <vtkActor2D.h>
 #include <vtkCamera.h>
+#include <vtkCellArray.h>
+#include <vtkCellData.h>
+#include <vtkCellIterator.h>
+#include <vtkCleanPolyData.h>
+#include <vtkDataSetMapper.h>
+#include <vtkDelaunay3D.h>
+#include <vtkMath.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolygon.h>
-#include <vtkMath.h>
-#include <vtkRenderer.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkCleanPolyData.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkCellIterator.h>
-#include <vtkCellData.h>
-#include <vtkUnsignedCharArray.h>
-#include <vtkNamedColors.h>
-
-#include <vtkTextProperty.h>
+#include <vtkRenderer.h>
 #include <vtkTextMapper.h>
-#include <vtkActor2D.h>
-
+#include <vtkTextProperty.h>
+#include <vtkUnsignedCharArray.h>
+#include <vtkUnstructuredGrid.h>
 #include <vtkXMLPolyDataReader.h>
 
 #include <sstream>
 
-int main ( int argc, char *argv[] )
+int main(int argc, char* argv[])
 {
   float alpha = .5;
-  if(argc < 2)
+  if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " filename.vtp [alpha]" << std::endl;
+    std::cout << "Usage: " << argv[0] << " filename.vtp [alpha] e.g. Bunny.vtp"
+              << std::endl;
     return EXIT_FAILURE;
   }
   if (argc > 2)
   {
     alpha = atof(argv[2]);
   }
-  //Read the file
-  vtkSmartPointer<vtkXMLPolyDataReader> reader =
-    vtkSmartPointer<vtkXMLPolyDataReader>::New();
+  // Read the file
+  vtkNew<vtkXMLPolyDataReader> reader;
   reader->SetFileName(argv[1]);
 
-  vtkSmartPointer<vtkNamedColors> color =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> color;
 
-  vtkSmartPointer<vtkDataSetMapper> originalMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> originalMapper;
   originalMapper->SetInputConnection(reader->GetOutputPort());
   originalMapper->ScalarVisibilityOff();
   originalMapper->SetScalarModeToUseCellData();
 
-  vtkSmartPointer<vtkActor> originalActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> originalActor;
   originalActor->SetMapper(originalMapper);
   originalActor->GetProperty()->SetColor(color->GetColor3d("tomato").GetData());
   originalActor->GetProperty()->SetInterpolationToFlat();
 
   // Clean the polydata. This will remove duplicate points that may be
   // present in the input data.
-  vtkSmartPointer<vtkCleanPolyData> cleaner =
-    vtkSmartPointer<vtkCleanPolyData>::New();
-  cleaner->SetInputConnection (reader->GetOutputPort());
+  vtkNew<vtkCleanPolyData> cleaner;
+  cleaner->SetInputConnection(reader->GetOutputPort());
 
   // Generate a tetrahedral mesh from the input points. By
   // default, the generated volume is the convex hull of the points.
-  vtkSmartPointer<vtkDelaunay3D> delaunay3D =
-    vtkSmartPointer<vtkDelaunay3D>::New();
-  delaunay3D->SetInputConnection (cleaner->GetOutputPort());
+  vtkNew<vtkDelaunay3D> delaunay3D;
+  delaunay3D->SetInputConnection(cleaner->GetOutputPort());
 
-  vtkSmartPointer<vtkDataSetMapper> delaunayMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> delaunayMapper;
   delaunayMapper->SetInputConnection(delaunay3D->GetOutputPort());
   delaunayMapper->SetScalarModeToUseCellData();
 
-  vtkSmartPointer<vtkActor> delaunayActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> delaunayActor;
   delaunayActor->SetMapper(delaunayMapper);
   delaunayActor->GetProperty()->SetColor(color->GetColor3d("banana").GetData());
   delaunayActor->GetProperty()->SetInterpolationToFlat();
@@ -87,15 +76,13 @@ int main ( int argc, char *argv[] )
   // Generate a mesh from the input points. If Alpha is non-zero, then
   // tetrahedra, triangles, edges and vertices that lie within the
   // alpha radius are output.
-  vtkSmartPointer<vtkDelaunay3D> delaunay3DAlpha =
-    vtkSmartPointer<vtkDelaunay3D>::New();
-  delaunay3DAlpha->SetInputConnection (cleaner->GetOutputPort());
+  vtkNew<vtkDelaunay3D> delaunay3DAlpha;
+  delaunay3DAlpha->SetInputConnection(cleaner->GetOutputPort());
   delaunay3DAlpha->SetAlpha(alpha);
   delaunay3DAlpha->Update();
   std::cout << "Alpha: " << alpha << std::endl;
 
-  vtkSmartPointer<vtkUnsignedCharArray> cellData =
-    vtkSmartPointer<vtkUnsignedCharArray>::New();
+  vtkNew<vtkUnsignedCharArray> cellData;
   cellData->SetNumberOfComponents(3);
 
   int numTetras = 0;
@@ -138,31 +125,26 @@ int main ( int argc, char *argv[] )
   // Set the cell color depending on cell type
   delaunay3DAlpha->GetOutput()->GetCellData()->SetScalars(cellData);
 
-  vtkSmartPointer<vtkDataSetMapper> delaunayAlphaMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> delaunayAlphaMapper;
   delaunayAlphaMapper->SetInputConnection(delaunay3DAlpha->GetOutputPort());
   delaunayAlphaMapper->SetScalarModeToUseCellData();
 
-  vtkSmartPointer<vtkActor> delaunayAlphaActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> delaunayAlphaActor;
   delaunayAlphaActor->SetMapper(delaunayAlphaMapper);
   delaunayAlphaActor->GetProperty()->SetPointSize(5.0);
   delaunayAlphaActor->GetProperty()->SetInterpolationToFlat();
 
   // Visualize
 
-  vtkSmartPointer<vtkTextProperty> textProperty =
-    vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkTextProperty> textProperty;
   textProperty->SetFontSize(16);
   textProperty->SetColor(color->GetColor3d("Black").GetData());
 
-  vtkSmartPointer<vtkTextMapper> textMapper =
-    vtkSmartPointer<vtkTextMapper>::New();  
+  vtkNew<vtkTextMapper> textMapper;
   textMapper->SetInput(ss.str().c_str());
   textMapper->SetTextProperty(textProperty);
 
-  vtkSmartPointer<vtkActor2D> textActor =
-    vtkSmartPointer<vtkActor2D>::New();
+  vtkNew<vtkActor2D> textActor;
   textActor->SetMapper(textMapper);
   textActor->SetPosition(10, 10);
 
@@ -173,25 +155,21 @@ int main ( int argc, char *argv[] )
   double rightViewport[4] = {0.66, 0.0, 1.0, 1.0};
 
   // Shared camera
-  vtkSmartPointer<vtkCamera> sharedCamera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> sharedCamera;
 
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetActiveCamera(sharedCamera);
 
-  vtkSmartPointer<vtkRenderer> delaunayRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> delaunayRenderer;
   delaunayRenderer->SetActiveCamera(sharedCamera);
 
-  vtkSmartPointer<vtkRenderer> delaunayAlphaRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> delaunayAlphaRenderer;
   delaunayAlphaRenderer->SetActiveCamera(sharedCamera);
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetSize(900,300);
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetSize(900, 300);
+  renderWindow->SetWindowName("Delaunay3D");
 
   renderWindow->AddRenderer(originalRenderer);
   originalRenderer->SetViewport(leftViewport);
@@ -200,8 +178,7 @@ int main ( int argc, char *argv[] )
   renderWindow->AddRenderer(delaunayAlphaRenderer);
   delaunayAlphaRenderer->SetViewport(rightViewport);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   originalRenderer->AddActor(originalActor);
@@ -209,17 +186,15 @@ int main ( int argc, char *argv[] )
   delaunayAlphaRenderer->AddActor(delaunayAlphaActor);
   delaunayAlphaRenderer->AddViewProp(textActor);
 
-  originalRenderer->SetBackground(
-    color->GetColor3d("Slate_Grey").GetData());
-  delaunayRenderer->SetBackground(
-    color->GetColor3d("Light_Grey").GetData());
-  delaunayAlphaRenderer->SetBackground(
-    color->GetColor3d("Grey").GetData());
+  originalRenderer->SetBackground(color->GetColor3d("Slate_Grey").GetData());
+  delaunayRenderer->SetBackground(color->GetColor3d("Light_Grey").GetData());
+  delaunayAlphaRenderer->SetBackground(color->GetColor3d("Grey").GetData());
 
   originalRenderer->ResetCamera();
   renderWindow->Render();
 
   // Render and interact
   renderWindowInteractor->Start();
+
   return EXIT_SUCCESS;
 }

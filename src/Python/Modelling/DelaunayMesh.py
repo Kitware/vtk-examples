@@ -88,6 +88,7 @@ def main():
     ren.AddActor(edgeActor)
     ren.SetBackground(colors.GetColor3d('AliceBlue'))
     renWin.SetSize(512, 512)
+    renWin.SetWindowName('DelaunayMesh')
 
     ren.ResetCamera()
     ren.GetActiveCamera().Zoom(1.3)

@@ -57,7 +57,7 @@ def main():
 
     bottle = vtk.vtkActor()
     bottle.SetMapper(mapper)
-    bottle.GetProperty().SetColor(colors.GetColor3d("Mint"))
+    bottle.GetProperty().SetColor(colors.GetColor3d('Mint'))
 
     # Sisplay the profile.
     stripper = vtk.vtkStripper()
@@ -66,22 +66,23 @@ def main():
     tubes = vtk.vtkTubeFilter()
     tubes.SetInputConnection(stripper.GetOutputPort())
     tubes.SetNumberOfSides(11)
-    tubes.SetRadius(.05)
+    tubes.SetRadius(0.05)
 
     profileMapper = vtk.vtkPolyDataMapper()
     profileMapper.SetInputConnection(tubes.GetOutputPort())
 
     profileActor = vtk.vtkActor()
     profileActor.SetMapper(profileMapper)
-    profileActor.GetProperty().SetColor(colors.GetColor3d("Tomato"))
+    profileActor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
 
     # Add the actors to the renderer, set the background and size.
     #
     renderer.AddActor(bottle)
     renderer.AddActor(profileActor)
-    renderer.SetBackground(colors.GetColor3d("Burlywood"))
+    renderer.SetBackground(colors.GetColor3d('Burlywood'))
 
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('Bottle');
     renWin.Render()
 
     renderer.GetActiveCamera().SetPosition(1, 0, 0)
