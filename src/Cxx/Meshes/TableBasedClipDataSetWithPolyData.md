@@ -14,7 +14,7 @@ the program exits using the "e: key, the example will report the cell
 type for both the inside and outside clips.
 
 !!! note
-    Contrast this with the vtkClipDataSet example: [ClipDataSetWithPolyData](ClipDataSetWithPolyData).
+    Contrast this with the vtkClipDataSet example: [ClipDataSetWithPolyData](../ClipDataSetWithPolyData).
 
 Here is the summary reported when the example exits:
 <pre><code>
