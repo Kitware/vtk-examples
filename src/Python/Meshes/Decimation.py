@@ -24,9 +24,9 @@ def main():
 
     # Define colors
     colors = vtk.vtkNamedColors()
-    backFaceColor = colors.GetColor3d("gold")
-    inputActorColor = colors.GetColor3d("flesh")
-    decimatedActorColor = colors.GetColor3d("flesh")
+    backFaceColor = colors.GetColor3d('Gold')
+    inputActorColor = colors.GetColor3d('NavajoWhite')
+    decimatedActorColor = colors.GetColor3d('NavajoWhite')
     # colors.SetColor('leftBkg', [0.6, 0.5, 0.4, 1.0])
     # colors.SetColor('rightBkg', [0.4, 0.5, 0.6, 1.0])
 
@@ -42,9 +42,9 @@ def main():
     else:
         inputPolyData = GetSpherePD()
 
-    print("Before decimation")
-    print(f"There are {inputPolyData.GetNumberOfPoints()} points.")
-    print(f"There are {inputPolyData.GetNumberOfPolys()} polygons.")
+    print('Before decimation')
+    print(f'There are {inputPolyData.GetNumberOfPoints()} points.')
+    print(f'There are {inputPolyData.GetNumberOfPolys()} polygons.')
 
     decimate = vtk.vtkDecimatePro()
     decimate.SetInputData(inputPolyData)
@@ -55,11 +55,11 @@ def main():
     decimated = vtk.vtkPolyData()
     decimated.ShallowCopy(decimate.GetOutput())
 
-    print("After decimation")
-    print(f"There are {decimated.GetNumberOfPoints()} points.")
-    print(f"There are {decimated.GetNumberOfPolys()} polygons.")
+    print('After decimation')
+    print(f'There are {decimated.GetNumberOfPoints()} points.')
+    print(f'There are {decimated.GetNumberOfPolys()} polygons.')
     print(
-        f"Reduction: {(inputPolyData.GetNumberOfPolys() - decimated.GetNumberOfPolys()) / inputPolyData.GetNumberOfPolys()}")
+        f'Reduction: {(inputPolyData.GetNumberOfPolys() - decimated.GetNumberOfPolys()) / inputPolyData.GetNumberOfPolys()}')
 
     inputMapper = vtk.vtkPolyDataMapper()
     inputMapper.SetInputData(inputPolyData)
@@ -85,6 +85,7 @@ def main():
     # There will be one render window
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.SetSize(600, 300)
+    renderWindow.SetWindowName('Decimation');
 
     # And one interactor
     interactor = vtk.vtkRenderWindowInteractor()
@@ -137,32 +138,32 @@ def ReadPolyData(file_name):
     import os
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
-    if extension == ".ply":
+    if extension == '.ply':
         reader = vtk.vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtp":
+    elif extension == '.vtp':
         reader = vtk.vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".obj":
+    elif extension == '.obj':
         reader = vtk.vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".stl":
+    elif extension == '.stl':
         reader = vtk.vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtk":
+    elif extension == '.vtk':
         reader = vtk.vtkpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".g":
+    elif extension == '.g':
         reader = vtk.vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
@@ -174,9 +175,9 @@ def ReadPolyData(file_name):
 
 
 def GetSpherePD():
-    """
+    '''
     :return: The PolyData representation of a sphere.
-    """
+    '''
     source = vtk.vtkSphereSource()
     source.SetThetaResolution(30)
     source.SetPhiResolution(15)

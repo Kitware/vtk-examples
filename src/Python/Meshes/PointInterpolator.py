@@ -106,7 +106,7 @@ def main():
 
     renderer.AddActor(actor)
     renderer.AddActor(point_actor)
-    renderer.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
     renWin.SetSize(640, 480)
     renWin.SetWindowName('PointInterpolator')

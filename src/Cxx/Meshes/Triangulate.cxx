@@ -1,49 +1,49 @@
-#include <vtkSmartPointer.h>
-#include <vtkProperty.h>
-#include <vtkPolyData.h>
-#include <vtkTriangleFilter.h>
-#include <vtkRegularPolygonSource.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRegularPolygonSource.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkTriangleFilter.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkRegularPolygonSource> polygonSource =
-    vtkSmartPointer<vtkRegularPolygonSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkRegularPolygonSource> polygonSource;
   polygonSource->Update();
 
-  vtkSmartPointer<vtkTriangleFilter> triangleFilter =
-    vtkSmartPointer<vtkTriangleFilter>::New();
+  vtkNew<vtkTriangleFilter> triangleFilter;
   triangleFilter->SetInputConnection(polygonSource->GetOutputPort());
   triangleFilter->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> inputMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> inputMapper;
   inputMapper->SetInputConnection(polygonSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> inputActor =
-      vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> inputActor;
   inputActor->SetMapper(inputMapper);
   inputActor->GetProperty()->SetRepresentationToWireframe();
+  inputActor->GetProperty()->SetColor(
+      colors->GetColor3d("MistyRose").GetData());
 
-  vtkSmartPointer<vtkPolyDataMapper> triangleMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> triangleMapper;
   triangleMapper->SetInputConnection(triangleFilter->GetOutputPort());
-  vtkSmartPointer<vtkActor> triangleActor =
-      vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> triangleActor;
   triangleActor->SetMapper(triangleMapper);
   triangleActor->GetProperty()->SetRepresentationToWireframe();
-  
+  triangleActor->GetProperty()->SetColor(
+      colors->GetColor3d("MistyRose").GetData());
+
   // There will be one render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
+  renderWindow->SetWindowName("Triangulate");
 
   // And one interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Define viewport ranges
@@ -52,17 +52,15 @@ int main(int, char *[])
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup both renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  leftRenderer->SetBackground(.6, .5, .4);
+  leftRenderer->SetBackground(colors->GetColor3d("SaddleBrown").GetData());
 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  rightRenderer->SetBackground(.4, .5, .6);
+  rightRenderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
 
   leftRenderer->AddActor(inputActor);
   rightRenderer->AddActor(triangleActor);
@@ -73,6 +71,6 @@ int main(int, char *[])
 
   renderWindow->Render();
   interactor->Start();
-  
+
   return EXIT_SUCCESS;
 }

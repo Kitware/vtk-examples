@@ -3,6 +3,7 @@
 #include <vtkDelimitedTextReader.h>
 #include <vtkGaussianKernel.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPointGaussianMapper.h>
 #include <vtkPointInterpolator.h>
@@ -12,7 +13,6 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSTLReader.h>
-#include <vtkSmartPointer.h>
 #include <vtkTableToPolyData.h>
 
 int main(int argc, char* argv[])
@@ -27,13 +27,13 @@ int main(int argc, char* argv[])
   std::string probeSurfaceFile = argv[2];
 
   // Read a points data
-  auto pointsReader = vtkSmartPointer<vtkDelimitedTextReader>::New();
+  vtkNew<vtkDelimitedTextReader> pointsReader;
   pointsReader->SetFileName(pointsFile.c_str());
   pointsReader->DetectNumericColumnsOn();
   pointsReader->SetFieldDelimiterCharacters("\t");
   pointsReader->SetHaveHeaders(true);
 
-  auto tablePoints = vtkSmartPointer<vtkTableToPolyData>::New();
+  vtkNew<vtkTableToPolyData> tablePoints;
   tablePoints->SetInputConnection(pointsReader->GetOutputPort());
   tablePoints->SetXColumn("x");
   tablePoints->SetYColumn("y");
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
   double* range = points->GetPointData()->GetScalars()->GetRange();
 
   // Read a probe surface
-  auto stlReader = vtkSmartPointer<vtkSTLReader>::New();
+  vtkNew<vtkSTLReader> stlReader;
   stlReader->SetFileName(probeSurfaceFile.c_str());
   stlReader->Update();
 
@@ -53,30 +53,31 @@ int main(int argc, char* argv[])
   // double* bounds = surface->GetBounds();
 
   // Gaussian kernel
-  auto gaussianKernel = vtkSmartPointer<vtkGaussianKernel>::New();
+  vtkNew<vtkGaussianKernel> gaussianKernel;
   gaussianKernel->SetSharpness(2.0);
   gaussianKernel->SetRadius(12.0);
 
-  auto interpolator = vtkSmartPointer<vtkPointInterpolator>::New();
+  vtkNew<vtkPointInterpolator> interpolator;
   interpolator->SetInputData(surface);
   interpolator->SetSourceData(points);
   interpolator->SetKernel(gaussianKernel);
 
   // Visualize
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(interpolator->GetOutputPort());
   mapper->SetScalarRange(range);
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  auto pointsMapper = vtkSmartPointer<vtkPointGaussianMapper>::New();
+  vtkNew<vtkPointGaussianMapper> pointsMapper;
   pointsMapper->SetInputData(points);
   pointsMapper->SetScalarRange(range);
   pointsMapper->SetScaleFactor(0.6);
   pointsMapper->EmissiveOff();
+  // clang-format off
   pointsMapper->SetSplatShaderCode(
       "//VTK::Color::Impl\n"
       "float dist = dot(offsetVCVSOutput.xy,offsetVCVSOutput.xy);\n"
@@ -87,19 +88,20 @@ int main(int argc, char* argv[])
       "  ambientColor *= scale;\n"
       "  diffuseColor *= scale;\n"
       "};\n");
+  // clang-format on
 
-  auto pointsActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> pointsActor;
   pointsActor->SetMapper(pointsMapper);
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
   renderWindow->SetWindowName("PointInterpolator");
 
-  auto iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
