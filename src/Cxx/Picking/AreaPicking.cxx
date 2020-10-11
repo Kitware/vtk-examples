@@ -6,6 +6,7 @@
 #include <vtkInteractorStyleTrackball.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -14,7 +15,6 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkXMLPolyDataWriter.h>
 
 namespace {
@@ -25,10 +25,8 @@ void PickCallbackFunction(vtkObject* caller, long unsigned int eventId,
 int main(int, char*[])
 {
   // Create a set of points
-  vtkSmartPointer<vtkPoints> points =
-      vtkSmartPointer<vtkPoints>::New();
-  vtkSmartPointer<vtkCellArray> vertices =
-      vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkPoints> points;
+  vtkNew<vtkCellArray> vertices;
   vtkIdType pid[1];
   pid[0] = points->InsertNextPoint(1.0, 0.0, 0.0);
   vertices->InsertNextCell(1, pid);
@@ -38,60 +36,50 @@ int main(int, char*[])
   vertices->InsertNextCell(1, pid);
 
   // Create a polydata
-  vtkSmartPointer<vtkPolyData> polydata =
-      vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   polydata->SetPoints(points);
   polydata->SetVerts(vertices);
 
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polydata);
 
-  vtkSmartPointer<vtkNamedColors> colors =
-      vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkActor> actor =
-      vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetPointSize(5);
-  actor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
+  actor->GetProperty()->SetPointSize(8);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
 
-  vtkSmartPointer<vtkRenderer> renderer =
-      vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("AreaPicking");
 
-  vtkSmartPointer<vtkAreaPicker> areaPicker =
-      vtkSmartPointer<vtkAreaPicker>::New();
+  vtkNew<vtkAreaPicker> areaPicker;
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderWindowInteractor->SetPicker(areaPicker);
 
   renderer->AddActor(actor);
 
-  renderer->SetBackground(colors->GetColor3d("Gold").GetData());
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
 
   renderWindow->Render();
 
   // For vtkInteractorStyleRubberBandPick - use 'r' and left-mouse to draw a
   // selection box used to pick
-  vtkSmartPointer<vtkInteractorStyleRubberBandPick> style =
-      vtkSmartPointer<vtkInteractorStyleRubberBandPick>::New();
+  vtkNew<vtkInteractorStyleRubberBandPick> style;
 
   // For vtkInteractorStyleTrackballCamera - use 'p' to pick at the current
   // mouse position
-  //  vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
-  //    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New(); //like
+  //  vtkNew<vtkInteractorStyleTrackballCamera> style;
   //    paraview
   style->SetCurrentRenderer(renderer);
   renderWindowInteractor->SetInteractorStyle(style);
 
-  vtkSmartPointer<vtkCallbackCommand> pickCallback =
-      vtkSmartPointer<vtkCallbackCommand>::New();
+  vtkNew<vtkCallbackCommand> pickCallback;
   pickCallback->SetCallback(PickCallbackFunction);
 
   areaPicker->AddObserver(vtkCommand::EndPickEvent, pickCallback);

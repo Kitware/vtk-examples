@@ -70,15 +70,23 @@ def main():
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
+    randomSequence = vtk.vtkMinimalStandardRandomSequence()
+    # randomSequence.SetSeed(1043618065)
+    # randomSequence.SetSeed(5170)
+    randomSequence.SetSeed(8775070)
     # Add spheres to play with
     for i in range(numberOfSpheres):
         source = vtk.vtkSphereSource()
 
         # random position and radius
-        x = vtk.vtkMath.Random(-5, 5)
-        y = vtk.vtkMath.Random(-5, 5)
-        z = vtk.vtkMath.Random(-5, 5)
-        radius = vtk.vtkMath.Random(.5, 1.0)
+        x = randomSequence.GetRangeValue(-5.0, 5.0)
+        randomSequence.Next()
+        y = randomSequence.GetRangeValue(-5.0, 5.0)
+        randomSequence.Next()
+        z = randomSequence.GetRangeValue(-5.0, 5.0)
+        randomSequence.Next()
+        radius = randomSequence.GetRangeValue(0.5, 1.0)
+        randomSequence.Next()
 
         source.SetRadius(radius)
         source.SetCenter(x, y, z)
@@ -90,9 +98,13 @@ def main():
         actor = vtk.vtkActor()
         actor.SetMapper(mapper)
 
-        r = vtk.vtkMath.Random(.4, 1.0)
-        g = vtk.vtkMath.Random(.4, 1.0)
-        b = vtk.vtkMath.Random(.4, 1.0)
+        r = randomSequence.GetRangeValue(0.4, 1.0)
+        randomSequence.Next()
+        g = randomSequence.GetRangeValue(0.4, 1.0)
+        randomSequence.Next()
+        b = randomSequence.GetRangeValue(0.4, 1.0)
+        randomSequence.Next()
+
         actor.GetProperty().SetDiffuseColor(r, g, b)
         actor.GetProperty().SetDiffuse(.8)
         actor.GetProperty().SetSpecular(.5)
