@@ -1,7 +1,8 @@
 #include <vtkActor.h>
 #include <vtkInteractorStyleTrackballCamera.h>
-#include <vtkMath.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkObjectFactory.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPropPicker.h>
@@ -9,11 +10,9 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 
-namespace
-{
+namespace {
 // Handle mouse events
 class MouseInteractorHighLightActor : public vtkInteractorStyleTrackballCamera
 {
@@ -33,13 +32,12 @@ public:
   }
   virtual void OnLeftButtonDown() override
   {
-    auto colors =   vtkSmartPointer<vtkNamedColors>::New();
+    vtkNew<vtkNamedColors> colors;
 
     int* clickPos = this->GetInteractor()->GetEventPosition();
 
     // Pick from this location.
-    auto picker =
-        vtkSmartPointer<vtkPropPicker>::New();
+    vtkNew<vtkPropPicker> picker;
     picker->Pick(clickPos[0], clickPos[1], 0, this->GetDefaultRenderer());
 
     // If we picked something before, reset its property
@@ -69,17 +67,14 @@ private:
   vtkActor* LastPickedActor;
   vtkProperty* LastPickedProperty;
 };
-}
 
 vtkStandardNewMacro(MouseInteractorHighLightActor);
+} // namespace
 
 // Execute application.
 int main(int argc, char* argv[])
 {
-  auto colors =
-      vtkSmartPointer<vtkNamedColors>::New();
-
-  colors->SetColor("Bkg", 0.3, 0.4, 0.5);
+  vtkNew<vtkNamedColors> colors;
 
   int numberOfSpheres = 10;
   if (argc > 1)
@@ -87,48 +82,52 @@ int main(int argc, char* argv[])
     numberOfSpheres = atoi(argv[1]);
   }
   // A renderer and render window
-  auto renderer =
-      vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("HighlightPickedActor");
 
   // An interactor
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Set the custom type to use for interaction.
-  auto style =
-      vtkSmartPointer<MouseInteractorHighLightActor>::New();
+  vtkNew<MouseInteractorHighLightActor> style;
   style->SetDefaultRenderer(renderer);
 
   renderWindowInteractor->SetInteractorStyle(style);
-
+  
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(8775070);
   for (int i = 0; i < numberOfSpheres; ++i)
   {
-    auto source =
-        vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     double x, y, z, radius;
-    x = vtkMath::Random(-5, 5);
-    y = vtkMath::Random(-5, 5);
-    z = vtkMath::Random(-5, 5);
-    radius = vtkMath::Random(0.5, 1.0);
+    // random position and radius
+    x = randomSequence->GetRangeValue(-5.0, 5.0);
+    randomSequence->Next();
+    y = randomSequence->GetRangeValue(-5.0, 5.0);
+    randomSequence->Next();
+    z = randomSequence->GetRangeValue(-5.0, 5.0);
+    randomSequence->Next();
+    radius = randomSequence->GetRangeValue(0.5, 1.0);
+    randomSequence->Next();
     source->SetRadius(radius);
     source->SetCenter(x, y, z);
     source->SetPhiResolution(11);
     source->SetThetaResolution(21);
-    auto mapper =
-        vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputConnection(source->GetOutputPort());
-    auto actor =
-        vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> actor;
     actor->SetMapper(mapper);
     double r, g, b;
-    r = vtkMath::Random(0.4, 1.0);
-    g = vtkMath::Random(0.4, 1.0);
-    b = vtkMath::Random(0.4, 1.0);
+    r = randomSequence->GetRangeValue(0.4, 1.0);
+    randomSequence->Next();
+    g = randomSequence->GetRangeValue(0.4, 1.0);
+    randomSequence->Next();
+    b = randomSequence->GetRangeValue(0.4, 1.0);
+    randomSequence->Next();
     actor->GetProperty()->SetDiffuseColor(r, g, b);
     actor->GetProperty()->SetDiffuse(0.8);
     actor->GetProperty()->SetSpecular(0.5);
@@ -138,7 +137,7 @@ int main(int argc, char* argv[])
     renderer->AddActor(actor);
   }
 
-  renderer->SetBackground(colors->GetColor3d("Bkg").GetData());
+  renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
   // Render and interact
   renderWindow->Render();

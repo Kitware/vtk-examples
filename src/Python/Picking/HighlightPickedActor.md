@@ -1,3 +1,6 @@
 ### Description
 
-Shows how to customize vtkInteractorStyleTrackballCamera and vtkPropPicker to select an actor in the scene by pressing the left mouse button.
+Click on a sphere to highlight it. The picked sphere color changes to red, and its EdgeVisibity is On. The example subclasses vtkInteractorStyleTrackballCamera with a local class called **MouseInteractorHighLightActor**. The new interactor overrides the *OnLeftButtonDown* of vtkInteractorStyleTrackballCamera.
+
+!!! seealso
+    [HighlightWithSilhouette](../HighlightWithSilhouette) generates a silhouette of the picked actor.

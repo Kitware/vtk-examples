@@ -3,29 +3,31 @@
 
 #include <vtkNamedColors.h>
 
-#include <vtkChartXY.h>
 #include <vtkAxis.h>
 #include <vtkBrush.h>
 #include <vtkCharArray.h>
+#include <vtkChartXY.h>
 #include <vtkContextScene.h>
 #include <vtkContextView.h>
 #include <vtkFloatArray.h>
+#include <vtkNew.h>
 #include <vtkPlot.h>
-#include <vtkTextProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkTable.h>
+#include <vtkTextProperty.h>
 
 #include <algorithm>
 //----------------------------------------------------------------------------
-int main( int, char * [] )
+int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
   // Set up a 2D scene, add an XY chart to it
   vtkNew<vtkContextView> view;
   view->GetRenderWindow()->SetSize(640, 480);
+  view->GetRenderWindow()->SetWindowName("AreaPlot");
 
   vtkNew<vtkChartXY> chart;
   chart->SetTitle("Area Plot");
@@ -33,13 +35,17 @@ int main( int, char * [] )
   chart->GetTitleProperties()->SetColor(colors->GetColor3d("Banana").GetData());
 
   chart->GetAxis(0)->GetTitleProperties()->SetFontSize(24);
-  chart->GetAxis(0)->GetTitleProperties()->SetColor(colors->GetColor3d("orange").GetData());
-  chart->GetAxis(0)->GetLabelProperties()->SetColor(colors->GetColor3d("beige").GetData());
+  chart->GetAxis(0)->GetTitleProperties()->SetColor(
+      colors->GetColor3d("orange").GetData());
+  chart->GetAxis(0)->GetLabelProperties()->SetColor(
+      colors->GetColor3d("beige").GetData());
   chart->GetAxis(0)->GetLabelProperties()->SetFontSize(18);
 
   chart->GetAxis(1)->GetTitleProperties()->SetFontSize(24);
-  chart->GetAxis(1)->GetTitleProperties()->SetColor(colors->GetColor3d("orange").GetData());
-  chart->GetAxis(1)->GetLabelProperties()->SetColor(colors->GetColor3d("beige").GetData());
+  chart->GetAxis(1)->GetTitleProperties()->SetColor(
+      colors->GetColor3d("orange").GetData());
+  chart->GetAxis(1)->GetLabelProperties()->SetColor(
+      colors->GetColor3d("beige").GetData());
   chart->GetAxis(1)->GetLabelProperties()->SetFontSize(18);
 
   view->GetScene()->AddItem(chart);
@@ -77,7 +83,7 @@ int main( int, char * [] )
 
   // Test charting with a few more points...
   int numPoints = 69;
-  float inc = 7.5 / (numPoints-1);
+  float inc = 7.5 / (numPoints - 1);
   table->SetNumberOfRows(numPoints);
   for (int i = 0; i < numPoints; ++i)
   {
@@ -93,16 +99,15 @@ int main( int, char * [] )
 
   // Add multiple line plots, setting the colors etc
   vtkColor3d color3d = colors->GetColor3d("tomato");
-  vtkPlotArea* area = dynamic_cast<vtkPlotArea*>(chart->AddPlot(vtkChart::AREA));
+  vtkPlotArea* area =
+      dynamic_cast<vtkPlotArea*>(chart->AddPlot(vtkChart::AREA));
   area->SetInputData(table);
   area->SetInputArray(0, "X Axis");
   area->SetInputArray(1, "Sine");
   area->SetInputArray(2, "Sine2");
   area->SetValidPointMaskName("ValidMask");
-  area->GetBrush()->SetColorF(color3d.GetRed(),
-                              color3d.GetGreen(),
-                              color3d.GetBlue(),
-                              .6);
+  area->GetBrush()->SetColorF(color3d.GetRed(), color3d.GetGreen(),
+                              color3d.GetBlue(), .6);
 
   chart->GetAxis(vtkAxis::LEFT)->SetLogScale(true);
 

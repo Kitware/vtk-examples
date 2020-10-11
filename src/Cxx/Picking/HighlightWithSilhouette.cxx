@@ -1,22 +1,19 @@
-#include <vtkSmartPointer.h>
-#include <vtkInteractorStyleTrackballCamera.h>
-
-#include <vtkPolyDataSilhouette.h>
-#include <vtkMath.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkPolyDataSilhouette.h>
 #include <vtkPropPicker.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSphereSource.h>
-#include <vtkNamedColors.h>
 
-namespace
-{
+namespace {
 // Handle mouse events
 class MouseInteractorHighLightActor : public vtkInteractorStyleTrackballCamera
 {
@@ -36,11 +33,10 @@ public:
   }
   virtual void OnLeftButtonDown() override
   {
-    int *clickPos = this->GetInteractor()->GetEventPosition();
+    int* clickPos = this->GetInteractor()->GetEventPosition();
 
     // Pick from this location.
-    auto picker =
-      vtkSmartPointer<vtkPropPicker>::New();
+    vtkNew<vtkPropPicker> picker;
     picker->Pick(clickPos[0], clickPos[1], 0, this->GetDefaultRenderer());
     this->LastPickedActor = picker->GetActor();
 
@@ -52,35 +48,36 @@ public:
 
       // Highlight the picked actor by generating a silouhette
       this->Silhouette->SetInputData(
-        dynamic_cast<vtkPolyDataMapper*>(this->LastPickedActor->GetMapper())->GetInput());
+          dynamic_cast<vtkPolyDataMapper*>(this->LastPickedActor->GetMapper())
+              ->GetInput());
       this->GetDefaultRenderer()->AddActor(this->SilhouetteActor);
     }
 
     // Forward events
     vtkInteractorStyleTrackballCamera::OnLeftButtonDown();
-}
-  void SetSilhouette(vtkPolyDataSilhouette *silhouette)
+  }
+  void SetSilhouette(vtkPolyDataSilhouette* silhouette)
   {
     this->Silhouette = silhouette;
   }
-  void SetSilhouetteActor(vtkActor *silhouetteActor)
+  void SetSilhouetteActor(vtkActor* silhouetteActor)
   {
     this->SilhouetteActor = silhouetteActor;
   }
+
 private:
-  vtkActor *              LastPickedActor;
-  vtkActor *              SilhouetteActor;
-  vtkPolyDataSilhouette * Silhouette;
+  vtkActor* LastPickedActor;
+  vtkActor* SilhouetteActor;
+  vtkPolyDataSilhouette* Silhouette;
 };
-}
 
 vtkStandardNewMacro(MouseInteractorHighLightActor);
+} // namespace
 
 // Execute application.
 int main(int argc, char* argv[])
 {
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   colors->SetColor("Bkg", 0.3, 0.4, 0.5);
 
   int numberOfSpheres = 10;
@@ -89,41 +86,46 @@ int main(int argc, char* argv[])
     numberOfSpheres = atoi(argv[1]);
   }
   // Create a renderer and render window
-  auto renderer =
-      vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("HighlightWithSilhouette");
 
   // An interactor
-  auto interactor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(8775070);
   for (int i = 0; i < numberOfSpheres; ++i)
   {
-    auto source =
-        vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     double x, y, z, radius;
-    x = vtkMath::Random(-5, 5);
-    y = vtkMath::Random(-5, 5);
-    z = vtkMath::Random(-5, 5);
-    radius = vtkMath::Random(0.5, 1.0);
+    // random position and radius
+    x = randomSequence->GetRangeValue(-5.0, 5.0);
+    randomSequence->Next();
+    y = randomSequence->GetRangeValue(-5.0, 5.0);
+    randomSequence->Next();
+    z = randomSequence->GetRangeValue(-5.0, 5.0);
+    randomSequence->Next();
+    radius = randomSequence->GetRangeValue(0.5, 1.0);
+    randomSequence->Next();
     source->SetRadius(radius);
     source->SetCenter(x, y, z);
     source->SetPhiResolution(11);
     source->SetThetaResolution(21);
-    auto mapper =
-        vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputConnection(source->GetOutputPort());
-    auto actor =
-        vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> actor;
     actor->SetMapper(mapper);
     double r, g, b;
-    r = vtkMath::Random(0.4, 1.0);
-    g = vtkMath::Random(0.4, 1.0);
-    b = vtkMath::Random(0.4, 1.0);
+    r = randomSequence->GetRangeValue(0.4, 1.0);
+    randomSequence->Next();
+    g = randomSequence->GetRangeValue(0.4, 1.0);
+    randomSequence->Next();
+    b = randomSequence->GetRangeValue(0.4, 1.0);
+    randomSequence->Next();
     actor->GetProperty()->SetDiffuseColor(r, g, b);
     actor->GetProperty()->SetDiffuse(0.8);
     actor->GetProperty()->SetSpecular(0.5);
@@ -133,31 +135,28 @@ int main(int argc, char* argv[])
     renderer->AddActor(actor);
   }
 
-  renderer->SetBackground(colors->GetColor3d("Bkg").GetData());
+  renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
   // Render and interact
   renderWindow->Render();
 
   // Create the silhouette pipeline, the input data will be set in the
   // interactor
-  auto silhouette =
-    vtkSmartPointer<vtkPolyDataSilhouette>::New();
+  vtkNew<vtkPolyDataSilhouette> silhouette;
   silhouette->SetCamera(renderer->GetActiveCamera());
 
   // Create mapper and actor for silhouette
-  auto silhouetteMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> silhouetteMapper;
   silhouetteMapper->SetInputConnection(silhouette->GetOutputPort());
 
-  auto silhouetteActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> silhouetteActor;
   silhouetteActor->SetMapper(silhouetteMapper);
-  silhouetteActor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
+  silhouetteActor->GetProperty()->SetColor(
+      colors->GetColor3d("Tomato").GetData());
   silhouetteActor->GetProperty()->SetLineWidth(5);
 
   // Set the custom type to use for interaction.
-  auto style =
-      vtkSmartPointer<MouseInteractorHighLightActor>::New();
+  vtkNew<MouseInteractorHighLightActor> style;
   style->SetDefaultRenderer(renderer);
   style->SetSilhouetteActor(silhouetteActor);
   style->SetSilhouette(silhouette);

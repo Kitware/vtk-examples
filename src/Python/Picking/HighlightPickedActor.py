@@ -34,6 +34,7 @@ class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
             self.NewPickedActor.GetProperty().SetColor(colors.GetColor3d('Red'))
             self.NewPickedActor.GetProperty().SetDiffuse(1.0)
             self.NewPickedActor.GetProperty().SetSpecular(0.0)
+            self.NewPickedActor.GetProperty().EdgeVisibilityOn()
 
             # save the last picked actor
             self.LastPickedActor = self.NewPickedActor
@@ -49,6 +50,8 @@ def main():
 
     renwin = vtk.vtkRenderWindow()
     renwin.AddRenderer(renderer)
+    renwin.SetSize(640, 480)
+    renwin.SetWindowName('HighlightPickedActor')
 
     # An interactor
     interactor = vtk.vtkRenderWindowInteractor()
@@ -59,15 +62,23 @@ def main():
     style.SetDefaultRenderer(renderer)
     interactor.SetInteractorStyle(style)
 
+    randomSequence = vtk.vtkMinimalStandardRandomSequence()
+    # randomSequence.SetSeed(1043618065)
+    # randomSequence.SetSeed(5170)
+    randomSequence.SetSeed(8775070)
     # Add spheres to play with
     for i in range(NUMBER_OF_SPHERES):
         source = vtk.vtkSphereSource()
 
         # random position and radius
-        x = vtk.vtkMath.Random(-5, 5)
-        y = vtk.vtkMath.Random(-5, 5)
-        z = vtk.vtkMath.Random(-5, 5)
-        radius = vtk.vtkMath.Random(.5, 1.0)
+        x = randomSequence.GetRangeValue(-5.0, 5.0)
+        randomSequence.Next()
+        y = randomSequence.GetRangeValue(-5.0, 5.0)
+        randomSequence.Next()
+        z = randomSequence.GetRangeValue(-5.0, 5.0)
+        randomSequence.Next()
+        radius = randomSequence.GetRangeValue(0.5, 1.0)
+        randomSequence.Next()
 
         source.SetRadius(radius)
         source.SetCenter(x, y, z)
@@ -79,13 +90,17 @@ def main():
         actor = vtk.vtkActor()
         actor.SetMapper(mapper)
 
-        r = vtk.vtkMath.Random(.4, 1.0)
-        g = vtk.vtkMath.Random(.4, 1.0)
-        b = vtk.vtkMath.Random(.4, 1.0)
+        r = randomSequence.GetRangeValue(0.4, 1.0)
+        randomSequence.Next()
+        g = randomSequence.GetRangeValue(0.4, 1.0)
+        randomSequence.Next()
+        b = randomSequence.GetRangeValue(0.4, 1.0)
+        randomSequence.Next()
+
         actor.GetProperty().SetDiffuseColor(r, g, b)
         actor.GetProperty().SetDiffuse(.8)
         actor.GetProperty().SetSpecular(.5)
-        actor.GetProperty().SetSpecularColor(1.0, 1.0, 1.0)
+        actor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
         actor.GetProperty().SetSpecularPower(30.0)
 
         renderer.AddActor(actor)

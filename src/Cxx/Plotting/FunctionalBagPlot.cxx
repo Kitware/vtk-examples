@@ -1,28 +1,26 @@
-#include <vtkNew.h>
-#include <vtkPlotFunctionalBag.h>
-#include <vtkChartXY.h>
 #include <vtkChartLegend.h>
-
-#include <vtkNamedColors.h>
-#include <vtkColorSeries.h>
+#include <vtkChartXY.h>
 #include <vtkColor.h>
-
+#include <vtkColorSeries.h>
 #include <vtkContextScene.h>
 #include <vtkContextView.h>
 #include <vtkDoubleArray.h>
 #include <vtkLookupTable.h>
 #include <vtkMath.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPen.h>
-#include <vtkRenderer.h>
+#include <vtkPlotFunctionalBag.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkStringArray.h>
 #include <vtkTable.h>
 
 #include <sstream>
 
 //----------------------------------------------------------------------------
-int main(int, char * [])
+int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
@@ -41,9 +39,12 @@ int main(int, char * [])
     arr[i]->SetNumberOfValues(numVals);
     for (int j = 0; j < numVals; j++)
     {
-      arr[i]->SetValue(j, (i+1) *
-        fabs(sin((j * 2.f *vtkMath::Pi()) /
-        static_cast<float>(numVals))) * j + i * 20);
+      arr[i]->SetValue(j,
+                       (i + 1) *
+                               fabs(sin((j * 2.f * vtkMath::Pi()) /
+                                        static_cast<float>(numVals))) *
+                               j +
+                           i * 20);
     }
     inputTable->AddColumn(arr[i]);
   }
@@ -57,7 +58,6 @@ int main(int, char * [])
     xArr->SetValue(j, j * 2.0);
   }
   inputTable->AddColumn(xArr);
-
 
   // Create the bag columns
   vtkNew<vtkDoubleArray> q3Arr;
@@ -88,6 +88,7 @@ int main(int, char * [])
   vtkNew<vtkContextView> view;
   view->GetRenderWindow()->SetSize(640, 480);
   view->GetRenderWindow()->SetMultiSamples(0);
+  view->GetRenderWindow()->SetWindowName("FunctionalBagPlot");
 
   vtkNew<vtkChartXY> chart;
   chart->SetShowLegend(true);
@@ -110,23 +111,22 @@ int main(int, char * [])
   chart->AddPlot(q2Plot);
 
   vtkNew<vtkColorSeries> colorSeries;
-  colorSeries->SetColorScheme(vtkColorSeries::BREWER_QUALITATIVE_SET3);;
+  colorSeries->SetColorScheme(vtkColorSeries::BREWER_QUALITATIVE_SET3);
+  ;
 
   vtkNew<vtkLookupTable> lookup;
   lookup->SetNumberOfColors(numCols);
-  lookup->SetRange(0, numCols-1);
+  lookup->SetRange(0, numCols - 1);
   for (int j = 0; j < numCols; j++)
   {
     vtkNew<vtkPlotFunctionalBag> plot;
     vtkColor3ub color = colorSeries->GetColorRepeating(j);
-    lookup->SetTableValue(
-      j,
-      color.GetRed()/255., color.GetGreen()/255., color.GetBlue()/255., 1.);
+    lookup->SetTableValue(j, color.GetRed() / 255., color.GetGreen() / 255.,
+                          color.GetBlue() / 255., 1.);
     double rgb[3];
     lookup->GetColor(j, rgb);
     plot->SetColor(rgb[0], rgb[1], rgb[2]);
-    plot->SetInputData(inputTable, "X",
-                       inputTable->GetColumn(j)->GetName());
+    plot->SetInputData(inputTable, "X", inputTable->GetColumn(j)->GetName());
     plot->GetPen()->SetWidth(3.0);
     chart->AddPlot(plot);
   }

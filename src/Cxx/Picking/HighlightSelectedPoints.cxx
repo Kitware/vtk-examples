@@ -7,6 +7,7 @@
 #include <vtkIdTypeArray.h>
 #include <vtkInteractorStyleRubberBandPick.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkObjectFactory.h>
 #include <vtkPlanes.h>
 #include <vtkPointData.h>
@@ -23,10 +24,12 @@
 #include <vtkVersion.h>
 #include <vtkVertexGlyphFilter.h>
 
+
 #if VTK_VERSION_NUMBER >= 89000000000ULL
 #define VTK890 1
 #endif
 
+namespace {
 // Define interaction style
 class InteractorStyle : public vtkInteractorStyleRubberBandPick
 {
@@ -43,7 +46,7 @@ public:
 
   virtual void OnLeftButtonUp() override
   {
-    auto colors = vtkSmartPointer<vtkNamedColors>::New();
+    vtkNew<vtkNamedColors> colors;
 
     // Forward events
     vtkInteractorStyleRubberBandPick::OnLeftButtonUp();
@@ -52,12 +55,12 @@ public:
         static_cast<vtkAreaPicker*>(this->GetInteractor()->GetPicker())
             ->GetFrustum();
 
-    auto extractGeometry = vtkSmartPointer<vtkExtractGeometry>::New();
+    vtkNew<vtkExtractGeometry> extractGeometry;
     extractGeometry->SetImplicitFunction(frustum);
     extractGeometry->SetInputData(this->Points);
     extractGeometry->Update();
 
-    auto glyphFilter = vtkSmartPointer<vtkVertexGlyphFilter>::New();
+    vtkNew<vtkVertexGlyphFilter> glyphFilter;
     glyphFilter->SetInputConnection(extractGeometry->GetOutputPort());
     glyphFilter->Update();
 
@@ -78,7 +81,7 @@ public:
 
     this->SelectedActor->GetProperty()->SetColor(
         colors->GetColor3d("Red").GetData());
-    this->SelectedActor->GetProperty()->SetPointSize(3);
+    this->SelectedActor->GetProperty()->SetPointSize(5);
 
     this->CurrentRenderer->AddActor(SelectedActor);
     this->GetInteractor()->GetRenderWindow()->Render();
@@ -95,17 +98,19 @@ private:
   vtkSmartPointer<vtkActor> SelectedActor;
   vtkSmartPointer<vtkDataSetMapper> SelectedMapper;
 };
+
 vtkStandardNewMacro(InteractorStyle);
+} // namespace
 
 int main(int, char*[])
 {
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto pointSource = vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(20);
   pointSource->Update();
 
-  auto idFilter = vtkSmartPointer<vtkIdFilter>::New();
+  vtkNew<vtkIdFilter> idFilter;
   idFilter->SetInputConnection(pointSource->GetOutputPort());
 #if VTK890
   idFilter->SetCellIdsArrayName("OriginalIds");
@@ -115,37 +120,39 @@ int main(int, char*[])
 #endif
   idFilter->Update();
 
-  auto surfaceFilter = vtkSmartPointer<vtkDataSetSurfaceFilter>::New();
+  vtkNew<vtkDataSetSurfaceFilter> surfaceFilter;
   surfaceFilter->SetInputConnection(idFilter->GetOutputPort());
   surfaceFilter->Update();
 
   vtkPolyData* input = surfaceFilter->GetOutput();
 
   // Create a mapper and actor
-  auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(input);
   mapper->ScalarVisibilityOff();
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetPointSize(3);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
 
   // Visualize
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("HighlightSelectedPoints");
 
-  auto areaPicker = vtkSmartPointer<vtkAreaPicker>::New();
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkAreaPicker> areaPicker;
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetPicker(areaPicker);
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
-  renderer->SetBackground(colors->GetColor3d("Black").GetData());
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
 
   renderWindow->Render();
 
-  auto style = vtkSmartPointer<InteractorStyle>::New();
+  vtkNew<InteractorStyle> style;
   style->SetPoints(input);
   renderWindowInteractor->SetInteractorStyle(style);
 

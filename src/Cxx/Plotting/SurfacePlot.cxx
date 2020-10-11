@@ -1,22 +1,21 @@
-#include <vtkNew.h>
-#include <vtkPlotSurface.h>
-
-#include <vtkNamedColors.h>
 #include <vtkChartXYZ.h>
-#include <vtkPen.h>
 #include <vtkContextMouseEvent.h>
-#include <vtkContextView.h>
 #include <vtkContextScene.h>
+#include <vtkContextView.h>
 #include <vtkFloatArray.h>
-#include <vtkRenderer.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPen.h>
+#include <vtkPlotSurface.h>
+#include <vtkRegressionTestImage.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkTable.h>
-#include <vtkRegressionTestImage.h>
 #include <vtkUnsignedCharArray.h>
 #include <vtkVector.h>
 
-int main(int , char * [])
+int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
@@ -46,8 +45,8 @@ int main(int , char * [])
     float x = i * inc;
     for (vtkIdType j = 0; j < numPoints; ++j)
     {
-      float y  = j * inc;
-      table->SetValue(i, j, sin(sqrt(x*x + y*y)));
+      float y = j * inc;
+      table->SetValue(i, j, sin(sqrt(x * x + y * y)));
     }
   }
 
@@ -60,6 +59,7 @@ int main(int , char * [])
 
   view->GetRenderWindow()->SetMultiSamples(0);
   view->GetInteractor()->Initialize();
+  view->GetRenderWindow()->SetWindowName("SurfacePlot");
   view->GetRenderWindow()->Render();
 
   // rotate
@@ -78,7 +78,8 @@ int main(int , char * [])
   vtkVector2d sP(pos.Cast<double>().GetData());
   vtkVector2d lSP(lastPos.Cast<double>().GetData());
   vtkVector2d screenPos(mouseEvent.GetScreenPos().Cast<double>().GetData());
-  vtkVector2d lastScreenPos(mouseEvent.GetLastScreenPos().Cast<double>().GetData());
+  vtkVector2d lastScreenPos(
+      mouseEvent.GetLastScreenPos().Cast<double>().GetData());
 
   chart->MouseMoveEvent(mouseEvent);
 

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-from __future__ import division
-
 import math
 
 import vtk
 
 
 def main():
+    colors = vtk.vtkNamedColors()
+
     view = vtk.vtkContextView()
-    view.GetRenderer().SetBackground(1.0, 1.0, 1.0)
+    view.GetRenderer().SetBackground(colors.GetColor3d('SlateGray'))
     view.GetRenderWindow().SetSize(400, 300)
 
     chart = vtk.vtkChartXY()
@@ -64,6 +64,7 @@ def main():
     points.SetMarkerStyle(vtk.vtkPlotPoints.CIRCLE)
 
     view.GetRenderWindow().SetMultiSamples(0)
+    view.GetRenderWindow().SetWindowName('ScatterPlot')
     view.GetInteractor().Initialize()
     view.GetInteractor().Start()
 

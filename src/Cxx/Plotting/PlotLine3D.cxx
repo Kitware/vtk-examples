@@ -1,25 +1,22 @@
-#include <vtkNew.h>
-
+#include <vtkCamera.h>
 #include <vtkChartXYZ.h>
+#include <vtkContext3D.h>
+#include <vtkContextScene.h>
+#include <vtkContextView.h>
+#include <vtkFloatArray.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPen.h>
 #include <vtkPlotLine3D.h>
-
-#include <vtkNamedColors.h>
 #include <vtkRenderWindow.h>
-#include <vtkTable.h>
-#include <vtkFloatArray.h>
-#include <vtkContextView.h>
-#include <vtkContextScene.h>
-#include <vtkContext3D.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkCamera.h>
+#include <vtkTable.h>
 
 // Plot the solution to the Lorenz attractor.
 // http://en.wikipedia.org/wiki/Lorenz_system
-namespace
-{
-void lorenz(const float * varX, float * varXDerivative)
+namespace {
+void lorenz(const float* varX, float* varXDerivative)
 {
   const float sigma = 10.f;
   const float rho = 28.f;
@@ -29,10 +26,10 @@ void lorenz(const float * varX, float * varXDerivative)
   varXDerivative[1] = varX[0] * (rho - varX[2]) - varX[1];
   varXDerivative[2] = varX[0] * varX[1] - beta * varX[2];
 }
-} // end anonymous namespace
+} // namespace
 
 //----------------------------------------------------------------------------
-int main(int, char * [])
+int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
@@ -74,6 +71,7 @@ int main(int, char * [])
   // Set up a 3D scene and add an XYZ chart to it.
   vtkNew<vtkContextView> view;
   view->GetRenderWindow()->SetSize(640, 480);
+  view->GetRenderWindow()->SetWindowName("PlotLine3D");
 
   vtkNew<vtkChartXYZ> chart;
   chart->SetGeometry(vtkRectf(5.0, 5.0, 635.0, 475.0));
@@ -82,13 +80,14 @@ int main(int, char * [])
   // Add a line plot.
   vtkNew<vtkPlotLine3D> plot;
   plot->SetInputData(varXSolution);
-  plot->GetPen()->SetColorF(colors->GetColor3d("Tomato").GetData());
+  plot->GetPen()->SetColorF(colors->GetColor3d("LightCoral").GetData());
   view->GetRenderWindow()->SetMultiSamples(0);
-  plot->GetPen()->SetWidth(6.0);
+  plot->GetPen()->SetWidth(2.0);
   chart->AddPlot(plot);
 
   // Finally render the scene.
-  view->GetRenderer()->SetBackground(colors->GetColor3d("Mint").GetData());
+  view->GetRenderer()->SetBackground(
+      colors->GetColor3d("DarkOliveGreen").GetData());
   view->GetRenderWindow()->Render();
   view->GetInteractor()->Initialize();
   view->GetInteractor()->Start();

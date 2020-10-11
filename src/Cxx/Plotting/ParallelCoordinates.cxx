@@ -1,42 +1,40 @@
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkSmartPointer.h>
 #include <vtkChartParallelCoordinates.h>
-#include <vtkPlot.h>
-#include <vtkTable.h>
-#include <vtkFloatArray.h>
-#include <vtkContextView.h>
 #include <vtkContextScene.h>
+#include <vtkContextView.h>
+#include <vtkFloatArray.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPlot.h>
+#include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkTable.h>
 
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Set up a 2D scene, add an XY chart to it
-  vtkSmartPointer<vtkContextView> view =
-    vtkSmartPointer<vtkContextView>::New();
-  view->GetRenderer()->SetBackground(.2, .3, .4);
+  vtkNew<vtkContextView> view;
+  view->GetRenderer()->SetBackground(colors->GetColor3d("SlateGray").GetData());
   view->GetRenderWindow()->SetSize(800, 600);
-  vtkSmartPointer<vtkChartParallelCoordinates> chart =
-    vtkSmartPointer<vtkChartParallelCoordinates>::New();
+  view->GetRenderWindow()->SetWindowName("ParallelCoordinates");
+
+  vtkNew<vtkChartParallelCoordinates> chart;
   view->GetScene()->AddItem(chart);
 
   // Create a table with some points in it...
-  vtkSmartPointer<vtkTable> table =
-    vtkSmartPointer<vtkTable>::New();
-  vtkSmartPointer<vtkFloatArray> arrX =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkTable> table;
+  vtkNew<vtkFloatArray> arrX;
   arrX->SetName("Field 1");
   table->AddColumn(arrX);
-  vtkSmartPointer<vtkFloatArray> arrC =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> arrC;
   arrC->SetName("Field 2");
   table->AddColumn(arrC);
-  vtkSmartPointer<vtkFloatArray> arrS =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> arrS;
   arrS->SetName("Field 3");
   table->AddColumn(arrS);
-  vtkSmartPointer<vtkFloatArray> arrS2 =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> arrS2;
   arrS2->SetName("Field 4");
   table->AddColumn(arrS2);
   // Test charting with a few more points...

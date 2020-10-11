@@ -7,6 +7,7 @@
 #include <vtkIdTypeArray.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkObjectFactory.h>
 #include <vtkPlaneSource.h>
 #include <vtkPoints.h>
@@ -23,6 +24,8 @@
 #include <vtkTriangleFilter.h>
 #include <vtkUnstructuredGrid.h>
 
+namespace {
+
 // Catch mouse events
 class MouseInteractorStyle : public vtkInteractorStyleTrackballCamera
 {
@@ -37,14 +40,12 @@ public:
 
   virtual void OnLeftButtonDown() override
   {
-    vtkSmartPointer<vtkNamedColors> colors =
-        vtkSmartPointer<vtkNamedColors>::New();
+    vtkNew<vtkNamedColors> colors;
 
     // Get the location of the click (in window coordinates)
     int* pos = this->GetInteractor()->GetEventPosition();
 
-    vtkSmartPointer<vtkCellPicker> picker =
-        vtkSmartPointer<vtkCellPicker>::New();
+    vtkNew<vtkCellPicker> picker;
     picker->SetTolerance(0.0005);
 
     // Pick from this location.
@@ -59,30 +60,25 @@ public:
       std::cout << "Pick position is: " << worldPosition[0] << " "
                 << worldPosition[1] << " " << worldPosition[2] << endl;
 
-      vtkSmartPointer<vtkIdTypeArray> ids =
-          vtkSmartPointer<vtkIdTypeArray>::New();
+      vtkNew<vtkIdTypeArray> ids;
       ids->SetNumberOfComponents(1);
       ids->InsertNextValue(picker->GetCellId());
 
-      vtkSmartPointer<vtkSelectionNode> selectionNode =
-          vtkSmartPointer<vtkSelectionNode>::New();
+      vtkNew<vtkSelectionNode> selectionNode;
       selectionNode->SetFieldType(vtkSelectionNode::CELL);
       selectionNode->SetContentType(vtkSelectionNode::INDICES);
       selectionNode->SetSelectionList(ids);
 
-      vtkSmartPointer<vtkSelection> selection =
-          vtkSmartPointer<vtkSelection>::New();
+      vtkNew<vtkSelection> selection;
       selection->AddNode(selectionNode);
 
-      vtkSmartPointer<vtkExtractSelection> extractSelection =
-          vtkSmartPointer<vtkExtractSelection>::New();
+      vtkNew<vtkExtractSelection> extractSelection;
       extractSelection->SetInputData(0, this->Data);
       extractSelection->SetInputData(1, selection);
       extractSelection->Update();
 
       // In selection
-      vtkSmartPointer<vtkUnstructuredGrid> selected =
-          vtkSmartPointer<vtkUnstructuredGrid>::New();
+      vtkNew<vtkUnstructuredGrid> selected;
       selected->ShallowCopy(extractSelection->GetOutput());
 
       std::cout << "There are " << selected->GetNumberOfPoints()
@@ -113,41 +109,37 @@ public:
 
 vtkStandardNewMacro(MouseInteractorStyle);
 
+} // namespace
+
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-      vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkPlaneSource> planeSource =
-      vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> planeSource;
   planeSource->Update();
 
-  vtkSmartPointer<vtkTriangleFilter> triangleFilter =
-      vtkSmartPointer<vtkTriangleFilter>::New();
+  vtkNew<vtkTriangleFilter> triangleFilter;
   triangleFilter->SetInputConnection(planeSource->GetOutputPort());
   triangleFilter->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(triangleFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->GetProperty()->SetColor(colors->GetColor3d("Green").GetData());
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("CellPicking");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderWindowInteractor->Initialize();
 
   // Set the custom stype to use for interaction.
-  vtkSmartPointer<MouseInteractorStyle> style =
-      vtkSmartPointer<MouseInteractorStyle>::New();
+  vtkNew<MouseInteractorStyle> style;
   style->SetDefaultRenderer(renderer);
   style->Data = triangleFilter->GetOutput();
 
