@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-"""
-"""
+'''
+'''
 
 import vtk
 
@@ -9,7 +9,7 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor("PopColor", [230, 230, 230, 255])
+    colors.SetColor('PopColor', [230, 230, 230, 255])
 
     fileName = get_program_parameters()
 
@@ -36,7 +36,7 @@ def main():
     popActor = vtk.vtkActor()
     popActor.SetMapper(popMapper)
     popActor.GetProperty().SetOpacity(0.3)
-    popActor.GetProperty().SetColor(colors.GetColor3d("PopColor"))
+    popActor.GetProperty().SetColor(colors.GetColor3d('PopColor'))
 
     # Construct the pipeline for the delinquent population.
     lateSplatter = vtk.vtkGaussianSplatter()
@@ -55,7 +55,7 @@ def main():
 
     lateActor = vtk.vtkActor()
     lateActor.SetMapper(lateMapper)
-    lateActor.GetProperty().SetColor(colors.GetColor3d("Red"))
+    lateActor.GetProperty().SetColor(colors.GetColor3d('Red'))
 
     # Create axes.
     popSplatter.Update()
@@ -89,8 +89,9 @@ def main():
     renderer.AddActor(lateActor)
     renderer.AddActor(axesActor)
     renderer.AddActor(popActor)
-    renderer.SetBackground(colors.GetColor3d("Wheat"))
+    renderer.SetBackground(colors.GetColor3d('Wheat'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('Finance')
 
     renderer.ResetCamera()
     renderer.GetActiveCamera().Dolly(1.3)
@@ -120,11 +121,11 @@ def normalise(maximum, minimum, x):
 
 
 def read_file(filename):
-    """
+    '''
     Read in the data set.
     :param filename:
     :return:
-    """
+    '''
     res = dict()
 
     with open(filename) as ifn:

@@ -13,6 +13,7 @@ We create a fancy image of a 2D Delaunay triangulation. Points are
 #include <vtkGlyph3D.h>
 #include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -25,12 +26,11 @@ We create a fancy image of a 2D Delaunay triangulation. Points are
 
 int main(int, char*[])
 {
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Generate some "random" points.
-  auto points = vtkSmartPointer<vtkPoints>::New();
-  auto randomSequence =
-      vtkSmartPointer<vtkMinimalStandardRandomSequence>::New();
+  vtkNew<vtkPoints> points;
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
   randomSequence->SetSeed(1);
   for (auto i = 0; i < 50; ++i)
   {
@@ -43,31 +43,31 @@ int main(int, char*[])
     points->InsertPoint(i, p1, p2, 0.0);
   }
   // Create a polydata with the points we just created.
-  auto profile = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> profile;
   profile->SetPoints(points);
 
   // Perform a 2D Delaunay triangulation on them.
-  auto delny = vtkSmartPointer<vtkDelaunay2D>::New();
+  vtkNew<vtkDelaunay2D> delny;
   delny->SetInputData(profile);
   delny->SetTolerance(0.001);
-  auto mapMesh = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapMesh;
   mapMesh->SetInputConnection(delny->GetOutputPort());
-  auto meshActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> meshActor;
   meshActor->SetMapper(mapMesh);
   meshActor->GetProperty()->SetColor(
       colors->GetColor3d("MidnightBlue").GetData());
 
   // We will now create a nice looking mesh by wrapping the edges in tubes,
   // and putting fat spheres at the points.
-  auto extract = vtkSmartPointer<vtkExtractEdges>::New();
+  vtkNew<vtkExtractEdges> extract;
   extract->SetInputConnection(delny->GetOutputPort());
-  auto tubes = vtkSmartPointer<vtkTubeFilter>::New();
+  vtkNew<vtkTubeFilter> tubes;
   tubes->SetInputConnection(extract->GetOutputPort());
   tubes->SetRadius(0.01);
   tubes->SetNumberOfSides(6);
-  auto mapEdges = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapEdges;
   mapEdges->SetInputConnection(tubes->GetOutputPort());
-  auto edgeActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> edgeActor;
   edgeActor->SetMapper(mapEdges);
   edgeActor->GetProperty()->SetColor(colors->GetColor3d("peacock").GetData());
   edgeActor->GetProperty()->SetSpecularColor(1, 1, 1);
@@ -76,16 +76,16 @@ int main(int, char*[])
   edgeActor->GetProperty()->SetAmbient(0.2);
   edgeActor->GetProperty()->SetDiffuse(0.8);
 
-  auto ball = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> ball;
   ball->SetRadius(0.025);
   ball->SetThetaResolution(12);
   ball->SetPhiResolution(12);
-  auto balls = vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> balls;
   balls->SetInputConnection(delny->GetOutputPort());
   balls->SetSourceConnection(ball->GetOutputPort());
-  auto mapBalls = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBalls;
   mapBalls->SetInputConnection(balls->GetOutputPort());
-  auto ballActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> ballActor;
   ballActor->SetMapper(mapBalls);
   ballActor->GetProperty()->SetColor(colors->GetColor3d("hot_pink").GetData());
   ballActor->GetProperty()->SetSpecularColor(1, 1, 1);
@@ -95,10 +95,10 @@ int main(int, char*[])
   ballActor->GetProperty()->SetDiffuse(0.8);
 
   // Create the rendering window, renderer, and interactive renderer.
-  auto ren = vtkSmartPointer<vtkRenderer>::New();
-  auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
-  auto iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Add the actors to the renderer, set the background and size.
@@ -106,6 +106,7 @@ int main(int, char*[])
   ren->AddActor(edgeActor);
   ren->SetBackground(colors->GetColor3d("AliceBlue").GetData());
   renWin->SetSize(512, 512);
+  renWin->SetWindowName("DelaunayMesh");
 
   ren->ResetCamera();
   ren->GetActiveCamera()->Zoom(1.3);

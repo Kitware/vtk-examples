@@ -1,35 +1,35 @@
-#include <vtkSmartPointer.h>
+#include <vtkActor.h>
 #include <vtkDiscreteMarchingCubes.h>
-#include <vtkWindowedSincPolyDataFilter.h>
-
-#include <vtkMath.h>
 #include <vtkImageData.h>
-#include <vtkSphere.h>
-#include <vtkSampleFunction.h>
-#include <vtkImageThreshold.h>
 #include <vtkImageMathematics.h>
+#include <vtkImageThreshold.h>
+#include <vtkLookupTable.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
-
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkActor.h>
-#include <vtkLookupTable.h>
+#include <vtkRenderer.h>
+#include <vtkSampleFunction.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphere.h>
+#include <vtkWindowedSincPolyDataFilter.h>
 
-#include <vtkNamedColors.h>
+namespace {
+vtkSmartPointer<vtkLookupTable> MakeColors(unsigned int n);
 
-static vtkSmartPointer<vtkLookupTable> MakeColors (unsigned int n);
-static vtkSmartPointer<vtkImageData> MakeBlob(int n, double radius);
+vtkSmartPointer<vtkImageData> MakeBlob(int n, double radius);
+} // namespace
 
-int main (int /* argc */, char * /* argv */ [])
+int main(int /* argc */, char* /* argv */[])
 {
   int n = 20;
   double radius = 8;
 
   vtkSmartPointer<vtkImageData> blob = MakeBlob(n, radius);
 
-  vtkSmartPointer<vtkDiscreteMarchingCubes> discrete =
-    vtkSmartPointer<vtkDiscreteMarchingCubes>::New();
+  vtkNew<vtkDiscreteMarchingCubes> discrete;
   discrete->SetInputData(blob);
   discrete->GenerateValues(n, 1, n);
 
@@ -37,8 +37,7 @@ int main (int /* argc */, char * /* argv */ [])
   double passBand = 0.001;
   double featureAngle = 120.0;
 
-  vtkSmartPointer<vtkWindowedSincPolyDataFilter> smoother =
-    vtkSmartPointer<vtkWindowedSincPolyDataFilter>::New();
+  vtkNew<vtkWindowedSincPolyDataFilter> smoother;
   smoother->SetInputConnection(discrete->GetOutputPort());
   smoother->SetNumberOfIterations(smoothingIterations);
   smoother->BoundarySmoothingOff();
@@ -51,31 +50,27 @@ int main (int /* argc */, char * /* argv */ [])
 
   vtkSmartPointer<vtkLookupTable> lut = MakeColors(n);
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(smoother->GetOutputPort());
   mapper->SetLookupTable(lut);
   mapper->SetScalarRange(0, lut->GetNumberOfColors());
 
-// Create the RenderWindow, Renderer and both Actors
-//
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  // Create the RenderWindow, Renderer and both Actors
+  //
+  vtkNew<vtkRenderer> ren1;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renWin->SetWindowName("SmoothDiscreteMarchingCubes");
+
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   ren1->AddActor(actor);
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   ren1->SetBackground(colors->GetColor3d("Burlywood").GetData());
 
   renWin->Render();
@@ -83,34 +78,33 @@ int main (int /* argc */, char * /* argv */ [])
   iren->Start();
 
   return EXIT_SUCCESS;
+
+  return EXIT_SUCCESS;
 }
 
+namespace {
 vtkSmartPointer<vtkImageData> MakeBlob(int n, double radius)
 {
-  vtkSmartPointer<vtkMath> math =
-    vtkSmartPointer<vtkMath>::New();
+  vtkNew<vtkMath> math;
 
-  vtkSmartPointer<vtkImageData> blobImage =
-    vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> blobImage;
 
   for (int i = 0; i < n; ++i)
   {
-    vtkSmartPointer<vtkSphere> sphere =
-      vtkSmartPointer<vtkSphere>::New();
+    vtkNew<vtkSphere> sphere;
     sphere->SetRadius(radius);
     double maxR = 50 - 2.0 * radius;
     sphere->SetCenter(int(math->Random(-maxR, maxR)),
-                      int(math->Random(-maxR, maxR)), int(math->Random(-maxR, maxR)));
+                      int(math->Random(-maxR, maxR)),
+                      int(math->Random(-maxR, maxR)));
 
-    vtkSmartPointer<vtkSampleFunction> sampler =
-      vtkSmartPointer<vtkSampleFunction>::New();
+    vtkNew<vtkSampleFunction> sampler;
     sampler->SetImplicitFunction(sphere);
     sampler->SetOutputScalarTypeToFloat();
     sampler->SetSampleDimensions(100, 100, 100);
     sampler->SetModelBounds(-50, 50, -50, 50, -50, 50);
 
-    vtkSmartPointer<vtkImageThreshold> thres =
-      vtkSmartPointer<vtkImageThreshold>::New();
+    vtkNew<vtkImageThreshold> thres;
     thres->SetInputConnection(sampler->GetOutputPort());
     thres->ThresholdByLower(radius * radius);
     thres->ReplaceInOn();
@@ -123,8 +117,7 @@ vtkSmartPointer<vtkImageData> MakeBlob(int n, double radius)
       blobImage->DeepCopy(thres->GetOutput());
     }
 
-    vtkSmartPointer<vtkImageMathematics>     maxValue =
-      vtkSmartPointer<vtkImageMathematics>::New();
+    vtkNew<vtkImageMathematics> maxValue;
     maxValue->SetInputData(0, blobImage);
     maxValue->SetInputData(1, thres->GetOutput());
     maxValue->SetOperationToMax();
@@ -137,23 +130,30 @@ vtkSmartPointer<vtkImageData> MakeBlob(int n, double radius)
 }
 
 // Generate some random colors
-vtkSmartPointer<vtkLookupTable> MakeColors (unsigned int n)
+vtkSmartPointer<vtkLookupTable> MakeColors(unsigned int n)
 {
-  vtkSmartPointer<vtkLookupTable> lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   lut->SetNumberOfColors(n);
   lut->SetTableRange(0, n - 1);
   lut->SetScaleToLinear();
   lut->Build();
   lut->SetTableValue(0, 0, 0, 0, 1);
 
-  vtkSmartPointer<vtkMath> math =
-    vtkSmartPointer<vtkMath>::New();
-  math->RandomSeed(5071);
-  for ( int i = 1; i < static_cast<int>(n); ++i)
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(5071);
+  for (int i = 1; i < static_cast<int>(n); ++i)
   {
-    lut->SetTableValue(i, math->Random(.4, 1),
-                       math->Random(.4, 1), math->Random(.4, 1), 1.0);
+    double r;
+    double g;
+    double b;
+    r = randomSequence->GetRangeValue(0.4, 1);
+    randomSequence->Next();
+    g = randomSequence->GetRangeValue(0.4, 1);
+    randomSequence->Next();
+    b = randomSequence->GetRangeValue(0.4, 1);
+    randomSequence->Next();
+    lut->SetTableValue(i, r, g, b, 1.0);
   }
   return lut;
 }
+} // namespace

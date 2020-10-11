@@ -7,6 +7,7 @@
 #include <vtkGaussianSplatter.h>
 #include <vtkImageData.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyDataMapper.h>
@@ -26,6 +27,7 @@ namespace {
 vtkSmartPointer<vtkDataSet> ReadFinancialData(const char* fname, const char* x,
                                               const char* y, const char* z,
                                               const char* s);
+
 int ParseFile(FILE* file, const char* tag, float* data);
 } // namespace
 
@@ -35,12 +37,13 @@ int main(int argc, char* argv[])
 
   if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0] << " financial_file" << endl;
+    std::cout << "Usage: " << argv[0] << " financial_file e.g. financial.txt"
+              << endl;
     return EXIT_FAILURE;
   }
   char* fname = argv[1];
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the color for the population.
   std::array<unsigned char, 4> popColor{{230, 230, 230, 255}};
@@ -50,41 +53,41 @@ int main(int argc, char* argv[])
   auto dataSet = ReadFinancialData(fname, "MONTHLY_PAYMENT", "INTEREST_RATE",
                                    "LOAN_AMOUNT", "TIME_LATE");
   // construct pipeline for original population
-  auto popSplatter = vtkSmartPointer<vtkGaussianSplatter>::New();
+  vtkNew<vtkGaussianSplatter> popSplatter;
   popSplatter->SetInputData(dataSet);
   popSplatter->SetSampleDimensions(100, 100, 100);
   popSplatter->SetRadius(0.05);
   popSplatter->ScalarWarpingOff();
 
-  auto popSurface = vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> popSurface;
   popSurface->SetInputConnection(popSplatter->GetOutputPort());
   popSurface->SetValue(0, 0.01);
 
-  auto popMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> popMapper;
   popMapper->SetInputConnection(popSurface->GetOutputPort());
   popMapper->ScalarVisibilityOff();
 
-  auto popActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> popActor;
   popActor->SetMapper(popMapper);
   popActor->GetProperty()->SetOpacity(0.3);
   popActor->GetProperty()->SetColor(colors->GetColor3d("popColor").GetData());
 
   // construct pipeline for delinquent population
-  auto lateSplatter = vtkSmartPointer<vtkGaussianSplatter>::New();
+  vtkNew<vtkGaussianSplatter> lateSplatter;
   lateSplatter->SetInputData(dataSet);
   lateSplatter->SetSampleDimensions(50, 50, 50);
   lateSplatter->SetRadius(0.05);
   lateSplatter->SetScaleFactor(0.005);
 
-  auto lateSurface = vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> lateSurface;
   lateSurface->SetInputConnection(lateSplatter->GetOutputPort());
   lateSurface->SetValue(0, 0.01);
 
-  auto lateMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> lateMapper;
   lateMapper->SetInputConnection(lateSurface->GetOutputPort());
   lateMapper->ScalarVisibilityOff();
 
-  auto lateActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> lateActor;
   lateActor->SetMapper(lateMapper);
   lateActor->GetProperty()->SetColor(colors->GetColor3d("Red").GetData());
 
@@ -92,28 +95,29 @@ int main(int argc, char* argv[])
   popSplatter->Update();
   popSplatter->GetOutput()->GetBounds(bounds);
 
-  auto axes = vtkSmartPointer<vtkAxes>::New();
+  vtkNew<vtkAxes> axes;
   axes->SetOrigin(bounds[0], bounds[2], bounds[4]);
   axes->SetScaleFactor(popSplatter->GetOutput()->GetLength() / 5);
 
-  auto axesTubes = vtkSmartPointer<vtkTubeFilter>::New();
+  vtkNew<vtkTubeFilter> axesTubes;
   axesTubes->SetInputConnection(axes->GetOutputPort());
   axesTubes->SetRadius(axes->GetScaleFactor() / 25.0);
   axesTubes->SetNumberOfSides(6);
 
-  auto axesMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> axesMapper;
   axesMapper->SetInputConnection(axesTubes->GetOutputPort());
 
-  auto axesActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> axesActor;
   axesActor->SetMapper(axesMapper);
 
   // graphics stuff
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(renderer);
+  renWin->SetWindowName("Financial");
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renWin);
 
   // set up renderer
@@ -147,7 +151,7 @@ vtkSmartPointer<vtkDataSet> ReadFinancialData(const char* filename,
   if ((file = fopen(filename, "r")) == 0)
   {
     std::cerr << "ERROR: Can't open file: " << filename << std::endl;
-    return NULL;
+    return nullptr;
   }
 
   int n = fscanf(file, "%79s %d", tag, &npts); // read number of points
@@ -172,7 +176,7 @@ vtkSmartPointer<vtkDataSet> ReadFinancialData(const char* filename,
     fclose(file);
     return NULL;
   }
-  auto dataSet = vtkSmartPointer<vtkUnstructuredGrid>::New();
+  vtkNew<vtkUnstructuredGrid> dataSet;
   float* xV = new float[npts];
   float* yV = new float[npts];
   float* zV = new float[npts];
@@ -190,8 +194,8 @@ vtkSmartPointer<vtkDataSet> ReadFinancialData(const char* filename,
     return NULL;
   }
 
-  auto newPts = vtkSmartPointer<vtkPoints>::New();
-  auto newScalars = vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkPoints> newPts;
+  vtkNew<vtkFloatArray> newScalars;
 
   for (i = 0; i < npts; i++)
   {
@@ -249,9 +253,7 @@ int ParseFile(FILE* file, const char* label, float* data)
         if (data[i] < min)
           min = data[i];
         if (data[i] > min)
-          max = data[i]; // bug here
-        // Should be:
-        // if ( data[i] > max ) max = data[i];
+          max = data[i];
       }
       // normalize data
       for (i = 0; i < npts; i++) data[i] = min + data[i] / (max - min);

@@ -14,10 +14,10 @@ def main():
 
     size = 3187  # maximum number possible
 
-    xAxis = "INTEREST_RATE"
-    yAxis = "MONTHLY_PAYMENT"
-    zAxis = "MONTHLY_INCOME"
-    scalar = "TIME_LATE"
+    xAxis = 'INTEREST_RATE'
+    yAxis = 'MONTHLY_PAYMENT'
+    zAxis = 'MONTHLY_INCOME'
+    scalar = 'TIME_LATE'
 
     # Extract data from field as a polydata (just points), then extract scalars.
     do2ds = vtk.vtkDataObjectToDataSetFilter()
@@ -52,7 +52,7 @@ def main():
     popActor = vtk.vtkActor()
     popActor.SetMapper(popMapper)
     popActor.GetProperty().SetOpacity(0.3)
-    popActor.GetProperty().SetColor(colors.GetColor3d("Gold"))
+    popActor.GetProperty().SetColor(colors.GetColor3d('Gold'))
 
     # Construct the pipeline for the delinquent population.
     lateSplatter = vtk.vtkGaussianSplatter()
@@ -69,7 +69,7 @@ def main():
     lateMapper.ScalarVisibilityOff()
     lateActor = vtk.vtkActor()
     lateActor.SetMapper(lateMapper)
-    lateActor.GetProperty().SetColor(colors.GetColor3d("Tomato"))
+    lateActor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
 
     # Create the axes.
     popSplatter.Update()
@@ -123,7 +123,7 @@ def main():
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindow.SetWindowName("vtk - Field.Data")
+    renderWindow.SetWindowName('FinanceFieldData')
 
     # Add the actors to the renderer, set the background and size.
     renderer.AddActor(axesActor)
@@ -132,7 +132,7 @@ def main():
     renderer.AddActor(YActor)
     renderer.AddActor(ZActor)
     renderer.AddActor(popActor)
-    renderer.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
     renderWindow.SetSize(650, 480)
 
     camera = vtk.vtkCamera()

@@ -3,6 +3,7 @@
 #include <vtkCellArray.h>
 #include <vtkLine.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -11,7 +12,6 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkRotationalExtrusionFilter.h>
-#include <vtkSmartPointer.h>
 
 #include <array>
 #include <cmath>
@@ -117,53 +117,53 @@ int main(int argc, char* argv[])
   auto pts = GetLine(angle, step, radius, uncapped, start);
 
   // Setup points and lines
-  auto points = vtkSmartPointer<vtkPoints>::New();
-  auto lines = vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkPoints> points;
+  vtkNew<vtkCellArray> lines;
   for (auto pt : pts)
   {
     unsigned long pt_id = points->InsertNextPoint(pt.data());
     if (pt_id < pts.size() - 1)
     {
-      auto line = vtkSmartPointer<vtkLine>::New();
+      vtkNew<vtkLine> line;
       line->GetPointIds()->SetId(0, pt_id);
       line->GetPointIds()->SetId(1, pt_id + 1);
       lines->InsertNextCell(line);
     }
   }
 
-  auto polydata = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   polydata->SetPoints(points);
   polydata->SetLines(lines);
 
   // Extrude the profile to make the capped sphere
-  auto extrude = vtkSmartPointer<vtkRotationalExtrusionFilter>::New();
+  vtkNew<vtkRotationalExtrusionFilter> extrude;
   extrude->SetInputData(polydata);
   extrude->SetResolution(60);
 
   //  Visualize
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // To see the line
-  auto lineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> lineMapper;
   lineMapper->SetInputData(polydata);
 
-  auto lineActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> lineActor;
   lineActor->SetMapper(lineMapper);
   lineActor->GetProperty()->SetLineWidth(4);
   lineActor->GetProperty()->SetColor(colors->GetColor3d("Red").GetData());
 
   // To see the surface
-  auto surfaceMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> surfaceMapper;
   surfaceMapper->SetInputConnection(extrude->GetOutputPort());
 
-  auto surfaceActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> surfaceActor;
   surfaceActor->SetMapper(surfaceMapper);
   surfaceActor->GetProperty()->SetColor(colors->GetColor3d("Khaki").GetData());
 
-  auto ren = vtkSmartPointer<vtkRenderer>::New();
-  auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
-  auto iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   ren->AddActor(surfaceActor);

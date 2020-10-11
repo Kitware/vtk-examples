@@ -1,19 +1,21 @@
-#include <vtkMarchingSquares.h>
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
-#include <vtkRenderer.h>
+#include <vtkCamera.h>
+#include <vtkDataSetMapper.h>
+#include <vtkMarchingSquares.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPNGReader.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkPNGReader.h>
-#include <vtkDataSetMapper.h>
-#include <vtkCamera.h>
-#include <vtkProperty.h>
+#include <vtkRenderer.h>
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   std::string inputFileName;
-  if (argc > 1 )
+  if (argc > 1)
   {
     inputFileName = argv[1];
   }
@@ -23,8 +25,7 @@ int main(int argc, char* argv[])
     isoValue = atoi(argv[2]);
   }
 
-  vtkSmartPointer<vtkPNGReader> reader =
-    vtkSmartPointer<vtkPNGReader>::New();
+  vtkNew<vtkPNGReader> reader;
   if (!reader->CanReadFile(inputFileName.c_str()))
   {
     std::cerr << "Error: Could not read " << inputFileName << ".\n";
@@ -33,39 +34,35 @@ int main(int argc, char* argv[])
   reader->SetFileName(inputFileName.c_str());
   reader->Update();
 
-  vtkSmartPointer<vtkMarchingSquares> iso =
-    vtkSmartPointer<vtkMarchingSquares>::New();
+  vtkNew<vtkMarchingSquares> iso;
   iso->SetInputConnection(reader->GetOutputPort());
   iso->SetValue(0, isoValue);
 
-  vtkSmartPointer<vtkDataSetMapper> isoMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> isoMapper;
   isoMapper->SetInputConnection(iso->GetOutputPort());
   isoMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> isoActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> isoActor;
   isoActor->SetMapper(isoMapper);
-  isoActor->GetProperty()->SetColor(0.8900, 0.8100, 0.3400);
+  isoActor->GetProperty()->SetColor(colors->GetColor3d("Yellow").GetData());
 
   // Standard rendering classes
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->SetMultiSamples(0);
   renWin->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renWin->SetWindowName("MarchingSquares");
+
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   renderer->AddActor(isoActor);
 
   // Standard testing code.
-  renderer->SetBackground(0.5,0.5,0.5);
-  renWin->SetSize(300,300);
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
+  renWin->SetSize(300, 300);
 
-  vtkCamera *camera = renderer->GetActiveCamera();
+  vtkCamera* camera = renderer->GetActiveCamera();
   renderer->ResetCamera();
   camera->Azimuth(180);
 
