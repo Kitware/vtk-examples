@@ -24,7 +24,7 @@ def main():
     oily.SetNumberOfTuples(numTuples)
 
     rand_seq = vtk.vtkMinimalStandardRandomSequence()
-    rand_seq.SetSeed(1)
+    rand_seq.SetSeed(8775070)
 
     for i in range(numTuples):
         bitter.SetTuple1(i, rand_seq.GetRangeValue(1, 10))
@@ -51,7 +51,7 @@ def main():
     actor.SetIndependentVariablesToColumns()
     actor.GetPositionCoordinate().SetValue(0.05, 0.1, 0.0)
     actor.GetPosition2Coordinate().SetValue(0.95, 0.85, 0.0)
-    actor.GetProperty().SetColor(colors.GetColor3d('Bisque'))
+    actor.GetProperty().SetColor(colors.GetColor3d('Red'))
 
     actor.SetAxisLabel(0, "Bitter")
     actor.SetAxisRange(0, 1, 10)
@@ -70,18 +70,18 @@ def main():
     actor.GetLegendActor().SetNumberOfEntries(numTuples)
 
     for i in range(numTuples):
-        r = rand_seq.GetValue()
+        r = rand_seq.GetRangeValue(0.4, 1.0)
         rand_seq.Next()
-        g = rand_seq.GetValue()
+        g = rand_seq.GetRangeValue(0.4, 1.0)
         rand_seq.Next()
-        b = rand_seq.GetValue()
+        b = rand_seq.GetRangeValue(0.4, 1.0)
         rand_seq.Next()
         actor.SetPlotColor(i, r, g, b)
 
     actor.LegendVisibilityOn()
 
-    actor.GetTitleTextProperty().SetColor(colors.GetColor3d('Yellow'))
-    actor.GetLabelTextProperty().SetColor(colors.GetColor3d('OrangeRed'))
+    actor.GetTitleTextProperty().SetColor(colors.GetColor3d('MistyRose'))
+    actor.GetLabelTextProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     ren1 = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
@@ -89,8 +89,9 @@ def main():
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     ren1.AddActor(actor)
-    ren1.SetBackground(colors.GetColor3d('Black'))
-    renWin.SetSize(800, 800)
+    ren1.SetBackground(colors.GetColor3d('DarkSlateGray'))
+    renWin.SetSize(600, 500)
+    renWin.SetWindowName('SpiderPlot')
 
     iren.Initialize()
     renWin.Render()

@@ -1,18 +1,17 @@
-#include <vtkBarChartActor.h>
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkActor2D.h>
+#include <vtkBarChartActor.h>
 #include <vtkDataObject.h>
 #include <vtkFieldData.h>
 #include <vtkIntArray.h>
 #include <vtkLegendBoxActor.h>
-#include <vtkMath.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkProperty2D.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkTextMapper.h>
 #include <vtkTextProperty.h>
 
@@ -33,11 +32,9 @@ vtkSmartPointer<vtkIntArray> CreateExtremeValueDistribution(int, double,
 int main(int, char*[])
 {
 
-  vtkSmartPointer<vtkNamedColors> colors =
-      vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
 
   int count = 100000;
   std::map<std::string, vtkSmartPointer<vtkIntArray>> frequencies;
@@ -57,44 +54,41 @@ int main(int, char*[])
 
   for (auto fit = frequencies.begin(); fit != frequencies.end(); fit++)
   {
-    vtkSmartPointer<vtkBarChartActor> chart =
-        vtkSmartPointer<vtkBarChartActor>::New();
+    vtkNew<vtkBarChartActor> chart;
 
-    vtkSmartPointer<vtkDataObject> dataObject =
-        vtkSmartPointer<vtkDataObject>::New();
+    vtkNew<vtkDataObject> dataObject;
     dataObject->GetFieldData()->AddArray(fit->second);
 
     chart->SetInput(dataObject);
     chart->SetTitle(fit->first.c_str());
     chart->GetPositionCoordinate()->SetValue(0.05, 0.05, 0.0);
     chart->GetPosition2Coordinate()->SetValue(0.95, 0.85, 0.0);
-    chart->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
+    chart->GetProperty()->SetColor(colors->GetColor3d("Yellow").GetData());
     chart->LegendVisibilityOff();
     chart->LabelVisibilityOff();
     chart->TitleVisibilityOff();
     for (int c = 0; c < count; ++c)
     {
-      chart->SetBarColor(c, colors->GetColor3d("Tomato").GetData());
+      chart->SetBarColor(c, colors->GetColor3d("MidnightBlue").GetData());
     }
     // Create a title
-    vtkSmartPointer<vtkTextProperty> titleProperty =
-        vtkSmartPointer<vtkTextProperty>::New();
+    vtkNew<vtkTextProperty> titleProperty;
     titleProperty->SetFontSize(16);
     titleProperty->SetJustificationToCentered();
 
-    vtkSmartPointer<vtkTextMapper> titleMapper =
-        vtkSmartPointer<vtkTextMapper>::New();
+    vtkNew<vtkTextMapper> titleMapper;
     titleMapper->SetInput(fit->first.c_str());
     titleMapper->SetTextProperty(titleProperty);
 
-    vtkSmartPointer<vtkActor2D> titleActor = vtkSmartPointer<vtkActor2D>::New();
+    vtkNew<vtkActor2D> titleActor;
     titleActor->SetMapper(titleMapper);
     titleActor->GetPositionCoordinate()
         ->SetCoordinateSystemToNormalizedViewport();
     titleActor->GetPositionCoordinate()->SetValue(.5, .85, 0.0);
-    titleActor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
+    titleActor->GetProperty()->SetColor(
+        colors->GetColor3d("MidnightBlue").GetData());
 
-    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+    vtkNew<vtkRenderer> renderer;
     renderer->AddActor(chart);
     renderer->AddActor(titleActor);
     renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
@@ -109,7 +103,7 @@ int main(int, char*[])
   // Define side length (in pixels) of each renderer square
   int rendererSize = 300;
 
-  renderWindow->SetWindowName("Geometric Objects Demo");
+  renderWindow->SetWindowName("CompareRandomGeneratorsCxx");
   renderWindow->SetSize(rendererSize * gridCols, rendererSize * gridRows);
 
   // Set up a grid of viewports for each renderer
@@ -133,8 +127,7 @@ int main(int, char*[])
     }
   }
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();
@@ -158,7 +151,7 @@ vtkSmartPointer<vtkIntArray> CreateUniformDistribution(int count, double a,
   double range = (rmax - rmin);
   int numberOfBins = std::max(51, (int)std::ceil(range / 10));
 
-  std::vector<int> frequencies(numberOfBins,0);
+  std::vector<int> frequencies(numberOfBins, 0);
   for (int i = 0; i < count; ++i)
   {
     double value = (distribution(generator) - rmin) / range;
@@ -175,8 +168,7 @@ vtkSmartPointer<vtkIntArray> CreateUniformDistribution(int count, double a,
   }
   frequencies[numberOfBins - 1] = 0;
 
-  vtkSmartPointer<vtkIntArray> frequenciesArray =
-      vtkSmartPointer<vtkIntArray>::New();
+  vtkNew<vtkIntArray> frequenciesArray;
   frequenciesArray->SetNumberOfComponents(1);
   frequenciesArray->SetNumberOfTuples(numberOfBins);
 
@@ -218,8 +210,7 @@ vtkSmartPointer<vtkIntArray> CreateNormalDistribution(int count, double a,
   }
   frequencies[numberOfBins - 1] = 0;
 
-  vtkSmartPointer<vtkIntArray> frequenciesArray =
-      vtkSmartPointer<vtkIntArray>::New();
+  vtkNew<vtkIntArray> frequenciesArray;
   frequenciesArray->SetNumberOfComponents(1);
   frequenciesArray->SetNumberOfTuples(numberOfBins);
 
@@ -260,8 +251,7 @@ vtkSmartPointer<vtkIntArray> CreateWeibullDistribution(int count, double a,
   }
   frequencies[numberOfBins - 1] = 0;
 
-  vtkSmartPointer<vtkIntArray> frequenciesArray =
-      vtkSmartPointer<vtkIntArray>::New();
+  vtkNew<vtkIntArray> frequenciesArray;
   frequenciesArray->SetNumberOfComponents(1);
   frequenciesArray->SetNumberOfTuples(numberOfBins);
 
@@ -302,8 +292,7 @@ vtkSmartPointer<vtkIntArray> CreateGammaDistribution(int count, double a,
   }
   frequencies[numberOfBins - 1] = 0;
 
-  vtkSmartPointer<vtkIntArray> frequenciesArray =
-      vtkSmartPointer<vtkIntArray>::New();
+  vtkNew<vtkIntArray> frequenciesArray;
   frequenciesArray->SetNumberOfComponents(1);
   frequenciesArray->SetNumberOfTuples(numberOfBins);
 
@@ -347,8 +336,7 @@ vtkSmartPointer<vtkIntArray> CreateCauchyDistribution(int count, double a,
   frequencies[0] = frequencies[1];
   frequencies[numberOfBins - 1] = frequencies[numberOfBins - 2];
 
-  vtkSmartPointer<vtkIntArray> frequenciesArray =
-      vtkSmartPointer<vtkIntArray>::New();
+  vtkNew<vtkIntArray> frequenciesArray;
   frequenciesArray->SetNumberOfComponents(1);
   frequenciesArray->SetNumberOfTuples(numberOfBins);
 
@@ -390,8 +378,7 @@ vtkSmartPointer<vtkIntArray> CreateExtremeValueDistribution(int count, double a,
   }
   frequencies[numberOfBins - 1] = 0;
 
-  vtkSmartPointer<vtkIntArray> frequenciesArray =
-      vtkSmartPointer<vtkIntArray>::New();
+  vtkNew<vtkIntArray> frequenciesArray;
   frequenciesArray->SetNumberOfComponents(1);
   frequenciesArray->SetNumberOfTuples(numberOfBins);
 

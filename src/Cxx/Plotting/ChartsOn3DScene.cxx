@@ -1,23 +1,22 @@
-#include <vtkNew.h>
-#include <vtkChartXY.h>
-
-#include <vtkNamedColors.h>
 #include <vtkActor.h>
-#include <vtkContextScene.h>
+#include <vtkCamera.h>
+#include <vtkChartXY.h>
 #include <vtkContextActor.h>
+#include <vtkContextScene.h>
 #include <vtkCubeSource.h>
 #include <vtkFloatArray.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlotPoints.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkTable.h>
-#include <vtkCamera.h>
 
 //----------------------------------------------------------------------------
-int main(int , char * [])
+int main(int, char*[])
 {
 
   vtkNew<vtkNamedColors> colors;
@@ -25,6 +24,7 @@ int main(int , char * [])
   vtkNew<vtkRenderWindow> renwin;
   renwin->SetMultiSamples(4);
   renwin->SetSize(640, 480);
+  renwin->SetWindowName("ChartsOn3DScene");
 
   vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renwin);
@@ -60,7 +60,7 @@ int main(int , char * [])
   chartScene->AddItem(chart);
   chartActor->SetScene(chartScene);
 
-  //both needed
+  // both needed
   renderer->AddActor(chartActor);
   chartScene->SetRenderer(renderer);
 
@@ -85,7 +85,7 @@ int main(int , char * [])
 
   // Test charting with a few more points...
   int numPoints = 69;
-  float inc = 7.5 / (numPoints-1);
+  float inc = 7.5 / (numPoints - 1);
   table->SetNumberOfRows(numPoints);
   table->SetNumberOfRows(numPoints);
   for (int i = 0; i < numPoints; ++i)
@@ -99,7 +99,7 @@ int main(int , char * [])
   // Add multiple line plots, setting the colors etc
   vtkColor3d color3d = colors->GetColor3d("banana");
 
-  vtkPlot *points = chart->AddPlot(vtkChart::POINTS);
+  vtkPlot* points = chart->AddPlot(vtkChart::POINTS);
   points->SetInputData(table, 0, 1);
   points->SetColor(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
   points->SetWidth(1.0);

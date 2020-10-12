@@ -40,6 +40,7 @@ def main():
 
     view.GetRenderWindow().SetMultiSamples(0)
     view.GetInteractor().Initialize()
+    view.GetRenderWindow().SetWindowName("SurfacePlot")
     view.GetRenderWindow().Render()
 
     # Rotate

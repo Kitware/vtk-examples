@@ -1,39 +1,39 @@
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkRenderWindow.h>
-#include <vtkSmartPointer.h>
 #include <vtkChartXY.h>
-#include <vtkTable.h>
-#include <vtkPlot.h>
-#include <vtkFloatArray.h>
-#include <vtkContextView.h>
 #include <vtkContextScene.h>
+#include <vtkContextView.h>
+#include <vtkFloatArray.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPen.h>
- 
-int main(int, char *[])
+#include <vtkPlot.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkTable.h>
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a table with some points in it
-  vtkSmartPointer<vtkTable> table = 
-    vtkSmartPointer<vtkTable>::New();
- 
-  vtkSmartPointer<vtkFloatArray> arrX = 
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkTable> table;
+
+  vtkNew<vtkFloatArray> arrX;
   arrX->SetName("X Axis");
   table->AddColumn(arrX);
- 
-  vtkSmartPointer<vtkFloatArray> arrC = 
-    vtkSmartPointer<vtkFloatArray>::New();
+
+  vtkNew<vtkFloatArray> arrC;
   arrC->SetName("Cosine");
   table->AddColumn(arrC);
- 
-  vtkSmartPointer<vtkFloatArray> arrS = 
-    vtkSmartPointer<vtkFloatArray>::New();
+
+  vtkNew<vtkFloatArray> arrS;
   arrS->SetName("Sine");
   table->AddColumn(arrS);
- 
+
   // Fill in the table with some example values
   int numPoints = 69;
-  float inc = 7.5 / (numPoints-1);
+  float inc = 7.5 / (numPoints - 1);
   table->SetNumberOfRows(numPoints);
   for (int i = 0; i < numPoints; ++i)
   {
@@ -41,17 +41,16 @@ int main(int, char *[])
     table->SetValue(i, 1, cos(i * inc));
     table->SetValue(i, 2, sin(i * inc));
   }
- 
+
   // Set up the view
-  vtkSmartPointer<vtkContextView> view = 
-    vtkSmartPointer<vtkContextView>::New();
-  view->GetRenderer()->SetBackground(1.0, 1.0, 1.0);
- 
+  vtkNew<vtkContextView> view;
+  view->GetRenderWindow()->SetWindowName("LinePlot");
+  view->GetRenderer()->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
   // Add multiple line plots, setting the colors etc
-  vtkSmartPointer<vtkChartXY> chart = 
-    vtkSmartPointer<vtkChartXY>::New();
+  vtkNew<vtkChartXY> chart;
   view->GetScene()->AddItem(chart);
-  vtkPlot *line = chart->AddPlot(vtkChart::LINE);
+  vtkPlot* line = chart->AddPlot(vtkChart::LINE);
   line->SetInputData(table, 0, 1);
   line->SetColor(0, 255, 0, 255);
   line->SetWidth(1.0);
@@ -68,12 +67,12 @@ int main(int, char *[])
   // (ifdef-ed out on Windows because DASH_LINE does not work on Windows
   //  machines with built-in Intel HD graphics card...)
 
-  //view->GetRenderWindow()->SetMultiSamples(0);
+  // view->GetRenderWindow()->SetMultiSamples(0);
 
   // Start interactor
   view->GetRenderWindow()->Render();
   view->GetInteractor()->Initialize();
   view->GetInteractor()->Start();
- 
+
   return EXIT_SUCCESS;
 }
