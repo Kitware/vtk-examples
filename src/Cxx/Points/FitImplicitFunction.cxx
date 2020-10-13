@@ -2,7 +2,6 @@
 #include <vtkCamera.h>
 #include <vtkFitImplicitFunction.h>
 #include <vtkGlyph3D.h>
-#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
@@ -17,9 +16,6 @@
 int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
-
-  //  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
-  // randomSequence->SetSeed(8775070);
 
   double radius = 1.0;
   vtkNew<vtkBoundedPointSource> points;

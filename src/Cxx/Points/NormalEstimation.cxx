@@ -1,91 +1,76 @@
-#include <vtkSmartPointer.h>
+#include <vtkArrowSource.h>
+#include <vtkCamera.h>
+#include <vtkGlyph3D.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPCANormalEstimation.h>
 #include <vtkPointSource.h>
-
-#include <vtkSphereSource.h>
-#include <vtkArrowSource.h>
-#include <vtkGlyph3D.h>
-#include <vtkMath.h>
-
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkCamera.h>
-#include <vtkNamedColors.h>
+#include <vtkSphereSource.h>
 
-namespace
-{
-void MakeGlyphs(vtkPolyData *src, double size, vtkGlyph3D *glyph);
+namespace {
+void MakeGlyphs(vtkPolyData* src, double size, vtkGlyph3D* glyph);
 }
 
-int main (int, char *[])
+int main(int, char*[])
 {
-  vtkMath::RandomSeed(4355412); // for test result consistency
-
   double radius = 1.0;
-  vtkSmartPointer<vtkPointSource> points =
-    vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> points;
   points->SetNumberOfPoints(1000);
   points->SetRadius(radius);
   points->SetCenter(0.0, 0.0, 0.0);
   points->SetDistributionToShell();
 
   int sampleSize = 10;
-  vtkSmartPointer<vtkPCANormalEstimation> normals =
-    vtkSmartPointer<vtkPCANormalEstimation>::New();
-  normals->SetInputConnection (points->GetOutputPort());
+  vtkNew<vtkPCANormalEstimation> normals;
+  normals->SetInputConnection(points->GetOutputPort());
   normals->SetSampleSize(sampleSize);
   normals->SetNormalOrientationToGraphTraversal();
   normals->Update();
 
-  vtkSmartPointer<vtkNamedColors>colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkGlyph3D> glyph3D =
-    vtkSmartPointer<vtkGlyph3D>::New();
-  MakeGlyphs(normals->GetOutput(), radius * .2, glyph3D.GetPointer());
+  vtkNew<vtkGlyph3D> glyph3D;
+  MakeGlyphs(normals->GetOutput(), radius * 0.2, glyph3D.GetPointer());
 
-  vtkSmartPointer<vtkPolyDataMapper> glyph3DMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> glyph3DMapper;
   glyph3DMapper->SetInputConnection(glyph3D->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> glyph3DActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> glyph3DActor;
   glyph3DActor->SetMapper(glyph3DMapper);
-  glyph3DActor->GetProperty()->SetDiffuseColor(colors->GetColor3d("Banana").GetData());
+  glyph3DActor->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("Banana").GetData());
 
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphere;
   sphere->SetRadius(1.0);
   sphere->SetThetaResolution(41);
   sphere->SetPhiResolution(21);
 
-  vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphere->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> sphereActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
-  sphereActor->GetProperty()->SetDiffuseColor(colors->GetColor3d("Tomato").GetData());
+  sphereActor->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("Tomato").GetData());
 
   // Create graphics stuff
   //
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("NormalEstimation");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
-  
+
   // Add the actors to the renderer, set the background and size
   //
   renderer->AddActor(glyph3DActor);
@@ -105,16 +90,14 @@ int main (int, char *[])
 
   return EXIT_SUCCESS;
 }
-namespace
-{
-void MakeGlyphs(vtkPolyData *src, double size, vtkGlyph3D *glyph)
+namespace {
+void MakeGlyphs(vtkPolyData* src, double size, vtkGlyph3D* glyph)
 {
   // Source for the glyph filter
-  vtkSmartPointer<vtkArrowSource> arrow =
-    vtkSmartPointer<vtkArrowSource>::New();
+  vtkNew<vtkArrowSource> arrow;
   arrow->SetTipResolution(16);
-  arrow->SetTipLength(.3);
-  arrow->SetTipRadius(.1);
+  arrow->SetTipLength(0.3);
+  arrow->SetTipRadius(0.1);
 
   glyph->SetSourceConnection(arrow->GetOutputPort());
   glyph->SetInputData(src);
@@ -124,4 +107,4 @@ void MakeGlyphs(vtkPolyData *src, double size, vtkGlyph3D *glyph)
   glyph->OrientOn();
   glyph->Update();
 }
-}
+} // namespace
