@@ -7,10 +7,10 @@ The image was created using the [Armadillo dataset](https://github.com/lorensen/
 
 
 !!! info
-    [CompareExtractSurface](/Cxx/Points/CompareExtractSurface) compares three surface extraction algorithms.
+    [CompareExtractSurface](../CompareExtractSurface) compares three surface extraction algorithms.
 
 !!! seealso
-    [PowercrustExtractSurface](/Cxx/Points/PowercrustExtractSurface) reconstructs surfaces and is implemented as a VTK remote module. [PoissonExtractSurface](/Cxx/Points/PoissonExtractSurface) reconstructs surfaces and is implemented as a VTK remote module.
+    [PowercrustExtractSurface](../PowercrustExtractSurface) reconstructs surfaces and is implemented as a VTK remote module. [PoissonExtractSurface](../PoissonExtractSurface) reconstructs surfaces and is implemented as a VTK remote module.
 
 !!! warning
     If you experience extraneous lines in the reconstruction, update your VTK. A [patch](https://gitlab.kitware.com/vtk/vtk/merge_requests/3238) was made on September 5, 2017 to correct the issue.

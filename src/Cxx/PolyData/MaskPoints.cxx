@@ -1,5 +1,6 @@
-#include <vtkSmartPointer.h>
 #include <vtkMaskPoints.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -10,9 +11,10 @@
 
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a set of points
-  vtkSmartPointer<vtkPointSource> pointsSource =
-    vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> pointsSource;
   pointsSource->SetNumberOfPoints(40);
   pointsSource->Update();
 
@@ -20,42 +22,41 @@ int main(int, char*[])
             << " input points." << std::endl;
 
   // Create a point set
-  vtkSmartPointer<vtkMaskPoints> maskPoints =
-      vtkSmartPointer<vtkMaskPoints>::New();
-  maskPoints->SetOnRatio(2); //keep every 2nd point (half the number of points)
+  vtkNew<vtkMaskPoints> maskPoints;
+  maskPoints->SetOnRatio(2); // keep every 2nd point (half the number of points)
   maskPoints->SetInputConnection(pointsSource->GetOutputPort());
   maskPoints->Update();
 
-  vtkSmartPointer<vtkVertexGlyphFilter> glyphFilter =
-    vtkSmartPointer<vtkVertexGlyphFilter>::New();
+  vtkNew<vtkVertexGlyphFilter> glyphFilter;
   glyphFilter->SetInputConnection(maskPoints->GetOutputPort());
   glyphFilter->Update();
-  
+
   std::cout << "There are " << maskPoints->GetOutput()->GetNumberOfPoints()
             << " masked points." << std::endl;
 
-  vtkSmartPointer<vtkPolyDataMapper> inputMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> inputMapper;
   inputMapper->SetInputConnection(pointsSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> inputActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> inputActor;
   inputActor->SetMapper(inputMapper);
+  inputActor->GetProperty()->SetPointSize(5);
+  inputActor->GetProperty()->SetColor(
+      colors->GetColor3d("MistyRose").GetData());
 
-  vtkSmartPointer<vtkPolyDataMapper> maskedMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> maskedMapper;
   maskedMapper->SetInputConnection(glyphFilter->GetOutputPort());
-  vtkSmartPointer<vtkActor> maskedActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> maskedActor;
   maskedActor->SetMapper(maskedMapper);
+  maskedActor->GetProperty()->SetPointSize(5);
+  maskedActor->GetProperty()->SetColor(
+      colors->GetColor3d("MistyRose").GetData());
 
   // There will be one render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
+  renderWindow->SetWindowName("MaskPoints");
 
   // And one interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Define viewport ranges
@@ -64,19 +65,16 @@ int main(int, char*[])
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup both renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  leftRenderer->SetBackground(.6, .5, .4);
+  leftRenderer->SetBackground(colors->GetColor3d("Chocolate").GetData());
 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  rightRenderer->SetBackground(.4, .5, .6);
+  rightRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
-  // Add the sphere to the left and the cube to the right
   leftRenderer->AddActor(inputActor);
   rightRenderer->AddActor(maskedActor);
 
@@ -85,6 +83,6 @@ int main(int, char*[])
 
   renderWindow->Render();
   interactor->Start();
-  
+
   return EXIT_SUCCESS;
 }

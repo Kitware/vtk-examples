@@ -1,3 +1,20 @@
+#include <vtkArrowSource.h>
+#include <vtkCamera.h>
+#include <vtkExtractSurface.h>
+#include <vtkGlyph3D.h>
+#include <vtkMaskPoints.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPCANormalEstimation.h>
+#include <vtkPointData.h>
+#include <vtkPointSource.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSignedDistance.h>
 #include <vtkSmartPointer.h>
 
 #include <vtkBYUReader.h>
@@ -7,69 +24,50 @@
 #include <vtkSTLReader.h>
 #include <vtkXMLPolyDataReader.h>
 
-#include <vtkPointSource.h>
-#include <vtkPCANormalEstimation.h>
-#include <vtkSignedDistance.h>
-#include <vtkExtractSurface.h>
-#include <vtkPointData.h>
-
-#include <vtkArrowSource.h>
-#include <vtkMaskPoints.h>
-#include <vtkGlyph3D.h>
-
-#include <vtkPolyDataMapper.h>
-#include <vtkProperty.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkRenderer.h>
-#include <vtkCamera.h>
-
 #include <vtksys/SystemTools.hxx>
 
-namespace
-{
-void MakeGlyphs(vtkPolyData *src, double size, vtkGlyph3D *glyph);
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
-}
+namespace {
+void MakeGlyphs(vtkPolyData* src, double size, vtkGlyph3D* glyph);
 
-int main (int argc, char *argv[])
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
+} // namespace
+
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");;
+  vtkNew<vtkNamedColors> colors;
+
+  auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
   double bounds[6];
   polyData->GetBounds(bounds);
   double range[3];
   for (int i = 0; i < 3; ++i)
   {
-    range[i] = bounds[2*i + 1] - bounds[2*i];
+    range[i] = bounds[2 * i + 1] - bounds[2 * i];
   }
 
   int sampleSize = 15;
 
   std::cout << "Sample size is: " << sampleSize << std::endl;
   // Do we need to estimate normals?
-  vtkSmartPointer<vtkSignedDistance> distance =
-    vtkSmartPointer<vtkSignedDistance>::New();
-  vtkSmartPointer<vtkPCANormalEstimation> normals =
-    vtkSmartPointer<vtkPCANormalEstimation>::New();
+  vtkNew<vtkSignedDistance> distance;
+  vtkNew<vtkPCANormalEstimation> normals;
   if (polyData->GetPointData()->GetNormals())
   {
     std::cout << "Using normals from input file" << std::endl;
-    distance->SetInputData (polyData);
+    distance->SetInputData(polyData);
   }
   else
   {
     std::cout << "Estimating normals using PCANormalEstimation" << std::endl;
-    normals->SetInputData (polyData);
+    normals->SetInputData(polyData);
     normals->SetSampleSize(sampleSize);
     normals->SetNormalOrientationToGraphTraversal();
     normals->FlipNormalsOn();
-    distance->SetInputConnection (normals->GetOutputPort());
+    distance->SetInputConnection(normals->GetOutputPort());
   }
-  std::cout << "Range: "
-            << range[0] << ", "
-            << range[1] << ", "
-            << range[2] << std::endl;
+  std::cout << "Range: " << range[0] << ", " << range[1] << ", " << range[2]
+            << std::endl;
   int dimension = 512;
   double radius;
   radius = range[0] / static_cast<double>(dimension) * 3; // ~3 voxels
@@ -77,23 +75,17 @@ int main (int argc, char *argv[])
 
   distance->SetRadius(radius);
   distance->SetDimensions(dimension, dimension, dimension);
-  distance->SetBounds(
-    bounds[0] - range[0] * .1,
-    bounds[1] + range[0] * .1,
-    bounds[2] - range[1] * .1,
-    bounds[3] + range[1] * .1,
-    bounds[4] - range[2] * .1,
-    bounds[5] + range[2] * .1);
+  distance->SetBounds(bounds[0] - range[0] * .1, bounds[1] + range[0] * .1,
+                      bounds[2] - range[1] * .1, bounds[3] + range[1] * .1,
+                      bounds[4] - range[2] * .1, bounds[5] + range[2] * .1);
 
-  vtkSmartPointer<vtkExtractSurface> surface =
-    vtkSmartPointer<vtkExtractSurface>::New();
-  surface->SetInputConnection (distance->GetOutputPort());
+  vtkNew<vtkExtractSurface> surface;
+  surface->SetInputConnection(distance->GetOutputPort());
   surface->SetRadius(radius * .99);
   surface->HoleFillingOn();
   surface->Update();
 
-  vtkSmartPointer<vtkGlyph3D> glyph3D =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> glyph3D;
   if (polyData->GetPointData()->GetNormals())
   {
     MakeGlyphs(polyData, radius * 2.0, glyph3D.GetPointer());
@@ -102,43 +94,37 @@ int main (int argc, char *argv[])
   {
     MakeGlyphs(normals->GetOutput(), radius * 2.0, glyph3D.GetPointer());
   }
-  vtkSmartPointer<vtkPolyDataMapper> surfaceMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> surfaceMapper;
   surfaceMapper->SetInputConnection(surface->GetOutputPort());
   surfaceMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkProperty> backProp =
-    vtkSmartPointer<vtkProperty>::New();
-  backProp->SetColor(0.8900, 0.8100, 0.3400);
+  vtkNew<vtkProperty> backProp;
+  backProp->SetColor(colors->GetColor3d("Banana").GetData());
 
-  vtkSmartPointer<vtkActor> surfaceActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> surfaceActor;
   surfaceActor->SetMapper(surfaceMapper);
-  surfaceActor->GetProperty()->SetColor(1.0000, 0.4900, 0.2500);
+  surfaceActor->GetProperty()->SetColor(colors->GetColor3d("Coral").GetData());
   surfaceActor->SetBackfaceProperty(backProp);
 
-  vtkSmartPointer<vtkPolyDataMapper> glyph3DMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> glyph3DMapper;
   glyph3DMapper->SetInputConnection(glyph3D->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> glyph3DActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> glyph3DActor;
   glyph3DActor->SetMapper(glyph3DMapper);
-  glyph3DActor->GetProperty()->SetColor(0.6902, 0.7686, 0.8706);
+  glyph3DActor->GetProperty()->SetColor(
+      colors->GetColor3d("MidnightBlue").GetData());
 
   // Create graphics stuff
   //
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
-  ren1->SetBackground(.3, .4, .6);
+  vtkNew<vtkRenderer> ren1;
+  ren1->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
-  renWin->SetSize(512,512);
+  renWin->SetSize(512, 512);
+  renWin->SetWindowName("ExtractSurfaceDemo");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Add the actors to the renderer, set the background and size
@@ -160,102 +146,98 @@ int main (int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
-namespace
-{
+namespace {
 //-----------------------------------------------------------------------------
-void MakeGlyphs(vtkPolyData *src, double size, vtkGlyph3D *glyph)
+void MakeGlyphs(vtkPolyData* src, double size, vtkGlyph3D* glyph)
 {
-  vtkSmartPointer<vtkMaskPoints> maskPts =
-    vtkSmartPointer<vtkMaskPoints>::New();
+  vtkNew<vtkMaskPoints> maskPts;
   maskPts->SetOnRatio(20);
   maskPts->RandomModeOn();
   maskPts->SetInputData(src);
   // Source for the glyph filter
-  vtkSmartPointer<vtkArrowSource> arrow =
-    vtkSmartPointer<vtkArrowSource>::New();
+  vtkNew<vtkArrowSource> arrow;
   arrow->SetTipResolution(16);
-  arrow->SetTipLength(.3);
-  arrow->SetTipRadius(.1);
+  arrow->SetTipLength(0.3);
+  arrow->SetTipRadius(0.1);
 
   glyph->SetSourceConnection(arrow->GetOutputPort());
   glyph->SetInputConnection(maskPts->GetOutputPort());
   glyph->SetVectorModeToUseNormal();
-//  glyph->SetColorModeToColorByVector();
+  //  glyph->SetColorModeToColorByVector();
   glyph->SetScaleModeToScaleByVector();
   glyph->SetScaleFactor(size);
   glyph->OrientOn();
   glyph->Update();
 }
-}
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
-  std::string extension = vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
+  std::string extension =
+      vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    vtkSmartPointer<vtkPLYReader> reader =
-      vtkSmartPointer<vtkPLYReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPLYReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    vtkSmartPointer<vtkPolyDataReader> reader =
-      vtkSmartPointer<vtkPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    vtkSmartPointer<vtkOBJReader> reader =
-      vtkSmartPointer<vtkOBJReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkOBJReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    vtkSmartPointer<vtkSTLReader> reader =
-      vtkSmartPointer<vtkSTLReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkSTLReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    vtkSmartPointer<vtkBYUReader> reader =
-      vtkSmartPointer<vtkBYUReader>::New();
-    reader->SetGeometryFileName (fileName);
+    vtkNew<vtkBYUReader> reader;
+    reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    vtkSmartPointer<vtkPointSource> points =
-      vtkSmartPointer<vtkPointSource>::New();
+    vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+    randomSequence->SetSeed(8775070);
+
+    vtkNew<vtkPointSource> points;
     points->SetNumberOfPoints(100000);
     points->SetRadius(10.0);
-    points->SetCenter(vtkMath::Random(-100, 100),
-                      vtkMath::Random(-100, 100),
-                      vtkMath::Random(-100, 100));
+    double x, y, z;
+    // random position
+    x = randomSequence->GetRangeValue(-100, 100);
+    randomSequence->Next();
+    y = randomSequence->GetRangeValue(-100, 100);
+    randomSequence->Next();
+    z = randomSequence->GetRangeValue(-100, 100);
+    randomSequence->Next();
+    points->SetCenter(x, y, z);
     points->SetDistributionToShell();
     points->Update();
     polyData = points->GetOutput();
   }
   return polyData;
 }
-}
-
+} // namespace

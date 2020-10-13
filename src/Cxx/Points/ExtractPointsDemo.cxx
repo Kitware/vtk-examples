@@ -4,6 +4,8 @@
 #include <vtkCylinder.h>
 #include <vtkExtractPoints.h>
 #include <vtkGlyph3DMapper.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
@@ -17,14 +19,16 @@
 
 int main(int /*argc*/, char* /* argv */[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create implicit functions
-  auto cone = vtkSmartPointer<vtkCone>::New();
+  vtkNew<vtkCone> cone;
   cone->SetAngle(30.0);
-  auto sphere = vtkSmartPointer<vtkSphere>::New();
-  auto cylinder = vtkSmartPointer<vtkCylinder>::New();
-  auto superquadric = vtkSmartPointer<vtkSuperquadric>::New();
+  vtkNew<vtkSphere> sphere;
+  vtkNew<vtkCylinder> cylinder;
+  vtkNew<vtkSuperquadric> superquadric;
   superquadric->SetPhiRoundness(2.5);
-  superquadric->SetThetaRoundness(.5);
+  superquadric->SetThetaRoundness(0.5);
 
   // Store the functions
   std::vector<vtkSmartPointer<vtkImplicitFunction>> functions;
@@ -33,7 +37,7 @@ int main(int /*argc*/, char* /* argv */[])
   functions.push_back(cylinder);
   functions.push_back(superquadric);
 
-  auto pointSource = vtkSmartPointer<vtkBoundedPointSource>::New();
+  vtkNew<vtkBoundedPointSource> pointSource;
   pointSource->SetNumberOfPoints(100000);
 
   // Rows and columns
@@ -42,7 +46,7 @@ int main(int /*argc*/, char* /* argv */[])
 
   // Need a renderer even if there is no actor
   std::vector<vtkSmartPointer<vtkRenderer>> renderers;
-  double background[6] = {.4, .5, .6, .6, .5, .4};
+  double background[6] = {0.4, 0.5, 0.6, 0.6, 0.5, 0.4};
   for (size_t i = 0; i < gridXDimensions * gridYDimensions; i++)
   {
     renderers.push_back(vtkSmartPointer<vtkRenderer>::New());
@@ -51,15 +55,16 @@ int main(int /*argc*/, char* /* argv */[])
   }
 
   // Glyphs
-  double radius = .02;
-  auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+  double radius = 0.02;
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetRadius(radius);
 
   // One render window
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   int rendererSize = 256;
   renderWindow->SetSize(rendererSize * gridXDimensions,
                         rendererSize * gridYDimensions);
+  renderWindow->SetWindowName("ExtractPointsDemo");
 
   // Create a pipeline for each function
   for (int row = 0; row < static_cast<int>(gridYDimensions); row++)
@@ -85,17 +90,19 @@ int main(int /*argc*/, char* /* argv */[])
         continue;
       }
       // Define the pipeline
-      auto extract = vtkSmartPointer<vtkExtractPoints>::New();
+      vtkNew<vtkExtractPoints> extract;
       extract->SetInputConnection(pointSource->GetOutputPort());
       extract->SetImplicitFunction(functions[index]);
 
-      auto glyph = vtkSmartPointer<vtkGlyph3DMapper>::New();
+      vtkNew<vtkGlyph3DMapper> glyph;
       glyph->SetInputConnection(extract->GetOutputPort());
       glyph->SetSourceConnection(sphereSource->GetOutputPort());
       glyph->ScalingOff();
 
-      auto glyphActor = vtkSmartPointer<vtkActor>::New();
+      vtkNew<vtkActor> glyphActor;
       glyphActor->SetMapper(glyph);
+      glyphActor->GetProperty()->SetColor(
+          colors->GetColor3d("MistyRose").GetData());
 
       renderers[index]->AddActor(glyphActor);
       renderers[index]->ResetCamera();
@@ -105,7 +112,7 @@ int main(int /*argc*/, char* /* argv */[])
       renderers[index]->ResetCameraClippingRange();
     }
   }
-  auto iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renderWindow);
 
   renderWindow->Render();
