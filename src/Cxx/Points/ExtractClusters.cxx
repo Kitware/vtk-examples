@@ -1,45 +1,52 @@
-#include <vtkSmartPointer.h>
-
-#include <vtkEuclideanClusterExtraction.h>
-#include <vtkPointSource.h>
 #include <vtkAppendPolyData.h>
-#include <vtkSphereSource.h>
+#include <vtkCamera.h>
+#include <vtkEuclideanClusterExtraction.h>
 #include <vtkGlyph3D.h>
-
 #include <vtkLookupTable.h>
-
-#include <vtkMath.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkCamera.h>
+#include <vtkSphereSource.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
-  vtkMath::RandomSeed(4355412); // for test result consistency
-  double limits = 10;
-  double radius = .5;
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkAppendPolyData> append =
-    vtkSmartPointer<vtkAppendPolyData>::New();
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  // randomSequence->SetSeed(8775070);
+  randomSequence->SetSeed(4355412);
+
+  double limits = 10;
+  double radius = 0.5;
+
+  vtkNew<vtkAppendPolyData> append;
   for (unsigned i = 0; i < 30; ++i)
   {
-    vtkSmartPointer<vtkPointSource> points =
-      vtkSmartPointer<vtkPointSource>::New();
+    vtkNew<vtkPointSource> points;
+
     points->SetNumberOfPoints(800);
     points->SetRadius(2.5 * radius);
-    points->SetCenter(vtkMath::Random(-limits, limits),
-                      vtkMath::Random(-limits, limits),
-                      vtkMath::Random(-limits, limits));
+    double x, y, z;
+    // random position
+    x = randomSequence->GetRangeValue(-limits, limits);
+    randomSequence->Next();
+    y = randomSequence->GetRangeValue(-limits, limits);
+    randomSequence->Next();
+    z = randomSequence->GetRangeValue(-limits, limits);
+    randomSequence->Next();
+    points->SetCenter(x, y, z);
     points->SetDistributionToShell();
 
     append->AddInputConnection(points->GetOutputPort());
   }
 
-  vtkSmartPointer<vtkEuclideanClusterExtraction> cluster =
-    vtkSmartPointer<vtkEuclideanClusterExtraction>::New();
+  vtkNew<vtkEuclideanClusterExtraction> cluster;
   cluster->SetInputConnection(append->GetOutputPort());
   cluster->SetExtractionModeToAllClusters();
   cluster->SetRadius(radius);
@@ -50,8 +57,7 @@ int main (int, char *[])
             << " clusters within radius " << radius << std::endl;
 
   // Create a lookup table to map point data to colors
-  vtkSmartPointer<vtkLookupTable> lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   int tableSize = cluster->GetNumberOfExtractedClusters();
   lut->SetNumberOfTableValues(tableSize);
   lut->Build();
@@ -59,47 +65,44 @@ int main (int, char *[])
   // Fill in the lookup table
   for (unsigned int i = 0; static_cast<int>(i) < tableSize; ++i)
   {
-    lut->SetTableValue(i,
-                       vtkMath::Random(.25, 1.0),
-                       vtkMath::Random(.25, 1.0),
-                       vtkMath::Random(.25, 1.0),
-                       1.0);
+    double r, g, b;
+    r = randomSequence->GetRangeValue(0.25, 1.0);
+    randomSequence->Next();
+    g = randomSequence->GetRangeValue(0.25, 1.0);
+    randomSequence->Next();
+    b = randomSequence->GetRangeValue(0.25, 1.0);
+    randomSequence->Next();
+    lut->SetTableValue(i, r, g, b, 1.0);
   }
 
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphere;
   sphere->SetRadius(radius / 2.0);
 
-  vtkSmartPointer<vtkGlyph3D> glyphs =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> glyphs;
   glyphs->SetInputConnection(cluster->GetOutputPort());
   glyphs->SetSourceConnection(sphere->GetOutputPort());
   glyphs->ScalingOff();
   glyphs->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(glyphs->GetOutputPort());
   mapper->SetScalarRange(0, tableSize - 1);
   mapper->SetLookupTable(lut);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   // Create graphics stuff
   //
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
-  ren1->SetBackground(.3, .4, .6);
+  vtkNew<vtkRenderer> ren1;
+  ren1->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
   renWin->SetSize(640, 512);
+  renWin->SetWindowName("ExtractClusters");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Add the actors to the renderer

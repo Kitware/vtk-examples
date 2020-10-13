@@ -6,4 +6,3 @@ If the polydata is not closed or is non-manifold, the filter does not create an 
 
 !!! warning
     Expect a warning message from the vtkExecutive is the enclosing polydata is not closed or non-manifold.
-

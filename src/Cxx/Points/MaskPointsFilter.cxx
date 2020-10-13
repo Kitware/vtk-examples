@@ -1,25 +1,30 @@
-#include <vtkSmartPointer.h>
-#include <vtkMaskPointsFilter.h>
 #include <vtkBoundedPointSource.h>
-#include <vtkImageData.h>
+#include <vtkCamera.h>
 #include <vtkCone.h>
-#include <vtkSampleImplicitFunctionFilter.h>
-#include <vtkImageThreshold.h>
-#include <vtkBoundedPointSource.h>
-#include <vtkMetaImageReader.h>
-#include <vtkSphereSource.h>
 #include <vtkGlyph3D.h>
+#include <vtkImageData.h>
+#include <vtkImageThreshold.h>
+#include <vtkMaskPointsFilter.h>
+#include <vtkMetaImageReader.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkCamera.h>
+#include <vtkSampleImplicitFunctionFilter.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 
-static vtkSmartPointer<vtkImageData> CreatePoints();
+namespace {
+vtkSmartPointer<vtkImageData> CreatePoints();
+}
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   vtkSmartPointer<vtkImageData> imageMask;
   if (argc < 2)
   {
@@ -32,14 +37,12 @@ int main (int argc, char *argv[])
     {
       upper = atoi(argv[2]);
     }
-    // Read the volume data
-    vtkSmartPointer<vtkMetaImageReader> reader =
-      vtkSmartPointer<vtkMetaImageReader>::New();
-    reader->SetFileName (argv[1]);
+    // Read the volume data e.g. FullHead.mhd
+    vtkNew<vtkMetaImageReader> reader;
+    reader->SetFileName(argv[1]);
     reader->Update();
 
-    vtkSmartPointer<vtkImageThreshold> threshold =
-      vtkSmartPointer<vtkImageThreshold>::New();
+    vtkNew<vtkImageThreshold> threshold;
     threshold->SetInputConnection(reader->GetOutputPort());
     threshold->ThresholdByUpper(upper);
     threshold->SetOutputScalarTypeToUnsignedChar();
@@ -50,62 +53,54 @@ int main (int argc, char *argv[])
     threshold->Update();
     imageMask = dynamic_cast<vtkImageData*>(threshold->GetOutput());
   }
-  vtkSmartPointer<vtkBoundedPointSource> pointSource =
-    vtkSmartPointer<vtkBoundedPointSource>::New();
+  vtkNew<vtkBoundedPointSource> pointSource;
   pointSource->SetNumberOfPoints(100000);
   pointSource->SetBounds(imageMask->GetBounds());
 
-  vtkSmartPointer<vtkMaskPointsFilter> maskPoints =
-    vtkSmartPointer<vtkMaskPointsFilter>::New();
+  vtkNew<vtkMaskPointsFilter> maskPoints;
   maskPoints->SetInputConnection(pointSource->GetOutputPort());
   maskPoints->SetMaskData(imageMask);
 
   double radius = imageMask->GetSpacing()[0] * 4.0;
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetRadius(radius);
 
-  vtkSmartPointer<vtkGlyph3D> glyph =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> glyph;
   glyph->SetInputConnection(maskPoints->GetOutputPort());
   glyph->SetSourceConnection(sphereSource->GetOutputPort());
   glyph->ScalingOff();
   glyph->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> glyphMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> glyphMapper;
   glyphMapper->SetInputConnection(glyph->GetOutputPort());
   glyphMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> glyphActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> glyphActor;
   glyphActor->SetMapper(glyphMapper);
-  glyphActor->GetProperty()->SetColor(0.8900, 0.8100, 0.3400);
+  glyphActor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
 
   // Create graphics stuff
   //
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
-  ren1->SetBackground(.3, .4, .6);
+  vtkNew<vtkRenderer> ren1;
+  ren1->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
-  renWin->SetSize(512,512);
+  renWin->SetSize(512, 512);
+  renWin->SetWindowName("MaskPointsFilter");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
-  
+
   // Add the actors to the renderer, set the background and size
   //
   ren1->AddActor(glyphActor);
 
   // Generate an interesting view
   //
-  ren1->GetActiveCamera()->SetPosition (1, 0, 0);
-  ren1->GetActiveCamera()->SetFocalPoint (0, 1, 0);
-  ren1->GetActiveCamera()->SetViewUp (0, 0, -1);
+  ren1->GetActiveCamera()->SetPosition(1, 0, 0);
+  ren1->GetActiveCamera()->SetFocalPoint(0, 1, 0);
+  ren1->GetActiveCamera()->SetViewUp(0, 0, -1);
   ren1->GetActiveCamera()->Azimuth(30);
   ren1->GetActiveCamera()->Elevation(30);
   ren1->ResetCamera();
@@ -119,25 +114,22 @@ int main (int argc, char *argv[])
   return EXIT_SUCCESS;
 }
 
-static vtkSmartPointer<vtkImageData> CreatePoints()
+namespace {
+vtkSmartPointer<vtkImageData> CreatePoints()
 {
   vtkSmartPointer<vtkImageData> imageMask;
 
-  vtkSmartPointer<vtkImageData> image =
-    vtkSmartPointer<vtkImageData>::New();
-  image->SetDimensions(256,256,256);
-  image->AllocateScalars(VTK_DOUBLE,1);
-  image->SetSpacing(5.0/255.0, 5.0/255.0, 5.0/255.0);
+  vtkNew<vtkImageData> image;
+  image->SetDimensions(256, 256, 256);
+  image->AllocateScalars(VTK_DOUBLE, 1);
+  image->SetSpacing(5.0 / 255.0, 5.0 / 255.0, 5.0 / 255.0);
   image->SetOrigin(-2.5, -2.5, -2.5);
-  vtkSmartPointer<vtkCone> implicitFunction =
-    vtkSmartPointer<vtkCone>::New();
-  vtkSmartPointer<vtkSampleImplicitFunctionFilter> sample = 
-    vtkSmartPointer<vtkSampleImplicitFunctionFilter>::New();
+  vtkNew<vtkCone> implicitFunction;
+  vtkNew<vtkSampleImplicitFunctionFilter> sample;
   sample->SetImplicitFunction(implicitFunction);
   sample->SetInputData(image);
-  
-  vtkSmartPointer<vtkImageThreshold> threshold =
-    vtkSmartPointer<vtkImageThreshold>::New();
+
+  vtkNew<vtkImageThreshold> threshold;
   threshold->SetInputConnection(sample->GetOutputPort());
   threshold->ThresholdByLower(.5);
   threshold->SetOutputScalarTypeToUnsignedChar();
@@ -149,3 +141,4 @@ static vtkSmartPointer<vtkImageData> CreatePoints()
   imageMask = dynamic_cast<vtkImageData*>(threshold->GetOutput());
   return imageMask;
 }
+} // namespace
