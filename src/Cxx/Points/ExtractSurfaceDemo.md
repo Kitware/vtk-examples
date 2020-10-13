@@ -10,6 +10,3 @@ distance field.
 The image was created using the [Armadillo dataset](https://github.com/lorensen/VTKExamples/blob/master/src/Testing/Data/Armadillo.ply?raw=true).
 
 This is a demo version of [ExtractSurface](../ExtractSurface). It displays some a sampling of the normals with arrows. It also uses a different color for the front and back surfaces.
-
-!!! warning
-    The classes used in this example require vtk 7.1 or later.
