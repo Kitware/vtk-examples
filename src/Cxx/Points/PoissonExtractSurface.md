@@ -9,10 +9,10 @@ If the example is run without an argument, the example uses random points on a s
     The [VTK Journal](http://www.vtkjournal.org/) paper [Poisson Surface Reconstruction for VTK](http://www.vtkjournal.org/browse/publication/718) describes the VTK implementaion.
 
 !!! info
-    [CompareExtractSurface](/Cxx/Points/CompareExtractSurface) compares three surface extraction algorithms.
+    [CompareExtractSurface](../CompareExtractSurface) compares three surface extraction algorithms.
 
 !!! seealso
-    [ExtractSurface](/Cxx/Points/ExtractSurface) reconstructs surfaces and is included with the VTK distribution. [PowercrustExtractSurface](/Cxx/Points/PowercrustExtractSurface) reconstructs surfaces and is implemented as a VTK remote module.
+    [ExtractSurface](../ExtractSurface) reconstructs surfaces and is included with the VTK distribution. [PowercrustExtractSurface](../PowercrustExtractSurface) reconstructs surfaces and is implemented as a VTK remote module.
 
 !!! info
     PoissonReconstruction is implemented as a [VTK Remote Module](http://www.vtk.org/Wiki/VTK/Remote_Modules).
