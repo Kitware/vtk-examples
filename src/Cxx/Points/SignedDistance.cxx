@@ -4,6 +4,8 @@
 #include <vtkImageMapToColors.h>
 #include <vtkImageMapper3D.h>
 #include <vtkLookupTable.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNew.h>
 #include <vtkPCANormalEstimation.h>
 #include <vtkPointSource.h>
 #include <vtkProperty.h>
@@ -13,6 +15,8 @@
 #include <vtkScalarBarActor.h>
 #include <vtkSignedDistance.h>
 #include <vtkSmartPointer.h>
+#include <vtkNamedColors.h>
+
 
 // Readers
 #include <vtkBYUReader.h>
@@ -35,8 +39,9 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName);
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
-  ;
 
   double bounds[6];
   polyData->GetBounds(bounds);
@@ -52,7 +57,7 @@ int main(int argc, char* argv[])
     sampleSize = 10;
   }
   std::cout << "Sample size is: " << sampleSize << std::endl;
-  auto normals = vtkSmartPointer<vtkPCANormalEstimation>::New();
+  vtkNew<vtkPCANormalEstimation> normals;
   normals->SetInputData(polyData);
   normals->SetSampleSize(sampleSize);
   normals->SetNormalOrientationToGraphTraversal();
@@ -61,82 +66,87 @@ int main(int argc, char* argv[])
             << std::endl;
   int dimension = 256;
   dimension = 128;
-  // auto radius = range[0] * .02;
+  // auto radius = range[0] * 0.02;
   auto radius = range[0] / static_cast<double>(dimension) * 5; // ~5 voxels
   std::cout << "Radius: " << radius << std::endl;
-  auto distance = vtkSmartPointer<vtkSignedDistance>::New();
+  vtkNew<vtkSignedDistance> distance;
   distance->SetInputConnection(normals->GetOutputPort());
   distance->SetRadius(radius);
   distance->SetDimensions(dimension, dimension, dimension);
-  distance->SetBounds(bounds[0] - range[0] * .1, bounds[1] + range[0] * .1,
-                      bounds[2] - range[1] * .1, bounds[3] + range[1] * .1,
-                      bounds[4] - range[2] * .1, bounds[5] + range[2] * .1);
+  distance->SetBounds(bounds[0] - range[0] * 0.1, bounds[1] + range[0] * 0.1,
+                      bounds[2] - range[1] * 0.1, bounds[3] + range[1] * 0.1,
+                      bounds[4] - range[2] * 0.1, bounds[5] + range[2] * 0.1);
 
   // Create a lookup table that consists of the full hue circle
   // (from HSV).
-  auto hueLut = vtkSmartPointer<vtkLookupTable>::New();
-  hueLut->SetTableRange(-.99 * radius, .99 * radius);
-  hueLut->SetHueRange(.667, 0);
+  auto belowRangeColor = colors->GetColor4d("Black").GetData();
+  belowRangeColor[3] = 0.2;
+  auto aboveRangeColor = colors->GetColor4d("White").GetData();
+  aboveRangeColor[3] = 0.2;
+  vtkNew<vtkLookupTable> hueLut;
+  hueLut->SetTableRange(-0.99 * radius, 0.99 * radius);
+  hueLut->SetHueRange(0.667, 0);
   hueLut->SetSaturationRange(1, 1);
   hueLut->SetValueRange(1, 1);
   hueLut->UseBelowRangeColorOn();
-  hueLut->SetBelowRangeColor(0, 0, 0, 0);
+  hueLut->SetBelowRangeColor(belowRangeColor);
   hueLut->UseAboveRangeColorOn();
-  hueLut->SetAboveRangeColor(0, 0, 0, 0);
+  hueLut->SetAboveRangeColor(aboveRangeColor);
   hueLut->SetNumberOfColors(5);
   hueLut->Build();
   double* last = hueLut->GetTableValue(4);
   hueLut->SetAboveRangeColor(last[0], last[1], last[2], 0);
 
-  auto sagittalColors = vtkSmartPointer<vtkImageMapToColors>::New();
+  vtkNew<vtkImageMapToColors> sagittalColors;
   sagittalColors->SetInputConnection(distance->GetOutputPort());
   sagittalColors->SetLookupTable(hueLut);
   sagittalColors->Update();
 
-  auto sagittal = vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> sagittal;
   sagittal->GetMapper()->SetInputConnection(sagittalColors->GetOutputPort());
   sagittal->SetDisplayExtent(dimension / 2, dimension / 2, 0, dimension - 1, 0,
                              dimension - 1);
   sagittal->ForceOpaqueOn();
 
-  auto axialColors = vtkSmartPointer<vtkImageMapToColors>::New();
+  vtkNew<vtkImageMapToColors> axialColors;
   axialColors->SetInputConnection(distance->GetOutputPort());
   axialColors->SetLookupTable(hueLut);
   axialColors->Update();
 
-  auto axial = vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> axial;
   axial->GetMapper()->SetInputConnection(axialColors->GetOutputPort());
   axial->SetDisplayExtent(0, dimension - 1, 0, dimension - 1, dimension / 2,
                           dimension / 2);
   axial->ForceOpaqueOn();
 
-  auto coronalColors = vtkSmartPointer<vtkImageMapToColors>::New();
+  vtkNew<vtkImageMapToColors> coronalColors;
   coronalColors->SetInputConnection(distance->GetOutputPort());
   coronalColors->SetLookupTable(hueLut);
   coronalColors->Update();
 
-  auto coronal = vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> coronal;
   coronal->GetMapper()->SetInputConnection(coronalColors->GetOutputPort());
   coronal->SetDisplayExtent(0, dimension - 1, dimension / 2, dimension / 2, 0,
                             dimension - 1);
   coronal->ForceOpaqueOn();
 
   // Create a scalar bar
-  auto scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
+  vtkNew<vtkScalarBarActor> scalarBar;
   scalarBar->SetLookupTable(hueLut);
   scalarBar->SetTitle("Distance");
   scalarBar->SetNumberOfLabels(5);
 
   // Create graphics stuff
   //
-  auto ren1 = vtkSmartPointer<vtkRenderer>::New();
-  ren1->SetBackground(.3, .4, .6);
+  vtkNew<vtkRenderer> ren1;
+  ren1->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
 
-  auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
-  renWin->SetSize(512, 512);
+  renWin->SetSize(600, 400);
+  renWin->SetWindowName("SignedDistance");
 
-  auto iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Add the actors to the renderer, set the background and size
@@ -159,6 +169,7 @@ int main(int argc, char* argv[])
   iren->Start();
   std::cout << distance->GetOutput()->GetScalarRange()[0] << ", "
             << distance->GetOutput()->GetScalarRange()[1] << std::endl;
+
   return EXIT_SUCCESS;
 }
 
@@ -176,58 +187,67 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
                  ::tolower);
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
+    vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName(fileName.c_str());
-    reader->Update();
-    polyData = reader->GetOutput();
-  }
-  else if (extension == ".obj")
-  {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
-    reader->SetFileName(fileName.c_str());
-    reader->Update();
-    polyData = reader->GetOutput();
-  }
-  else if (extension == ".stl")
-  {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
+    vtkNew<vtkPolyDataReader> reader;
+    reader->SetFileName(fileName.c_str());
+    reader->Update();
+    polyData = reader->GetOutput();
+  }
+  else if (extension == ".obj")
+  {
+    vtkNew<vtkOBJReader> reader;
+    reader->SetFileName(fileName.c_str());
+    reader->Update();
+    polyData = reader->GetOutput();
+  }
+  else if (extension == ".stl")
+  {
+    vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
+    vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    auto points = vtkSmartPointer<vtkPointSource>::New();
+    vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+    randomSequence->SetSeed(8775070);
+
+    vtkNew<vtkPointSource> points;
     points->SetNumberOfPoints(100000);
     points->SetRadius(10.0);
-    points->SetCenter(vtkMath::Random(-100, 100), vtkMath::Random(-100, 100),
-                      vtkMath::Random(-100, 100));
+    double x, y, z;
+    // random position
+    x = randomSequence->GetRangeValue(-100, 100);
+    randomSequence->Next();
+    y = randomSequence->GetRangeValue(-100, 100);
+    randomSequence->Next();
+    z = randomSequence->GetRangeValue(-100, 100);
+    randomSequence->Next();
+    points->SetCenter(x, y, z);
     points->SetDistributionToShell();
     points->Update();
     polyData = points->GetOutput();
   }
   return polyData;
 }
-
 } // namespace

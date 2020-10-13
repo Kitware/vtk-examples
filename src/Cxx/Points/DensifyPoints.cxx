@@ -1,6 +1,7 @@
 #include <vtkCamera.h>
 #include <vtkDensifyPointCloudFilter.h>
 #include <vtkGlyph3DMapper.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPointSource.h>
@@ -11,8 +12,8 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
+
 #include <vtksys/SystemTools.hxx>
-#include <vtkMinimalStandardRandomSequence.h>
 
 #include <vtkBYUReader.h>
 #include <vtkOBJReader.h>
