@@ -125,7 +125,7 @@ def main():
 
     sourceActor = vtk.vtkActor()
     sourceActor.SetMapper(sourceMapper)
-    sourceActor.GetProperty().SetOpacity(.6)
+    sourceActor.GetProperty().SetOpacity(0.6)
     sourceActor.GetProperty().SetDiffuseColor(
         colors.GetColor3d('White'))
     renderer.AddActor(sourceActor)

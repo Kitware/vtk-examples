@@ -1,47 +1,41 @@
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-
-#include <vtkLookupTable.h>
-#include <vtkFloatArray.h>
 #include <vtkCellData.h>
-#include <vtkPolyData.h>
-#include <vtkPlaneSource.h>
-
+#include <vtkFloatArray.h>
+#include <vtkLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPlaneSource.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
 #include <algorithm>
 
-int main(int , char *[])
+int main(int, char*[])
 {
   // Provide some geometry
   int resolution = 3;
-  vtkSmartPointer<vtkPlaneSource> aPlane =
-    vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> aPlane;
   aPlane->SetXResolution(resolution);
   aPlane->SetYResolution(resolution);
 
   // Create cell data
-  vtkSmartPointer<vtkFloatArray> cellData =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> cellData;
   for (int i = 0; i < resolution * resolution; i++)
   {
     cellData->InsertNextValue(i + 1);
   }
 
   // Create a lookup table to map cell data to colors
-  vtkSmartPointer<vtkLookupTable> lut =
-    vtkSmartPointer<vtkLookupTable>::New();
-  int tableSize = std::max(resolution*resolution + 1, 10);
+  vtkNew<vtkLookupTable> lut;
+  int tableSize = std::max(resolution * resolution + 1, 10);
   lut->SetNumberOfTableValues(tableSize);
   lut->Build();
 
   // Fill in a few known colors, the rest will be generated if needed
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   lut->SetTableValue(0, colors->GetColor4d("Black").GetData());
   lut->SetTableValue(1, colors->GetColor4d("Banana").GetData());
   lut->SetTableValue(2, colors->GetColor4d("Tomato").GetData());
@@ -57,24 +51,21 @@ int main(int , char *[])
   aPlane->GetOutput()->GetCellData()->SetScalars(cellData);
 
   // Setup actor and mapper
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(aPlane->GetOutputPort());
   mapper->SetScalarRange(0, tableSize - 1);
   mapper->SetLookupTable(lut);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   // Setup render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("ColorCells");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());

@@ -1,4 +1,5 @@
 ### Description
+
 The idea of this example is to navigate levels of a uniform spatial tree, vtkCellLocator, using a slider.
 
 !!! note

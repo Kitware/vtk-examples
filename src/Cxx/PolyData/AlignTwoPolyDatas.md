@@ -21,4 +21,3 @@ The algorithm proceeds as follows:
 
 !!! info
     You may need to orient the target using vtkTransformPolyDataFilter to get a better fit, for example when using  [Grey_Nurse_Shark.stl](https://github.com/lorensen/VTKExamples/raw/master/src/Testing/Data/thingiverse/Grey_Nurse_Shark.stl) and [greatWhite.stl](https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Data/greatWhite.stl), uncommenting the two rotations in vtkTransform will provide an excellent alignment.
-

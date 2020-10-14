@@ -1,13 +1,14 @@
 #include <vtkLandmarkTransform.h>
 #include <vtkMath.h>
-#include <vtkPolyData.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
-#include <vtkSmartPointer.h>
+#include <vtkPolyData.h>
 #include <vtkTransform.h>
+#include <vtkTransformFilter.h>
 #include <vtkVertexGlyphFilter.h>
 #include <vtkXMLPolyDataWriter.h>
-#include <vtkTransformFilter.h>
 
+namespace {
 struct Frame
 {
   Frame(float o[3], float x[3], float y[3], float z[3])
@@ -17,26 +18,27 @@ struct Frame
     this->SetYDirection(y);
     this->SetZDirection(z);
 
-    std::cout << "Origin: " << this->origin[0] << " " << this->origin[1] << " " << this->origin[2] << std::endl;
-    std::cout << "xDirection: "<< this->xDirection[0] << " " << this->xDirection[1] << " " << this->xDirection[2] << std::endl;
-    std::cout << "yDirection: "<< this->yDirection[0] << " " << this->yDirection[1] << " " << this->yDirection[2] << std::endl;
-    std::cout << "zDirection: "<< this->zDirection[0] << " " << this->zDirection[1] << " " << this->zDirection[2] << std::endl;
+    std::cout << "Origin: " << this->origin[0] << " " << this->origin[1] << " "
+              << this->origin[2] << std::endl;
+    std::cout << "xDirection: " << this->xDirection[0] << " "
+              << this->xDirection[1] << " " << this->xDirection[2] << std::endl;
+    std::cout << "yDirection: " << this->yDirection[0] << " "
+              << this->yDirection[1] << " " << this->yDirection[2] << std::endl;
+    std::cout << "zDirection: " << this->zDirection[0] << " "
+              << this->zDirection[1] << " " << this->zDirection[2] << std::endl;
   }
 
   void ApplyTransform(vtkTransform* transform, std::string filename)
   {
-    vtkSmartPointer<vtkPolyData> polydata =
-      vtkSmartPointer<vtkPolyData>::New();
+    vtkNew<vtkPolyData> polydata;
     CreatePolydata(polydata);
-    
-    vtkSmartPointer<vtkTransformFilter> transformFilter =
-      vtkSmartPointer<vtkTransformFilter>::New();
+
+    vtkNew<vtkTransformFilter> transformFilter;
     transformFilter->SetInputData(polydata);
     transformFilter->SetTransform(transform);
     transformFilter->Update();
 
-    vtkSmartPointer<vtkXMLPolyDataWriter> writer =
-      vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+    vtkNew<vtkXMLPolyDataWriter> writer;
     writer->SetFileName(filename.c_str());
     writer->SetInputConnection(transformFilter->GetOutputPort());
     writer->Write();
@@ -44,8 +46,7 @@ struct Frame
 
   void CreatePolydata(vtkPolyData* polydata)
   {
-    vtkSmartPointer<vtkPoints> points =
-      vtkSmartPointer<vtkPoints>::New();
+    vtkNew<vtkPoints> points;
 
     points->InsertNextPoint(this->origin);
     float x[3];
@@ -60,27 +61,24 @@ struct Frame
 
     polydata->SetPoints(points);
 
-    vtkSmartPointer<vtkVertexGlyphFilter> vertexGlyphFilter =
-      vtkSmartPointer<vtkVertexGlyphFilter>::New();
+    vtkNew<vtkVertexGlyphFilter> vertexGlyphFilter;
     vertexGlyphFilter->AddInputData(polydata);
     vertexGlyphFilter->Update();
 
     polydata->ShallowCopy(vertexGlyphFilter->GetOutput());
   }
-  
+
   void Write(std::string filename)
   {
-    vtkSmartPointer<vtkPolyData> polydata =
-      vtkSmartPointer<vtkPolyData>::New();
+    vtkNew<vtkPolyData> polydata;
     CreatePolydata(polydata);
 
-    vtkSmartPointer<vtkXMLPolyDataWriter> writer =
-      vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+    vtkNew<vtkXMLPolyDataWriter> writer;
     writer->SetFileName(filename.c_str());
     writer->SetInputData(polydata);
     writer->Write();
   }
-  
+
   float origin[3];
   float xDirection[3];
   float yDirection[3];
@@ -92,7 +90,7 @@ struct Frame
     this->origin[1] = o[1];
     this->origin[2] = o[2];
   }
-  
+
   void SetXDirection(float direction[3])
   {
     vtkMath::Normalize(direction);
@@ -100,7 +98,7 @@ struct Frame
     this->xDirection[1] = direction[1];
     this->xDirection[2] = direction[2];
   }
-  
+
   void SetYDirection(float direction[3])
   {
     vtkMath::Normalize(direction);
@@ -108,7 +106,7 @@ struct Frame
     this->yDirection[1] = direction[1];
     this->yDirection[2] = direction[2];
   }
-  
+
   void SetZDirection(float direction[3])
   {
     vtkMath::Normalize(direction);
@@ -116,50 +114,52 @@ struct Frame
     this->zDirection[1] = direction[1];
     this->zDirection[2] = direction[2];
   }
-
 };
 
-void AlignFrames(Frame sourceFrame, Frame destinationFrame, vtkTransform* transform);
+void AlignFrames(Frame sourceFrame, Frame destinationFrame,
+                 vtkTransform* transform);
+} // namespace
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  float frame1origin[3] = {0,0,0};
-  float frame1XDirection[3] = {1,0,0};
-  float frame1YDirection[3] = {0,1,0};
-  std::cout << frame1YDirection[0] << " " << frame1YDirection[1] << " " << frame1YDirection[2] << std::endl;
-  float frame1ZDirection[3] = {0,0,1};
-  Frame frame1(frame1origin, frame1XDirection, frame1YDirection, frame1ZDirection);
+  float frame1origin[3] = {0, 0, 0};
+  float frame1XDirection[3] = {1, 0, 0};
+  float frame1YDirection[3] = {0, 1, 0};
+  std::cout << frame1YDirection[0] << " " << frame1YDirection[1] << " "
+            << frame1YDirection[2] << std::endl;
+  float frame1ZDirection[3] = {0, 0, 1};
+  Frame frame1(frame1origin, frame1XDirection, frame1YDirection,
+               frame1ZDirection);
   frame1.Write("frame1.vtp");
-  
-  float frame2origin[3] = {0,0,0};
-  float frame2XDirection[3] = {.707f,.707f,0};
-  float frame2YDirection[3] = {-.707f,.707f,0};
-  float frame2ZDirection[3] = {0,0,1};
-  Frame frame2(frame2origin, frame2XDirection, frame2YDirection, frame2ZDirection);
+
+  float frame2origin[3] = {0, 0, 0};
+  float frame2XDirection[3] = {.707f, .707f, 0};
+  float frame2YDirection[3] = {-.707f, .707f, 0};
+  float frame2ZDirection[3] = {0, 0, 1};
+  Frame frame2(frame2origin, frame2XDirection, frame2YDirection,
+               frame2ZDirection);
   frame2.Write("frame2.vtp");
-  
-  vtkSmartPointer<vtkTransform> transform =
-    vtkSmartPointer<vtkTransform>::New();
+
+  vtkNew<vtkTransform> transform;
   AlignFrames(frame2, frame1, transform); // Brings frame2 to frame1
 
-  //std::cout << *transform << std::endl;
+  // std::cout << *transform << std::endl;
 
   frame2.ApplyTransform(transform, "transformed.vtp");
-    
+
   return EXIT_SUCCESS;
 }
 
+namespace {
 void AlignFrames(Frame sourceFrame, Frame targetFrame, vtkTransform* transform)
 {
   // This function takes two frames and finds the matrix M between them.
-  
-  vtkSmartPointer<vtkLandmarkTransform> landmarkTransform =
-    vtkSmartPointer<vtkLandmarkTransform>::New();
-    
+
+  vtkNew<vtkLandmarkTransform> landmarkTransform;
+
   // Setup source points
-  vtkSmartPointer<vtkPoints> sourcePoints =
-    vtkSmartPointer<vtkPoints>::New();
-    
+  vtkNew<vtkPoints> sourcePoints;
+
   sourcePoints->InsertNextPoint(sourceFrame.origin);
   float sourceX[3];
   vtkMath::Add(sourceFrame.origin, sourceFrame.xDirection, sourceX);
@@ -172,9 +172,8 @@ void AlignFrames(Frame sourceFrame, Frame targetFrame, vtkTransform* transform)
   sourcePoints->InsertNextPoint(sourceZ);
 
   // Setup target points
-  vtkSmartPointer<vtkPoints> targetPoints =
-    vtkSmartPointer<vtkPoints>::New();
-    
+  vtkNew<vtkPoints> targetPoints;
+
   targetPoints->InsertNextPoint(targetFrame.origin);
   float targetX[3];
   vtkMath::Add(targetFrame.origin, targetFrame.xDirection, targetX);
@@ -195,3 +194,4 @@ void AlignFrames(Frame sourceFrame, Frame targetFrame, vtkTransform* transform)
 
   transform->SetMatrix(M);
 }
+} // namespace

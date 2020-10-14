@@ -1,17 +1,20 @@
-#include <vtkSmartPointer.h>
-#include <vtkPointData.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyDataConnectivityFilter.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
 #include <vtkCamera.h>
-#include <vtkProperty.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPolyDataConnectivityFilter.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
+#include <vtkMinimalStandardRandomSequence.h>
+
 
 #include <vtkBYUReader.h>
 #include <vtkOBJReader.h>
@@ -20,25 +23,21 @@
 #include <vtkSTLReader.h>
 #include <vtkXMLPolyDataReader.h>
 
+//#include <random>
 #include <vtksys/SystemTools.hxx>
-#include <random>
 
-namespace
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
+void RandomColors(vtkLookupTable* lut, int numberOfColors);
+} // namespace
+
+int main(int argc, char* argv[])
 {
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
-void RandomColors(vtkSmartPointer<vtkLookupTable> &lut, int numberOfColors);
-}
+  vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
-int main(int argc, char*argv[])
-{
-  vtkSmartPointer<vtkPolyData> polyData =
-    ReadPolyData(argc > 1 ? argv[1] : "");
+  vtkNew<vtkNamedColors> colors;
 
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-  
-  auto connectivityFilter =
-    vtkSmartPointer<vtkPolyDataConnectivityFilter>::New();
+  vtkNew<vtkPolyDataConnectivityFilter> connectivityFilter;
   connectivityFilter->SetInputData(polyData);
   connectivityFilter->SetExtractionModeToAllRegions();
   connectivityFilter->ColorRegionsOn();
@@ -46,24 +45,23 @@ int main(int argc, char*argv[])
 
   // Visualize
   auto numberOfRegions = connectivityFilter->GetNumberOfExtractedRegions();
-  auto lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   lut->SetNumberOfTableValues(std::max(numberOfRegions, 10));
   lut->Build();
   RandomColors(lut, numberOfRegions);
-  auto mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(connectivityFilter->GetOutputPort());
-  mapper->SetScalarRange(connectivityFilter->GetOutput()->GetPointData()->GetArray("RegionId")->GetRange());
+  mapper->SetScalarRange(connectivityFilter->GetOutput()
+                             ->GetPointData()
+                             ->GetArray("RegionId")
+                             ->GetRange());
   mapper->SetLookupTable(lut);
   mapper->Update();
 
-  auto actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->UseHiddenLineRemovalOn();
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
@@ -75,15 +73,13 @@ int main(int argc, char*argv[])
   renderer->GetActiveCamera()->Dolly(1.2);
   renderer->ResetCameraClippingRange();
 
-  auto renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("ColorDisconnectedRegions");
 
-  auto style =
-    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-  auto interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkInteractorStyleTrackballCamera> style;
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetInteractorStyle(style);
   interactor->SetRenderWindow(renderWindow);
   renderWindow->Render();
@@ -93,75 +89,67 @@ int main(int argc, char*argv[])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
-  std::string extension = vtksys::SystemTools::GetFilenameLastExtension(std::string(fileName));
+  std::string extension =
+      vtksys::SystemTools::GetFilenameLastExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    auto reader =
-      vtkSmartPointer<vtkPLYReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPLYReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader =
-      vtkSmartPointer<vtkOBJReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkOBJReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader =
-      vtkSmartPointer<vtkSTLReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkSTLReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader =
-      vtkSmartPointer<vtkPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader =
-      vtkSmartPointer<vtkBYUReader>::New();
-    reader->SetGeometryFileName (fileName);
+    vtkNew<vtkBYUReader> reader;
+    reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    auto source =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->Update();
     polyData = source->GetOutput();
   }
   return polyData;
 }
 
-void RandomColors(vtkSmartPointer<vtkLookupTable> &lut, int numberOfColors)
+void RandomColors(vtkLookupTable* lut, int numberOfColors)
 {
   // Fill in a few known colors, the rest will be generated if needed
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   lut->SetTableValue(0, colors->GetColor4d("Gold").GetData());
   lut->SetTableValue(1, colors->GetColor4d("Banana").GetData());
   lut->SetTableValue(2, colors->GetColor4d("Tomato").GetData());
@@ -173,16 +161,23 @@ void RandomColors(vtkSmartPointer<vtkLookupTable> &lut, int numberOfColors)
   lut->SetTableValue(8, colors->GetColor4d("Mint").GetData());
   lut->SetTableValue(9, colors->GetColor4d("Peacock").GetData());
 
-  // If the number of color is larger than the number of specified colors,
+  // If the number of colors is larger than the number of specified colors,
   // generate some random colors.
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(4355412);
   if (numberOfColors > 9)
   {
-    std::mt19937 mt(4355412); //Standard mersenne_twister_engine
-    std::uniform_real_distribution<double> distribution(.6, 1.0);
     for (auto i = 10; i < numberOfColors; ++i)
     {
-      lut->SetTableValue(i, distribution(mt), distribution(mt), distribution(mt), 1.0);
+      double r, g, b;
+      r = randomSequence->GetRangeValue(0.6, 1.0);
+      randomSequence->Next();
+      g = randomSequence->GetRangeValue(0.6, 1.0);
+      randomSequence->Next();
+      b = randomSequence->GetRangeValue(0.6, 1.0);
+      randomSequence->Next();
+      lut->SetTableValue(i, r, g, b, 1.0);
     }
   }
 }
-}
+} // namespace

@@ -5,6 +5,7 @@
 #include <vtkIdList.h>
 #include <vtkIdTypeArray.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
@@ -12,7 +13,6 @@
 #include <vtkRenderer.h>
 #include <vtkSelection.h>
 #include <vtkSelectionNode.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkTriangleFilter.h>
 
@@ -21,17 +21,17 @@
 int main(int, char*[])
 {
   // Create a sphere
-  auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
-  auto triangleFilter = vtkSmartPointer<vtkTriangleFilter>::New();
+  vtkNew<vtkTriangleFilter> triangleFilter;
   triangleFilter->SetInputConnection(sphereSource->GetOutputPort());
   triangleFilter->Update();
 
   // Find all cells connected to point 0
   vtkIdType cellId = 0;
 
-  auto cellPointIds = vtkSmartPointer<vtkIdList>::New();
+  vtkNew<vtkIdList> cellPointIds;
   triangleFilter->GetOutput()->GetCellPoints(cellId, cellPointIds);
 
   // neighbor cells may be listed multiple times
@@ -47,11 +47,11 @@ int main(int, char*[])
 
   for (vtkIdType i = 0; i < cellPointIds->GetNumberOfIds(); i++)
   {
-    auto idList = vtkSmartPointer<vtkIdList>::New();
+    vtkNew<vtkIdList> idList;
     idList->InsertNextId(cellPointIds->GetId(i));
 
     // get the neighbors of the cell
-    auto neighborCellIds = vtkSmartPointer<vtkIdList>::New();
+    vtkNew<vtkIdList> neighborCellIds;
 
     triangleFilter->GetOutput()->GetCellNeighbors(cellId, idList,
                                                   neighborCellIds);
@@ -70,38 +70,38 @@ int main(int, char*[])
   }
   std::cout << std::endl;
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto sphereMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
   sphereMapper->SetResolveCoincidentTopologyToPolygonOffset();
 
-  auto sphereActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
   sphereActor->GetProperty()->SetEdgeColor(
       colors->GetColor3d("Lamp_Black").GetData());
   sphereActor->GetProperty()->EdgeVisibilityOn();
   sphereActor->GetProperty()->SetLineWidth(3);
 
-  auto mainCellMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mainCellMapper;
 
-  auto neighborCellsMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> neighborCellsMapper;
 
   // Create a dataset with the cell of interest
   {
-    auto ids = vtkSmartPointer<vtkIdTypeArray>::New();
+    vtkNew<vtkIdTypeArray> ids;
     ids->SetNumberOfComponents(1);
     ids->InsertNextValue(cellId);
 
-    auto selectionNode = vtkSmartPointer<vtkSelectionNode>::New();
+    vtkNew<vtkSelectionNode> selectionNode;
     selectionNode->SetFieldType(vtkSelectionNode::CELL);
     selectionNode->SetContentType(vtkSelectionNode::INDICES);
     selectionNode->SetSelectionList(ids);
 
-    auto selection = vtkSmartPointer<vtkSelection>::New();
+    vtkNew<vtkSelection> selection;
     selection->AddNode(selectionNode);
 
-    auto extractSelection = vtkSmartPointer<vtkExtractSelection>::New();
+    vtkNew<vtkExtractSelection> extractSelection;
     extractSelection->SetInputConnection(0, sphereSource->GetOutputPort());
     extractSelection->SetInputData(1, selection);
     extractSelection->Update();
@@ -109,29 +109,29 @@ int main(int, char*[])
     mainCellMapper->SetInputConnection(extractSelection->GetOutputPort());
   }
 
-  auto mainCellActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> mainCellActor;
   mainCellActor->SetMapper(mainCellMapper);
   mainCellActor->GetProperty()->SetColor(
       colors->GetColor3d("Tomato").GetData());
 
   // Create a dataset with the neighbor cells
   {
-    auto ids = vtkSmartPointer<vtkIdTypeArray>::New();
+    vtkNew<vtkIdTypeArray> ids;
     ids->SetNumberOfComponents(1);
     for (auto it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
     {
       ids->InsertNextValue(*it1);
     }
 
-    auto selectionNode = vtkSmartPointer<vtkSelectionNode>::New();
+    vtkNew<vtkSelectionNode> selectionNode;
     selectionNode->SetFieldType(vtkSelectionNode::CELL);
     selectionNode->SetContentType(vtkSelectionNode::INDICES);
     selectionNode->SetSelectionList(ids);
 
-    auto selection = vtkSmartPointer<vtkSelection>::New();
+    vtkNew<vtkSelection> selection;
     selection->AddNode(selectionNode);
 
-    auto extractSelection = vtkSmartPointer<vtkExtractSelection>::New();
+    vtkNew<vtkExtractSelection> extractSelection;
     extractSelection->SetInputConnection(0, sphereSource->GetOutputPort());
     extractSelection->SetInputData(1, selection);
     extractSelection->Update();
@@ -139,24 +139,25 @@ int main(int, char*[])
     neighborCellsMapper->SetInputConnection(extractSelection->GetOutputPort());
   }
 
-  auto neighborCellsActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> neighborCellsActor;
   neighborCellsActor->SetMapper(neighborCellsMapper);
   neighborCellsActor->GetProperty()->SetColor(
       colors->GetColor3d("Mint").GetData());
 
   // Create a renderer, render window, and interactor
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("CellPointNeighbors");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
   renderer->AddActor(sphereActor);
   renderer->AddActor(mainCellActor);
   renderer->AddActor(neighborCellsActor);
-  renderer->SetBackground(colors->GetColor3d("Slate_grey").GetData());
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Render and interact
   renderWindow->SetSize(640, 480);

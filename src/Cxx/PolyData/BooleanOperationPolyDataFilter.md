@@ -1,4 +1,5 @@
 ### Description
+
 The vtkBooleanOperationPolyDataFilter works best with "clean" data, so this examples first runs vtkTriangleFilter and then vtkCleanPolyData.
 
 This example can be run in three ways:
@@ -13,4 +14,4 @@ This example can be run in three ways:
     See [Boolean Operations on Surfaces in VTK Without External Libraries](http://www.vtkjournal.org/browse/publication/797) for details on the algorithm.
 
 !!! seealso
-    [LoopBooleanPolyDataFilter](/Cxx/PolyData/LoopBooleanPolyDataFilter) uses an alternative algorithm to do the boolean operations.
+    [LoopBooleanPolyDataFilter](../LoopBooleanPolyDataFilter), it uses an alternative algorithm to do the boolean operations.
