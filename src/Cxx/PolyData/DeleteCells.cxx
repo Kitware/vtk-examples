@@ -1,5 +1,7 @@
-#include <vtkSmartPointer.h>
-
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
+#include <vtkNew.h>
 #include <vtkActor.h>
 #include <vtkCellArray.h>
 #include <vtkLine.h>
@@ -7,44 +9,37 @@
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-
+#include <vtkRenderer.h>
 #include <vtkNamedColors.h>
- 
-int main(int, char *[])
+
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint(0,0,0);
-  points->InsertNextPoint(1,0,0);
-  points->InsertNextPoint(1,1,0);
-  points->InsertNextPoint(0,1,0);
- 
-  vtkSmartPointer<vtkLine> line0 = 
-    vtkSmartPointer<vtkLine>::New();
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(0, 0, 0);
+  points->InsertNextPoint(1, 0, 0);
+  points->InsertNextPoint(1, 1, 0);
+  points->InsertNextPoint(0, 1, 0);
+
+  vtkNew<vtkLine> line0;
   line0->GetPointIds()->SetId(0, 0);
   line0->GetPointIds()->SetId(1, 1);
- 
-  vtkSmartPointer<vtkLine> line1 = 
-    vtkSmartPointer<vtkLine>::New();
+
+  vtkNew<vtkLine> line1;
   line1->GetPointIds()->SetId(0, 1);
   line1->GetPointIds()->SetId(1, 2);
- 
-  vtkSmartPointer<vtkLine> line2 = 
-    vtkSmartPointer<vtkLine>::New();
+
+  vtkNew<vtkLine> line2;
   line2->GetPointIds()->SetId(0, 2);
   line2->GetPointIds()->SetId(1, 3);
- 
-  vtkSmartPointer<vtkCellArray> lines =
-    vtkSmartPointer<vtkCellArray>::New();
+
+  vtkNew<vtkCellArray> lines;
   lines->InsertNextCell(line0);
   lines->InsertNextCell(line1);
   lines->InsertNextCell(line2);
- 
-  vtkSmartPointer<vtkPolyData> polydata =
-    vtkSmartPointer<vtkPolyData>::New();
+
+  vtkNew<vtkPolyData> polydata;
   polydata->SetPoints(points);
   polydata->SetLines(lines);
 
@@ -56,32 +51,28 @@ int main(int, char *[])
   polydata->RemoveDeletedCells();
 
   // Visualize
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputDataObject(polydata);
- 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
   actor->GetProperty()->SetLineWidth(4);
- 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("DeleteCells");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderer->AddActor(actor);
- 
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
+
   renderWindow->Render();
   renderWindowInteractor->Start();
- 
+
   return EXIT_SUCCESS;
 }

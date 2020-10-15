@@ -1,31 +1,30 @@
-#include <vtkSmartPointer.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyData.h>
-#include <vtkPointData.h>
-#include <vtkFloatArray.h>
 #include <vtkDoubleArray.h>
+#include <vtkFloatArray.h>
 #include <vtkIntArray.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPolyData.h>
+#include <vtkSphereSource.h>
 
+namespace {
 void ManualMethod(vtkPolyData* input);
 void AutomaticMethod(vtkPolyData* input);
+} // namespace
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
   vtkPolyData* polydata = sphereSource->GetOutput();
 
-  vtkSmartPointer<vtkDoubleArray> doubles =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> doubles;
   doubles->SetName("Doubles");
   doubles->SetNumberOfTuples(polydata->GetNumberOfPoints());
 
   polydata->GetPointData()->AddArray(doubles);
 
-  vtkSmartPointer<vtkIntArray> ints =
-    vtkSmartPointer<vtkIntArray>::New();
+  vtkNew<vtkIntArray> ints;
   ints->SetName("Ints");
   ints->SetNumberOfTuples(polydata->GetNumberOfPoints());
 
@@ -37,19 +36,21 @@ int main(int, char *[])
   return EXIT_SUCCESS;
 }
 
+namespace {
 void ManualMethod(vtkPolyData* input)
 {
   unsigned int numberOfArrays = input->GetPointData()->GetNumberOfArrays();
   std::cout << "There are " << numberOfArrays << " arrays." << std::endl;
 
-  vtkSmartPointer<vtkPolyData> newPolyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> newPolyData;
 
-  for(unsigned int i = 0; i < numberOfArrays; i++)
+  for (unsigned int i = 0; i < numberOfArrays; i++)
   {
     std::cout << "array " << i << ":" << std::endl;
-    std::cout << "name: " << input->GetPointData()->GetArrayName(i) << std::endl;
-    std::cout << "type: " << input->GetPointData()->GetArray(i)->GetDataType() << std::endl;
+    std::cout << "name: " << input->GetPointData()->GetArrayName(i)
+              << std::endl;
+    std::cout << "type: " << input->GetPointData()->GetArray(i)->GetDataType()
+              << std::endl;
     std::cout << std::endl;
 
     newPolyData->GetPointData()->AddArray(input->GetPointData()->GetArray(i));
@@ -57,14 +58,16 @@ void ManualMethod(vtkPolyData* input)
 
   std::cout << "new polydata: " << std::endl;
 
-  for(unsigned int i = 0; i < numberOfArrays; i++)
+  for (unsigned int i = 0; i < numberOfArrays; i++)
   {
     std::cout << "array " << i << ":" << std::endl;
-    std::cout << "name: " << newPolyData->GetPointData()->GetArrayName(i) << std::endl;
-    std::cout << "type: " << newPolyData->GetPointData()->GetArray(i)->GetDataType() << std::endl;
+    std::cout << "name: " << newPolyData->GetPointData()->GetArrayName(i)
+              << std::endl;
+    std::cout << "type: "
+              << newPolyData->GetPointData()->GetArray(i)->GetDataType()
+              << std::endl;
     std::cout << std::endl;
   }
-
 }
 
 void AutomaticMethod(vtkPolyData* input)
@@ -72,27 +75,31 @@ void AutomaticMethod(vtkPolyData* input)
   unsigned int numberOfArrays = input->GetPointData()->GetNumberOfArrays();
   std::cout << "There are " << numberOfArrays << " arrays." << std::endl;
 
-  vtkSmartPointer<vtkPolyData> newPolyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> newPolyData;
 
   newPolyData->GetPointData()->PassData(input->GetPointData());
 
-  for(unsigned int i = 0; i < numberOfArrays; i++)
+  for (unsigned int i = 0; i < numberOfArrays; i++)
   {
     std::cout << "array " << i << ":" << std::endl;
-    std::cout << "name: " << input->GetPointData()->GetArrayName(i) << std::endl;
-    std::cout << "type: " << input->GetPointData()->GetArray(i)->GetDataType() << std::endl;
+    std::cout << "name: " << input->GetPointData()->GetArrayName(i)
+              << std::endl;
+    std::cout << "type: " << input->GetPointData()->GetArray(i)->GetDataType()
+              << std::endl;
     std::cout << std::endl;
   }
 
   std::cout << "new polydata: " << std::endl;
 
-  for(unsigned int i = 0; i < numberOfArrays; i++)
+  for (unsigned int i = 0; i < numberOfArrays; i++)
   {
     std::cout << "array " << i << ":" << std::endl;
-    std::cout << "name: " << newPolyData->GetPointData()->GetArrayName(i) << std::endl;
-    std::cout << "type: " << newPolyData->GetPointData()->GetArray(i)->GetDataType() << std::endl;
+    std::cout << "name: " << newPolyData->GetPointData()->GetArrayName(i)
+              << std::endl;
+    std::cout << "type: "
+              << newPolyData->GetPointData()->GetArray(i)->GetDataType()
+              << std::endl;
     std::cout << std::endl;
   }
-
 }
+} // namespace

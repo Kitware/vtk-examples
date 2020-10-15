@@ -59,18 +59,18 @@ def main():
     # Outside points have a 0 value in ALL points of a cell
     outsideId = threshold.AddBandpassIntervalSet(
         0, 0,
-        vtk.vtkDataObject.FIELD_ASSOCIATION_POINTS, "SelectedPoints",
+        vtk.vtkDataObject.FIELD_ASSOCIATION_POINTS, 'SelectedPoints',
         0, 1)
     # Inside points have a 1 value in ALL points of a cell
     insideId = threshold.AddBandpassIntervalSet(
         1, 1,
-        vtk.vtkDataObject.FIELD_ASSOCIATION_POINTS, "SelectedPoints",
+        vtk.vtkDataObject.FIELD_ASSOCIATION_POINTS, 'SelectedPoints',
         0, 1)
     # Border points have a 0 or a 1 in at least one point of a cell
     borderId = threshold.AddIntervalSet(
         0, 1,
         vtk.vtkMultiThreshold.OPEN, vtk.vtkMultiThreshold.OPEN,
-        vtk.vtkDataObject.FIELD_ASSOCIATION_POINTS, "SelectedPoints",
+        vtk.vtkDataObject.FIELD_ASSOCIATION_POINTS, 'SelectedPoints',
         0, 0)
 
     threshold.SetInputConnection(select.GetOutputPort())
@@ -83,11 +83,11 @@ def main():
 
     # Visualize
     colors = vtk.vtkNamedColors()
-    outsideColor = colors.GetColor3d("Crimson")
-    insideColor = colors.GetColor3d("Banana")
-    borderColor = colors.GetColor3d("Mint")
-    surfaceColor = colors.GetColor3d("Peacock")
-    backgroundColor = colors.GetColor3d("Silver")
+    outsideColor = colors.GetColor3d('Crimson')
+    insideColor = colors.GetColor3d('Banana')
+    borderColor = colors.GetColor3d('Mint')
+    surfaceColor = colors.GetColor3d('Peacock')
+    backgroundColor = colors.GetColor3d('Silver')
 
     # Outside
     outsideMapper = vtk.vtkDataSetMapper()
@@ -164,32 +164,32 @@ def ReadPolyData(file_name):
     import os
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
-    if extension == ".ply":
+    if extension == '.ply':
         reader = vtk.vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtp":
+    elif extension == '.vtp':
         reader = vtk.vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".obj":
+    elif extension == '.obj':
         reader = vtk.vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".stl":
+    elif extension == '.stl':
         reader = vtk.vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtk":
+    elif extension == '.vtk':
         reader = vtk.vtkPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".g":
+    elif extension == '.g':
         reader = vtk.vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()

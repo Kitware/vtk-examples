@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""
+'''
 The purpose of this is to demonstrate how to get the Gaussian and Mean curvatures of a surface.
 
 Two different surfaces are used in this demonstration with each surface coloured according
@@ -26,7 +26,7 @@ In the case of the Random Hills Gaussian Curvature surface, this colouration sho
 This example also demonstrates the use of lists and the linking of the elements of the
  lists together to form a pipeline.
 
-"""
+'''
 
 import vtk
 
@@ -82,8 +82,8 @@ def main():
     # Colour transfer function.
     ctf = vtk.vtkColorTransferFunction()
     ctf.SetColorSpaceToDiverging()
-    p1 = [0.0] + list(colors.GetColor3d("MidnightBlue"))
-    p2 = [1.0] + list(colors.GetColor3d("DarkOrange"))
+    p1 = [0.0] + list(colors.GetColor3d('MidnightBlue'))
+    p2 = [1.0] + list(colors.GetColor3d('DarkOrange'))
     ctf.AddRGBPoint(*p1)
     ctf.AddRGBPoint(*p2)
     cc = list()
@@ -154,17 +154,17 @@ def main():
         renderers.append(vtk.vtkRenderer())
 
     gridDimensions = 2
+    rendererSize = 512
 
     for idx in range(len(sources)):
         if idx < gridDimensions * gridDimensions:
             renderers.append(vtk.vtkRenderer)
 
-    rendererSize = 600
-
     # Create the RenderWindow
     #
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.SetSize(rendererSize * gridDimensions, rendererSize * gridDimensions)
+    renderWindow.SetWindowName('CurvaturesDemo')
 
     # Add and position the renders to the render window.
     viewport = list()
@@ -186,7 +186,7 @@ def main():
 
             renderers[idx].AddActor(actors[idx])
             renderers[idx].AddActor(textactors[idx])
-            renderers[idx].SetBackground(colors.GetColor3d("CornflowerBlue"))
+            renderers[idx].SetBackground(colors.GetColor3d('CornflowerBlue'))
 
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
@@ -196,5 +196,5 @@ def main():
     interactor.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

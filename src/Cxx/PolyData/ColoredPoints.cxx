@@ -1,17 +1,17 @@
-#include <vtkSmartPointer.h>
-#include <vtkVertexGlyphFilter.h>
-
+#include <vtkActor.h>
+#include <vtkCellArray.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
-#include <vtkPointData.h>
-#include <vtkCellArray.h>
-#include <vtkUnsignedCharArray.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkUnsignedCharArray.h>
+#include <vtkVertexGlyphFilter.h>
 
 #include <vtkNamedColors.h>
 
@@ -20,36 +20,30 @@
 #define InsertNextTupleValue InsertNextTypedTuple
 #endif
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint (0.0, 0.0, 0.0);
-  points->InsertNextPoint (1.0, 0.0, 0.0);
-  points->InsertNextPoint (0.0, 1.0, 0.0);
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(0.0, 0.0, 0.0);
+  points->InsertNextPoint(1.0, 0.0, 0.0);
+  points->InsertNextPoint(0.0, 1.0, 0.0);
 
-  vtkSmartPointer<vtkPolyData> pointsPolydata =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> pointsPolydata;
 
   pointsPolydata->SetPoints(points);
 
-  vtkSmartPointer<vtkVertexGlyphFilter> vertexFilter =
-    vtkSmartPointer<vtkVertexGlyphFilter>::New();
+  vtkNew<vtkVertexGlyphFilter> vertexFilter;
   vertexFilter->SetInputData(pointsPolydata);
   vertexFilter->Update();
 
-  vtkSmartPointer<vtkPolyData> polydata =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   polydata->ShallowCopy(vertexFilter->GetOutput());
 
   // Setup colors
-  vtkSmartPointer<vtkNamedColors> namedColors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> namedColors;
 
-  vtkSmartPointer<vtkUnsignedCharArray> colors =
-    vtkSmartPointer<vtkUnsignedCharArray>::New();
+  vtkNew<vtkUnsignedCharArray> colors;
   colors->SetNumberOfComponents(3);
-  colors->SetName ("Colors");
+  colors->SetName("Colors");
   colors->InsertNextTupleValue(namedColors->GetColor3ub("Tomato").GetData());
   colors->InsertNextTupleValue(namedColors->GetColor3ub("Mint").GetData());
   colors->InsertNextTupleValue(namedColors->GetColor3ub("Peacock").GetData());
@@ -57,22 +51,19 @@ int main(int, char *[])
   polydata->GetPointData()->SetScalars(colors);
 
   // Visualization
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polydata);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetPointSize(10);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("ColoredPoints");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);

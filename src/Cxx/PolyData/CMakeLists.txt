@@ -162,7 +162,7 @@ if (BUILD_TESTING)
     TestExternalContour ${DATA}/Bunny.vtp -E 80 )
 
   add_test(${KIT}-DetermineArrayDataTypes ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestDetermineArrayDataTypes ${DATA}/foilledContours.vtp)
+    TestDetermineArrayDataTypes ${DATA}/filledContours.vtp)
 
   add_test(${KIT}-GetMiscCellData ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestGetMiscCellData ${DATA}/SuperQuadric.vtp Nromals)
