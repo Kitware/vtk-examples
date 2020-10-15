@@ -18,7 +18,7 @@ def ReadPolyData(file_name):
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".vtp":
-        reader = vtk.vtkXMLpoly_dataReader()
+        reader = vtk.vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
@@ -33,7 +33,7 @@ def ReadPolyData(file_name):
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".vtk":
-        reader = vtk.vtkpoly_dataReader()
+        reader = vtk.vtkPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()

@@ -1,73 +1,66 @@
-#include <vtkSmartPointer.h>
-#include <vtkPointData.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyDataConnectivityFilter.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkProperty.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkAppendPolyData.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPolyDataConnectivityFilter.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create some spheres
-  vtkSmartPointer<vtkSphereSource> sphereSource1 =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource1;
   sphereSource1->Update();
 
-  vtkSmartPointer<vtkSphereSource> sphereSource2 =
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource2->SetCenter(5,0,0);
+  vtkNew<vtkSphereSource> sphereSource2;
+  sphereSource2->SetCenter(5, 0, 0);
   sphereSource2->Update();
 
-  vtkSmartPointer<vtkSphereSource> sphereSource3 =
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource3->SetCenter(10,0,0);
+  vtkNew<vtkSphereSource> sphereSource3;
+  sphereSource3->SetCenter(10, 0, 0);
   sphereSource3->Update();
 
-  vtkSmartPointer<vtkAppendPolyData> appendFilter =
-    vtkSmartPointer<vtkAppendPolyData>::New();
+  vtkNew<vtkAppendPolyData> appendFilter;
   appendFilter->AddInputConnection(sphereSource1->GetOutputPort());
   appendFilter->AddInputConnection(sphereSource2->GetOutputPort());
   appendFilter->AddInputConnection(sphereSource3->GetOutputPort());
   appendFilter->Update();
 
-  vtkSmartPointer<vtkPolyDataConnectivityFilter> connectivityFilter =
-    vtkSmartPointer<vtkPolyDataConnectivityFilter>::New();
+  vtkNew<vtkPolyDataConnectivityFilter> connectivityFilter;
   connectivityFilter->SetInputConnection(appendFilter->GetOutputPort());
   connectivityFilter->SetExtractionModeToAllRegions();
   connectivityFilter->ColorRegionsOn();
   connectivityFilter->Update();
 
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(connectivityFilter->GetOutputPort());
-  mapper->SetScalarRange(connectivityFilter->GetOutput()->GetPointData()->GetArray("RegionId")->GetRange());
+  mapper->SetScalarRange(connectivityFilter->GetOutput()
+                             ->GetPointData()
+                             ->GetArray("RegionId")
+                             ->GetRange());
   mapper->Update();
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("ColorDisconnectedRegions");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();

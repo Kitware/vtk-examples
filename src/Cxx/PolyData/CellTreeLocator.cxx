@@ -1,40 +1,36 @@
-#include <vtkPolyData.h>
-#include <vtkSphereSource.h>
-#include <vtkSmartPointer.h>
-#include <vtkUnstructuredGrid.h>
 #include <vtkCellTreeLocator.h>
 #include <vtkGenericCell.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkSphereSource.h>
+#include <vtkUnstructuredGrid.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(0.0, 0.0, 0.0);
   sphereSource->SetRadius(1.0);
   sphereSource->Update();
 
-
   // Create the tree
-  vtkSmartPointer<vtkCellTreeLocator> cellTree =
-    vtkSmartPointer<vtkCellTreeLocator>::New();
+  vtkNew<vtkCellTreeLocator> cellTree;
   cellTree->SetDataSet(sphereSource->GetOutput());
   cellTree->BuildLocator();
 
-  double testInside[3] = {.5, 0.0, 0.0};
+  double testInside[3] = {0.5, 0.0, 0.0};
   double testOutside[3] = {10.0, 0.0, 0.0};
 
   double pcoords[3], weights[3];
 
   vtkIdType cellId;
 
-  vtkSmartPointer<vtkGenericCell> cell = vtkSmartPointer<vtkGenericCell>::New();
+  vtkNew<vtkGenericCell> cell;
 
   int returnValue = EXIT_SUCCESS;
 
   // Should be inside
-  cellId = cellTree->FindCell(testInside,0,
-                              cell, pcoords, weights);
-  if (cellId>=0)
+  cellId = cellTree->FindCell(testInside, 0, cell, pcoords, weights);
+  if (cellId >= 0)
   {
     std::cout << "First point: in cell " << cellId << std::endl;
   }
@@ -45,9 +41,8 @@ int main(int, char *[])
   }
 
   // Should be outside
-  cellId = cellTree->FindCell(testOutside,0,
-                            cell, pcoords, weights);
-  if (cellId>=0)
+  cellId = cellTree->FindCell(testOutside, 0, cell, pcoords, weights);
+  if (cellId >= 0)
   {
     std::cout << "ERROR: Found point in cell " << cellId
               << " but it should be outside the domain." << std::endl;

@@ -1,67 +1,66 @@
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-
-#include <vtkMath.h>
-#include <vtkUnsignedCharArray.h>
+#include <vtkRenderer.h>
+#include <vtkNew.h>
 #include <vtkCellData.h>
-#include <vtkPolyData.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkPlaneSource.h>
+#include <vtkPolyData.h>
+#include <vtkUnsignedCharArray.h>
 
 #include <vtkNamedColors.h>
 
-int main(int , char *[])
+int main(int, char*[])
 {
   // Provide some geometry
   int resolutionX = 5;
   int resolutionY = 3;
 
-  vtkSmartPointer<vtkPlaneSource> aPlane =
-    vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> aPlane;
   aPlane->SetXResolution(resolutionX);
   aPlane->SetYResolution(resolutionY);
   aPlane->Update();
 
   // Create cell data
   vtkMath::RandomSeed(8775070); // for reproducibility
-  vtkSmartPointer<vtkUnsignedCharArray> cellData =
-    vtkSmartPointer<vtkUnsignedCharArray>::New();
+  vtkNew<vtkUnsignedCharArray> cellData;
   cellData->SetNumberOfComponents(3);
   cellData->SetNumberOfTuples(aPlane->GetOutput()->GetNumberOfCells());
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(8775070);
   for (int i = 0; i < aPlane->GetOutput()->GetNumberOfCells(); i++)
   {
     float rgb[3];
-    rgb[0] = vtkMath::Random(64, 255);
-    rgb[1] = vtkMath::Random(64, 255);
-    rgb[2] = vtkMath::Random(64, 255);
+    rgb[0] = randomSequence->GetRangeValue(64, 255);
+    randomSequence->Next();
+    rgb[1] = randomSequence->GetRangeValue(64, 255);
+    randomSequence->Next();
+    rgb[2] = randomSequence->GetRangeValue(64, 255);
+    randomSequence->Next();
     cellData->InsertTuple(i, rgb);
   }
 
   aPlane->GetOutput()->GetCellData()->SetScalars(cellData);
 
   // Setup actor and mapper
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(aPlane->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   // Setup render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("ColorCellsWithRGB");
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());

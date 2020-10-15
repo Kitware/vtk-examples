@@ -6,6 +6,7 @@
 #include <vtkIterativeClosestPointTransform.h>
 #include <vtkLandmarkTransform.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOBBTree.h>
 #include <vtkPoints.h>
 #include <vtkProperty.h>
@@ -60,15 +61,15 @@ int main(int argc, char* argv[])
   }
 
   // Vis Pipeline
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer->SetBackground(colors->GetColor3d("sea_green_light").GetData());
@@ -79,7 +80,7 @@ int main(int argc, char* argv[])
 
   // Save the source polydata in case the align does not improve
   // segmentation
-  auto originalSourcePolyData = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> originalSourcePolyData;
   originalSourcePolyData->DeepCopy(sourcePolyData);
 
   std::cout << "Loading target: " << argv[2] << std::endl;
@@ -91,15 +92,15 @@ int main(int argc, char* argv[])
   // For example, when using Grey_Nurse_Shark.stl as the source and
   // greatWhite.stl as the target, you need to uncomment the following
   // two rotations.
-  auto trnf = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> trnf;
   // trnf->RotateX(90);
   // trnf->RotateY(-90);
-  auto tpd = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> tpd;
   tpd->SetTransform(trnf);
   tpd->SetInputData(targetPolyData);
   tpd->Update();
 
-  auto distance = vtkSmartPointer<vtkHausdorffDistancePointSetFilter>::New();
+  vtkNew<vtkHausdorffDistancePointSetFilter> distance;
   distance->SetInputData(0, tpd->GetOutput());
   distance->SetInputData(1, sourcePolyData);
   distance->Update();
@@ -129,7 +130,7 @@ int main(int argc, char* argv[])
   }
 
   // Refine the alignment using IterativeClosestPoint
-  auto icp = vtkSmartPointer<vtkIterativeClosestPointTransform>::New();
+  vtkNew<vtkIterativeClosestPointTransform> icp;
   icp->SetSource(sourcePolyData);
   icp->SetTarget(tpd->GetOutput());
   icp->GetLandmarkTransform()->SetModeToRigidBody();
@@ -143,7 +144,7 @@ int main(int argc, char* argv[])
   //  icp->Print(std::cout);
 
   auto lmTransform = icp->GetLandmarkTransform();
-  auto transform = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> transform;
   transform->SetInputData(sourcePolyData);
   transform->SetTransform(lmTransform);
   transform->SetTransform(icp);
@@ -168,7 +169,7 @@ int main(int argc, char* argv[])
             << distanceAfterICP << ", " << bestDistance << std::endl;
 
   // Select
-  auto sourceMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> sourceMapper;
   if (bestDistance == distanceBeforeAlign)
   {
     sourceMapper->SetInputData(originalSourcePolyData);
@@ -186,18 +187,18 @@ int main(int argc, char* argv[])
   }
   sourceMapper->ScalarVisibilityOff();
 
-  auto sourceActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sourceActor;
   sourceActor->SetMapper(sourceMapper);
   sourceActor->GetProperty()->SetOpacity(.6);
   sourceActor->GetProperty()->SetDiffuseColor(
       colors->GetColor3d("White").GetData());
   renderer->AddActor(sourceActor);
 
-  auto targetMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> targetMapper;
   targetMapper->SetInputData(tpd->GetOutput());
   targetMapper->ScalarVisibilityOff();
 
-  auto targetActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> targetActor;
   targetActor->SetMapper(targetMapper);
   targetActor->GetProperty()->SetDiffuseColor(
       colors->GetColor3d("Tomato").GetData());
@@ -254,42 +255,42 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
                  ::tolower);
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
+    vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
+    vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
+    vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
+    vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
+    vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
@@ -297,7 +298,7 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
   else
   {
     // Return a polydata sphere if the extension is unknown.
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->SetThetaResolution(20);
     source->SetPhiResolution(11);
     source->Update();
@@ -309,28 +310,28 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
 void AlignBoundingBoxes(vtkPolyData* source, vtkPolyData* target)
 {
   // Use OBBTree to create an oriented bounding box for target and source
-  auto sourceOBBTree = vtkSmartPointer<vtkOBBTree>::New();
+  vtkNew<vtkOBBTree> sourceOBBTree;
   sourceOBBTree->SetDataSet(source);
   sourceOBBTree->SetMaxLevel(1);
   sourceOBBTree->BuildLocator();
 
-  auto targetOBBTree = vtkSmartPointer<vtkOBBTree>::New();
+  vtkNew<vtkOBBTree> targetOBBTree;
   targetOBBTree->SetDataSet(target);
   targetOBBTree->SetMaxLevel(1);
   targetOBBTree->BuildLocator();
 
-  auto sourceLandmarks = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> sourceLandmarks;
   sourceOBBTree->GenerateRepresentation(0, sourceLandmarks);
 
-  auto targetLandmarks = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> targetLandmarks;
   targetOBBTree->GenerateRepresentation(0, targetLandmarks);
 
-  auto lmTransform = vtkSmartPointer<vtkLandmarkTransform>::New();
+  vtkNew<vtkLandmarkTransform> lmTransform;
   lmTransform->SetModeToSimilarity();
   lmTransform->SetTargetLandmarks(targetLandmarks->GetPoints());
-  // auto lmTransformPD = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  // vtkNew<vtkTransformPolyDataFilter> lmTransformPD;
   double bestDistance = VTK_DOUBLE_MAX;
-  auto bestPoints = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> bestPoints;
   BestBoundingBox("X", target, source, targetLandmarks, sourceLandmarks,
                   bestDistance, bestPoints);
   BestBoundingBox("Y", target, source, targetLandmarks, sourceLandmarks,
@@ -341,7 +342,7 @@ void AlignBoundingBoxes(vtkPolyData* source, vtkPolyData* target)
   lmTransform->SetSourceLandmarks(bestPoints);
   lmTransform->Modified();
 
-  auto transformPD = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> transformPD;
   transformPD->SetInputData(source);
   transformPD->SetTransform(lmTransform);
   transformPD->Update();
@@ -353,11 +354,11 @@ void BestBoundingBox(std::string const& axis, vtkPolyData* target,
                      vtkPolyData* sourceLandmarks, double& bestDistance,
                      vtkPoints* bestPoints)
 {
-  auto distance = vtkSmartPointer<vtkHausdorffDistancePointSetFilter>::New();
-  auto testTransform = vtkSmartPointer<vtkTransform>::New();
-  auto testTransformPD = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
-  auto lmTransform = vtkSmartPointer<vtkLandmarkTransform>::New();
-  auto lmTransformPD = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkHausdorffDistancePointSetFilter> distance;
+  vtkNew<vtkTransform> testTransform;
+  vtkNew<vtkTransformPolyDataFilter> testTransformPD;
+  vtkNew<vtkLandmarkTransform> lmTransform;
+  vtkNew<vtkTransformPolyDataFilter> lmTransformPD;
 
   lmTransform->SetModeToSimilarity();
   lmTransform->SetTargetLandmarks(targetLandmarks->GetPoints());

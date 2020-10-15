@@ -1,4 +1,17 @@
 ### Description
-Computes the intersection of two spheres
 
-NOTE: This example requires version 5.9.20111206 or higher.
+The vtkBooleanOperationPolyDataFilter works best with "clean" data, so this examples first runs vtkTriangleFilter and then vtkCleanPolyData.
+
+This example can be run in three ways:
+
+1.  *BooleanOperationPolyDataFilter* - Computes the intersection of two spheres
+
+2.  *BooleanOperationPolyDataFilter* **-o intersection|difference|union** - Computes the intersection(difference or union) of two spheres
+
+3.  *BooleanOperationPolyDataFilter* **-o intersection|difference|union input1.vtk input2.vtk** - Computes the intersection(difference or union) of two vtkPolyData's
+
+!!! cite
+    See [Boolean Operations on Surfaces in VTK Without External Libraries](http://www.vtkjournal.org/browse/publication/797) for details on the algorithm.
+
+!!! seealso
+    [LoopBooleanPolyDataFilter](../LoopBooleanPolyDataFilter), it uses an alternative algorithm to do the boolean operations.

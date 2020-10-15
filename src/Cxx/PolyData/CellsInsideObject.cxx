@@ -4,6 +4,7 @@
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiThreshold.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
@@ -44,8 +45,8 @@ int main(int argc, char* argv[])
   ;
 
   vtkSmartPointer<vtkPolyData> polyData2;
-  auto transform = vtkSmartPointer<vtkTransform>::New();
-  auto transformPD = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransform> transform;
+  vtkNew<vtkTransformPolyDataFilter> transformPD;
   // If only one polydata is present, generate a second polydata by
   // rotating the orginal about its center.
   if (argc < 3)
@@ -66,14 +67,14 @@ int main(int argc, char* argv[])
     polyData2 = polyData;
   }
   // Mark points inside with 1 and outside with a 0
-  auto select = vtkSmartPointer<vtkSelectEnclosedPoints>::New();
+  vtkNew<vtkSelectEnclosedPoints> select;
   select->SetInputData(polyData1);
   select->SetSurfaceData(polyData2);
 
   // Extract three meshes, one completely inside, one completely
   // outside and on the border between the inside and outside.
 
-  auto threshold = vtkSmartPointer<vtkMultiThreshold>::New();
+  vtkNew<vtkMultiThreshold> threshold;
   // Outside points have a 0 value in ALL points of a cell
   int outsideId = threshold->AddBandpassIntervalSet(
       0, 0, vtkDataObject::FIELD_ASSOCIATION_POINTS, "SelectedPoints", 0, 1);
@@ -94,7 +95,7 @@ int main(int argc, char* argv[])
   threshold->Update();
 
   // Visualize
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   vtkColor3d outsideColor = colors->GetColor3d("Crimson");
   vtkColor3d insideColor = colors->GetColor3d("Banana");
   vtkColor3d borderColor = colors->GetColor3d("Mint");
@@ -102,28 +103,28 @@ int main(int argc, char* argv[])
   vtkColor3d backgroundColor = colors->GetColor3d("Silver");
 
   // Outside
-  auto outsideMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> outsideMapper;
   outsideMapper->SetInputData(dynamic_cast<vtkUnstructuredGrid*>(
       vtkMultiBlockDataSet::SafeDownCast(
           threshold->GetOutput()->GetBlock(outsideId))
           ->GetBlock(0)));
   outsideMapper->ScalarVisibilityOff();
 
-  auto outsideActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outsideActor;
   outsideActor->SetMapper(outsideMapper);
   outsideActor->GetProperty()->SetDiffuseColor(outsideColor.GetData());
   outsideActor->GetProperty()->SetSpecular(.6);
   outsideActor->GetProperty()->SetSpecularPower(30);
 
   // Inside
-  auto insideMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> insideMapper;
   insideMapper->SetInputData(dynamic_cast<vtkUnstructuredGrid*>(
       vtkMultiBlockDataSet::SafeDownCast(
           threshold->GetOutput()->GetBlock(insideId))
           ->GetBlock(0)));
   insideMapper->ScalarVisibilityOff();
 
-  auto insideActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> insideActor;
   insideActor->SetMapper(insideMapper);
   insideActor->GetProperty()->SetDiffuseColor(insideColor.GetData());
   insideActor->GetProperty()->SetSpecular(.6);
@@ -131,37 +132,36 @@ int main(int argc, char* argv[])
   insideActor->GetProperty()->EdgeVisibilityOn();
 
   // Border
-  auto borderMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> borderMapper;
   borderMapper->SetInputData(dynamic_cast<vtkUnstructuredGrid*>(
       vtkMultiBlockDataSet::SafeDownCast(
           threshold->GetOutput()->GetBlock(borderId))
           ->GetBlock(0)));
   borderMapper->ScalarVisibilityOff();
 
-  auto borderActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> borderActor;
   borderActor->SetMapper(borderMapper);
   borderActor->GetProperty()->SetDiffuseColor(borderColor.GetData());
   borderActor->GetProperty()->SetSpecular(.6);
   borderActor->GetProperty()->SetSpecularPower(30);
   borderActor->GetProperty()->EdgeVisibilityOn();
 
-  auto surfaceMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> surfaceMapper;
   surfaceMapper->SetInputData(polyData2);
   surfaceMapper->ScalarVisibilityOff();
 
   // Surface of object containing cell
-  auto surfaceActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> surfaceActor;
   surfaceActor->SetMapper(surfaceMapper);
   surfaceActor->GetProperty()->SetDiffuseColor(surfaceColor.GetData());
   surfaceActor->GetProperty()->SetOpacity(.1);
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
 
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->SetBackground(backgroundColor.GetData());
@@ -198,42 +198,42 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
                  ::tolower);
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
+    vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
+    vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
+    vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
+    vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
+    vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
@@ -241,7 +241,7 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
   else
   {
     // Return a polydata sphere if the extension is unknown.
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->SetThetaResolution(20);
     source->SetPhiResolution(11);
     source->Update();
