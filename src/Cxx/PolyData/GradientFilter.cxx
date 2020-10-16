@@ -1,5 +1,3 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkArrowSource.h>
 #include <vtkAssignAttribute.h>
@@ -7,63 +5,55 @@
 #include <vtkExtractEdges.h>
 #include <vtkGlyph3D.h>
 #include <vtkGradientFilter.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkTubeFilter.h>
 #include <vtkUnstructuredGridReader.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    std::cerr << "Usage: " << argv[0]
-              << " Filename(.vtk)" << std::endl;
+    std::cerr << "Usage: " << argv[0] << " Filename(.vtk) e.g. uGridEx.vtk "
+              << std::endl;
   }
   // Create the reader for the data.
-  // This is the data that will be volume rendered.
+  // This is the data that will be rendered.
   std::string filename = argv[1];
   std::cout << "Loading " << filename.c_str() << std::endl;
-  vtkSmartPointer<vtkUnstructuredGridReader> reader =
-    vtkSmartPointer<vtkUnstructuredGridReader>::New();
+  vtkNew<vtkUnstructuredGridReader> reader;
   reader->SetFileName(filename.c_str());
 
-  vtkSmartPointer<vtkExtractEdges> edges =
-    vtkSmartPointer<vtkExtractEdges>::New();
+  vtkNew<vtkExtractEdges> edges;
   edges->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkTubeFilter> tubes =
-    vtkSmartPointer<vtkTubeFilter>::New();
+  vtkNew<vtkTubeFilter> tubes;
   tubes->SetInputConnection(edges->GetOutputPort());
   tubes->SetRadius(0.0625);
   tubes->SetVaryRadiusToVaryRadiusOff();
   tubes->SetNumberOfSides(32);
 
-  vtkSmartPointer<vtkPolyDataMapper> tubesMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> tubesMapper;
   tubesMapper->SetInputConnection(tubes->GetOutputPort());
   tubesMapper->SetScalarRange(0.0, 26.0);
 
-  vtkSmartPointer<vtkActor> tubesActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> tubesActor;
   tubesActor->SetMapper(tubesMapper);
 
-  vtkSmartPointer<vtkGradientFilter> gradients =
-    vtkSmartPointer<vtkGradientFilter>::New();
+  vtkNew<vtkGradientFilter> gradients;
   gradients->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkAssignAttribute> vectors =
-    vtkSmartPointer<vtkAssignAttribute>::New();
+  vtkNew<vtkAssignAttribute> vectors;
   vectors->SetInputConnection(gradients->GetOutputPort());
   vectors->Assign("Gradients", vtkDataSetAttributes::VECTORS,
                   vtkAssignAttribute::POINT_DATA);
 
-  vtkSmartPointer<vtkArrowSource> arrow =
-    vtkSmartPointer<vtkArrowSource>::New();
+  vtkNew<vtkArrowSource> arrow;
 
-  vtkSmartPointer<vtkGlyph3D> glyphs =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> glyphs;
   glyphs->SetInputConnection(0, vectors->GetOutputPort());
   glyphs->SetInputConnection(1, arrow->GetOutputPort());
   glyphs->ScalingOn();
@@ -74,34 +64,30 @@ int main(int argc, char *argv[])
   glyphs->SetVectorModeToUseVector();
   glyphs->SetIndexModeToOff();
 
-  vtkSmartPointer<vtkPolyDataMapper> glyphMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> glyphMapper;
   glyphMapper->SetInputConnection(glyphs->GetOutputPort());
   glyphMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> glyphActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> glyphActor;
   glyphActor->SetMapper(glyphMapper);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(tubesActor);
   renderer->AddActor(glyphActor);
   renderer->SetBackground(0.328125, 0.347656, 0.425781);
 
-  vtkSmartPointer<vtkRenderWindow> renwin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renwin;
   renwin->AddRenderer(renderer);
   renwin->SetSize(350, 500);
+  renwin->SetWindowName("GradientFilter");
 
   renderer->ResetCamera();
-  vtkCamera *camera = renderer->GetActiveCamera();
+  vtkCamera* camera = renderer->GetActiveCamera();
   camera->Elevation(-80.0);
   camera->OrthogonalizeViewUp();
   camera->Azimuth(135.0);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renwin);
   renwin->Render();
   iren->Initialize();

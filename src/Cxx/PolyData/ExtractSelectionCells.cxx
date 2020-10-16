@@ -12,26 +12,24 @@
 #include <vtkRenderer.h>
 #include <vtkSelection.h>
 #include <vtkSelectionNode.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkUnstructuredGrid.h>
 
 #include <array>
 
-int main(int, char *[])
+int main(int, char*[])
 {
 
   vtkNew<vtkNamedColors> colors;
 
-  std::array<double, 4> bkgL = {{0.6, 0.5, 0.4, 1.0}};
-  std::array<double, 4> bkgC = {{0.3, 0.1, 0.4, 1.0}};
-  std::array<double, 4> bkgR = {{0.4, 0.5, 0.6, 1.0}};
-  colors->SetColor("leftBkg", bkgL.data());
-  colors->SetColor("centreBkg", bkgC.data());
-  colors->SetColor("rightBkg", bkgR.data());
+  //std::array<double, 4> bkgL = {{0.6, 0.5, 0.4, 1.0}};
+  //std::array<double, 4> bkgC = {{0.3, 0.1, 0.4, 1.0}};
+  //std::array<double, 4> bkgR = {{0.4, 0.5, 0.6, 1.0}};
+  //colors->SetColor("leftBkg", bkgL.data());
+  //colors->SetColor("centreBkg", bkgC.data());
+  //colors->SetColor("rightBkg", bkgR.data());
 
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
   std::cout << "There are " << sphereSource->GetOutput()->GetNumberOfPoints()
@@ -39,33 +37,30 @@ int main(int, char *[])
   std::cout << "There are " << sphereSource->GetOutput()->GetNumberOfCells()
             << " input cells." << std::endl;
 
-  vtkSmartPointer<vtkIdTypeArray> ids = vtkSmartPointer<vtkIdTypeArray>::New();
+  vtkNew<vtkIdTypeArray> ids;
   ids->SetNumberOfComponents(1);
 
   // Specify that we want to extract cells 10 through 19
-  for (unsigned int i = 10; i < 20; i++) {
+  for (unsigned int i = 10; i < 20; i++)
+  {
     ids->InsertNextValue(i);
   }
 
-  vtkSmartPointer<vtkSelectionNode> selectionNode =
-      vtkSmartPointer<vtkSelectionNode>::New();
+  vtkNew<vtkSelectionNode> selectionNode;
   selectionNode->SetFieldType(vtkSelectionNode::CELL);
   selectionNode->SetContentType(vtkSelectionNode::INDICES);
   selectionNode->SetSelectionList(ids);
 
-  vtkSmartPointer<vtkSelection> selection =
-      vtkSmartPointer<vtkSelection>::New();
+  vtkNew<vtkSelection> selection;
   selection->AddNode(selectionNode);
 
-  vtkSmartPointer<vtkExtractSelection> extractSelection =
-      vtkSmartPointer<vtkExtractSelection>::New();
+  vtkNew<vtkExtractSelection> extractSelection;
   extractSelection->SetInputConnection(0, sphereSource->GetOutputPort());
   extractSelection->SetInputData(1, selection);
   extractSelection->Update();
 
   // In selection
-  vtkSmartPointer<vtkUnstructuredGrid> selected =
-      vtkSmartPointer<vtkUnstructuredGrid>::New();
+  vtkNew<vtkUnstructuredGrid> selected;
   selected->ShallowCopy(extractSelection->GetOutput());
 
   std::cout << "There are " << selected->GetNumberOfPoints()
@@ -78,8 +73,7 @@ int main(int, char *[])
                                       1); // invert the selection
   extractSelection->Update();
 
-  vtkSmartPointer<vtkUnstructuredGrid> notSelected =
-      vtkSmartPointer<vtkUnstructuredGrid>::New();
+  vtkNew<vtkUnstructuredGrid> notSelected;
   notSelected->ShallowCopy(extractSelection->GetOutput());
 
   std::cout << "There are " << notSelected->GetNumberOfPoints()
@@ -87,71 +81,69 @@ int main(int, char *[])
   std::cout << "There are " << notSelected->GetNumberOfCells()
             << " cells NOT in the selection." << std::endl;
 
-  vtkSmartPointer<vtkProperty> backfaces = vtkSmartPointer<vtkProperty>::New();
-  backfaces->SetColor(colors->GetColor3d("Red").GetData());
+  vtkNew<vtkProperty> backfaces;
+  backfaces->SetColor(colors->GetColor3d("Gold").GetData());
 
-  vtkSmartPointer<vtkDataSetMapper> inputMapper =
-      vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> inputMapper;
   inputMapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> inputActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> inputActor;
   inputActor->SetMapper(inputMapper);
+  inputActor->GetProperty()->SetColor(
+      colors->GetColor3d("MistyRose").GetData());
   inputActor->SetBackfaceProperty(backfaces);
 
-  vtkSmartPointer<vtkDataSetMapper> selectedMapper =
-      vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> selectedMapper;
   selectedMapper->SetInputData(selected);
 
-  vtkSmartPointer<vtkActor> selectedActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> selectedActor;
   selectedActor->SetMapper(selectedMapper);
+  selectedActor->GetProperty()->SetColor(
+      colors->GetColor3d("MistyRose").GetData());
   selectedActor->SetBackfaceProperty(backfaces);
 
-  vtkSmartPointer<vtkDataSetMapper> notSelectedMapper =
-      vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> notSelectedMapper;
   notSelectedMapper->SetInputData(notSelected);
 
-  vtkSmartPointer<vtkActor> notSelectedActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> notSelectedActor;
   notSelectedActor->SetMapper(notSelectedMapper);
+  notSelectedActor->GetProperty()->SetColor(
+      colors->GetColor3d("MistyRose").GetData());
   notSelectedActor->SetBackfaceProperty(backfaces);
 
   // There will be one render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(900, 300);
 
   // And one interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
-  double leftViewport[4] = {0.0, 0.0, 0.5, 1.0};
+  double leftViewport[4] = {0.0, 0.0, 0.33, 1.0};
   double centerViewport[4] = {0.33, 0.0, .66, 1.0};
   double rightViewport[4] = {0.66, 0.0, 1.0, 1.0};
 
   // Create a camera for all renderers
-  vtkSmartPointer<vtkCamera> camera = vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
 
   // Setup the renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  leftRenderer->SetBackground(colors->GetColor3d("leftBkg").GetData());
+  leftRenderer->SetBackground(colors->GetColor3d("BurlyWood").GetData());
   leftRenderer->SetActiveCamera(camera);
 
-  vtkSmartPointer<vtkRenderer> centerRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> centerRenderer;
   renderWindow->AddRenderer(centerRenderer);
   centerRenderer->SetViewport(centerViewport);
-  centerRenderer->SetBackground(colors->GetColor3d("centerBkg").GetData());
+  centerRenderer->SetBackground(colors->GetColor3d("orchid_dark").GetData());
   centerRenderer->SetActiveCamera(camera);
 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  rightRenderer->SetBackground(colors->GetColor3d("rightBkg").GetData());
+  rightRenderer->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
   rightRenderer->SetActiveCamera(camera);
 
   leftRenderer->AddActor(inputActor);

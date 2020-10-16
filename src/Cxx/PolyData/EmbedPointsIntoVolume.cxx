@@ -1,80 +1,74 @@
-#include <vtkPolyData.h>
-#include <vtkImageData.h>
-#include <vtkSmartPointer.h>
-#include <vtkXMLPolyDataReader.h>
-#include <vtkXMLImageDataWriter.h>
+#include <vtkActor.h>
+#include <vtkContourFilter.h>
 #include <vtkGaussianSplatter.h>
-#include <vtkSphereSource.h>
-#include <vtkRenderer.h>
+#include <vtkImageData.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkContourFilter.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
-#include <vtkProperty.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+#include <vtkXMLImageDataWriter.h>
+#include <vtkXMLPolyDataReader.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkPolyData> input =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  if(argc == 1) // Generate the data
+  vtkNew<vtkPolyData> input;
+
+  if (argc == 1) // Generate the data
   {
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetRadius(.01);
     sphereSource->Update();
     input->ShallowCopy(sphereSource->GetOutput());
   }
   else // Read the data from a file
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
 
     input->ShallowCopy(reader->GetOutput());
-
   }
 
-  vtkSmartPointer<vtkGaussianSplatter> splatter =
-    vtkSmartPointer<vtkGaussianSplatter>::New();
+  vtkNew<vtkGaussianSplatter> splatter;
   splatter->SetInputData(input);
 
   unsigned int n = 200;
-  splatter->SetSampleDimensions(n,n,n);
+  splatter->SetSampleDimensions(n, n, n);
   splatter->SetRadius(.02);
   splatter->SetExponentFactor(-10);
   splatter->SetEccentricity(2);
   splatter->Update();
 
-  vtkSmartPointer<vtkContourFilter> isoSurface =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> isoSurface;
   isoSurface->SetInputConnection(splatter->GetOutputPort());
   isoSurface->SetValue(0, .95 * splatter->GetRadius());
 
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(isoSurface->GetOutputPort());
   mapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(1.0, 0.3882, 0.2784);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("EmbedPointsIntoVolume");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
-  renderer->SetBackground(.2, .3, .4);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();

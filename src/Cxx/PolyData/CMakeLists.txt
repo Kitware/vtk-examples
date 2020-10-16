@@ -88,12 +88,14 @@ if (BUILD_TESTING)
     CombineImportedActors
     ConvexHull
     Curvatures
+    DataSetSurfaceFilter
     DetermineArrayDataTypes
     DijkstraGraphGeodesicPath
     EmbedPointsIntoVolume
     ExternalContour
     GetMiscCellData
     GetMiscPointData
+    GeometryFilter
     GradientFilter
     GreedyTerrainDecimation
     HighlightBadCells
@@ -152,6 +154,9 @@ if (BUILD_TESTING)
   add_test(${KIT}-Curvatures ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestCurvatures ${DATA}/cowHead.vtp -20 20)
 
+  add_test(${KIT}-DataSetSurfaceFilter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestDataSetSurfaceFilter ${DATA}/uGridEx.vtk)
+
   add_test(${KIT}-DijkstraGraphGeodesicPath ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestDijkstraGraphGeodesicPath	-E 20)
 
@@ -164,8 +169,11 @@ if (BUILD_TESTING)
   add_test(${KIT}-DetermineArrayDataTypes ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestDetermineArrayDataTypes ${DATA}/filledContours.vtp)
 
+  add_test(${KIT}-GeometryFilter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestGeometryFilter ${DATA}/uGridEx.vtk)
+
   add_test(${KIT}-GetMiscCellData ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestGetMiscCellData ${DATA}/SuperQuadric.vtp Nromals)
+    TestGetMiscCellData ${DATA}/SuperQuadric.vtp Normals)
 
   add_test(${KIT}-GetMiscPointData ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestGetMiscPointData ${DATA}/cowHead.vtp Gauss_Curvature)

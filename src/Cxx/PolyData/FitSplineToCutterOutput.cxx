@@ -1,11 +1,15 @@
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkCellArray.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #ifdef VTK_CELL_ARRAY_V2
 #include <vtkCellArrayIterator.h>
 #endif // VTK_CELL_ARRAY_V2
 #include <vtkCutter.h>
 #include <vtkKochanekSpline.h>
+#include <vtkNamedColors.h>
 #include <vtkPlane.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
@@ -22,77 +26,75 @@
 #include <vtkTubeFilter.h>
 #include <vtkXMLPolyDataReader.h>
 
-#include <vtkNamedColors.h>
-
 int main(int argc, char* argv[])
 {
   vtkSmartPointer<vtkPolyData> polyData;
   if (argc > 1)
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    auto modelSource = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> modelSource;
     modelSource->Update();
     polyData = modelSource->GetOutput();
   }
 
   double length = polyData->GetLength();
 
-  auto plane = vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane;
   plane->SetNormal(0, 1, 1);
   plane->SetOrigin(polyData->GetCenter());
 
-  auto cutter = vtkSmartPointer<vtkCutter>::New();
+  vtkNew<vtkCutter> cutter;
   cutter->SetInputData(polyData);
   cutter->SetCutFunction(plane);
   cutter->GenerateValues(1, 0.0, 0.0);
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto modelMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> modelMapper;
   modelMapper->SetInputData(polyData);
 
-  auto model = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> model;
   model->SetMapper(modelMapper);
   model->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
   model->GetProperty()->SetInterpolationToFlat();
 
-  auto stripper = vtkSmartPointer<vtkStripper>::New();
+  vtkNew<vtkStripper> stripper;
   stripper->SetInputConnection(cutter->GetOutputPort());
 
-  auto spline = vtkSmartPointer<vtkKochanekSpline>::New();
+  vtkNew<vtkKochanekSpline> spline;
   spline->SetDefaultTension(.5);
 
-  auto sf = vtkSmartPointer<vtkSplineFilter>::New();
+  vtkNew<vtkSplineFilter> sf;
   sf->SetInputConnection(stripper->GetOutputPort());
   sf->SetSubdivideToSpecified();
   sf->SetNumberOfSubdivisions(50);
   sf->SetSpline(spline);
   sf->GetSpline()->ClosedOn();
 
-  auto tubes = vtkSmartPointer<vtkTubeFilter>::New();
+  vtkNew<vtkTubeFilter> tubes;
   tubes->SetInputConnection(sf->GetOutputPort());
   tubes->SetNumberOfSides(8);
   tubes->SetRadius(length / 100.0);
 
-  auto linesMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> linesMapper;
   linesMapper->SetInputConnection(tubes->GetOutputPort());
   linesMapper->ScalarVisibilityOff();
 
-  auto lines = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> lines;
   lines->SetMapper(linesMapper);
   lines->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->UseHiddenLineRemovalOn();
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Add the actors to the renderer
@@ -105,6 +107,7 @@ int main(int argc, char* argv[])
   renderer->GetActiveCamera()->Elevation(30);
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("FitSplineToCutterOutput");
 
   // This starts the event loop and as a side effect causes an initial
   // render.
@@ -146,13 +149,12 @@ int main(int argc, char* argv[])
 
   // Newer versions of vtkCellArray prefer local iterators:
   auto cellIter = vtk::TakeSmartPointer(cells->NewIterator());
-  for (cellIter->GoToFirstCell();
-       !cellIter->IsDoneWithTraversal();
+  for (cellIter->GoToFirstCell(); !cellIter->IsDoneWithTraversal();
        cellIter->GoToNextCell())
   {
     std::cout << "Line " << cellIter->GetCurrentCellId() << ":\n";
 
-    vtkIdList *cell = cellIter->GetCurrentCell();
+    vtkIdList* cell = cellIter->GetCurrentCell();
     for (vtkIdType i = 0; i < cell->GetNumberOfIds(); ++i)
     {
       double point[3];

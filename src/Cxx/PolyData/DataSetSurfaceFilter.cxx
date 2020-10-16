@@ -5,6 +5,7 @@
 #include <vtkPolyData.h>
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
+#include <vtkUnstructuredGridReader.h>
 #include <vtkVertex.h>
 
 namespace {
@@ -12,14 +13,28 @@ template <typename T>
 vtkSmartPointer<vtkUnstructuredGrid> MakeUnstructuredGrid(vtkSmartPointer<T>);
 }
 
-int main(int, char*[])
+int main(int argc, char* argv[])
 {
+  auto surfaceFilter = vtkSmartPointer<vtkDataSetSurfaceFilter>::New();
+  if (argc < 2)
+  {
+    // std::cerr << "Usage: " << argv[0] << " Filename(.vtk) e.g. uGridEx.vtk "
+    //          << std::endl;
+    auto unstructuredGrid =
+        MakeUnstructuredGrid(vtkSmartPointer<vtkVertex>::New());
+    surfaceFilter->SetInputData(unstructuredGrid);
+  }
+  else
+  {
+    // Create the reader for the data.
+    // This is the data that will be rendered.
+    std::string filename = argv[1];
+    std::cout << "Loading " << filename.c_str() << std::endl;
+    vtkNew<vtkUnstructuredGridReader> reader;
+    reader->SetFileName(filename.c_str());
+    surfaceFilter->SetInputConnection(reader->GetOutputPort());
+  }
 
-  auto unstructuredGrid =
-      MakeUnstructuredGrid(vtkSmartPointer<vtkVertex>::New());
-
-  vtkNew<vtkDataSetSurfaceFilter> surfaceFilter;
-  surfaceFilter->SetInputData(unstructuredGrid);
   surfaceFilter->Update();
 
   vtkPolyData* polydata = surfaceFilter->GetOutput();
