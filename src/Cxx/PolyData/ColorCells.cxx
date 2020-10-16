@@ -10,11 +10,19 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkMinimalStandardRandomSequence.h>
+
 
 #include <algorithm>
 
+namespace {
+void RandomColors(vtkLookupTable* lut, int numberOfColors);
+}
+
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+  
   // Provide some geometry
   int resolution = 3;
   vtkNew<vtkPlaneSource> aPlane;
@@ -33,19 +41,7 @@ int main(int, char*[])
   int tableSize = std::max(resolution * resolution + 1, 10);
   lut->SetNumberOfTableValues(tableSize);
   lut->Build();
-
-  // Fill in a few known colors, the rest will be generated if needed
-  vtkNew<vtkNamedColors> colors;
-  lut->SetTableValue(0, colors->GetColor4d("Black").GetData());
-  lut->SetTableValue(1, colors->GetColor4d("Banana").GetData());
-  lut->SetTableValue(2, colors->GetColor4d("Tomato").GetData());
-  lut->SetTableValue(3, colors->GetColor4d("Wheat").GetData());
-  lut->SetTableValue(4, colors->GetColor4d("Lavender").GetData());
-  lut->SetTableValue(5, colors->GetColor4d("Flesh").GetData());
-  lut->SetTableValue(6, colors->GetColor4d("Raspberry").GetData());
-  lut->SetTableValue(7, colors->GetColor4d("Salmon").GetData());
-  lut->SetTableValue(8, colors->GetColor4d("Mint").GetData());
-  lut->SetTableValue(9, colors->GetColor4d("Peacock").GetData());
+  RandomColors(lut, tableSize);
 
   aPlane->Update(); // Force an update so we can set cell data
   aPlane->GetOutput()->GetCellData()->SetScalars(cellData);
@@ -73,4 +69,42 @@ int main(int, char*[])
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
+}
+
+namespace {
+void RandomColors(vtkLookupTable* lut, int numberOfColors)
+{
+  // Fill in a few known colors, the rest will be generated if needed
+  vtkNew<vtkNamedColors> colors;
+  lut->SetTableValue(0, colors->GetColor4d("Black").GetData());
+  lut->SetTableValue(1, colors->GetColor4d("Banana").GetData());
+  lut->SetTableValue(2, colors->GetColor4d("Tomato").GetData());
+  lut->SetTableValue(3, colors->GetColor4d("Wheat").GetData());
+  lut->SetTableValue(4, colors->GetColor4d("Lavender").GetData());
+  lut->SetTableValue(5, colors->GetColor4d("Flesh").GetData());
+  lut->SetTableValue(6, colors->GetColor4d("Raspberry").GetData());
+  lut->SetTableValue(7, colors->GetColor4d("Salmon").GetData());
+  lut->SetTableValue(8, colors->GetColor4d("Mint").GetData());
+  lut->SetTableValue(9, colors->GetColor4d("Peacock").GetData());
+
+  // If the number of colors is larger than the number of specified colors,
+  // generate some random colors.
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(4355412);
+  if (numberOfColors > 9)
+  {
+    for (auto i = 10; i < numberOfColors; ++i)
+    {
+      double r, g, b;
+      r = randomSequence->GetRangeValue(0.6, 1.0);
+      randomSequence->Next();
+      g = randomSequence->GetRangeValue(0.6, 1.0);
+      randomSequence->Next();
+      b = randomSequence->GetRangeValue(0.6, 1.0);
+      randomSequence->Next();
+      lut->SetTableValue(i, r, g, b, 1.0);
+    }
+  }
+}
+
 }

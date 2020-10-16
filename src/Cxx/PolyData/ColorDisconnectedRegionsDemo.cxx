@@ -49,6 +49,7 @@ int main(int argc, char* argv[])
   lut->SetNumberOfTableValues(std::max(numberOfRegions, 10));
   lut->Build();
   RandomColors(lut, numberOfRegions);
+
   vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(connectivityFilter->GetOutputPort());
   mapper->SetScalarRange(connectivityFilter->GetOutput()

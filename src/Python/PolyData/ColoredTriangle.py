@@ -36,7 +36,7 @@ def main():
     # setup colors
     Colors = vtk.vtkUnsignedCharArray()
     Colors.SetNumberOfComponents(3)
-    Colors.SetName("Colors")
+    Colors.SetName('Colors')
     Colors.InsertNextTuple3(*colors.GetColor3ub('Red'))
     Colors.InsertNextTuple3(*colors.GetColor3ub('Lime'))
     Colors.InsertNextTuple3(*colors.GetColor3ub('Blue'))

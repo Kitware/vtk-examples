@@ -124,32 +124,32 @@ def ReadPolyData(file_name):
     import os
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
-    if extension == ".ply":
+    if extension == '.ply':
         reader = vtk.vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtp":
+    elif extension == '.vtp':
         reader = vtk.vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".obj":
+    elif extension == '.obj':
         reader = vtk.vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".stl":
+    elif extension == '.stl':
         reader = vtk.vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtk":
+    elif extension == '.vtk':
         reader = vtk.vtkPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".g":
+    elif extension == '.g':
         reader = vtk.vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()

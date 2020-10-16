@@ -2,22 +2,27 @@
 #include <vtkAppendPolyData.h>
 #include <vtkCellArray.h>
 #include <vtkMath.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
 #include <vtkVoxelContoursToSurfaceFilter.h>
 
+namespace {
 void CreateCircle(const double& z, const double& radius, const int& resolution,
                   vtkPolyData* polyData);
+}
 
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create the data: a series of discs representing the intersections of x-y
   // planes through a unit sphere centered at 0, 0, 0
   //
@@ -32,7 +37,7 @@ int main(int, char*[])
 
   // Append all the discs into one polydata
   //
-  auto appendFilter = vtkSmartPointer<vtkAppendPolyData>::New();
+  vtkNew<vtkAppendPolyData> appendFilter;
 
   for (int i = 0; i <= numDivisions; ++i)
   {
@@ -40,7 +45,7 @@ int main(int, char*[])
     double u = i / double(numDivisions);
     z = (1. - u) * zmin + u * zmax;
     auto radius = sqrt(sphereRadius * sphereRadius - z * z);
-    auto circle = vtkSmartPointer<vtkPolyData>::New();
+    vtkNew<vtkPolyData> circle;
     CreateCircle(z, radius, resolution, circle);
     appendFilter->AddInputData(circle);
   }
@@ -64,8 +69,8 @@ int main(int, char*[])
   double spacing[3] = {(bounds[1] - bounds[0]) / 40,
                        (bounds[3] - bounds[2]) / 40, deltaz};
 
-  auto poly = vtkSmartPointer<vtkPolyData>::New();
-  auto points = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPolyData> poly;
+  vtkNew<vtkPoints> points;
   vtkPoints* contourPoints = contours->GetPoints();
   int numPoints = contourPoints->GetNumberOfPoints();
   points->SetNumberOfPoints(numPoints);
@@ -83,8 +88,7 @@ int main(int, char*[])
 
   // Create the contour to surface filter
   //
-  auto contoursToSurface =
-      vtkSmartPointer<vtkVoxelContoursToSurfaceFilter>::New();
+  vtkNew<vtkVoxelContoursToSurfaceFilter> contoursToSurface;
   contoursToSurface->SetInputData(poly);
   contoursToSurface->SetSpacing(spacing[0], spacing[1], spacing[2]);
   contoursToSurface->Update();
@@ -98,9 +102,9 @@ int main(int, char*[])
   double center[3];
   contours->GetCenter(center);
 
-  auto transformFilter = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> transformFilter;
   transformFilter->SetInputConnection(contoursToSurface->GetOutputPort());
-  auto transform = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform;
   transformFilter->SetTransform(transform);
   transform->Translate(-scaleCenter[0], -scaleCenter[1], -scaleCenter[2]);
   transform->Scale((bounds[1] - bounds[0]) / (scaleBounds[1] - scaleBounds[0]),
@@ -110,49 +114,54 @@ int main(int, char*[])
 
   // Visualize the contours
   //
-  auto contoursMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> contoursMapper;
   contoursMapper->SetInputData(contours);
   contoursMapper->ScalarVisibilityOff();
 
-  auto contoursActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> contoursActor;
   contoursActor->SetMapper(contoursMapper);
   contoursActor->GetProperty()->SetRepresentationToWireframe();
   contoursActor->GetProperty()->ShadingOff();
+  contoursActor->GetProperty()->SetColor(
+      colors->GetColor3d("MistyRose").GetData());
 
   // Visualize the surface
   //
-  auto surfaceMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> surfaceMapper;
   surfaceMapper->SetInputConnection(transformFilter->GetOutputPort());
   surfaceMapper->ScalarVisibilityOff();
 
-  auto surfaceActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> surfaceActor;
   surfaceActor->SetMapper(surfaceMapper);
   surfaceActor->GetProperty()->SetRepresentationToWireframe();
   surfaceActor->GetProperty()->ShadingOff();
+  surfaceActor->GetProperty()->SetColor(
+      colors->GetColor3d("MistyRose").GetData());
 
   // Create two renderers side by side to show the contours and the surface
   // separately
   //
-  // Press 't' for trackball interaction
-  // Press 'r' to reset the camera
-  // Press 'w' for wireframe representation
-  // Press 's' for surface representation
-  //
-  auto renderer1 = vtkSmartPointer<vtkRenderer>::New();
+  std::cout << "Press 't' for trackball interaction" << std::endl;
+  std::cout << "Press 'r' to reset the camera" << std::endl;
+  std::cout << "Press 'w' for wireframe representation" << std::endl;
+  std::cout << "Press 's' for surface representation" << std::endl;
+
+  vtkNew<vtkRenderer> renderer1;
   renderer1->SetViewport(0., 0., 0.5, 1.);
-  renderer1->SetBackground(0.2, 0.2, 0.8);
+  renderer1->SetBackground(colors->GetColor3d("CadetBlue").GetData());
 
-  auto renderer2 = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer2;
   renderer2->SetViewport(0.5, 0., 1., 1.);
-  renderer2->SetBackground(0.8, 0.2, 0.2);
+  renderer2->SetBackground(colors->GetColor3d("BurlyWood").GetData());
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(800, 400);
+  renderWindow->SetWindowName("ContoursToSurface");
 
   renderWindow->AddRenderer(renderer1);
   renderWindow->AddRenderer(renderer2);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer1->AddViewProp(surfaceActor);
@@ -164,11 +173,12 @@ int main(int, char*[])
   return EXIT_SUCCESS;
 }
 
+namespace {
 void CreateCircle(const double& z, const double& radius, const int& resolution,
                   vtkPolyData* polyData)
 {
-  auto points = vtkSmartPointer<vtkPoints>::New();
-  auto cells = vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkPoints> points;
+  vtkNew<vtkCellArray> cells;
 
   points->SetNumberOfPoints(resolution);
   cells->Allocate(1, resolution);
@@ -187,3 +197,4 @@ void CreateCircle(const double& z, const double& radius, const int& resolution,
   polyData->SetPolys(cells);
   polyData->SetPoints(points);
 }
+} // namespace

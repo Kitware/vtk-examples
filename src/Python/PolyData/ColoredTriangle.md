@@ -1,3 +1,3 @@
 ### Decription
 
-Creates a file TriangleColored.vtp.
+Creates a file called TestTriangleColored.vtp.

@@ -37,6 +37,7 @@ of the elements of the vector together to form a pipeline.
 #include <vtkCurvatures.h>
 #include <vtkLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkParametricFunctionSource.h>
 #include <vtkParametricRandomHills.h>
 #include <vtkPolyDataAlgorithm.h>
@@ -57,10 +58,10 @@ of the elements of the vector together to form a pipeline.
 
 int main(int, char* argv[])
 {
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   // We are going to handle two different sources.
   // The first source is a superquadric source.
-  auto torus = vtkSmartPointer<vtkSuperquadricSource>::New();
+  vtkNew<vtkSuperquadricSource> torus;
   torus->SetCenter(0.0, 0.0, 0.0);
   torus->SetScale(1.0, 1.0, 1.0);
   torus->SetPhiResolution(64);
@@ -71,28 +72,28 @@ int main(int, char* argv[])
   torus->SetToroidal(1);
 
   // Rotate the torus towards the observer (around the x-axis)
-  auto torusT = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> torusT;
   torusT->RotateX(55);
 
-  auto torusTF = vtkSmartPointer<vtkTransformFilter>::New();
+  vtkNew<vtkTransformFilter> torusTF;
   torusTF->SetInputConnection(torus->GetOutputPort());
   torusTF->SetTransform(torusT);
 
   // The quadric is made of strips, so pass it through a triangle filter as
   // the curvature filter only operates on polys
-  auto tri = vtkSmartPointer<vtkTriangleFilter>::New();
+  vtkNew<vtkTriangleFilter> tri;
   tri->SetInputConnection(torusTF->GetOutputPort());
 
   // The quadric has nasty discontinuities from the way the edges are generated
   // so let's pass it though a CleanPolyDataFilter and merge any points which
   // are coincident, or very close
-  auto cleaner = vtkSmartPointer<vtkCleanPolyData>::New();
+  vtkNew<vtkCleanPolyData> cleaner;
   cleaner->SetInputConnection(tri->GetOutputPort());
   cleaner->SetTolerance(0.005);
 
   // The next source will be a parametric function
-  auto rh = vtkSmartPointer<vtkParametricRandomHills>::New();
-  auto rhFnSrc = vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricRandomHills> rh;
+  vtkNew<vtkParametricFunctionSource> rhFnSrc;
   rhFnSrc->SetParametricFunction(rh);
 
   // Now we have the sources, lets put them into a vector
@@ -103,7 +104,7 @@ int main(int, char* argv[])
   sources.push_back(rhFnSrc);
 
   // Colour transfer function.
-  auto ctf = vtkSmartPointer<vtkColorTransferFunction>::New();
+  vtkNew<vtkColorTransferFunction> ctf;
   ctf->SetColorSpaceToDiverging();
   ctf->AddRGBPoint(0.0, colors->GetColor3d("MidnightBlue").GetRed(),
                    colors->GetColor3d("MidnightBlue").GetGreen(),
@@ -116,7 +117,7 @@ int main(int, char* argv[])
   std::vector<vtkSmartPointer<vtkLookupTable>> luts;
   for (auto idx = 0; idx < sources.size(); ++idx)
   {
-    auto lut = vtkSmartPointer<vtkLookupTable>::New();
+    vtkNew<vtkLookupTable> lut;
     lut->SetNumberOfColors(256);
     for (auto i = 0; i < lut->GetNumberOfColors(); ++i)
     {
@@ -173,7 +174,7 @@ int main(int, char* argv[])
   }
 
   // Create a common text property.
-  auto textProperty = vtkSmartPointer<vtkTextProperty>::New();
+  vtkNew<vtkTextProperty> textProperty;
   textProperty->SetFontSize(24);
   textProperty->SetJustificationToCentered();
 
@@ -205,9 +206,10 @@ int main(int, char* argv[])
   auto rendererSize = 512;
   auto gridDimensions = 2;
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(rendererSize * gridDimensions,
                         rendererSize * gridDimensions);
+  renderWindow->SetWindowName("CurvaturesDemo");
 
   // Add and position the renders to the render window.
   for (auto row = 0; row < gridDimensions; ++row)
@@ -229,7 +231,7 @@ int main(int, char* argv[])
     }
   }
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();

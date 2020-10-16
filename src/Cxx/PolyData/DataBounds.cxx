@@ -1,5 +1,5 @@
+#include <vtkNew.h>
 #include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkXMLPolyDataReader.h>
 
@@ -9,14 +9,14 @@ int main(int argc, char* argv[])
 
   if (argc > 1)
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    auto modelSource = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> modelSource;
     modelSource->Update();
     polyData = modelSource->GetOutput();
   }
