@@ -1,26 +1,25 @@
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkSmartPointer.h>
-#include <vtkChartXY.h>
-#include <vtkPlot.h>
 #include <vtkAxis.h>
-#include <vtkPlotStacked.h>
+#include <vtkChartXY.h>
 #include <vtkColor.h>
 #include <vtkColorSeries.h>
-#include <vtkTable.h>
-#include <vtkIntArray.h>
-#include <vtkDoubleArray.h>
-#include <vtkStringArray.h>
-#include <vtkContextView.h>
 #include <vtkContextScene.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkContextView.h>
+#include <vtkDoubleArray.h>
+#include <vtkIntArray.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
+#include <vtkPlot.h>
+#include <vtkPlotStacked.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkStringArray.h>
+#include <vtkTable.h>
 
 namespace {
 // Monthly checkout data
-constexpr char *month_labels[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+std::string month_labels[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 constexpr int book[] = {5675, 5902, 6388, 5990, 5575, 7393,
                         9878, 8082, 6417, 5946, 5526, 5166};
 constexpr int new_popular[] = {701, 687, 736, 696, 750, 814,
