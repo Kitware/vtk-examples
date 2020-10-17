@@ -17,8 +17,8 @@ namespace {
 constexpr int NUM_ITEMS = 5;
 constexpr int data[] = {77938, 9109, 2070, 12806, 19514};
 // constexpr int data[] = {200,200,200,200,200};
-constexpr char* labels[] = {"Books", "New and Popular", "Periodical",
-                            "Audiobook", "Video"};
+std::string labels[] = {"Books", "New and Popular", "Periodical", "Audiobook",
+                        "Video"};
 } // namespace
 
 int main(int, char*[])

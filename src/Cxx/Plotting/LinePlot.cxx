@@ -61,9 +61,9 @@ int main(int, char*[])
 
   // For dotted line, the line type can be from 2 to 5 for different dash/dot
   // patterns (see enum in vtkPen containing DASH_LINE, value 2):
-#ifndef WIN32
-  line->GetPen()->SetLineType(vtkPen::DASH_LINE);
-#endif
+  // #ifndef WIN32
+  //   line->GetPen()->SetLineType(vtkPen::DASH_LINE);
+  // #endif
   // (ifdef-ed out on Windows because DASH_LINE does not work on Windows
   //  machines with built-in Intel HD graphics card...)
 
