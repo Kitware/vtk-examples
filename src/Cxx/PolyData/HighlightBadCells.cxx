@@ -1,96 +1,94 @@
-#include <vtkSmartPointer.h>
-#include <vtkProperty.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkPolyData.h>
-#include <vtkThreshold.h>
+#include <vtkActor.h>
 #include <vtkCellData.h>
-#include <vtkDoubleArray.h>
 #include <vtkDataSet.h>
 #include <vtkDataSetMapper.h>
+#include <vtkDoubleArray.h>
 #include <vtkMeshQuality.h>
-#include <vtkSphereSource.h>
-#include <vtkTriangleFilter.h>
-#include <vtkActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+#include <vtkThreshold.h>
+#include <vtkTriangleFilter.h>
+#include <vtkUnstructuredGrid.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
-  vtkSmartPointer<vtkTriangleFilter> triangleFilter =
-      vtkSmartPointer<vtkTriangleFilter>::New();
+  vtkNew<vtkTriangleFilter> triangleFilter;
   triangleFilter->SetInputConnection(sphereSource->GetOutputPort());
   triangleFilter->Update();
 
-    //Create a mapper and actor
-  vtkSmartPointer<vtkDataSetMapper> sphereMapper =
-      vtkSmartPointer<vtkDataSetMapper>::New();
+  // Create a mapper and actor
+  vtkNew<vtkDataSetMapper> sphereMapper;
   sphereMapper->SetInputConnection(triangleFilter->GetOutputPort());
-  vtkSmartPointer<vtkActor> sphereActor =
-      vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
+  sphereActor->GetProperty()->SetColor(
+      colors->GetColor3d("MistyRose").GetData());
 
   vtkPolyData* mesh = triangleFilter->GetOutput();
   cout << "There are " << mesh->GetNumberOfCells() << " cells." << endl;
 
-  vtkSmartPointer<vtkMeshQuality> qualityFilter =
-      vtkSmartPointer<vtkMeshQuality>::New();
+  vtkNew<vtkMeshQuality> qualityFilter;
   qualityFilter->SetInputData(mesh);
   qualityFilter->SetTriangleQualityMeasureToArea();
   qualityFilter->Update();
 
   vtkDataSet* qualityMesh = qualityFilter->GetOutput();
-  vtkSmartPointer<vtkDoubleArray> qualityArray =
-    dynamic_cast<vtkDoubleArray*>(qualityMesh->GetCellData()->GetArray("Quality"));
+  auto qualityArray = dynamic_cast<vtkDoubleArray*>(
+      qualityMesh->GetCellData()->GetArray("Quality"));
 
-  cout << "There are " << qualityArray->GetNumberOfTuples() << " values." << endl;
+  cout << "There are " << qualityArray->GetNumberOfTuples() << " values."
+       << endl;
 
-  for(vtkIdType i = 0; i < qualityArray->GetNumberOfTuples(); i++)
+  for (vtkIdType i = 0; i < qualityArray->GetNumberOfTuples(); i++)
   {
     double val = qualityArray->GetValue(i);
     cout << "value " << i << " : " << val << endl;
   }
 
-  vtkSmartPointer<vtkThreshold> selectCells =
-    vtkSmartPointer<vtkThreshold>::New();
+  vtkNew<vtkThreshold> selectCells;
   selectCells->ThresholdByLower(.02);
-  selectCells->SetInputArrayToProcess( 0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_CELLS,
-              vtkDataSetAttributes::SCALARS );
+  selectCells->SetInputArrayToProcess(0, 0, 0,
+                                      vtkDataObject::FIELD_ASSOCIATION_CELLS,
+                                      vtkDataSetAttributes::SCALARS);
   selectCells->SetInputData(qualityMesh);
   selectCells->Update();
 
   vtkUnstructuredGrid* ug = selectCells->GetOutput();
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputData(ug);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(1.0, 0.0, 0.0);
   actor->GetProperty()->SetRepresentationToWireframe();
   actor->GetProperty()->SetLineWidth(5);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Red").GetData());
 
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("HighlightBadCells");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
   renderer->AddActor(actor);
   renderer->AddActor(sphereActor);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Render and interact
   renderWindow->Render();
