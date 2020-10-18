@@ -28,6 +28,8 @@ WEB_REPO_URL=$3
 WEB_REPO_DIR=$4
 VTK_SOURCE_DIR=$5
 
+start_time=$(date +%s)
+
 echo "Synchronizing the vtk-examples site with the web repository folder."
 echo " VTK Examples site URL: "$SITE_URL
 echo " Web Site URL:          "$WEB_SITE_URL
@@ -97,5 +99,12 @@ pushd ${WEB_REPO_DIR}/site
 find . -name index.html -exec htmlmin {} {} \;
 popd
 
+#####################
+end_time=$(date +%s)
+total_time=$(expr $end_time - $start_time)
+echo
+echo "Total time taken: "$total_time"s"
+echo
+#####################
 echo "Now go to the repository DIR: "$WEB_REPO_DIR
 echo " and update the site."
