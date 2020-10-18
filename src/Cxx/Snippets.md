@@ -8,29 +8,29 @@ Snippets are chunks of code that can be cut (*snipped*) and pasted into examples
 
 Uses the appropriate vtkPolyData reader to read any vtkPolyData file.
 
-#### [SaveSceneToFieldData](/Cxx/Snippets/SaveSceneToFieldData)
+#### [SaveSceneToFieldData](/Cxx/Snippets/SaveSceneToFieldData.md)
 
 Stores the current vtkCamera location in a vtkDataSet's vtkFieldData.
 
-#### [RestoreSceneFromFieldData](/Cxx/Snippets/RestoreSceneFromFieldData)
+#### [RestoreSceneFromFieldData](/Cxx/Snippets/RestoreSceneFromFieldData.md)
 
 Restores the saved vtkCamera view from a vtkDataSet's vtkFieldData.
 
-#### [SaveSceneToFile](/Cxx/Snippets/SaveSceneToFile)
+#### [SaveSceneToFile](/Cxx/Snippets/SaveSceneToFile.md)
 
 Stores the current vtkCamera location in a file.
 
-#### [RestoreSceneFromFile](/Cxx/Snippets/RestoreSceneFromFile)
+#### [RestoreSceneFromFile](/Cxx/Snippets/RestoreSceneFromFile.md)
 
 Restores the saved vtkCamera view from a file.
 
-#### [ChooseContrastingColor](/Cxx/Snippets/ChooseContrastingColor)
+#### [ChooseContrastingColor](/Cxx/Snippets/ChooseContrastingColor.md)
 
 Given a color, find a contrasting color. If the given color is "light", use the lightColor otherwise use the darkColor
 
-#### [ViewportBorders](/Cxx/Snippets/ViewportBorders)
+#### [ViewportBorders](/Cxx/Snippets/ViewportBorders.md)
 
 Draw the borders of a vtkRenderer's viewports.
 
-#### [WriteImage](/Cxx/Snippets/WriteImage)
+#### [WriteImage](/Cxx/Snippets/WriteImage.md)
 Take a screen shot and save it to a file.
