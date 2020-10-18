@@ -19,7 +19,7 @@ int main(int, char*[])
   pointLocator->SetNumberOfPointsPerBucket(2);
   pointLocator->BuildLocator();
 
-  double radius = .1;
+  double radius = 0.1;
   double center[3] = {0.0, 0.0, 0.0};
   vtkNew<vtkIdList> result;
   pointLocator->FindPointsWithinRadius(radius, center, result);

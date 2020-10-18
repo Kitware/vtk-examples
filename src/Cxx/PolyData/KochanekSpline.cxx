@@ -1,51 +1,42 @@
-#include <vtkSmartPointer.h>
+#include <vtkActor.h>
+#include <vtkGlyph3DMapper.h>
 #include <vtkKochanekSpline.h>
-#include <vtkParametricSpline.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkParametricFunctionSource.h>
-
+#include <vtkParametricSpline.h>
 #include <vtkPointSource.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkActor.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-
-#include <vtkGlyph3DMapper.h>
+#include <vtkRenderer.h>
 #include <vtkSphereSource.h>
-#include <vtkNamedColors.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   int numberOfPoints = 10;
-  vtkSmartPointer<vtkPointSource> pointSource = 
-    vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(numberOfPoints);
   pointSource->Update();
-  
-  vtkPoints* points = pointSource->GetOutput()->GetPoints();
-    
-  vtkSmartPointer<vtkKochanekSpline> xSpline = 
-    vtkSmartPointer<vtkKochanekSpline>::New();
-  vtkSmartPointer<vtkKochanekSpline> ySpline = 
-    vtkSmartPointer<vtkKochanekSpline>::New();
-  vtkSmartPointer<vtkKochanekSpline> zSpline = 
-    vtkSmartPointer<vtkKochanekSpline>::New();
 
-  vtkSmartPointer<vtkParametricSpline> spline = 
-    vtkSmartPointer<vtkParametricSpline>::New();
+  vtkPoints* points = pointSource->GetOutput()->GetPoints();
+
+  vtkNew<vtkKochanekSpline> xSpline;
+  vtkNew<vtkKochanekSpline> ySpline;
+  vtkNew<vtkKochanekSpline> zSpline;
+
+  vtkNew<vtkParametricSpline> spline;
   spline->SetXSpline(xSpline);
   spline->SetYSpline(ySpline);
   spline->SetZSpline(zSpline);
   spline->SetPoints(points);
-  
-  vtkSmartPointer<vtkParametricFunctionSource> functionSource = 
-      vtkSmartPointer<vtkParametricFunctionSource>::New();
+
+  vtkNew<vtkParametricFunctionSource> functionSource;
   functionSource->SetParametricFunction(spline);
   functionSource->SetUResolution(50 * numberOfPoints);
   functionSource->SetVResolution(50 * numberOfPoints);
@@ -53,54 +44,48 @@ int main(int, char *[])
   functionSource->Update();
 
   // Setup actor and mapper
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(functionSource->GetOutputPort());
-  
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetColor(colors->GetColor3d("DarkSlateGrey").GetData());
   actor->GetProperty()->SetLineWidth(3.0);
-  
+
   // Glyph the points
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphere;
   sphere->SetPhiResolution(21);
   sphere->SetThetaResolution(21);
   sphere->SetRadius(.02);
 
   // Create a polydata to store everything in
-  vtkSmartPointer<vtkPolyData> polyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polyData;
   polyData->SetPoints(points);
 
-  vtkSmartPointer<vtkGlyph3DMapper> pointMapper =
-    vtkSmartPointer<vtkGlyph3DMapper>::New();
+  vtkNew<vtkGlyph3DMapper> pointMapper;
   pointMapper->SetInputData(polyData);
   pointMapper->SetSourceConnection(sphere->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> pointActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> pointActor;
   pointActor->SetMapper(pointMapper);
   pointActor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
 
   // Setup render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("KochanekSpline");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
-  renderer->AddActor(pointActor);;
+  renderer->AddActor(pointActor);
+
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

@@ -1,65 +1,60 @@
-#include <vtkSmartPointer.h>
-#include <vtkVectorText.h>
-#include <vtkLinearExtrusionFilter.h>
-#include <vtkTriangleFilter.h>
-
-#include <vtkDataSetMapper.h>
 #include <vtkActor.h>
-#include <vtkProperty.h>
 #include <vtkCamera.h>
+#include <vtkDataSetMapper.h>
+#include <vtkLinearExtrusionFilter.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkTriangleFilter.h>
+#include <vtkVectorText.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create vector text
-  vtkSmartPointer<vtkVectorText> vecText = 
-    vtkSmartPointer<vtkVectorText>::New();
+  vtkNew<vtkVectorText> vecText;
   vecText->SetText("Text!");
-    
-  // Apply linear extrusion 
-  vtkSmartPointer<vtkLinearExtrusionFilter> extrude = 
-    vtkSmartPointer<vtkLinearExtrusionFilter>::New();
-  extrude->SetInputConnection( vecText->GetOutputPort());
+
+  // Apply linear extrusion
+  vtkNew<vtkLinearExtrusionFilter> extrude;
+  extrude->SetInputConnection(vecText->GetOutputPort());
   extrude->SetExtrusionTypeToNormalExtrusion();
-  extrude->SetVector(0, 0, 1 );
-  extrude->SetScaleFactor (0.5);
-    
-  vtkSmartPointer<vtkTriangleFilter> triangleFilter =
-    vtkSmartPointer<vtkTriangleFilter>::New();
+  extrude->SetVector(0, 0, 1);
+  extrude->SetScaleFactor(0.5);
+
+  vtkNew<vtkTriangleFilter> triangleFilter;
   triangleFilter->SetInputConnection(extrude->GetOutputPort());
-    
-  vtkSmartPointer<vtkDataSetMapper> mapper = 
-    vtkSmartPointer<vtkDataSetMapper>::New();
+
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(triangleFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(0.8900, 0.8100, 0.3400);
-    
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
-  
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  renderer->SetBackground(.4, .5, .7);
+  actor->GetProperty()->SetColor(colors->GetColor3d("PaleGoldenrod").GetData());
+
+  vtkNew<vtkRenderWindow> renderWindow;
+
+  vtkNew<vtkRenderer> renderer;
+  renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("LinearExtrusion");
 
   renderer->AddActor(actor);
-  
+
   renderer->ResetCamera();
-    // Generate an interesting view
+  // Generate an interesting view
   renderer->ResetCamera();
   renderer->GetActiveCamera()->Azimuth(30);
   renderer->GetActiveCamera()->Elevation(30);
   renderer->GetActiveCamera()->Dolly(1.0);
   renderer->ResetCameraClippingRange();
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderWindow->Render();
   renderWindowInteractor->Start();
