@@ -9,12 +9,12 @@
 #include <vtkIdTypeArray.h>
 #include <vtkImplicitDataSet.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkVersion.h>
 #include <vtkXMLPolyDataWriter.h>
@@ -31,11 +31,11 @@ void WriteDataSet(vtkDataSet* const dataSet, const std::string& filename);
 
 int main(int, char*[])
 {
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  colors->SetColor("Bkg", 0.2, 0.3, 0.4);
+  // colors->SetColor("Bkg", 0.2, 0.3, 0.4);
 
-  auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(.75, 0, 0);
 
   unsigned int res = 10;
@@ -49,7 +49,7 @@ int main(int, char*[])
             << " cells. " << std::endl;
 
   // Add ids to the points and cells of the sphere
-  auto cellIdFilter = vtkSmartPointer<vtkIdFilter>::New();
+  vtkNew<vtkIdFilter> cellIdFilter;
   cellIdFilter->SetInputConnection(sphereSource->GetOutputPort());
   cellIdFilter->SetCellIds(true);
   cellIdFilter->SetPointIds(false);
@@ -62,7 +62,7 @@ int main(int, char*[])
 
   WriteDataSet(cellIdFilter->GetOutput(), "CellIdFilter.vtp");
 
-  auto pointIdFilter = vtkSmartPointer<vtkIdFilter>::New();
+  vtkNew<vtkIdFilter> pointIdFilter;
   pointIdFilter->SetInputConnection(cellIdFilter->GetOutputPort());
   pointIdFilter->SetCellIds(false);
   pointIdFilter->SetPointIds(true);
@@ -77,13 +77,13 @@ int main(int, char*[])
 
   WriteDataSet(sphereWithIds, "BothIdFilter.vtp");
 
-  auto cubeSource = vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkCubeSource> cubeSource;
   cubeSource->Update();
 
-  auto implicitCube = vtkSmartPointer<vtkBox>::New();
+  vtkNew<vtkBox> implicitCube;
   implicitCube->SetBounds(cubeSource->GetOutput()->GetBounds());
 
-  auto clipper = vtkSmartPointer<vtkClipPolyData>::New();
+  vtkNew<vtkClipPolyData> clipper;
   clipper->SetClipFunction(implicitCube);
   clipper->SetInputData(sphereWithIds);
   clipper->InsideOutOn();
@@ -109,42 +109,45 @@ int main(int, char*[])
   }
 
   // Create a mapper and actor for clipped sphere
-  auto clippedMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> clippedMapper;
   clippedMapper->SetInputConnection(clipper->GetOutputPort());
   clippedMapper->ScalarVisibilityOff();
 
-  auto clippedActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> clippedActor;
   clippedActor->SetMapper(clippedMapper);
   clippedActor->GetProperty()->SetRepresentationToWireframe();
+  clippedActor->GetProperty()->SetColor(colors->GetColor3d("Yellow").GetData());
 
   // Create a mapper and actor for cube
-  auto cubeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cubeMapper;
   cubeMapper->SetInputConnection(cubeSource->GetOutputPort());
 
-  auto cubeActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cubeActor;
   cubeActor->SetMapper(cubeMapper);
   cubeActor->GetProperty()->SetRepresentationToWireframe();
   cubeActor->GetProperty()->SetOpacity(0.5);
+  cubeActor->GetProperty()->SetColor(colors->GetColor3d("Blue").GetData());
 
   // Create a renderer, render window, and interactor
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("ImplicitDataSetClipping");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
   renderer->AddActor(clippedActor);
   renderer->AddActor(cubeActor);
-  renderer->SetBackground(colors->GetColor3d("Bkg").GetData());
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Generate an interesting view
   //
   renderer->ResetCamera();
   renderer->GetActiveCamera()->Azimuth(-30);
   renderer->GetActiveCamera()->Elevation(30);
-  renderer->GetActiveCamera()->Dolly(1.1);
+  renderer->GetActiveCamera()->Dolly(1.0);
   renderer->ResetCameraClippingRange();
 
   // Render and interact
@@ -157,7 +160,7 @@ int main(int, char*[])
 namespace {
 void WritePolyData(vtkPolyData* const polyData, const std::string& filename)
 {
-  auto writer = vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+  vtkNew<vtkXMLPolyDataWriter> writer;
   writer->SetInputData(polyData);
   writer->SetFileName(filename.c_str());
   writer->Write();
@@ -165,7 +168,7 @@ void WritePolyData(vtkPolyData* const polyData, const std::string& filename)
 
 void WriteDataSet(vtkDataSet* const dataSet, const std::string& filename)
 {
-  auto writer = vtkSmartPointer<vtkDataSetWriter>::New();
+  vtkNew<vtkDataSetWriter> writer;
   writer->SetInputData(dataSet);
   writer->SetFileName(filename.c_str());
   writer->Write();

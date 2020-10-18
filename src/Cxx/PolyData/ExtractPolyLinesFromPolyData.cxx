@@ -34,7 +34,7 @@ int main(int, char*[])
   vtkNew<vtkCutter> cutter;
   cutter->SetInputConnection(modelSource->GetOutputPort());
   cutter->SetCutFunction(plane);
-  cutter->GenerateValues(10, -.5, .5);
+  cutter->GenerateValues(10, -0.5, 0.5);
 
   vtkNew<vtkPolyDataMapper> modelMapper;
   modelMapper->SetInputConnection(modelSource->GetOutputPort());

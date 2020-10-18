@@ -3,6 +3,8 @@ import vtk
 
 
 def main():
+    colors = vtk.vtkNamedColors()
+
     sphereSource = vtk.vtkSphereSource()
     sphereSource.SetCenter(0.0, 0.0, 0.0)
     sphereSource.SetRadius(1.0)
@@ -14,7 +16,7 @@ def main():
 
     sphereActor = vtk.vtkActor()
     sphereActor.SetMapper(sphereMapper)
-    sphereActor.GetProperty().SetOpacity(.3)
+    sphereActor.GetProperty().SetOpacity(0.3)
     sphereActor.GetProperty().SetColor(1, 0, 0)
 
     implicitPolyDataDistance = vtk.vtkImplicitPolyDataDistance()
@@ -31,7 +33,7 @@ def main():
     # Add distances to each point
     signedDistances = vtk.vtkFloatArray()
     signedDistances.SetNumberOfComponents(1)
-    signedDistances.SetName("SignedDistances")
+    signedDistances.SetName('SignedDistances')
 
     # Evaluate the signed distance function at all of the grid points
     for pointId in range(points.GetNumberOfPoints()):
@@ -57,9 +59,11 @@ def main():
     renderer = vtk.vtkRenderer()
     renderer.AddViewProp(sphereActor)
     renderer.AddViewProp(signedDistanceActor)
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
+    renderWindow.SetWindowName('ImplicitPolyDataDistance')
 
     renWinInteractor = vtk.vtkRenderWindowInteractor()
     renWinInteractor.SetRenderWindow(renderWindow)

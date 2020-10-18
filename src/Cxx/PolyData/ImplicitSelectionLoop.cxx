@@ -2,25 +2,25 @@
 #include <vtkImplicitSelectionLoop.h>
 #include <vtkLODActor.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 
 int main(int, char*[])
 {
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetPhiResolution(100);
   sphereSource->SetThetaResolution(100);
   sphereSource->Update();
 
-  auto selectionPoints = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> selectionPoints;
 
   selectionPoints->InsertPoint(0, -0.16553, 0.135971, 0.451972);
   selectionPoints->InsertPoint(1, -0.0880123, -0.134952, 0.4747);
@@ -51,40 +51,40 @@ int main(int, char*[])
   selectionPoints->InsertPoint(26, -0.0392091, 0.000251724, 0.499943);
   selectionPoints->InsertPoint(27, -0.096161, 0.159646, 0.46438);
 
-  auto loop = vtkSmartPointer<vtkImplicitSelectionLoop>::New();
+  vtkNew<vtkImplicitSelectionLoop> loop;
   loop->SetLoop(selectionPoints);
 
-  auto clip = // clips out positive region
-      vtkSmartPointer<vtkClipPolyData>::New();
+  vtkNew<vtkClipPolyData> clip;
   clip->SetInputConnection(sphereSource->GetOutputPort());
   clip->SetClipFunction(loop);
   clip->SetValue(0.0);
 
-  auto clipMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> clipMapper;
   clipMapper->SetInputConnection(clip->GetOutputPort());
   clipMapper->ScalarVisibilityOff();
 
-  auto backProp = vtkSmartPointer<vtkProperty>::New();
-  backProp->SetColor(colors->GetColor3d("tomato").GetData());
+  vtkNew<vtkProperty> backProp;
+  backProp->SetColor(colors->GetColor3d("Tomato").GetData());
 
-  auto clipActor = vtkSmartPointer<vtkLODActor>::New();
+  vtkNew<vtkLODActor> clipActor;
   clipActor->SetMapper(clipMapper);
   clipActor->SetBackfaceProperty(backProp);
-  clipActor->GetProperty()->SetColor(colors->GetColor3d("banana").GetData());
+  clipActor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Add the actors to the renderer, set the background and size
   renderer->AddActor(clipActor);
-  renderer->SetBackground(colors->GetColor3d("slate_grey").GetData());
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   renderWindow->SetSize(500, 500);
+  renderWindow->SetWindowName("ImplicitSelectionLoop");
 
   renderWindow->Render();
   interactor->Start();
