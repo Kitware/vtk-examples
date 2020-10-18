@@ -1,7 +1,7 @@
-"""
+'''
 converted from:
  - http://www.vtk.org/Wiki/VTK/Examples/Cxx/PolyData/ExtractSelectionCells
-"""
+'''
 
 import vtk
 
@@ -9,15 +9,15 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor('leftBkg', [0.6, 0.5, 0.4, 1.0])
-    colors.SetColor('centreBkg', [0.3, 0.1, 0.4, 1.0])
-    colors.SetColor('rightBkg', [0.4, 0.5, 0.6, 1.0])
+    # colors.SetColor('leftBkg', [0.6, 0.5, 0.4, 1.0])
+    # colors.SetColor('centreBkg', [0.3, 0.1, 0.4, 1.0])
+    # colors.SetColor('rightBkg', [0.4, 0.5, 0.6, 1.0])
 
     sphereSource = vtk.vtkSphereSource()
     sphereSource.Update()
 
-    print("There are %s input points" % sphereSource.GetOutput().GetNumberOfPoints())
-    print("There are %s input cells" % sphereSource.GetOutput().GetNumberOfCells())
+    print('There are %s input points' % sphereSource.GetOutput().GetNumberOfPoints())
+    print('There are %s input cells' % sphereSource.GetOutput().GetNumberOfCells())
 
     ids = vtk.vtkIdTypeArray()
     ids.SetNumberOfComponents(1)
@@ -45,8 +45,8 @@ def main():
     selected = vtk.vtkUnstructuredGrid()
     selected.ShallowCopy(extractSelection.GetOutput())
 
-    print("There are %s points in the selection" % selected.GetNumberOfPoints())
-    print("There are %s cells in the selection" % selected.GetNumberOfCells())
+    print('There are %s points in the selection' % selected.GetNumberOfPoints())
+    print('There are %s cells in the selection' % selected.GetNumberOfCells())
 
     # Get points that are NOT in the selection
     selectionNode.GetProperties().Set(vtk.vtkSelectionNode.INVERSE(), 1)  # invert the selection
@@ -55,17 +55,18 @@ def main():
     notSelected = vtk.vtkUnstructuredGrid()
     notSelected.ShallowCopy(extractSelection.GetOutput())
 
-    print("There are %s points NOT in the selection" % notSelected.GetNumberOfPoints())
-    print("There are %s cells NOT in the selection" % notSelected.GetNumberOfCells())
+    print('There are %s points NOT in the selection' % notSelected.GetNumberOfPoints())
+    print('There are %s cells NOT in the selection' % notSelected.GetNumberOfCells())
 
     backfaces = vtk.vtkProperty()
-    backfaces.SetColor(colors.GetColor3d('Red'))
+    backfaces.SetColor(colors.GetColor3d('Gold'))
 
     inputMapper = vtk.vtkDataSetMapper()
     inputMapper.SetInputConnection(sphereSource.GetOutputPort())
     inputActor = vtk.vtkActor()
     inputActor.SetMapper(inputMapper)
     inputActor.SetBackfaceProperty(backfaces)
+    inputActor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     selectedMapper = vtk.vtkDataSetMapper()
     selectedMapper.SetInputData(selected)
@@ -73,6 +74,7 @@ def main():
     selectedActor = vtk.vtkActor()
     selectedActor.SetMapper(selectedMapper)
     selectedActor.SetBackfaceProperty(backfaces)
+    selectedActor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     notSelectedMapper = vtk.vtkDataSetMapper()
     notSelectedMapper.SetInputData(notSelected)
@@ -80,10 +82,12 @@ def main():
     notSelectedActor = vtk.vtkActor()
     notSelectedActor.SetMapper(notSelectedMapper)
     notSelectedActor.SetBackfaceProperty(backfaces)
+    notSelectedActor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     # There will be one render window
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.SetSize(900, 300)
+    renderWindow.SetWindowName('ExtractSelectionCells')
 
     # And one interactor
     interactor = vtk.vtkRenderWindowInteractor()
@@ -91,8 +95,8 @@ def main():
 
     # Define viewport ranges
     # (xmin, ymin, xmax, ymax)
-    leftViewport = [0.0, 0.0, 0.5, 1.0]
-    centerViewport = [0.33, 0.0, .66, 1.0]
+    leftViewport = [0.0, 0.0, 0.33, 1.0]
+    centerViewport = [0.33, 0.0, 0.66, 1.0]
     rightViewport = [0.66, 0.0, 1.0, 1.0]
 
     # Create a camera for all renderers
@@ -102,19 +106,19 @@ def main():
     leftRenderer = vtk.vtkRenderer()
     renderWindow.AddRenderer(leftRenderer)
     leftRenderer.SetViewport(leftViewport)
-    leftRenderer.SetBackground(colors.GetColor3d('leftBkg'))
+    leftRenderer.SetBackground(colors.GetColor3d('BurlyWood'))
     leftRenderer.SetActiveCamera(camera)
 
     centerRenderer = vtk.vtkRenderer()
     renderWindow.AddRenderer(centerRenderer)
     centerRenderer.SetViewport(centerViewport)
-    centerRenderer.SetBackground(colors.GetColor3d('centreBkg'))
+    centerRenderer.SetBackground(colors.GetColor3d('orchid_dark'))
     centerRenderer.SetActiveCamera(camera)
 
     rightRenderer = vtk.vtkRenderer()
     renderWindow.AddRenderer(rightRenderer)
     rightRenderer.SetViewport(rightViewport)
-    rightRenderer.SetBackground(colors.GetColor3d('rightBkg'))
+    rightRenderer.SetBackground(colors.GetColor3d('CornflowerBlue'))
     rightRenderer.SetActiveCamera(camera)
 
     leftRenderer.AddActor(inputActor)

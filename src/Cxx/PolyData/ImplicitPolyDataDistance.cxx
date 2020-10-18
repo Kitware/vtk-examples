@@ -1,61 +1,57 @@
-#include <vtkImplicitPolyDataDistance.h>
-
 #include <vtkActor.h>
 #include <vtkFloatArray.h>
+#include <vtkImplicitPolyDataDistance.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 #include <vtkVertexGlyphFilter.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource->SetCenter(0.0, 0.0, 0.0);
-  sphereSource->SetRadius(1.0f);
-  sphereSource->Update();
-  vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  sphereMapper->SetInputConnection( sphereSource->GetOutputPort() );
-  sphereMapper->ScalarVisibilityOff();
-  vtkSmartPointer<vtkActor> sphereActor =
-    vtkSmartPointer<vtkActor>::New();
-  sphereActor->SetMapper( sphereMapper );
-  sphereActor->GetProperty()->SetOpacity(.3);
-  sphereActor->GetProperty()->SetColor(1,0,0);
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkImplicitPolyDataDistance> implicitPolyDataDistance =
-    vtkSmartPointer<vtkImplicitPolyDataDistance>::New();
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetCenter(0.0, 0.0, 0.0);
+  sphereSource->SetRadius(1.0);
+  sphereSource->Update();
+  vtkNew<vtkPolyDataMapper> sphereMapper;
+  sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
+  sphereMapper->ScalarVisibilityOff();
+  vtkNew<vtkActor> sphereActor;
+  sphereActor->SetMapper(sphereMapper);
+  sphereActor->GetProperty()->SetOpacity(0.3);
+  sphereActor->GetProperty()->SetColor(1, 0, 0);
+
+  vtkNew<vtkImplicitPolyDataDistance> implicitPolyDataDistance;
   implicitPolyDataDistance->SetInput(sphereSource->GetOutput());
 
   // Setup a grid
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   float step = 0.1;
-  for(float x = - 2.0; x <= 2.0; x += step)
+  for (float x = -2.0; x <= 2.0; x += step)
   {
-    for(float y = - 2.0; y <= 2.0; y += step)
+    for (float y = -2.0; y <= 2.0; y += step)
     {
-      for(float z = - 2.0; z <= 2.0; z += step)
+      for (float z = -2.0; z <= 2.0; z += step)
       {
-        points->InsertNextPoint(x,y,z);
+        points->InsertNextPoint(x, y, z);
       }
     }
   }
 
   // Add distances to each point
-  vtkSmartPointer<vtkFloatArray> signedDistances =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> signedDistances;
   signedDistances->SetNumberOfComponents(1);
   signedDistances->SetName("SignedDistances");
 
   // Evaluate the signed distance function at all of the grid points
-  for(vtkIdType pointId = 0; pointId < points->GetNumberOfPoints(); ++pointId)
+  for (vtkIdType pointId = 0; pointId < points->GetNumberOfPoints(); ++pointId)
   {
     double p[3];
     points->GetPoint(pointId, p);
@@ -63,37 +59,32 @@ int main(int, char *[])
     signedDistances->InsertNextValue(signedDistance);
   }
 
-  vtkSmartPointer<vtkPolyData> polyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polyData;
   polyData->SetPoints(points);
   polyData->GetPointData()->SetScalars(signedDistances);
 
-  vtkSmartPointer<vtkVertexGlyphFilter> vertexGlyphFilter =
-    vtkSmartPointer<vtkVertexGlyphFilter>::New();
+  vtkNew<vtkVertexGlyphFilter> vertexGlyphFilter;
   vertexGlyphFilter->SetInputData(polyData);
   vertexGlyphFilter->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> signedDistanceMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> signedDistanceMapper;
   signedDistanceMapper->SetInputConnection(vertexGlyphFilter->GetOutputPort());
   signedDistanceMapper->ScalarVisibilityOn();
 
-  vtkSmartPointer<vtkActor> signedDistanceActor =
-    vtkSmartPointer<vtkActor>::New();
-  signedDistanceActor->SetMapper( signedDistanceMapper );
+  vtkNew<vtkActor> signedDistanceActor;
+  signedDistanceActor->SetMapper(signedDistanceMapper);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddViewProp(sphereActor);
   renderer->AddViewProp(signedDistanceActor);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->AddRenderer( renderer );
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ImplicitPolyDataDistance");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renWinInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  renWinInteractor->SetRenderWindow( renderWindow );
+  vtkNew<vtkRenderWindowInteractor> renWinInteractor;
+  renWinInteractor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();
   renWinInteractor->Start();

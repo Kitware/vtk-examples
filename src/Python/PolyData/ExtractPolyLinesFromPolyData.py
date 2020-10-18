@@ -3,11 +3,12 @@
 
 import vtk
 
+
 def main():
     colors = vtk.vtkNamedColors()
-    lineColor = colors.GetColor3d("peacock")
-    modelColor = colors.GetColor3d("silver")
-    backgroundColor = colors.GetColor3d("wheat")
+    lineColor = colors.GetColor3d('peacock')
+    modelColor = colors.GetColor3d('silver')
+    backgroundColor = colors.GetColor3d('wheat')
 
     modelSource = vtk.vtkSphereSource()
 
@@ -16,7 +17,7 @@ def main():
     cutter = vtk.vtkCutter()
     cutter.SetInputConnection(modelSource.GetOutputPort())
     cutter.SetCutFunction(plane)
-    cutter.GenerateValues(10, -.5, .5)
+    cutter.GenerateValues(10, -0.5, 0.5)
 
     modelMapper = vtk.vtkPolyDataMapper()
     modelMapper.SetInputConnection(modelSource.GetOutputPort())
@@ -43,6 +44,7 @@ def main():
 
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
+    renderWindow.SetWindowName('ExtractPolyLinesFromPolyData')
 
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
@@ -51,6 +53,9 @@ def main():
     renderer.AddActor(model)
     renderer.AddActor(lines)
     renderer.SetBackground(backgroundColor)
+    renderer.GetActiveCamera().Azimuth(-45)
+    renderer.GetActiveCamera().Elevation(-22.5)
+    renderer.ResetCamera()
 
     # This starts the event loop and as a side effect causes an
     # initial render.
@@ -60,26 +65,27 @@ def main():
     # Extract the lines from the polydata.
     numberOfLines = cutter.GetOutput().GetNumberOfLines()
 
-    print("-----------Lines without using vtkStripper")
-    print("There are {0} lines in the polydata".format(numberOfLines))
+    print('-----------Lines without using vtkStripper')
+    print('There are {0} lines in the polydata'.format(numberOfLines))
 
     numberOfLines = stripper.GetOutput().GetNumberOfLines()
     points = stripper.GetOutput().GetPoints()
     cells = stripper.GetOutput().GetLines()
     cells.InitTraversal()
 
-    print("-----------Lines using vtkStripper")
-    print("There are {0} lines in the polydata".format(numberOfLines))
+    print('-----------Lines using vtkStripper')
+    print('There are {0} lines in the polydata'.format(numberOfLines))
 
     indices = vtk.vtkIdList()
     lineCount = 0
 
     while cells.GetNextCell(indices):
-        print("Line {0}:".format(lineCount))
+        print('Line {0}:'.format(lineCount))
         for i in range(indices.GetNumberOfIds()):
             point = points.GetPoint(indices.GetId(i))
-            print("\t({0:0.6f} ,{1:0.6f}, {2:0.6f})".format(point[0], point[1], point[2]))
+            print('\t({0:0.6f} ,{1:0.6f}, {2:0.6f})'.format(point[0], point[1], point[2]))
         lineCount += 1
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     main()

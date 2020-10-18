@@ -1,43 +1,38 @@
-#include <vtkSmartPointer.h>
-#include <vtkImplicitModeller.h>
-
-#include <vtkSmartPointer.h>
-
+#include <vtkActor.h>
 #include <vtkBYUReader.h>
+#include <vtkContourFilter.h>
+#include <vtkImplicitModeller.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOBJReader.h>
 #include <vtkPLYReader.h>
-#include <vtkPolyDataReader.h>
-#include <vtkSTLReader.h>
-#include <vtkXMLPolyDataReader.h>
-#include <vtkSphereSource.h>
-
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
+#include <vtkPolyDataReader.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkContourFilter.h>
-#include <vtkNamedColors.h>
+#include <vtkRenderer.h>
+#include <vtkSTLReader.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
+#include <vtkXMLPolyDataReader.h>
 
 #include <vtksys/SystemTools.hxx>
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");;
+  vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");
+  ;
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkImplicitModeller> implicitModeller =
-    vtkSmartPointer<vtkImplicitModeller>::New();
-  implicitModeller->SetSampleDimensions(50,50,50);
+  vtkNew<vtkImplicitModeller> implicitModeller;
+  implicitModeller->SetSampleDimensions(50, 50, 50);
   implicitModeller->SetInputData(polyData);
   implicitModeller->AdjustBoundsOn();
   implicitModeller->SetAdjustDistance(.1); // Adjust by 10%
@@ -49,103 +44,92 @@ int main(int argc, char *argv[])
   double xrange = bounds[1] - bounds[0];
 
   // Create the 0 isosurface
-  vtkSmartPointer<vtkContourFilter> contourFilter =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> contourFilter;
   contourFilter->SetInputConnection(implicitModeller->GetOutputPort());
-  contourFilter->SetValue(0, xrange/30.0); // 30% of xrange
+  contourFilter->SetValue(0, xrange / 30.0); // 30% of xrange
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(contourFilter->GetOutputPort());
   mapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(colors->GetColor3d("Lime").GetData());
+  actor->GetProperty()->SetColor(colors->GetColor3d("Sienna").GetData());
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("Wheat").GetData());
 
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("ImplicitModeller");
+
   renderWindow->Render();
   interactor->Start();
 
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
-  std::string extension = vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
+  std::string extension =
+      vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    vtkSmartPointer<vtkPLYReader> reader =
-      vtkSmartPointer<vtkPLYReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPLYReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    vtkSmartPointer<vtkPolyDataReader> reader =
-      vtkSmartPointer<vtkPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    vtkSmartPointer<vtkOBJReader> reader =
-      vtkSmartPointer<vtkOBJReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkOBJReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    vtkSmartPointer<vtkSTLReader> reader =
-      vtkSmartPointer<vtkSTLReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkSTLReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    vtkSmartPointer<vtkBYUReader> reader =
-      vtkSmartPointer<vtkBYUReader>::New();
-    reader->SetGeometryFileName (fileName);
+    vtkNew<vtkBYUReader> reader;
+    reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    vtkSmartPointer<vtkSphereSource> sphere =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphere;
     sphere->Update();
     polyData = sphere->GetOutput();
   }
   return polyData;
 }
-}
+} // namespace

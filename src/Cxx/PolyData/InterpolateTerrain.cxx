@@ -1,79 +1,75 @@
-#include <vtkSmartPointer.h>
 #include <vtkCellArray.h>
-#include <vtkPoints.h>
-#include <vtkTriangle.h>
-#include <vtkPolyData.h>
-#include <vtkPointData.h>
-#include <vtkLine.h>
-#include <vtkImageData.h>
-#include <vtkProbeFilter.h>
-#include <vtkDelaunay2D.h>
-#include <vtkXMLPolyDataWriter.h>
-#include <vtkDoubleArray.h>
-#include <vtkMath.h>
 #include <vtkCellLocator.h>
+#include <vtkDelaunay2D.h>
+#include <vtkDoubleArray.h>
+#include <vtkImageData.h>
+#include <vtkLine.h>
+#include <vtkMath.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkProbeFilter.h>
+#include <vtkTriangle.h>
+#include <vtkXMLPolyDataWriter.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkImageData> image =
-    vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> image;
   image->SetExtent(0, 9, 0, 9, 0, 0);
-  image->AllocateScalars(VTK_DOUBLE,1);
+  image->AllocateScalars(VTK_DOUBLE, 1);
 
-  //Create a random set of heights on a grid. This is often called a
+  // Create a random set of heights on a grid. This is often called a
   //"terrain map"
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
 
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(8775070);
   unsigned int GridSize = 10;
-  for ( unsigned int x = 0; x < GridSize; x++ )
+  for (unsigned int x = 0; x < GridSize; x++)
   {
-    for ( unsigned int y = 0; y < GridSize; y++ )
+    for (unsigned int y = 0; y < GridSize; y++)
     {
-      double val = vtkMath::Random(-1.0, 1.0);
-      points->InsertNextPoint ( x, y, val);
-      image->SetScalarComponentFromDouble(x,y,0,0,val);
+      double val = randomSequence->GetRangeValue(-1, 1);
+      randomSequence->Next();
+      points->InsertNextPoint(x, y, val);
+      image->SetScalarComponentFromDouble(x, y, 0, 0, val);
     }
   }
 
-  //add the grid points to a polydata object
-  vtkSmartPointer<vtkPolyData> polydata =
-    vtkSmartPointer<vtkPolyData>::New();
-  polydata->SetPoints ( points );
+  // add the grid points to a polydata object
+  vtkNew<vtkPolyData> polydata;
+  polydata->SetPoints(points);
 
-  //triangulate the grid points
-  vtkSmartPointer<vtkDelaunay2D> delaunay =
-    vtkSmartPointer<vtkDelaunay2D>::New();
-  delaunay->SetInputData ( polydata );
+  // triangulate the grid points
+  vtkNew<vtkDelaunay2D> delaunay;
+  delaunay->SetInputData(polydata);
   delaunay->Update();
 
-  vtkSmartPointer<vtkXMLPolyDataWriter> writer =
-    vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-  writer->SetFileName ( "surface.vtp" );
-  writer->SetInputConnection ( delaunay->GetOutputPort() );
+  vtkNew<vtkXMLPolyDataWriter> writer;
+  writer->SetFileName("surface.vtp");
+  writer->SetInputConnection(delaunay->GetOutputPort());
   writer->Write();
 
   // Add some points to interpolate
-  vtkSmartPointer<vtkPoints> probePoints =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> probePoints;
   probePoints->InsertNextPoint(5.2, 3.2, 0);
   probePoints->InsertNextPoint(5.0, 3.0, 0);
   probePoints->InsertNextPoint(0.0, 0.0, 0);
 
-  vtkSmartPointer<vtkPolyData> probePolyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> probePolyData;
   probePolyData->SetPoints(probePoints);
 
-  vtkSmartPointer<vtkProbeFilter> probe =
-    vtkSmartPointer<vtkProbeFilter>::New();
+  vtkNew<vtkProbeFilter> probe;
   probe->SetSourceData(image);
   probe->SetInputData(probePolyData);
   probe->Update();
 
   vtkDataArray* data = probe->GetOutput()->GetPointData()->GetScalars();
-  vtkDoubleArray* doubleData = dynamic_cast<vtkDoubleArray*> (data);
+  vtkDoubleArray* doubleData = dynamic_cast<vtkDoubleArray*>(data);
 
-  for(int i = 0; i < doubleData->GetNumberOfTuples(); i++)
+  for (int i = 0; i < doubleData->GetNumberOfTuples(); i++)
   {
     double val = doubleData->GetValue(i);
     cout << "Interpolation using ProbeFilter ";
@@ -81,12 +77,11 @@ int main(int, char *[])
   }
 
   // Now find the elevation with a CellLocator
-  vtkSmartPointer<vtkCellLocator> cellLocator =
-    vtkSmartPointer<vtkCellLocator>::New();
+  vtkNew<vtkCellLocator> cellLocator;
   cellLocator->SetDataSet(delaunay->GetOutput());
   cellLocator->BuildLocator();
 
-  for(int i = 0; i < doubleData->GetNumberOfTuples(); i++)
+  for (int i = 0; i < doubleData->GetNumberOfTuples(); i++)
   {
     int subId;
     double t, xyz[3], pcoords[3];
@@ -96,17 +91,12 @@ int main(int, char *[])
     probePoints->GetPoint(i, rayEnd);
     rayEnd[2] -= 1000.0;
 
-    if (cellLocator->IntersectWithLine(
-          rayStart,
-          rayEnd,
-          0.0001,
-          t,
-          xyz,
-          pcoords,
-          subId))
+    if (cellLocator->IntersectWithLine(rayStart, rayEnd, 0.0001, t, xyz,
+                                       pcoords, subId))
     {
       cout << "Interpolation using CellLocator ";
-      cout << "Elevation at " << rayStart[0] << ", " << rayStart[1] << " is " << xyz[2] << endl;
+      cout << "Elevation at " << rayStart[0] << ", " << rayStart[1] << " is "
+           << xyz[2] << endl;
     }
   }
   return EXIT_SUCCESS;

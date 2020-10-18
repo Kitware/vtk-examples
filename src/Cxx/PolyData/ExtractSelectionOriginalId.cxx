@@ -1,3 +1,4 @@
+#include <vtkCamera.h>
 #include <vtkDataSetMapper.h>
 #include <vtkExtractSelection.h>
 #include <vtkIdTypeArray.h>
@@ -112,22 +113,27 @@ int main(int, char*[])
   double leftViewport[4] = {0.0, 0.0, 0.5, 1.0};
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
+  // Create a camera for all renderers
+  vtkNew<vtkCamera> camera;
+
   // Setup the renderers
   vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
   leftRenderer->SetBackground(colors->GetColor3d("BurlyWood").GetData());
+  leftRenderer->SetActiveCamera(camera);
 
   vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
   rightRenderer->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
+  rightRenderer->SetActiveCamera(camera);
 
   leftRenderer->AddActor(inputActor);
   rightRenderer->AddActor(selectedActor);
 
   leftRenderer->ResetCamera();
-  rightRenderer->ResetCamera();
+  //rightRenderer->ResetCamera();
 
   renderWindow->Render();
   interactor->Start();

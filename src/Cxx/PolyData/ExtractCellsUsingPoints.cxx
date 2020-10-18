@@ -1,3 +1,4 @@
+#include <vtkCamera.h>
 #include <vtkDataSetMapper.h>
 #include <vtkExtractSelection.h>
 #include <vtkIdTypeArray.h>
@@ -75,7 +76,7 @@ int main(int, char*[])
   std::cout << "There are " << notSelected->GetNumberOfCells()
             << " cells NOT in the selection." << std::endl;
 
-    vtkNew<vtkProperty> backfaces;
+  vtkNew<vtkProperty> backfaces;
   backfaces->SetColor(colors->GetColor3d("Gold").GetData());
 
   vtkNew<vtkDataSetMapper> inputMapper;
@@ -120,29 +121,33 @@ int main(int, char*[])
   double centerViewport[4] = {0.33, 0.0, .66, 1.0};
   double rightViewport[4] = {0.66, 0.0, 1.0, 1.0};
 
+  // Create a camera for all renderers
+  vtkNew<vtkCamera> camera;
+
   // Setup the renderers
   vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
   leftRenderer->SetBackground(colors->GetColor3d("BurlyWood").GetData());
+  leftRenderer->SetActiveCamera(camera);
 
   vtkNew<vtkRenderer> centerRenderer;
   renderWindow->AddRenderer(centerRenderer);
   centerRenderer->SetViewport(centerViewport);
   centerRenderer->SetBackground(colors->GetColor3d("orchid_dark").GetData());
+  centerRenderer->SetActiveCamera(camera);
 
   vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
   rightRenderer->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
+  rightRenderer->SetActiveCamera(camera);
 
   leftRenderer->AddActor(inputActor);
   centerRenderer->AddActor(selectedActor);
   rightRenderer->AddActor(notSelectedActor);
 
   leftRenderer->ResetCamera();
-  centerRenderer->ResetCamera();
-  rightRenderer->ResetCamera();
 
   renderWindow->Render();
   interactor->Start();

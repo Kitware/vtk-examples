@@ -43,14 +43,17 @@ def main():
     # cutMapper.SetInput(FeatureEdges.GetOutput())
     cutMapper.SetInputData(cutPoly)
 
-    cutActor = vtk.vtkActor()
-    cutActor.GetProperty().SetColor(colors.GetColor3d('Yellow'))
-    cutActor.GetProperty().SetEdgeColor(colors.GetColor3d('LimeGreen'))
+    backface = vtk.vtkProperty()
+    backface.SetColor(colors.GetColor3d('Gold'))
 
+    cutActor = vtk.vtkActor()
+    cutActor.SetMapper(cutMapper)
+    cutActor.GetProperty().SetColor(colors.GetColor3d('Yellow'))
+    cutActor.GetProperty().SetEdgeColor(colors.GetColor3d('Red'))
     cutActor.GetProperty().SetLineWidth(2)
     cutActor.GetProperty().EdgeVisibilityOn()
     # cutActor.GetProperty().SetOpacity(0.7)
-    cutActor.SetMapper(cutMapper)
+    cutActor.SetBackfaceProperty(backface)
 
     # create renderers and add actors of plane and cube
     ren = vtk.vtkRenderer()
@@ -59,12 +62,23 @@ def main():
     # Add renderer to renderwindow and render
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
-    renWin.SetSize(600, 600)
+    renWin.SetSize(600, 400)
+    renWin.SetWindowName('FilledPolygon')
+
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
-    ren.SetBackground(colors.GetColor3d('Black'))
+    ren.SetBackground(colors.GetColor3d('DarkSlateGray'))
     ren.GetActiveCamera().SetPosition(223, -122, -91)
     renWin.Render()
+
+    camera = ren.GetActiveCamera()
+    camera.SetPosition(151.519511, 12.795117, -223.586044)
+    camera.SetFocalPoint(12.518283, 1.963242, 7.618042)
+    camera.SetViewUp(0.740690, -0.523767, 0.420769)
+    camera.SetDistance(269.988889)
+    camera.SetClippingRange(175.347580, 366.490816)
+    camera.Zoom(1.5)
+
     iren.Start()
 
 

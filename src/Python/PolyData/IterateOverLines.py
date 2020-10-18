@@ -3,6 +3,7 @@
 
 import vtk
 
+
 def main():
     origin = [0.0, 0.0, 0.0]
     p0 = [1.0, 0.0, 0.0]
@@ -37,14 +38,15 @@ def main():
     # Add the lines to the dataset.
     linesPolyData.SetLines(lines)
 
-    print("There are {0} lines.".format(linesPolyData.GetNumberOfLines()))
+    print('There are {0} lines.'.format(linesPolyData.GetNumberOfLines()))
 
     linesPolyData.GetLines().InitTraversal()
     idList = vtk.vtkIdList()
-    while(linesPolyData.GetLines().GetNextCell(idList)):
-        print("Line has {0} points".format(idList.GetNumberOfIds()))
+    while (linesPolyData.GetLines().GetNextCell(idList)):
+        print('Line has {0} points'.format(idList.GetNumberOfIds()))
         for pointId in range(idList.GetNumberOfIds() - 1):
-            print("{0} {1}".format(idList.GetId(pointId), idList.GetId(pointId + 1)))
+            print('{0} {1}'.format(idList.GetId(pointId), idList.GetId(pointId + 1)))
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     main()

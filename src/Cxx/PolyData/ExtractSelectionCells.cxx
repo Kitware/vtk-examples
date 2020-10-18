@@ -15,19 +15,19 @@
 #include <vtkSphereSource.h>
 #include <vtkUnstructuredGrid.h>
 
-#include <array>
+//#include <array>
 
 int main(int, char*[])
 {
 
   vtkNew<vtkNamedColors> colors;
 
-  //std::array<double, 4> bkgL = {{0.6, 0.5, 0.4, 1.0}};
-  //std::array<double, 4> bkgC = {{0.3, 0.1, 0.4, 1.0}};
-  //std::array<double, 4> bkgR = {{0.4, 0.5, 0.6, 1.0}};
-  //colors->SetColor("leftBkg", bkgL.data());
-  //colors->SetColor("centreBkg", bkgC.data());
-  //colors->SetColor("rightBkg", bkgR.data());
+  // std::array<double, 4> bkgL = {{0.6, 0.5, 0.4, 1.0}};
+  // std::array<double, 4> bkgC = {{0.3, 0.1, 0.4, 1.0}};
+  // std::array<double, 4> bkgR = {{0.4, 0.5, 0.6, 1.0}};
+  // colors->SetColor("leftBkg", bkgL.data());
+  // colors->SetColor("centreBkg", bkgC.data());
+  // colors->SetColor("rightBkg", bkgR.data());
 
   vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
@@ -113,6 +113,7 @@ int main(int, char*[])
   // There will be one render window
   vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(900, 300);
+  renderWindow->SetWindowName("ExtractSelectionCells");
 
   // And one interactor
   vtkNew<vtkRenderWindowInteractor> interactor;
