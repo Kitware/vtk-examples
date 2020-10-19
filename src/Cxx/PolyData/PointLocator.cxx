@@ -13,6 +13,8 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
+namespace {
+
 class KeyPressInteractorStyle3 : public vtkInteractorStyleTrackballCamera
 {
 public:
@@ -71,6 +73,8 @@ private:
 
 vtkStandardNewMacro(KeyPressInteractorStyle3);
 
+} // namespace
+
 int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
@@ -105,6 +109,7 @@ int main(int, char*[])
   vtkNew<vtkRenderer> renderer;
   vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("PointLocator");
 
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);

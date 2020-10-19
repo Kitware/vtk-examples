@@ -10,4 +10,4 @@ This example can be run in three ways:
 3.  *LoopBooleanPolyDataFilter* **input1.vtk intersection|difference|union input2.vtk** - Computes the intersection(difference or union) of two vtkPolyData's
 
 !!! seealso
-    [BooleanOperationPolyDataFilter](/Cxx/PolyData/BooleanOperationPolyDataFilter) uses an alternative algorithm to do the boolean operations.
+    [BooleanOperationPolyDataFilter](../BooleanOperationPolyDataFilter) uses an alternative algorithm to do the boolean operations.

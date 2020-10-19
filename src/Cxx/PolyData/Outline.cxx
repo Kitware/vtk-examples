@@ -1,59 +1,56 @@
-#include <vtkSphereSource.h>
-#include <vtkProperty.h>
-#include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkConeSource.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource->SetCenter(0.0, 0.0, 0.0);
-  sphereSource->SetRadius(5.0);
-  sphereSource->Update();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkPolyData* sphere = sphereSource->GetOutput();
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  mapper->SetInputData(sphere);
+  // Create a cone
+  vtkNew<vtkConeSource> source;
+  source->SetCenter(0.0, 0.0, 0.0);
+  source->SetResolution(100);
+  source->Update();
 
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
+  mapper->SetInputConnection(source->GetOutputPort());
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // Create the outline
-  vtkSmartPointer<vtkOutlineFilter> outline = 
-    vtkSmartPointer<vtkOutlineFilter>::New();
-  outline->SetInputData(sphere);
+  vtkNew<vtkOutlineFilter> outline;
+  outline->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
-  vtkSmartPointer<vtkActor> outlineActor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
-  outlineActor->GetProperty()->SetColor(0,0,0);
-  
+  outlineActor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
+
   // Setup the window
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("Outline");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
   renderer->AddActor(actor);
   renderer->AddActor(outlineActor);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(
+      colors->GetColor3d("MidnightBlue").GetData()); // Background color white
 
   // Render and interact
   renderWindow->Render();

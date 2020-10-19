@@ -1,8 +1,8 @@
 #include <vtkFloatArray.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
 #include <vtkVersion.h>
 
 #if VTK_VERSION_NUMBER >= 90000000000ULL
@@ -11,16 +11,15 @@
 
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(1, 1, 1);
   points->InsertNextPoint(2, 2, 2);
   points->InsertNextPoint(3, 3, 3);
 
-  vtkSmartPointer<vtkPolyData> polydata = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   polydata->SetPoints(points);
 
-  vtkSmartPointer<vtkFloatArray> floatArray =
-      vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> floatArray;
   floatArray->SetNumberOfValues(3);
   floatArray->SetNumberOfComponents(1);
   floatArray->SetName("FloatArray");
@@ -30,7 +29,7 @@ int main(int, char*[])
   }
   polydata->GetPointData()->AddArray(floatArray);
 
-  vtkSmartPointer<vtkIntArray> intArray = vtkSmartPointer<vtkIntArray>::New();
+  vtkNew<vtkIntArray> intArray;
   intArray->SetNumberOfValues(3);
   intArray->SetNumberOfComponents(1);
   intArray->SetName("IntArray");

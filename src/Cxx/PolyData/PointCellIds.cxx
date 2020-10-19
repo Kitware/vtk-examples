@@ -1,8 +1,8 @@
 #include <vtkCellData.h>
 #include <vtkIdFilter.h>
 #include <vtkIdTypeArray.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkVersion.h>
 
@@ -12,7 +12,7 @@
 
 int main(int, char*[])
 {
-  auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
   std::cout << "There are " << sphereSource->GetOutput()->GetNumberOfPoints()
@@ -20,7 +20,7 @@ int main(int, char*[])
   std::cout << "There are " << sphereSource->GetOutput()->GetNumberOfCells()
             << " cells." << std::endl;
 
-  auto idFilter = vtkSmartPointer<vtkIdFilter>::New();
+  vtkNew<vtkIdFilter> idFilter;
   idFilter->SetInputConnection(sphereSource->GetOutputPort());
 #if VTK890
   idFilter->SetPointIdsArrayName("ids");

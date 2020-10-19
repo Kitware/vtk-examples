@@ -1,25 +1,25 @@
-#include <vtkPolyData.h>
-#include <vtkPointData.h>
-#include <vtkCubeSource.h>
-#include <vtkSmartPointer.h>
-#include <vtkSelectEnclosedPoints.h>
-#include <vtkIntArray.h>
-#include <vtkDataArray.h>
-#include <vtkVertexGlyphFilter.h>
-#include <vtkProperty.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkCubeSource.h>
+#include <vtkDataArray.h>
+#include <vtkIntArray.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSelectEnclosedPoints.h>
 #include <vtkVertexGlyphFilter.h>
 
-
-int main(int, char *argv[])
+int main(int, char* argv[])
 {
-  //cube centered in origin, 1cm side.
-  vtkSmartPointer<vtkCubeSource> cubeSource =
-    vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  // cube centered in origin, 1cm side.
+  vtkNew<vtkCubeSource> cubeSource;
   cubeSource->Update();
 
   vtkPolyData* cube = cubeSource->GetOutput();
@@ -27,83 +27,91 @@ int main(int, char *argv[])
   double testInside[3] = {0.0, 0.0, 0.0};
   double testOutside[3] = {0.7, 0.0, 0.0};
   double testBorderOutside[3] = {0.5, 0.0, 0.0};
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(testInside);
   points->InsertNextPoint(testOutside);
   points->InsertNextPoint(testBorderOutside);
 
-  vtkSmartPointer<vtkPolyData> pointsPolydata =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> pointsPolydata;
   pointsPolydata->SetPoints(points);
 
-  //Points inside test
-  vtkSmartPointer<vtkSelectEnclosedPoints> selectEnclosedPoints =
-    vtkSmartPointer<vtkSelectEnclosedPoints>::New();
+  // Points inside test
+  vtkNew<vtkSelectEnclosedPoints> selectEnclosedPoints;
   selectEnclosedPoints->SetInputData(pointsPolydata);
   selectEnclosedPoints->SetSurfaceData(cube);
   selectEnclosedPoints->Update();
 
-  for(unsigned int i = 0; i < 2; i++)
+  for (unsigned int i = 0; i < 2; i++)
   {
-    std::cout << "Point " << i << ": " << selectEnclosedPoints->IsInside(i) << std::endl;
+    std::cout << "Point " << i << ": ";
+    if (selectEnclosedPoints->IsInside(i) == 1)
+    {
+      std::cout << "inside" << std::endl;
+    }
+    else
+    {
+      std::cout << "outside" << std::endl;
+    }
   }
 
-  vtkDataArray* insideArray =
-    dynamic_cast<vtkDataArray*>(selectEnclosedPoints->GetOutput()->GetPointData()->GetArray("SelectedPoints"));
+  auto insideArray = dynamic_cast<vtkDataArray*>(
+      selectEnclosedPoints->GetOutput()->GetPointData()->GetArray(
+          "SelectedPoints"));
 
-  for(vtkIdType i = 0; i < insideArray->GetNumberOfTuples(); i++)
+  for (vtkIdType i = 0; i < insideArray->GetNumberOfTuples(); i++)
   {
-    std::cout << i << " : " << insideArray->GetComponent(i,0) << std::endl;
+    std::cout << "Tuple " << i << ": ";
+    if (insideArray->GetComponent(i, 0) == 1)
+    {
+      std::cout << "inside" << std::endl;
+    }
+    else
+    {
+      std::cout << "outside" << std::endl;
+    }
   }
 
+  // RENDERING PART
 
-  //RENDERING PART
-
-  //Cube mapper, actor
-  vtkSmartPointer<vtkPolyDataMapper> cubeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  // Cube mapper, actor
+  vtkNew<vtkPolyDataMapper> cubeMapper;
   cubeMapper->SetInputConnection(cubeSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> cubeActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cubeActor;
   cubeActor->SetMapper(cubeMapper);
   cubeActor->GetProperty()->SetOpacity(0.5);
+  cubeActor->GetProperty()->SetColor(colors->GetColor3d("SandyBrown").GetData());
 
-  //Points mapper, actor
-  //First, apply vtkVertexGlyphFilter to make cells around points, vtk only render cells.
-  vtkSmartPointer<vtkVertexGlyphFilter> vertexGlyphFilter =
-  vtkSmartPointer<vtkVertexGlyphFilter>::New();
+  // Points mapper, actor
+  // First, apply vtkVertexGlyphFilter to make cells around points, vtk only
+  // render cells.
+  vtkNew<vtkVertexGlyphFilter> vertexGlyphFilter;
   vertexGlyphFilter->AddInputData(pointsPolydata);
   vertexGlyphFilter->Update();
 
- vtkSmartPointer<vtkPolyDataMapper> pointsMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> pointsMapper;
   pointsMapper->SetInputConnection(vertexGlyphFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> pointsActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> pointsActor;
   pointsActor->SetMapper(pointsMapper);
   pointsActor->GetProperty()->SetPointSize(5);
-  pointsActor->GetProperty()->SetColor(0.0,0.0,1);
+  pointsActor->GetProperty()->SetColor(colors->GetColor3d("GreenYellow").GetData());
 
-  //Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  // Create a renderer, render window, and interactor
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("PointCellIds");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
   renderer->AddActor(cubeActor);
   renderer->AddActor(pointsActor);
-  renderer->SetBackground(.0, 1,.0);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Render and interact
-  renderWindow->SetWindowName(argv[0]);
   renderWindow->Render();
   renderWindowInteractor->Start();
 
