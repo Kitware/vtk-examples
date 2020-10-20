@@ -106,8 +106,8 @@ def main():
         randomSequence.Next()
 
         actor.GetProperty().SetDiffuseColor(r, g, b)
-        actor.GetProperty().SetDiffuse(.8)
-        actor.GetProperty().SetSpecular(.5)
+        actor.GetProperty().SetDiffuse(0.8)
+        actor.GetProperty().SetSpecular(0.5)
         actor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
         actor.GetProperty().SetSpecularPower(30.0)
 

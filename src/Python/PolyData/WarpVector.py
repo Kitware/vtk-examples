@@ -68,6 +68,7 @@ def main():
 
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
+    renderWindow.SetWindowName('WarpVector')
 
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)

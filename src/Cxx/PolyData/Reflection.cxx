@@ -1,66 +1,57 @@
-#include <vtkSmartPointer.h>
-#include <vtkReflectionFilter.h>
-
-#include <vtkDataSetMapper.h>
-#include <vtkProperty.h>
-#include <vtkPolyData.h>
-#include <vtkConeSource.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkConeSource.h>
+#include <vtkDataSetMapper.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkReflectionFilter.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkConeSource> coneSource = 
-    vtkSmartPointer<vtkConeSource>::New();
+  vtkNew<vtkConeSource> coneSource;
   coneSource->Update();
-  
-  vtkSmartPointer<vtkPolyDataMapper> coneMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+
+  vtkNew<vtkPolyDataMapper> coneMapper;
   coneMapper->SetInputConnection(coneSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> coneActor = 
-      vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> coneActor;
   coneActor->SetMapper(coneMapper);
   coneActor->GetProperty()->SetColor(colors->GetColor3d("Mint").GetData());
-  
+
   // Reflection
-  vtkSmartPointer<vtkReflectionFilter> reflectionFilter = 
-    vtkSmartPointer<vtkReflectionFilter>::New();
+  vtkNew<vtkReflectionFilter> reflectionFilter;
   reflectionFilter->SetInputConnection(coneSource->GetOutputPort());
   reflectionFilter->CopyInputOff();
   reflectionFilter->Update();
-  
-  vtkSmartPointer<vtkDataSetMapper> reflectionMapper = 
-    vtkSmartPointer<vtkDataSetMapper>::New();
+
+  vtkNew<vtkDataSetMapper> reflectionMapper;
   reflectionMapper->SetInputConnection(reflectionFilter->GetOutputPort());
-  vtkSmartPointer<vtkActor> reflectionActor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> reflectionActor;
   reflectionActor->SetMapper(reflectionMapper);
-  reflectionActor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
-  
+  reflectionActor->GetProperty()->SetColor(
+      colors->GetColor3d("Tomato").GetData());
+
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("Reflection");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
- 
+
   // Add the actor to the scene
   renderer->AddActor(coneActor);
   renderer->AddActor(reflectionActor);
   renderer->SetBackground(colors->GetColor3d("Burlywood").GetData());
- 
+
   // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();

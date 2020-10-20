@@ -1,52 +1,50 @@
-#include <vtkSmartPointer.h>
-
+#include <vtkActor.h>
 #include <vtkArrowSource.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkTransform.h>
 #include <vtkTransformFilter.h>
- 
-int main(int, char *[])
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an arrow.
-  vtkSmartPointer<vtkArrowSource> arrowSource = 
-    vtkSmartPointer<vtkArrowSource>::New();
- 
-  vtkSmartPointer<vtkTransform> transform =
-    vtkSmartPointer<vtkTransform>::New();
-  transform->Scale(5,1,1);
-  
-  vtkSmartPointer<vtkTransformFilter> transformFilter =
-    vtkSmartPointer<vtkTransformFilter>::New();
+  vtkNew<vtkArrowSource> arrowSource;
+
+  vtkNew<vtkTransform> transform;
+  transform->Scale(5, 1, 1);
+
+  vtkNew<vtkTransformFilter> transformFilter;
   transformFilter->SetInputConnection(arrowSource->GetOutputPort());
   transformFilter->SetTransform(transform);
-  
+
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(transformFilter->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
- 
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  actor->GetProperty()->SetColor(colors->GetColor3d("Coral").GetData());
+
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("TransformFilter");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
- 
+
   renderer->AddActor(actor);
-  renderer->SetBackground(.2, .3, .4);
- 
+  renderer->SetBackground(colors->GetColor3d("CadetBlue").GetData());
+
   renderWindow->Render();
   renderWindowInteractor->Start();
- 
+
   return EXIT_SUCCESS;
 }

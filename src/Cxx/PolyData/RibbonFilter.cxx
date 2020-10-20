@@ -1,11 +1,10 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkCellArray.h>
 #include <vtkLine.h>
 #include <vtkMath.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -16,7 +15,7 @@
 
 int main(int, char*[])
 {
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Spiral parameters
   unsigned int nV = 256; // No. of vertices
@@ -27,7 +26,7 @@ int main(int, char*[])
   unsigned int i;
 
   // Create points and cells for a spiral
-  auto points = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   for (i = 0; i < nV; i++)
   {
     // Spiral coordinates
@@ -37,47 +36,49 @@ int main(int, char*[])
     points->InsertPoint(i, vX, vY, vZ);
   }
 
-  auto lines = vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkCellArray> lines;
   lines->InsertNextCell(nV);
   for (i = 0; i < nV; i++)
   {
     lines->InsertCellPoint(i);
   }
 
-  auto polyData = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polyData;
   polyData->SetPoints(points);
   polyData->SetLines(lines);
 
   // Create a mapper and actor
-  auto lineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> lineMapper;
   lineMapper->SetInputData(polyData);
 
-  auto lineActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> lineActor;
   lineActor->SetMapper(lineMapper);
   lineActor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
   lineActor->GetProperty()->SetLineWidth(3);
 
   // Create a ribbon around the line
-  auto ribbonFilter = vtkSmartPointer<vtkRibbonFilter>::New();
+  vtkNew<vtkRibbonFilter> ribbonFilter;
   ribbonFilter->SetInputData(polyData);
   ribbonFilter->SetWidth(.4);
 
   // Create a mapper and actor
-  auto ribbonMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> ribbonMapper;
   ribbonMapper->SetInputConnection(ribbonFilter->GetOutputPort());
 
-  auto ribbonActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> ribbonActor;
   ribbonActor->SetMapper(ribbonMapper);
+  ribbonActor->GetProperty()->SetColor(
+      colors->GetColor3d("AliceBlue").GetData());
 
   // Create a renderer, render window, and interactor
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
+  renderWindow->SetWindowName("RibbonFilter");
 
   // Add the actor to the scene
   renderer->AddActor(ribbonActor);

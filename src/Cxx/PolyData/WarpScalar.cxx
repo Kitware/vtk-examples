@@ -1,39 +1,42 @@
 #include <vtkActor.h>
 #include <vtkDoubleArray.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
+#include <vtkNew.h>
 #include <vtkSphereSource.h>
 #include <vtkWarpScalar.h>
-#include <vtkMath.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNamedColors.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
   // Create Scalars
-  vtkSmartPointer<vtkDoubleArray> scalars =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> scalars;
   int numberOfPoints = sphereSource->GetOutput()->GetNumberOfPoints();
   scalars->SetNumberOfTuples(numberOfPoints);
 
-  vtkMath::RandomSeed(8775070); // for reproducibility
-  for(vtkIdType i = 0; i < numberOfPoints; ++i)
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(8775070);
+  for (vtkIdType i = 0; i < numberOfPoints; ++i)
   {
-    scalars->SetTuple1(i, vtkMath::Random(0.0, 1.0 / 7.0));
+    scalars->SetTuple1(i, randomSequence->GetRangeValue(0.0, 1.0 / 7.0));
+    randomSequence->Next();
   }
 
   sphereSource->GetOutput()->GetPointData()->SetScalars(scalars);
 
-  vtkSmartPointer<vtkWarpScalar> warpScalar =
-    vtkSmartPointer<vtkWarpScalar>::New();
+  vtkNew<vtkWarpScalar> warpScalar;
   warpScalar->SetInputConnection(sphereSource->GetOutputPort());
   warpScalar->SetScaleFactor(1); // use the scalars themselves
 
@@ -44,26 +47,23 @@ int main(int, char *[])
   warpScalar->Update();
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(warpScalar->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("WarpScalar");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(colors->GetColor3d("Cornsilk").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();

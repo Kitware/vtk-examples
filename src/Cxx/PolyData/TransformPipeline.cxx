@@ -1,79 +1,88 @@
-//This example describes the transformation pipeline. Robotic arm was used to demonstrate an example.
-#include <vtkCylinderSource.h>
-#include <vtkPolyDataMapper.h>
+// This example describes the transformation pipeline. Robotic arm was used to
+// demonstrate an example.
 #include <vtkActor.h>
+#include <vtkCylinderSource.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkTransform.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
+#include <vtkTransform.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkRenderer> ren1 = vtkSmartPointer<vtkRenderer>::New();
-  ren1->SetBackground( 0.1, 0.2, 0.4 );
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren1;
+  ren1->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
+
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
   renWin->SetSize(600, 600);
   renWin->SetWindowName("Robotic Arm");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  //arm
-  vtkSmartPointer<vtkCylinderSource> arm = vtkSmartPointer<vtkCylinderSource>::New();
+  // arm
+  vtkNew<vtkCylinderSource> arm;
   arm->SetRadius(8);
   arm->SetHeight(20);
   arm->SetResolution(20);
 
-  vtkSmartPointer<vtkPolyDataMapper> armMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> armMapper;
   armMapper->SetInputConnection(arm->GetOutputPort());
 
-  vtkSmartPointer<vtkTransform> armTransform = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> armTransform;
 
-  vtkSmartPointer<vtkActor> armActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> armActor;
   armActor->SetUserTransform(armTransform);
   armActor->SetMapper(armMapper);
-  armActor->GetProperty()->SetColor(0.7,0.6,0.3);
+  armActor->GetProperty()->SetColor(colors->GetColor3d("SandyBrown").GetData());
 
-  //forearm
-  vtkSmartPointer<vtkCylinderSource> forearm = vtkSmartPointer<vtkCylinderSource>::New();
+  // forearm
+  vtkNew<vtkCylinderSource> forearm;
   forearm->SetRadius(6);
   forearm->SetHeight(15);
   forearm->SetResolution(20);
-  forearm->SetCenter(*(arm->GetCenter()),*(arm->GetCenter()+1)+forearm->GetHeight(),*(arm->GetCenter()+2));
+  forearm->SetCenter(*(arm->GetCenter()),
+                     *(arm->GetCenter() + 1) + forearm->GetHeight(),
+                     *(arm->GetCenter() + 2));
 
-  vtkSmartPointer<vtkPolyDataMapper> forearmMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> forearmMapper;
   forearmMapper->SetInputConnection(forearm->GetOutputPort());
 
-  vtkSmartPointer<vtkTransform> forearmTransform = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> forearmTransform;
   forearmTransform->SetInput(armTransform);
 
-  vtkSmartPointer<vtkActor> forearmActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> forearmActor;
   forearmActor->SetUserTransform(forearmTransform);
   forearmActor->SetMapper(forearmMapper);
-  forearmActor->GetProperty()->SetColor(0.1,0.2,0.9);
+  forearmActor->GetProperty()->SetColor(
+      colors->GetColor3d("RoyalBLue").GetData());
 
-  //hand
-  vtkSmartPointer<vtkCylinderSource> hand = vtkSmartPointer<vtkCylinderSource>::New();
+  // hand
+  vtkNew<vtkCylinderSource> hand;
   hand->SetRadius(4);
   hand->SetHeight(10);
   hand->SetResolution(20);
-  hand->SetCenter(*(forearm->GetCenter()),*(forearm->GetCenter()+1)+hand->GetHeight(),*(forearm->GetCenter()+2));
+  hand->SetCenter(*(forearm->GetCenter()),
+                  *(forearm->GetCenter() + 1) + hand->GetHeight(),
+                  *(forearm->GetCenter() + 2));
 
-  vtkSmartPointer<vtkPolyDataMapper> handMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> handMapper;
   handMapper->SetInputConnection(hand->GetOutputPort());
 
-  vtkSmartPointer<vtkTransform> handTransform = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> handTransform;
   handTransform->SetInput(forearmTransform);
 
-  vtkSmartPointer<vtkActor> handActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> handActor;
   handActor->SetUserTransform(handTransform);
   handActor->SetMapper(handMapper);
-  handActor->GetProperty()->SetColor(0.6,0.9,0.1);
-
+  handActor->GetProperty()->SetColor(
+      colors->GetColor3d("GreenYellow").GetData());
 
   ren1->AddActor(armActor);
   ren1->AddActor(forearmActor);
@@ -81,15 +90,15 @@ int main (int, char *[])
 
   renWin->Render();
 
-  //execution of robot arm motion
-  for (int i = 0; i <45; i++)
+  // execution of robot arm motion
+  for (int i = 0; i < 45; i++)
   {
     armTransform->Identity();
     armTransform->RotateZ(-i);
     renWin->Render();
   }
-  //execution of robot forearm motion
-  for (int i = 0; i <45; i++)
+  // execution of robot forearm motion
+  for (int i = 0; i < 45; i++)
   {
     forearmTransform->Identity();
     forearmTransform->RotateZ(i);

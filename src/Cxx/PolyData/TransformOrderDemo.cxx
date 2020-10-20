@@ -1,65 +1,60 @@
-#include <vtkSmartPointer.h>
-#include <vtkTransform.h>
 #include <vtkAxesActor.h>
-#include <vtkRenderer.h>
+#include <vtkCamera.h>
+#include <vtkImageActor.h>
+#include <vtkImageCast.h>
+#include <vtkImageMandelbrotSource.h>
+#include <vtkImageMapper3D.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkImageMandelbrotSource.h>
-#include <vtkImageActor.h>
-#include <vtkImageMapper3D.h>
-#include <vtkImageCast.h>
+#include <vtkRenderer.h>
+#include <vtkTransform.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageMandelbrotSource> source =
-    vtkSmartPointer<vtkImageMandelbrotSource>::New();
+  vtkNew<vtkImageMandelbrotSource> source;
   source->Update();
 
-  vtkSmartPointer<vtkImageCast> castFilter =
-    vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> castFilter;
   castFilter->SetInputConnection(source->GetOutputPort());
   castFilter->SetOutputScalarTypeToUnsignedChar();
   castFilter->Update();
 
   // Create an actor
-  vtkSmartPointer<vtkImageActor> actor1a =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> actor1a;
   actor1a->GetMapper()->SetInputConnection(castFilter->GetOutputPort());
-  vtkSmartPointer<vtkImageActor> actor1b =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> actor1b;
   actor1b->GetMapper()->SetInputConnection(castFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> actor2a =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> actor2a;
   actor2a->GetMapper()->SetInputConnection(castFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> actor2b =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> actor2b;
   actor2b->GetMapper()->SetInputConnection(castFilter->GetOutputPort());
-  
+
   // Create the transformation
-  vtkSmartPointer<vtkTransform> transform1a =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform1a;
   transform1a->PostMultiply();
   transform1a->Translate(10.0, 0.0, 0.0);
   actor1a->SetUserTransform(transform1a);
 
-  vtkSmartPointer<vtkTransform> transform1b =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform1b;
   transform1b->PostMultiply();
   transform1b->Translate(10.0, 0.0, 0.0);
   transform1b->RotateZ(40.0);
   actor1b->SetUserTransform(transform1b);
-  
-  vtkSmartPointer<vtkTransform> transform2a =
-    vtkSmartPointer<vtkTransform>::New();
+
+  vtkNew<vtkTransform> transform2a;
   transform2a->PostMultiply();
   transform2a->RotateZ(40.0);
   actor2a->SetUserTransform(transform2a);
 
-  vtkSmartPointer<vtkTransform> transform2b =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform2b;
   transform2b->PostMultiply();
   transform2b->RotateZ(40.0);
   transform2b->Translate(10.0, 0.0, 0.0);
@@ -71,33 +66,32 @@ int main(int, char *[])
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Cetup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetSize(640, 640);
+  renderWindow->SetWindowName("TransformOrderDemo");
 
   // Setup both renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  leftRenderer->SetBackground(.6, .5, .4);
+  leftRenderer->SetBackground(colors->GetColor3d("BurlyWood").GetData());
 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  rightRenderer->SetBackground(.4, .5, .6);  
+  rightRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
   // an interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
 
   interactor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkAxesActor> axes =
-    vtkSmartPointer<vtkAxesActor>::New();
+  vtkNew<vtkAxesActor> axes;
   axes->AxisLabelsOff();
-  axes->SetTotalLength(5,5,5);
-  
+  axes->SetTotalLength(5, 5, 5);
+
+  vtkCamera* camera;
+  camera = leftRenderer->GetActiveCamera();
   leftRenderer->AddActor(axes);
   leftRenderer->AddActor(actor1a);
   leftRenderer->AddActor(actor1b);
@@ -105,10 +99,12 @@ int main(int, char *[])
   rightRenderer->AddActor(axes);
   rightRenderer->AddActor(actor2a);
   rightRenderer->AddActor(actor2b);
+  rightRenderer->SetActiveCamera(camera);
 
   leftRenderer->ResetCamera();
-  rightRenderer->ResetCamera();
-  
+  // rightRenderer->ResetCamera();
+  camera->Zoom(1.3);
+
   renderWindow->Render();
 
   interactor->Start();

@@ -1,32 +1,29 @@
-#include <vtkSmartPointer.h>
-#include <vtkWarpVector.h>
-
-#include <vtkXMLPolyDataReader.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyData.h>
-#include <vtkCleanPolyData.h>
-#include <vtkPolyDataNormals.h>
-#include <vtkDataSetAttributes.h>
-
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
 #include <vtkCamera.h>
+#include <vtkCleanPolyData.h>
+#include <vtkDataSetAttributes.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkPolyDataNormals.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-
-#include <vtkNamedColors.h>
-int main(int argc, char *argv[])
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
+#include <vtkWarpVector.h>
+#include <vtkXMLPolyDataReader.h>
+int main(int argc, char* argv[])
 {
   double scale = 1.0;
   vtkSmartPointer<vtkPolyData> inputPolyData;
   // If a file is provided, use it, otherwise generate a sphere
-  if(argc > 1)
+  if (argc > 1)
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName(argv[1]);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(argv[1]); // e.g. cowHead.vtp
     reader->Update();
     inputPolyData = reader->GetOutput();
     if (argc > 2)
@@ -36,65 +33,54 @@ int main(int argc, char *argv[])
   }
   else
   {
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetPhiResolution(15);
     sphereSource->SetThetaResolution(15);
     sphereSource->Update();
     inputPolyData = sphereSource->GetOutput();
   }
 
-  vtkSmartPointer<vtkCleanPolyData> clean =
-    vtkSmartPointer<vtkCleanPolyData>::New();
+  vtkNew<vtkCleanPolyData> clean;
   clean->SetInputData(inputPolyData);
 
   // Generate normals
-  vtkSmartPointer<vtkPolyDataNormals> normals =
-    vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> normals;
   normals->SetInputConnection(clean->GetOutputPort());
   normals->SplittingOff();
 
   // Warp using the normals
-  vtkSmartPointer<vtkWarpVector> warp =
-    vtkSmartPointer<vtkWarpVector>::New();
-  warp->SetInputConnection (normals->GetOutputPort());
-  warp->SetInputArrayToProcess(0, 0, 0,
-                               vtkDataObject::FIELD_ASSOCIATION_POINTS,
+  vtkNew<vtkWarpVector> warp;
+  warp->SetInputConnection(normals->GetOutputPort());
+  warp->SetInputArrayToProcess(0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_POINTS,
                                vtkDataSetAttributes::NORMALS);
   warp->SetScaleFactor(scale);
 
   // Visualize the original and warped models
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(warp->GetOutputPort());
   mapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> warpedActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> warpedActor;
   warpedActor->SetMapper(mapper);
   warpedActor->GetProperty()->SetColor(colors->GetColor4d("Flesh").GetData());
 
-  vtkSmartPointer<vtkPolyDataMapper> originalMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> originalMapper;
   originalMapper->SetInputConnection(normals->GetOutputPort());
   originalMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> originalActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> originalActor;
   originalActor->SetMapper(originalMapper);
   originalActor->GetProperty()->SetInterpolationToFlat();
   originalActor->GetProperty()->SetColor(colors->GetColor4d("Flesh").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("WarpSurface");
 
   // Create a camera for all renderers
-  vtkSmartPointer<vtkCamera> camera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -102,14 +88,12 @@ int main(int argc, char *argv[])
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup both renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   leftRenderer->SetViewport(leftViewport);
   leftRenderer->SetBackground(colors->GetColor3d("Burlywood").GetData());
   leftRenderer->SetActiveCamera(camera);
 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
   rightRenderer->SetViewport(rightViewport);
   rightRenderer->SetBackground(colors->GetColor3d("CornFlower").GetData());
   rightRenderer->SetActiveCamera(camera);
@@ -122,8 +106,7 @@ int main(int argc, char *argv[])
   renderWindow->AddRenderer(rightRenderer);
   renderWindow->AddRenderer(leftRenderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();

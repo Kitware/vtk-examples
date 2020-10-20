@@ -1,13 +1,15 @@
 #include <vtkCellData.h>
 #include <vtkDoubleArray.h>
 #include <vtkFloatArray.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataNormals.h>
-#include <vtkPointData.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkXMLPolyDataReader.h>
+
+namespace {
 
 void TestPointNormals(vtkPolyData* polydata);
 void TestCellNormals(vtkPolyData* polydata);
@@ -15,21 +17,21 @@ void TestCellNormals(vtkPolyData* polydata);
 bool GetPointNormals(vtkPolyData* polydata);
 bool GetCellNormals(vtkPolyData* polydata);
 
-int main(int argc, char *argv[])
+} // namespace
+
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkPolyData> polydata =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
 
   // If a file is provided, read it. Else, create a sphere.
-  if(argc == 2)
+  if (argc == 2)
   {
 
     // Read File
-    std::string filename = argv[1]; //first command line argument
+    std::string filename = argv[1]; // first command line argument
     std::cout << "Reading file " << filename << "..." << std::endl;
 
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     std::cout << "Reading " << filename << std::endl;
     reader->SetFileName(filename.c_str());
     reader->Update();
@@ -38,10 +40,10 @@ int main(int argc, char *argv[])
   else
   {
     std::cout << "Creating a sphere..." << std::endl;
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->Update();
-    std::cout << "In main: " << sphereSource->GetOutput()->GetNumberOfPoints() << std::endl;
+    std::cout << "In main: " << sphereSource->GetOutput()->GetNumberOfPoints()
+              << std::endl;
     polydata->DeepCopy(sphereSource->GetOutput());
   }
 
@@ -54,19 +56,22 @@ int main(int argc, char *argv[])
   return EXIT_SUCCESS;
 }
 
+namespace {
+
 void TestPointNormals(vtkPolyData* polydata)
 {
-  std::cout << "In TestPointNormals: " << polydata->GetNumberOfPoints() << std::endl;
+  std::cout << "In TestPointNormals: " << polydata->GetNumberOfPoints()
+            << std::endl;
   // Try to read normals directly
   bool hasPointNormals = GetPointNormals(polydata);
 
-  if(!hasPointNormals)
+  if (!hasPointNormals)
   {
-    std::cout << "No point normals were found. Computing normals..." << std::endl;
+    std::cout << "No point normals were found. Computing normals..."
+              << std::endl;
 
     // Generate normals
-    vtkSmartPointer<vtkPolyDataNormals> normalGenerator =
-      vtkSmartPointer<vtkPolyDataNormals>::New();
+    vtkNew<vtkPolyDataNormals> normalGenerator;
     normalGenerator->SetInputData(polydata);
     normalGenerator->ComputePointNormalsOn();
     normalGenerator->ComputeCellNormalsOff();
@@ -88,8 +93,8 @@ void TestPointNormals(vtkPolyData* polydata)
     // Try to read normals again
     hasPointNormals = GetPointNormals(polydata);
 
-    std::cout << "On the second try, has point normals? " << hasPointNormals << std::endl;
-
+    std::cout << "On the second try, has point normals? " << hasPointNormals
+              << std::endl;
   }
   else
   {
@@ -102,13 +107,13 @@ void TestCellNormals(vtkPolyData* polydata)
   // Try to read normals directly
   bool hasCellNormals = GetCellNormals(polydata);
 
-  if(!hasCellNormals)
+  if (!hasCellNormals)
   {
-    std::cout << "No cell normals were found. Computing normals..." << std::endl;
+    std::cout << "No cell normals were found. Computing normals..."
+              << std::endl;
 
     // Generate normals
-    vtkSmartPointer<vtkPolyDataNormals> normalGenerator =
-      vtkSmartPointer<vtkPolyDataNormals>::New();
+    vtkNew<vtkPolyDataNormals> normalGenerator;
     normalGenerator->SetInputData(polydata);
     normalGenerator->ComputePointNormalsOff();
     normalGenerator->ComputeCellNormalsOn();
@@ -130,8 +135,8 @@ void TestCellNormals(vtkPolyData* polydata)
     // Try to read normals again
     hasCellNormals = GetCellNormals(polydata);
 
-    std::cout << "On the second try, has cell normals? " << hasCellNormals << std::endl;
-
+    std::cout << "On the second try, has cell normals? " << hasCellNormals
+              << std::endl;
   }
   else
   {
@@ -139,11 +144,10 @@ void TestCellNormals(vtkPolyData* polydata)
   }
 }
 
-
-
 bool GetPointNormals(vtkPolyData* polydata)
 {
-  std::cout << "In GetPointNormals: " << polydata->GetNumberOfPoints() << std::endl;
+  std::cout << "In GetPointNormals: " << polydata->GetNumberOfPoints()
+            << std::endl;
   std::cout << "Looking for point normals..." << std::endl;
 
   // Count points
@@ -156,36 +160,36 @@ bool GetPointNormals(vtkPolyData* polydata)
 
   ////////////////////////////////////////////////////////////////
   // Double normals in an array
-  vtkDoubleArray* normalDataDouble =
-    dynamic_cast<vtkDoubleArray*>(polydata->GetPointData()->GetArray("Normals"));
+  vtkDoubleArray* normalDataDouble = dynamic_cast<vtkDoubleArray*>(
+      polydata->GetPointData()->GetArray("Normals"));
 
-  if(normalDataDouble)
+  if (normalDataDouble)
   {
     int nc = normalDataDouble->GetNumberOfTuples();
-    std::cout << "There are " << nc
-            << " components in normalDataDouble" << std::endl;
+    std::cout << "There are " << nc << " components in normalDataDouble"
+              << std::endl;
     return true;
   }
 
   ////////////////////////////////////////////////////////////////
   // Double normals in an array
-  vtkFloatArray* normalDataFloat =
-    dynamic_cast<vtkFloatArray*>(polydata->GetPointData()->GetArray("Normals"));
+  vtkFloatArray* normalDataFloat = dynamic_cast<vtkFloatArray*>(
+      polydata->GetPointData()->GetArray("Normals"));
 
-  if(normalDataFloat)
+  if (normalDataFloat)
   {
     int nc = normalDataFloat->GetNumberOfTuples();
-    std::cout << "There are " << nc
-            << " components in normalDataFloat" << std::endl;
+    std::cout << "There are " << nc << " components in normalDataFloat"
+              << std::endl;
     return true;
   }
 
   ////////////////////////////////////////////////////////////////
   // Point normals
   vtkDoubleArray* normalsDouble =
-    dynamic_cast<vtkDoubleArray*>(polydata->GetPointData()->GetNormals());
+      dynamic_cast<vtkDoubleArray*>(polydata->GetPointData()->GetNormals());
 
-  if(normalsDouble)
+  if (normalsDouble)
   {
     std::cout << "There are " << normalsDouble->GetNumberOfComponents()
               << " components in normalsDouble" << std::endl;
@@ -195,9 +199,9 @@ bool GetPointNormals(vtkPolyData* polydata)
   ////////////////////////////////////////////////////////////////
   // Point normals
   vtkFloatArray* normalsFloat =
-    dynamic_cast<vtkFloatArray*>(polydata->GetPointData()->GetNormals());
+      dynamic_cast<vtkFloatArray*>(polydata->GetPointData()->GetNormals());
 
-  if(normalsFloat)
+  if (normalsFloat)
   {
     std::cout << "There are " << normalsFloat->GetNumberOfComponents()
               << " components in normalsFloat" << std::endl;
@@ -206,8 +210,9 @@ bool GetPointNormals(vtkPolyData* polydata)
 
   /////////////////////////////////////////////////////////////////////
   // Generic type point normals
-  vtkDataArray* normalsGeneric = polydata->GetPointData()->GetNormals(); //works
-  if(normalsGeneric)
+  vtkDataArray* normalsGeneric =
+      polydata->GetPointData()->GetNormals(); // works
+  if (normalsGeneric)
   {
     std::cout << "There are " << normalsGeneric->GetNumberOfTuples()
               << " normals in normalsGeneric" << std::endl;
@@ -215,8 +220,8 @@ bool GetPointNormals(vtkPolyData* polydata)
     double testDouble[3];
     normalsGeneric->GetTuple(0, testDouble);
 
-    std::cout << "Double: " << testDouble[0] << " "
-              << testDouble[1] << " " << testDouble[2] << std::endl;
+    std::cout << "Double: " << testDouble[0] << " " << testDouble[1] << " "
+              << testDouble[2] << std::endl;
 
     // Can't do this:
     /*
@@ -229,13 +234,10 @@ bool GetPointNormals(vtkPolyData* polydata)
     return true;
   }
 
-
   // If the function has not yet quit, there were none of these types of normals
   std::cout << "Normals not found!" << std::endl;
   return false;
-
 }
-
 
 bool GetCellNormals(vtkPolyData* polydata)
 {
@@ -251,36 +253,36 @@ bool GetCellNormals(vtkPolyData* polydata)
 
   ////////////////////////////////////////////////////////////////
   // Double normals in an array
-  vtkDoubleArray* normalDataDouble =
-    dynamic_cast<vtkDoubleArray*>(polydata->GetCellData()->GetArray("Normals"));
+  vtkDoubleArray* normalDataDouble = dynamic_cast<vtkDoubleArray*>(
+      polydata->GetCellData()->GetArray("Normals"));
 
-  if(normalDataDouble)
+  if (normalDataDouble)
   {
     int nc = normalDataDouble->GetNumberOfTuples();
-    std::cout << "There are " << nc
-            << " components in normalDataDouble" << std::endl;
+    std::cout << "There are " << nc << " components in normalDataDouble"
+              << std::endl;
     return true;
   }
 
   ////////////////////////////////////////////////////////////////
   // Double normals in an array
-  vtkFloatArray* normalDataFloat =
-    dynamic_cast<vtkFloatArray*>(polydata->GetCellData()->GetArray("Normals"));
+  vtkFloatArray* normalDataFloat = dynamic_cast<vtkFloatArray*>(
+      polydata->GetCellData()->GetArray("Normals"));
 
-  if(normalDataFloat)
+  if (normalDataFloat)
   {
     int nc = normalDataFloat->GetNumberOfTuples();
-    std::cout << "There are " << nc
-            << " components in normalDataFloat" << std::endl;
+    std::cout << "There are " << nc << " components in normalDataFloat"
+              << std::endl;
     return true;
   }
 
   ////////////////////////////////////////////////////////////////
   // Point normals
   vtkDoubleArray* normalsDouble =
-    dynamic_cast<vtkDoubleArray*>(polydata->GetCellData()->GetNormals());
+      dynamic_cast<vtkDoubleArray*>(polydata->GetCellData()->GetNormals());
 
-  if(normalsDouble)
+  if (normalsDouble)
   {
     std::cout << "There are " << normalsDouble->GetNumberOfComponents()
               << " components in normalsDouble" << std::endl;
@@ -290,9 +292,9 @@ bool GetCellNormals(vtkPolyData* polydata)
   ////////////////////////////////////////////////////////////////
   // Point normals
   vtkFloatArray* normalsFloat =
-    dynamic_cast<vtkFloatArray*>(polydata->GetCellData()->GetNormals());
+      dynamic_cast<vtkFloatArray*>(polydata->GetCellData()->GetNormals());
 
-  if(normalsFloat)
+  if (normalsFloat)
   {
     std::cout << "There are " << normalsFloat->GetNumberOfComponents()
               << " components in normalsFloat" << std::endl;
@@ -301,8 +303,8 @@ bool GetCellNormals(vtkPolyData* polydata)
 
   /////////////////////////////////////////////////////////////////////
   // Generic type point normals
-  vtkDataArray* normalsGeneric = polydata->GetCellData()->GetNormals(); //works
-  if(normalsGeneric)
+  vtkDataArray* normalsGeneric = polydata->GetCellData()->GetNormals(); // works
+  if (normalsGeneric)
   {
     std::cout << "There are " << normalsGeneric->GetNumberOfTuples()
               << " normals in normalsGeneric" << std::endl;
@@ -310,8 +312,8 @@ bool GetCellNormals(vtkPolyData* polydata)
     double testDouble[3];
     normalsGeneric->GetTuple(0, testDouble);
 
-    std::cout << "Double: " << testDouble[0] << " "
-              << testDouble[1] << " " << testDouble[2] << std::endl;
+    std::cout << "Double: " << testDouble[0] << " " << testDouble[1] << " "
+              << testDouble[2] << std::endl;
 
     // Can't do this:
     /*
@@ -324,9 +326,9 @@ bool GetCellNormals(vtkPolyData* polydata)
     return true;
   }
 
-
   // If the function has not yet quit, there were none of these types of normals
   std::cout << "Normals not found!" << std::endl;
   return false;
-
 }
+
+} // namespace

@@ -1,31 +1,36 @@
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkQuantizePolyDataPoints.h>
-
+#include <vtkSmartPointer.h>
+#include <vtkCamera.h>
+#include <vtkGlyph3DMapper.h>
+#include <vtkPointSource.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
-#include <vtkPointSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkXMLPolyDataReader.h>
 #include <vtkSphereSource.h>
-#include <vtkGlyph3DMapper.h>
-#include <vtkCamera.h>
+#include <vtkXMLPolyDataReader.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 
-int main(int, char *[])
+
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkPointSource> pointSource =
-    vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(100);
   pointSource->Update();
 
-  std::cout << "There are " << pointSource->GetNumberOfPoints()
-            << " points." << std::endl;
+  std::cout << "There are " << pointSource->GetNumberOfPoints() << " points."
+            << std::endl;
 
-  vtkSmartPointer<vtkQuantizePolyDataPoints> quantizeFilter =
-    vtkSmartPointer<vtkQuantizePolyDataPoints>::New();
+  vtkNew<vtkQuantizePolyDataPoints> quantizeFilter;
   quantizeFilter->SetInputConnection(pointSource->GetOutputPort());
   quantizeFilter->SetQFactor(.1);
   quantizeFilter->Update();
@@ -34,55 +39,54 @@ int main(int, char *[])
   std::cout << "There are " << quantized->GetNumberOfPoints()
             << " quantized points." << std::endl;
 
-  for(vtkIdType i = 0; i < pointSource->GetOutput()->GetNumberOfPoints(); i++)
+  for (vtkIdType i = 0; i < pointSource->GetOutput()->GetNumberOfPoints(); i++)
   {
     double pOrig[3];
     double pQuantized[3];
-    pointSource->GetOutput()->GetPoint(i,pOrig);
-    quantized->GetPoints()->GetPoint(i,pQuantized);
+    pointSource->GetOutput()->GetPoint(i, pOrig);
+    quantized->GetPoints()->GetPoint(i, pQuantized);
 
-    std::cout << "Point " << i << " : ("
-              << pOrig[0] << ", " << pOrig[1] << ", " << pOrig[2] << ")"
-              << " (" << pQuantized[0] << ", " << pQuantized[1] << ", " << pQuantized[2]
-              << ")" << std::endl;
+    std::cout << "Point " << i << " : (" << pOrig[0] << ", " << pOrig[1] << ", "
+              << pOrig[2] << ")"
+              << " (" << pQuantized[0] << ", " << pQuantized[1] << ", "
+              << pQuantized[2] << ")" << std::endl;
   }
 
-  double radius = .02;
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  double radius = 0.02;
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetRadius(radius);
 
-  vtkSmartPointer<vtkGlyph3DMapper> inputMapper =
-    vtkSmartPointer<vtkGlyph3DMapper>::New();
+  vtkNew<vtkGlyph3DMapper> inputMapper;
   inputMapper->SetInputConnection(pointSource->GetOutputPort());
   inputMapper->SetSourceConnection(sphereSource->GetOutputPort());
   inputMapper->ScalarVisibilityOff();
   inputMapper->ScalingOff();
 
-  vtkSmartPointer<vtkActor> inputActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> inputActor;
   inputActor->SetMapper(inputMapper);
+  inputActor->GetProperty()->SetColor(
+      colors->GetColor3d("Orchid").GetData());
 
-  vtkSmartPointer<vtkGlyph3DMapper> quantizedMapper =
-    vtkSmartPointer<vtkGlyph3DMapper>::New();
+
+  vtkNew<vtkGlyph3DMapper> quantizedMapper;
   quantizedMapper->SetInputConnection(quantizeFilter->GetOutputPort());
   quantizedMapper->SetSourceConnection(sphereSource->GetOutputPort());
   quantizedMapper->ScalarVisibilityOff();
   quantizedMapper->ScalingOff();
 
-  vtkSmartPointer<vtkActor> quantizedActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> quantizedActor;
   quantizedActor->SetMapper(quantizedMapper);
+  quantizedActor->GetProperty()->SetColor(
+      colors->GetColor3d("Orchid").GetData());
 
   // There will be one render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 360);
 
   // And one interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
+  renderWindow->SetWindowName("QuantizePolyDataPoints");
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -90,19 +94,16 @@ int main(int, char *[])
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup both renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  leftRenderer->SetBackground(.6, .5, .4);
+  leftRenderer->SetBackground(colors->GetColor3d("Bisque").GetData());
 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  rightRenderer->SetBackground(.4, .5, .6);
+  rightRenderer->SetBackground(colors->GetColor3d("PaleTurquoise").GetData());
 
-  // Add the sphere to the left and the cube to the right
   leftRenderer->AddActor(inputActor);
   rightRenderer->AddActor(quantizedActor);
 

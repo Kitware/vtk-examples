@@ -8,7 +8,7 @@ def main():
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.SetWindowName('Outline')
-    
+
     renWin.AddRenderer(ren)
 
     # create a renderwindowinteractor
@@ -38,7 +38,7 @@ def main():
     actor2 = vtk.vtkActor()
     actor2.SetMapper(mapper2)
     actor2.GetProperty().SetColor(colors.GetColor3d('Gold'))
-    
+
     # assign actor to the renderer
     ren.AddActor(actor1)
     ren.AddActor(actor2)

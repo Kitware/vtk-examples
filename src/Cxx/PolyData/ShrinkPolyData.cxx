@@ -1,72 +1,60 @@
-#include <vtkSmartPointer.h>
-
-#include <vtkShrinkPolyData.h>
-#include <vtkSphereSource.h>
-
-#include <vtkPolyData.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
 #include <vtkCamera.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkShrinkPolyData.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 #include <vtkXMLPolyDataReader.h>
 
-#include <vtkNamedColors.h>
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   vtkSmartPointer<vtkPolyData> inputPolyData;
-  if(argc > 1)
+  if (argc > 1)
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName(argv[1]);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(argv[1]); // e.g. cowHead.vtp
     reader->Update();
     inputPolyData = reader->GetOutput();
   }
   else
   {
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetPhiResolution(15);
     sphereSource->SetThetaResolution(15);
     sphereSource->Update();
     inputPolyData = sphereSource->GetOutput();
   }
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkShrinkPolyData> shrink =
-    vtkSmartPointer<vtkShrinkPolyData>::New();
+  vtkNew<vtkShrinkPolyData> shrink;
   shrink->SetShrinkFactor(.8);
   shrink->SetInputData(inputPolyData);
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(shrink->GetOutputPort());
   mapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkProperty> back =
-    vtkSmartPointer<vtkProperty>::New();
+  vtkNew<vtkProperty> back;
   back->SetColor(colors->GetColor3d("Peacock").GetData());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetColor(colors->GetColor3d("Salmon").GetData());
   actor->SetBackfaceProperty(back);
@@ -76,10 +64,13 @@ int main(int argc, char *argv[])
   renderer->ResetCamera();
   renderer->GetActiveCamera()->Azimuth(30);
   renderer->GetActiveCamera()->Elevation(30);
-  renderer->GetActiveCamera()->Dolly(1.5);;
+  renderer->GetActiveCamera()->Dolly(1.5);
+
   renderer->ResetCameraClippingRange();
 
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("ShrinkPolyData");
+
   renderWindow->Render();
   interactor->Start();
 

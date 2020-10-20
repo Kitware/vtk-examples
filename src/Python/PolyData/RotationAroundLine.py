@@ -4,59 +4,55 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    # create two cones, rotate one of them.
-
-    # create a rendering window and renderer
+    # Create a rendering window and renderer
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
-    WIDTH = 640
-    HEIGHT = 480
-    renWin.SetSize(WIDTH, HEIGHT)
+    renWin.SetSize(640, 480)
+    renWin.SetWindowName('RotationAroundLine')
 
-    # create a renderwindowinteractor
+    # Create a renderwindowinteractor
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    # create cone
-    source = vtk.vtkConeSource()
-    source.SetResolution(60)
-    source.SetCenter(-2, 0, 0)
+    # Create arrow
+    source = vtk.vtkArrowSource()
 
-    # create a transform that rotates the cone
+    # Create a transform that rotates the arrow 45° around the z-axis
     transform = vtk.vtkTransform()
-    transform.RotateWXYZ(45, 0, 1, 0)
+    transform.RotateWXYZ(45, 0, 0, 1)
     transformFilter = vtk.vtkTransformPolyDataFilter()
     transformFilter.SetTransform(transform)
     transformFilter.SetInputConnection(source.GetOutputPort())
     transformFilter.Update()
 
-    # mapper for original cone
+    # Mapper for the original arrow
     coneMapper1 = vtk.vtkPolyDataMapper()
     coneMapper1.SetInputConnection(source.GetOutputPort())
 
-    # another mapper for the rotated cone
+    # Another mapper for the rotated arrow
     coneMapper2 = vtk.vtkPolyDataMapper()
     coneMapper2.SetInputConnection(transformFilter.GetOutputPort())
 
-    # actor for original cone
+    # Actor for original arrow
     actor1 = vtk.vtkActor()
     actor1.SetMapper(coneMapper1)
 
-    # actor for rotated cone
+    # Actor for rotated arrow
     actor2 = vtk.vtkActor()
     actor2.SetMapper(coneMapper2)
 
-    # color the original cone red
-    actor1.GetProperty().SetColor(colors.GetColor3d('Red'))
-    # color rotated cone blue
-    actor2.GetProperty().SetColor(colors.GetColor3d('Blue'))
+    # Color the original arrow
+    actor1.GetProperty().SetColor(colors.GetColor3d('LightCoral'))
+    # Color rotated arrow
+    actor2.GetProperty().SetColor(colors.GetColor3d('PaleTurquoise'))
 
-    # assign actor to the renderer
+    # Assign actor to the renderer
     ren.AddActor(actor1)
     ren.AddActor(actor2)
+    ren.SetBackground(colors.GetColor3d('SlateGray'));
 
-    # enable user interface interactor
+    # Enable the user interface interactor
     iren.Initialize()
     renWin.Render()
     iren.Start()

@@ -1,32 +1,28 @@
 #include <vtkAppendFilter.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkXMLUnstructuredGridWriter.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(0.0, 0.0, 0.0);
   sphereSource->SetRadius(5.0);
   sphereSource->Update();
 
   // Combine the two data sets
-  vtkSmartPointer<vtkAppendFilter> appendFilter =
-    vtkSmartPointer<vtkAppendFilter>::New();
+  vtkNew<vtkAppendFilter> appendFilter;
   appendFilter->AddInputData(sphereSource->GetOutput());
   appendFilter->Update();
 
-  vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid =
-     vtkSmartPointer<vtkUnstructuredGrid>::New();
+  vtkNew<vtkUnstructuredGrid> unstructuredGrid;
   unstructuredGrid->ShallowCopy(appendFilter->GetOutput());
 
   // Write the unstructured grid
-  vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer =
-    vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
+  vtkNew<vtkXMLUnstructuredGridWriter> writer;
   writer->SetFileName("UnstructuredGrid.vtu");
   writer->SetInputData(unstructuredGrid);
   writer->Write();

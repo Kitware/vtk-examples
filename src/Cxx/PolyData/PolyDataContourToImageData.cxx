@@ -1,15 +1,15 @@
-#include <vtkSmartPointer.h>
-#include <vtkPolyData.h>
-#include <vtkImageData.h>
-#include <vtkSphereSource.h>
-#include <vtkMetaImageWriter.h>
-#include <vtkPolyDataToImageStencil.h>
-#include <vtkImageStencil.h>
-#include <vtkPointData.h>
 #include <vtkCutter.h>
-#include <vtkPlane.h>
-#include <vtkStripper.h>
+#include <vtkImageData.h>
+#include <vtkImageStencil.h>
 #include <vtkLinearExtrusionFilter.h>
+#include <vtkMetaImageWriter.h>
+#include <vtkNew.h>
+#include <vtkPlane.h>
+#include <vtkPointData.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataToImageStencil.h>
+#include <vtkSphereSource.h>
+#include <vtkStripper.h>
 #include <vtkXMLPolyDataWriter.h>
 
 // This example generates a sphere, cuts it with a plane and, therefore,
@@ -19,11 +19,10 @@
 // utilized. Both the circular poly data (circle.vtp) and the resultant
 // image (labelImage.mhd) are saved to disk.
 
-int main(int, char *[])
+int main(int, char*[])
 {
   // 3D source sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetPhiResolution(30);
   sphereSource->SetThetaResolution(30);
   sphereSource->SetCenter(40, 40, 0);
@@ -31,26 +30,22 @@ int main(int, char *[])
 
   // generate circle by cutting the sphere with an implicit plane
   // (through its center, axis-aligned)
-  vtkSmartPointer<vtkCutter> circleCutter =
-    vtkSmartPointer<vtkCutter>::New();
+  vtkNew<vtkCutter> circleCutter;
   circleCutter->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkPlane> cutPlane =
-    vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> cutPlane;
   cutPlane->SetOrigin(sphereSource->GetCenter());
   cutPlane->SetNormal(0, 0, 1);
   circleCutter->SetCutFunction(cutPlane);
 
-  vtkSmartPointer<vtkStripper> stripper =
-    vtkSmartPointer<vtkStripper>::New();
+  vtkNew<vtkStripper> stripper;
   stripper->SetInputConnection(circleCutter->GetOutputPort()); // valid circle
   stripper->Update();
 
   // that's our circle
-  vtkSmartPointer<vtkPolyData> circle = stripper->GetOutput();
+  auto circle = stripper->GetOutput();
 
   // write circle out
-  vtkSmartPointer<vtkXMLPolyDataWriter> polyDataWriter =
-      vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+  vtkNew<vtkXMLPolyDataWriter> polyDataWriter;
   polyDataWriter->SetInputData(circle);
   polyDataWriter->SetFileName("circle.vtp");
   polyDataWriter->SetCompressorTypeToNone();
@@ -58,8 +53,7 @@ int main(int, char *[])
   polyDataWriter->Write();
 
   // prepare the binary image's voxel grid
-  vtkSmartPointer<vtkImageData> whiteImage =
-      vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> whiteImage;
   double bounds[6];
   circle->GetBounds(bounds);
   double spacing[3]; // desired volume spacing
@@ -72,8 +66,9 @@ int main(int, char *[])
   int dim[3];
   for (int i = 0; i < 3; i++)
   {
-    dim[i] = static_cast<int>(ceil((bounds[i * 2 + 1] - bounds[i * 2]) /
-        spacing[i])) + 1;
+    dim[i] = static_cast<int>(
+                 ceil((bounds[i * 2 + 1] - bounds[i * 2]) / spacing[i])) +
+        1;
     if (dim[i] < 1)
       dim[i] = 1;
   }
@@ -82,11 +77,11 @@ int main(int, char *[])
   double origin[3];
 
   // NOTE: I am not sure whether or not we had to add some offset!
-  origin[0] = bounds[0];// + spacing[0] / 2;
-  origin[1] = bounds[2];// + spacing[1] / 2;
-  origin[2] = bounds[4];// + spacing[2] / 2;
+  origin[0] = bounds[0]; // + spacing[0] / 2;
+  origin[1] = bounds[2]; // + spacing[1] / 2;
+  origin[2] = bounds[4]; // + spacing[2] / 2;
   whiteImage->SetOrigin(origin);
-  whiteImage->AllocateScalars(VTK_UNSIGNED_CHAR,1);
+  whiteImage->AllocateScalars(VTK_UNSIGNED_CHAR, 1);
 
   // fill the image with foreground voxels:
   unsigned char inval = 255;
@@ -98,8 +93,7 @@ int main(int, char *[])
   }
 
   // sweep polygonal data (this is the important thing with contours!)
-  vtkSmartPointer<vtkLinearExtrusionFilter> extruder =
-      vtkSmartPointer<vtkLinearExtrusionFilter>::New();
+  vtkNew<vtkLinearExtrusionFilter> extruder;
   extruder->SetInputData(circle);
   extruder->SetScaleFactor(1.);
   extruder->SetExtrusionTypeToVectorExtrusion();
@@ -107,8 +101,7 @@ int main(int, char *[])
   extruder->Update();
 
   // polygonal data --> image stencil:
-  vtkSmartPointer<vtkPolyDataToImageStencil> pol2stenc =
-    vtkSmartPointer<vtkPolyDataToImageStencil>::New();
+  vtkNew<vtkPolyDataToImageStencil> pol2stenc;
   pol2stenc->SetTolerance(0); // important if extruder->SetVector(0, 0, 1) !!!
   pol2stenc->SetInputConnection(extruder->GetOutputPort());
   pol2stenc->SetOutputOrigin(origin);
@@ -117,8 +110,7 @@ int main(int, char *[])
   pol2stenc->Update();
 
   // cut the corresponding white image and set the background:
-  vtkSmartPointer<vtkImageStencil> imgstenc =
-    vtkSmartPointer<vtkImageStencil>::New();
+  vtkNew<vtkImageStencil> imgstenc;
   imgstenc->SetInputData(whiteImage);
   imgstenc->SetStencilConnection(pol2stenc->GetOutputPort());
   imgstenc->ReverseStencilOff();
@@ -126,8 +118,7 @@ int main(int, char *[])
   imgstenc->Update();
   imgstenc->GetOutput()->Print(std::cout);
 
-  vtkSmartPointer<vtkMetaImageWriter> imageWriter =
-    vtkSmartPointer<vtkMetaImageWriter>::New();
+  vtkNew<vtkMetaImageWriter> imageWriter;
   imageWriter->SetFileName("labelImage.mhd");
   imageWriter->SetInputConnection(imgstenc->GetOutputPort());
   imageWriter->Write();

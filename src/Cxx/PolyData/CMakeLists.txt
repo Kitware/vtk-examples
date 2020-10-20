@@ -104,7 +104,6 @@ if (BUILD_TESTING)
     LoopBooleanPolyDataFilter
     MiscPointData
     PointLocatorVisualization
-    PolyDataBooleanOperationFilter
     PolyDataIsoLines
     PolyDataPointSampler
     PolyDataToImageData
@@ -195,12 +194,6 @@ if (BUILD_TESTING)
 
   add_test(${KIT}-PointLocatorVisualization ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestPointLocatorVisualization -E 50)
-
-  if(TARGET PolyDataBooleanOperationFilter)
-    add_test(${KIT}-PolyDataBooleanOperationFilter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-message (STATUS "TestPolyDataBooleanOperationFilter")
-    TestPolyDataBooleanOperationFilter ${DATA}/Torso.vtp difference ${DATA}/ObliqueCone.vtp)
-  endif()
 
   add_test(${KIT}-PolyDataIsoLines ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestPolyDataIsoLines ${DATA}/cowHead.vtp)

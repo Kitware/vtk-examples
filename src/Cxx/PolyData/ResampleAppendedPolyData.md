@@ -15,4 +15,4 @@ The example proceeds as follows:
 
 !!! note
     The example was motivated on [this question](https://discourse.vtk.org/t/how-to-probe-a-polygonal-mesh-on-a-polydata/1323)  on [VTK's Discourse](https://discourse.vtk.org/).
- LocalWords:  Creata
+

@@ -1,39 +1,46 @@
-#include <vtkSmartPointer.h>
-#include <vtkIdList.h>
-#include <vtkPolyData.h>
+#include <vtkActor.h>
 #include <vtkCellData.h>
-#include <vtkDoubleArray.h>
 #include <vtkDataSet.h>
+#include <vtkDataSetMapper.h>
+#include <vtkDoubleArray.h>
+#include <vtkExtractEdges.h>
+#include <vtkExtractSelection.h>
+#include <vtkIdList.h>
+#include <vtkIdTypeArray.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSelection.h>
+#include <vtkSelectionNode.h>
+#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkTriangleFilter.h>
-#include <vtkExtractEdges.h>
-#include <vtkDataSetMapper.h>
-#include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkIdTypeArray.h>
-#include <vtkSelectionNode.h>
-#include <vtkSelection.h>
-#include <vtkExtractSelection.h>
-#include <vtkProperty.h>
 #include <vtkVertexGlyphFilter.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 
-vtkSmartPointer<vtkIdList> GetConnectedVertices(vtkSmartPointer<vtkPolyData> mesh, int id);
+namespace {
 
-int main(int, char *[])
+vtkSmartPointer<vtkIdList> GetConnectedVertices(vtkPolyData* mesh, int id);
+
+}
+
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
-  vtkSmartPointer<vtkTriangleFilter> triangleFilter =
-      vtkSmartPointer<vtkTriangleFilter>::New();
+  vtkNew<vtkTriangleFilter> triangleFilter;
   triangleFilter->SetInputConnection(sphereSource->GetOutputPort());
   triangleFilter->Update();
 
-  vtkSmartPointer<vtkExtractEdges> extractEdges =
-    vtkSmartPointer<vtkExtractEdges>::New();
+  vtkNew<vtkExtractEdges> extractEdges;
   extractEdges->SetInputConnection(triangleFilter->GetOutputPort());
   extractEdges->Update();
 
@@ -41,131 +48,117 @@ int main(int, char *[])
 
   vtkSmartPointer<vtkIdList> connectedVertices = GetConnectedVertices(mesh, 0);
 
-  vtkSmartPointer<vtkIdTypeArray> ids =
-    vtkSmartPointer<vtkIdTypeArray>::New();
+  vtkNew<vtkIdTypeArray> ids;
   ids->SetNumberOfComponents(1);
 
   std::cout << "Connected vertices: ";
-  for(vtkIdType i = 0; i < connectedVertices->GetNumberOfIds(); i++)
+  for (vtkIdType i = 0; i < connectedVertices->GetNumberOfIds(); i++)
   {
     std::cout << connectedVertices->GetId(i) << " ";
     ids->InsertNextValue(connectedVertices->GetId(i));
   }
   std::cout << std::endl;
 
-  vtkSmartPointer<vtkDataSetMapper> connectedVertexMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> connectedVertexMapper;
 
   {
-    vtkSmartPointer<vtkSelectionNode> selectionNode =
-      vtkSmartPointer<vtkSelectionNode>::New();
+    vtkNew<vtkSelectionNode> selectionNode;
     selectionNode->SetFieldType(vtkSelectionNode::POINT);
     selectionNode->SetContentType(vtkSelectionNode::INDICES);
     selectionNode->SetSelectionList(ids);
 
-    vtkSmartPointer<vtkSelection> selection =
-        vtkSmartPointer<vtkSelection>::New();
+    vtkNew<vtkSelection> selection;
     selection->AddNode(selectionNode);
 
-    vtkSmartPointer<vtkExtractSelection> extractSelection =
-        vtkSmartPointer<vtkExtractSelection>::New();
+    vtkNew<vtkExtractSelection> extractSelection;
 
     extractSelection->SetInputConnection(0, extractEdges->GetOutputPort());
     extractSelection->SetInputData(1, selection);
     extractSelection->Update();
 
-    vtkSmartPointer<vtkVertexGlyphFilter> glyphFilter =
-      vtkSmartPointer<vtkVertexGlyphFilter>::New();
+    vtkNew<vtkVertexGlyphFilter> glyphFilter;
     glyphFilter->SetInputConnection(extractSelection->GetOutputPort());
     glyphFilter->Update();
 
     connectedVertexMapper->SetInputConnection(glyphFilter->GetOutputPort());
   }
 
-  vtkSmartPointer<vtkActor> connectedVertexActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> connectedVertexActor;
   connectedVertexActor->SetMapper(connectedVertexMapper);
-  connectedVertexActor->GetProperty()->SetColor(1,0,0);
+  connectedVertexActor->GetProperty()->SetColor(
+      colors->GetColor3d("Red").GetData());
   connectedVertexActor->GetProperty()->SetPointSize(5);
 
-  vtkSmartPointer<vtkDataSetMapper> queryVertexMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> queryVertexMapper;
 
   {
-    vtkSmartPointer<vtkIdTypeArray> ids2 =
-      vtkSmartPointer<vtkIdTypeArray>::New();
+    vtkNew<vtkIdTypeArray> ids2;
     ids2->SetNumberOfComponents(1);
     ids2->InsertNextValue(0);
 
-    vtkSmartPointer<vtkSelectionNode> selectionNode =
-      vtkSmartPointer<vtkSelectionNode>::New();
+    vtkNew<vtkSelectionNode> selectionNode;
     selectionNode->SetFieldType(vtkSelectionNode::POINT);
     selectionNode->SetContentType(vtkSelectionNode::INDICES);
     selectionNode->SetSelectionList(ids2);
 
-    vtkSmartPointer<vtkSelection> selection =
-        vtkSmartPointer<vtkSelection>::New();
+    vtkNew<vtkSelection> selection;
     selection->AddNode(selectionNode);
 
-    vtkSmartPointer<vtkExtractSelection> extractSelection =
-        vtkSmartPointer<vtkExtractSelection>::New();
+    vtkNew<vtkExtractSelection> extractSelection;
 
     extractSelection->SetInputConnection(0, extractEdges->GetOutputPort());
     extractSelection->SetInputData(1, selection);
     extractSelection->Update();
 
-    vtkSmartPointer<vtkVertexGlyphFilter> glyphFilter =
-      vtkSmartPointer<vtkVertexGlyphFilter>::New();
+    vtkNew<vtkVertexGlyphFilter> glyphFilter;
     glyphFilter->SetInputConnection(extractSelection->GetOutputPort());
     glyphFilter->Update();
 
     queryVertexMapper->SetInputConnection(glyphFilter->GetOutputPort());
   }
 
-  vtkSmartPointer<vtkActor> queryVertexActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> queryVertexActor;
   queryVertexActor->SetMapper(queryVertexMapper);
-  queryVertexActor->GetProperty()->SetColor(0,1,0);
+  queryVertexActor->GetProperty()->SetColor(
+      colors->GetColor3d("Lime").GetData());
   queryVertexActor->GetProperty()->SetPointSize(5);
 
-  vtkSmartPointer<vtkDataSetMapper> sphereMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> sphereMapper;
   sphereMapper->SetInputConnection(extractEdges->GetOutputPort());
-  vtkSmartPointer<vtkActor> sphereActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
+  sphereActor->GetProperty()->SetColor(colors->GetColor3d("Snow").GetData());
 
-    //Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  // Create a renderer, render window, and interactor
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("VertexConnectivity");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  //Add the actors to the scene
+  // Add the actors to the scene
   renderer->AddActor(sphereActor);
   renderer->AddActor(queryVertexActor);
   renderer->AddActor(connectedVertexActor);
-  renderer->SetBackground(.3, .2, .1); // Background color dark red
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
 
-  //Render and interact
+  // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
 }
 
-vtkSmartPointer<vtkIdList> GetConnectedVertices(vtkSmartPointer<vtkPolyData> mesh, int id)
-{
-  vtkSmartPointer<vtkIdList> connectedVertices =
-      vtkSmartPointer<vtkIdList>::New();
+namespace {
 
-  //get all cells that vertex 'id' is a part of
-  vtkSmartPointer<vtkIdList> cellIdList =
-      vtkSmartPointer<vtkIdList>::New();
+vtkSmartPointer<vtkIdList> GetConnectedVertices(vtkPolyData* mesh, int id)
+{
+  vtkNew<vtkIdList> connectedVertices;
+
+  // get all cells that vertex 'id' is a part of
+  vtkNew<vtkIdList> cellIdList;
   mesh->GetPointCells(id, cellIdList);
 
   /*
@@ -177,27 +170,29 @@ vtkSmartPointer<vtkIdList> GetConnectedVertices(vtkSmartPointer<vtkPolyData> mes
   cout << endl;
   */
 
-  for(vtkIdType i = 0; i < cellIdList->GetNumberOfIds(); i++)
+  for (vtkIdType i = 0; i < cellIdList->GetNumberOfIds(); i++)
   {
-    //cout << "id " << i << " : " << cellIdList->GetId(i) << endl;
+    // cout << "id " << i << " : " << cellIdList->GetId(i) << endl;
 
-    vtkSmartPointer<vtkIdList> pointIdList =
-      vtkSmartPointer<vtkIdList>::New();
+    vtkNew<vtkIdList> pointIdList;
     mesh->GetCellPoints(cellIdList->GetId(i), pointIdList);
 
-    //cout << "End points are " << pointIdList->GetId(0) << " and " << pointIdList->GetId(1) << endl;
+    // cout << "End points are " << pointIdList->GetId(0) << " and " <<
+    // pointIdList->GetId(1) << endl;
 
-    if(pointIdList->GetId(0) != id)
+    if (pointIdList->GetId(0) != id)
     {
-      //cout << "Connected to " << pointIdList->GetId(0) << endl;
+      // cout << "Connected to " << pointIdList->GetId(0) << endl;
       connectedVertices->InsertNextId(pointIdList->GetId(0));
     }
     else
     {
-      //cout << "Connected to " << pointIdList->GetId(1) << endl;
+      // cout << "Connected to " << pointIdList->GetId(1) << endl;
       connectedVertices->InsertNextId(pointIdList->GetId(1));
     }
   }
 
   return connectedVertices;
 }
+
+} // namespace

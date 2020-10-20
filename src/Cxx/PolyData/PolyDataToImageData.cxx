@@ -1,30 +1,29 @@
-#include <vtkSmartPointer.h>
-#include <vtkPolyData.h>
 #include <vtkImageData.h>
-#include <vtkSphereSource.h>
-#include <vtkMetaImageWriter.h>
-#include <vtkPolyDataToImageStencil.h>
 #include <vtkImageStencil.h>
+#include <vtkMetaImageWriter.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataToImageStencil.h>
+#include <vtkSphereSource.h>
 
 /**
- * This program generates a sphere (closed surface, vtkPolyData) and converts it into volume
- * representation (vtkImageData) where the foreground voxels are 1 and the background voxels are
- * 0. Internally vtkPolyDataToImageStencil is utilized. The resultant image is saved to disk
- * in metaimage file format (SphereVolume.mhd).
+ * This program generates a sphere (closed surface, vtkPolyData) and converts it
+ * into volume representation (vtkImageData) where the foreground voxels are 1
+ * and the background voxels are 0. Internally vtkPolyDataToImageStencil is
+ * utilized. The resultant image is saved to disk in metaimage file format
+ * (SphereVolume.mhd).
  */
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetRadius(20);
   sphereSource->SetPhiResolution(30);
   sphereSource->SetThetaResolution(30);
-  vtkSmartPointer<vtkPolyData> pd = sphereSource->GetOutput();
+  auto pd = sphereSource->GetOutput();
   sphereSource->Update();
 
-  vtkSmartPointer<vtkImageData> whiteImage =
-    vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> whiteImage;
   double bounds[6];
   pd->GetBounds(bounds);
   double spacing[3]; // desired volume spacing
@@ -37,7 +36,8 @@ int main(int, char *[])
   int dim[3];
   for (int i = 0; i < 3; i++)
   {
-    dim[i] = static_cast<int>(ceil((bounds[i * 2 + 1] - bounds[i * 2]) / spacing[i]));
+    dim[i] = static_cast<int>(
+        ceil((bounds[i * 2 + 1] - bounds[i * 2]) / spacing[i]));
   }
   whiteImage->SetDimensions(dim);
   whiteImage->SetExtent(0, dim[0] - 1, 0, dim[1] - 1, 0, dim[2] - 1);
@@ -47,7 +47,7 @@ int main(int, char *[])
   origin[1] = bounds[2] + spacing[1] / 2;
   origin[2] = bounds[4] + spacing[2] / 2;
   whiteImage->SetOrigin(origin);
-  whiteImage->AllocateScalars(VTK_UNSIGNED_CHAR,1);
+  whiteImage->AllocateScalars(VTK_UNSIGNED_CHAR, 1);
 
   // fill the image with foreground voxels:
   unsigned char inval = 255;
@@ -59,8 +59,7 @@ int main(int, char *[])
   }
 
   // polygonal data --> image stencil:
-  vtkSmartPointer<vtkPolyDataToImageStencil> pol2stenc =
-    vtkSmartPointer<vtkPolyDataToImageStencil>::New();
+  vtkNew<vtkPolyDataToImageStencil> pol2stenc;
   pol2stenc->SetInputData(pd);
   pol2stenc->SetOutputOrigin(origin);
   pol2stenc->SetOutputSpacing(spacing);
@@ -68,16 +67,14 @@ int main(int, char *[])
   pol2stenc->Update();
 
   // cut the corresponding white image and set the background:
-  vtkSmartPointer<vtkImageStencil> imgstenc =
-    vtkSmartPointer<vtkImageStencil>::New();
+  vtkNew<vtkImageStencil> imgstenc;
   imgstenc->SetInputData(whiteImage);
   imgstenc->SetStencilConnection(pol2stenc->GetOutputPort());
   imgstenc->ReverseStencilOff();
   imgstenc->SetBackgroundValue(outval);
   imgstenc->Update();
 
-  vtkSmartPointer<vtkMetaImageWriter> writer =
-    vtkSmartPointer<vtkMetaImageWriter>::New();
+  vtkNew<vtkMetaImageWriter> writer;
   writer->SetFileName("SphereVolume.mhd");
   writer->SetInputData(imgstenc->GetOutput());
   writer->Write();
