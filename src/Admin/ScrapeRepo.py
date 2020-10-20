@@ -485,6 +485,11 @@ def add_thumbnails_and_links(web_repo_url, root_path, repo_dir, doc_dir, baselin
     from_path = make_path(root_path, repo_dir, from_file)
     to_path = make_path(doc_dir, to_file)
     # baseline_path = make_path(root_path, repo_dir, baseline_dir)
+    # We need to treat [Lang]HowTo.md files, e.g. CxxHowTo.md, in a special way
+    has_how_to = False
+    if ('HowTo' in from_file):
+        lang = re.split('HowTo', from_file)[0]
+        has_how_to = True
     with open(from_path, 'r') as md_file:
         lines = dict()
         line_count = 0
@@ -509,20 +514,34 @@ def add_thumbnails_and_links(web_repo_url, root_path, repo_dir, doc_dir, baselin
             x = []
         add_image_link(test_images, lines, stats)
         if from_file != 'VTKBookFigures.md':
-            for k, v in lines.items():
-                line_changed = False
-                if v[1] != '':
-                    if '](/Coverage' in v[1]:
-                        # Make the coverage link relative.
-                        v[1] = re.sub(r'][ ]*\([ ]*/', r'](', v[1])
-                        v[1] = v[1].replace('.md', '')
-                        line_changed = True
-                    if '/CSharp/' in v[1] or '/Cxx/' in v[1] or '/Java/' in v[1] or '/Python/' in v[1]:
-                        # Make the language link relative, also drop off the language.
-                        v[1] = re.sub(r'][ ]*\([ ]*/\w+/', r'](', v[1])
-                        line_changed = True
-                if line_changed:
-                    lines[k] = v
+            if not has_how_to:
+                for k, v in lines.items():
+                    line_changed = False
+                    if v[1] != '':
+                        if '](/Coverage' in v[1]:
+                            # Make the coverage link relative.
+                            v[1] = re.sub(r'][ ]*\([ ]*/', r'](', v[1])
+                            v[1] = v[1].replace('.md', '')
+                            line_changed = True
+                        if '/CSharp/' in v[1] or '/Cxx/' in v[1] or '/Java/' in v[1] or '/Python/' in v[1]:
+                            # Make the language link relative, also drop off the language.
+                            v[1] = re.sub(r'][ ]*\([ ]*/\w+/', r'](', v[1])
+                            line_changed = True
+                    if line_changed:
+                        lines[k] = v
+            else:
+                for k, v in lines.items():
+                    line_changed = False
+                    if v[1] != '':
+                        if '/CSharp/' in v[1] or '/Cxx/' in v[1] or '/Java/' in v[1] or '/Python/' in v[1]:
+                            # Make the language link relative to the src folder.
+                            link_head = r'](' + r'../' + lang + r'/'
+                            if '.md' in v[1]:
+                                v[1] = v[1].replace('.md', '')
+                            v[1] = re.sub(r'][ ]*\([ ]*/\w+/', link_head, v[1])
+                            line_changed = True
+                    if line_changed:
+                        lines[k] = v
         else:
             for k, v in lines.items():
                 line_changed = False
@@ -974,8 +993,13 @@ def main():
         os.makedirs(make_path(doc_path, 'Java/Snippets'))
 
     # Add thumbnails and language links to each of the language summary pages, Snippets and Book figures
-    pages = ['Cxx.md', 'Python.md', 'CSharp.md', 'Java.md', 'JavaScript.md', 'Cxx/Snippets.md', 'Python/Snippets.md',
-             'Java/Snippets.md', 'VTKBookFigures.md', 'VTKFileFormats.md']
+    pages = ['Cxx.md', 'CxxHowTo.md',
+             'Python.md', 'PythonHowTo.md',
+             'CSharp.md', 'CSharpHowTo.md',
+             'Java.md', 'JavaHowTo.md',
+             'JavaScript.md',
+             'Cxx/Snippets.md', 'Python/Snippets.md', 'Java/Snippets.md',
+             'VTKBookFigures.md', 'VTKFileFormats.md']
     for p in pages:
         add_thumbnails_and_links(web_repo_url, root_path, repo_dir, doc_path, baseline_src_path, test_images_dict, p, p,
                                  stats)
