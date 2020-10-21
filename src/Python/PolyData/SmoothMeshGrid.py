@@ -125,7 +125,7 @@ def main():
     renderer.AddActor(actor)
     renderer.AddActor(actor_loop)
     renderer.AddActor(actor_butterfly)
-    renderer.SetBackground(nc.GetColor3d("AliceBlue"))
+    renderer.SetBackground(nc.GetColor3d('AliceBlue'))
 
     renderWindow.SetSize(900, 300)
     renderWindow.Render()

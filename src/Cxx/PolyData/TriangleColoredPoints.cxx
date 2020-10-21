@@ -1,28 +1,29 @@
-#include <vtkSmartPointer.h>
-#include <vtkPoints.h>
-#include <vtkXMLPolyDataWriter.h>
-#include <vtkPolyData.h>
-#include <vtkPointData.h>
+#include <vtkActor.h>
 #include <vtkCellArray.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkTriangle.h>
 #include <vtkUnsignedCharArray.h>
-
-#include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkXMLPolyDataWriter.h>
 
 // For compatibility with new VTK generic data arrays
 #ifdef vtkGenericDataArray_h
 #define InsertNextTupleValue InsertNextTypedTuple
 #endif
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> nc;
+
   // Setup points
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(1.0, 0.0, 0.0);
   points->InsertNextPoint(0.0, 0.0, 0.0);
   points->InsertNextPoint(0.0, 1.0, 0.0);
@@ -33,8 +34,7 @@ int main(int, char *[])
   unsigned char blue[3] = {0, 0, 255};
 
   // Setup the colors array
-  vtkSmartPointer<vtkUnsignedCharArray> colors =
-    vtkSmartPointer<vtkUnsignedCharArray>::New();
+  vtkNew<vtkUnsignedCharArray> colors;
   colors->SetNumberOfComponents(3);
   colors->SetName("Colors");
 
@@ -44,41 +44,36 @@ int main(int, char *[])
   colors->InsertNextTupleValue(blue);
 
   // Create a triangle
-  vtkSmartPointer<vtkCellArray> triangles =
-    vtkSmartPointer<vtkCellArray>::New();
-  vtkSmartPointer<vtkTriangle> triangle =
-    vtkSmartPointer<vtkTriangle>::New();
+  vtkNew<vtkCellArray> triangles;
+  vtkNew<vtkTriangle> triangle;
   triangle->GetPointIds()->SetId(0, 0);
   triangle->GetPointIds()->SetId(1, 1);
   triangle->GetPointIds()->SetId(2, 2);
   triangles->InsertNextCell(triangle);
 
   // Create a polydata object and add everything to it
-  vtkSmartPointer<vtkPolyData> polydata =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   polydata->SetPoints(points);
   polydata->SetPolys(triangles);
   polydata->GetPointData()->SetScalars(colors);
 
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polydata);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("TriangleColoredPoints");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
+  renderer->SetBackground(nc->GetColor3d("SlateGray").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();

@@ -4,12 +4,12 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    # create a rendering window and renderer
+    # Create a rendering window and renderer
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
 
-    # create a renderwindowinteractor
+    # Create a renderwindowinteractor
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
@@ -46,27 +46,32 @@ def main():
     ruledSurfaceFilter.SetResolution(21, 21)
     ruledSurfaceFilter.SetRuledModeToResample()
 
-    # Create the mapper with the ruledSufaceFilter as input
+    # Create the mapper with the ruledSurfaceFilter as input
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(ruledSurfaceFilter.GetOutputPort())
 
-    # create the actor with the mapper
+    # Create the actor with the mapper
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("Gold"))
+    actor.GetProperty().SetColor(colors.GetColor3d("Banana"))
     actor.GetProperty().SetSpecular(0.6)
     actor.GetProperty().SetSpecularPower(30)
 
-    # add the actor to the display
+    # Add the actor to the display
     ren.AddActor(actor)
-    ren.SetBackground(colors.GetColor3d("MidnightBlue"))
+    ren.SetBackground(colors.GetColor3d("SteelBlue"))
+    renWin.SetWindowName('RuledSurfaceFilter')
 
-    # enable user interface interactor
+    # Enable user interface interactor
     iren.Initialize()
     renWin.Render()
-    ren.GetActiveCamera().SetPosition(3.7, -0.5, -0.5)
-    ren.GetActiveCamera().SetFocalPoint(0.5, 0.5, 0.5)
-    ren.GetActiveCamera().SetViewUp(-0.3, 0.1, -1.0)
+    # ren.GetActiveCamera().SetPosition(3.7, -0.5, -0.5)
+    # ren.GetActiveCamera().SetFocalPoint(0.5, 0.5, 0.5)
+    # ren.GetActiveCamera().SetViewUp(-0.3, 0.1, -1.0)
+    ren.GetActiveCamera().Azimuth(60)
+    ren.GetActiveCamera().Elevation(60)
+    ren.ResetCamera()
+
     renWin.Render()
     iren.Start()
 

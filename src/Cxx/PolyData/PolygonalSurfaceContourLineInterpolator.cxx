@@ -1,34 +1,34 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkCellArray.h>
+#include <vtkContourWidget.h>
 #include <vtkImageDataGeometryFilter.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkOrientedGlyphContourRepresentation.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataCollection.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkPolygonalSurfaceContourLineInterpolator.h>
+#include <vtkPolygonalSurfacePointPlacer.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkTriangleFilter.h>
 #include <vtkXMLPolyDataReader.h>
 
-#include <vtkContourWidget.h>
-#include <vtkOrientedGlyphContourRepresentation.h>
-#include <vtkPolygonalSurfacePointPlacer.h>
-#include <vtkPolygonalSurfaceContourLineInterpolator.h>
-
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   vtkSmartPointer<vtkPolyData> polyData;
   if (argc < 2)
   {
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetThetaResolution(40);
     sphereSource->SetPhiResolution(20);
     sphereSource->Update();
@@ -37,67 +37,60 @@ int main(int argc, char *argv[])
   }
   else
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
     polyData = reader->GetOutput();
   }
 
   // The Dijkistra interpolator will not accept cells that aren't triangles
-  vtkSmartPointer<vtkTriangleFilter> triangleFilter =
-    vtkSmartPointer<vtkTriangleFilter>::New();
-  triangleFilter->SetInputData( polyData );
+  vtkNew<vtkTriangleFilter> triangleFilter;
+  triangleFilter->SetInputData(polyData);
   triangleFilter->Update();
 
-  vtkSmartPointer<vtkPolyData> pd = triangleFilter->GetOutput();
+  auto pd = triangleFilter->GetOutput();
 
-  //Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  // Create a mapper and actor
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(triangleFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetInterpolationToFlat();
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // Create the render window, renderer and interactor.
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("PolygonalSurfaceContourLineInterpolator");
+
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Add the actors to the renderer, set the background and size
 
   renderer->AddActor(actor);
-  renderer->SetBackground (.3, .4, .5);
+  renderer->SetBackground(colors->GetColor3d("CadetBlue").GetData());
 
   // Here comes the contour widget stuff...
 
-  vtkSmartPointer<vtkContourWidget> contourWidget =
-    vtkSmartPointer<vtkContourWidget>::New();
+  vtkNew<vtkContourWidget> contourWidget;
   contourWidget->SetInteractor(interactor);
   vtkSmartPointer<vtkOrientedGlyphContourRepresentation> rep =
-    dynamic_cast<vtkOrientedGlyphContourRepresentation*>(
-      contourWidget->GetRepresentation());
-  rep->GetLinesProperty()->SetColor(1, 0.2, 0);
+      dynamic_cast<vtkOrientedGlyphContourRepresentation*>(
+          contourWidget->GetRepresentation());
+  rep->GetLinesProperty()->SetColor(colors->GetColor3d("Crimson").GetData());
   rep->GetLinesProperty()->SetLineWidth(3.0);
 
-  vtkSmartPointer<vtkPolygonalSurfacePointPlacer> pointPlacer =
-    vtkSmartPointer<vtkPolygonalSurfacePointPlacer>::New();
+  vtkNew<vtkPolygonalSurfacePointPlacer> pointPlacer;
   pointPlacer->AddProp(actor);
-  pointPlacer->GetPolys()->AddItem( pd );
+  pointPlacer->GetPolys()->AddItem(pd);
   rep->SetPointPlacer(pointPlacer);
 
-  vtkSmartPointer<vtkPolygonalSurfaceContourLineInterpolator> interpolator =
-    vtkSmartPointer<vtkPolygonalSurfaceContourLineInterpolator>::New();
-  interpolator->GetPolys()->AddItem( pd );
+  vtkNew<vtkPolygonalSurfaceContourLineInterpolator> interpolator;
+  interpolator->GetPolys()->AddItem(pd);
   rep->SetLineInterpolator(interpolator);
 
   renderWindow->Render();

@@ -1,24 +1,29 @@
-#include <vtkSphereSource.h>
-#include <vtkTransformFilter.h>
-#include <vtkProperty.h>
+#include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkFloatArray.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkNew.h>
+#include <vtkSphereSource.h>
 #include <vtkTransform.h>
+#include <vtkTransformFilter.h>
 #include <vtkWeightedTransformFilter.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Use a sphere as a basis of the shape
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphere;
   sphere->SetPhiResolution(40);
   sphere->SetThetaResolution(40);
   sphere->Update();
@@ -26,29 +31,28 @@ int main(int, char *[])
   vtkPolyData* sphereData = sphere->GetOutput();
 
   // Create a data array to hold the weighting coefficients
-  vtkSmartPointer<vtkFloatArray> tfarray =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> tfarray;
   vtkIdType npoints = sphereData->GetNumberOfPoints();
   tfarray->SetNumberOfComponents(2);
   tfarray->SetNumberOfTuples(npoints);
 
   // Parameterize the sphere along the z axis, and fill the weights
   // with (1.0-a, a) to linearly interpolate across the shape
-  for(int i = 0; i < npoints; i++)
+  for (int i = 0; i < npoints; i++)
   {
     double pt[3];
     sphereData->GetPoint(i, pt);
-//    double x = pt[0];
-//    double y = pt[1];
+    //    double x = pt[0];
+    //    double y = pt[1];
     double z = pt[2];
 
     double zn = z + 0.5;
     double zn1 = 1.0 - zn;
-    if(zn > 1.0)
+    if (zn > 1.0)
     {
       zn = 1.0;
     }
-    if(zn1 < 0.0)
+    if (zn1 < 0.0)
     {
       zn1 = 0.0;
     }
@@ -58,32 +62,26 @@ int main(int, char *[])
   }
 
   // Create field data to hold the array, and bind it to the sphere
-//  vtkSmartPointer<vtkFieldData> fd =
-//    vtkSmartPointer<vtkFieldData>::New();
+  //  vtkNew<vtkFieldData> fd;
   tfarray->SetName("weights");
   sphereData->GetPointData()->AddArray(tfarray);
 
   // Use an ordinary transform to stretch the shape
-  vtkSmartPointer<vtkTransform> stretch =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> stretch;
   stretch->Scale(1, 1, 3.2);
 
-  vtkSmartPointer<vtkTransformFilter> stretchFilter =
-    vtkSmartPointer<vtkTransformFilter>::New();
+  vtkNew<vtkTransformFilter> stretchFilter;
   stretchFilter->SetInputData(sphereData);
   stretchFilter->SetTransform(stretch);
 
   // Now, for the weighted transform stuff
-  vtkSmartPointer<vtkWeightedTransformFilter> weightedTrans =
-    vtkSmartPointer<vtkWeightedTransformFilter>::New();
+  vtkNew<vtkWeightedTransformFilter> weightedTrans;
 
   // Create two transforms to interpolate between
-  vtkSmartPointer<vtkTransform> identity =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> identity;
   identity->Identity();
 
-  vtkSmartPointer<vtkTransform> rotated =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> rotated;
   double rotatedAngle = 45;
   rotated->RotateX(rotatedAngle);
 
@@ -95,27 +93,25 @@ int main(int, char *[])
 
   weightedTrans->SetInputConnection(stretchFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> weightedTransMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> weightedTransMapper;
   weightedTransMapper->SetInputConnection(weightedTrans->GetOutputPort());
-  vtkSmartPointer<vtkActor> weightedTransActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> weightedTransActor;
   weightedTransActor->SetMapper(weightedTransMapper);
-  weightedTransActor->GetProperty()->SetDiffuseColor(0.8, 0.8, 0.1);
+  weightedTransActor->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("Banana").GetData());
   weightedTransActor->GetProperty()->SetRepresentationToSurface();
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("WeightedTransformFilter");
+
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(weightedTransActor);
-  renderer->SetBackground(0.1, 0.2, 0.5);
+  renderer->SetBackground(colors->GetColor3d("RoyalBlue").GetData());
   renderWindow->SetSize(300, 300);
 
   renderer->ResetCamera();

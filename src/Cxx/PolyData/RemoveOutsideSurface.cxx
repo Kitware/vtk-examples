@@ -1,36 +1,33 @@
-#include <vtkSmartPointer.h>
-#include <vtkConnectivityFilter.h>
-
-#include <vtkSphereSource.h>
-#include <vtkDataSetMapper.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkAppendPolyData.h>
+#include <vtkCellData.h>
+#include <vtkCellIterator.h>
+#include <vtkCellLocator.h>
+#include <vtkConnectivityFilter.h>
+#include <vtkDataSetMapper.h>
+#include <vtkGenericCell.h>
+#include <vtkIdTypeArray.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkAppendPolyData.h>
-#include <vtkCellLocator.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
+#include <vtkUnstructuredGrid.h>
 #include <vtkXMLPolyDataReader.h>
 
-#include <vtkUnstructuredGrid.h>
-#include <vtkIdTypeArray.h>
-#include <vtkCellIterator.h>
-#include <vtkGenericCell.h>
-#include <vtkCellData.h>
-
-#include <vtkNamedColors.h>
-#include <vtkMath.h>
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   // PolyData to process
   vtkSmartPointer<vtkPolyData> polyData;
 
   if (argc > 1)
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
     polyData = reader->GetOutput();
@@ -38,26 +35,33 @@ int main(int argc, char *argv[])
   else
   {
     vtkMath::RandomSeed(5070); // for testing
-    vtkSmartPointer<vtkAppendPolyData> appendFilter =
-      vtkSmartPointer<vtkAppendPolyData>::New();
+    vtkNew<vtkAppendPolyData> appendFilter;
+
+    vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+    randomSequence->SetSeed(8775070);
 
     for (int i = 0; i < 20; ++i)
     {
       // Small spheres with most polgons
-      vtkSmartPointer<vtkSphereSource> sphereSource1 =
-        vtkSmartPointer<vtkSphereSource>::New();
+      vtkNew<vtkSphereSource> sphereSource1;
       sphereSource1->SetThetaResolution(10);
       sphereSource1->SetPhiResolution(10);
-      sphereSource1->SetCenter(vtkMath::Random(4.0, 14.0), vtkMath::Random(-3.0, 5.0), vtkMath::Random(4.0, 14.0));
+      double x, y, z;
+      x = randomSequence->GetRangeValue(4.0, 14.0);
+      randomSequence->Next();
+      y = randomSequence->GetRangeValue(-3.0, 5.0);
+      randomSequence->Next();
+      z = randomSequence->GetRangeValue(4.0, 14.0);
+      randomSequence->Next();
+      sphereSource1->SetCenter(x, y, x);
       sphereSource1->SetRadius(1.0);
       appendFilter->AddInputConnection(sphereSource1->GetOutputPort());
     }
 
     // Large sphere with least polygons
-    vtkSmartPointer<vtkSphereSource> sphereSource2 =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource2;
     sphereSource2->SetRadius(10);
-    sphereSource2->SetCenter(10,1,10);
+    sphereSource2->SetCenter(10, 1, 10);
 
     appendFilter->AddInputConnection(sphereSource2->GetOutputPort());
     appendFilter->Update();
@@ -66,30 +70,22 @@ int main(int argc, char *argv[])
 
   double center[3], bounds[6];
   polyData->GetCenter(center);
-  std::cout << "Center of data: "
-            << center[0] << ", "
-            << center[1] << ", "
+  std::cout << "Center of data: " << center[0] << ", " << center[1] << ", "
             << center[2] << std::endl;
   polyData->GetPoints()->GetBounds(bounds);
-  std::cout << "Bounds of data: "
-            << bounds[0] << ", "
-            << bounds[1] << ", "
-            << bounds[2] << ", "
-            << bounds[3] << ", "
-            << bounds[4] << ", "
+  std::cout << "Bounds of data: " << bounds[0] << ", " << bounds[1] << ", "
+            << bounds[2] << ", " << bounds[3] << ", " << bounds[4] << ", "
             << bounds[5] << std::endl;
 
   // Extract all regions and label cells with region number
-  vtkSmartPointer<vtkConnectivityFilter> connectivityFilter =
-      vtkSmartPointer<vtkConnectivityFilter>::New();
+  vtkNew<vtkConnectivityFilter> connectivityFilter;
   connectivityFilter->SetInputData(polyData);
   connectivityFilter->SetExtractionModeToAllRegions();
   connectivityFilter->ColorRegionsOn();
   connectivityFilter->Update();
 
   // Build a cell locator.
-  vtkSmartPointer<vtkCellLocator> cellLocator =
-    vtkSmartPointer<vtkCellLocator>::New();
+  vtkNew<vtkCellLocator> cellLocator;
   cellLocator->SetDataSet(connectivityFilter->GetOutput());
   cellLocator->BuildLocator();
 
@@ -105,35 +101,25 @@ int main(int argc, char *argv[])
   double xyz[3], t, pcoords[3];
   int subId;
 
-  cellLocator->IntersectWithLine(
-    rayStart,
-    center,
-    0.0001,
-    t,
-    xyz,
-    pcoords,
-    subId,
-    cellId);
+  cellLocator->IntersectWithLine(rayStart, center, 0.0001, t, xyz, pcoords,
+                                 subId, cellId);
 
-  vtkIdTypeArray *cd =
-    dynamic_cast<vtkIdTypeArray*>(connectivityFilter->GetOutput()->GetCellData()->GetScalars());
+  vtkIdTypeArray* cd = dynamic_cast<vtkIdTypeArray*>(
+      connectivityFilter->GetOutput()->GetCellData()->GetScalars());
   vtkIdType outsideRegionId = cd->GetTuple1(cellId);
   std::cout << "Id of cell on outside surface: " << cellId << std::endl;
   std::cout << "CellData at " << cellId << ": " << outsideRegionId << std::endl;
 
   // Build a polydata from cells that are not in the outside surface
   // Iterate over the original cells
-  vtkSmartPointer<vtkPolyData> insidePolyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> insidePolyData;
   insidePolyData->Allocate();
   insidePolyData->SetPoints(connectivityFilter->GetOutput()->GetPoints());
 
-  vtkSmartPointer<vtkGenericCell> cell =
-    vtkSmartPointer<vtkGenericCell>::New();
+  vtkNew<vtkGenericCell> cell;
   auto it = connectivityFilter->GetOutput()->NewCellIterator();
   vtkIdType originalCellId = 0;
-  for (it->InitTraversal();
-       !it->IsDoneWithTraversal();
+  for (it->InitTraversal(); !it->IsDoneWithTraversal();
        it->GoToNextCell(), ++originalCellId)
   {
     //  Retain cell if it is NOT an outside cell
@@ -146,35 +132,30 @@ int main(int argc, char *argv[])
   it->Delete();
 
   // Create a mapper and actor for original data
-  vtkSmartPointer<vtkPolyDataMapper> originalMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> originalMapper;
   originalMapper->SetInputData(polyData);
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkActor> originalActor =
-      vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> originalActor;
   originalActor->SetMapper(originalMapper);
   originalActor->GetProperty()->BackfaceCullingOn();
-  originalActor->GetProperty()->SetOpacity(.5);;
+  originalActor->GetProperty()->SetOpacity(.5);
   originalActor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
 
   // Create a mapper and actor for extracted data
-  vtkSmartPointer<vtkPolyDataMapper> extractedMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> extractedMapper;
   extractedMapper->SetInputData(insidePolyData);
 
-  vtkSmartPointer<vtkActor> extractedActor =
-      vtkSmartPointer<vtkActor>::New();
-  extractedActor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
+  vtkNew<vtkActor> extractedActor;
+  extractedActor->GetProperty()->SetColor(
+      colors->GetColor3d("Peacock").GetData());
   extractedActor->SetMapper(extractedMapper);
-  extractedActor->GetProperty()->SetOpacity(.5);;
+  extractedActor->GetProperty()->SetOpacity(.5);
   extractedActor->GetProperty()->BackfaceCullingOn();
 
   // Create a renderer
-  vtkSmartPointer<vtkRenderer> renderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(originalActor);
   renderer->AddActor(extractedActor);
 
@@ -185,14 +166,13 @@ int main(int argc, char *argv[])
   extractedActor->SetPosition((bounds[1] - bounds[0]) / 1.9, 0, 0);
   originalActor->SetPosition(-(bounds[1] - bounds[0]) / 1.9, 0, 0);
   // Create a render window
-  vtkSmartPointer<vtkRenderWindow> renwin =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renwin;
   renwin->AddRenderer(renderer);
   renwin->SetSize(512, 512);
+  renwin->SetWindowName("RemoveOutsideSurface");
 
   // Create an interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renwin);
   renwin->Render();
   iren->Initialize();

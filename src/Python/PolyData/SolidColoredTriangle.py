@@ -1,5 +1,6 @@
 import vtk
 
+
 def get_program_parameters():
     import argparse
     description = 'Generate a solid colored triangle and write it to a .vtp file.'
@@ -11,6 +12,7 @@ def get_program_parameters():
                         type=str, default='TestSolidColorTriangle.vtp')
     args = parser.parse_args()
     return args.filename
+
 
 def main():
     colors = vtk.vtkNamedColors()
@@ -31,7 +33,7 @@ def main():
     Triangle.GetPointIds().SetId(2, 2)
     Triangles.InsertNextCell(Triangle)
 
-    # setup colors (setting the name to "Colors" is nice but not necessary)
+    # Setup colors (setting the name to "Colors" is nice but not necessary)
     Colors = vtk.vtkUnsignedCharArray()
     Colors.SetNumberOfComponents(3)
     Colors.SetName("Colors")

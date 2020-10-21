@@ -2,31 +2,31 @@
 #include <vtkCellArray.h>
 #include <vtkDoubleArray.h>
 #include <vtkLine.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 #include <vtkWarpVector.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
 
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkPoints> points;
   points->InsertNextPoint(0.0, 0.0, 0.0);
   points->InsertNextPoint(1.0, 0.0, 0.0);
   points->InsertNextPoint(2.0, 0.0, 0.0);
   points->InsertNextPoint(3.0, 0.0, 0.0);
   points->InsertNextPoint(4.0, 0.0, 0.0);
 
-  vtkSmartPointer<vtkCellArray> lines =
-    vtkSmartPointer<vtkCellArray>::New();
-  vtkSmartPointer<vtkLine> line =
-    vtkSmartPointer<vtkLine>::New();
+  vtkNew<vtkCellArray> lines;
+  vtkNew<vtkLine> line;
   line->GetPointIds()->SetId(0, 0);
   line->GetPointIds()->SetId(1, 1);
   lines->InsertNextCell(line);
@@ -40,8 +40,7 @@ int main(int, char *[])
   line->GetPointIds()->SetId(1, 4);
   lines->InsertNextCell(line);
 
-  vtkSmartPointer<vtkDoubleArray> warpData =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> warpData;
   warpData->SetNumberOfComponents(3);
   warpData->SetName("warpData");
   double warp[3] = {0.0, 0.0, 0.0};
@@ -56,40 +55,34 @@ int main(int, char *[])
   warp[1] = 0.1;
   warpData->InsertNextTuple(warp);
 
-  vtkSmartPointer<vtkPolyData> polydata =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   polydata->SetPoints(points);
   polydata->SetLines(lines);
   polydata->GetPointData()->AddArray(warpData);
   polydata->GetPointData()->SetActiveVectors(warpData->GetName());
 
-  //WarpVector will use the array marked as active vector in polydata
-  //it has to be a 3 component array
-  //with the same number of tuples as points in polydata
-  vtkSmartPointer<vtkWarpVector> warpVector =
-    vtkSmartPointer<vtkWarpVector>::New();
+  // WarpVector will use the array marked as active vector in polydata
+  // it has to be a 3 component array
+  // with the same number of tuples as points in polydata
+  vtkNew<vtkWarpVector> warpVector;
   warpVector->SetInputData(polydata);
   warpVector->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(warpVector->GetPolyDataOutput());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
-  renderer->SetBackground(.3, .6, .3);
+  renderer->SetBackground(colors->GetColor3d("cobalt_green").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("WarpVector");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderWindow->Render();
   renderWindowInteractor->Start();

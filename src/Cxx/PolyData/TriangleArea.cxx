@@ -1,47 +1,42 @@
-#include <vtkSmartPointer.h>
 #include <vtkCellArray.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkTriangle.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  //setup points (geometry)
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint ( 0.0, 0.0, 0.0 );
-  points->InsertNextPoint ( 1.0, 0.0, 0.0 );
-  points->InsertNextPoint ( 1.0, 1.0, 0.0 );
-  points->InsertNextPoint ( 0.0, 1.0, 0.0 );
+  // setup points (geometry)
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(0.0, 0.0, 0.0);
+  points->InsertNextPoint(1.0, 0.0, 0.0);
+  points->InsertNextPoint(1.0, 1.0, 0.0);
+  points->InsertNextPoint(0.0, 1.0, 0.0);
 
-  //create a triangle on the three points in the polydata
-  vtkSmartPointer<vtkTriangle> triangle1 =
-    vtkSmartPointer<vtkTriangle>::New();
-  triangle1->GetPointIds()->SetId ( 0, 0 );
-  triangle1->GetPointIds()->SetId ( 1, 1 );
-  triangle1->GetPointIds()->SetId ( 2, 2 );
+  // create a triangle on the three points in the polydata
+  vtkNew<vtkTriangle> triangle1;
+  triangle1->GetPointIds()->SetId(0, 0);
+  triangle1->GetPointIds()->SetId(1, 1);
+  triangle1->GetPointIds()->SetId(2, 2);
 
-  vtkSmartPointer<vtkTriangle> triangle2 =
-    vtkSmartPointer<vtkTriangle>::New();
-  triangle2->GetPointIds()->SetId ( 0, 2 );
-  triangle2->GetPointIds()->SetId ( 1, 3 );
-  triangle2->GetPointIds()->SetId ( 2, 0 );
+  vtkNew<vtkTriangle> triangle2;
+  triangle2->GetPointIds()->SetId(0, 2);
+  triangle2->GetPointIds()->SetId(1, 3);
+  triangle2->GetPointIds()->SetId(2, 0);
 
-  //add the triangles to the list of triangles
-  vtkSmartPointer<vtkCellArray> triangles =
-    vtkSmartPointer<vtkCellArray>::New();
-  triangles->InsertNextCell ( triangle1 );
-  triangles->InsertNextCell ( triangle2 );
+  // add the triangles to the list of triangles
+  vtkNew<vtkCellArray> triangles;
+  triangles->InsertNextCell(triangle1);
+  triangles->InsertNextCell(triangle2);
 
-  //create a polydata object
-  vtkSmartPointer<vtkPolyData> polydata =
-    vtkSmartPointer<vtkPolyData>::New();
+  // create a polydata object
+  vtkNew<vtkPolyData> polydata;
 
-  //add the geometry and topology to the polydata
-  polydata->SetPoints ( points );
-  polydata->SetPolys ( triangles );
+  // add the geometry and topology to the polydata
+  polydata->SetPoints(points);
+  polydata->SetPolys(triangles);
 
-  for(vtkIdType i = 0; i < polydata->GetNumberOfCells(); i++)
+  for (vtkIdType i = 0; i < polydata->GetNumberOfCells(); i++)
   {
     vtkCell* cell = polydata->GetCell(0);
 

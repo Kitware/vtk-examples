@@ -76,6 +76,7 @@ def main():
     viewer.SetZSlice(0)
     viewer.SetColorWindow(2000)
     viewer.SetColorLevel(1000)
+    viewer.GetRenderWindow().SetWindowName('PolyDataToImageDataStencil')
     viewer.Render()
 
     interator.Start()

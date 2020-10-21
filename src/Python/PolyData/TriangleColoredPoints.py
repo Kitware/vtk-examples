@@ -1,5 +1,6 @@
 import vtk
 
+
 def get_program_parameters():
     import argparse
     description = 'Generate a triangle with colored points and write it to a .vtp file.'

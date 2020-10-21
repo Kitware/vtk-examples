@@ -31,7 +31,7 @@ def main():
     polyDataWriter = vtk.vtkXMLPolyDataWriter()
     polyDataWriter.SetInputData(circle)
 
-    polyDataWriter.SetFileName("circle.vtp")
+    polyDataWriter.SetFileName('circle.vtp')
     polyDataWriter.SetCompressorTypeToNone()
     polyDataWriter.SetDataModeToAscii()
     polyDataWriter.Write()
@@ -97,12 +97,12 @@ def main():
     imgstenc.Update()
 
     imageWriter = vtk.vtkMetaImageWriter()
-    imageWriter.SetFileName("labelImage.mhd")
+    imageWriter.SetFileName('labelImage.mhd')
     imageWriter.SetInputConnection(imgstenc.GetOutputPort())
     imageWriter.Write()
 
     imageWriter = vtk.vtkPNGWriter()
-    imageWriter.SetFileName("labelImage.png")
+    imageWriter.SetFileName('labelImage.png')
     imageWriter.SetInputConnection(imgstenc.GetOutputPort())
     imageWriter.Write()
 

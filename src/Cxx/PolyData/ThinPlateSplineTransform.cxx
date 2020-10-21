@@ -1,123 +1,120 @@
-#include <vtkImageGridSource.h>
-#include <vtkLookupTable.h>
-#include <vtkImageMapToColors.h>
+#include <vtkActor2D.h>
 #include <vtkBMPReader.h>
-#include <vtkImageBlend.h>
-#include <vtkPoints.h>
-#include <vtkThinPlateSplineTransform.h>
-#include <vtkImageReslice.h>
-#include <vtkSmartPointer.h>
 #include <vtkDataObject.h>
-#include <vtkRenderer.h>
+#include <vtkImageBlend.h>
+#include <vtkImageGridSource.h>
+#include <vtkImageMapToColors.h>
+#include <vtkImageMapper.h>
+#include <vtkImageReslice.h>
+#include <vtkInteractorStyleTerrain.h>
+#include <vtkLookupTable.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPoints.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleTerrain.h>
-#include <vtkImageMapper.h>
-#include <vtkActor2D.h>
+#include <vtkRenderer.h>
+#include <vtkThinPlateSplineTransform.h>
 
 // Warp an image with a thin plate spline
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  if ( argc < 2 )
+  vtkNew<vtkNamedColors> colors;
+
+  if (argc < 2)
   {
-    std::cerr << "Usage: " << argv[0] << " Filename.bmp" << std::endl;
+    std::cerr << "Usage: " << argv[0] << " Filename.bmp e.g. masonry.bmp"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   // First, create an image to warp
-  vtkSmartPointer<vtkImageGridSource> imageGrid =
-    vtkSmartPointer<vtkImageGridSource >::New();
-  imageGrid->SetGridSpacing( 16, 16, 0 );
-  imageGrid->SetGridOrigin( 0, 0, 0 );
-  imageGrid->SetDataExtent( 0, 255, 0, 255, 0, 0 );
+  vtkNew<vtkImageGridSource> imageGrid;
+  imageGrid->SetGridSpacing(16, 16, 0);
+  imageGrid->SetGridOrigin(0, 0, 0);
+  imageGrid->SetDataExtent(0, 255, 0, 255, 0, 0);
   imageGrid->SetDataScalarTypeToUnsignedChar();
 
-  vtkSmartPointer<vtkLookupTable> table =
-    vtkSmartPointer<vtkLookupTable >::New();
-  table->SetTableRange( 0, 1 );
-  table->SetAlphaRange( 0.0, 1.0 );
-  table->SetHueRange( 0.15, 0.15 );
-  table->SetSaturationRange( 1, 1 );
-  table->SetValueRange( 0, 1 );
+  vtkNew<vtkLookupTable> table;
+  table->SetTableRange(0, 1);
+  table->SetAlphaRange(0.0, 1.0);
+  table->SetHueRange(0.15, 0.15);
+  table->SetSaturationRange(1, 1);
+  table->SetValueRange(0, 1);
   table->Build();
 
-  vtkSmartPointer<vtkImageMapToColors> alpha =
-    vtkSmartPointer<vtkImageMapToColors >::New();
-  alpha->SetInputConnection( imageGrid->GetOutputPort() );
-  alpha->SetLookupTable( table );
+  vtkNew<vtkImageMapToColors> alpha;
+  alpha->SetInputConnection(imageGrid->GetOutputPort());
+  alpha->SetLookupTable(table);
 
-  vtkSmartPointer<vtkBMPReader> reader =
-    vtkSmartPointer<vtkBMPReader>::New();
+  vtkNew<vtkBMPReader> reader;
   reader->SetFileName(argv[1]);
   reader->Update();
+  auto dataExtent = reader->GetDataExtent();
+  // Use dataExtent[1] and dataExtent[3] to set the render window size.
 
-  vtkSmartPointer<vtkImageBlend> blend =
-    vtkSmartPointer<vtkImageBlend >::New();
-  blend->AddInputConnection( 0, reader->GetOutputPort() );
-  blend->AddInputConnection( 0, alpha->GetOutputPort() );
+  vtkNew<vtkImageBlend> blend;
+  blend->AddInputConnection(0, reader->GetOutputPort());
+  blend->AddInputConnection(0, alpha->GetOutputPort());
 
   // Next, create a ThinPlateSpline transform
 
-  vtkSmartPointer< vtkPoints > p1 = vtkSmartPointer< vtkPoints >::New();
-  p1->SetNumberOfPoints( 8 );
-  p1->SetPoint( 0, 0, 0, 0 );
-  p1->SetPoint( 1, 0, 255, 0);
-  p1->SetPoint( 2, 255, 0, 0 );
-  p1->SetPoint( 3, 255, 255, 0 );
-  p1->SetPoint( 4, 96, 96, 0 );
-  p1->SetPoint( 5, 96, 159, 0 );
-  p1->SetPoint( 6, 159, 159, 0 );
-  p1->SetPoint( 7, 159, 96, 0 );
+  vtkNew<vtkPoints> p1;
+  p1->SetNumberOfPoints(8);
+  p1->SetPoint(0, 0, 0, 0);
+  p1->SetPoint(1, 0, 255, 0);
+  p1->SetPoint(2, 255, 0, 0);
+  p1->SetPoint(3, 255, 255, 0);
+  p1->SetPoint(4, 96, 96, 0);
+  p1->SetPoint(5, 96, 159, 0);
+  p1->SetPoint(6, 159, 159, 0);
+  p1->SetPoint(7, 159, 96, 0);
 
-  vtkSmartPointer< vtkPoints > p2 = vtkSmartPointer< vtkPoints >::New();
-  p2->SetNumberOfPoints( 8 );
-  p2->SetPoint( 0, 0, 0, 0 );
-  p2->SetPoint( 1, 0, 255, 0 );
-  p2->SetPoint( 2, 255, 0, 0 );
-  p2->SetPoint( 3, 255, 255, 0);
-  p2->SetPoint( 4, 96, 159, 0 );
-  p2->SetPoint( 5, 159, 159, 0 );
-  p2->SetPoint( 6, 159, 96, 0 );
-  p2->SetPoint( 7, 96, 96, 0 );
+  vtkNew<vtkPoints> p2;
+  p2->SetNumberOfPoints(8);
+  p2->SetPoint(0, 0, 0, 0);
+  p2->SetPoint(1, 0, 255, 0);
+  p2->SetPoint(2, 255, 0, 0);
+  p2->SetPoint(3, 255, 255, 0);
+  p2->SetPoint(4, 96, 159, 0);
+  p2->SetPoint(5, 159, 159, 0);
+  p2->SetPoint(6, 159, 96, 0);
+  p2->SetPoint(7, 96, 96, 0);
 
-  vtkSmartPointer<vtkThinPlateSplineTransform> transform =
-    vtkSmartPointer< vtkThinPlateSplineTransform >::New();
-  transform->SetSourceLandmarks( p2 );
-  transform->SetTargetLandmarks( p1 );
+  vtkNew<vtkThinPlateSplineTransform> transform;
+  transform->SetSourceLandmarks(p2);
+  transform->SetTargetLandmarks(p1);
   transform->SetBasisToR2LogR();
   // You must invert the transform before passing it to vtkImageReslice
   transform->Inverse();
 
-  vtkSmartPointer< vtkImageReslice > reslice =
-    vtkSmartPointer<vtkImageReslice >::New();
-  reslice->SetInputConnection( blend->GetOutputPort() );
-  reslice->SetResliceTransform( transform );
+  vtkNew<vtkImageReslice> reslice;
+  reslice->SetInputConnection(blend->GetOutputPort());
+  reslice->SetResliceTransform(transform);
   reslice->SetInterpolationModeToLinear();
-  vtkSmartPointer< vtkImageMapper > map =
-    vtkSmartPointer<vtkImageMapper >::New();
-  map->SetInputConnection( reslice->GetOutputPort() );
-  map->SetColorWindow( 255.0);
-  map->SetColorLevel( 127.5 );
-  map->SetZSlice( 0 );
-  vtkSmartPointer< vtkActor2D > act =
-    vtkSmartPointer< vtkActor2D >::New();
-  act->SetMapper( map );
-  act->SetPosition( 0.0, 0.0 );
+  vtkNew<vtkImageMapper> map;
+  map->SetInputConnection(reslice->GetOutputPort());
+  map->SetColorWindow(255.0);
+  map->SetColorLevel(127.5);
+  map->SetZSlice(0);
+  vtkNew<vtkActor2D> act;
+  act->SetMapper(map);
 
-  vtkSmartPointer< vtkRenderer > renderer =
-    vtkSmartPointer<vtkRenderer >::New();
-  renderer->AddActor( act );
-  vtkSmartPointer< vtkRenderWindow > window =
-    vtkSmartPointer<vtkRenderWindow >::New();
-  window->SetSize( 640, 480 );
+  vtkNew<vtkRenderer> renderer;
+  renderer->AddActor(act);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
+  vtkNew<vtkRenderWindow> window;
+  window->SetSize(dataExtent[1], dataExtent[3]);
+  window->SetWindowName("ThinPlateSplineTransform");
+
   window->AddRenderer(renderer);
-  vtkSmartPointer< vtkRenderWindowInteractor > interactor =
-    vtkSmartPointer< vtkRenderWindowInteractor >::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(window);
-  vtkSmartPointer< vtkInteractorStyleTerrain > style =
-    vtkSmartPointer< vtkInteractorStyleTerrain >::New();
-  interactor->SetInteractorStyle( style );
+  vtkNew<vtkInteractorStyleTerrain> style;
+  interactor->SetInteractorStyle(style);
   window->Render();
   interactor->Initialize();
   interactor->Start();
