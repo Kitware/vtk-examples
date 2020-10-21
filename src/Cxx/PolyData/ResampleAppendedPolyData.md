@@ -16,3 +16,5 @@ The example proceeds as follows:
 !!! note
     The example was motivated on [this question](https://discourse.vtk.org/t/how-to-probe-a-polygonal-mesh-on-a-polydata/1323)  on [VTK's Discourse](https://discourse.vtk.org/).
 
+!!! note
+    Note that `std::mt19937_64` gives different results for Microsoft Visual Studio and Linux gcc so it has been commented out and vtkMinimalStandardRandomSequence used instead.
