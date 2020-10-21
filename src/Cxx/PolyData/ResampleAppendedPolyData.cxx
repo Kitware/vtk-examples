@@ -4,6 +4,7 @@
 #include <vtkCellArray.h>
 #include <vtkCellLocator.h>
 #include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPlaneSource.h>
@@ -18,7 +19,7 @@
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
 
-#include <random>
+//#include <random>
 
 int main(int, char*[])
 {
@@ -29,7 +30,7 @@ int main(int, char*[])
   constexpr double yMax = 10.0;
   constexpr int xResolution = 100;
   constexpr int yResolution = 100;
-  constexpr double scaleMin = .2;
+  constexpr double scaleMin = 0.2;
   constexpr double scaleMax = 1.5;
   constexpr int numberOfObjects = 200;
   constexpr int probeResolution = 200.0;
@@ -47,21 +48,37 @@ int main(int, char*[])
   vtkNew<vtkAppendPolyData> append;
   append->AddInputConnection(terrain->GetOutputPort());
 
-  std::mt19937_64 mt(4355412); // Standard mersenne twister engine
-  std::uniform_int_distribution<> solid(0, 4);
-  std::uniform_real_distribution<> scale(scaleMin, scaleMax);
-  std::uniform_real_distribution<> position(xMin + 1.0, xMax - 1.0);
+  // Commented out since it gives different results for VS and gcc.
+  // std::mt19937_64 mt(4355412); // Standard mersenne twister engine
+  // std::uniform_int_distribution<> solid(0, 4);
+  // std::uniform_real_distribution<> scale(scaleMin, scaleMax);
+  // std::uniform_real_distribution<> position(xMin + 1.0, xMax - 1.0);
+
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(4355412);
 
   for (auto i = 0; i < numberOfObjects; ++i)
   {
+    int solid = static_cast<int>(randomSequence->GetRangeValue(0, 4));
+    randomSequence->Next();
+    double s = randomSequence->GetRangeValue(scaleMin, scaleMax);
+    randomSequence->Next();
+    double x, y;
+    x = randomSequence->GetRangeValue(xMin + 1.0, xMax - 1.0);
+    randomSequence->Next();
+    y = randomSequence->GetRangeValue(yMin + 1.0, yMax - 1.0);
+    randomSequence->Next();
+
     // Generate an object
     vtkNew<vtkPlatonicSolidSource> platonic;
-    platonic->SetSolidType(solid(mt));
+    // platonic->SetSolidType(solid(mt));
+    platonic->SetSolidType(solid);
 
     // Translate and scale
     vtkNew<vtkTransform> transform;
-    double s = scale(mt);
-    transform->Translate(position(mt), position(mt), 0.0);
+    // double s = scale(mt);
+    // transform->Translate(position(mt), position(mt), 0.0);
+    transform->Translate(x, y, 0.0);
     transform->Scale(s, s, s);
     vtkNew<vtkTransformPolyDataFilter> transformPD;
     transformPD->SetTransform(transform);
@@ -168,7 +185,7 @@ int main(int, char*[])
   camera->SetPosition(1.0, 0.0, 0.0);
   camera->SetViewUp(0.0, 0.0, 1.0);
   camera->Azimuth(30.0);
-  camera->Elevation(30.0);
+  camera->Elevation(45.0);
 
   leftRenderer->ResetCamera();
   rightRenderer->SetActiveCamera(camera);
