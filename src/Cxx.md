@@ -562,9 +562,9 @@ This section includes vtkImageData vtkStructuredGrid and vtkRectilinearGrid.
 | Example Name | Classes Demonstrated | Description | Image |
 | -------------- | ---------------------- | ------------- | ------- |
 [RGrid](/Cxx/RectilinearGrid/RGrid) | vtkRectilinearGrid | Creating a rectilinear grid dataset. The coordinates along each axis are defined using an instance of vtkDataArray.
-[RectilinearGrid](/Cxx/RectilinearGrid/RectilinearGrid) | vtkRectilinearGrid | Rectilinear grid
-[RectilinearGridToTetrahedra](/Cxx/RectilinearGrid/RectilinearGridToTetrahedra) | vtkRectilinearGridToTetrahedra | Convert a vtkRectilinearGrid to a vtkUnstructuredGrid mesh
-[VisualizeRectilinearGrid](/Cxx/RectilinearGrid/VisualizeRectilinearGrid) | vtkRectilinearGrid vtkShrinkFilter | Visualize the cells of a rectilinear grid
+[RectilinearGrid](/Cxx/RectilinearGrid/RectilinearGrid) | vtkRectilinearGrid | Create a rectilinear grid.
+[RectilinearGridToTetrahedra](/Cxx/RectilinearGrid/RectilinearGridToTetrahedra) | vtkRectilinearGridToTetrahedra | Convert a vtkRectilinearGrid to a vtkUnstructuredGrid mesh.
+[VisualizeRectilinearGrid](/Cxx/RectilinearGrid/VisualizeRectilinearGrid) | vtkRectilinearGrid vtkShrinkFilter | Visualize the cells of a rectilinear grid.
 
 ### Working with Unstructured 3D Data
 

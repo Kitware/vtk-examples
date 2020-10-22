@@ -72,6 +72,7 @@ def main():
     renderer.GetActiveCamera().Zoom(1.0)
 
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('RGrid')
 
     # Interact with the data.
     renWin.Render()
