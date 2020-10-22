@@ -1,70 +1,73 @@
-#include <vtkSmartPointer.h>
-#include <vtkRectilinearGrid.h>
-#include <vtkMath.h>
-#include <vtkDataSetMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkShrinkFilter.h>
+#include <vtkCamera.h>
+#include <vtkDataSetMapper.h>
 #include <vtkDoubleArray.h>
+#include <vtkMath.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
+#include <vtkRectilinearGrid.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkShrinkFilter.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a grid
-  vtkSmartPointer<vtkRectilinearGrid> grid = 
-    vtkSmartPointer<vtkRectilinearGrid>::New();
-  
-  grid->SetDimensions(2,3,2);
-  
-  vtkSmartPointer<vtkDoubleArray> xArray = 
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkRectilinearGrid> grid;
+
+  grid->SetDimensions(2, 3, 2);
+
+  vtkNew<vtkDoubleArray> xArray;
   xArray->InsertNextValue(0.0);
   xArray->InsertNextValue(2.0);
-  
-  vtkSmartPointer<vtkDoubleArray> yArray = 
-    vtkSmartPointer<vtkDoubleArray>::New();
+
+  vtkNew<vtkDoubleArray> yArray;
   yArray->InsertNextValue(0.0);
   yArray->InsertNextValue(1.0);
   yArray->InsertNextValue(2.0);
-  
-  vtkSmartPointer<vtkDoubleArray> zArray = 
-    vtkSmartPointer<vtkDoubleArray>::New();
+
+  vtkNew<vtkDoubleArray> zArray;
   zArray->InsertNextValue(0.0);
   zArray->InsertNextValue(5.0);
-  
+
   grid->SetXCoordinates(xArray);
   grid->SetYCoordinates(yArray);
   grid->SetZCoordinates(zArray);
-  
-  vtkSmartPointer<vtkShrinkFilter> shrinkFilter = 
-    vtkSmartPointer<vtkShrinkFilter>::New();
+
+  vtkNew<vtkShrinkFilter> shrinkFilter;
   shrinkFilter->SetInputData(grid);
   shrinkFilter->SetShrinkFactor(.8);
-  
+
   // Create a mapper and actor
-  vtkSmartPointer<vtkDataSetMapper> mapper = 
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(shrinkFilter->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
- 
+  actor->GetProperty()->SetColor(colors->GetColor3d("PeachPuff").GetData());
+
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("VisualizeRectilinearGrid");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
- 
+
   renderer->AddActor(actor);
- 
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+  renderer->GetActiveCamera()->Roll(10.0);
+  renderer->GetActiveCamera()->Elevation(60.0);
+  renderer->GetActiveCamera()->Azimuth(30.0);
+  renderer->ResetCamera();
+
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

@@ -298,7 +298,8 @@ This section includes vtkImageData vtkStructuredGrid and vtkRectilinearGrid.
 | Example Name | Classes Demonstrated | Description | Image |
 | -------------- | ---------------------- | ------------- | ------- |
 [RGrid](/Python/RectilinearGrid/RGrid) | vtkRectilinearGrid | Creating a rectilinear grid dataset. The coordinates along each axis are defined using an instance of vtkDataArray.
-[RectilinearGrid](/Python/RectilinearGrid/RectilinearGrid) | vtkRectilinearGrid | create a rectilinear grid
+[RectilinearGrid](/Python/RectilinearGrid/RectilinearGrid) | vtkRectilinearGrid | Create a rectilinear grid.
+[VisualizeRectilinearGrid](/Python/RectilinearGrid/VisualizeRectilinearGrid) | vtkRectilinearGrid vtkShrinkFilter | Visualize the cells of a rectilinear grid.
 
 ### Working with Unstructured 3D Data
 

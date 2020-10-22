@@ -22,4 +22,4 @@ If you want to ensure that the same random points/colors are used in C++ and oth
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
-[HighlightWithSilhouette](/Python/HighlightWithSilhouette) | Here we use randomly positioned spheres with random colors. A vtkLookupTable is filled with random colors.
+[HighlightWithSilhouette](/Python/Picking/HighlightWithSilhouette) | Here we use randomly positioned spheres with random colors. A vtkLookupTable is filled with random colors.

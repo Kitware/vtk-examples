@@ -6,9 +6,10 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    # Create a grid
+    # Create a grid    
     grid = vtk.vtkRectilinearGrid()
-    grid.SetDimensions(2, 3, 1)
+
+    grid.SetDimensions(2, 3, 2)
 
     xArray = vtk.vtkDoubleArray()
     xArray.InsertNextValue(0.0)
@@ -21,22 +22,19 @@ def main():
 
     zArray = vtk.vtkDoubleArray()
     zArray.InsertNextValue(0.0)
+    zArray.InsertNextValue(5.0)
 
     grid.SetXCoordinates(xArray)
     grid.SetYCoordinates(yArray)
     grid.SetZCoordinates(zArray)
 
-    print('There are', grid.GetNumberOfPoints(), 'points.')
-    print('There are', grid.GetNumberOfCells(), 'cells.')
-
-    for id in range(0, grid.GetNumberOfPoints()):
-        p = [0] * 3
-        p = grid.GetPoint(id)
-        print('Point', id, ':(', p[0], ',', p[1], ',', p[2], ')')
+    shrinkFilter = vtk.vtkShrinkFilter()
+    shrinkFilter.SetInputData(grid)
+    shrinkFilter.SetShrinkFactor(.8)
 
     # Create a mapper and actor
     mapper = vtk.vtkDataSetMapper()
-    mapper.SetInputData(grid)
+    mapper.SetInputConnection(shrinkFilter.GetOutputPort())
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
@@ -46,13 +44,17 @@ def main():
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindow.SetWindowName('RectilinearGrid')
+    renderWindow.SetWindowName('VisualizeRectilinearGrid')
 
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d('SlateGray'))
+    renderer.GetActiveCamera().Roll(10.0)
+    renderer.GetActiveCamera().Elevation(60.0)
+    renderer.GetActiveCamera().Azimuth(30.0)
+    renderer.ResetCamera()
 
     renderWindow.Render()
     renderWindowInteractor.Start()
