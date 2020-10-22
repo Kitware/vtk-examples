@@ -13,7 +13,6 @@
 #include <vtkQtTableView.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkVersion.h>
 
@@ -39,30 +38,30 @@ ShareCameraQt::ShareCameraQt()
 #endif
 
   // Sphere
-  auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
-  auto sphereMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
-  auto sphereActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
   sphereActor->GetProperty()->SetColor(colors->GetColor4d("Tomato").GetData());
 
   // Cube
-  auto cubeSource = vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkCubeSource> cubeSource;
   cubeSource->Update();
-  auto cubeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cubeMapper;
   cubeMapper->SetInputConnection(cubeSource->GetOutputPort());
-  auto cubeActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cubeActor;
   cubeActor->SetMapper(cubeMapper);
   cubeActor->GetProperty()->SetColor(
       colors->GetColor4d("MediumSeaGreen").GetData());
 
   // VTK Renderer
-  auto leftRenderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   leftRenderer->AddActor(sphereActor);
   leftRenderer->SetBackground(colors->GetColor3d("LightSteelBlue").GetData());
 
-  auto rightRenderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
 
   // Add Actor to renderer
   rightRenderer->AddActor(cubeActor);

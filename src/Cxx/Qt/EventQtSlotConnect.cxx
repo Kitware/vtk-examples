@@ -1,7 +1,7 @@
 #include "EventQtSlotConnect.h"
 
-#include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkEventQtSlotConnect.h>
+#include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkInteractorStyleTrackballActor.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>

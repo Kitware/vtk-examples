@@ -7,7 +7,7 @@
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkSphereSource.h>
 #include <vtkVersion.h>
 
@@ -30,16 +30,16 @@ RenderWindowUIMultipleInheritance::RenderWindowUIMultipleInheritance()
 #endif
 
   // Sphere
-  auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
-  auto sphereMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
-  auto sphereActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
   sphereActor->GetProperty()->SetColor(colors->GetColor4d("Tomato").GetData());
 
   // VTK Renderer
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(sphereActor);
   renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 

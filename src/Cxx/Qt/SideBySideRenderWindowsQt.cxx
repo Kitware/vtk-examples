@@ -1,5 +1,7 @@
 #include "SideBySideRenderWindowsQt.h"
 
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkCamera.h>
 #include <vtkCubeSource.h>
 #include <vtkDataObjectToTable.h>
@@ -11,7 +13,7 @@
 #include <vtkQtTableView.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkSphereSource.h>
 #include <vtkVersion.h>
 
@@ -37,7 +39,7 @@ SideBySideRenderWindowsQt::SideBySideRenderWindowsQt()
 #endif
 
   // Sphere
-  auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetPhiResolution(30);
   sphereSource->SetThetaResolution(30);
   sphereSource->Update();
@@ -45,29 +47,29 @@ SideBySideRenderWindowsQt::SideBySideRenderWindowsQt()
   sphereElev->SetInputConnection(sphereSource->GetOutputPort());
   sphereElev->SetLowPoint(0, -1.0, 0);
   sphereElev->SetHighPoint(0, 1.0, 0);
-  auto sphereMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphereElev->GetOutputPort());
-  auto sphereActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
 
   // Cube
-  auto cubeSource = vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkCubeSource> cubeSource;
   cubeSource->Update();
   vtkNew<vtkElevationFilter> cubeElev;
   cubeElev->SetInputConnection(cubeSource->GetOutputPort());
   cubeElev->SetLowPoint(0, -1.0, 0);
   cubeElev->SetHighPoint(0, 1.0, 0);
-  auto cubeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cubeMapper;
   cubeMapper->SetInputConnection(cubeElev->GetOutputPort());
-  auto cubeActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cubeActor;
   cubeActor->SetMapper(cubeMapper);
 
   // VTK Renderer
-  auto leftRenderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   leftRenderer->AddActor(sphereActor);
   leftRenderer->SetBackground(colors->GetColor3d("LightSteelBlue").GetData());
 
-  auto rightRenderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
 
   // Add Actor to renderer
   rightRenderer->AddActor(cubeActor);
