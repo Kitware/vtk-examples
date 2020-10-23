@@ -41,7 +41,7 @@ Here are some snippets or examples that highlight interesting features that may 
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
-[Model](/Cxx/Rendering/Model) | vtkRenderer vtkRenderWindow vtkRenderWindowInteractor | Multiple render windows.
+[Model](/Cxx/Rendering/Model) | Multiple render windows.
 
 ## Random
 
