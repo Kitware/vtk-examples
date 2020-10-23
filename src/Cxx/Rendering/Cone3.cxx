@@ -9,16 +9,16 @@
 #include <vtkCamera.h>
 #include <vtkConeSource.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
-
-int main(int, char* [])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   //
   // Create an instance of vtkConeSource and set some of its
@@ -26,7 +26,7 @@ int main(int, char* [])
   // visualization pipeline (it is a source process object); it produces data
   // (output type is vtkPolyData) which other filters may process.
   //
-  vtkSmartPointer<vtkConeSource> cone = vtkSmartPointer<vtkConeSource>::New();
+  vtkNew<vtkConeSource> cone;
   cone->SetHeight(3.0);
   cone->SetRadius(1.0);
   cone->SetResolution(10);
@@ -38,8 +38,7 @@ int main(int, char* [])
   // vtkPolyDataMapper to map the polygonal data into graphics primitives. We
   // connect the output of the cone source to the input of this mapper.
   //
-  vtkSmartPointer<vtkPolyDataMapper> coneMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> coneMapper;
   coneMapper->SetInputConnection(cone->GetOutputPort());
 
   //
@@ -49,7 +48,7 @@ int main(int, char* [])
   // matrix. We set this actor's mapper to be coneMapper which we created
   // above.
   //
-  vtkSmartPointer<vtkActor> coneActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> coneActor;
   coneActor->SetMapper(coneMapper);
 
   //
@@ -60,12 +59,12 @@ int main(int, char* [])
   // actor to two different renderers; it is okay to add different actors to
   // different renderers as well.
   //
-  vtkSmartPointer<vtkRenderer> ren1 = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren1;
   ren1->AddActor(coneActor);
   ren1->SetBackground(colors->GetColor3d("SlateGray").GetData());
   ren1->SetViewport(0.0, 0.0, 0.5, 1.0);
 
-  vtkSmartPointer<vtkRenderer> ren2 = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren2;
   ren2->AddActor(coneActor);
   ren2->SetBackground(colors->GetColor3d("LightSlateGray").GetData());
   ren2->SetViewport(0.5, 0.0, 1.0, 1.0);
@@ -75,14 +74,13 @@ int main(int, char* [])
   // We put our renderer into the render window using AddRenderer. We also
   // set the size to be 300 pixels by 300.
   //
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
   renWin->AddRenderer(ren2);
   renWin->SetSize(600, 300);
+  renWin->SetWindowName("Cone3");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   //

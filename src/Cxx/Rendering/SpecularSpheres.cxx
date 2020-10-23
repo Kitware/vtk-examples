@@ -111,7 +111,7 @@ int main(int, char*[])
 
   ren->SetBackground(colors->GetColor3d("bkg").GetData());
   renWin->SetSize(640, 480);
-  renWin->SetWindowName("Specular Spheres");
+  renWin->SetWindowName("SpecularSpheres");
 
   // Set up the lighting.
   //

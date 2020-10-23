@@ -66,6 +66,7 @@ int main(int, char* [])
   ren1->AddActor(spikeActor2);
   ren1->SetBackground(colors->GetColor3d("Bkg").GetData());
   renWin->SetSize(300, 300);
+  renWin->SetWindowName("CameraBlur");
   //   renWin->DoubleBufferOff();
 
   // Do the first render and then zoom in a little.

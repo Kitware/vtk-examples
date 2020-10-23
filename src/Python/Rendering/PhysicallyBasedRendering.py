@@ -166,11 +166,11 @@ def main():
     actor.GetProperty().SetNormalScale(normalScale)
 
     renderer.UseImageBasedLightingOn()
-    if vtk.VTK_VERSION_NUMBER >= 90000000000:
+    if vtk_version_ok(9, 0, 0):
         renderer.SetEnvironmentTexture(cubemap)
     else:
         renderer.SetEnvironmentCubeMap(cubemap)
-    renderer.SetBackground(colors.GetColor3d("BkgColor"))
+    renderer.SetBackground(colors.GetColor3d('BkgColor'))
     renderer.AddActor(actor)
 
     # Comment out if you don't want a skybox
@@ -194,7 +194,7 @@ def main():
 
     widget = vtk.vtkOrientationMarkerWidget()
     rgba = [0.0, 0.0, 0.0, 0.0]
-    colors.GetColor("Carrot", rgba)
+    colors.GetColor('Carrot', rgba)
     widget.SetOutlineColor(rgba[0], rgba[1], rgba[2])
     widget.SetOrientationMarker(axes)
     widget.SetInteractor(interactor)

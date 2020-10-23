@@ -29,6 +29,8 @@ def main():
     ren1.SetBackground(colors.GetColor3d("SlateGray"))
     renWin = vtk.vtkRenderWindow()
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('StippledLine')
+
 
     renWin.AddRenderer(ren1)
     iren = vtk.vtkRenderWindowInteractor()

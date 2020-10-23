@@ -47,6 +47,7 @@ def main():
     renderer.ResetCameraClippingRange()
 
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('TransformSphere')
 
     renWin.Render()
 

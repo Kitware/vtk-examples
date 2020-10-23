@@ -3,51 +3,45 @@
 #include <vtkDataSetMapper.h>
 #include <vtkElevationFilter.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 
-int main( int, char *[] )
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkNamedColors> colors;
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphere->SetPhiResolution(12); sphere->SetThetaResolution(12);
+  vtkNew<vtkSphereSource> sphere;
+  sphere->SetPhiResolution(12);
+  sphere->SetThetaResolution(12);
 
-  vtkSmartPointer<vtkElevationFilter> colorIt =
-    vtkSmartPointer<vtkElevationFilter>::New();
+  vtkNew<vtkElevationFilter> colorIt;
   colorIt->SetInputConnection(sphere->GetOutputPort());
-  colorIt->SetLowPoint(0,0,-1);
-  colorIt->SetHighPoint(0,0,1);
+  colorIt->SetLowPoint(0, 0, -1);
+  colorIt->SetHighPoint(0, 0, 1);
 
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(colorIt->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("ColoredSphere");
 
   renWin->Render();
 
   // interact with data
   iren->Start();
-  
+
   return EXIT_SUCCESS;
 }

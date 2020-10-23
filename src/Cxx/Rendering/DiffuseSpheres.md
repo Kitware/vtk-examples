@@ -5,4 +5,4 @@
 
 !!! info
     Similar examples setting the ambient and specular properties are:
-    See [AmbientSpheres.cxx](https://lorensen.github.io/VTKExamples/site/Cxx/Rendering/AmbientSpheres/), [AmbientSpheres.py](https://lorensen.github.io/VTKExamples/site/Python/Rendering/AmbientSpheres/), [AmbientSpheres.java](https://lorensen.github.io/VTKExamples/site/Java/Rendering/AmbientSpheres/) and [SpecularSpheres.cxx](https://lorensen.github.io/VTKExamples/site/Cxx/Rendering/SpecularSpheres/), [SpecularSpheres.py](https://lorensen.github.io/VTKExamples/site/Python/Rendering/SpecularSpheres/).
+    See [AmbientSpheres.cxx](../AmbientSpheres), [AmbientSpheres.py](../../../Python/Rendering/AmbientSpheres), [AmbientSpheres.java](../../../Java/Rendering/AmbientSpheres) and [SpecularSpheres.cxx](../SpecularSpheres), [SpecularSpheres.py](../../../Python/Rendering/SpecularSpheres).

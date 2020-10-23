@@ -1,15 +1,16 @@
-#include <vtkCameraInterpolator.h>
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
+#include <vtkCameraInterpolator.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkMinimalStandardRandomSequence.h>
 
 #include <vtkBYUReader.h>
 #include <vtkOBJReader.h>
@@ -24,53 +25,51 @@
 #include <array>
 #include <chrono>
 #include <iterator>
+//#include <random>
 #include <thread>
 #include <vector>
-#include <random>
+
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
+
+void ComputeKeyPoints(vtkPolyData* polyData, std::array<double, 3>& center,
+                      std::vector<std::array<double, 3>>& keyPoints);
 
 template <class T, std::size_t N>
-ostream &operator<<(ostream &o, const std::array<T, N> &arr)
+ostream& operator<<(ostream& o, const std::array<T, N>& arr)
 {
   copy(arr.cbegin(), arr.cend(), std::ostream_iterator<T>(o, ", "));
   return o;
 }
 
 template <class T, std::size_t N>
-ostream &operator<<(ostream &o, const std::vector<T> &vec)
+ostream& operator<<(ostream& o, const std::vector<T>& vec)
 {
   copy(vec.cbegin(), vec.cend(), std::ostream_iterator<T>(o, ", "));
   return o;
 }
 
-namespace
+} // namespace
+
+int main(int argc, char* argv[])
 {
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
 
-void ComputeKeyPoints(vtkPolyData *polyData, std::array<double, 3> &center,
-                      std::vector<std::array<double, 3>> &keyPoints);
-}
-
-int main(int argc, char *argv[]) {
-
-  vtkSmartPointer<vtkNamedColors> colors =
-      vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
-
   // Setup camera views for interpolation
-  vtkSmartPointer<vtkCameraInterpolator> interpolator =
-      vtkSmartPointer<vtkCameraInterpolator>::New();
+  vtkNew<vtkCameraInterpolator> interpolator;
   interpolator->SetInterpolationTypeToSpline();
 
   std::array<double, 3> center;
   std::vector<std::array<double, 3>> keyPoints;
   ComputeKeyPoints(polyData, center, keyPoints);
 
-  for (size_t i = 0; i < keyPoints.size() + 1; ++i) {
+  for (size_t i = 0; i < keyPoints.size() + 1; ++i)
+  {
     auto j = i;
-    vtkSmartPointer<vtkCamera> cam =
-        vtkSmartPointer<vtkCamera>::New();
+    vtkNew<vtkCamera> cam;
     cam->SetFocalPoint(center.data());
     if (i < keyPoints.size())
     {
@@ -85,21 +84,18 @@ int main(int argc, char *argv[]) {
   }
 
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polyData);
   mapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkProperty> backProp =
-      vtkSmartPointer<vtkProperty>::New();
+  vtkNew<vtkProperty> backProp;
   backProp->SetDiffuseColor(colors->GetColor3d("Banana").GetData());
   backProp->SetDiffuse(.76);
   backProp->SetSpecular(.4);
   backProp->SetSpecularPower(30);
   ;
 
-  vtkSmartPointer<vtkActor> actor =
-      vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->SetBackfaceProperty(backProp);
   actor->GetProperty()->SetDiffuseColor(
@@ -107,23 +103,20 @@ int main(int argc, char *argv[]) {
   actor->GetProperty()->SetSpecular(.6);
   actor->GetProperty()->SetSpecularPower(30);
 
-
-  vtkSmartPointer<vtkRenderer> renderer =
-      vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("InterpolateCamera");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
 
-  vtkSmartPointer<vtkCamera> camera =
-      vtkSmartPointer<vtkCamera>::New();
+
+  vtkNew<vtkCamera> camera;
   renderer->SetActiveCamera(camera);
 
   auto numSteps = 600;
@@ -143,75 +136,71 @@ int main(int argc, char *argv[]) {
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
   std::string extension =
       vtksys::SystemTools::GetFilenameLastExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    vtkSmartPointer<vtkPLYReader> reader =
-        vtkSmartPointer<vtkPLYReader>::New();
+    vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-        vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    vtkSmartPointer<vtkOBJReader> reader =
-        vtkSmartPointer<vtkOBJReader>::New();
+    vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    vtkSmartPointer<vtkSTLReader> reader =
-        vtkSmartPointer<vtkSTLReader>::New();
+    vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    vtkSmartPointer<vtkPolyDataReader> reader =
-        vtkSmartPointer<vtkPolyDataReader>::New();
+    vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
-  else if (extension == ".g") {
-    vtkSmartPointer<vtkBYUReader> reader =
-        vtkSmartPointer<vtkBYUReader>::New();
+  else if (extension == ".g")
+  {
+    vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
-  else 
+  else
   {
-    vtkSmartPointer<vtkSphereSource> source =
-        vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->Update();
     polyData = source->GetOutput();
   }
   return polyData;
 }
 
-void ComputeKeyPoints(vtkPolyData *polyData, std::array<double, 3> &center,
-                      std::vector<std::array<double, 3>> &keyPoints)
+void ComputeKeyPoints(vtkPolyData* polyData, std::array<double, 3>& center,
+                      std::vector<std::array<double, 3>>& keyPoints)
 {
-  std::mt19937 mt(4355412); //Standard mersenne_twister_engine
-  std::uniform_real_distribution<double> dis(1.0, 3.0);
+  //std::mt19937 mt(4355412); // Standard mersenne_twister_engine
+  //std::uniform_real_distribution<double> dis(1.0, 3.0);
+
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(4355412);
 
   // Get Bounding Box
   std::array<double, 6> bounds;
@@ -257,7 +246,9 @@ void ComputeKeyPoints(vtkPolyData *polyData, std::array<double, 3> &center,
       direction[j] = points[i][j] - center[j];
     }
     vtkMath::Normalize(direction.data());
-    double factor = dis(mt);
+    //double factor = dis(mt);
+    double factor = randomSequence->GetRangeValue(1.0, 3.0);
+    randomSequence->Next();
     keyPoints.resize(8);
     for (auto j = 0; j < 3; ++j)
     {

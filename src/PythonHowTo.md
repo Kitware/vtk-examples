@@ -16,6 +16,12 @@ Here are some snippets or examples that highlight interesting features that may 
 | -------------- | ---------------------- | ------- |
 [WriteImage](/Python/Snippets/WriteImage) | Write out an image of various types.
 
+## Render Windows
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[Model](/Python/Rendering/Model) | vtkRenderer vtkRenderWindow vtkRenderWindowInteractor | Multiple render windows.
+
 ## Random
 
 If you want to ensure that the same random points/colors are used in C++ and other languages then it is best to use vtkMinimalStandardRandomSequence.

@@ -1,4 +1,5 @@
 ### Description
+
 This example demonstrates the use and manipulation of vtkLookupTable's.
 
 First a simple pipeline that reads a vtkStructuredGrid and then extracts a plane using vtkStructuredGeometryFilter from the grid. The plane will be colored differently by using different vtkLookupTable's.
@@ -10,4 +11,4 @@ First a simple pipeline that reads a vtkStructuredGrid and then extracts a plane
     This original tcl source code for this example is [here](https://gitlab.kitware.com/vtk/vtk/blob/395857190c8453508d283958383bc38c9c2999bf/Examples/Rendering/Tcl/rainbow.tcl).
 
 !!! info
-    See [Figure 6-3](/VTKBook/06Chapter6/#Figure%206-3) in [Chapter 6](/VTKBook/06Chapter6) the [VTK Textbook](/VTKBook/01Chapter1).
+    See [Figure 6-3](../../../VTKBook/06Chapter6/#Figure%206-3) in [Chapter 6](../../../VTKBook/06Chapter6) the [VTK Textbook](../../../VTKBook/01Chapter1).

@@ -4,6 +4,7 @@
 #include <vtkElevationFilter.h>
 #include <vtkLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
@@ -11,51 +12,41 @@
 #include <vtkTransform.h>
 #include <vtkTransformFilter.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkNamedColors> colors;
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphere->SetThetaResolution(12); sphere->SetPhiResolution(12);
+  vtkNew<vtkSphereSource> sphere;
+  sphere->SetThetaResolution(12);
+  sphere->SetPhiResolution(12);
 
-  vtkSmartPointer<vtkTransform> aTransform =
-    vtkSmartPointer<vtkTransform>::New();
-  aTransform->Scale(1,1.5,2);
+  vtkNew<vtkTransform> aTransform;
+  aTransform->Scale(1, 1.5, 2);
 
-  vtkSmartPointer<vtkTransformFilter> transFilter =
-    vtkSmartPointer<vtkTransformFilter>::New();
+  vtkNew<vtkTransformFilter> transFilter;
   transFilter->SetInputConnection(sphere->GetOutputPort());
-  transFilter->SetTransform(aTransform);  
+  transFilter->SetTransform(aTransform);
 
-  vtkSmartPointer<vtkElevationFilter> colorIt =
-    vtkSmartPointer<vtkElevationFilter>::New();
+  vtkNew<vtkElevationFilter> colorIt;
   colorIt->SetInputConnection(transFilter->GetOutputPort());
-  colorIt->SetLowPoint(0,0,-1);
-  colorIt->SetHighPoint(0,0,1);
+  colorIt->SetLowPoint(0, 0, -1);
+  colorIt->SetHighPoint(0, 0, 1);
 
-  vtkSmartPointer<vtkLookupTable> lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   lut->SetHueRange(0.667, 0);
-  lut->SetSaturationRange(1,1);
-  lut->SetValueRange(1,1);
+  lut->SetSaturationRange(1, 1);
+  lut->SetValueRange(1, 1);
 
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetLookupTable(lut);
   mapper->SetInputConnection(colorIt->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   renderer->AddActor(actor);
@@ -66,6 +57,7 @@ int main(int, char *[])
   renderer->ResetCameraClippingRange();
 
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("TransformSphere");
 
   renWin->Render();
 
@@ -74,4 +66,3 @@ int main(int, char *[])
 
   return EXIT_SUCCESS;
 }
-

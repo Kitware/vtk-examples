@@ -9,17 +9,16 @@
 #include <vtkCamera.h>
 #include <vtkConeSource.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
-
-int main(int, char* [])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   //
   // Next we create an instance of vtkConeSource and set some of its
@@ -27,7 +26,7 @@ int main(int, char* [])
   // visualization pipeline (it is a source process object); it produces data
   // (output type is vtkPolyData) which other filters may process.
   //
-  vtkSmartPointer<vtkConeSource> cone = vtkSmartPointer<vtkConeSource>::New();
+  vtkNew<vtkConeSource> cone;
   cone->SetHeight(3.0);
   cone->SetRadius(1.0);
   cone->SetResolution(10);
@@ -39,8 +38,7 @@ int main(int, char* [])
   // vtkPolyDataMapper to map the polygonal data into graphics primitives. We
   // connect the output of the cone source to the input of this mapper.
   //
-  vtkSmartPointer<vtkPolyDataMapper> coneMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> coneMapper;
   coneMapper->SetInputConnection(cone->GetOutputPort());
 
   //
@@ -48,7 +46,7 @@ int main(int, char* [])
   // modified to give it different surface properties. By default, an actor
   // is create with a property so the GetProperty() method can be used.
   //
-  vtkSmartPointer<vtkActor> coneActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> coneActor;
   coneActor->SetMapper(coneMapper);
   coneActor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
   coneActor->GetProperty()->SetDiffuse(0.7);
@@ -59,7 +57,7 @@ int main(int, char* [])
   // Create a property and directly manipulate it. Assign it to the
   // second actor.
   //
-  vtkSmartPointer<vtkProperty> property = vtkSmartPointer<vtkProperty>::New();
+  vtkNew<vtkProperty> property;
   property->SetColor(colors->GetColor3d("Tomato").GetData());
   property->SetDiffuse(0.7);
   property->SetSpecular(0.4);
@@ -71,7 +69,7 @@ int main(int, char* [])
   // property can be shared among many actors. Note also that we use the
   // same mapper as the first actor did. This way we avoid duplicating
   // geometry, which may save lots of memory if the geoemtry is large.
-  vtkSmartPointer<vtkActor> coneActor2 = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> coneActor2;
   coneActor2->SetMapper(coneMapper);
   coneActor2->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
   coneActor2->SetProperty(property);
@@ -83,7 +81,7 @@ int main(int, char* [])
   // responsible for drawing the actors it has.  We also set the background
   // color here.
   //
-  vtkSmartPointer<vtkRenderer> ren1 = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren1;
   ren1->AddActor(coneActor);
   ren1->AddActor(coneActor2);
   ren1->SetBackground(colors->GetColor3d("LightSlateGray").GetData());
@@ -93,13 +91,12 @@ int main(int, char* [])
   // We put our renderer into the render window using AddRenderer. We also
   // set the size to be 300 pixels by 300.
   //
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("Cone4");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   //

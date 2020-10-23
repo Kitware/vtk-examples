@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-"""
-"""
+'''
+'''
 
 import vtk
 
@@ -20,6 +20,8 @@ def main():
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer1)
     renderWindow.AddRenderer(renderer2)
+    renderWindow.SetWindowName('StripFran')
+    
 
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
@@ -46,7 +48,7 @@ def main():
 
     cyberActor = vtk.vtkActor()
     cyberActor.SetMapper(cyberMapper)
-    cyberActor.GetProperty().SetColor(colors.GetColor3d("Flesh"))
+    cyberActor.GetProperty().SetColor(colors.GetColor3d('Flesh'))
 
     stripper = vtk.vtkStripper()
     stripper.SetInputConnection(cyber.GetOutputPort())
@@ -60,14 +62,14 @@ def main():
 
     stripperActor = vtk.vtkActor()
     stripperActor.SetMapper(stripperMapper)
-    stripperActor.GetProperty().SetColor(colors.GetColor3d("Flesh"))
+    stripperActor.GetProperty().SetColor(colors.GetColor3d('Flesh'))
 
     # Add the actors to the renderer, set the background and size.
     #
     renderer1.AddActor(stripperActor)
     renderer2.AddActor(cyberActor)
-    renderer1.SetBackground(colors.GetColor3d("Wheat"))
-    renderer2.SetBackground(colors.GetColor3d("Papaya_Whip"))
+    renderer1.SetBackground(colors.GetColor3d('Wheat'))
+    renderer2.SetBackground(colors.GetColor3d('Papaya_Whip'))
     renderWindow.SetSize(1024, 640)
 
     # Render the image.

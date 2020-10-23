@@ -4,7 +4,7 @@ import vtk
 
 
 def main():
-    """
+    '''
         To match the illustrations in VTKTextbook.pdf, use BkgColor as the background and
           Wheat as the cow colour.
         Also comment out the lines:
@@ -12,22 +12,22 @@ def main():
           modelActor->GetProperty()->SetSpecularPower(30);
         and use cow.g as the input data.
 
-    """
+    '''
     file_name, figure, book_color = get_program_parameters()
     rotate(file_name, figure, book_color)
 
 
 def rotate(file_name, figure, book_color):
-    """"
+    ''''
     This is where we do the rotations.
 
-    """
+    '''
     # Create renderer stuff
     #
     colors = vtk.vtkNamedColors()
     # Set the background color.
-    colors.SetColor("BkgColor", [26, 51, 102, 255])
-    # colors.SetColor("BkgColor", [60, 93, 144, 255])
+    colors.SetColor('BkgColor', [26, 51, 102, 255])
+    # colors.SetColor('BkgColor', [60, 93, 144, 255])
 
     ren1 = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
@@ -46,9 +46,9 @@ def rotate(file_name, figure, book_color):
     modelActor = vtk.vtkActor()
     modelActor.SetMapper(modelMapper)
     if book_color:
-        modelActor.GetProperty().SetDiffuseColor(colors.GetColor3d("Wheat"))
+        modelActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Wheat'))
     else:
-        modelActor.GetProperty().SetDiffuseColor(colors.GetColor3d("Crimson"))
+        modelActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Crimson'))
         modelActor.GetProperty().SetSpecular(.6)
         modelActor.GetProperty().SetSpecularPower(30)
 
@@ -69,13 +69,15 @@ def rotate(file_name, figure, book_color):
     #
     ren1.AddActor(modelActor)
     if book_color:
-        ren1.SetBackground(colors.GetColor3d("BkgColor"))
+        ren1.SetBackground(colors.GetColor3d('BkgColor'))
     else:
-        ren1.SetBackground(colors.GetColor3d("Silver"))
+        ren1.SetBackground(colors.GetColor3d('Silver'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('Rotations')
+
     ren1.ResetCamera()
     ren1.GetActiveCamera().Azimuth(0)
-    ren1.GetActiveCamera().SetClippingRange(.1, 1000.0)
+    ren1.GetActiveCamera().SetClippingRange(0.1, 1000.0)
 
     modelAxes.VisibilityOn()
 
@@ -166,32 +168,32 @@ def ReadPolyData(file_name):
     import os
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
-    if extension == ".ply":
+    if extension == '.ply':
         reader = vtk.vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtp":
+    elif extension == '.vtp':
         reader = vtk.vtkXMLpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".obj":
+    elif extension == '.obj':
         reader = vtk.vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".stl":
+    elif extension == '.stl':
         reader = vtk.vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtk":
+    elif extension == '.vtk':
         reader = vtk.vtkpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".g":
+    elif extension == '.g':
         reader = vtk.vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()

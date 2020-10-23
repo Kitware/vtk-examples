@@ -58,6 +58,7 @@ def main():
     skybox = ReadCubeMap(cube_path, '/', '.jpg', 1)
     # skybox = ReadCubeMap(cube_path, '/skybox', '.jpg', 2)
     skybox.InterpolateOn()
+    skybox.MipmapOn()
     skybox.RepeatOff()
     skybox.EdgeClampOn()
 
@@ -103,7 +104,7 @@ def main():
     actor.SetMapper(mapper)
 
     renderer.UseImageBasedLightingOn()
-    if vtk.VTK_VERSION_NUMBER >= 90000000000:
+    if vtk_version_ok(9, 0, 0):
         renderer.SetEnvironmentTexture(cubemap)
     else:
         renderer.SetEnvironmentCubeMap(cubemap)

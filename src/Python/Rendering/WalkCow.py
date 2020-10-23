@@ -11,12 +11,13 @@ def walk_cow(file_name, figure):
 
     colors = vtk.vtkNamedColors()
     # Set the background color.
-    colors.SetColor("BkgColor1", [60, 93, 144, 255])
-    colors.SetColor("BkgColor2", [26, 51, 102, 255])
+    colors.SetColor('BkgColor1', [60, 93, 144, 255])
+    colors.SetColor('BkgColor2', [26, 51, 102, 255])
 
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
+    renWin.SetWindowName('WalkCow');
 
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
@@ -32,7 +33,7 @@ def walk_cow(file_name, figure):
 
     cowActor = vtk.vtkActor()
     cowActor.SetMapper(cowMapper)
-    cowActor.GetProperty().SetColor(colors.GetColor3d("Wheat"))
+    cowActor.GetProperty().SetColor(colors.GetColor3d('Wheat'))
 
     ren.AddActor(cowActor)
 
@@ -50,7 +51,7 @@ def walk_cow(file_name, figure):
 
     ren.AddActor(cowAxes)
 
-    ren.SetBackground(colors.GetColor3d("BkgColor1"))
+    ren.SetBackground(colors.GetColor3d('BkgColor1'))
     renWin.SetSize(600, 480)
 
     iren.Initialize()
@@ -66,7 +67,7 @@ def walk_cow(file_name, figure):
     Rotate_Z(cowActor, ren, renWin)
     Rotate_XY(cowActor, ren, renWin)
 
-    ren.SetBackground(colors.GetColor3d("BkgColor2"))
+    ren.SetBackground(colors.GetColor3d('BkgColor2'))
     if figure == 1:
         Rotate_V_0(cowActor, ren, renWin)
     elif figure == 2:
@@ -103,7 +104,7 @@ def get_program_parameters():
     return args.filename, args.figure
 
 
-"""
+'''
   These Rotate* and Walk functions create a scene where multiple
      views of the object exist.
 
@@ -121,7 +122,7 @@ def get_program_parameters():
     6) Set EraseOff() in the render window.
     7) Reset the object position.
 
-"""
+'''
 
 
 def Rotate_X(cowActor, ren, renWin):
@@ -148,7 +149,7 @@ def Rotate_X(cowActor, ren, renWin):
         cowActor.RotateX(60)
         renWin.Render()
         renWin.Render()
-    # Screenshot("Fig3-31a.png", renWin)
+    # Screenshot('Fig3-31a.png', renWin)
     renWin.EraseOn()
 
 
@@ -176,7 +177,7 @@ def Rotate_Y(cowActor, ren, renWin):
         cowActor.RotateY(60)
         renWin.Render()
         renWin.Render()
-    # Screenshot("Fig3-31b.png", renWin)
+    # Screenshot('Fig3-31b.png', renWin)
     renWin.EraseOn()
 
 
@@ -205,7 +206,7 @@ def Rotate_Z(cowActor, ren, renWin):
         cowActor.RotateZ(60)
         renWin.Render()
         renWin.Render()
-    # Screenshot("Fig3-31c.png", renWin)
+    # Screenshot('Fig3-31c.png', renWin)
     renWin.EraseOn()
 
 
@@ -236,7 +237,7 @@ def Rotate_XY(cowActor, ren, renWin):
         renWin.Render()
         renWin.Render()
     cowActor.RotateX(-60)
-    # Screenshot("Fig3-31d.png", renWin)
+    # Screenshot('Fig3-31d.png', renWin)
     renWin.EraseOn()
 
 
@@ -270,7 +271,7 @@ def Rotate_V_0(cowActor, ren, renWin):
         cowActor.RotateWXYZ(60, 2.19574, -1.42455, -0.0331036)
         renWin.Render()
         renWin.Render()
-    # Screenshot("Fig3-33a.png", renWin)
+    # Screenshot('Fig3-33a.png', renWin)
     renWin.EraseOn()
     # Put the cow back on the origin.
     # for idx in range(0, 6):
@@ -312,7 +313,7 @@ def Rotate_V_V(cowActor, ren, renWin):
         cowActor.RotateWXYZ(60, 2.19574, -1.42455, -0.0331036)
         renWin.Render()
         renWin.Render()
-    # Screenshot("Fig3-33b.png", renWin)
+    # Screenshot('Fig3-33b.png', renWin)
     renWin.EraseOn()
     # Put the cow back on the origin.
     # for idx in range(0, 6):
@@ -321,7 +322,7 @@ def Rotate_V_V(cowActor, ren, renWin):
 
 
 def Walk(cowActor, ren, renWin):
-    # The cow "walking" around the global origin
+    # The cow 'walking' around the global origin
     cowPos = vtk.vtkTransform()
     cowPos.Identity()
     cowPos.SetMatrix(cowActor.GetMatrix())
@@ -351,37 +352,37 @@ def Walk(cowActor, ren, renWin):
         cowActor.SetUserMatrix(cowTransform.GetMatrix())
         renWin.Render()
         renWin.Render()
-    # Screenshot("Fig3-32.png", renWin)
+    # Screenshot('Fig3-32.png', renWin)
     renWin.EraseOn()
     # Walkies are over, put the cow back on the origin.
     # cowActor.SetUserMatrix(cowPos.GetMatrix())
 
 
 def CameraModifiedCallback(caller, ev):
-    """
+    '''
      Used to estimate positions similar to the book illustrations.
     :param caller:
     :return:
-    """
-    print(caller.GetClassName(), "modified")
+    '''
+    print(caller.GetClassName(), 'modified')
     # Print the interesting stuff.
-    print("\tPosition: ",
-          caller.GetPosition()[0], ", ",
-          caller.GetPosition()[1], ", ",
+    print('\tPosition: ',
+          caller.GetPosition()[0], ', ',
+          caller.GetPosition()[1], ', ',
           caller.GetPosition()[2])
-    print("\tFocal point: ",
-          caller.GetFocalPoint()[0], ", ",
-          caller.GetFocalPoint()[1], ", ",
+    print('\tFocal point: ',
+          caller.GetFocalPoint()[0], ', ',
+          caller.GetFocalPoint()[1], ', ',
           caller.GetFocalPoint()[2])
 
 
 def Screenshot(fileName, renWin):
-    """
+    '''
     Save a screenshot.
     :param fileName:
     :param renWin:
     :return:
-    """
+    '''
     windowToImageFilter = vtk.vtkWindowToImageFilter()
     windowToImageFilter.SetInput(renWin)
     windowToImageFilter.SetScale(1)  # image quality

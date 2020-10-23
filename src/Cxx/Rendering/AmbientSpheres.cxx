@@ -104,7 +104,7 @@ int main(int, char*[])
   ren->SetBackground(colors->GetColor3d("bkg").GetData());
   renWin->SetSize(640, 480);
   std::cout << "DPI: " << renWin->GetDPI() << std::endl;
-  renWin->SetWindowName("Ambient Spheres");
+  renWin->SetWindowName("AmbientSpheres");
 
   // Set up the lighting.
   //

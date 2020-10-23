@@ -4,6 +4,7 @@
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiBlockPLOT3DReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
@@ -31,11 +32,9 @@ int main(int argc, char* argv[])
               << std::endl;
     return EXIT_FAILURE;
   }
-  vtkSmartPointer<vtkNamedColors> colors =
-      vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkMultiBlockPLOT3DReader> pl3d =
-      vtkSmartPointer<vtkMultiBlockPLOT3DReader>::New();
+  vtkNew<vtkMultiBlockPLOT3DReader> pl3d;
   pl3d->SetXYZFileName(argv[1]);
   pl3d->SetQFileName(argv[2]);
   pl3d->SetScalarFunctionNumber(100);
@@ -48,23 +47,18 @@ int main(int argc, char* argv[])
   std::vector<vtkSmartPointer<vtkRenderer>> renderers;
 
   // Create the 4 renderers
-  vtkSmartPointer<vtkRenderer> grayScaleRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> grayScaleRenderer;
   renderers.push_back(grayScaleRenderer);
-  vtkSmartPointer<vtkRenderer> rainbowBlueRedRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rainbowBlueRedRenderer;
   renderers.push_back(rainbowBlueRedRenderer);
-  vtkSmartPointer<vtkRenderer> rainbowRedBlueRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rainbowRedBlueRenderer;
   renderers.push_back(rainbowRedBlueRenderer);
-  vtkSmartPointer<vtkRenderer> largeContrastRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> largeContrastRenderer;
   renderers.push_back(largeContrastRenderer);
 
   std::vector<vtkSmartPointer<vtkLookupTable>> luts;
 
-  vtkSmartPointer<vtkLookupTable> grayScaleLut =
-      vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> grayScaleLut;
   grayScaleLut->SetHueRange(0, 0);
   grayScaleLut->SetSaturationRange(0, 0);
   grayScaleLut->SetValueRange(0.2, 1.0);
@@ -73,22 +67,19 @@ int main(int argc, char* argv[])
   grayScaleLut->Build();
   luts.push_back(grayScaleLut);
 
-  vtkSmartPointer<vtkLookupTable> rainbowBlueRedLut =
-      vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> rainbowBlueRedLut;
   rainbowBlueRedLut->SetNumberOfColors(256);
   rainbowBlueRedLut->SetHueRange(0.667, 0.0);
   rainbowBlueRedLut->Build();
   luts.push_back(rainbowBlueRedLut);
 
-  vtkSmartPointer<vtkLookupTable> rainbowRedBlueLut =
-      vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> rainbowRedBlueLut;
   rainbowRedBlueLut->SetNumberOfColors(256);
   rainbowRedBlueLut->SetHueRange(0.0, 0.667);
   rainbowRedBlueLut->Build();
   luts.push_back(rainbowRedBlueLut);
 
-  vtkSmartPointer<vtkLookupTable> highContrastLut =
-      vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> highContrastLut;
   highContrastLut->SetNumberOfColors(256);
   highContrastLut->Build();
 
@@ -101,10 +92,8 @@ int main(int argc, char* argv[])
   }
   luts.push_back(highContrastLut);
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   int rendererSize = 256;
@@ -127,33 +116,29 @@ int main(int argc, char* argv[])
     }
   }
 
-  vtkSmartPointer<vtkStructuredGridGeometryFilter> plane =
-      vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> plane;
   plane->SetInputData(pl3dOutput);
   plane->SetExtent(1, 100, 1, 100, 7, 7);
 
   for (size_t r = 0; r < renderers.size(); ++r)
   {
     vtkSmartPointer<vtkLookupTable> lut = luts[r];
-    vtkSmartPointer<vtkPolyDataMapper> planeMapper =
-        vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> planeMapper;
     planeMapper->SetLookupTable(lut);
     planeMapper->SetInputConnection(plane->GetOutputPort());
     planeMapper->SetScalarRange(pl3dOutput->GetScalarRange());
 
-    vtkSmartPointer<vtkActor> planeActor = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> planeActor;
     planeActor->SetMapper(planeMapper);
 
     // This creates an outline around the data.
-    vtkSmartPointer<vtkStructuredGridOutlineFilter> outline =
-        vtkSmartPointer<vtkStructuredGridOutlineFilter>::New();
+    vtkNew<vtkStructuredGridOutlineFilter> outline;
     outline->SetInputData(pl3dOutput);
 
-    vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-        vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> outlineMapper;
     outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-    vtkSmartPointer<vtkActor> outlineActor = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> outlineActor;
     outlineActor->SetMapper(outlineMapper);
 
     // Create the RenderWindow, Renderer and both Actors
@@ -173,14 +158,14 @@ int main(int argc, char* argv[])
     renderWindow->AddRenderer(renderers[r]);
   }
 
-  // vtkSmartPointer<vtkLookupTable> lut =
-  //  vtkSmartPointer<vtkLookupTable>::New();
+  // vtkNew<vtkLookupTable> lut;
 
   // Add the actors to the renderer, set the background and size
   //
 
   renderWindow->SetSize(rendererSize * xGridDimensions,
                         rendererSize * yGridDimensions);
+  renderWindow->SetWindowName("Rainbow");
 
   interactor->Initialize();
 
