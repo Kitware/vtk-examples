@@ -1,7 +1,5 @@
 // test baking shadow maps
 
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkCameraPass.h>
@@ -9,6 +7,7 @@
 #include <vtkCubeSource.h>
 #include <vtkLight.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOpenGLRenderer.h>
 #include <vtkOpenGLTexture.h>
 #include <vtkPlaneSource.h>
@@ -22,6 +21,7 @@
 #include <vtkSequencePass.h>
 #include <vtkShadowMapBakerPass.h>
 #include <vtkShadowMapPass.h>
+#include <vtkSmartPointer.h>
 
 #include <vtkBYUReader.h>
 #include <vtkOBJReader.h>
@@ -31,8 +31,9 @@
 #include <vtkSphereSource.h>
 #include <vtkXMLPolyDataReader.h>
 
-#include <array>
 #include <vtksys/SystemTools.hxx>
+
+#include <array>
 
 namespace {
 vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
@@ -45,39 +46,39 @@ int main(int argc, char* argv[])
   auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
   ;
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   colors->SetColor("HighNoonSun", 1.0, 1.0, .9843, 1.0); // Color temp. 5400k
   colors->SetColor("100W Tungsten", 1.0, .8392, .6667,
                    1.0); // Color temp. 2850k
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  auto light1 = vtkSmartPointer<vtkLight>::New();
+  vtkNew<vtkLight> light1;
   light1->SetFocalPoint(0, 0, 0);
   light1->SetPosition(0, 1, 0.2);
   light1->SetColor(colors->GetColor3d("HighNoonSun").GetData());
   light1->SetIntensity(0.3);
   renderer->AddLight(light1);
 
-  auto light2 = vtkSmartPointer<vtkLight>::New();
+  vtkNew<vtkLight> light2;
   light2->SetFocalPoint(0, 0, 0);
   light2->SetPosition(1.0, 1.0, 1.0);
   light2->SetColor(colors->GetColor3d("100W Tungsten").GetData());
   light2->SetIntensity(0.8);
   renderer->AddLight(light2);
 
-  auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polyData);
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetAmbientColor(
       colors->GetColor3d("SaddleBrown").GetData());
@@ -102,32 +103,32 @@ int main(int argc, char* argv[])
             << std::endl;
   double expand = 1.0;
   auto thickness = range[2] * 0.1;
-  auto plane = vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkCubeSource> plane;
   plane->SetCenter((bounds[1] + bounds[0]) / 2.0, bounds[2] - thickness / 2.0,
                    (bounds[5] + bounds[4]) / 2.0);
   plane->SetXLength(bounds[1] - bounds[0] + (range[0] * expand));
   plane->SetYLength(thickness);
   plane->SetZLength(bounds[5] - bounds[4] + (range[2] * expand));
 
-  auto planeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> planeMapper;
   planeMapper->SetInputConnection(plane->GetOutputPort());
 
-  auto planeActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> planeActor;
   planeActor->SetMapper(planeMapper);
   renderer->AddActor(planeActor);
 
   renderWindow->SetMultiSamples(0);
 
-  auto shadows = vtkSmartPointer<vtkShadowMapPass>::New();
+  vtkNew<vtkShadowMapPass> shadows;
 
-  auto seq = vtkSmartPointer<vtkSequencePass>::New();
+  vtkNew<vtkSequencePass> seq;
 
-  auto passes = vtkSmartPointer<vtkRenderPassCollection>::New();
+  vtkNew<vtkRenderPassCollection> passes;
   passes->AddItem(shadows->GetShadowMapBakerPass());
   passes->AddItem(shadows);
   seq->SetPasses(passes);
 
-  auto cameraP = vtkSmartPointer<vtkCameraPass>::New();
+  vtkNew<vtkCameraPass> cameraP;
   cameraP->SetDelegatePass(seq);
 
   // tell the renderer to use our render pass pipeline
@@ -144,7 +145,6 @@ int main(int argc, char* argv[])
   renderWindow->Render();
   renderWindow->SetWindowName("Shadows");
 
-
   interactor->Start();
 
   return EXIT_SUCCESS;
@@ -158,49 +158,49 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
       vtksys::SystemTools::GetFilenameLastExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
+    vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
+    vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
+    vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
+    vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
+    vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->SetThetaResolution(100);
     source->SetPhiResolution(100);
     source->Update();

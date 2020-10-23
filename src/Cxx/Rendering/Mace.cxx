@@ -1,65 +1,62 @@
 #include <vtkConeSource.h>
 #include <vtkGlyph3D.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 
-int main( int, char *[] )
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(renderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphere->SetThetaResolution(8); sphere->SetPhiResolution(8);
+  vtkNew<vtkSphereSource> sphere;
+  sphere->SetThetaResolution(8);
+  sphere->SetPhiResolution(8);
 
-  vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphere->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> sphereActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
+  sphereActor->GetProperty()->SetColor(
+      colors->GetColor3d("Silver").GetData());
 
-  vtkSmartPointer<vtkConeSource> cone =
-    vtkSmartPointer<vtkConeSource>::New();
+  vtkNew<vtkConeSource> cone;
   cone->SetResolution(6);
 
-  vtkSmartPointer<vtkGlyph3D> glyph =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> glyph;
   glyph->SetInputConnection(sphere->GetOutputPort());
   glyph->SetSourceConnection(cone->GetOutputPort());
   glyph->SetVectorModeToUseNormal();
   glyph->SetScaleModeToScaleByVector();
   glyph->SetScaleFactor(0.25);
 
-  vtkSmartPointer<vtkPolyDataMapper> spikeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> spikeMapper;
   spikeMapper->SetInputConnection(glyph->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> spikeActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> spikeActor;
   spikeActor->SetMapper(spikeMapper);
+  spikeActor->GetProperty()->SetColor(
+      colors->GetColor3d("Silver").GetData());
 
   renderer->AddActor(sphereActor);
   renderer->AddActor(spikeActor);
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("Mace");
 
   // interact with data
   renWin->Render();

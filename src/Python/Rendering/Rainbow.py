@@ -77,10 +77,11 @@ def main():
     ren1.AddActor(outlineActor)
     ren1.AddActor(planeActor)
 
-    ren1.SetBackground(colors.GetColor3d("SlateGray"))
+    ren1.SetBackground(colors.GetColor3d('SlateGray'))
     ren1.TwoSidedLightingOff()
 
     renWin.SetSize(512, 512)
+    renWin.SetWindowName('Rainbow')
 
     iren.Initialize()
 

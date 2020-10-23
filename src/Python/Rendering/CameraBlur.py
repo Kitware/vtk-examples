@@ -7,7 +7,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("Bkg", [26, 51, 102, 255])
+    colors.SetColor('Bkg', [26, 51, 102, 255])
 
     # Create the rendering objects.
     ren1 = vtk.vtkRenderer()
@@ -53,8 +53,9 @@ def main():
     ren1.AddActor(spikeActor)
     ren1.AddActor(sphereActor2)
     ren1.AddActor(spikeActor2)
-    ren1.SetBackground(colors.GetColor3d("Bkg"))
+    ren1.SetBackground(colors.GetColor3d('Bkg'))
     renWin.SetSize(300, 300)
+    renWin.SetWindowName('CameraBlur')
 
     # Do the first render and then zoom in a little.
     renWin.Render()

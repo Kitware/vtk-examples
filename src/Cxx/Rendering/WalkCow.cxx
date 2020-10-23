@@ -6,21 +6,20 @@
 #include <vtkCallbackCommand.h>
 #include <vtkCamera.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPNGWriter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkTransform.h>
 #include <vtkVersionMacros.h>
 #include <vtkWindowToImageFilter.h>
 
 #include <array>
 
-namespace
-{
+namespace {
 /*
 These Rotate* and Walk functions create a scene where multiple
    views of the object exist.
@@ -58,7 +57,7 @@ static void CameraModifiedCallback(vtkObject* caller,
 
 // Save a screenshot.
 void Screenshot(std::string fileName, vtkRenderWindow* renWin);
-}
+} // namespace
 
 int main(int argc, char* argv[])
 {
@@ -78,50 +77,45 @@ int main(int argc, char* argv[])
     figure = (figure > 2) ? 0 : figure;
   }
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
-  std::array<unsigned char , 4> bkg1{{60, 93, 144, 255}};
-    colors->SetColor("BkgColor1", bkg1.data());
-  std::array<unsigned char , 4> bkg2{{26, 51, 102, 255}};
-    colors->SetColor("BkgColor2", bkg2.data());
+  std::array<unsigned char, 4> bkg1{{60, 93, 144, 255}};
+  colors->SetColor("BkgColor1", bkg1.data());
+  std::array<unsigned char, 4> bkg2{{26, 51, 102, 255}};
+  colors->SetColor("BkgColor2", bkg2.data());
 
-  vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // The cow pipeline.
-  vtkSmartPointer<vtkBYUReader> cow = vtkSmartPointer<vtkBYUReader>::New();
+  vtkNew<vtkBYUReader> cow;
   cow->SetGeometryFileName(fileName.c_str());
   cow->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> cowMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cowMapper;
   cowMapper->SetInputConnection(cow->GetOutputPort());
   cowMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> cowActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cowActor;
   cowActor->SetMapper(cowMapper);
   cowActor->GetProperty()->SetColor(colors->GetColor3d("Wheat").GetData());
 
   ren->AddActor(cowActor);
 
   // Axes pipeline.
-  vtkSmartPointer<vtkAxes> cowAxesSource = vtkSmartPointer<vtkAxes>::New();
+  vtkNew<vtkAxes> cowAxesSource;
   cowAxesSource->SetScaleFactor(10.0);
   cowAxesSource->SetOrigin(0, 0, 0);
 
-  vtkSmartPointer<vtkPolyDataMapper> cowAxesMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cowAxesMapper;
   cowAxesMapper->SetInputConnection(cowAxesSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> cowAxes = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cowAxes;
   cowAxes->SetMapper(cowAxesMapper);
   cowAxes->VisibilityOff();
 
@@ -129,14 +123,14 @@ int main(int argc, char* argv[])
 
   ren->SetBackground(colors->GetColor3d("BkgColor1").GetData());
   renWin->SetSize(600, 480);
+  renWin->SetWindowName("WalkCow");
 
   iren->Initialize();
   cowAxes->VisibilityOn();
   renWin->Render();
 
   // Activate this if you want to see the Position and Focal point.
-  // vtkSmartPointer<vtkCallbackCommand> modifiedCallback =
-  // vtkSmartPointer<vtkCallbackCommand>::New();
+  // vtkNew<vtkCallbackCommand> modifiedCallback;
   // modifiedCallback->SetCallback(CameraModifiedCallback);
   // ren->GetActiveCamera()->AddObserver(vtkCommand::ModifiedEvent,
   // modifiedCallback);
@@ -150,19 +144,19 @@ int main(int argc, char* argv[])
   ren->SetBackground(colors->GetColor3d("BkgColor2").GetData());
   switch (figure)
   {
-    default:
-    case 0:
-      Rotate_V_0(cowActor, ren, renWin);
-      Rotate_V_V(cowActor, ren, renWin);
-      // Walk() needs to go after Rotate_V_0() or Rotate_V_V().
-      Walk(cowActor, ren, renWin);
-      break;
-    case 1:
-      Rotate_V_0(cowActor, ren, renWin);
-      break;
-    case 2:
-      Rotate_V_V(cowActor, ren, renWin);
-      break;
+  default:
+  case 0:
+    Rotate_V_0(cowActor, ren, renWin);
+    Rotate_V_V(cowActor, ren, renWin);
+    // Walk() needs to go after Rotate_V_0() or Rotate_V_V().
+    Walk(cowActor, ren, renWin);
+    break;
+  case 1:
+    Rotate_V_0(cowActor, ren, renWin);
+    break;
+  case 2:
+    Rotate_V_V(cowActor, ren, renWin);
+    break;
   }
 
   // Interact with data.
@@ -172,8 +166,7 @@ int main(int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
+namespace {
 
 void Rotate_X(vtkActor* cowActor, vtkRenderer* ren, vtkRenderWindow* renWin)
 {
@@ -325,11 +318,10 @@ void Rotate_V_0(vtkActor* cowActor, vtkRenderer* ren, vtkRenderWindow* renWin)
   {
     fp[i] = (bounds[i * 2 + 1] + bounds[i * 2]) / 2.0;
   }
-  vtkSmartPointer<vtkTransform> cowPos = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> cowPos;
   cowPos->Identity();
   cowPos->SetMatrix(cowActor->GetMatrix());
-  vtkSmartPointer<vtkTransform> cowTransform =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> cowTransform;
   cowTransform->Identity();
   cowActor->SetUserMatrix(cowTransform->GetMatrix());
   // This closely matches the original illustration.
@@ -374,12 +366,11 @@ void Rotate_V_V(vtkActor* cowActor, vtkRenderer* ren, vtkRenderWindow* renWin)
   {
     fp[i] = (bounds[i * 2 + 1] + bounds[i * 2]) / 2.0;
   }
-  vtkSmartPointer<vtkTransform> cowPos = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> cowPos;
   cowPos->Identity();
   cowPos->SetMatrix(cowActor->GetMatrix());
   cowActor->SetOrigin(6.11414, 1.27386, 0.015175); // The cow's nose
-  vtkSmartPointer<vtkTransform> cowTransform =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> cowTransform;
   cowTransform->Identity();
   cowActor->SetUserMatrix(cowTransform->GetMatrix());
   // This closely matches the original illustration.
@@ -408,7 +399,7 @@ void Rotate_V_V(vtkActor* cowActor, vtkRenderer* ren, vtkRenderWindow* renWin)
 void Walk(vtkActor* cowActor, vtkRenderer* ren, vtkRenderWindow* renWin)
 {
   // The cow "walking" around the global origin
-  vtkSmartPointer<vtkTransform> cowPos = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> cowPos;
   cowPos->Identity();
   cowPos->SetMatrix(cowActor->GetMatrix());
   cowActor->SetOrientation(0.0, 0.0, 0.0);
@@ -420,8 +411,7 @@ void Walk(vtkActor* cowActor, vtkRenderer* ren, vtkRenderWindow* renWin)
   {
     fp[i] = (bounds[i * 2 + 1] + bounds[i * 2]) / 2.0;
   }
-  vtkSmartPointer<vtkTransform> cowTransform =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> cowTransform;
   cowTransform->Identity();
   cowTransform->Translate(0, 0, 5);
   cowActor->SetUserMatrix(cowTransform->GetMatrix());
@@ -468,8 +458,7 @@ static void CameraModifiedCallback(vtkObject* caller,
 
 void Screenshot(std::string fileName, vtkRenderWindow* renWin)
 {
-  vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter =
-    vtkSmartPointer<vtkWindowToImageFilter>::New();
+  vtkNew<vtkWindowToImageFilter> windowToImageFilter;
   windowToImageFilter->SetInput(renWin);
 #if VTK_MAJOR_VERSION > 8 || VTK_MAJOR_VERSION == 8 && VTK_MINOR_VERSION >= 1
   windowToImageFilter->SetScale(1); // image quality
@@ -483,9 +472,9 @@ void Screenshot(std::string fileName, vtkRenderWindow* renWin)
   windowToImageFilter->ReadFrontBufferOff();
   windowToImageFilter->Update();
 
-  vtkSmartPointer<vtkPNGWriter> writer = vtkSmartPointer<vtkPNGWriter>::New();
+  vtkNew<vtkPNGWriter> writer;
   writer->SetFileName(fileName.c_str());
   writer->SetInputConnection(windowToImageFilter->GetOutputPort());
   writer->Write();
 }
-}
+} // namespace

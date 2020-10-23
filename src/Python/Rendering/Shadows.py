@@ -20,32 +20,32 @@ def ReadPolyData(file_name):
     import os
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
-    if extension == ".ply":
+    if extension == '.ply':
         reader = vtk.vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtp":
+    elif extension == '.vtp':
         reader = vtk.vtkXMLpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".obj":
+    elif extension == '.obj':
         reader = vtk.vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".stl":
+    elif extension == '.stl':
         reader = vtk.vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtk":
+    elif extension == '.vtk':
         reader = vtk.vtkpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".g":
+    elif extension == '.g':
         reader = vtk.vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
@@ -118,7 +118,7 @@ def main():
     rnge[0] = bounds[1] - bounds[0]
     rnge[1] = bounds[3] - bounds[2]
     rnge[2] = bounds[5] - bounds[4]
-    print("range: ", ', '.join(["{0:0.6f}".format(i) for i in rnge]))
+    print('range: ', ', '.join(['{0:0.6f}'.format(i) for i in rnge]))
     expand = 1.0
     thickness = rnge[2] * 0.1
     plane = vtk.vtkCubeSource()

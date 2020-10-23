@@ -104,7 +104,7 @@ int main(int, char*[])
 
   ren->SetBackground(colors->GetColor3d("bkg").GetData());
   renWin->SetSize(640, 480);
-  renWin->SetWindowName("Diffuse Spheres");
+  renWin->SetWindowName("DiffuseSpheres");
 
   // Set up the lighting.
   //

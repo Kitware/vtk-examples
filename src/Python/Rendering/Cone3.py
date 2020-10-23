@@ -17,7 +17,7 @@ def main():
 
     #
     # Next we create an instance of vtkConeSource and set some of its
-    # properties. The instance of vtkConeSource "cone" is part of a visualization
+    # properties. The instance of vtkConeSource 'cone' is part of a visualization
     # pipeline (it is a source process object); it produces data (output type is
     # vtkPolyData) which other filters may process.
     #
@@ -55,12 +55,12 @@ def main():
     #
     ren1 = vtk.vtkRenderer()
     ren1.AddActor(coneActor)
-    ren1.SetBackground(colors.GetColor3d("SlateGray"))
+    ren1.SetBackground(colors.GetColor3d('SlateGray'))
     ren1.SetViewport(0.0, 0.0, 0.5, 1.0)
 
     ren2 = vtk.vtkRenderer()
     ren2.AddActor(coneActor)
-    ren2.SetBackground(colors.GetColor3d("LightSlateGray"))
+    ren2.SetBackground(colors.GetColor3d('LightSlateGray'))
     ren2.SetViewport(0.5, 0.0, 1.0, 1.0)
 
     #
@@ -72,6 +72,7 @@ def main():
     renWin.AddRenderer(ren1)
     renWin.AddRenderer(ren2)
     renWin.SetSize(600, 300)
+    renWin.SetWindowName('Cone3')
 
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
@@ -95,5 +96,5 @@ def main():
     iren.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

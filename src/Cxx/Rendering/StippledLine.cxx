@@ -1,34 +1,29 @@
-#include <vtkDoubleArray.h>
 #include <vtkActor.h>
-#include <vtkProperty.h>
-#include <vtkPolyData.h>
-#include <vtkMapper.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkPointData.h>
+#include <vtkDoubleArray.h>
 #include <vtkImageData.h>
 #include <vtkLineSource.h>
-#include <vtkTexture.h>
-
-#include <vtkRenderer.h>
+#include <vtkMapper.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkTexture.h>
 
-#include <vtkNamedColors.h>
-
-namespace
-{
-void StippledLine(vtkSmartPointer<vtkActor> &actor,
-                  int LineStipplePattern = 0xFFFF,
+namespace {
+void StippledLine(vtkActor* actor, int LineStipplePattern = 0xFFFF,
                   int LineStippleRepeat = 1);
 }
 
-int main (int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-    
-  vtkSmartPointer<vtkLineSource> lines =
-    vtkSmartPointer<vtkLineSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkLineSource> lines;
   // Create two points, P0 and P1
   double p0[3] = {1.0, 0.0, 0.0};
   double p1[3] = {5.0, 0.0, 0.0};
@@ -37,28 +32,25 @@ int main (int, char *[])
   lines->SetPoint1(p0);
   lines->SetPoint2(p1);
   lines->Update();
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(lines->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetLineWidth(5);
   actor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
 
   StippledLine(actor, 0xA1A1, 2);
 
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren1;
   ren1->SetBackground(colors->GetColor3d("SlateGray").GetData());
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("StippledLine");
 
   renWin->AddRenderer(ren1);
-  vtkSmartPointer<vtkRenderWindowInteractor>
-    iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkSmartPointer<vtkRenderWindowInteractor> iren =
+      vtkSmartPointer<vtkRenderWindowInteractor>::New();
   iren->SetRenderWindow(renWin);
   ren1->AddActor(actor);
 
@@ -68,27 +60,22 @@ int main (int, char *[])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-void StippledLine(vtkSmartPointer<vtkActor> &actor,
-                  int lineStipplePattern,
+namespace {
+void StippledLine(vtkActor* actor, int lineStipplePattern,
                   int lineStippleRepeat)
 {
-  vtkSmartPointer<vtkDoubleArray> tcoords =
-    vtkSmartPointer<vtkDoubleArray>::New();
-  vtkSmartPointer<vtkImageData> image =
-    vtkSmartPointer<vtkImageData>::New();
-  vtkSmartPointer<vtkTexture> texture =
-    vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkDoubleArray> tcoords;
+  vtkNew<vtkImageData> image;
+  vtkNew<vtkTexture> texture;
 
   // Create texture
   int dimension = 16 * lineStippleRepeat;
 
-  image->SetDimensions(dimension,1,1);
+  image->SetDimensions(dimension, 1, 1);
   image->AllocateScalars(VTK_UNSIGNED_CHAR, 4);
   image->SetExtent(0, dimension - 1, 0, 0, 0, 0);
-  unsigned char  *pixel;
-  pixel = static_cast<unsigned char *>(image->GetScalarPointer());
+  unsigned char* pixel;
+  pixel = static_cast<unsigned char*>(image->GetScalarPointer());
   unsigned char on = 255;
   unsigned char off = 0;
   for (int i = 0; i < 16; ++i)
@@ -100,9 +87,9 @@ void StippledLine(vtkSmartPointer<vtkActor> &actor,
     {
       for (int j = 0; j < lineStippleRepeat; ++j)
       {
-        *pixel       = on;
+        *pixel = on;
         *(pixel + 1) = on;
-        *(pixel + 2 )= on;
+        *(pixel + 2) = on;
         *(pixel + 3) = off;
         pixel += 4;
       }
@@ -111,15 +98,16 @@ void StippledLine(vtkSmartPointer<vtkActor> &actor,
     {
       for (int j = 0; j < lineStippleRepeat; ++j)
       {
-        *pixel       = on;
+        *pixel = on;
         *(pixel + 1) = on;
-        *(pixel + 2 )= on;
+        *(pixel + 2) = on;
         *(pixel + 3) = on;
         pixel += 4;
       }
     }
   }
-  vtkPolyData *polyData = dynamic_cast<vtkPolyData*>(actor->GetMapper()->GetInput());
+  vtkPolyData* polyData =
+      dynamic_cast<vtkPolyData*>(actor->GetMapper()->GetInput());
 
   // Create texture coordnates
   tcoords->SetNumberOfComponents(1);
@@ -137,4 +125,4 @@ void StippledLine(vtkSmartPointer<vtkActor> &actor,
 
   actor->SetTexture(texture);
 }
-}
+} // namespace

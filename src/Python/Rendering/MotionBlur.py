@@ -8,16 +8,19 @@ def main():
 
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor("A1Diff", [255, 204, 77, 255])
-    colors.SetColor("A2Amb", [51, 51, 255, 255])
-    colors.SetColor("A2Diff", [51, 255, 204, 255])
-    colors.SetColor("A3Amb", [230, 230, 230, 255])
-    colors.SetColor("Bkg", [128, 166, 255, 255])
+    colors.SetColor('A1Diff', [255, 204, 77, 255])
+    colors.SetColor('A2Amb', [51, 51, 255, 255])
+    colors.SetColor('A2Diff', [51, 255, 204, 255])
+    colors.SetColor('A3Amb', [128, 166, 255, 255])
+    colors.SetColor('Bkg', [77, 102, 153, 255])
 
     renderer = vtk.vtkRenderer()
-    renderer.SetBackground(colors.GetColor3d("Bkg"))
+    renderer.SetBackground(colors.GetColor3d('Bkg'))
+
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.SetSize(500, 500)
+    renderWindow.SetWindowName('MotionBlur')
+
     renderWindow.AddRenderer(renderer)
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renderWindow)
@@ -33,8 +36,8 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetAmbientColor(colors.GetColor3d("Red"))
-    actor.GetProperty().SetDiffuseColor(colors.GetColor3d("A1Diff"))
+    actor.GetProperty().SetAmbientColor(colors.GetColor3d('Red'))
+    actor.GetProperty().SetDiffuseColor(colors.GetColor3d('A1Diff'))
     actor.GetProperty().SetSpecular(0.0)
     actor.GetProperty().SetDiffuse(0.5)
     actor.GetProperty().SetAmbient(0.3)
@@ -43,9 +46,9 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetAmbientColor(colors.GetColor3d("A2Amb"))
-    actor.GetProperty().SetDiffuseColor(colors.GetColor3d("A2Diff"))
-    actor.GetProperty().SetSpecularColor(colors.GetColor3d("Black"))
+    actor.GetProperty().SetAmbientColor(colors.GetColor3d('A2Amb'))
+    actor.GetProperty().SetDiffuseColor(colors.GetColor3d('A2Diff'))
+    actor.GetProperty().SetSpecularColor(colors.GetColor3d('Black'))
     actor.GetProperty().SetSpecular(0.2)
     actor.GetProperty().SetDiffuse(0.9)
     actor.GetProperty().SetAmbient(0.1)
@@ -54,8 +57,8 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetDiffuseColor(colors.GetColor3d("A3Amb"))
-    actor.GetProperty().SetSpecularColor(colors.GetColor3d("White"))
+    actor.GetProperty().SetDiffuseColor(colors.GetColor3d('A3Amb'))
+    actor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
     actor.GetProperty().SetSpecular(0.7)
     actor.GetProperty().SetDiffuse(0.4)
     actor.GetProperty().SetSpecularPower(60.0)

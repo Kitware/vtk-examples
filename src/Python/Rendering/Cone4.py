@@ -12,7 +12,7 @@ def main():
 
     #
     # Next we create an instance of vtkConeSource and set some of its
-    # properties. The instance of vtkConeSource "cone" is part of a visualization
+    # properties. The instance of vtkConeSource 'cone' is part of a visualization
     # pipeline (it is a source process object); it produces data (output type is
     # vtkPolyData) which other filters may process.
     #
@@ -38,7 +38,7 @@ def main():
     #
     coneActor = vtk.vtkActor()
     coneActor.SetMapper(coneMapper)
-    coneActor.GetProperty().SetColor(colors.GetColor3d("Peacock"))
+    coneActor.GetProperty().SetColor(colors.GetColor3d('Peacock'))
     coneActor.GetProperty().SetDiffuse(0.7)
     coneActor.GetProperty().SetSpecular(0.4)
     coneActor.GetProperty().SetSpecularPower(20)
@@ -48,7 +48,7 @@ def main():
     # second actor.
     #
     property = vtk.vtkProperty()
-    property.SetColor(colors.GetColor3d("Tomato"))
+    property.SetColor(colors.GetColor3d('Tomato'))
     property.SetDiffuse(0.7)
     property.SetSpecular(0.4)
     property.SetSpecularPower(20)
@@ -61,7 +61,7 @@ def main():
     # geometry, which may save lots of memory if the geometry is large.
     coneActor2 = vtk.vtkActor()
     coneActor2.SetMapper(coneMapper)
-    # coneActor2.GetProperty().SetColor(colors.GetColor3d("Peacock"))
+    # coneActor2.GetProperty().SetColor(colors.GetColor3d('Peacock'))
     coneActor2.SetProperty(property)
     coneActor2.SetPosition(0, 2, 0)
 
@@ -73,7 +73,7 @@ def main():
     ren1 = vtk.vtkRenderer()
     ren1.AddActor(coneActor)
     ren1.AddActor(coneActor2)
-    ren1.SetBackground(colors.GetColor3d("LightSlateGray"))
+    ren1.SetBackground(colors.GetColor3d('LightSlateGray'))
 
     #
     # Finally we create the render window which will show up on the screen
@@ -83,6 +83,7 @@ def main():
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren1)
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('Cone4')
 
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
@@ -101,5 +102,5 @@ def main():
     iren.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

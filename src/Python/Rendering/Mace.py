@@ -23,6 +23,7 @@ def main():
 
     sphereActor = vtk.vtkActor()
     sphereActor.SetMapper(sphereMapper)
+    sphereActor.GetProperty().SetColor(colors.GetColor3d('Silver'))
 
     cone = vtk.vtkConeSource()
     cone.SetResolution(6)
@@ -39,11 +40,13 @@ def main():
 
     spikeActor = vtk.vtkActor()
     spikeActor.SetMapper(spikeMapper)
+    spikeActor.GetProperty().SetColor(colors.GetColor3d('Silver'))
 
     renderer.AddActor(sphereActor)
     renderer.AddActor(spikeActor)
-    renderer.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('Mace')
 
     # Interact with the data.
     renWin.Render()

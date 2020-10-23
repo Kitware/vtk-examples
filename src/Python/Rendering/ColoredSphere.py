@@ -27,8 +27,9 @@ def main():
     actor.SetMapper(mapper)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('ColoredSphere')
 
     renWin.Render()
 

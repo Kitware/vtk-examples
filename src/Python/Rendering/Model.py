@@ -8,8 +8,8 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the colors.
-    colors.SetColor("CubeColor", [250, 128, 114, 255])
-    colors.SetColor("BkgColor", [230, 230, 230, 255])
+    colors.SetColor('CubeColor', [250, 128, 114, 255])
+    colors.SetColor('BkgColor', [230, 230, 230, 255])
 
     # Create the rendering windows and three renderers.
 
@@ -18,10 +18,14 @@ def main():
     renWindow1 = vtk.vtkRenderWindow()
     renWindow1.AddRenderer(ren1)
     renWindow1.AddRenderer(ren2)
+    renWindow1.SetWindowName('Model')
+
     iren1 = vtk.vtkRenderWindowInteractor()
     iren1.SetRenderWindow(renWindow1)
     ren3 = vtk.vtkRenderer()
     renWindow2 = vtk.vtkRenderWindow()
+    renWindow2.SetWindowName('Model')
+
     renWindow2.AddRenderer(ren3)
     iren2 = vtk.vtkRenderWindowInteractor()
     iren2.SetRenderWindow(renWindow2)
@@ -35,7 +39,7 @@ def main():
 
     coneActor = vtk.vtkActor()
     coneActor.SetMapper(coneMapper)
-    coneActor.GetProperty().SetColor(colors.GetColor3d("Peacock"))
+    coneActor.GetProperty().SetColor(colors.GetColor3d('Peacock'))
 
     # Create an actor and give it cube geometry.
     cube = vtk.vtkCubeSource()
@@ -45,7 +49,7 @@ def main():
 
     cubeActor = vtk.vtkActor()
     cubeActor.SetMapper(cubeMapper)
-    cubeActor.GetProperty().SetColor(colors.GetColor3d("CubeColor"))
+    cubeActor.GetProperty().SetColor(colors.GetColor3d('CubeColor'))
 
     # Create an actor and give it sphere geometry.
     sphere = vtk.vtkSphereSource()
@@ -57,7 +61,7 @@ def main():
 
     sphereActor = vtk.vtkActor()
     sphereActor.SetMapper(sphereMapper)
-    sphereActor.GetProperty().SetColor(colors.GetColor3d("Melon"))
+    sphereActor.GetProperty().SetColor(colors.GetColor3d('Melon'))
 
     # Assign our actors to both renderers.
     ren1.AddActor(coneActor)
@@ -72,10 +76,10 @@ def main():
 
     # Set the viewports and backgrounds of the renderers.
     ren1.SetViewport(0, 0, 0.5, 1)
-    ren1.SetBackground(colors.GetColor3d("BkgColor"))
+    ren1.SetBackground(colors.GetColor3d('BkgColor'))
     ren2.SetViewport(0.5, 0, 1, 1)
-    ren2.SetBackground(colors.GetColor3d("White"))
-    ren3.SetBackground(colors.GetColor3d("White"))
+    ren2.SetBackground(colors.GetColor3d('Linen'))
+    ren3.SetBackground(colors.GetColor3d('Honeydew'))
 
     # Draw the resulting scene.
     renWindow1.Render()
@@ -84,5 +88,5 @@ def main():
     iren1.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

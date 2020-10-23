@@ -37,6 +37,12 @@ Here are some snippets or examples that highlight interesting features that may 
 | -------------- | ---------------------- | ------- |
 [QuantizePolyDataPoints](/Cxx/PolyData/QuantizePolyDataPoints) | Represent a point by a glyph.
 
+## Render Windows
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[Model](/Cxx/Rendering/Model) | vtkRenderer vtkRenderWindow vtkRenderWindowInteractor | Multiple render windows.
+
 ## Random
 
 If you want to ensure that the same random points/colors are used in C++ and other languages then it is best to use vtkMinimalStandardRandomSequence.

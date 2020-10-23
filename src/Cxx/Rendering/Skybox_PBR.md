@@ -3,6 +3,7 @@
 Demonstrates physically based rendering using image based lighting and a skybox.
 
 Physically based rendering sets color, metallicity and roughness of the object, sliders are provided for:
+
 - metallicity
 - roughness
 

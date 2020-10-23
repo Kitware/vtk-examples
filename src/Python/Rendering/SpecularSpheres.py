@@ -7,7 +7,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("bkg", [26, 51, 102, 255])
+    colors.SetColor('bkg', [26, 51, 102, 255])
 
     # The following lines create a sphere represented by polygons.
     #
@@ -40,12 +40,12 @@ def main():
         specularPower = spBase * spScale
         spheres.append(vtk.vtkActor())
         spheres[i].SetMapper(sphereMapper)
-        spheres[i].GetProperty().SetColor(colors.GetColor3d("Red"))
+        spheres[i].GetProperty().SetColor(colors.GetColor3d('Red'))
         spheres[i].GetProperty().SetAmbient(ambient)
         spheres[i].GetProperty().SetDiffuse(diffuse)
         spheres[i].GetProperty().SetSpecular(specular)
         spheres[i].GetProperty().SetSpecularPower(specularPower)
-        spheres[i].GetProperty().SetSpecularColor(colors.GetColor3d("White"))
+        spheres[i].GetProperty().SetSpecularColor(colors.GetColor3d('White'))
         spheres[i].AddPosition(position)
         spScale = spScale * 2.0
         position[0] += 1.25
@@ -71,9 +71,9 @@ def main():
     for i in range(0, numberOfSpheres):
         ren.AddActor(spheres[i])
 
-    ren.SetBackground(colors.GetColor3d("bkg"))
+    ren.SetBackground(colors.GetColor3d('bkg'))
     renWin.SetSize(640, 480)
-    renWin.SetWindowName("Specular Spheres")
+    renWin.SetWindowName('SpecularSpheres')
 
     # Set up the lighting.
     #
@@ -99,5 +99,5 @@ def main():
     iren.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

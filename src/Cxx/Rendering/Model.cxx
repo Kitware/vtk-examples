@@ -2,79 +2,74 @@
 #include <vtkConeSource.h>
 #include <vtkCubeSource.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 
 #include <array>
 
-int main(int, char* [])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
-  std::array<unsigned char , 4> cubeColor{{230, 230, 230, 255}};
-    colors->SetColor("CubeColor", cubeColor.data());
-  std::array<unsigned char , 4> bkg{{230, 230, 230, 255}};
-    colors->SetColor("BkgColor", bkg.data());
+  std::array<unsigned char, 4> cubeColor{{250, 128, 114, 255}};
+  colors->SetColor("CubeColor", cubeColor.data());
+  std::array<unsigned char, 4> bkg{{230, 230, 230, 255}};
+  colors->SetColor("BkgColor", bkg.data());
 
   // create rendering windows and three renderers
-  vtkSmartPointer<vtkRenderer> ren1 = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderer> ren2 = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWindow1 =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren1;
+  vtkNew<vtkRenderer> ren2;
+  vtkNew<vtkRenderWindow> renWindow1;
   renWindow1->AddRenderer(ren1);
   renWindow1->AddRenderer(ren2);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren1 =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renWindow1->SetWindowName("Model");
+
+  vtkNew<vtkRenderWindowInteractor> iren1;
   iren1->SetRenderWindow(renWindow1);
-  vtkSmartPointer<vtkRenderer> ren3 = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWindow2 =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren3;
+  vtkNew<vtkRenderWindow> renWindow2;
   renWindow2->AddRenderer(ren3);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren2 =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renWindow2->SetWindowName("Model");
+
+  vtkNew<vtkRenderWindowInteractor> iren2;
   iren2->SetRenderWindow(renWindow2);
 
   // create an actor and give it cone geometry
-  vtkSmartPointer<vtkConeSource> cone = vtkSmartPointer<vtkConeSource>::New();
+  vtkNew<vtkConeSource> cone;
   cone->SetResolution(8);
 
-  vtkSmartPointer<vtkPolyDataMapper> coneMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> coneMapper;
   coneMapper->SetInputConnection(cone->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> coneActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> coneActor;
   coneActor->SetMapper(coneMapper);
   coneActor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
 
   // create an actor and give it cube geometry
-  vtkSmartPointer<vtkCubeSource> cube = vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkCubeSource> cube;
 
-  vtkSmartPointer<vtkPolyDataMapper> cubeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cubeMapper;
   cubeMapper->SetInputConnection(cube->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> cubeActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cubeActor;
   cubeActor->SetMapper(cubeMapper);
   cubeActor->GetProperty()->SetColor(colors->GetColor3d("CubeColor").GetData());
 
   // create an actor and give it sphere geometry
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphere;
   sphere->SetThetaResolution(16);
   sphere->SetPhiResolution(16);
 
-  vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphere->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> sphereActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
   sphereActor->GetProperty()->SetColor(colors->GetColor3d("Melon").GetData());
 
@@ -93,8 +88,8 @@ int main(int, char* [])
   ren1->SetViewport(0, 0, 0.5, 1);
   ren1->SetBackground(colors->GetColor3d("BkgColor").GetData());
   ren2->SetViewport(0.5, 0, 1, 1);
-  ren2->SetBackground(colors->GetColor3d("White").GetData());
-  ren3->SetBackground(colors->GetColor3d("White").GetData());
+  ren2->SetBackground(colors->GetColor3d("Linen").GetData());
+  ren3->SetBackground(colors->GetColor3d("Honeydew").GetData());
 
   // draw the resulting scene
   renWindow1->Render();
