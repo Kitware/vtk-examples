@@ -1,129 +1,113 @@
-#include <vtkFrenetSerretFrame.h>
-
-#include <vtkSmartPointer.h>
-
-#include <vtkParametricSpline.h>
-#include <vtkParametricFunctionSource.h>
-
-#include <vtkSphereSource.h>
+#include <vtkActor.h>
 #include <vtkArrowSource.h>
+#include <vtkCamera.h>
+#include <vtkFrenetSerretFrame.h>
 #include <vtkGlyph3D.h>
-
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkParametricFunctionSource.h>
+#include <vtkParametricSpline.h>
+#include <vtkPointData.h>
 #include <vtkPointSource.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
-#include <vtkPointData.h>
-
-#include <vtkProperty.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkCamera.h>
-#include <vtkActor.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-static void MakeGlyphs(vtkPolyData *src, double size, vtkGlyph3D *glyph);
+namespace {
+void MakeGlyphs(vtkPolyData* src, double size, vtkGlyph3D* glyph);
+}
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Generate  some random points
   int numberOfPoints = 8;
-  vtkSmartPointer<vtkPointSource> pointSource = 
-    vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(numberOfPoints);
   pointSource->Update();
-  
+
   vtkPoints* points = pointSource->GetOutput()->GetPoints();
-    
-  vtkSmartPointer<vtkParametricSpline> spline = 
-    vtkSmartPointer<vtkParametricSpline>::New();
+
+  vtkNew<vtkParametricSpline> spline;
   spline->SetPoints(points);
-  
-  vtkSmartPointer<vtkParametricFunctionSource> functionSource = 
-    vtkSmartPointer<vtkParametricFunctionSource>::New();
+
+  vtkNew<vtkParametricFunctionSource> functionSource;
   functionSource->SetParametricFunction(spline);
   functionSource->SetUResolution(10 * numberOfPoints);
   functionSource->SetVResolution(10 * numberOfPoints);
   functionSource->SetWResolution(10 * numberOfPoints);
 
   // Create the frame
-  vtkSmartPointer<vtkFrenetSerretFrame> frame =
-    vtkSmartPointer<vtkFrenetSerretFrame>::New();
+  vtkNew<vtkFrenetSerretFrame> frame;
   frame->SetInputConnection(functionSource->GetOutputPort());
   frame->ConsistentNormalsOn();
   frame->Update();
 
-  vtkSmartPointer<vtkGlyph3D> glyph3DNormals =
-    vtkSmartPointer<vtkGlyph3D>::New();
-  vtkSmartPointer<vtkGlyph3D> glyph3DTangents =
-    vtkSmartPointer<vtkGlyph3D>::New();
-  vtkSmartPointer<vtkGlyph3D> glyph3DBinormals =
-    vtkSmartPointer<vtkGlyph3D>::New();
-  
+  vtkNew<vtkGlyph3D> glyph3DNormals;
+  vtkNew<vtkGlyph3D> glyph3DTangents;
+  vtkNew<vtkGlyph3D> glyph3DBinormals;
+
   // for each vector, create a Glyph3D and DeepCopy the output
-  double radius = .05;
+  double radius = 0.05;
   frame->GetOutput()->GetPointData()->SetActiveVectors("FSNormals");
   MakeGlyphs(frame->GetOutput(), radius, glyph3DNormals.GetPointer());
-  vtkSmartPointer<vtkPolyData> normalsPolyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> normalsPolyData;
   normalsPolyData->DeepCopy(glyph3DNormals->GetOutput());
 
   frame->GetOutput()->GetPointData()->SetActiveVectors("FSTangents");
   MakeGlyphs(frame->GetOutput(), radius, glyph3DTangents.GetPointer());
-  vtkSmartPointer<vtkPolyData> tangentsPolyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> tangentsPolyData;
   tangentsPolyData->DeepCopy(glyph3DTangents->GetOutput());
 
   frame->GetOutput()->GetPointData()->SetActiveVectors("FSBinormals");
   MakeGlyphs(frame->GetOutput(), radius, glyph3DBinormals.GetPointer());
-  vtkSmartPointer<vtkPolyData> binormalsPolyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> binormalsPolyData;
   binormalsPolyData->DeepCopy(glyph3DBinormals->GetOutput());
 
-// Setup actors and mappers
-  vtkSmartPointer<vtkPolyDataMapper> glyph3DNormalsMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  // Setup actors and mappers
+  vtkNew<vtkPolyDataMapper> glyph3DNormalsMapper;
   glyph3DNormalsMapper->SetInputData(normalsPolyData);
 
-  vtkSmartPointer<vtkActor> glyph3DNormalsActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> glyph3DNormalsActor;
   glyph3DNormalsActor->SetMapper(glyph3DNormalsMapper);
-  glyph3DNormalsActor->GetProperty()->SetColor(0.8900, 0.8100, 0.3400);
+  glyph3DNormalsActor->GetProperty()->SetColor(
+      colors->GetColor3d("Banana").GetData());
 
-  vtkSmartPointer<vtkPolyDataMapper> glyph3DTangentsMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> glyph3DTangentsMapper;
   glyph3DTangentsMapper->SetInputData(tangentsPolyData);
 
-  vtkSmartPointer<vtkActor> glyph3DTangentsActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> glyph3DTangentsActor;
   glyph3DTangentsActor->SetMapper(glyph3DTangentsMapper);
-  glyph3DTangentsActor->GetProperty()->SetColor(1.0000, 0.3882, 0.2784);
+  glyph3DTangentsActor->GetProperty()->SetColor(
+      colors->GetColor3d("Tomato").GetData());
 
-  vtkSmartPointer<vtkPolyDataMapper> glyph3DBinormalsMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> glyph3DBinormalsMapper;
   glyph3DBinormalsMapper->SetInputData(binormalsPolyData);
 
-  vtkSmartPointer<vtkActor> glyph3DBinormalsActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> glyph3DBinormalsActor;
   glyph3DBinormalsActor->SetMapper(glyph3DBinormalsMapper);
-  glyph3DBinormalsActor->GetProperty()->SetColor(0.1804,0.5451,0.3412);
+  glyph3DBinormalsActor->GetProperty()->SetColor(
+      colors->GetColor3d("ForestGreen").GetData());
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(functionSource->GetOutputPort());
-  
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  
+
   // Setup render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("FrenetSerretFrame");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(glyph3DNormalsActor);
@@ -131,7 +115,7 @@ int main(int, char *[])
   renderer->AddActor(glyph3DBinormalsActor);
   renderer->AddActor(actor);
 
-  renderer->SetBackground(.4, .5, .7);
+  renderer->SetBackground(colors->GetColor3d("CornflowerBlue").GetData());
 
   // Pick a good view
   renderer->ResetCamera();
@@ -143,15 +127,15 @@ int main(int, char *[])
   renderWindow->SetSize(640, 480);
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }
 
-void MakeGlyphs(vtkPolyData *src, double size, vtkGlyph3D *glyph)
+namespace {
+void MakeGlyphs(vtkPolyData* src, double size, vtkGlyph3D* glyph)
 {
   // Source for the glyph filter
-  vtkSmartPointer<vtkArrowSource> arrow =
-    vtkSmartPointer<vtkArrowSource>::New();
+  vtkNew<vtkArrowSource> arrow;
   arrow->SetTipResolution(16);
   arrow->SetTipLength(.3);
   arrow->SetTipRadius(.1);
@@ -164,3 +148,4 @@ void MakeGlyphs(vtkPolyData *src, double size, vtkGlyph3D *glyph)
   glyph->OrientOn();
   glyph->Update();
 }
+} // namespace
