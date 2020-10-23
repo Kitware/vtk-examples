@@ -20,7 +20,7 @@ Here are some snippets or examples that highlight interesting features that may 
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
-[Model](/Python/Rendering/Model) | vtkRenderer vtkRenderWindow vtkRenderWindowInteractor | Multiple render windows.
+[Model](/Python/Rendering/Model) | Multiple render windows.
 
 ## Random
 
