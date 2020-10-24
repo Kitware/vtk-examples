@@ -1,6 +1,7 @@
 #include <vtkActor.h>
 #include <vtkAppendFilter.h>
 #include <vtkDataSetMapper.h>
+#include <vtkGlyph3DMapper.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPointSource.h>
@@ -10,7 +11,25 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 #include <vtkUnstructuredGrid.h>
+
+namespace {
+
+/**
+ * Convert points to glyphs.
+ *
+ * @param points - The points to glyph
+ * @param scale - The scale, used to determine the size of the glyph
+ * representing the point, expressed as a fraction of the largest side of the
+ * bounding box surrounding the points. e.g. 0.05
+ *
+ * @return The actor.
+ */
+vtkSmartPointer<vtkActor> PointToGlyph(vtkPoints* points, double const& scale);
+
+} // namespace
 
 int main(int, char*[])
 {
@@ -54,7 +73,10 @@ int main(int, char*[])
 
   vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetPointSize(5);
+
+  // Map the points to spheres
+  auto sphereActor = PointToGlyph(appendFilter->GetOutput()->GetPoints(), 0.05);
+  sphereActor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
 
   // Create a renderer, render window, and interactor
   vtkNew<vtkRenderer> renderer;
@@ -65,7 +87,8 @@ int main(int, char*[])
 
   // Add the actor to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+  renderer->AddActor(sphereActor);
+  renderer->SetBackground(colors->GetColor3d("RoyalBlue").GetData());
 
   // Render and interact
   renderWindow->SetWindowName("AppendFilter");
@@ -74,3 +97,34 @@ int main(int, char*[])
 
   return EXIT_SUCCESS;
 }
+
+namespace {
+
+vtkSmartPointer<vtkActor> PointToGlyph(vtkPoints* points, double const& scale)
+{
+  auto bounds = points->GetBounds();
+  double maxLen = 0;
+  for (int i = 1; i < 3; ++i)
+  {
+    maxLen = std::max(bounds[i + 1] - bounds[i], maxLen);
+  }
+
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetRadius(scale * maxLen);
+
+  vtkNew<vtkPolyData> pd;
+  pd->SetPoints(points);
+
+  vtkNew<vtkGlyph3DMapper> mapper;
+  mapper->SetInputData(pd);
+  mapper->SetSourceConnection(sphereSource->GetOutputPort());
+  mapper->ScalarVisibilityOff();
+  mapper->ScalingOff();
+
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+
+  return actor;
+}
+
+} // namespace

@@ -4,6 +4,10 @@ Snippets are chunks of code that can be cut (*snipped*) and pasted into examples
 
 ### Available snippets
 
+#### [PointToGlyph](/Cxx/Snippets/PointToGlyph.md)
+
+Represent points as glyphs.
+
 #### [ReadPolyData](/Cxx/Snippets/ReadPolyData.md)
 
 Uses the appropriate vtkPolyData reader to read any vtkPolyData file.
