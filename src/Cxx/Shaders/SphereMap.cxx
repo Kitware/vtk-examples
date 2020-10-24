@@ -19,6 +19,7 @@
 #include <vtkJPEGReader.h>
 #include <vtkLight.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOpenGLPolyDataMapper.h>
 #include <vtkOpenGLRenderWindow.h>
 #include <vtkPolyDataNormals.h>
@@ -28,7 +29,6 @@
 #include <vtkRenderer.h>
 #include <vtkShaderProgram.h>
 #include <vtkSkybox.h>
-#include <vtkSmartPointer.h>
 #include <vtkTexture.h>
 #include <vtkVersion.h>
 #include <vtkXMLPolyDataReader.h>
@@ -47,26 +47,26 @@ int main(int argc, char* argv[])
     return EXIT_SUCCESS;
   }
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(0.0, 0.0, 0.0);
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  auto light = vtkSmartPointer<vtkLight>::New();
+  vtkNew<vtkLight> light;
   light->SetLightTypeToSceneLight();
   light->SetPosition(1.0, 7.0, 1.0);
   renderer->AddLight(light);
 
-  auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+  vtkNew<vtkXMLPolyDataReader> reader;
   reader->SetFileName(argv[1]);
 
-  auto norms = vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> norms;
   norms->SetInputConnection(reader->GetOutputPort());
 
-  auto texture = vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkTexture> texture;
   texture->InterpolateOn();
 
   // mipmapping works on many systems but is not
@@ -75,14 +75,14 @@ int main(int argc, char* argv[])
   // out here to make valid images easier
   // texture->MipmapOn();
 
-  auto imgReader = vtkSmartPointer<vtkJPEGReader>::New();
+  vtkNew<vtkJPEGReader> imgReader;
   imgReader->SetFileName(argv[2]);
   texture->SetInputConnection(imgReader->GetOutputPort());
 
-  auto mapper = vtkSmartPointer<vtkOpenGLPolyDataMapper>::New();
+  vtkNew<vtkOpenGLPolyDataMapper> mapper;
   mapper->SetInputConnection(norms->GetOutputPort());
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetPosition(0, 0, 0);
   actor->SetScale(6.0, 6.0, 6.0);
   actor->GetProperty()->SetSpecular(0.8);
@@ -182,7 +182,7 @@ int main(int argc, char* argv[])
   );
 #endif
 
-  auto world = vtkSmartPointer<vtkSkybox>::New();
+  vtkNew<vtkSkybox> world;
   world->SetProjectionToSphere();
   world->SetTexture(texture);
   renderer->AddActor(world);
@@ -200,7 +200,7 @@ int main(int argc, char* argv[])
   renderWindow->SetWindowName("SphereMap");
   renderWindow->Render();
 
-  auto style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+  vtkNew<vtkInteractorStyleTrackballCamera> style;
   renderWindow->GetInteractor()->SetInteractorStyle(style);
 
   interactor->Start();

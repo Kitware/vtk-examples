@@ -6,6 +6,7 @@
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkJPEGReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOpenGLPolyDataMapper.h>
 #include <vtkOpenGLRenderWindow.h>
 #include <vtkPLYReader.h>
@@ -46,31 +47,30 @@ int main(int argc, char* argv[])
 {
   if (argc < 3)
   {
-    std::cout << "Usage: " << argv[0]
-              << " horse.ply path_to_cubemap_files"
+    std::cout << "Usage: " << argv[0] << " horse.ply path_to_cubemap_files"
               << std::endl;
     return EXIT_FAILURE;
   }
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkNamedColors> colors;
+  vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
-  auto reader = vtkSmartPointer<vtkPLYReader>::New();
+  vtkNew<vtkPLYReader> reader;
   reader->SetFileName(argv[1]);
 
-  auto norms = vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> norms;
   norms->SetInputConnection(reader->GetOutputPort());
 
   auto texture = ReadCubeMap(argv[2], "/skybox", ".jpg", 2);
 
-  auto mapper = vtkSmartPointer<vtkOpenGLPolyDataMapper>::New();
+  vtkNew<vtkOpenGLPolyDataMapper> mapper;
   mapper->SetInputConnection(norms->GetOutputPort());
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   renderer->AddActor(actor);
   actor->SetTexture(texture);
   actor->SetMapper(mapper);
@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
   renderWindow->SetWindowName("CubeMap");
   renderWindow->Render();
 
-  auto style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+  vtkNew<vtkInteractorStyleTrackballCamera> style;
   renderWindow->GetInteractor()->SetInteractorStyle(style);
 
   interactor->Start();
@@ -157,7 +157,7 @@ vtkSmartPointer<vtkTexture> ReadCubeMap(std::string const& folderPath,
     std::cerr << "ReadCubeMap(): invalid key, unable to continue." << std::endl;
     std::exit(EXIT_FAILURE);
   }
-  auto texture = vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkTexture> texture;
   texture->CubeMapOn();
   // Build the file names.
   std::for_each(fns.begin(), fns.end(),
@@ -167,10 +167,10 @@ vtkSmartPointer<vtkTexture> ReadCubeMap(std::string const& folderPath,
   auto i = 0;
   for (auto const& fn : fns)
   {
-    auto imgReader = vtkSmartPointer<vtkJPEGReader>::New();
+    vtkNew<vtkJPEGReader> imgReader;
     imgReader->SetFileName(fn.c_str());
 
-    auto flip = vtkSmartPointer<vtkImageFlip>::New();
+    vtkNew<vtkImageFlip> flip;
     flip->SetInputConnection(imgReader->GetOutputPort());
     flip->SetFilteredAxis(1); // flip y axis
     texture->SetInputConnection(i, flip->GetOutputPort(0));

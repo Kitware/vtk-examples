@@ -1,6 +1,7 @@
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOpenGLPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
@@ -121,34 +122,34 @@ int main(int argc, char* argv[])
       std::max(std::max(bounds[1] - bounds[0], bounds[3] - bounds[2]),
                bounds[5] - bounds[4]);
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto mapper = vtkSmartPointer<vtkOpenGLPolyDataMapper>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkOpenGLPolyDataMapper> mapper;
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
   renderer->AddActor(actor);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Rescale polydata to [-1,1]
-  auto userTransform = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> userTransform;
   userTransform->Translate(-center[0], -center[1], -center[2]);
   userTransform->Scale(1.0 / maxBound, 1.0 / maxBound, 1.0 / maxBound);
-  auto transform = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> transform;
   transform->SetTransform(userTransform);
   transform->SetInputData(polyData);
 
-  auto triangles = vtkSmartPointer<vtkTriangleFilter>::New();
+  vtkNew<vtkTriangleFilter> triangles;
   triangles->SetInputConnection(transform->GetOutputPort());
 
-  auto norms = vtkSmartPointer<vtkTriangleMeshPointNormals>::New();
+  vtkNew<vtkTriangleMeshPointNormals> norms;
   norms->SetInputConnection(triangles->GetOutputPort());
 
   mapper->SetInputConnection(norms->GetOutputPort());
@@ -349,7 +350,7 @@ int main(int argc, char* argv[])
   );
 #endif
 
-  auto myCallback = vtkSmartPointer<ShaderCallback>::New();
+  vtkNew<ShaderCallback> myCallback;
   myCallback->Renderer = renderer;
   if (argc == 6)
   {
@@ -433,49 +434,49 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
       vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
+    vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
+    vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
+    vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
+    vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
+    vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->SetPhiResolution(25);
     source->SetThetaResolution(25);
     source->Update();
