@@ -4,6 +4,10 @@ Snippets are chunks of code that can be cut (*snipped*) and pasted into examples
 
 ### Available snippets
 
+#### [PointToGlyph](/Python/Snippets/PointToGlyph.md)
+
+Represent points as glyphs.
+
 #### [GetProgramParameters](/Python/Snippets/GetProgramParameters.md)
 
 Get the program parameters.

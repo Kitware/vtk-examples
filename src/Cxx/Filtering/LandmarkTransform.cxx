@@ -1,5 +1,6 @@
 #include <vtkActor.h>
 #include <vtkCellData.h>
+#include <vtkGlyph3DMapper.h>
 #include <vtkLandmarkTransform.h>
 #include <vtkLine.h>
 #include <vtkMatrix4x4.h>
@@ -12,6 +13,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 #include <vtkTransformPolyDataFilter.h>
 #include <vtkUnsignedCharArray.h>
 #include <vtkVertexGlyphFilter.h>
@@ -23,7 +25,20 @@
 
 namespace {
 void AxesLines(vtkSmartPointer<vtkPolyData> linesPolyData);
-}
+
+/**
+ * Convert points to glyphs.
+ *
+ * @param points - The points to glyph
+ * @param scale - The scale, used to determine the size of the glyph
+ * representing the point, expressed as a fraction of the largest side of the
+ * bounding box surrounding the points. e.g. 0.05
+ *
+ * @return The actor.
+ */
+vtkSmartPointer<vtkActor> PointToGlyph(vtkPoints* points, double const& scale);
+
+} // namespace
 
 int main(int, char*[])
 {
@@ -86,29 +101,18 @@ int main(int, char*[])
   std::cout << "Matrix: " << *mat << std::endl;
 
   // Visualize
-  vtkNew<vtkPolyDataMapper> sourceMapper;
-  sourceMapper->SetInputConnection(sourceGlyphFilter->GetOutputPort());
+  // Map the points to spheres
+  auto sourceActor =
+      PointToGlyph(sourceGlyphFilter->GetOutput()->GetPoints(), 0.03);
+  sourceActor->GetProperty()->SetColor(colors->GetColor3d("Red").GetData());
 
-  vtkNew<vtkActor> sourceActor;
-  sourceActor->SetMapper(sourceMapper);
-  sourceActor->GetProperty()->SetColor(colors->GetColor3d("Lime").GetData());
-  sourceActor->GetProperty()->SetPointSize(5);
+  auto targetActor =
+      PointToGlyph(targetGlyphFilter->GetOutput()->GetPoints(), 0.03);
+  targetActor->GetProperty()->SetColor(colors->GetColor3d("Lime").GetData());
 
-  vtkNew<vtkPolyDataMapper> targetMapper;
-  targetMapper->SetInputConnection(targetGlyphFilter->GetOutputPort());
-
-  vtkNew<vtkActor> targetActor;
-  targetActor->SetMapper(targetMapper);
-  targetActor->GetProperty()->SetColor(colors->GetColor3d("Red").GetData());
-  targetActor->GetProperty()->SetPointSize(5);
-
-  vtkNew<vtkPolyDataMapper> solutionMapper;
-  solutionMapper->SetInputConnection(transformFilter->GetOutputPort());
-
-  vtkNew<vtkActor> solutionActor;
-  solutionActor->SetMapper(solutionMapper);
+  auto solutionActor =
+      PointToGlyph(transformFilter->GetOutput()->GetPoints(), 0.03);
   solutionActor->GetProperty()->SetColor(colors->GetColor3d("Blue").GetData());
-  solutionActor->GetProperty()->SetPointSize(5);
 
   vtkNew<vtkPolyDataMapper> axesMapper;
   axesMapper->SetInputData(linesPolyData);
@@ -131,7 +135,7 @@ int main(int, char*[])
   renderer->AddActor(solutionActor);
   renderer->AddActor(axesActor);
 
-  renderer->SetBackground(colors->GetColor3d("lamp_black").GetData());
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Render and interact
   renderWindow->Render();
@@ -186,10 +190,38 @@ void AxesLines(vtkSmartPointer<vtkPolyData> linesPolyData)
   colors->SetNumberOfComponents(3);
   colors->InsertNextTupleValue(namedColors->GetColor3ub("DarkRed").GetData());
   colors->InsertNextTupleValue(namedColors->GetColor3ub("DarkGreen").GetData());
-  colors->InsertNextTupleValue(namedColors->GetColor3ub("SteelBlue").GetData());
+  colors->InsertNextTupleValue(
+      namedColors->GetColor3ub("MidnightBlue").GetData());
 
   // Color the lines.
   linesPolyData->GetCellData()->SetScalars(colors);
+}
+
+vtkSmartPointer<vtkActor> PointToGlyph(vtkPoints* points, double const& scale)
+{
+  auto bounds = points->GetBounds();
+  double maxLen = 0;
+  for (int i = 1; i < 3; ++i)
+  {
+    maxLen = std::max(bounds[i + 1] - bounds[i], maxLen);
+  }
+
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetRadius(scale * maxLen);
+
+  vtkNew<vtkPolyData> pd;
+  pd->SetPoints(points);
+
+  vtkNew<vtkGlyph3DMapper> mapper;
+  mapper->SetInputData(pd);
+  mapper->SetSourceConnection(sphereSource->GetOutputPort());
+  mapper->ScalarVisibilityOff();
+  mapper->ScalingOff();
+
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+
+  return actor;
 }
 
 } // namespace

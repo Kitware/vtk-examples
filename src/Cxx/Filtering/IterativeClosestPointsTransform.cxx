@@ -1,6 +1,7 @@
 #include <vtkActor.h>
 #include <vtkCellArray.h>
 #include <vtkCellData.h>
+#include <vtkGlyph3DMapper.h>
 #include <vtkIterativeClosestPointTransform.h>
 #include <vtkLandmarkTransform.h>
 #include <vtkLine.h>
@@ -16,6 +17,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
 #include <vtkUnsignedCharArray.h>
@@ -33,6 +35,19 @@ void CreatePolyData(vtkSmartPointer<vtkPolyData> polydata);
 void PerturbPolyData(vtkSmartPointer<vtkPolyData> polydata);
 void TranslatePolyData(vtkSmartPointer<vtkPolyData> polydata);
 void AxesLines(vtkSmartPointer<vtkPolyData> linesPolyData);
+
+/**
+ * Convert points to glyphs.
+ *
+ * @param points - The points to glyph
+ * @param scale - The scale, used to determine the size of the glyph
+ * representing the point, expressed as a fraction of the largest side of the
+ * bounding box surrounding the points. e.g. 0.05
+ *
+ * @return The actor.
+ */
+vtkSmartPointer<vtkActor> PointToGlyph(vtkPoints* points, double const& scale);
+
 } // namespace
 
 int main(int argc, char* argv[])
@@ -100,29 +115,16 @@ int main(int argc, char* argv[])
   */
 
   // Visualize
-  vtkNew<vtkPolyDataMapper> sourceMapper;
-  sourceMapper->SetInputData(source);
-
-  vtkNew<vtkActor> sourceActor;
-  sourceActor->SetMapper(sourceMapper);
+  // Map the points to spheres
+  auto sourceActor = PointToGlyph(source->GetPoints(), 0.03);
   sourceActor->GetProperty()->SetColor(colors->GetColor3d("Red").GetData());
-  sourceActor->GetProperty()->SetPointSize(5);
 
-  vtkNew<vtkPolyDataMapper> targetMapper;
-  targetMapper->SetInputData(target);
-
-  vtkNew<vtkActor> targetActor;
-  targetActor->SetMapper(targetMapper);
+  auto targetActor = PointToGlyph(target->GetPoints(), 0.03);
   targetActor->GetProperty()->SetColor(colors->GetColor3d("Lime").GetData());
-  targetActor->GetProperty()->SetPointSize(5);
 
-  vtkNew<vtkPolyDataMapper> solutionMapper;
-  solutionMapper->SetInputConnection(icpTransformFilter->GetOutputPort());
-
-  vtkNew<vtkActor> solutionActor;
-  solutionActor->SetMapper(solutionMapper);
+  auto solutionActor =
+      PointToGlyph(icpTransformFilter->GetOutput()->GetPoints(), 0.03);
   solutionActor->GetProperty()->SetColor(colors->GetColor3d("Blue").GetData());
-  solutionActor->GetProperty()->SetPointSize(5);
 
   vtkNew<vtkPolyDataMapper> axesMapper;
   vtkNew<vtkActor> axesActor;
@@ -151,7 +153,7 @@ int main(int argc, char* argv[])
     renderer->AddActor(axesActor);
   }
 
-  renderer->SetBackground(colors->GetColor3d("lamp_black").GetData());
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Render and interact
   renderWindow->Render();
@@ -246,9 +248,9 @@ void AxesLines(vtkSmartPointer<vtkPolyData> linesPolyData)
 {
   // Create four points
   double origin[3] = {0.0, 0.0, 0.0};
-  double p0[3] = {1.2, 0.0, 0.0};
+  double p0[3] = {1.5, 0.0, 0.0};
   double p1[3] = {0.0, 1.5, 0.0};
-  double p2[3] = {0.0, 0.0, 1.2};
+  double p2[3] = {0.0, 0.0, 1.5};
 
   // Create a vtkPoints container and store the points in it
   vtkNew<vtkPoints> pts;
@@ -287,10 +289,38 @@ void AxesLines(vtkSmartPointer<vtkPolyData> linesPolyData)
   colors->SetNumberOfComponents(3);
   colors->InsertNextTupleValue(namedColors->GetColor3ub("DarkRed").GetData());
   colors->InsertNextTupleValue(namedColors->GetColor3ub("DarkGreen").GetData());
-  colors->InsertNextTupleValue(namedColors->GetColor3ub("SteelBlue").GetData());
+  colors->InsertNextTupleValue(
+      namedColors->GetColor3ub("MidnightBlue").GetData());
 
   // Color the lines.
   linesPolyData->GetCellData()->SetScalars(colors);
+}
+
+vtkSmartPointer<vtkActor> PointToGlyph(vtkPoints* points, double const& scale)
+{
+  auto bounds = points->GetBounds();
+  double maxLen = 0;
+  for (int i = 1; i < 3; ++i)
+  {
+    maxLen = std::max(bounds[i + 1] - bounds[i], maxLen);
+  }
+
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetRadius(scale * maxLen);
+
+  vtkNew<vtkPolyData> pd;
+  pd->SetPoints(points);
+
+  vtkNew<vtkGlyph3DMapper> mapper;
+  mapper->SetInputData(pd);
+  mapper->SetSourceConnection(sphereSource->GetOutputPort());
+  mapper->ScalarVisibilityOff();
+  mapper->ScalingOff();
+
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+
+  return actor;
 }
 
 } // end anonymous namespace

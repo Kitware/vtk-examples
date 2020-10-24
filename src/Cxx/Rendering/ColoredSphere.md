@@ -5,4 +5,4 @@ This demonstrates a simple visualization pipeline. A polygonal representation of
 The execution of the pipeline occurs implicitly when we render the actor. Each actor asks its mapper to update itself. The mapper in turn asks its input to update itself. This process continues until a source object is encountered. Then the source will execute if modified since the last render.
 
 !!! info
-    See [Figure 4-19](../../../VTKBook/04Chapter4/#Figure%204-19) in [Chapter 4](../../../VTKBook/04Chapter4) the [VTK Textbook]../../../VTKBook/01Chapter1).
+    See [Figure 4-19](../../../VTKBook/04Chapter4/#Figure%204-19) in [Chapter 4](../../../VTKBook/04Chapter4) the [VTK Textbook](../../../VTKBook/01Chapter1).
