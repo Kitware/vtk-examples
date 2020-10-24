@@ -8,6 +8,7 @@ if(NOT VTK_BINARY_DIR)
 
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
+    vtkCommonColor
     vtkCommonCore
     vtkFiltersCore
     vtkIOExport
@@ -55,7 +56,7 @@ if (BUILD_TESTING)
     )
   set(DATA ${WikiExamples_SOURCE_DIR}/src/Testing/Data)
   add_test(${KIT}-PolyDataRIB ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestPolyDataRIB ${DATA}/Torso.vtp .01)
+    TestPolyDataRIB ${DATA}/Torso.vtp 0.01)
 
   include(${WikiExamples_SOURCE_DIR}/CMake/ExamplesTesting.cmake)
 endif()
