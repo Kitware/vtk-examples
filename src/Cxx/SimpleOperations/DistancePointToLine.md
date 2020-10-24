@@ -1,3 +1,3 @@
 ### Description
-This example computes the distance from a point to a line.
 
+This example computes the distance from a point to a line.
