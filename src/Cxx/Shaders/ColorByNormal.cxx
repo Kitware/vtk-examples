@@ -1,6 +1,7 @@
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOpenGLPolyDataMapper.h>
 #include <vtkPolyDataNormals.h>
 #include <vtkProperty.h>
@@ -34,22 +35,22 @@ int main(int argc, char* argv[])
 {
   auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto mapper = vtkSmartPointer<vtkOpenGLPolyDataMapper>::New();
+  vtkNew<vtkActor> actor;
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkOpenGLPolyDataMapper> mapper;
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
   renderer->AddActor(actor);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  auto norms = vtkSmartPointer<vtkTriangleMeshPointNormals>::New();
+  vtkNew<vtkTriangleMeshPointNormals> norms;
   norms->SetInputData(polyData);
 
   mapper->SetInputConnection(norms->GetOutputPort());
@@ -189,49 +190,49 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
       vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    auto reader = vtkSmartPointer<vtkPLYReader>::New();
+    vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    auto reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    auto reader = vtkSmartPointer<vtkOBJReader>::New();
+    vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    auto reader = vtkSmartPointer<vtkSTLReader>::New();
+    vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    auto reader = vtkSmartPointer<vtkPolyDataReader>::New();
+    vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    auto reader = vtkSmartPointer<vtkBYUReader>::New();
+    vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    auto source = vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->SetPhiResolution(25);
     source->SetThetaResolution(25);
     source->Update();
