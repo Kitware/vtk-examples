@@ -1,4 +1,3 @@
 ### Description
-This example uses a timer to move a sphere across a scene.
 
-* Contributed by: Bryan Conrad
+This example demonstrates how to create a simple animation. A timer is used to move a sphere across a scene.
