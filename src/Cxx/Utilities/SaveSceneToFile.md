@@ -9,4 +9,4 @@ To see how the scene is saved and restored,
 3. Press the **e key** to exit the example.
 
 !!! info
-    This example uses [snippets](../Snippets.md).
+    This example uses [snippets](../Snippets).
