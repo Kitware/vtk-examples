@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-"""
-"""
+'''
+'''
 
 import vtk
 
@@ -20,7 +20,7 @@ def main():
 
     innerSphere = vtk.vtkActor()
     innerSphere.SetMapper(innerMapper)
-    innerSphere.GetProperty().SetColor(colors.GetColor3d("BlanchedAlmond"))
+    innerSphere.GetProperty().SetColor(colors.GetColor3d('BlanchedAlmond'))
 
     # sphere to texture
     sphere2 = vtk.vtkSphereSource()
@@ -65,7 +65,7 @@ def main():
     outerSphere = vtk.vtkActor()
     outerSphere.SetMapper(outerMapper)
     outerSphere.SetTexture(texture)
-    outerSphere.GetProperty().SetColor(colors.GetColor3d("LightSalmon"))
+    outerSphere.GetProperty().SetColor(colors.GetColor3d('LightSalmon'))
 
     renWin = vtk.vtkRenderWindow()
     iren = vtk.vtkRenderWindowInteractor()
@@ -75,12 +75,13 @@ def main():
 
     aren.AddActor(innerSphere)
     aren.AddActor(outerSphere)
-    aren.SetBackground(colors.GetColor3d("SlateGray"))
-    aren.GetActiveCamera().Azimuth(-20)
-    aren.GetActiveCamera().Elevation(-10)
+    aren.SetBackground(colors.GetColor3d('SlateGray'))
+    aren.GetActiveCamera().Azimuth(-30)
+    aren.GetActiveCamera().Elevation(-30)
     aren.ResetCamera()
 
     renWin.SetSize(500, 500)
+    renWin.SetWindowName('TextureCutSphere')
 
     # interact with data
     renWin.Render()

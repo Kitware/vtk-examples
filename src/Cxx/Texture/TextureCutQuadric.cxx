@@ -4,6 +4,7 @@
 #include <vtkDataSetMapper.h>
 #include <vtkImplicitTextureCoords.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkProperty.h>
 #include <vtkQuadric.h>
 #include <vtkRenderWindow.h>
@@ -29,43 +30,34 @@ vtkSmartPointer<vtkBooleanTexture> MakeBooleanTexture(int, int, int);
 
 int main(int /* argc */, char* /* argv */[])
 {
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
 
-  auto iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  auto aren =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> aren;
 
   // define two elliptical cylinders
-  auto quadric1 =
-    vtkSmartPointer<vtkQuadric>::New();
+  vtkNew<vtkQuadric> quadric1;
   quadric1->SetCoefficients(1, 2, 0, 0, 0, 0, 0, 0, 0, -.07);
 
-  auto quadric2 =
-    vtkSmartPointer<vtkQuadric>::New();
+  vtkNew<vtkQuadric> quadric2;
   quadric2->SetCoefficients(2, 1, 0, 0, 0, 0, 0, 0, 0, -.07);
 
   // create a sphere for all to use
-  auto aSphere =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> aSphere;
   aSphere->SetPhiResolution(21);
   aSphere->SetThetaResolution(21);
 
   // create texture coordinates for all
-  auto tcoords =
-    vtkSmartPointer<vtkImplicitTextureCoords>::New();
+  vtkNew<vtkImplicitTextureCoords> tcoords;
   tcoords->SetInputConnection(aSphere->GetOutputPort());
   tcoords->SetRFunction(quadric1);
   tcoords->SetSFunction(quadric2);
 
-  auto aMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> aMapper;
   aMapper->SetInputConnection(tcoords->GetOutputPort());
 
   // create a mapper, sphere and texture map for each case
@@ -73,25 +65,27 @@ int main(int /* argc */, char* /* argv */[])
   {
     auto aBoolean = MakeBooleanTexture(i, 64, 0);
 
-    auto aTexture2 =
-      vtkSmartPointer<vtkTexture>::New();
+    vtkNew<vtkTexture> aTexture2;
     aTexture2->SetInputConnection(aBoolean->GetOutputPort());
     aTexture2->InterpolateOff();
     aTexture2->RepeatOff();
 
-    auto anActor2 =
-      vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> anActor2;
 
     anActor2->SetMapper(aMapper);
     anActor2->SetTexture(aTexture2);
     anActor2->SetPosition(&positions[i][0]);
     anActor2->SetScale(2.0, 2.0, 2.0);
+    anActor2->GetProperty()->SetColor(
+        colors->GetColor3d("MistyRose").GetData());
+
     aren->AddActor(anActor2);
   }
 
   aren->SetBackground(colors->GetColor3d("SlateGray").GetData());
   renWin->SetSize(500, 500);
   renWin->AddRenderer(aren);
+  renWin->SetWindowName("TextureCutQuadric");
 
   // interact with data
   renWin->Render();
@@ -106,8 +100,7 @@ namespace {
 vtkSmartPointer<vtkBooleanTexture>
 MakeBooleanTexture(int caseNumber, int resolution, int thickness)
 {
-  auto booleanTexture =
-    vtkSmartPointer<vtkBooleanTexture>::New();
+  vtkNew<vtkBooleanTexture> booleanTexture;
 
   booleanTexture->SetXSize(resolution);
   booleanTexture->SetYSize(resolution);
