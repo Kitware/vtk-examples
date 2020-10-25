@@ -4,13 +4,13 @@ import vtk
 
 
 def main():
-    fileNames = [""] * 2
+    fileNames = [''] * 2
     fileNames[0], fileNames[1] = get_program_parameters()
 
     # Generate the other vecAnim file names. There are 8 of them.
     tmpFn = fileNames[1][:-5]
     for i in range(2, 9):
-        fileNames.append(tmpFn + str(i) + ".vtk")
+        fileNames.append(tmpFn + str(i) + '.vtk')
 
     colors = vtk.vtkNamedColors()
 
@@ -60,7 +60,7 @@ def main():
 
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     #  Texture maps.
     textureMaps = list()
@@ -86,11 +86,12 @@ def main():
     cam1.SetFocalPoint(136.71, 104.025, 23)
     cam1.SetPosition(204.747, 258.939, 63.7925)
     cam1.SetViewUp(-0.102647, -0.210897, 0.972104)
-    cam1.Zoom(1.5)
+    cam1.Zoom(1.2)
     renderer.SetActiveCamera(cam1)
 
-    renderer.SetBackground(colors.GetColor3d("Wheat"))
+    renderer.SetBackground(colors.GetColor3d('Wheat'))
     renderWindow.SetSize(640, 480)
+    renderWindow.SetWindowName('AnimateVectors')
 
     # Go into a loop.
     for j in range(0, 100):

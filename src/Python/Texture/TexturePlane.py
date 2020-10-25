@@ -42,8 +42,9 @@ def main():
 
     # Add the actors to the renderer, set the background and size.
     renderer.AddActor(planeActor)
-    renderer.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer.SetBackground(colors.GetColor3d('DarkSlateGray'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('TexturePlane')
 
     # render the image
     renWin.Render()

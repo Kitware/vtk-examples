@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-"""
-"""
+'''
+'''
 
 import vtk
 
@@ -63,11 +63,13 @@ def main():
         anActor2.SetTexture(aTexture2)
         anActor2.SetPosition(positions[i])
         anActor2.SetScale(2.0, 2.0, 2.0)
+        anActor2.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
         aren.AddActor(anActor2)
 
-    aren.SetBackground(colors.GetColor3d("SlateGray"))
+    aren.SetBackground(colors.GetColor3d('SlateGray'))
     renWin.SetSize(500, 500)
     renWin.AddRenderer(aren)
+    renWin.SetWindowName('TextureCutQuadric')
 
     # Interact with the data.
     renWin.Render()

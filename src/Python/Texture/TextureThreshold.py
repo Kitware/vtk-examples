@@ -27,7 +27,7 @@ def main():
     wallMap.ScalarVisibilityOff()
     wallActor = vtk.vtkActor()
     wallActor.SetMapper(wallMap)
-    wallActor.GetProperty().SetColor(colors.GetColor3d("PeachPuff"))
+    wallActor.GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
 
     # Make the fin (rear wall)
     fin = vtk.vtkStructuredGridGeometryFilter()
@@ -38,7 +38,7 @@ def main():
     finMap.ScalarVisibilityOff()
     finActor = vtk.vtkActor()
     finActor.SetMapper(finMap)
-    finActor.GetProperty().SetColor(colors.GetColor3d("DarkSlateGray"))
+    finActor.GetProperty().SetColor(colors.GetColor3d('DarkSlateGray'))
 
     # Get the texture.
     tmap = vtk.vtkStructuredPointsReader()
@@ -98,14 +98,16 @@ def main():
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineProp = outlineActor.GetProperty()
-    outlineProp.SetColor(colors.GetColor3d("Black"))
+    outlineProp.SetColor(colors.GetColor3d('Black'))
 
     # Add the remaining actors to the renderer, set the background and size.
     ren.AddActor(outlineActor)
     ren.AddActor(wallActor)
     ren.AddActor(finActor)
-    ren.SetBackground(colors.GetColor3d("MistyRose"))
+    ren.SetBackground(colors.GetColor3d('MistyRose'))
     renWin.SetSize(512, 512)
+    renWin.SetWindowName('TextureThreshold')
+
     cam = vtk.vtkCamera()
     cam.SetClippingRange(1.51176, 75.5879)
     cam.SetFocalPoint(2.33749, 2.96739, 3.61023)

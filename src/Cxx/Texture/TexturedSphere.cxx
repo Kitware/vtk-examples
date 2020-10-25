@@ -1,82 +1,78 @@
-#include <vtkSmartPointer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkActor.h>
+#include <vtkImageReader.h>
+#include <vtkImageReader2Factory.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkTransformTextureCoords.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkTexture.h>
 #include <vtkTextureMapToSphere.h>
-#include <vtkImageReader2Factory.h>
-#include <vtkImageReader.h>
 #include <vtkTexturedSphereSource.h>
+#include <vtkTransformTextureCoords.h>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   if (argc < 2)
   {
-      std::cout << "Usage: " << argv[0]
-                << " texture(.png/.ppm) e.g. earth.ppm"
-                << " [translate]" <<std::endl;
-      return EXIT_FAILURE;
+    std::cout << "Usage: " << argv[0] << " texture(.png/.ppm) e.g. earth.ppm"
+              << " [translate]" << std::endl;
+    return EXIT_FAILURE;
   }
   double translate[3];
   if (argc > 2)
   {
-      translate[0] = atof(argv[2]);
+    translate[0] = atof(argv[2]);
   }
   else
   {
-      translate[0] = 0.0;
+    translate[0] = 0.0;
   }
   translate[1] = 0.0;
   translate[2] = 0.0;
-  std::cout << translate[0] << ", "
-            << translate[1] << ", "
-            << translate[2] << "\n";
+  std::cout << translate[0] << ", " << translate[1] << ", " << translate[2]
+            << "\n";
   // Create a sphere with texture coordinates
-  vtkSmartPointer<vtkTexturedSphereSource> source =
-    vtkSmartPointer<vtkTexturedSphereSource>::New();
+  vtkNew<vtkTexturedSphereSource> source;
+  source->SetThetaResolution(100);
+  source->SetPhiResolution(100);
 
   // Read texture file
-  vtkSmartPointer<vtkImageReader2Factory> readerFactory =
-    vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> imageReader;
-  imageReader.TakeReference(
-    readerFactory->CreateImageReader2(argv[1]));
+  imageReader.TakeReference(readerFactory->CreateImageReader2(argv[1]));
   imageReader->SetFileName(argv[1]);
 
   // Create texture
-  vtkSmartPointer<vtkTexture> texture =
-    vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkTexture> texture;
   texture->SetInputConnection(imageReader->GetOutputPort());
 
-  vtkSmartPointer<vtkTransformTextureCoords> transformTexture =
-    vtkSmartPointer<vtkTransformTextureCoords>::New();
+  vtkNew<vtkTransformTextureCoords> transformTexture;
   transformTexture->SetInputConnection(source->GetOutputPort());
   transformTexture->SetPosition(translate);
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(transformTexture->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
-  actor->SetMapper( mapper );
-  actor->SetTexture( texture );
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+  actor->SetTexture(texture);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
-  renderer->SetBackground(.1, .2, .3);
+  renderer->SetBackground(colors->GetColor3d("Black").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->AddRenderer( renderer );
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("TexturedSphere");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renWinInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  renWinInteractor->SetRenderWindow( renderWindow );
+  vtkNew<vtkRenderWindowInteractor> renWinInteractor;
+  renWinInteractor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();
   renWinInteractor->Start();

@@ -7,8 +7,6 @@ fluid flow->
      From the left, the scalar threshold is set so that:
        1) Only data with a scalar value greater than or equal to 1.5 is shown.
        2) Only data with a scalar value less than or equal to 1.5 is shown.
-       3) Only data with a scalar value between 1.5 and 1.8 inclusive is
-shown.
 */
 
 #include <vtkActor.h>
@@ -17,11 +15,13 @@ shown.
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiBlockPLOT3DReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkStructuredGrid.h>
 #include <vtkStructuredGridGeometryFilter.h>
 #include <vtkStructuredGridOutlineFilter.h>
@@ -49,12 +49,10 @@ int main(int argc, char* argv[])
   std::string dataFn2 = argv[2];
   std::string textureFn = argv[3];
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Read the data.
-  vtkSmartPointer<vtkMultiBlockPLOT3DReader> pl3d =
-    vtkSmartPointer<vtkMultiBlockPLOT3DReader>::New();
+  vtkNew<vtkMultiBlockPLOT3DReader> pl3d;
   pl3d->SetXYZFileName(dataFn1.c_str());
   pl3d->SetQFileName(dataFn2.c_str());
   pl3d->SetScalarFunctionNumber(100); // Density
@@ -62,51 +60,44 @@ int main(int argc, char* argv[])
   pl3d->Update();
 
   vtkStructuredGrid* output =
-    dynamic_cast<vtkStructuredGrid*>(pl3d->GetOutput()->GetBlock(0));
+      dynamic_cast<vtkStructuredGrid*>(pl3d->GetOutput()->GetBlock(0));
 
   // Make the wall (floor).
-  vtkSmartPointer<vtkStructuredGridGeometryFilter> wall =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> wall;
   wall->SetInputData(output);
   wall->SetExtent(0, 100, 0, 0, 0, 100);
-  vtkSmartPointer<vtkPolyDataMapper> wallMap =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> wallMap;
   wallMap->SetInputConnection(wall->GetOutputPort());
   wallMap->ScalarVisibilityOff();
-  vtkSmartPointer<vtkActor> wallActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> wallActor;
   wallActor->SetMapper(wallMap);
   wallActor->GetProperty()->SetColor(colors->GetColor3d("PeachPuff").GetData());
 
   // Make the fin (rear wall).
-  vtkSmartPointer<vtkStructuredGridGeometryFilter> fin =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> fin;
   fin->SetInputData(output);
   fin->SetExtent(0, 100, 0, 100, 0, 0);
-  vtkSmartPointer<vtkPolyDataMapper> finMap =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> finMap;
   finMap->SetInputConnection(fin->GetOutputPort());
   finMap->ScalarVisibilityOff();
-  vtkSmartPointer<vtkActor> finActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> finActor;
   finActor->SetMapper(finMap);
   finActor->GetProperty()->SetColor(
-    colors->GetColor3d("DarkSlateGray").GetData());
+      colors->GetColor3d("DarkSlateGray").GetData());
 
   // Get the texture.
-  vtkSmartPointer<vtkStructuredPointsReader> tmap =
-    vtkSmartPointer<vtkStructuredPointsReader>::New();
+  vtkNew<vtkStructuredPointsReader> tmap;
   tmap->SetFileName(textureFn.c_str());
-  vtkSmartPointer<vtkTexture> texture = vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkTexture> texture;
   texture->SetInputConnection(tmap->GetOutputPort());
   texture->InterpolateOff();
   texture->RepeatOff();
 
   // Create the rendering window, renderer, and interactive renderer.
-  vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Make the planes to threshold and texture.
@@ -131,16 +122,16 @@ int main(int argc, char* argv[])
     // thresh[i]->ThresholdByUpper(1.5); for all planes.
     switch (i)
     {
-      case 0:
-      default:
-        thresh[i]->ThresholdByUpper(1.5);
-        break;
-      case 1:
-        thresh[i]->ThresholdByLower(1.5);
-        break;
-      case 2:
-        thresh[i]->ThresholdBetween(1.5, 1.8);
-        break;
+    case 0:
+    default:
+      thresh[i]->ThresholdByUpper(1.5);
+      break;
+    case 1:
+      thresh[i]->ThresholdByLower(1.5);
+      break;
+    case 2:
+      thresh[i]->ThresholdBetween(1.5, 1.8);
+      break;
     }
     planeMap.push_back(vtkSmartPointer<vtkDataSetMapper>::New());
     planeMap[i]->SetInputConnection(thresh[i]->GetOutputPort());
@@ -153,13 +144,11 @@ int main(int argc, char* argv[])
     ren->AddActor(planeActor[i]);
   }
   // Get an outline of the data set for context.
-  vtkSmartPointer<vtkStructuredGridOutlineFilter> outline =
-    vtkSmartPointer<vtkStructuredGridOutlineFilter>::New();
+  vtkNew<vtkStructuredGridOutlineFilter> outline;
   outline->SetInputData(output);
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
-  vtkSmartPointer<vtkActor> outlineActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
   outlineActor->SetMapper(outlineMapper);
 
@@ -169,7 +158,9 @@ int main(int argc, char* argv[])
   ren->AddActor(finActor);
   ren->SetBackground(colors->GetColor3d("MistyRose").GetData());
   renWin->SetSize(512, 512);
-  vtkSmartPointer<vtkCamera> cam = vtkSmartPointer<vtkCamera>::New();
+  renWin->SetWindowName("TextureThreshold");
+
+  vtkNew<vtkCamera> cam;
   cam->SetClippingRange(1.51176, 75.5879);
   cam->SetFocalPoint(2.33749, 2.96739, 3.61023);
   cam->SetPosition(10.8787, 5.27346, 15.8687);

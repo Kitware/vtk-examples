@@ -3,6 +3,7 @@
 #include <vtkImageReader2.h>
 #include <vtkImageReader2Factory.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlaneSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderWindow.h>
@@ -17,65 +18,55 @@
 // is not of this type, you will have to map it through a lookup table
 // or by using vtkImageShiftScale.
 //
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   // Verify input arguments
-  if ( argc != 2 )
+  if (argc != 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " Filename" << std::endl;
+    std::cout << "Usage: " << argv[0] << " Filename" << std::endl;
     return EXIT_FAILURE;
   }
 
-  vtkSmartPointer<vtkImageReader2Factory> readerFactory =
-    vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> textureFile;
-  textureFile.TakeReference(
-    readerFactory->CreateImageReader2(argv[1]));
+  textureFile.TakeReference(readerFactory->CreateImageReader2(argv[1]));
   textureFile->SetFileName(argv[1]);
   textureFile->Update();
 
-  vtkSmartPointer<vtkTexture> atext =
-    vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkTexture> atext;
   atext->SetInputConnection(textureFile->GetOutputPort());
   atext->InterpolateOn();
 
-// Create a plane source and actor. The vtkPlanesSource generates
-// texture coordinates.
-//
-  vtkSmartPointer<vtkPlaneSource> plane =
-    vtkSmartPointer<vtkPlaneSource>::New();
+  // Create a plane source and actor. The vtkPlanesSource generates
+  // texture coordinates.
+  //
+  vtkNew<vtkPlaneSource> plane;
 
-  vtkSmartPointer<vtkPolyDataMapper>  planeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> planeMapper;
   planeMapper->SetInputConnection(plane->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> planeActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> planeActor;
   planeActor->SetMapper(planeMapper);
   planeActor->SetTexture(atext);
 
-// Create the RenderWindow, Renderer and both Actors
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  // Create the RenderWindow, Renderer and both Actors
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(renderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-// Add the actors to the renderer, set the background and size
+  // Add the actors to the renderer, set the background and size
   renderer->AddActor(planeActor);
-  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("TexturePlane");
 
-// render the image
+  // render the image
   renWin->Render();
 
   renderer->ResetCamera();

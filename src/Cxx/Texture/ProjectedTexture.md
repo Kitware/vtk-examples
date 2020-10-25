@@ -1,4 +1,5 @@
 ### Description
+
 vtkProjectedTexture  is tricky to set up. Picking the right parameters will take some iterations. The example uses vtkFrustumSource to help understand the parameters.
 
 !!! cite

@@ -3,100 +3,87 @@
 #include <vtkGlyph3D.h>
 #include <vtkLineSource.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkStructuredPointsReader.h>
 #include <vtkTexture.h>
 #include <vtkThresholdPoints.h>
 
 #include <vector>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 3)
   {
-    std::cout << "Usage: " << argv[0] << " carotid.vtk vecAnim1.vtk ..." << std::endl;
+    std::cout << "Usage: " << argv[0] << " carotid.vtk vecAnim1.vtk ..."
+              << std::endl;
     return EXIT_FAILURE;
   }
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Setup render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-
-// read data
-//
-// create pipeline
-//
-  vtkSmartPointer<vtkStructuredPointsReader> reader =
-    vtkSmartPointer<vtkStructuredPointsReader>::New();
+  // read data
+  //
+  // create pipeline
+  //
+  vtkNew<vtkStructuredPointsReader> reader;
   reader->SetFileName(argv[1]);
 
-  vtkSmartPointer<vtkThresholdPoints> threshold =
-    vtkSmartPointer<vtkThresholdPoints>::New();
+  vtkNew<vtkThresholdPoints> threshold;
   threshold->SetInputConnection(reader->GetOutputPort());
   threshold->ThresholdByUpper(200);
 
-  vtkSmartPointer<vtkLineSource> line =
-    vtkSmartPointer<vtkLineSource>::New();
+  vtkNew<vtkLineSource> line;
   line->SetResolution(1);
-  
-  vtkSmartPointer<vtkGlyph3D> lines =
-    vtkSmartPointer<vtkGlyph3D>::New();
+
+  vtkNew<vtkGlyph3D> lines;
   lines->SetInputConnection(threshold->GetOutputPort());
   lines->SetSourceConnection(line->GetOutputPort());
   lines->SetScaleFactor(0.005);
   lines->SetScaleModeToScaleByScalar();
   lines->Update();
-  
-  vtkSmartPointer<vtkPolyDataMapper> vectorMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+
+  vtkNew<vtkPolyDataMapper> vectorMapper;
   vectorMapper->SetInputConnection(lines->GetOutputPort());
   vectorMapper->SetScalarRange(lines->GetOutput()->GetScalarRange());
-  
-  vtkSmartPointer<vtkActor> vectorActor =
-    vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> vectorActor;
   vectorActor->SetMapper(vectorMapper);
   vectorActor->GetProperty()->SetOpacity(0.99);
   vectorActor->GetProperty()->SetLineWidth(1.5);
 
-// outline
-  vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  // outline
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
-//  texture maps
-  std::vector<vtkSmartPointer<vtkTexture> > textureMaps;
-  for (int i =  2; i < argc; ++i)
+  //  texture maps
+  std::vector<vtkSmartPointer<vtkTexture>> textureMaps;
+  for (int i = 2; i < argc; ++i)
   {
-    vtkSmartPointer<vtkStructuredPointsReader> tmap =
-      vtkSmartPointer<vtkStructuredPointsReader>::New();
+    vtkNew<vtkStructuredPointsReader> tmap;
     tmap->SetFileName(argv[i]);
 
-    vtkSmartPointer<vtkTexture> texture =
-      vtkSmartPointer<vtkTexture>::New();
+    vtkNew<vtkTexture> texture;
     texture->SetInputConnection(tmap->GetOutputPort());
     texture->InterpolateOff();
     texture->RepeatOff();
@@ -104,24 +91,24 @@ int main (int argc, char *argv[])
   }
   vectorActor->SetTexture(textureMaps[0]);
 
-// Add the actors to the renderer, set the background and size
-//
+  // Add the actors to the renderer, set the background and size
+  //
   renderer->AddActor(vectorActor);
   renderer->AddActor(outlineActor);
 
-  vtkSmartPointer<vtkCamera> cam1 =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> cam1;
   cam1->SetClippingRange(17.4043, 870.216);
   cam1->SetFocalPoint(136.71, 104.025, 23);
   cam1->SetPosition(204.747, 258.939, 63.7925);
   cam1->SetViewUp(-0.102647, -0.210897, 0.972104);
-  cam1->Zoom(1.5);
+  cam1->Zoom(1.2);
   renderer->SetActiveCamera(cam1);
 
   renderer->SetBackground(colors->GetColor3d("Wheat").GetData());
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("AnimateVectors");
 
-// go into loop
+  // go into loop
   for (int j = 0; j < 100; ++j)
   {
     for (size_t i = 0; i < textureMaps.size(); ++i)
