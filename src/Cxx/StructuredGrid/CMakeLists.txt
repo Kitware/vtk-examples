@@ -9,6 +9,7 @@ if(NOT VTK_BINARY_DIR)
     vtkFiltersCore
     vtkFiltersGeneral
     vtkFiltersGeometry
+    vtkFiltersSources
     vtkIOXML
     vtkInteractionStyle
     vtkRenderingCore

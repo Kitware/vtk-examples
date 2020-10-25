@@ -2,24 +2,13 @@
 
 Often you just need a "pointer" to an example that shows you how to do something.
 
-Here are some snippets or examples that highlight interesting features that may help you:
-
-## Read in a Polydata file
-
-| Example Name | Comments | Image |
-| -------------- | ---------------------- | ------- |
-[ReadPolyData](/Cxx/Snippets/ReadPolyData) | This snippet works for most PolyData.
-
-## Write out an image
-
-| Example Name | Comments | Image |
-| -------------- | ---------------------- | ------- |
-[WriteImage](/Cxx/Snippets/WriteImage) | Write out an image of various types.
+Here are some snippets and examples that highlight interesting features that may help you:
 
 ## Camera
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
+[CameraPosition](/Cxx/Snippets/CameraPosition) | Get the camera position while moving the image.
 [MergeSelections](/Cxx/PolyData/MergeSelections) | Use the same camera for all renderers.
 [ShareCamera](/Cxx/Utilities/ShareCamera) | Use the same camera for all renderers.
 
@@ -36,6 +25,18 @@ Here are some snippets or examples that highlight interesting features that may 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
 [QuantizePolyDataPoints](/Cxx/PolyData/QuantizePolyDataPoints) | Represent a point by a glyph.
+
+## Image
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[WriteImage](/Cxx/Snippets/WriteImage) | Write out an image of various types.
+
+## Polydata
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[ReadPolyData](/Cxx/Snippets/ReadPolyData) | This snippet works for most PolyData.
 
 ## Render Windows
 

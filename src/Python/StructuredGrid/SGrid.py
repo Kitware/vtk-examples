@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-"""
+'''
 This example shows how to manually create a structured grid.
 The basic idea is to instantiate vtkStructuredGrid, set its dimensions,
  and then assign points defining the grid coordinate. The number of
  points must equal the number of points implicit in the dimensions
  (i.e., dimX*dimY*dimZ). Also, data attributes (either point or cell)
  can be added to the dataset.
-"""
+'''
 
 import math
 
@@ -64,22 +64,23 @@ def main():
     sgridMapper.SetInputConnection(hedgehog.GetOutputPort())
     sgridActor = vtk.vtkActor()
     sgridActor.SetMapper(sgridMapper)
-    sgridActor.GetProperty().SetColor(colors.GetColor3d("Peacock"))
+    sgridActor.GetProperty().SetColor(colors.GetColor3d('Gold'))
 
     # Create the usual rendering stuff
     renderer = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(renderer)
+    renWin.SetWindowName('SGrid')
 
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     renderer.AddActor(sgridActor)
-    renderer.SetBackground(colors.GetColor3d("Beige"))
+    renderer.SetBackground(colors.GetColor3d('MidnightBlue'))
     renderer.ResetCamera()
     renderer.GetActiveCamera().Elevation(60.0)
     renderer.GetActiveCamera().Azimuth(30.0)
-    renderer.GetActiveCamera().Dolly(1.25)
+    renderer.GetActiveCamera().Dolly(1.0)
     renWin.SetSize(640, 480)
 
     # Interact with the data.
@@ -87,5 +88,5 @@ def main():
     iren.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

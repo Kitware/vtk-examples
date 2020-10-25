@@ -12,6 +12,7 @@
 #include <vtkHedgeHog.h>
 #include <vtkMath.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyDataMapper.h>
@@ -28,17 +29,15 @@ int main(int, char*[])
   static int dims[3] = {13, 11, 11};
 
   // Create the structured grid.
-  vtkSmartPointer<vtkStructuredGrid> sgrid =
-      vtkSmartPointer<vtkStructuredGrid>::New();
+  vtkNew<vtkStructuredGrid> sgrid;
   sgrid->SetDimensions(dims);
 
   // We also create the points and vectors. The points
   // form a hemi-cylinder of data.
-  vtkSmartPointer<vtkDoubleArray> vectors =
-      vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> vectors;
   vectors->SetNumberOfComponents(3);
   vectors->SetNumberOfTuples(dims[0] * dims[1] * dims[2]);
-  vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->Allocate(dims[0] * dims[1] * dims[2]);
 
   deltaZ = 2.0 / (dims[2] - 1);
@@ -69,36 +68,33 @@ int main(int, char*[])
   sgrid->GetPointData()->SetVectors(vectors);
 
   // We create a simple pipeline to display the data.
-  vtkSmartPointer<vtkHedgeHog> hedgehog = vtkSmartPointer<vtkHedgeHog>::New();
+  vtkNew<vtkHedgeHog> hedgehog;
   hedgehog->SetInputData(sgrid);
   hedgehog->SetScaleFactor(0.1);
 
-  vtkSmartPointer<vtkNamedColors> colors =
-      vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkPolyDataMapper> sgridMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sgridMapper;
   sgridMapper->SetInputConnection(hedgehog->GetOutputPort());
-  vtkSmartPointer<vtkActor> sgridActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sgridActor;
   sgridActor->SetMapper(sgridMapper);
-  sgridActor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
+  sgridActor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
 
   // Create the usual rendering stuff
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(renderer);
+  renWin->SetWindowName("SGrid");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   renderer->AddActor(sgridActor);
-  renderer->SetBackground(colors->GetColor3d("Beige").GetData());
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
   renderer->ResetCamera();
   renderer->GetActiveCamera()->Elevation(60.0);
   renderer->GetActiveCamera()->Azimuth(30.0);
-  renderer->GetActiveCamera()->Dolly(1.25);
+  renderer->GetActiveCamera()->Dolly(1.0);
   renWin->SetSize(640, 480);
 
   // interact with data

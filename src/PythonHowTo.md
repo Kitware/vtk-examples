@@ -2,15 +2,15 @@
 
 Often you just need a "pointer" to an example that shows you how to do something.
 
-Here are some snippets or examples that highlight interesting features that may help you:
+Here are some snippets and examples that highlight interesting features that may help you:
 
-## Read in a Polydata file
+## Camera
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
-[ReadPolyData](/Python/Snippets/ReadPolyData) | This snippet works for most PolyData.
+[CameraPosition](/Python/Snippets/CameraPosition) | Get the camera position while moving the image.
 
-## Write out an image
+## Image
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
@@ -21,6 +21,12 @@ Here are some snippets or examples that highlight interesting features that may 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
 [Model](/Python/Rendering/Model) | Multiple render windows.
+
+## Polydata
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[ReadPolyData](/Python/Snippets/ReadPolyData) | This snippet works for most PolyData.
 
 ## Random
 
