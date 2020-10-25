@@ -3,6 +3,7 @@
 A class called LUTUtilities is demonstrated along with a test harness that shows you how to use the class.
 
 This class allows you to:
+
 * Print the contents of the lookup table
 * Compare two lookup tables to see if they are the same.
 
