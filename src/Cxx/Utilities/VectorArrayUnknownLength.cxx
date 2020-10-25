@@ -1,26 +1,25 @@
-#include <vtkSmartPointer.h>
 #include <vtkFloatArray.h>
+#include <vtkNew.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkFloatArray> distances =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> distances;
   distances->SetName("Distances");
   distances->SetNumberOfComponents(3);
 
-  //set values
-  for(vtkIdType i = 0; i < 5; i++)
+  // set values
+  for (vtkIdType i = 0; i < 5; i++)
   {
     float tuple[3];
     tuple[0] = (float)i + 0.1;
     tuple[1] = (float)i + 0.2;
     tuple[2] = (float)i + 0.3;
-    //this will allocate memory as necessary
+    // this will allocate memory as necessary
     distances->InsertNextTuple(tuple);
   }
 
-  //get values
-  for(vtkIdType i = 0; i < distances->GetNumberOfTuples(); i++)
+  // get values
+  for (vtkIdType i = 0; i < distances->GetNumberOfTuples(); i++)
   {
     double d[3];
     distances->GetTuple(i, d);

@@ -21,7 +21,7 @@ def main():
     # imports raw data and stores it.
     dataImporter = vtk.vtkImageImport()
     # The previously created array is converted to a string of chars and imported.
-    data_string = data_matrix.tostring()
+    data_string = data_matrix.tobytes()
     dataImporter.CopyImportVoidPointer(data_string, len(data_string))
     # The type of the newly imported data is set to unsigned char (uint8)
     dataImporter.SetDataScalarTypeToUnsignedChar()
@@ -82,6 +82,7 @@ def main():
 
     # ... and set window size.
     renderWin.SetSize(400, 400)
+    renderWin.SetWindowName('VTKWithNumpy')
 
     # A simple function to be called when the user decides to quit the application.
     def exitCheck(obj, event):

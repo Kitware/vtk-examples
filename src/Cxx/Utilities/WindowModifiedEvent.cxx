@@ -1,15 +1,19 @@
-#include <vtkSphereSource.h>
-#include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkCallbackCommand.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-void WindowModifiedCallback( vtkObject*
-                      caller, long unsigned int vtkNotUsed(eventId), void* vtkNotUsed(clientData), void* vtkNotUsed(callData) )
+void WindowModifiedCallback(vtkObject* caller,
+                            long unsigned int vtkNotUsed(eventId),
+                            void* vtkNotUsed(clientData),
+                            void* vtkNotUsed(callData))
 {
   std::cout << "Window modified" << std::endl;
   std::cout << caller->GetClassName() << std::endl;
@@ -18,52 +22,49 @@ void WindowModifiedCallback( vtkObject*
   int* windowSize = window->GetSize();
   std::cout << "Size: " << windowSize[0] << " " << windowSize[1] << std::endl;
 
-  if(windowSize[0] > 400)
+  if (windowSize[0] > 400)
   {
     window->SetSize(400, windowSize[1]);
     window->Render();
     window->Modified();
     window->Render();
-
   }
 }
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
 
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("WindowModifiedEvent");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(colors->GetColor3d("MistyRose").GetData());
 
-  vtkSmartPointer<vtkCallbackCommand> m_pModifiedCallback =
-    vtkSmartPointer<vtkCallbackCommand>::New();
-  m_pModifiedCallback->SetCallback (WindowModifiedCallback);
-  //m_pModifiedCallback->SetClientData(this);
+  vtkNew<vtkCallbackCommand> m_pModifiedCallback;
+  m_pModifiedCallback->SetCallback(WindowModifiedCallback);
+  // m_pModifiedCallback->SetClientData(this);
 
-  renderWindow->AddObserver(vtkCommand::ModifiedEvent,m_pModifiedCallback);
+  renderWindow->AddObserver(vtkCommand::ModifiedEvent, m_pModifiedCallback);
 
   // Render and interact
   renderWindow->Render();

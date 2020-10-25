@@ -1,71 +1,85 @@
-#include <vtkSmartPointer.h>
-#include <vtkObjectFactory.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkCommand.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkObjectFactory.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+
+namespace {
+
+// We wil use these to destroy the timer after maxCounter times.
+unsigned int counter = 0;
+unsigned int maxCounter = 5;
+vtkRenderWindowInteractor* iren;
 
 class CommandSubclass2 : public vtkCommand
 {
-  public:
-    vtkTypeMacro(CommandSubclass2, vtkCommand);
-    
-    static CommandSubclass2 *New()
-    {
-      return new CommandSubclass2;
-    }
-        
-    void Execute(vtkObject *vtkNotUsed(caller), unsigned long vtkNotUsed(eventId), 
-                        void *vtkNotUsed(callData))
-    {
-      std::cout << "timer callback" << std::endl;
-    }
+public:
+  vtkTypeMacro(CommandSubclass2, vtkCommand);
 
+  static CommandSubclass2* New()
+  {
+    return new CommandSubclass2;
+  }
+
+  void Execute(vtkObject* vtkNotUsed(caller), unsigned long vtkNotUsed(eventId),
+               void* vtkNotUsed(callData))
+  {
+    std::cout << "timer callback" << std::endl;
+    if (counter > maxCounter)
+    {
+      iren->DestroyTimer();
+    }
+    counter++;
+  }
 };
 
-int main(int, char *[])
+} // namespace
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
-  
+
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
- 
+  actor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
+
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("CommandSubclass");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
-  
+
   // Initialize must be called prior to creating timer events.
   renderWindowInteractor->Initialize();
-  renderWindowInteractor->CreateRepeatingTimer(500);
-  
-  vtkSmartPointer<CommandSubclass2> timerCallback = 
-    vtkSmartPointer<CommandSubclass2>::New();
-  renderWindowInteractor->AddObserver ( vtkCommand::TimerEvent, timerCallback );
-  
+  iren = renderWindowInteractor;
+
+  vtkNew<CommandSubclass2> timerCallback;
+  renderWindowInteractor->AddObserver(vtkCommand::TimerEvent, timerCallback);
+  auto timerId = renderWindowInteractor->CreateRepeatingTimer(500);
+
   // Add the actor to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1); // Background color white
- 
+  renderer->SetBackground(colors->GetColor3d("MistyRose").GetData());
+
   // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

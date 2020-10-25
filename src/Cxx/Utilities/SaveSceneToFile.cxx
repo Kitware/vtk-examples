@@ -1,72 +1,60 @@
-#include <vtkSmartPointer.h>
-
+#include <vtkActor.h>
 #include <vtkBYUReader.h>
+#include <vtkCamera.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOBJReader.h>
 #include <vtkPLYReader.h>
-#include <vtkPolyDataReader.h>
-#include <vtkSTLReader.h>
-#include <vtkXMLPolyDataReader.h>
-#include <vtkSphereSource.h>
-
-#include <vtkActor.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkPolyDataReader.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkCamera.h>
-
-#include <vtkNamedColors.h>
+#include <vtkSTLReader.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 #include <vtkTimerLog.h>
-#include <vtksys/SystemTools.hxx>
-#include <vtksys/RegularExpression.hxx>
+#include <vtkXMLPolyDataReader.h>
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
+#include <vtksys/RegularExpression.hxx>
+#include <vtksys/SystemTools.hxx>
+
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
 }
 #include <vtkActor.h>
 #include <vtkCamera.h>
-namespace
-{
-void SaveSceneToFile(std::string fileName,
-                     vtkActor *actor,
-                     vtkCamera *camera);
+namespace {
+void SaveSceneToFile(std::string fileName, vtkActor* actor, vtkCamera* camera);
 }
 #include <vtkActor.h>
 #include <vtkCamera.h>
-namespace
-{
-void RestoreSceneFromFile(std::string fileName,
-                          vtkActor *actor,
-                          vtkCamera *camera);
+namespace {
+void RestoreSceneFromFile(std::string fileName, vtkActor* actor,
+                          vtkCamera* camera);
 }
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");;
+  auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
   // Visualize
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polyData);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetDiffuseColor(colors->GetColor3d("Crimson").GetData());
+  actor->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("Crimson").GetData());
   actor->GetProperty()->SetSpecular(.6);
   actor->GetProperty()->SetSpecularPower(30);
-;
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  ;
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
@@ -86,55 +74,43 @@ int main (int argc, char *argv[])
   renderWindow->Render();
   renderWindowInteractor->Start();
 
-return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }
 
-namespace
-{
+namespace {
 #include <fstream>
-void SaveSceneToFile(std::string fileName,
-                     vtkActor * /* actor */,
-                     vtkCamera *camera)
+void SaveSceneToFile(std::string fileName, vtkActor* /* actor */,
+                     vtkCamera* camera)
 {
-// Actor
-//  Position, orientation, origin, scale, usrmatrix, usertransform
-//Camera
-//  FocalPoint, Position, ViewUp, ViewAngle, ClippingRange
+  // Actor
+  //  Position, orientation, origin, scale, usrmatrix, usertransform
+  // Camera
+  //  FocalPoint, Position, ViewUp, ViewAngle, ClippingRange
   std::ofstream saveFile(fileName, std::ofstream::out);
   double vector[3];
   double scalar;
 
   camera->GetFocalPoint(vector);
-  saveFile << "Camera:FocalPoint "
-           << vector[0] << ", "
-           << vector[1] << ", "
+  saveFile << "Camera:FocalPoint " << vector[0] << ", " << vector[1] << ", "
            << vector[2] << std::endl;
   camera->GetPosition(vector);
-  saveFile << "Camera:Position "
-           << vector[0] << ", "
-           << vector[1] << ", "
+  saveFile << "Camera:Position " << vector[0] << ", " << vector[1] << ", "
            << vector[2] << std::endl;
   camera->GetViewUp(vector);
-  saveFile << "Camera:ViewUp "
-           << vector[0] << ", "
-           << vector[1] << ", "
+  saveFile << "Camera:ViewUp " << vector[0] << ", " << vector[1] << ", "
            << vector[2] << std::endl;
   scalar = camera->GetViewAngle();
-  saveFile << "Camera:ViewAngle "
-           << scalar << std::endl;
+  saveFile << "Camera:ViewAngle " << scalar << std::endl;
   camera->GetClippingRange(vector);
-  saveFile << "Camera:ClippingRange "
-           << vector[0] << ", "
-           << vector[1] << std::endl;
+  saveFile << "Camera:ClippingRange " << vector[0] << ", " << vector[1]
+           << std::endl;
   saveFile.close();
 }
-}
-namespace
-{
+} // namespace
+namespace {
 #include <fstream>
-void RestoreSceneFromFile(std::string fileName,
-                          vtkActor * /* actor */,
-                          vtkCamera *camera)
+void RestoreSceneFromFile(std::string fileName, vtkActor* /* actor */,
+                          vtkCamera* camera)
 {
   std::ifstream saveFile(fileName);
   std::string line;
@@ -145,20 +121,20 @@ void RestoreSceneFromFile(std::string fileName,
   vtksys::RegularExpression reCVA("^Camera:ViewAngle");
   vtksys::RegularExpression reCCR("^Camera:ClippingRange");
   vtksys::RegularExpression floatNumber(
-      "[^0-9\\.\\-]*([0-9e\\.\\-]*[^,])[^0-9\\.\\-]*([0-9e\\.\\-]*[^,])[^0-9\\.\\-]*([0-9e\\.\\-]*[^,])");
+      "[^0-9\\.\\-]*([0-9e\\.\\-]*[^,])[^0-9\\.\\-]*([0-9e\\.\\-]*[^,])[^0-9\\."
+      "\\-]*([0-9e\\.\\-]*[^,])");
   vtksys::RegularExpression floatScalar("[^0-9\\.\\-]*([0-9\\.\\-e]*[^,])");
 
-  while (std::getline(saveFile, line) && ! saveFile.eof())
+  while (std::getline(saveFile, line) && !saveFile.eof())
   {
     if (reCFP.find(line))
     {
       std::string rest(line, reCFP.end());
       if (floatNumber.find(rest))
       {
-        camera->SetFocalPoint(
-          atof(floatNumber.match(1).c_str()),
-          atof(floatNumber.match(2).c_str()),
-          atof(floatNumber.match(3).c_str()));
+        camera->SetFocalPoint(atof(floatNumber.match(1).c_str()),
+                              atof(floatNumber.match(2).c_str()),
+                              atof(floatNumber.match(3).c_str()));
       }
     }
     else if (reCP.find(line))
@@ -166,10 +142,9 @@ void RestoreSceneFromFile(std::string fileName,
       std::string rest(line, reCP.end());
       if (floatNumber.find(rest))
       {
-        camera->SetPosition(
-          atof(floatNumber.match(1).c_str()),
-          atof(floatNumber.match(2).c_str()),
-          atof(floatNumber.match(3).c_str()));
+        camera->SetPosition(atof(floatNumber.match(1).c_str()),
+                            atof(floatNumber.match(2).c_str()),
+                            atof(floatNumber.match(3).c_str()));
       }
     }
     else if (reCVU.find(line))
@@ -177,10 +152,9 @@ void RestoreSceneFromFile(std::string fileName,
       std::string rest(line, reCVU.end());
       if (floatNumber.find(rest))
       {
-        camera->SetViewUp(
-          atof(floatNumber.match(1).c_str()),
-          atof(floatNumber.match(2).c_str()),
-          atof(floatNumber.match(3).c_str()));
+        camera->SetViewUp(atof(floatNumber.match(1).c_str()),
+                          atof(floatNumber.match(2).c_str()),
+                          atof(floatNumber.match(3).c_str()));
       }
     }
     else if (reCVA.find(line))
@@ -188,8 +162,7 @@ void RestoreSceneFromFile(std::string fileName,
       std::string rest(line, reCVA.end());
       if (floatScalar.find(rest))
       {
-        camera->SetViewAngle(
-          atof(floatScalar.match(1).c_str()));
+        camera->SetViewAngle(atof(floatScalar.match(1).c_str()));
       }
     }
     else if (reCCR.find(line))
@@ -197,9 +170,8 @@ void RestoreSceneFromFile(std::string fileName,
       std::string rest(line, reCCR.end());
       if (floatNumber.find(rest))
       {
-        camera->SetClippingRange(
-          atof(floatNumber.match(1).c_str()),
-          atof(floatNumber.match(2).c_str()));
+        camera->SetClippingRange(atof(floatNumber.match(1).c_str()),
+                                 atof(floatNumber.match(2).c_str()));
       }
     }
     else
@@ -209,68 +181,61 @@ void RestoreSceneFromFile(std::string fileName,
   }
   saveFile.close();
 }
-}
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
+} // namespace
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
-  std::string extension = vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
+  std::string extension =
+      vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    vtkSmartPointer<vtkPLYReader> reader =
-      vtkSmartPointer<vtkPLYReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPLYReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    vtkSmartPointer<vtkOBJReader> reader =
-      vtkSmartPointer<vtkOBJReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkOBJReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    vtkSmartPointer<vtkSTLReader> reader =
-      vtkSmartPointer<vtkSTLReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkSTLReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    vtkSmartPointer<vtkPolyDataReader> reader =
-      vtkSmartPointer<vtkPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    vtkSmartPointer<vtkBYUReader> reader =
-      vtkSmartPointer<vtkBYUReader>::New();
-    reader->SetGeometryFileName (fileName);
+    vtkNew<vtkBYUReader> reader;
+    reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    vtkSmartPointer<vtkSphereSource> source =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->Update();
     polyData = source->GetOutput();
   }
   return polyData;
 }
-}
+} // namespace

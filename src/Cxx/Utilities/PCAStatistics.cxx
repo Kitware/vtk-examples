@@ -1,6 +1,6 @@
-#include <vtkSmartPointer.h>
 #include <vtkDoubleArray.h>
 #include <vtkMultiBlockDataSet.h>
+#include <vtkNew.h>
 #include <vtkPCAStatistics.h>
 #include <vtkStringArray.h>
 #include <vtkTable.h>
@@ -17,75 +17,68 @@ int main(int, char*[])
 
   // These would be all of your "x" values.
   const char m0Name[] = "M0";
-  vtkSmartPointer<vtkDoubleArray> dataset1Arr =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> dataset1Arr;
   dataset1Arr->SetNumberOfComponents(1);
-  dataset1Arr->SetName( m0Name );
+  dataset1Arr->SetName(m0Name);
   dataset1Arr->InsertNextValue(0);
   dataset1Arr->InsertNextValue(1);
   dataset1Arr->InsertNextValue(0);
 
   // These would be all of your "y" values.
   const char m1Name[] = "M1";
-  vtkSmartPointer<vtkDoubleArray> dataset2Arr =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> dataset2Arr;
   dataset2Arr->SetNumberOfComponents(1);
-  dataset2Arr->SetName( m1Name );
+  dataset2Arr->SetName(m1Name);
   dataset2Arr->InsertNextValue(0);
   dataset2Arr->InsertNextValue(0);
   dataset2Arr->InsertNextValue(1);
 
   // These would be all of your "z" values.
   const char m2Name[] = "M2";
-  vtkSmartPointer<vtkDoubleArray> dataset3Arr =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> dataset3Arr;
   dataset3Arr->SetNumberOfComponents(1);
-  dataset3Arr->SetName( m2Name );
+  dataset3Arr->SetName(m2Name);
   dataset3Arr->InsertNextValue(0);
   dataset3Arr->InsertNextValue(0);
   dataset3Arr->InsertNextValue(0);
 
-  vtkSmartPointer<vtkTable> datasetTable =
-    vtkSmartPointer<vtkTable>::New();
+  vtkNew<vtkTable> datasetTable;
   datasetTable->AddColumn(dataset1Arr);
   datasetTable->AddColumn(dataset2Arr);
   datasetTable->AddColumn(dataset3Arr);
 
-  vtkSmartPointer<vtkPCAStatistics> pcaStatistics =
-    vtkSmartPointer<vtkPCAStatistics>::New();
-  pcaStatistics->SetInputData( vtkStatisticsAlgorithm::INPUT_DATA, datasetTable );
-  pcaStatistics->SetColumnStatus("M0", 1 );
-  pcaStatistics->SetColumnStatus("M1", 1 );
-  pcaStatistics->SetColumnStatus("M2", 1 );
+  vtkNew<vtkPCAStatistics> pcaStatistics;
+  pcaStatistics->SetInputData(vtkStatisticsAlgorithm::INPUT_DATA, datasetTable);
+  pcaStatistics->SetColumnStatus("M0", 1);
+  pcaStatistics->SetColumnStatus("M1", 1);
+  pcaStatistics->SetColumnStatus("M2", 1);
   pcaStatistics->RequestSelectedColumns();
   pcaStatistics->SetDeriveOption(true);
   pcaStatistics->Update();
 
   ///////// Eigenvalues ////////////
-  vtkSmartPointer<vtkDoubleArray> eigenvalues =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> eigenvalues;
   pcaStatistics->GetEigenvalues(eigenvalues);
-//  double eigenvaluesGroundTruth[3] = {.5, .166667, 0};
-  for(vtkIdType i = 0; i < eigenvalues->GetNumberOfTuples(); i++)
+  //  double eigenvaluesGroundTruth[3] = {.5, .166667, 0};
+  for (vtkIdType i = 0; i < eigenvalues->GetNumberOfTuples(); i++)
   {
-    std::cout << "Eigenvalue " << i << " = " << eigenvalues->GetValue(i) << std::endl;
+    std::cout << "Eigenvalue " << i << " = " << eigenvalues->GetValue(i)
+              << std::endl;
   }
 
   ///////// Eigenvectors ////////////
-  vtkSmartPointer<vtkDoubleArray> eigenvectors =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> eigenvectors;
 
   pcaStatistics->GetEigenvectors(eigenvectors);
-  for(vtkIdType i = 0; i < eigenvectors->GetNumberOfTuples(); i++)
+  for (vtkIdType i = 0; i < eigenvectors->GetNumberOfTuples(); i++)
   {
     std::cout << "Eigenvector " << i << " : ";
     double* evec = new double[eigenvectors->GetNumberOfComponents()];
     eigenvectors->GetTuple(i, evec);
-    for(vtkIdType j = 0; j < eigenvectors->GetNumberOfComponents(); j++)
+    for (vtkIdType j = 0; j < eigenvectors->GetNumberOfComponents(); j++)
     {
       std::cout << evec[j] << " ";
-      vtkSmartPointer<vtkDoubleArray> eigenvectorSingle =
-        vtkSmartPointer<vtkDoubleArray>::New();
+      vtkNew<vtkDoubleArray> eigenvectorSingle;
       pcaStatistics->GetEigenvector(i, eigenvectorSingle);
     }
     delete[] evec;

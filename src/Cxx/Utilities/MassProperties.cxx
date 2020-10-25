@@ -1,46 +1,42 @@
-#include <vtkSmartPointer.h>
-#include <vtkMassProperties.h>
-#include <vtkTriangleFilter.h>
 #include <vtkFillHolesFilter.h>
+#include <vtkMassProperties.h>
+#include <vtkNew.h>
 #include <vtkPolyDataNormals.h>
+#include <vtkSmartPointer.h>
+#include <vtkTriangleFilter.h>
 
 #include <vtkBYUReader.h>
 #include <vtkOBJReader.h>
 #include <vtkPLYReader.h>
 #include <vtkPolyDataReader.h>
 #include <vtkSTLReader.h>
-#include <vtkXMLPolyDataReader.h>
 #include <vtkSphereSource.h>
+#include <vtkXMLPolyDataReader.h>
 #include <vtksys/SystemTools.hxx>
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
 }
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");;
+  vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");
+  ;
 
-
-  vtkSmartPointer<vtkFillHolesFilter> fillHolesFilter =
-    vtkSmartPointer<vtkFillHolesFilter>::New();
+  vtkNew<vtkFillHolesFilter> fillHolesFilter;
   fillHolesFilter->SetInputData(polyData);
   fillHolesFilter->SetHoleSize(1000.0);
 
-  vtkSmartPointer<vtkTriangleFilter> triangleFilter =
-    vtkSmartPointer<vtkTriangleFilter>::New();
+  vtkNew<vtkTriangleFilter> triangleFilter;
   triangleFilter->SetInputConnection(fillHolesFilter->GetOutputPort());
 
   // Make the triangle windong order consistent
-  vtkSmartPointer<vtkPolyDataNormals> normals =
-    vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> normals;
   normals->SetInputConnection(triangleFilter->GetOutputPort());
   normals->ConsistencyOn();
   normals->SplittingOff();
 
-  vtkSmartPointer<vtkMassProperties> massProperties =
-    vtkSmartPointer<vtkMassProperties>::New();
+  vtkNew<vtkMassProperties> massProperties;
   massProperties->SetInputConnection(normals->GetOutputPort());
   massProperties->Update();
   std::cout << "Volume: " << massProperties->GetVolume() << std::endl
@@ -48,71 +44,67 @@ int main (int argc, char *argv[])
             << "    VolumeY: " << massProperties->GetVolumeY() << std::endl
             << "    VolumeZ: " << massProperties->GetVolumeZ() << std::endl
             << "Area:   " << massProperties->GetSurfaceArea() << std::endl
-            << "    MinCellArea: " << massProperties->GetMinCellArea() << std::endl
-            << "    MinCellArea: " << massProperties->GetMaxCellArea() << std::endl
-            << "NormalizedShapeIndex: " << massProperties->GetNormalizedShapeIndex() << std::endl;
+            << "    MinCellArea: " << massProperties->GetMinCellArea()
+            << std::endl
+            << "    MinCellArea: " << massProperties->GetMaxCellArea()
+            << std::endl
+            << "NormalizedShapeIndex: "
+            << massProperties->GetNormalizedShapeIndex() << std::endl;
 
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
-  std::string extension = vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
+  std::string extension =
+      vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    vtkSmartPointer<vtkPLYReader> reader =
-      vtkSmartPointer<vtkPLYReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPLYReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    vtkSmartPointer<vtkOBJReader> reader =
-      vtkSmartPointer<vtkOBJReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkOBJReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    vtkSmartPointer<vtkSTLReader> reader =
-      vtkSmartPointer<vtkSTLReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkSTLReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    vtkSmartPointer<vtkPolyDataReader> reader =
-      vtkSmartPointer<vtkPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    vtkSmartPointer<vtkBYUReader> reader =
-      vtkSmartPointer<vtkBYUReader>::New();
-    reader->SetGeometryFileName (fileName);
+    vtkNew<vtkBYUReader> reader;
+    reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    vtkSmartPointer<vtkSphereSource> source =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->SetPhiResolution(51);
     source->SetThetaResolution(51);
     source->Update();
@@ -120,4 +112,4 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
   }
   return polyData;
 }
-}
+} // namespace

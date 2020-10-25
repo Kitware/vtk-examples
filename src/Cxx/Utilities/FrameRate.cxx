@@ -1,56 +1,56 @@
-#include <vtkSmartPointer.h>
-#include <vtkCallbackCommand.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkMath.h>
-#include <vtkRenderWindow.h>
-#include <vtkTimerLog.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkCallbackCommand.h>
+#include <vtkMath.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+#include <vtkTimerLog.h>
 
-static void CallbackFunction ( vtkObject* caller, long unsigned int eventId,
-          void* clientData, void* callData );
+namespace {
+void CallbackFunction(vtkObject* caller, long unsigned int eventId,
+                      void* clientData, void* callData);
+}
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  for(unsigned int i = 0; i < 10; i++)
+  vtkNew<vtkRenderer> renderer;
+
+  for (unsigned int i = 0; i < 10; i++)
   {
     // Create a sphere
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetCenter(i, 0, 0);
 
     // Create a mapper and actor
-    vtkSmartPointer<vtkPolyDataMapper> mapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputConnection(sphereSource->GetOutputPort());
 
-    vtkSmartPointer<vtkActor> actor =
-      vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> actor;
     actor->SetMapper(mapper);
+    actor->GetProperty()->SetColor(colors->GetColor3d("carrot").GetData());
 
     renderer->AddActor(actor);
   }
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("FrameRate");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkCallbackCommand> callback =
-    vtkSmartPointer<vtkCallbackCommand>::New();
+  vtkNew<vtkCallbackCommand> callback;
 
   callback->SetCallback(CallbackFunction);
   renderer->AddObserver(vtkCommand::EndEvent, callback);
-
-  renderer->SetBackground(.3, .6, .3); // Background color green
+  renderer->SetBackground(colors->GetColor3d("sap_green").GetData());
 
   // Render and interact
   renderWindow->Render();
@@ -58,13 +58,17 @@ int main(int, char *[])
   return EXIT_SUCCESS;
 }
 
-void CallbackFunction(vtkObject* caller, long unsigned int vtkNotUsed(eventId), void* vtkNotUsed(clientData), void* vtkNotUsed(callData) )
+namespace {
+
+void CallbackFunction(vtkObject* caller, long unsigned int vtkNotUsed(eventId),
+                      void* vtkNotUsed(clientData), void* vtkNotUsed(callData))
 {
   vtkRenderer* renderer = static_cast<vtkRenderer*>(caller);
 
   double timeInSeconds = renderer->GetLastRenderTimeInSeconds();
-  double fps = 1.0/timeInSeconds;
+  double fps = 1.0 / timeInSeconds;
   std::cout << "FPS: " << fps << std::endl;
 
   std::cout << "Callback" << std::endl;
 }
+} // namespace

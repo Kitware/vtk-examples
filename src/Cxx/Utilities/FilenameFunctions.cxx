@@ -1,24 +1,24 @@
-#include <vtkSmartPointer.h>
-#include <vtkDirectory.h>
-#include <vtksys/SystemTools.hxx>
 #include <string>
+#include <vtkDirectory.h>
+#include <vtkNew.h>
+#include <vtksys/SystemTools.hxx>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   std::string directoryName;
-  if(argc < 2)
+  if (argc < 2)
   {
-    directoryName = std::string(".");    
+    directoryName = std::string(".");
   }
   else
   {
-    directoryName = std::string(argv[1]);    
+    directoryName = std::string(argv[1]);
   }
 
-  vtkSmartPointer<vtkDirectory> directory = vtkSmartPointer<vtkDirectory>::New();
+  vtkNew<vtkDirectory> directory;
   int opened = directory->Open(directoryName.c_str());
 
-  if(!opened)
+  if (!opened)
   {
     std::cout << "Invalid directory!" << std::endl;
     return EXIT_FAILURE;
@@ -36,7 +36,8 @@ int main(int argc, char *argv[])
     std::string ext = vtksys::SystemTools::GetFilenameLastExtension(fileString);
     std::cout << fileString << " extension: " << ext << std::endl;
 
-    std::string name = vtksys::SystemTools::GetFilenameWithoutLastExtension(fileString);    
+    std::string name =
+        vtksys::SystemTools::GetFilenameWithoutLastExtension(fileString);
     std::cout << "name: " << name << std::endl;
   }
 

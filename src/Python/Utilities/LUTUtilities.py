@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+
 import sys
+
 import vtk
 
 
@@ -25,10 +27,10 @@ class LUTUtilities(object):
         dR = lut.GetTableRange()
         if lut.GetIndexedLookup():
             av = lut.GetNumberOfAnnotatedValues()
-            str = "Categorical Lookup Table\n" +\
-                "Number of annotated values: {:d}".format(av) +\
-                " Number of table values: {:d}".format(tv) +\
-                "\nTable Range: {:8.6f} to {:8.6f}\n".format(dR[0], dR[1])
+            str = "Categorical Lookup Table\n" + \
+                  "Number of annotated values: {:d}".format(av) + \
+                  " Number of table values: {:d}".format(tv) + \
+                  "\nTable Range: {:8.6f} to {:8.6f}\n".format(dR[0], dR[1])
             if av > 0:
                 for i in range(av):
                     rgba = [0.0, 0.0, 0.0, 0.0]
@@ -42,9 +44,9 @@ class LUTUtilities(object):
                     str += "{:5d}: ".format(i)
                     str += self.AssembleRGBAString(rgba)
         else:
-            str = "Ordinal Lookup Table\n" +\
-                " Number of table values: {:d}".format(tv) +\
-                "\nTable Range: {:8.6f} to {:8.6f}\n".format(dR[0], dR[1])
+            str = "Ordinal Lookup Table\n" + \
+                  " Number of table values: {:d}".format(tv) + \
+                  "\nTable Range: {:8.6f} to {:8.6f}\n".format(dR[0], dR[1])
             indices = [(dR[1] - dR[0]) *
                        float(x) / tv + dR[0] for x in range(0, tv)]
             for i, v in enumerate(indices):
@@ -83,8 +85,8 @@ class LUTUtilities(object):
             res[0] = False
             res[1] = "One table is ordinal and the other is categorical."
             return res
-        if lut1.GetIndexedLookup() and\
-                lut1.GetNumberOfAnnotatedValues() !=\
+        if lut1.GetIndexedLookup() and \
+                lut1.GetNumberOfAnnotatedValues() != \
                 lut2.GetNumberOfAnnotatedValues():
             res[0] = False
             res[1] = "The number of annotated values do not match."

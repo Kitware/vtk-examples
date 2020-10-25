@@ -3,7 +3,6 @@
 #include <vtkGenericCell.h>
 #include <vtkGenericDataSet.h>
 #include <vtkPointSet.h>
-#include <vtkSmartPointer.h>
 #include <vtkXMLGenericDataObjectReader.h>
 
 #include <map>
@@ -14,8 +13,7 @@ int main(int argc, char* argv[])
 
   for (int arg = 1; arg < argc; ++arg)
   {
-    auto reader =
-      vtkSmartPointer<vtkXMLGenericDataObjectReader>::New();
+    auto reader = vtkSmartPointer<vtkXMLGenericDataObjectReader>::New();
     reader->SetFileName(argv[arg]);
     reader->Update();
 
