@@ -44,10 +44,11 @@ def main():
     volActor = vtk.vtkActor()
     volActor.SetMapper(volMapper)
     volActor.GetProperty().EdgeVisibilityOn()
-    volActor.GetProperty().SetColor(colors.GetColor3d("Salmon"))
+    volActor.GetProperty().SetColor(colors.GetColor3d('Salmon'))
     renderer.AddActor(volActor)
-    renderer.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
     renWin.SetSize(512, 512)
+    renWin.SetWindowName('Vol')
 
     # Interact with the data.
     renWin.Render()
@@ -55,5 +56,5 @@ def main():
     iren.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
