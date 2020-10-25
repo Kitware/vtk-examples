@@ -35,7 +35,7 @@ def main():
 
     colors = vtk.vtkNamedColors()
     renderer = vtk.vtkRenderer()
-    renderer.SetBackground(colors.GetColor3d("Wheat"))
+    renderer.SetBackground(colors.GetColor3d('Wheat'))
     renderer.UseHiddenLineRemovalOn()
 
     renderWindow = vtk.vtkRenderWindow()
@@ -64,7 +64,7 @@ def main():
 
     insideActor = vtk.vtkActor()
     insideActor.SetMapper(insideMapper)
-    insideActor.GetProperty().SetDiffuseColor(colors.GetColor3d("banana"))
+    insideActor.GetProperty().SetDiffuseColor(colors.GetColor3d('banana'))
     insideActor.GetProperty().SetAmbient(.3)
     insideActor.GetProperty().EdgeVisibilityOn()
 
@@ -74,7 +74,7 @@ def main():
 
     clippedActor = vtk.vtkActor()
     clippedActor.SetMapper(clippedMapper)
-    clippedActor.GetProperty().SetDiffuseColor(colors.GetColor3d("tomato"))
+    clippedActor.GetProperty().SetDiffuseColor(colors.GetColor3d('tomato'))
     insideActor.GetProperty().SetAmbient(.3)
     clippedActor.GetProperty().EdgeVisibilityOn()
 
@@ -107,8 +107,8 @@ def main():
 
     # Generate a report
     numberOfCells = clipper.GetOutput().GetNumberOfCells()
-    print("------------------------")
-    print("The inside dataset contains a \n", clipper.GetOutput().GetClassName(), " that has ", numberOfCells, " cells")
+    print('------------------------')
+    print('The inside dataset contains a \n', clipper.GetOutput().GetClassName(), ' that has ', numberOfCells, ' cells')
     cellMap = dict()
     for i in range(0, numberOfCells):
         cellMap.setdefault(clipper.GetOutput().GetCellType(i), 0)
@@ -116,19 +116,19 @@ def main():
     # Sort by key and put into an OrderedDict.
     # An OrderedDict remembers the order in which the keys have been inserted.
     for k, v in collections.OrderedDict(sorted(cellMap.items())).items():
-        print("\tCell type ", vtk.vtkCellTypes.GetClassNameFromTypeId(k), " occurs ", v, " times.")
+        print('\tCell type ', vtk.vtkCellTypes.GetClassNameFromTypeId(k), ' occurs ', v, ' times.')
 
     numberOfCells = clipper.GetClippedOutput().GetNumberOfCells()
-    print("------------------------")
-    print("The clipped dataset contains a \n", clipper.GetClippedOutput().GetClassName(), " that has ", numberOfCells,
-          " cells")
+    print('------------------------')
+    print('The clipped dataset contains a \n', clipper.GetClippedOutput().GetClassName(), ' that has ', numberOfCells,
+          ' cells')
     outsideCellMap = dict()
     for i in range(0, numberOfCells):
         outsideCellMap.setdefault(clipper.GetClippedOutput().GetCellType(i), 0)
         outsideCellMap[clipper.GetClippedOutput().GetCellType(i)] += 1
     for k, v in collections.OrderedDict(sorted(outsideCellMap.items())).items():
-        print("\tCell type ", vtk.vtkCellTypes.GetClassNameFromTypeId(k), " occurs ", v, " times.")
+        print('\tCell type ', vtk.vtkCellTypes.GetClassNameFromTypeId(k), ' occurs ', v, ' times.')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
