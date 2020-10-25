@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-"""
+'''
 This example shows how to create an unstructured grid.
-"""
+'''
 
 import vtk
 
@@ -55,18 +55,19 @@ def main():
 
     ugridActor = vtk.vtkActor()
     ugridActor.SetMapper(ugridMapper)
-    ugridActor.GetProperty().SetColor(colors.GetColor3d("Peacock"))
+    ugridActor.GetProperty().SetColor(colors.GetColor3d('Peacock'))
     ugridActor.GetProperty().EdgeVisibilityOn()
 
     renderer.AddActor(ugridActor)
-    renderer.SetBackground(colors.GetColor3d("Beige"))
+    renderer.SetBackground(colors.GetColor3d('Beige'))
 
     renderer.ResetCamera()
     renderer.GetActiveCamera().Elevation(60.0)
     renderer.GetActiveCamera().Azimuth(30.0)
-    renderer.GetActiveCamera().Dolly(1.2)
+    renderer.GetActiveCamera().Dolly(1.0)
 
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('UGrid')
 
     # Interact with the data.
     renWin.Render()
@@ -74,5 +75,5 @@ def main():
     iren.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
