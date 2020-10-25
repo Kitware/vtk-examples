@@ -4,6 +4,10 @@ Snippets are chunks of code that can be cut (*snipped*) and pasted into examples
 
 ### Available snippets
 
+#### [CameraPosition](/Python/Snippets/CameraPosition.md)
+
+Output the camera position while moving the image.
+
 #### [PointToGlyph](/Python/Snippets/PointToGlyph.md)
 
 Represent points as glyphs.

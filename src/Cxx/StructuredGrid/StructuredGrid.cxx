@@ -19,7 +19,7 @@
 
 #define USE_POINT_DATA
 // Uncomment the next line if you want to use cell data instead
-// #undef USE_POINT_DATA
+//#undef USE_POINT_DATA
 
 int main(int, char*[])
 {

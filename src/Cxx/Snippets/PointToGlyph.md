@@ -1,10 +1,8 @@
-# Description
+### Description
 
 Represent points as glyphs. The point is represented as a sphere.
 
 To use the snippet, click the *Copy to clipboard* at the upper left of the code blocks.
-
-## C++
 
 ### Declaration Section
 
