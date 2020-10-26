@@ -22,7 +22,7 @@ and maximum number of iterative peels).
 
 However if depth peeling is not available on a certain machine, depth
 sorting can be accomplished on the CPU using
-[DepthSortPolyData](/Cxx/Visualization/DepthSortPolyData). This
+[DepthSortPolyData](../DepthSortPolyData). This
 is usually much slower than the GPU-implementation and furthermore
 brings additional restrictions with it (e.g. poly data must be merged
 within one set).
@@ -38,7 +38,10 @@ and compares the different render modes: no special translucency
 treatment, CPU depth sorting and GPU depth peeling.
 
 ###Program Usage
+
+``` bash
 ./CorrectlyRenderTranslucentGeometry Theta Phi MaximumPeels OcclusionRatio ForceDepthSortingFlag DoNotUseAnyDepthRelatedAlgorithmFlag
+```
 
 Theta ... spheres' THETA resolution
 
@@ -52,14 +55,14 @@ ForceDepthSortingFlag ... force depth sorting even if depth peeling is supported
 
 DoNotUseAnyDepthRelatedAlgorithmFlag ... neither use depth peeling nor depth sorting - just render as usual
 
-
 ***Example calls***:
 
+``` bash
 ./CorrectlyRenderTranslucentGeometry 100 100 50 0.1 0 0 ... will render the spheres using depth peeling if available (depth sorting otherwise)
 
 ./CorrectlyRenderTranslucentGeometry 100 100 50 0.1 1 0 ... will render the spheres using depth sorting even if depth peeling is available
 
 ./CorrectlyRenderTranslucentGeometry 100 100 50 0.1 0 1 ... will render the spheres using neither depth peeling nor depth sorting
-
+```
 
 ***Resultant frame rates show that depth peeling is usually much faster than the CPU-implementation, however, it will slow down the rendering process due to internal multi-pass rendering.***

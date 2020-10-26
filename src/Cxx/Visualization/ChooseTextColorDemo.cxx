@@ -1,15 +1,15 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkCoordinate.h>
 #include <vtkMath.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkTextActor.h>
 #include <vtkTextProperty.h>
 
@@ -32,8 +32,7 @@ void ChooseContrastingColor(double* rgbIn, double* rgbOut,
                             const std::string& lightColor = "white",
                             const std::string& darkColor = "black");
 
-void ViewportBorder(vtkSmartPointer<vtkRenderer>& renderer, double* color,
-                    bool last = false);
+void ViewportBorder(vtkRenderer* renderer, double* color, bool last = false);
 } // namespace
 
 int main(int argc, char* argv[])
@@ -56,20 +55,17 @@ int main(int argc, char* argv[])
     darkColor = argv[3];
   }
   // Visualize
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Setup render window
-  auto renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   std::vector<vtkSmartPointer<vtkRenderer>> renderers;
   unsigned int xGridDimensions = 10;
   unsigned int yGridDimensions = 10;
   for (auto i = 0; i < static_cast<int>(xGridDimensions * yGridDimensions); ++i)
   {
     // Create textActors
-    auto textActor =
-      vtkSmartPointer<vtkTextActor>::New();
+    vtkNew<vtkTextActor> textActor;
     textActor->GetTextProperty()->SetJustificationToCentered();
     textActor->GetTextProperty()->SetVerticalJustificationToCentered();
     textActor->SetInput("Text");
@@ -78,8 +74,7 @@ int main(int argc, char* argv[])
     textActor->GetTextProperty()->SetFontSize(20);
 
     // Setup renderer
-    auto renderer =
-      vtkSmartPointer<vtkRenderer>::New();
+    vtkNew<vtkRenderer> renderer;
     renderer->AddActor(textActor);
     ;
     double hsv[3];
@@ -101,6 +96,8 @@ int main(int argc, char* argv[])
   int rendererSize = 100;
   renderWindow->SetSize(rendererSize * xGridDimensions,
                         rendererSize * yGridDimensions);
+  renderWindow->SetWindowName("ChooseTextColorDemo");
+
   for (auto row = 0; row < static_cast<int>(yGridDimensions); row++)
   {
     for (auto col = 0; col < static_cast<int>(xGridDimensions); col++)
@@ -121,8 +118,7 @@ int main(int argc, char* argv[])
                      col == static_cast<int>(xGridDimensions));
     }
   }
-  auto renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();
@@ -133,12 +129,10 @@ int main(int argc, char* argv[])
 
 namespace {
 // draw the borders of a renderer's viewport
-void ViewportBorder(vtkSmartPointer<vtkRenderer>& renderer, double* color,
-                    bool last)
+void ViewportBorder(vtkRenderer* renderer, double* color, bool last)
 {
   // points start at upper right and proceed anti-clockwise
-  auto points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->SetNumberOfPoints(4);
   points->InsertPoint(0, 1, 1, 0);
   points->InsertPoint(1, 0, 1, 0);
@@ -146,12 +140,10 @@ void ViewportBorder(vtkSmartPointer<vtkRenderer>& renderer, double* color,
   points->InsertPoint(3, 1, 0, 0);
 
   // create cells, and lines
-  auto cells =
-    vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkCellArray> cells;
   cells->Initialize();
 
-  auto lines =
-    vtkSmartPointer<vtkPolyLine>::New();
+  vtkNew<vtkPolyLine> lines;
 
   // only draw last line if this is the last viewport
   // this prevents double vertical lines at right border
@@ -176,24 +168,21 @@ void ViewportBorder(vtkSmartPointer<vtkRenderer>& renderer, double* color,
   cells->InsertNextCell(lines);
 
   // now make tge polydata and display it
-  auto poly =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> poly;
   poly->Initialize();
   poly->SetPoints(points);
   poly->SetLines(cells);
 
   // use normalized viewport coordinates since
   // they are independent of window size
-  auto coordinate =
-    vtkSmartPointer<vtkCoordinate>::New();
+  vtkNew<vtkCoordinate> coordinate;
   coordinate->SetCoordinateSystemToNormalizedViewport();
 
-  auto mapper =
-    vtkSmartPointer<vtkPolyDataMapper2D>::New();
+  vtkNew<vtkPolyDataMapper2D> mapper;
   mapper->SetInputData(poly);
   mapper->SetTransformCoordinate(coordinate);
 
-  auto actor = vtkSmartPointer<vtkActor2D>::New();
+  vtkNew<vtkActor2D> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetColor(color);
   // line width should be at least 2 to be visible at extremes
@@ -207,8 +196,7 @@ void ChooseContrastingColor(double* rgbIn, double* rgbOut, double threshold,
                             const std::string& lightColor,
                             const std::string& darkColor)
 {
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   double hsv[3];
   // If the value is <= .5, use a light color, otherwise use a dark color

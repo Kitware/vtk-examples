@@ -8,11 +8,11 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the colors.
-    colors.SetColor("AzimuthArrowColor", [255, 77, 77, 255])
-    colors.SetColor("ElevationArrowColor", [77, 255, 77, 255])
-    colors.SetColor("RollArrowColor", [255, 255, 77, 255])
-    colors.SetColor("SpikeColor", [255, 77, 255, 255])
-    colors.SetColor("BkgColor", [26, 51, 102, 255])
+    colors.SetColor('AzimuthArrowColor', [255, 77, 77, 255])
+    colors.SetColor('ElevationArrowColor', [77, 255, 77, 255])
+    colors.SetColor('RollArrowColor', [255, 255, 77, 255])
+    colors.SetColor('SpikeColor', [255, 77, 255, 255])
+    colors.SetColor('BkgColor', [26, 51, 102, 255])
 
     # Create a rendering window, renderer and interactor.
     ren = vtk.vtkRenderer()
@@ -111,8 +111,8 @@ def main():
     a1Actor.SetMapper(arrowMapper)
     a1Actor.RotateZ(180)
     a1Actor.SetPosition(1, 0, -1)
-    a1Actor.GetProperty().SetColor(colors.GetColor3d("AzimuthArrowColor"))
-    a1Actor.GetProperty().SetSpecularColor(colors.GetColor3d("White"))
+    a1Actor.GetProperty().SetColor(colors.GetColor3d('AzimuthArrowColor'))
+    a1Actor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
     a1Actor.GetProperty().SetSpecular(0.3)
     a1Actor.GetProperty().SetSpecularPower(20)
     a1Actor.GetProperty().SetAmbient(0.2)
@@ -123,8 +123,8 @@ def main():
     a2Actor.RotateZ(180)
     a2Actor.RotateX(180)
     a2Actor.SetPosition(1, 0, 1)
-    a2Actor.GetProperty().SetColor(colors.GetColor3d("AzimuthArrowColor"))
-    a2Actor.GetProperty().SetSpecularColor(colors.GetColor3d("White"))
+    a2Actor.GetProperty().SetColor(colors.GetColor3d('AzimuthArrowColor'))
+    a2Actor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
     a2Actor.GetProperty().SetSpecular(0.3)
     a2Actor.GetProperty().SetSpecularPower(20)
     a2Actor.GetProperty().SetAmbient(0.2)
@@ -136,8 +136,8 @@ def main():
     a3Actor.RotateZ(180)
     a3Actor.RotateX(90)
     a3Actor.SetPosition(1, -1, 0)
-    a3Actor.GetProperty().SetColor(colors.GetColor3d("ElevationArrowColor"))
-    a3Actor.GetProperty().SetSpecularColor(colors.GetColor3d("White"))
+    a3Actor.GetProperty().SetColor(colors.GetColor3d('ElevationArrowColor'))
+    a3Actor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
     a3Actor.GetProperty().SetSpecular(0.3)
     a3Actor.GetProperty().SetSpecularPower(20)
     a3Actor.GetProperty().SetAmbient(0.2)
@@ -148,8 +148,8 @@ def main():
     a4Actor.RotateZ(180)
     a4Actor.RotateX(-90)
     a4Actor.SetPosition(1, 1, 0)
-    a4Actor.GetProperty().SetColor(colors.GetColor3d("ElevationArrowColor"))
-    a4Actor.GetProperty().SetSpecularColor(colors.GetColor3d("White"))
+    a4Actor.GetProperty().SetColor(colors.GetColor3d('ElevationArrowColor'))
+    a4Actor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
     a4Actor.GetProperty().SetSpecular(0.3)
     a4Actor.GetProperty().SetSpecularPower(20)
     a4Actor.GetProperty().SetAmbient(0.2)
@@ -177,7 +177,7 @@ def main():
     a5Actor.SetScale(.3, .3, .6)
     a5Actor.RotateY(90)
     a5Actor.SetPosition(-2, 0, 0)
-    a5Actor.GetProperty().SetColor(colors.GetColor3d("SpikeColor"))
+    a5Actor.GetProperty().SetColor(colors.GetColor3d('SpikeColor'))
     a5Actor.GetProperty().SetAmbient(0.2)
     a5Actor.GetProperty().SetDiffuse(0.8)
 
@@ -189,7 +189,7 @@ def main():
     fpActor = vtk.vtkLODActor()
     fpActor.SetMapper(fpMapper)
     fpActor.SetPosition(-9, 0, 0)
-    fpActor.GetProperty().SetSpecularColor(colors.GetColor3d("White"))
+    fpActor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
     fpActor.GetProperty().SetSpecular(0.3)
     fpActor.GetProperty().SetAmbient(0.2)
     fpActor.GetProperty().SetDiffuse(0.8)
@@ -220,8 +220,8 @@ def main():
     a6Actor.RotateZ(90)
     a6Actor.SetPosition(-4, 0, 0)
     a6Actor.SetScale(1.5, 1.5, 1.5)
-    a6Actor.GetProperty().SetColor(colors.GetColor3d("RollArrowColor"))
-    a6Actor.GetProperty().SetSpecularColor(colors.GetColor3d("White"))
+    a6Actor.GetProperty().SetColor(colors.GetColor3d('RollArrowColor'))
+    a6Actor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
     a6Actor.GetProperty().SetSpecular(0.3)
     a6Actor.GetProperty().SetSpecularPower(20)
     a6Actor.GetProperty().SetAmbient(0.2)
@@ -236,9 +236,10 @@ def main():
     ren.AddActor(a5Actor)
     ren.AddActor(a6Actor)
     ren.AddActor(fpActor)
-    ren.SetBackground(colors.GetColor3d("BkgColor"))
-    ren.SetBackground(colors.GetColor3d("SlateGray"))
+    ren.SetBackground(colors.GetColor3d('BkgColor'))
+    ren.SetBackground(colors.GetColor3d('SlateGray'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('CameraModel1')
 
     # Render the image.
 
@@ -251,7 +252,7 @@ def main():
 
     # Create a TextActor for azimuth  (a1 and a2 actor's color).
     text = vtk.vtkTextActor()
-    text.SetInput("Azimuth")
+    text.SetInput('Azimuth')
     tprop = text.GetTextProperty()
     tprop.SetFontFamilyToArial()
     tprop.ShadowOff()
@@ -263,7 +264,7 @@ def main():
 
     # Create a TextActor for elevation  (a3 and a4 actor's color).
     text2 = vtk.vtkTextActor()
-    text2.SetInput("Elevation")
+    text2.SetInput('Elevation')
     tprop = text2.GetTextProperty()
     tprop.SetFontFamilyToArial()
     tprop.ShadowOff()
@@ -275,7 +276,7 @@ def main():
 
     # Create a TextActor for roll (a6 actor's color).
     text3 = vtk.vtkTextActor()
-    text3.SetInput("Roll")
+    text3.SetInput('Roll')
     tprop = text3.GetTextProperty()
     tprop.SetFontFamilyToArial()
     tprop.ShadowOff()
@@ -289,5 +290,5 @@ def main():
     iren.Start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -472,6 +472,8 @@ def main():
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
+    renderWindow.SetWindowName('CreateColorSeriesDemo')
+
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 

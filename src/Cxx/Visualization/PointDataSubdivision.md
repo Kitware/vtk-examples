@@ -12,10 +12,11 @@ A representative set of sources to render are provided in the class called **Sou
 
 #### Adding more sources.
 If you add more sources, you may need to provide one or all of these filters:
- - A vtkTriangleFilter
- - A vtkPolyDataNormals filter
- - A vtkElevationFilter.
- - A vtkCleanPolyData filter.
- - For parametric sources, you may need to apply one of both of **JoinUOff()** or **JoinVOff()**.
+
+- A vtkTriangleFilter
+- A vtkPolyDataNormals filter
+- A vtkElevationFilter.
+- A vtkCleanPolyData filter.
+- For parametric sources, you may need to apply one of both of **JoinUOff()** or **JoinVOff()**.
 
 The representative sources provided in the class **Sources** should provide good templates.

@@ -16,4 +16,4 @@ triangular elements are not. This is apparent from the occlusion of the mold wir
 You can also view the individual steps.
 
 !!! info
-    See [Figure 12-17](/VTKBook/12Chapter12/#Figure%2012-17) in [Chapter 12](/VTKBook/12Chapter12) the [VTK Textbook](/VTKBook/01Chapter1).
+    See [Figure 12-17](../../../VTKBook/12Chapter12/#Figure%2012-17) in [Chapter 12](../../../VTKBook/12Chapter12) the [VTK Textbook](../../../VTKBook/01Chapter1).

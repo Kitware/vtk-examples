@@ -1,9 +1,8 @@
-#include <vtkCameraActor.h>
-#include <vtkSmartPointer.h>
-
 #include <vtkCamera.h>
+#include <vtkCameraActor.h>
 #include <vtkMapper.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlanes.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -14,32 +13,27 @@
 
 int main(int, char*[])
 {
-  auto namedColors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> namedColors;
 
   // Sphere
-  auto sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetRadius(400);
   sphereSource->Update();
 
-  auto sphereMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
-  auto sphereActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
   sphereActor->GetProperty()->SetDiffuseColor(
       namedColors->GetColor3d("Tomato").GetData());
 
   // Camera
-  auto camera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
 
-  auto cameraActor =
-    vtkSmartPointer<vtkCameraActor>::New();
+  vtkNew<vtkCameraActor> cameraActor;
   cameraActor->SetCamera(camera);
-  cameraActor->GetProperty()->SetColor(0, 0, 0);
+  cameraActor->GetProperty()->SetColor(
+      namedColors->GetColor3d("Black").GetData());
 
   // (Xmin,Xmax,Ymin,Ymax,Zmin,Zmax).
   auto bounds = cameraActor->GetBounds();
@@ -48,14 +42,12 @@ int main(int, char*[])
             << std::endl;
 
   // Visualize
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("CameraActor");
 
-  auto renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(sphereActor);

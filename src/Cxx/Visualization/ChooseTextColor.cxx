@@ -1,7 +1,6 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkMath.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
@@ -60,11 +59,9 @@ int main(int argc, char* argv[])
   int width = 640;
   int height = 480;
 
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto actor =
-    vtkSmartPointer<vtkTextActor>::New();
+  vtkNew<vtkTextActor> actor;
   actor->GetTextProperty()->SetJustificationToCentered();
   actor->GetTextProperty()->SetVerticalJustificationToCentered();
   actor->SetTextScaleModeToViewport();
@@ -75,8 +72,7 @@ int main(int argc, char* argv[])
   actor->GetTextProperty()->SetFontFamily(VTK_FONT_FILE);
   actor->GetTextProperty()->SetFontFile(fontFile.c_str());
 
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(colors->GetColor3d(backColor.c_str()).GetData());
 
   // Compute a good color for text on the renderer background
@@ -86,14 +82,13 @@ int main(int argc, char* argv[])
   std::cout << rgb[0] << "," << rgb[1] << "," << rgb[2] << std::endl;
   actor->GetTextProperty()->SetColor(rgb);
 
-  auto renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
 
   renderWindow->SetSize(width, height);
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ChooseTextColor");
 
-  auto interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
@@ -111,8 +106,7 @@ void ChooseContrastingColor(double* rgbIn, double* rgbOut,
                             const std::string& lightColor,
                             const std::string& darkColor)
 {
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   double hsv[3];
   // If the value is <= threshold, use a light color, otherwise use a dark color

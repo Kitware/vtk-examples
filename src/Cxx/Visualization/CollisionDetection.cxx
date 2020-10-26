@@ -3,12 +3,12 @@
 #include <vtkCollisionDetectionFilter.h>
 #include <vtkMatrix4x4.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkTextActor.h>
 #include <vtkTextProperty.h>
@@ -26,21 +26,21 @@ int main(int argc, char* argv[])
   {
     contactMode = std::stoi(std::string(argv[1]));
   }
-  auto sphere0 = vtkSmartPointer<vtkSphereSource>::New();
-  sphere0->SetRadius(.29);
+  vtkNew<vtkSphereSource> sphere0;
+  sphere0->SetRadius(0.29);
   sphere0->SetPhiResolution(31);
   sphere0->SetThetaResolution(31);
   sphere0->SetCenter(0.0, 0, 0);
 
-  auto sphere1 = vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphere1;
   sphere1->SetPhiResolution(30);
   sphere1->SetThetaResolution(30);
   sphere1->SetRadius(0.3);
 
-  auto matrix1 = vtkSmartPointer<vtkMatrix4x4>::New();
-  auto transform0 = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkMatrix4x4> matrix1;
+  vtkNew<vtkTransform> transform0;
 
-  auto collide = vtkSmartPointer<vtkCollisionDetectionFilter>::New();
+  vtkNew<vtkCollisionDetectionFilter> collide;
   collide->SetInputConnection(0, sphere0->GetOutputPort());
   collide->SetTransform(0, transform0);
   collide->SetInputConnection(1, sphere1->GetOutputPort());
@@ -63,11 +63,11 @@ int main(int argc, char* argv[])
   collide->GenerateScalarsOn();
 
   // Visualize
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
-  auto mapper1 = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkNamedColors> colors;
+  vtkNew<vtkPolyDataMapper> mapper1;
   mapper1->SetInputConnection(collide->GetOutputPort(0));
   mapper1->ScalarVisibilityOff();
-  auto actor1 = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor1;
   actor1->SetMapper(mapper1);
   actor1->GetProperty()->BackfaceCullingOn();
   actor1->SetUserTransform(transform0);
@@ -75,27 +75,27 @@ int main(int argc, char* argv[])
       colors->GetColor3d("Tomato").GetData());
   actor1->GetProperty()->SetRepresentationToWireframe();
 
-  auto mapper2 = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper2;
   mapper2->SetInputConnection(collide->GetOutputPort(1));
 
-  auto actor2 = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor2;
   actor2->SetMapper(mapper2);
   actor2->GetProperty()->BackfaceCullingOn();
   actor2->SetUserMatrix(matrix1);
 
-  auto mapper3 = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper3;
   mapper3->SetInputConnection(collide->GetContactsOutputPort());
   mapper3->SetResolveCoincidentTopologyToPolygonOffset();
 
-  auto actor3 = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor3;
   actor3->SetMapper(mapper3);
   actor3->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
   actor3->GetProperty()->SetLineWidth(3.0);
 
-  auto txt = vtkSmartPointer<vtkTextActor>::New();
+  vtkNew<vtkTextActor> txt;
   txt->GetTextProperty()->SetFontSize(18);
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->UseHiddenLineRemovalOn();
   renderer->AddActor(actor1);
   renderer->AddActor(actor2);
@@ -104,11 +104,11 @@ int main(int argc, char* argv[])
   renderer->SetBackground(colors->GetColor3d("Gray").GetData());
   renderer->UseHiddenLineRemovalOn();
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(640, 480);
   renderWindow->AddRenderer(renderer);
 
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Move the first object
@@ -150,6 +150,6 @@ int main(int argc, char* argv[])
   // You can directly obtain these, see GetContactCells(int i)
   //  in the documentation.
   // collide->GetOutput(0)->Print(std::cout);
-  //collide->GetOutput(1)->Print(std::cout);
+  // collide->GetOutput(1)->Print(std::cout);
   return EXIT_SUCCESS;
 }

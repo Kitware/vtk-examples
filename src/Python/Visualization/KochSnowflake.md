@@ -1,3 +1,4 @@
 ### Description
 
-This script draws a Koch snowflake using the VTK. The general idea is to exercise some of the components of a vtkPolyData to produce something interesting rather than a boring old cube. Not that I have anything against cubes.
+This demo uses recursion to represent a Koch snowflake fractal. For more information about this fractal, there are many resources on the web:
+http://en.wikipedia.org/wiki/Koch_snowflake, http://mathworld.wolfram.com/KochSnowflake.html.

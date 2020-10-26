@@ -1,52 +1,56 @@
-#include <vtkSmartPointer.h>
-#include <vtkSphereSource.h>
+#include <vtkActor.h>
+#include <vtkCamera.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkCamera.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(0.0, 0.0, 0.0);
-  sphereSource->SetRadius(1.0);
+  sphereSource->SetRadius(10.0);
+  sphereSource->SetPhiResolution(30);
+  sphereSource->SetThetaResolution(30);
   sphereSource->Update();
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
-  
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
-  actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkCamera> camera = 
-    vtkSmartPointer<vtkCamera>::New();
-  camera->SetPosition(0, 0, 20);
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+  actor->GetProperty()->SetSpecular(0.6);
+  actor->GetProperty()->SetSpecularPower(30);
+  actor->GetProperty()->SetColor(colors->GetColor3d("LightSkyBlue").GetData());
+
+  vtkNew<vtkCamera> camera;
+  camera->SetPosition(0, 0, 100);
   camera->SetFocalPoint(0, 0, 0);
-  
+
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  
+  vtkNew<vtkRenderer> renderer;
+
   renderer->SetActiveCamera(camera);
-      
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("Camera");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(colors->GetColor3d("MistyRose").GetData());
 
   // Render and interact
   renderWindow->Render();

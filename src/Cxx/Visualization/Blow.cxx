@@ -7,6 +7,7 @@
 #include <vtkGeometryFilter.h>
 #include <vtkLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPolyDataNormals.h>
 #include <vtkProperty.h>
@@ -47,8 +48,7 @@ int main(int argc, char* argv[])
     dataPoint = atoi(argv[2]);
   }
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   std::vector<std::string> thickness;
   std::vector<std::string> displacement;
@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
   std::vector<vtkSmartPointer<vtkActor>> contours;
   std::vector<vtkSmartPointer<vtkRenderer>> ren;
 
-  vtkSmartPointer<vtkLookupTable> lut = vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   lut->SetHueRange(0.0, 0.66667);
 
   for (auto i = 0; i < 10; ++i)
@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
     moldActor.push_back(vtkSmartPointer<vtkActor>::New());
     moldActor[i]->SetMapper(moldMapper[i]);
     moldActor[i]->GetProperty()->SetColor(
-      colors->GetColor3d("ivory_black").GetData());
+        colors->GetColor3d("ivory_black").GetData());
     moldActor[i]->GetProperty()->SetRepresentationToWireframe();
 
     // Extract the parison from the mesh using connectivity.
@@ -146,10 +146,8 @@ int main(int argc, char* argv[])
   }
 
   // Create the RenderWindow and RenderWindowInteractor.
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindow> renWin;
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
   auto rendererSizeX = 750;
   auto rendererSizeY = 400;

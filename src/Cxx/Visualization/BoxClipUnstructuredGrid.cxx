@@ -1,21 +1,23 @@
-#include <vtkSmartPointer.h>
 #include <vtkBoxClipDataSet.h>
 #include <vtkLookupTable.h>
-
-#include <vtkUnstructuredGridReader.h>
-#include <vtkUnstructuredGrid.h>
-
-#include <vtkDataSetMapper.h>
-#include <vtkCamera.h>
-#include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-
 #include <vtkNamedColors.h>
-#include <vtkColor.h>
+#include <vtkNew.h>
+#include <vtkSmartPointer.h>
 
-int main(int argc, char *argv[])
+#include <vtkUnstructuredGrid.h>
+#include <vtkUnstructuredGridReader.h>
+
+#include <vtkActor.h>
+#include <vtkCamera.h>
+#include <vtkDataSetMapper.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+
+#include <vtkColor.h>
+#include <vtkNamedColors.h>
+
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
@@ -23,21 +25,19 @@ int main(int argc, char *argv[])
     return EXIT_FAILURE;
   }
 
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   vtkColor3d backgroundColor = colors->GetColor3d("Silver");
 
   // Read the data
-  auto reader =
-    vtkSmartPointer<vtkUnstructuredGridReader>::New();
-  reader->SetFileName (argv[1]);
+  vtkNew<vtkUnstructuredGridReader> reader;
+  reader->SetFileName(argv[1]);
   reader->Update();
 
   double bounds[6];
-  reader->GetOutput()->GetBounds(bounds);  
+  reader->GetOutput()->GetBounds(bounds);
 
   double range[2];
-  reader->GetOutput()->GetScalarRange(range);  
+  reader->GetOutput()->GetScalarRange(range);
 
   double minBoxPoint[3];
   double maxBoxPoint[3];
@@ -48,73 +48,62 @@ int main(int argc, char *argv[])
   maxBoxPoint[1] = bounds[3];
   maxBoxPoint[2] = bounds[5];
 
-  auto boxClip =
-    vtkSmartPointer<vtkBoxClipDataSet>::New();
-  boxClip->SetInputConnection (reader->GetOutputPort());
+  vtkNew<vtkBoxClipDataSet> boxClip;
+  boxClip->SetInputConnection(reader->GetOutputPort());
   boxClip->GenerateClippedOutputOn();
 
-  const double minusx[] = { -1.0, -0.5, 0.0 };
-  const double minusy[] = { 0.0, -1.0, 0.0 };
-  const double minusz[] = { 0.0, 0.0, -1.0 };
-  const double plusx[] = { 1.0, 0.0, 0.0 };
-  const double plusy[] = { 0.0, 1.0, 0.0 };
-  const double plusz[] = { 0.0, 0.0, 1.0 };
-  boxClip->SetBoxClip(minusx, minBoxPoint,
-                      minusy, minBoxPoint,
-                      minusz, minBoxPoint,
-                      plusx, maxBoxPoint,
-                      plusy, maxBoxPoint,
+  const double minusx[] = {-1.0, -0.5, 0.0};
+  const double minusy[] = {0.0, -1.0, 0.0};
+  const double minusz[] = {0.0, 0.0, -1.0};
+  const double plusx[] = {1.0, 0.0, 0.0};
+  const double plusy[] = {0.0, 1.0, 0.0};
+  const double plusz[] = {0.0, 0.0, 1.0};
+  boxClip->SetBoxClip(minusx, minBoxPoint, minusy, minBoxPoint, minusz,
+                      minBoxPoint, plusx, maxBoxPoint, plusy, maxBoxPoint,
                       plusz, maxBoxPoint);
 
   // Define a lut
-  auto lut1 =
-    vtkSmartPointer<vtkLookupTable>::New();
-  lut1->SetHueRange (.667, 0);
+  vtkNew<vtkLookupTable> lut1;
+  lut1->SetHueRange(.667, 0);
 
-  auto mapperIn =
-  vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapperIn;
   mapperIn->SetInputConnection(boxClip->GetOutputPort());
   mapperIn->SetScalarRange(reader->GetOutput()->GetScalarRange());
   mapperIn->SetLookupTable(lut1);
   mapperIn->SetColorModeToMapScalars();
 
-  auto actorIn = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actorIn;
   actorIn->SetMapper(mapperIn);
- 
-  auto mapperOut =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+
+  vtkNew<vtkDataSetMapper> mapperOut;
   mapperOut->SetInputConnection(boxClip->GetOutputPort(1));
   mapperOut->SetScalarRange(reader->GetOutput()->GetScalarRange());
   mapperOut->SetLookupTable(lut1);
   mapperOut->SetColorModeToMapScalars();
 
-  auto actorOut = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actorOut;
   actorOut->SetMapper(mapperOut);
-  actorOut->AddPosition(-.5 * (maxBoxPoint[0] - minBoxPoint[0]),
-                        -.5 * (maxBoxPoint[1] - minBoxPoint[1]),
-                        -.5 * (maxBoxPoint[2] - minBoxPoint[2]));
- 
+  actorOut->AddPosition(-0.5 * (maxBoxPoint[0] - minBoxPoint[0]),
+                        -0.5 * (maxBoxPoint[1] - minBoxPoint[1]),
+                        -0.5 * (maxBoxPoint[2] - minBoxPoint[2]));
+
   // Create a renderer, render window, and interactor
-  auto renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(backgroundColor.GetData());
   renderer->UseHiddenLineRemovalOn();
 
-  auto renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("BoxClipUnstructuredGrid");
 
-  auto renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
- 
+
   // Add the actor to the scene
   renderer->AddActor(actorIn);
   renderer->AddActor(actorOut);
-  
+
   // Generate an interesting view
   renderer->ResetCamera();
   renderer->GetActiveCamera()->Azimuth(120);
@@ -125,6 +114,6 @@ int main(int argc, char *argv[])
   // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

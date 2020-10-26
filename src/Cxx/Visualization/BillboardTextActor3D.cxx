@@ -1,103 +1,101 @@
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkProperty.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkSphereSource.h>
 #include <vtkBillboardTextActor3D.h>
-#include <vtkTextProperty.h>
 #include <vtkCallbackCommand.h>
 #include <vtkMath.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkNew.h>
+#include <vtkSphereSource.h>
+#include <vtkTextProperty.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
+
 #include <sstream>
 
-void ActorCallback( vtkObject* caller,
-                      long unsigned int vtkNotUsed(eventId),
-                      void* clientData,
-                      void* vtkNotUsed(callData) )
+namespace {
+void ActorCallback(vtkObject* caller, long unsigned int vtkNotUsed(eventId),
+                   void* clientData, void* vtkNotUsed(callData))
 {
-  vtkSmartPointer<vtkBillboardTextActor3D> textActor = 
-    static_cast<vtkBillboardTextActor3D *>(clientData);
-  vtkSmartPointer<vtkActor> actor = 
-    static_cast<vtkActor *>(caller);
+  auto textActor =
+      static_cast<vtkBillboardTextActor3D*>(clientData);
+  auto actor = static_cast<vtkActor*>(caller);
   std::ostringstream label;
-  label << std::setprecision(3)
-        << actor->GetPosition()[0] << ", "
-       << actor->GetPosition()[1] << ", "
-       << actor->GetPosition()[2] << std::endl;
+  label << std::setprecision(3) << actor->GetPosition()[0] << ", "
+        << actor->GetPosition()[1] << ", " << actor->GetPosition()[2]
+        << std::endl;
   textActor->SetPosition(actor->GetPosition());
   textActor->SetInput(label.str().c_str());
 }
+}
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // For testing
   vtkMath::RandomSeed(8775070);
 
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource->SetCenter ( 0.0, 0.0, 0.0 );
-  sphereSource->SetRadius ( 1.0 );
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetCenter(0.0, 0.0, 0.0);
+  sphereSource->SetRadius(1.0);
 
   // Create an actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper2 = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  mapper2->SetInputConnection ( sphereSource->GetOutputPort() );
-  vtkSmartPointer<vtkActor> actor2 = 
-    vtkSmartPointer<vtkActor>::New();
-  actor2->SetMapper ( mapper2 );
+  vtkNew<vtkPolyDataMapper> mapper2;
+  mapper2->SetInputConnection(sphereSource->GetOutputPort());
+  vtkNew<vtkActor> actor2;
+  actor2->SetMapper(mapper2);
   actor2->SetPosition(0, 0, 0);
-  actor2->GetProperty()->SetColor(1.0, .4, .4);
+  actor2->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
 
   // Create a renderer
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  renderer->SetBackground ( .6, .4, .2);
-  renderer->AddActor ( actor2 );
+  vtkNew<vtkRenderer> renderer;
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
+  renderer->AddActor(actor2);
 
   // Create a render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->AddRenderer ( renderer );
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("BillboardTextActor3D");
 
   // Create an interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  renderWindowInteractor->SetRenderWindow ( renderWindow );
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  renderWindowInteractor->SetRenderWindow(renderWindow);
 
   for (int i = 0; i < 10; ++i)
   {
     // Create a mapper
-    vtkSmartPointer<vtkPolyDataMapper> mapper = 
-      vtkSmartPointer<vtkPolyDataMapper>::New();
-    mapper->SetInputConnection ( sphereSource->GetOutputPort() );
+    vtkNew<vtkPolyDataMapper> mapper;
+    mapper->SetInputConnection(sphereSource->GetOutputPort());
 
     // Create an actor
-    vtkSmartPointer<vtkActor> actor = 
-      vtkSmartPointer<vtkActor>::New();
-    actor->SetMapper ( mapper );
+    vtkNew<vtkActor> actor;
+    actor->SetMapper(mapper);
     actor->SetPosition(0, 0, 0);
+    actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
     // Setup the text and add it to the renderer
-    vtkSmartPointer<vtkBillboardTextActor3D> textActor = 
-      vtkSmartPointer<vtkBillboardTextActor3D>::New();
-    textActor->SetInput ("");
-    textActor->SetPosition (actor->GetPosition());
-    textActor->GetTextProperty()->SetFontSize ( 12 );
-    textActor->GetTextProperty()->SetColor ( 1.0, 1.0, .4 );
+    vtkNew<vtkBillboardTextActor3D> textActor;
+    textActor->SetInput("");
+    textActor->SetPosition(actor->GetPosition());
+    textActor->GetTextProperty()->SetFontSize(12);
+    textActor->GetTextProperty()->SetColor(
+        colors->GetColor3d("Gold").GetData());
     textActor->GetTextProperty()->SetJustificationToCentered();
 
-    renderer->AddActor ( actor );
-    renderer->AddActor ( textActor );
-  
-    vtkSmartPointer<vtkCallbackCommand> actorCallback =
-      vtkSmartPointer<vtkCallbackCommand>::New();
-    actorCallback->SetCallback (ActorCallback);
+    renderer->AddActor(actor);
+    renderer->AddActor(textActor);
+
+    vtkNew<vtkCallbackCommand> actorCallback;
+    actorCallback->SetCallback(ActorCallback);
     actorCallback->SetClientData(textActor);
-    actor->AddObserver(vtkCommand::ModifiedEvent,actorCallback);
+    actor->AddObserver(vtkCommand::ModifiedEvent, actorCallback);
     actor->SetPosition(vtkMath::Random(-10.0, 10.0),
                        vtkMath::Random(-10.0, 10.0),
                        vtkMath::Random(-10.0, 10.0));

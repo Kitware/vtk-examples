@@ -10,7 +10,7 @@
 
 #include <vtkColorSeries.h>
 #include <vtkNamedColors.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 
 #include <algorithm>
 #include <cstdlib>
@@ -83,7 +83,7 @@ private:
   std::string MakeTable();
 
 private:
-  vtkSmartPointer<vtkNamedColors> nc = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
   ColorStructures cs = ColorStructures();
   HTMLToFromRGBAColor htmlRGBA = HTMLToFromRGBAColor();
 };

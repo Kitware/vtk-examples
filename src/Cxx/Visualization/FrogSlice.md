@@ -5,4 +5,4 @@ This example uses a dataset derived from a frog. This data was prepared at Lawre
 This example shows a photographic slice of frog (upper left), segmented frog (upper right) and composite of photo and segmentation (bottom). The purple color represents the stomach and the kidneys are yellow.
 
 !!! info
-    See [Figure 12-6](/VTKBook/12Chapter12/#Figure%2012-6) in [Chapter 12](/VTKBook/12Chapter12) the [VTK Textbook](/VTKBook/01Chapter1).
+    See [Figure 12-6](../../../VTKBook/12Chapter12/#Figure%2012-6) in [Chapter 12](../../../VTKBook/12Chapter12) the [VTK Textbook](../../../VTKBook/01Chapter1).

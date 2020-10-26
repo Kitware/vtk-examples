@@ -1,4 +1,3 @@
 ### Description
-This example demonstrates how to use multiple viewports to display several scenes in one render window.
 
-* Contributed by: Bryan Conrad
+This example creates a window with 4 viewports.

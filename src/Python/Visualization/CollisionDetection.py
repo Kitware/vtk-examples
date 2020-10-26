@@ -35,7 +35,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     sphere0 = vtk.vtkSphereSource()
-    sphere0.SetRadius(.29)
+    sphere0.SetRadius(0.29)
     sphere0.SetPhiResolution(31)
     sphere0.SetThetaResolution(31)
     sphere0.SetCenter(0.0, 0, 0)

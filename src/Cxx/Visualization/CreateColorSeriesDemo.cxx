@@ -1,48 +1,36 @@
-#include <vtkSmartPointer.h>
-#include <vtkColorSeries.h>
-
-#include <vtkNamedColors.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkCellData.h>
+#include <vtkColorSeries.h>
+#include <vtkFloatArray.h>
+#include <vtkLookupTable.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPlaneSource.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-
-#include <vtkLookupTable.h>
-#include <vtkFloatArray.h>
-#include <vtkCellData.h>
-#include <vtkPolyData.h>
-#include <vtkPlaneSource.h>
+#include <vtkRenderer.h>
 
 #include <map>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace {
-void CreateLookupTableVTKBlue(vtkSmartPointer<vtkLookupTable> &lut,
-                              int tableSize = 0);
-void CreateLookupTableVTKBrown(vtkSmartPointer<vtkLookupTable> &lut,
-                               int tableSize = 0);
-void CreateLookupTableVTKRed(vtkSmartPointer<vtkLookupTable> &lu,
-                             int tableSize = 0);
-void CreateLookupTableVTKOrange(vtkSmartPointer<vtkLookupTable> &lu,
-                                int tableSize = 0);
-void CreateLookupTableVTKWhite(vtkSmartPointer<vtkLookupTable> &lu,
-                               int tableSize = 0);
-void CreateLookupTableVTKGrey(vtkSmartPointer<vtkLookupTable> &lu,
-                              int tableSize = 0);
-void CreateLookupTableVTKMagenta(vtkSmartPointer<vtkLookupTable> &lu,
-                                 int tableSize = 0);
-void CreateLookupTableVTKCyan(vtkSmartPointer<vtkLookupTable> &lu,
-                                 int tableSize = 0);
-void CreateLookupTableVTKYellow(vtkSmartPointer<vtkLookupTable> &lu,
-                                int tableSize = 0);
-void CreateLookupTableVTKGreen(vtkSmartPointer<vtkLookupTable> &lu,
-                                int tableSize = 0);
-}
+void CreateLookupTableVTKBlue(vtkLookupTable* lut, int tableSize = 0);
+void CreateLookupTableVTKBrown(vtkLookupTable* lut, int tableSize = 0);
+void CreateLookupTableVTKRed(vtkLookupTable* lu, int tableSize = 0);
+void CreateLookupTableVTKOrange(vtkLookupTable* lu, int tableSize = 0);
+void CreateLookupTableVTKWhite(vtkLookupTable* lu, int tableSize = 0);
+void CreateLookupTableVTKGrey(vtkLookupTable* lu, int tableSize = 0);
+void CreateLookupTableVTKMagenta(vtkLookupTable* lu, int tableSize = 0);
+void CreateLookupTableVTKCyan(vtkLookupTable* lu, int tableSize = 0);
+void CreateLookupTableVTKYellow(vtkLookupTable* lu, int tableSize = 0);
+void CreateLookupTableVTKGreen(vtkLookupTable* lu, int tableSize = 0);
+} // namespace
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   std::string seriesName = "Red";
   if (argc > 1)
@@ -52,14 +40,12 @@ int main (int argc, char *argv[])
 
   // Provide some geometry
   int resolution = 6;
-  vtkSmartPointer<vtkPlaneSource> aPlane =
-    vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> aPlane;
   aPlane->SetXResolution(resolution);
   aPlane->SetYResolution(resolution);
 
   // Create cell data
-  vtkSmartPointer<vtkFloatArray> cellData =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> cellData;
   for (int i = 0; i < resolution * resolution; i++)
   {
     cellData->InsertNextValue(i);
@@ -67,15 +53,13 @@ int main (int argc, char *argv[])
   aPlane->Update(); // Force an update so we can set cell data
   aPlane->GetOutput()->GetCellData()->SetScalars(cellData);
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkLookupTable> lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   if (seriesName == "Blue")
-    {
-      CreateLookupTableVTKBlue(lut, resolution * resolution + 1);
-    }
+  {
+    CreateLookupTableVTKBlue(lut, resolution * resolution + 1);
+  }
   else if (seriesName == "Brown")
   {
     CreateLookupTableVTKBrown(lut, resolution * resolution + 1);
@@ -83,42 +67,34 @@ int main (int argc, char *argv[])
   else if (seriesName == "Red")
   {
     CreateLookupTableVTKRed(lut, resolution * resolution + 1);
-
   }
   else if (seriesName == "Orange")
   {
     CreateLookupTableVTKOrange(lut, resolution * resolution + 1);
-
   }
   else if (seriesName == "White")
   {
     CreateLookupTableVTKWhite(lut, resolution * resolution + 1);
-
   }
   else if (seriesName == "Grey")
   {
     CreateLookupTableVTKGrey(lut, resolution * resolution + 1);
-
   }
   else if (seriesName == "Magenta")
   {
     CreateLookupTableVTKMagenta(lut, resolution * resolution + 1);
-
   }
   else if (seriesName == "Cyan")
   {
     CreateLookupTableVTKCyan(lut, resolution * resolution + 1);
-
   }
   else if (seriesName == "Yellow")
   {
     CreateLookupTableVTKYellow(lut, resolution * resolution + 1);
-
   }
   else if (seriesName == "Green")
   {
     CreateLookupTableVTKGreen(lut, resolution * resolution + 1);
-
   }
   else
   {
@@ -127,26 +103,23 @@ int main (int argc, char *argv[])
   }
 
   // Setup actor and mapper
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetLookupTable(lut);
   mapper->SetInputConnection(aPlane->GetOutputPort());
   mapper->SetScalarModeToUseCellData();
   mapper->SetScalarRange(0, resolution * resolution + 1);
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->EdgeVisibilityOn();
 
   // Setup render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("CreateColorSeriesDemo");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
@@ -157,15 +130,12 @@ int main (int argc, char *argv[])
 }
 
 namespace {
-void CreateLookupTableVTKBlue(vtkSmartPointer<vtkLookupTable> &lut,
-                              int size)
+void CreateLookupTableVTKBlue(vtkLookupTable* lut, int size)
 {
-  vtkSmartPointer<vtkColorSeries> myColors =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> myColors;
   myColors->SetColorSchemeByName("VTKBlueColors");
 
-  vtkSmartPointer<vtkNamedColors> nc =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
 
   myColors->AddColor(nc->GetColor3ub("alice_blue"));
   myColors->AddColor(nc->GetColor3ub("blue"));
@@ -196,26 +166,23 @@ void CreateLookupTableVTKBlue(vtkSmartPointer<vtkLookupTable> &lut,
   myColors->AddColor(nc->GetColor3ub("ultramarine"));
 
   int numberOfColors = myColors->GetNumberOfColors();
-  std::cout << "Number of colors: " << numberOfColors << std::endl;  
-  lut->SetNumberOfTableValues (size == 0 ? numberOfColors : size);
+  std::cout << "Number of colors: " << numberOfColors << std::endl;
+  lut->SetNumberOfTableValues(size == 0 ? numberOfColors : size);
   lut->SetTableRange(0, lut->GetNumberOfTableValues());
   for (int i = 0; i < lut->GetNumberOfTableValues(); ++i)
   {
     vtkColor3ub color = myColors->GetColorRepeating(i);
-    lut->SetTableValue(
-      i, color.GetRed()/255., color.GetGreen()/255., color.GetBlue()/255., 1.);
+    lut->SetTableValue(i, color.GetRed() / 255., color.GetGreen() / 255.,
+                       color.GetBlue() / 255., 1.);
   }
 }
 
-void CreateLookupTableVTKBrown(vtkSmartPointer<vtkLookupTable> &lut,
-                               int size)
+void CreateLookupTableVTKBrown(vtkLookupTable* lut, int size)
 {
-  vtkSmartPointer<vtkColorSeries> myColors =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> myColors;
   myColors->SetColorSchemeByName("VTKBrownColors");
 
-  vtkSmartPointer<vtkNamedColors> nc =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
 
   myColors->AddColor(nc->GetColor3ub("beige"));
   myColors->AddColor(nc->GetColor3ub("brown"));
@@ -244,26 +211,23 @@ void CreateLookupTableVTKBrown(vtkSmartPointer<vtkLookupTable> &lut,
   myColors->AddColor(nc->GetColor3ub("tan"));
   myColors->AddColor(nc->GetColor3ub("van_dyke_brown"));
   int numberOfColors = myColors->GetNumberOfColors();
-  std::cout << "Number of colors: " << numberOfColors << std::endl;  
-  lut->SetNumberOfTableValues (size == 0 ? numberOfColors : size);
+  std::cout << "Number of colors: " << numberOfColors << std::endl;
+  lut->SetNumberOfTableValues(size == 0 ? numberOfColors : size);
   lut->SetTableRange(0, lut->GetNumberOfTableValues());
   for (int i = 0; i < lut->GetNumberOfTableValues(); ++i)
   {
     vtkColor3ub color = myColors->GetColorRepeating(i);
-    lut->SetTableValue(
-      i, color.GetRed()/255., color.GetGreen()/255., color.GetBlue()/255., 1.);
+    lut->SetTableValue(i, color.GetRed() / 255., color.GetGreen() / 255.,
+                       color.GetBlue() / 255., 1.);
   }
 }
 
-void CreateLookupTableVTKRed(vtkSmartPointer<vtkLookupTable> &lut,
-                             int size)
+void CreateLookupTableVTKRed(vtkLookupTable* lut, int size)
 {
-  vtkSmartPointer<vtkColorSeries> myColors =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> myColors;
   myColors->SetColorSchemeByName("VTKRedColors");
 
-  vtkSmartPointer<vtkNamedColors> nc =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
 
   myColors->AddColor(nc->GetColor3ub("alizarin_crimson"));
   myColors->AddColor(nc->GetColor3ub("brick"));
@@ -288,25 +252,22 @@ void CreateLookupTableVTKRed(vtkSmartPointer<vtkLookupTable> &lut,
   myColors->AddColor(nc->GetColor3ub("tomato"));
   myColors->AddColor(nc->GetColor3ub("venetian_red"));
   int numberOfColors = myColors->GetNumberOfColors();
-  std::cout << "Number of colors: " << numberOfColors << std::endl;  
-  lut->SetNumberOfTableValues (size == 0 ? numberOfColors : size);
+  std::cout << "Number of colors: " << numberOfColors << std::endl;
+  lut->SetNumberOfTableValues(size == 0 ? numberOfColors : size);
   lut->SetTableRange(0, lut->GetNumberOfTableValues());
   for (int i = 0; i < lut->GetNumberOfTableValues(); ++i)
   {
     vtkColor3ub color = myColors->GetColorRepeating(i);
-    lut->SetTableValue(
-      i, color.GetRed()/255., color.GetGreen()/255., color.GetBlue()/255., 1.);
+    lut->SetTableValue(i, color.GetRed() / 255., color.GetGreen() / 255.,
+                       color.GetBlue() / 255., 1.);
   }
 }
 
-void CreateLookupTableVTKGrey(vtkSmartPointer<vtkLookupTable> &lut,
-                             int size)
+void CreateLookupTableVTKGrey(vtkLookupTable* lut, int size)
 {
-  vtkSmartPointer<vtkColorSeries> myColors =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> myColors;
 
-  vtkSmartPointer<vtkNamedColors> nc =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
 
   myColors->SetColorSchemeByName("VTKGreyColors");
   myColors->AddColor(nc->GetColor3ub("cold_grey"));
@@ -319,25 +280,22 @@ void CreateLookupTableVTKGrey(vtkSmartPointer<vtkLookupTable> &lut,
   myColors->AddColor(nc->GetColor3ub("warm_grey"));
 
   int numberOfColors = myColors->GetNumberOfColors();
-  std::cout << "Number of colors: " << numberOfColors << std::endl;  
-  lut->SetNumberOfTableValues (size == 0 ? numberOfColors : size);
+  std::cout << "Number of colors: " << numberOfColors << std::endl;
+  lut->SetNumberOfTableValues(size == 0 ? numberOfColors : size);
   lut->SetTableRange(0, lut->GetNumberOfTableValues());
   for (int i = 0; i < lut->GetNumberOfTableValues(); ++i)
   {
     vtkColor3ub color = myColors->GetColorRepeating(i);
-    lut->SetTableValue(
-      i, color.GetRed()/255., color.GetGreen()/255., color.GetBlue()/255., 1.);
+    lut->SetTableValue(i, color.GetRed() / 255., color.GetGreen() / 255.,
+                       color.GetBlue() / 255., 1.);
   }
 }
 
-void CreateLookupTableVTKWhite(vtkSmartPointer<vtkLookupTable> &lut,
-                             int size)
+void CreateLookupTableVTKWhite(vtkLookupTable* lut, int size)
 {
-  vtkSmartPointer<vtkColorSeries> myColors =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> myColors;
 
-  vtkSmartPointer<vtkNamedColors> nc =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
 
   myColors->SetColorSchemeByName("VTKWhiteColors");
   myColors->AddColor(nc->GetColor3ub("antique_white"));
@@ -372,26 +330,23 @@ void CreateLookupTableVTKWhite(vtkSmartPointer<vtkLookupTable> &lut,
   myColors->AddColor(nc->GetColor3ub("zinc_white"));
 
   int numberOfColors = myColors->GetNumberOfColors();
-  std::cout << "Number of colors: " << numberOfColors << std::endl;  
-  lut->SetNumberOfTableValues (size == 0 ? numberOfColors : size);
+  std::cout << "Number of colors: " << numberOfColors << std::endl;
+  lut->SetNumberOfTableValues(size == 0 ? numberOfColors : size);
   lut->SetTableRange(0, lut->GetNumberOfTableValues());
   for (int i = 0; i < lut->GetNumberOfTableValues(); ++i)
   {
     vtkColor3ub color = myColors->GetColorRepeating(i);
-    lut->SetTableValue(
-      i, color.GetRed()/255., color.GetGreen()/255., color.GetBlue()/255., 1.);
+    lut->SetTableValue(i, color.GetRed() / 255., color.GetGreen() / 255.,
+                       color.GetBlue() / 255., 1.);
   }
 }
 
-void CreateLookupTableVTKOrange(vtkSmartPointer<vtkLookupTable> &lut,
-                             int size)
+void CreateLookupTableVTKOrange(vtkLookupTable* lut, int size)
 {
-  vtkSmartPointer<vtkColorSeries> myColors =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> myColors;
   myColors->SetColorSchemeByName("VTKOrangeColors");
 
-  vtkSmartPointer<vtkNamedColors> nc =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
 
   myColors->AddColor(nc->GetColor3ub("cadmium_orange"));
   myColors->AddColor(nc->GetColor3ub("cadmium_red_light"));
@@ -403,26 +358,23 @@ void CreateLookupTableVTKOrange(vtkSmartPointer<vtkLookupTable> &lut,
   myColors->AddColor(nc->GetColor3ub("orange_red"));
   myColors->AddColor(nc->GetColor3ub("yellow_ochre"));
   int numberOfColors = myColors->GetNumberOfColors();
-  std::cout << "Number of colors: " << numberOfColors << std::endl;  
-  lut->SetNumberOfTableValues (size == 0 ? numberOfColors : size);
+  std::cout << "Number of colors: " << numberOfColors << std::endl;
+  lut->SetNumberOfTableValues(size == 0 ? numberOfColors : size);
   lut->SetTableRange(0, lut->GetNumberOfTableValues());
   for (int i = 0; i < lut->GetNumberOfTableValues(); ++i)
   {
     vtkColor3ub color = myColors->GetColorRepeating(i);
-    lut->SetTableValue(
-      i, color.GetRed()/255., color.GetGreen()/255., color.GetBlue()/255., 1.);
+    lut->SetTableValue(i, color.GetRed() / 255., color.GetGreen() / 255.,
+                       color.GetBlue() / 255., 1.);
   }
 }
 
-void CreateLookupTableVTKMagenta(vtkSmartPointer<vtkLookupTable> &lut,
-                             int size)
+void CreateLookupTableVTKMagenta(vtkLookupTable* lut, int size)
 {
-  vtkSmartPointer<vtkColorSeries> myColors =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> myColors;
   myColors->SetColorSchemeByName("VTKMagentaColors");
 
-  vtkSmartPointer<vtkNamedColors> nc =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
 
   myColors->AddColor(nc->GetColor3ub("blue_violet"));
   myColors->AddColor(nc->GetColor3ub("cobalt_violet_deep"));
@@ -442,26 +394,23 @@ void CreateLookupTableVTKMagenta(vtkSmartPointer<vtkLookupTable> &lut,
   myColors->AddColor(nc->GetColor3ub("violet_red_pale"));
 
   int numberOfColors = myColors->GetNumberOfColors();
-  std::cout << "Number of colors: " << numberOfColors << std::endl;  
-  lut->SetNumberOfTableValues (size == 0 ? numberOfColors : size);
+  std::cout << "Number of colors: " << numberOfColors << std::endl;
+  lut->SetNumberOfTableValues(size == 0 ? numberOfColors : size);
   lut->SetTableRange(0, lut->GetNumberOfTableValues());
   for (int i = 0; i < lut->GetNumberOfTableValues(); ++i)
   {
     vtkColor3ub color = myColors->GetColorRepeating(i);
-    lut->SetTableValue(
-      i, color.GetRed()/255., color.GetGreen()/255., color.GetBlue()/255., 1.);
+    lut->SetTableValue(i, color.GetRed() / 255., color.GetGreen() / 255.,
+                       color.GetBlue() / 255., 1.);
   }
 }
 
-void CreateLookupTableVTKCyan(vtkSmartPointer<vtkLookupTable> &lut,
-                             int size)
+void CreateLookupTableVTKCyan(vtkLookupTable* lut, int size)
 {
-  vtkSmartPointer<vtkColorSeries> myColors =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> myColors;
   myColors->SetColorSchemeByName("VTKCyanColors");
 
-  vtkSmartPointer<vtkNamedColors> nc =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
 
   myColors->AddColor(nc->GetColor3ub("aquamarine"));
   myColors->AddColor(nc->GetColor3ub("aquamarine_medium"));
@@ -473,26 +422,23 @@ void CreateLookupTableVTKCyan(vtkSmartPointer<vtkLookupTable> &lut,
   myColors->AddColor(nc->GetColor3ub("turquoise_pale"));
 
   int numberOfColors = myColors->GetNumberOfColors();
-  std::cout << "Number of colors: " << numberOfColors << std::endl;  
-  lut->SetNumberOfTableValues (size == 0 ? numberOfColors : size);
+  std::cout << "Number of colors: " << numberOfColors << std::endl;
+  lut->SetNumberOfTableValues(size == 0 ? numberOfColors : size);
   lut->SetTableRange(0, lut->GetNumberOfTableValues());
   for (int i = 0; i < lut->GetNumberOfTableValues(); ++i)
   {
     vtkColor3ub color = myColors->GetColorRepeating(i);
-    lut->SetTableValue(
-      i, color.GetRed()/255., color.GetGreen()/255., color.GetBlue()/255., 1.);
+    lut->SetTableValue(i, color.GetRed() / 255., color.GetGreen() / 255.,
+                       color.GetBlue() / 255., 1.);
   }
 }
 
-void CreateLookupTableVTKYellow(vtkSmartPointer<vtkLookupTable> &lut,
-                             int size)
+void CreateLookupTableVTKYellow(vtkLookupTable* lut, int size)
 {
-  vtkSmartPointer<vtkColorSeries> myColors =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> myColors;
   myColors->SetColorSchemeByName("VTKYellowColors");
 
-  vtkSmartPointer<vtkNamedColors> nc =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
 
   myColors->AddColor(nc->GetColor3ub("aureoline_yellow"));
   myColors->AddColor(nc->GetColor3ub("banana"));
@@ -511,26 +457,23 @@ void CreateLookupTableVTKYellow(vtkSmartPointer<vtkLookupTable> &lut,
   myColors->AddColor(nc->GetColor3ub("yellow_light"));
 
   int numberOfColors = myColors->GetNumberOfColors();
-  std::cout << "Number of colors: " << numberOfColors << std::endl;  
-  lut->SetNumberOfTableValues (size == 0 ? numberOfColors : size);
+  std::cout << "Number of colors: " << numberOfColors << std::endl;
+  lut->SetNumberOfTableValues(size == 0 ? numberOfColors : size);
   lut->SetTableRange(0, lut->GetNumberOfTableValues());
   for (int i = 0; i < lut->GetNumberOfTableValues(); ++i)
   {
     vtkColor3ub color = myColors->GetColorRepeating(i);
-    lut->SetTableValue(
-      i, color.GetRed()/255., color.GetGreen()/255., color.GetBlue()/255., 1.);
+    lut->SetTableValue(i, color.GetRed() / 255., color.GetGreen() / 255.,
+                       color.GetBlue() / 255., 1.);
   }
 }
 
-void CreateLookupTableVTKGreen(vtkSmartPointer<vtkLookupTable> &lut,
-                             int size)
+void CreateLookupTableVTKGreen(vtkLookupTable* lut, int size)
 {
-  vtkSmartPointer<vtkColorSeries> myColors =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> myColors;
   myColors->SetColorSchemeByName("VTKGreenColors");
 
-  vtkSmartPointer<vtkNamedColors> nc =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
 
   myColors->AddColor(nc->GetColor3ub("chartreuse"));
   myColors->AddColor(nc->GetColor3ub("chrome_oxide_green"));
@@ -561,15 +504,14 @@ void CreateLookupTableVTKGreen(vtkSmartPointer<vtkLookupTable> &lut,
   myColors->AddColor(nc->GetColor3ub("yellow_green"));
 
   int numberOfColors = myColors->GetNumberOfColors();
-  std::cout << "Number of colors: " << numberOfColors << std::endl;  
-  lut->SetNumberOfTableValues (size == 0 ? numberOfColors : size);
+  std::cout << "Number of colors: " << numberOfColors << std::endl;
+  lut->SetNumberOfTableValues(size == 0 ? numberOfColors : size);
   lut->SetTableRange(0, lut->GetNumberOfTableValues());
   for (int i = 0; i < lut->GetNumberOfTableValues(); ++i)
   {
     vtkColor3ub color = myColors->GetColorRepeating(i);
-    lut->SetTableValue(
-      i, color.GetRed()/255., color.GetGreen()/255., color.GetBlue()/255., 1.);
+    lut->SetTableValue(i, color.GetRed() / 255., color.GetGreen() / 255.,
+                       color.GetBlue() / 255., 1.);
   }
 }
-}
-
+} // namespace

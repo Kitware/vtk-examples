@@ -8,6 +8,8 @@ Here are some snippets and examples that highlight interesting features that may
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
+[CameraModel1](/Cxx/Visualization/CameraModel1) | Illustrate camera movement around the focal point.
+[CameraModel2](/Cxx/Visualization/CameraModel2) | camera movement centered at the camera position.
 [CameraPosition](/Cxx/Snippets/CameraPosition) | Get the camera position while moving the image.
 [MergeSelections](/Cxx/PolyData/MergeSelections) | Use the same camera for all renderers.
 [ShareCamera](/Cxx/Utilities/ShareCamera) | Use the same camera for all renderers.
@@ -16,6 +18,7 @@ Here are some snippets and examples that highlight interesting features that may
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
+[BackgroundGradient](/Cxx/Visualization/BackgroundGradient) | Background gradient.
 [KochanekSplineDemo](/Cxx/PolyData/KochanekSplineDemo) | How to color the slider components.
 [MergeSelections](/Cxx/PolyData/MergeSelections) | A nifty way to get a "harmonious" set of window colors, using vtkNamedColors and vtkColorSeries.
 [ShareCamera](/Cxx/Utilities/ShareCamera) | Store background colors in a vector for later extraction of the red, green and blue components.

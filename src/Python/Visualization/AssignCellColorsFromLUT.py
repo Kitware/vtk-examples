@@ -19,8 +19,6 @@ The top row of the display uses the color transfer function to create a
 The bottom row of the display uses a lookup table of predefined colors.
 """
 
-from __future__ import print_function
-
 import vtk
 
 
@@ -203,7 +201,9 @@ def main():
 
     # Setup the render windows
     renWin = vtk.vtkRenderWindow()
-    renWin.SetSize(800, 800)
+    renWin.SetSize(600, 600)
+    renWin.SetWindowName('AssignCellColorsFromLUT');
+
     renWin.AddRenderer(ren11)
     renWin.AddRenderer(ren12)
     renWin.AddRenderer(ren21)

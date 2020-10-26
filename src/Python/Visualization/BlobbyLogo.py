@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-"""
-"""
+'''
+'''
 
 import vtk
 
@@ -16,6 +16,7 @@ def main():
     anInteractor = vtk.vtkRenderWindowInteractor()
     anInteractor.SetRenderWindow(aRenderWindow)
     aRenderWindow.SetSize(300, 300)
+    aRenderWindow.SetWindowName('BlobbyLogo')
 
     # Read the geometry file containing the letter v.
     letterV = vtk.vtkPolyDataReader()
@@ -82,12 +83,12 @@ def main():
     blobbyLogoMapper.ScalarVisibilityOff()
 
     tomato = vtk.vtkProperty()
-    tomato.SetDiffuseColor(colors.GetColor3d("tomato"))
+    tomato.SetDiffuseColor(colors.GetColor3d('tomato'))
     tomato.SetSpecular(.3)
     tomato.SetSpecularPower(20)
 
     banana = vtk.vtkProperty()
-    banana.SetDiffuseColor(colors.GetColor3d("banana"))
+    banana.SetDiffuseColor(colors.GetColor3d('banana'))
     banana.SetDiffuse(.7)
     banana.SetSpecular(.4)
     banana.SetSpecularPower(20)
@@ -112,7 +113,7 @@ def main():
     aRenderer.AddActor(logo)
     aRenderer.AddActor(blobbyLogo)
 
-    aRenderer.SetBackground(colors.GetColor3d("SlateGray"))
+    aRenderer.SetBackground(colors.GetColor3d('SlateGray'))
 
     aRenderWindow.Render()
 
