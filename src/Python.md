@@ -341,7 +341,7 @@ This section includes vtkUnstructuredGrid.
 [SaveSceneToFieldData](/Python/Utilities/SaveSceneToFieldData) | vtkCamera | Save a vtkCamera's state in a vtkDataSet's vtkFieldData and restore it.
 [SaveSceneToFile](/Python/Utilities/SaveSceneToFile) | vtkCamera | Save a vtkCamera's state in a file and restore it.
 [Screenshot](/Python/Utilities/Screenshot) | vtkWindowToImageFilter |
-[ShareCamera](/CPythonxx/Utilities/ShareCamera) | vtkRenderer vtkCamera | Share a camera between multiple renderers.
+[ShareCamera](/Python/Utilities/ShareCamera) | vtkRenderer vtkCamera | Share a camera between multiple renderers.
 [VTKVersion](/Python/Utilities/VTKVersion) | vtkVersion |
 [VTKWithNumpy](/Python/Utilities/VTKWithNumpy) | vtkImageImport |
 [Variant](/Python/Utilities/Variant) | vtkVariant |
