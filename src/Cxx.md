@@ -3,7 +3,7 @@
 These are fully independent, compilable examples. There is significant overlap in the examples, but they are each intended to illustrate a different concept and be fully stand alone compilable.
 
 !!! info
-    [This table](/Coverage/CxxVTKClassesUsed.md) shows the VTK classes covered by the examples.
+    [This table](/Coverage/CxxVTKClassesUsed.md) shows the VTK classes covered by the examples. For each VTK class it lists examples using it. It is really useful when searching for example(s) using a particular class.
 
 !!! info
     [This table](/Coverage/CxxVTKClassesNotUsed.md) shows VTK classes that do not have an example. Please add examples in your area of expertise!
