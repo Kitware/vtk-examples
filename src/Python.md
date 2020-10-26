@@ -5,7 +5,7 @@ Please see [this page](https://www.vtk.org/Wiki/VTK/PythonDevelopment) to learn 
 It would be appreciated if there are any Python VTK experts who could convert any of the [c++ examples](/Cxx) to Python!
 
 !!! info
-    [This table](/Coverage/PythonVTKClassesUsed.md) shows the VTK classes covered by the examples.
+    [This table](/Coverage/PythonVTKClassesUsed.md) shows the VTK classes covered by the examples. For each VTK class it lists examples using it. It is really useful when searching for example(s) using a particular class.
 
 !!! info
     [This table](/Coverage/PythonVTKClassesNotUsed.md) shows VTK classes that do not have an example. Please add examples in your area of expertise!
