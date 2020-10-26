@@ -1,27 +1,28 @@
-#include <vtkRenderView.h>
-#include <vtkSphereSource.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
 #include <vtkActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderView.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
-  
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
-  actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderView> renderView =
-    vtkSmartPointer<vtkRenderView>::New();
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
+
+  vtkNew<vtkRenderView> renderView;
   renderView->SetInteractionMode(vtkRenderView::INTERACTION_MODE_3D);
   renderView->GetRenderer()->AddActor(actor);
   renderView->Update();
