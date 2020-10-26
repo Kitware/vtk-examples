@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import vtk
 
 
@@ -49,8 +47,8 @@ def main():
     renderer.SetBackground(colors.GetColor3d("MistyRose"))
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.SetWindowName("Animation")
-
     renderWindow.AddRenderer(renderer)
+
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
@@ -59,7 +57,7 @@ def main():
 
     # Render and interact
     renderWindow.Render()
-    renderer.GetActiveCamera().Zoom(.8)
+    renderer.GetActiveCamera().Zoom(0.8)
     renderWindow.Render()
 
     # Initialize must be called prior to creating timer events.
@@ -73,6 +71,7 @@ def main():
     # start the interaction and timer
     renderWindow.Render()
     renderWindowInteractor.Start()
+
 
 if __name__ == '__main__':
     main()

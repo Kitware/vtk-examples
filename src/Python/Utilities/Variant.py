@@ -1,6 +1,8 @@
 from __future__ import print_function
-import vtk
+
 import sys
+
+import vtk
 
 # Unicode string for demonstration (etre with circumflex)
 if sys.hexversion >= 0x03000000:

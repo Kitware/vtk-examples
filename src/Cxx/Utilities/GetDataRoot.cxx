@@ -1,11 +1,10 @@
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkTesting.h>
 
 int main(int, char *[])
 {
   // Locate VTK_DATA_ROOT
-  vtkSmartPointer<vtkTesting> testHelper =
-    vtkSmartPointer<vtkTesting>::New();
+  vtkNew<vtkTesting> testHelper;
   std::string dataRoot = testHelper->GetDataRoot();
 
   std::cout << "dataRoot: " << dataRoot << std::endl;

@@ -1,11 +1,12 @@
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkSmartPointer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkPolyData> polydata = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
 
-  vtkSmartPointer<vtkPolyData> polydataCopy = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydataCopy;
 
   polydataCopy->ShallowCopy(polydata);
 

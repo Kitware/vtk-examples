@@ -14,18 +14,20 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetDiffuseColor(colors.GetColor3d("Crimson"))
+    actor.GetProperty().SetDiffuseColor(colors.GetColor3d('Crimson'))
     actor.GetProperty().SetSpecular(.6)
     actor.GetProperty().SetSpecularPower(30)
 
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
+    renderWindow.SetWindowName('SaveSceneToFieldData')
+
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("Silver"))
+    renderer.SetBackground(colors.GetColor3d('Silver'))
 
     # Interact to change camera.
     renderWindow.Render()
@@ -58,32 +60,32 @@ def ReadPolyData(file_name):
     import os
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
-    if extension == ".ply":
+    if extension == '.ply':
         reader = vtk.vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtp":
+    elif extension == '.vtp':
         reader = vtk.vtkXMLpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".obj":
+    elif extension == '.obj':
         reader = vtk.vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".stl":
+    elif extension == '.stl':
         reader = vtk.vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".vtk":
+    elif extension == '.vtk':
         reader = vtk.vtkpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
-    elif extension == ".g":
+    elif extension == '.g':
         reader = vtk.vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
@@ -113,7 +115,7 @@ def SaveSceneToFieldData(data, actor, camera):
     cameraArray = vtk.vtkStringArray()
     cameraArray.SetNumberOfValues(1)
     cameraArray.SetValue(0, buffer)
-    cameraArray.SetName("Camera")
+    cameraArray.SetName('Camera')
     data.GetFieldData().AddArray(cameraArray)
 
 
@@ -132,7 +134,7 @@ def RestoreSceneFromFieldData(data, actor, camera):
     # float_number = re.compile(r'[^0-9.\-]*([0-9e.\-]*[^,])[^0-9.\-]*([0-9e.\-]*[^,])[^0-9.\-]*([0-9e.\-]*[^,])')
     # float_scalar = re.compile(r'[^0-9.\-]*([0-9.\-e]*[^,])')
 
-    buffer = data.GetFieldData().GetAbstractArray("Camera").GetValue(0).split('\n')
+    buffer = data.GetFieldData().GetAbstractArray('Camera').GetValue(0).split('\n')
     res = dict()
     for line in buffer:
         if not line.strip():

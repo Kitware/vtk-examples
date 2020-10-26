@@ -1,11 +1,10 @@
-#include <vtkSmartPointer.h>
 #include <vtkFloatArray.h>
 #include <vtkIdList.h>
+#include <vtkNew.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkFloatArray> distances =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> distances;
   distances->SetNumberOfComponents(1);
   distances->SetName("Distances");
 
@@ -20,11 +19,10 @@ int main(int, char *[])
   std::cout << "result: " << result << std::endl;
 
   // Get all locations
-  vtkSmartPointer<vtkIdList> idList =
-    vtkSmartPointer<vtkIdList>::New();
+  vtkNew<vtkIdList> idList;
   distances->LookupValue(15, idList);
   std::cout << "found at: " << std::endl;
-  for(vtkIdType i = 0; i < idList->GetNumberOfIds(); i++)
+  for (vtkIdType i = 0; i < idList->GetNumberOfIds(); i++)
   {
     std::cout << idList->GetId(i) << " ";
   }

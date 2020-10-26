@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-int main(int, char *[])
+int main(int, char*[])
 {
   double dVal = vtkVariant("2").ToDouble();
   std::cout << "dVal: " << dVal << std::endl;

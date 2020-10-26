@@ -5,17 +5,18 @@
 #include <vtkDataSetReader.h>
 #include <vtkDataSetSurfaceFilter.h>
 #include <vtkFloatArray.h>
+#include <vtkImageActor.h>
 #include <vtkImageMapToColors.h>
 #include <vtkImageSliceMapper.h>
-#include <vtkImageActor.h>
 #include <vtkLookupTable.h>
+#include <vtkNamedColors.h>
 #include <vtkNew.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkPointData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderPassCollection.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkRenderPassCollection.h>
 #include <vtkSequencePass.h>
 #include <vtkValuePass.h>
 #include <vtkVersion.h>
@@ -26,10 +27,14 @@ int main(int argc, char* argv[])
 {
   if (argc < 4)
   {
-    std::cout << "Usage: " << argv[0] << " input(.vtk) array_name output(.vti)"
+    std::cout << "Usage: " << argv[0]
+              << " input(.vtk) array_name output(.vti) e.g. uGridEx.vtk "
+                 "scalars RenderScalarToFloatBuffer.vti"
               << std::endl;
     return EXIT_FAILURE;
   }
+
+  vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkPolyDataMapper> mapper;
   vtkNew<vtkActor> actor;
@@ -58,7 +63,8 @@ int main(int argc, char* argv[])
 #if VTK_MAJOR_VERSION < 9
   valuePass->SetRenderingMode(vtkValuePass::FLOATING_POINT);
 #endif
-  valuePass->SetInputArrayToProcess(VTK_SCALAR_MODE_USE_POINT_FIELD_DATA, argv[2]);
+  valuePass->SetInputArrayToProcess(VTK_SCALAR_MODE_USE_POINT_FIELD_DATA,
+                                    argv[2]);
   valuePass->SetInputComponentToProcess(0);
   vtkNew<vtkRenderPassCollection> passes;
   passes->AddItem(valuePass);
@@ -96,7 +102,9 @@ int main(int argc, char* argv[])
   imageActor->GetMapper()->SetInputConnection(mapColors->GetOutputPort());
   vtkNew<vtkRenderer> ren;
   ren->AddActor(imageActor);
+  ren->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
   renWin->AddRenderer(ren);
+  renWin->SetWindowName("RenderScalarToFloatBuffer");
   renWin->Render();
   iRen->Start();
 

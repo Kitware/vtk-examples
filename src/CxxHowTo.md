@@ -38,12 +38,6 @@ Here are some snippets and examples that highlight interesting features that may
 | -------------- | ---------------------- | ------- |
 [ReadPolyData](/Cxx/Snippets/ReadPolyData) | This snippet works for most PolyData.
 
-## Render Windows
-
-| Example Name | Comments | Image |
-| -------------- | ---------------------- | ------- |
-[Model](/Cxx/Rendering/Model) | Multiple render windows.
-
 ## Random
 
 If you want to ensure that the same random points/colors are used in C++ and other languages then it is best to use vtkMinimalStandardRandomSequence.
@@ -52,3 +46,9 @@ If you want to ensure that the same random points/colors are used in C++ and oth
 | -------------- | ---------------------- | ------- |
 [ColorDisconnectedRegionsDemo](/Cxx/PolyData/ColorDisconnectedRegionsDemo) | A vtkLookupTable is filled with random colors.
 [HighlightWithSilhouette](/Cxx/Picking/HighlightWithSilhouette) | Here we use randomly positioned spheres with random colors. A vtkLookupTable is filled with random colors.
+
+## Render Windows
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[Model](/Cxx/Rendering/Model) | Multiple render windows.

@@ -1,11 +1,12 @@
 // This demo creates depth map for a polydata instance by extracting
 // exact ZBuffer values.
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkBMPWriter.h>
 #include <vtkImageShiftScale.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
@@ -15,6 +16,8 @@
 
 int main(int argc, char* argv[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   if (argc < 3)
   {
     std::cout << "Usage: " << argv[0] << " input(.vtp) output(.bmp)"
@@ -22,22 +25,15 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-      vtkSmartPointer<vtkRenderWindow>::New();
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkXMLPolyDataReader> fileReader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-  vtkSmartPointer<vtkWindowToImageFilter> filter =
-      vtkSmartPointer<vtkWindowToImageFilter>::New();
-  vtkSmartPointer<vtkBMPWriter> imageWriter =
-      vtkSmartPointer<vtkBMPWriter>::New();
-  vtkSmartPointer<vtkImageShiftScale> scale =
-      vtkSmartPointer<vtkImageShiftScale>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
+  vtkNew<vtkActor> actor;
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
+  vtkNew<vtkRenderWindowInteractor> interactor;
+  vtkNew<vtkXMLPolyDataReader> fileReader;
+  vtkNew<vtkWindowToImageFilter> filter;
+  vtkNew<vtkBMPWriter> imageWriter;
+  vtkNew<vtkImageShiftScale> scale;
 
   // Read .vtp file
   fileReader->SetFileName(argv[1]);
@@ -45,8 +41,14 @@ int main(int argc, char* argv[])
   // Build visualization enviroment
   mapper->SetInputConnection(fileReader->GetOutputPort());
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Tan").GetData());
+
   renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
   renWin->AddRenderer(renderer);
+  renWin->SetWindowName("WindowModifiedEvent");
+
   interactor->SetRenderWindow(renWin);
   renWin->Render();
 

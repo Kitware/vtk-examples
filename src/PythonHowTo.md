@@ -9,18 +9,19 @@ Here are some snippets and examples that highlight interesting features that may
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
 [CameraPosition](/Python/Snippets/CameraPosition) | Get the camera position while moving the image.
+[ShareCamera](/Python/Utilities/ShareCamera) | Use the same camera for all renderers.
+
+## Coloring
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[ShareCamera](/Python/Utilities/ShareCamera) | Store background colors in a vector for later extraction of the red, green and blue components.
 
 ## Image
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
 [WriteImage](/Python/Snippets/WriteImage) | Write out an image of various types.
-
-## Render Windows
-
-| Example Name | Comments | Image |
-| -------------- | ---------------------- | ------- |
-[Model](/Python/Rendering/Model) | Multiple render windows.
 
 ## Polydata
 
@@ -35,3 +36,9 @@ If you want to ensure that the same random points/colors are used in C++ and oth
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
 [HighlightWithSilhouette](/Python/Picking/HighlightWithSilhouette) | Here we use randomly positioned spheres with random colors. A vtkLookupTable is filled with random colors.
+
+## Render Windows
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[Model](/Python/Rendering/Model) | Multiple render windows.

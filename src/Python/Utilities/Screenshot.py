@@ -1,5 +1,6 @@
 import vtk
 
+
 def main():
     colors = vtk.vtkNamedColors()
 
@@ -7,6 +8,7 @@ def main():
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
+    renWin.SetWindowName('Screenshot')
 
     # create a renderwindowinteractor
     iren = vtk.vtkRenderWindowInteractor()
@@ -19,22 +21,20 @@ def main():
     source.SetPhiResolution(30)
     source.SetThetaResolution(30)
 
-
     # mapper
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(source.GetOutputPort())
 
     # actor
     actor = vtk.vtkActor()
-    actor.GetProperty().SetColor(colors.GetColor3d("IndianRed"))
+    actor.GetProperty().SetColor(colors.GetColor3d('IndianRed'))
     actor.GetProperty().SetSpecular(0.6)
     actor.GetProperty().SetSpecularPower(30)
     actor.SetMapper(mapper)
 
     # assign actor to the renderer
     ren.AddActor(actor)
-    ren.SetBackground(colors.GetColor3d("MistyRose"))
-
+    ren.SetBackground(colors.GetColor3d('MistyRose'))
 
     renWin.Render()
 
@@ -46,7 +46,7 @@ def main():
     w2if.Update()
 
     writer = vtk.vtkPNGWriter()
-    writer.SetFileName("TestScreenshot.png")
+    writer.SetFileName('TestScreenshot.png')
     writer.SetInputConnection(w2if.GetOutputPort())
     writer.Write()
 

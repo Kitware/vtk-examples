@@ -1,17 +1,23 @@
-#include <vtkSmartPointer.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkProgrammableFilter.h>
 #include <vtkCallbackCommand.h>
+#include <vtkCamera.h>
+#include <vtkNew.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProgrammableFilter.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 
-void TimerCallbackFunction ( vtkObject* caller, long unsigned int eventId, void* clientData, void* callData );
+namespace {
+void TimerCallbackFunction(vtkObject* caller, long unsigned int eventId,
+                           void* clientData, void* callData);
 
-// Globals
-unsigned int counter2 = 0;
+unsigned int counter = 0;
+unsigned int maxCount = 6;
 
 void AdjustPoints2(void* arguments)
 {
@@ -21,11 +27,10 @@ void AdjustPoints2(void* arguments)
 
   vtkPoints* inPts = programmableFilter->GetPolyDataInput()->GetPoints();
   vtkIdType numPts = inPts->GetNumberOfPoints();
-  vtkSmartPointer<vtkPoints> newPts =
-      vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> newPts;
   newPts->SetNumberOfPoints(numPts);
 
-  for(vtkIdType i = 0; i < numPts; i++)
+  for (vtkIdType i = 0; i < numPts; i++)
   {
     double p[3];
     inPts->GetPoint(i, p);
@@ -34,80 +39,94 @@ void AdjustPoints2(void* arguments)
 
   double p0[3];
   inPts->GetPoint(0, p0);
-  p0[2] = p0[2] + counter2 * 0.1;
+  p0[2] = p0[2] + counter * 0.1;
   newPts->SetPoint(0, p0);
 
-  programmableFilter->GetPolyDataOutput()->CopyStructure(programmableFilter->GetPolyDataInput());
+  programmableFilter->GetPolyDataOutput()->CopyStructure(
+      programmableFilter->GetPolyDataInput());
   programmableFilter->GetPolyDataOutput()->SetPoints(newPts);
 }
 
-int main(int, char *[])
+} // namespace
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
-  vtkSmartPointer<vtkProgrammableFilter> programmableFilter =
-    vtkSmartPointer<vtkProgrammableFilter>::New();
+  vtkNew<vtkProgrammableFilter> programmableFilter;
   programmableFilter->SetInputConnection(sphereSource->GetOutputPort());
 
   programmableFilter->SetExecuteMethod(AdjustPoints2, programmableFilter);
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(programmableFilter->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
 
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("DataAnimation");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Initialize must be called prior to creating timer events.
   renderWindowInteractor->Initialize();
   renderWindowInteractor->CreateRepeatingTimer(500);
 
-  vtkSmartPointer<vtkCallbackCommand> timerCallback =
-    vtkSmartPointer<vtkCallbackCommand>::New();
-  timerCallback->SetCallback ( TimerCallbackFunction );
+  vtkNew<vtkCallbackCommand> timerCallback;
+  timerCallback->SetCallback(TimerCallbackFunction);
   timerCallback->SetClientData(programmableFilter);
 
-  renderWindowInteractor->AddObserver ( vtkCommand::TimerEvent, timerCallback );
+  renderWindowInteractor->AddObserver(vtkCommand::TimerEvent, timerCallback);
 
   // Add the actor to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(colors->GetColor3d("MistyRose").GetData());
 
   // Render and interact
   renderWindow->Render();
+  auto camera = renderer->GetActiveCamera();
+  camera->SetPosition(2.26841, -1.51874, 1.805);
+  camera->SetFocalPoint(-0.148582, 0.0814323, 0.24803);
+  camera->SetViewUp(0.157813, 0.800687, 0.577923);
+  camera->SetDistance(3.29037);
+  camera->SetClippingRange(1.14823, 5.60288);
+
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
 }
 
-
-void TimerCallbackFunction ( vtkObject* caller, long unsigned int vtkNotUsed(eventId), void* clientData, void* vtkNotUsed(callData) )
+namespace {
+void TimerCallbackFunction(vtkObject* caller,
+                           long unsigned int vtkNotUsed(eventId),
+                           void* clientData, void* vtkNotUsed(callData))
 {
   cout << "timer callback" << endl;
 
-  vtkSmartPointer<vtkProgrammableFilter> programmableFilter =
-      static_cast<vtkProgrammableFilter*>(clientData);
+  auto programmableFilter = static_cast<vtkProgrammableFilter*>(clientData);
 
-  vtkRenderWindowInteractor *iren =
-    static_cast<vtkRenderWindowInteractor*>(caller);
+  vtkRenderWindowInteractor* iren =
+      static_cast<vtkRenderWindowInteractor*>(caller);
 
   programmableFilter->Modified();
 
   iren->Render();
 
-  counter2++;
+  if (counter > maxCount)
+  {
+    iren->DestroyTimer();
+  }
+
+  counter++;
 }
+} // namespace
