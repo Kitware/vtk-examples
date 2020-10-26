@@ -1,27 +1,25 @@
-#include <vtkSmartPointer.h>
 #include <vtkImageCanvasSource2D.h>
+#include <vtkNew.h>
 #include <vtkOggTheoraWriter.h>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkImageCanvasSource2D> source =
-      vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> source;
   source->SetScalarTypeToUnsignedChar();
   source->SetNumberOfScalarComponents(3);
   source->SetExtent(0, 100, 0, 100, 0, 0);
 
-  vtkSmartPointer<vtkOggTheoraWriter> writer =
-      vtkSmartPointer<vtkOggTheoraWriter>::New();
+  vtkNew<vtkOggTheoraWriter> writer;
 
   writer->SetInputConnection(source->GetOutputPort());
   writer->SetFileName("test.avi");
   writer->Start();
 
-  for(unsigned int i = 0; i < 100; i++)
+  for (unsigned int i = 0; i < 100; i++)
   {
-    source->SetDrawColor(0,0,0,1); //black
-    source->FillBox(0, 100, 0, 100); //clear image
-    source->SetDrawColor(255,0,0,1); //red
+    source->SetDrawColor(0, 0, 0, 1);   // black
+    source->FillBox(0, 100, 0, 100);    // clear image
+    source->SetDrawColor(255, 0, 0, 1); // red
     source->FillBox(i, 20, 10, 20);
     source->Update();
 
