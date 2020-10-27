@@ -1,9 +1,9 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkCommand.h>
 #include <vtkConeSource.h>
 #include <vtkGlyph3D.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointWidget.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -12,12 +12,11 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkTextActor.h>
 #include <vtkTextProperty.h>
 #include <vtkXMLPolyDataReader.h>
-
-#include <vtkNamedColors.h>
 
 #include <sstream>
 
@@ -56,66 +55,55 @@ int main(int argc, char* argv[])
 
   if (argc > 1)
   {
-    auto reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
+    vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
     inputPolyData = reader->GetOutput();
   }
   else
   {
-    auto sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetPhiResolution(15);
     sphereSource->SetThetaResolution(15);
     sphereSource->Update();
     inputPolyData = sphereSource->GetOutput();
   }
 
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto point =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> point;
 
-  auto probe =
-    vtkSmartPointer<vtkProbeFilter>::New();
+  vtkNew<vtkProbeFilter> probe;
   probe->SetInputData(point);
   probe->SetSourceData(inputPolyData);
 
   // create glyph
-  auto cone =
-    vtkSmartPointer<vtkConeSource>::New();
+  vtkNew<vtkConeSource> cone;
   cone->SetResolution(16);
 
-  auto glyph =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> glyph;
   glyph->SetInputConnection(probe->GetOutputPort());
   glyph->SetSourceConnection(cone->GetOutputPort());
   glyph->SetVectorModeToUseVector();
   glyph->SetScaleModeToDataScalingOff();
   glyph->SetScaleFactor(inputPolyData->GetLength() * 0.1);
 
-  auto glyphMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> glyphMapper;
   glyphMapper->SetInputConnection(glyph->GetOutputPort());
 
-  auto glyphActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> glyphActor;
   glyphActor->SetMapper(glyphMapper);
   glyphActor->VisibilityOn();
 
-  auto mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(inputPolyData);
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetRepresentationToWireframe();
   actor->GetProperty()->SetColor(colors->GetColor3d("gold").GetData());
 
-  auto textActor =
-    vtkSmartPointer<vtkTextActor>::New();
+  vtkNew<vtkTextActor> textActor;
   textActor->GetTextProperty()->SetFontSize(12);
   textActor->SetPosition(10, 20);
   textActor->SetInput("cursor:");
@@ -123,29 +111,24 @@ int main(int argc, char* argv[])
 
   // Create the RenderWindow, Render1er and both Actors
   //
-  auto ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
-  auto renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren1;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
 
-  auto iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // The SetInteractor method is how 3D widgets are associated with the render
   // window interactor. Internally, SetInteractor sets up a bunch of callbacks
   // using the Command/Observer mechanism (AddObserver()).
-  auto myCallback =
-    vtkSmartPointer<vtkmyPWCallback>::New();
+  vtkNew<vtkmyPWCallback> myCallback;
   myCallback->PolyData = point;
   myCallback->CursorActor = glyphActor;
   myCallback->PositionActor = textActor;
 
   // The point widget is used probe the dataset.
   //
-  auto pointWidget =
-    vtkSmartPointer<vtkPointWidget>::New();
+  vtkNew<vtkPointWidget> pointWidget;
   pointWidget->SetInteractor(iren);
   pointWidget->SetInputData(inputPolyData);
   pointWidget->AllOff();
@@ -163,6 +146,7 @@ int main(int argc, char* argv[])
   ren1->SetBackground2(colors->GetColor3d("Wheat").GetData());
 
   renWin->SetSize(300, 300);
+  renWin->SetWindowName("Arbitrary3DCursor");
   renWin->Render();
   pointWidget->On();
   // render the image

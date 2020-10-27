@@ -1,41 +1,39 @@
-#include <vtkAxisActor.h>
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
+#include <vtkAxisActor.h>
 #include <vtkCamera.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkStringArray.h>
 #include <vtkTextProperty.h>
-#include <vtkNamedColors.h>
 
 //----------------------------------------------------------------------------
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-      vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkSphereSource> source =
-      vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> source;
   source->SetPhiResolution(31);
   source->SetThetaResolution(31);
   source->Update();
   double bounds[6];
   source->GetOutput()->GetBounds(bounds);
-  std::cout << "bounds: " << bounds[0] << ", " << bounds[2] << ", " << bounds[3]
+  std::cout << "Bounds: " << bounds[0] << ", " << bounds[2] << ", " << bounds[3]
             << ", " << bounds[1] << ", " << bounds[3] << ", " << bounds[5]
             << std::endl;
   double center[3];
   source->GetOutput()->GetCenter(center);
-  std::cout << "center: " << center[0] << ", " << center[1] << ", " << center[2]
+  std::cout << "Center: " << center[0] << ", " << center[1] << ", " << center[2]
             << std::endl;
 
   // Create the axis actor
-  vtkSmartPointer<vtkAxisActor> axis = vtkSmartPointer<vtkAxisActor>::New();
+  vtkNew<vtkAxisActor> axis;
   axis->SetPoint1(-1.1, 0.0, 0.0);
   axis->SetPoint2(1.1, 0.0, 0.0);
   axis->SetTickLocationToBoth();
@@ -52,8 +50,7 @@ int main(int, char*[])
   axis->GetLabelTextProperty()->SetColor(
       colors->GetColor3d("orange").GetData());
 
-  vtkSmartPointer<vtkStringArray> labels =
-      vtkSmartPointer<vtkStringArray>::New();
+  vtkNew<vtkStringArray> labels;
   labels->SetNumberOfTuples(1);
   labels->SetValue(0, "x Axis");
 
@@ -64,21 +61,20 @@ int main(int, char*[])
   axis->SetCalculateTitleOffset(0);
   axis->SetCalculateLabelOffset(0);
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetDiffuseColor(colors->GetColor4d("tomato").GetData());
+  actor->GetProperty()->SetDiffuseColor(colors->GetColor4d("Tomato").GetData());
 
   // Create the RenderWindow, Renderer and both Actors
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("AxisActor");
+
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   axis->SetCamera(renderer->GetActiveCamera());

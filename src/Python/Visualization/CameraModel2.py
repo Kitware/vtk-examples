@@ -251,6 +251,7 @@ def main():
     ren.AddActor(fpActor)
     ren.SetBackground(colors.GetColor3d("SlateGray"))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('CameraModel2')
 
     # Render the image.
 

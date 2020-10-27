@@ -35,7 +35,7 @@ def main():
 
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
-    outlineActor.GetProperty().SetColor(0, 0, 0)
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     aRenderer = vtk.vtkRenderer()
     aRenderWindow = vtk.vtkRenderWindow()
@@ -43,11 +43,12 @@ def main():
     anInteractor = vtk.vtkRenderWindowInteractor()
     anInteractor.SetRenderWindow(aRenderWindow)
     aRenderWindow.SetSize(640, 480)
-
+    aRenderWindow.SetWindowName('ComplexV')
+    
     aRenderer.AddActor(outlineActor)
     aRenderer.AddActor(hhogActor)
 
-    aRenderer.SetBackground(colors.GetColor3d("Gray"))
+    aRenderer.SetBackground(colors.GetColor3d('SlateGray'))
 
     # Generate an interesting view.
 

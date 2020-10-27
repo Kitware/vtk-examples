@@ -54,14 +54,14 @@ def main():
     glyph.SetVectorModeToUseVector()
     glyph.OrientOn()
 
-    # Tell the filter to "clamp" the scalar range
+    # Tell the filter to 'clamp' the scalar range
     glyph.ClampingOn()
 
     # Set the overall (multiplicative) scaling factor
     glyph.SetScaleFactor(1)
 
-    # Set the Range to "clamp" the data to
-    #   -- see equations above for nonintuitive definition of "clamping"
+    # Set the Range to 'clamp' the data to
+    #   -- see equations above for nonintuitive definition of 'clamping'
     # The fact that I'm setting the minimum value of the range below
     #   the minimum of my data (real min=0.0) with the equations above
     #   forces a minimum non-zero glyph size.
@@ -90,9 +90,11 @@ def main():
 
     ren = vtk.vtkRenderer()
     ren.AddActor(actor)
-    ren.SetBackground(colors.GetColor3d("MidnightBlue"))
+    ren.SetBackground(colors.GetColor3d('MidnightBlue'))
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
+    renWin.SetWindowName('ClampGlyphSizes')
+
     iren = vtk.vtkRenderWindowInteractor()
     istyle = vtk.vtkInteractorStyleTrackballCamera()
     iren.SetInteractorStyle(istyle)

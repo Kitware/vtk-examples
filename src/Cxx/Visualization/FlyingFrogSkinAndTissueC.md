@@ -2,7 +2,7 @@
 
 Frog no skin or skeleton.
 
-This example is a modification of [ViewFrogSkinAndTissue](https://lorensen.github.io/VTKExamples/site/Cxx/Visualization/ViewFrogSkinAndTissue/) using vtkFlyingEdges3D for contouring. However there is an option to use vtkMarchingCubes instead.
+This example is a modification of [ViewFrogSkinAndTissue](../ViewFrogSkinAndTissue) using vtkFlyingEdges3D for contouring. However there is an option to use vtkMarchingCubes instead.
 
 !!! info
-    See [Figure 12-9c](/VTKBook/12Chapter12/#Figure%2012-9c) in [Chapter 12](/VTKBook/12Chapter12) of the [VTK Textbook](/VTKBook/01Chapter1).
+    See [Figure 12-9c](../../../VTKBook/12Chapter12/#Figure%2012-9c) in [Chapter 12](../../../VTKBook/12Chapter12) of the [VTK Textbook](../../../VTKBook/01Chapter1).

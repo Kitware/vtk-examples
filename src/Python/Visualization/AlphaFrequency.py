@@ -16,10 +16,10 @@ def main():
     with open(fileName) as f:
         freq = Counter()
         for x in f:
-            remove_digits = re.sub("[\d_]", "", x.strip().lower())
-            freq += Counter(re.findall("\w", remove_digits, re.UNICODE))
+            remove_digits = re.sub('[\d_]', '', x.strip().lower())
+            freq += Counter(re.findall('\w', remove_digits, re.UNICODE))
     maxFreq = max(list(freq.values()))
-    keys = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ".lower())
+    keys = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.lower())
 
     #
     # graphics stuff
@@ -53,7 +53,7 @@ def main():
 
         actors.append(vtk.vtkActor())
         actors[i].SetMapper(mappers[i])
-        actors[i].GetProperty().SetColor(colors.GetColor3d("Peacock"))
+        actors[i].GetProperty().SetColor(colors.GetColor3d('Peacock'))
 
         if freq[k] <= 0:
             actors[i].VisibilityOff()
@@ -70,13 +70,14 @@ def main():
         y += -3.0
 
     ren.ResetCamera()
-    ren.SetBackground(colors.GetColor3d("Silver"))
+    ren.SetBackground(colors.GetColor3d('Silver'))
     ren.GetActiveCamera().Elevation(30.0)
     ren.GetActiveCamera().Azimuth(-30.0)
     ren.GetActiveCamera().Dolly(1.25)
     ren.ResetCameraClippingRange()
 
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('AlphaFrequency')
 
     # Interact with the data.
     iren.Start()

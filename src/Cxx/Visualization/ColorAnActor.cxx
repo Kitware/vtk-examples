@@ -1,47 +1,47 @@
-#include <vtkSphereSource.h>
-#include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
- 
-int main(int, char *[])
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+
+int main(int, char*[])
 {
-  //Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  // Create a sphere
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
-  
-  //Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+
+  // Create a mapper and actor
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  
-  //Set the color of the sphere
-  actor->GetProperty()->SetColor(1.0, 0.0, 0.0); //(R,G,B)
-  
-  //Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+
+  // Set the color of the sphere
+  actor->GetProperty()->SetColor(colors->GetColor3d("Bisque").GetData());
+
+  // Create a renderer, render window, and interactor
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("ColorAnActor");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
- 
-  //Add the actor to the scene
+
+  // Add the actor to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(1,1,1); // Background color white
- 
-  //Render and interact
+  renderer->SetBackground(colors->GetColor3d("Navy").GetData());
+
+  // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();
- 
+
   return EXIT_SUCCESS;
 }

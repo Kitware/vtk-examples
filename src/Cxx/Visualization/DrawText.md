@@ -4,10 +4,9 @@ This example writes "Hello world" in the bottom left corner of the render window
 
 This example draws text in 2D. For an example using 3D text that can
 be placed on the scene like a regular vtkActor, see
-[VectorText](/Cxx/Visualization/VectorText). For an example of drawing
+[VectorText](../VectorText). For an example of drawing
 text, also in 2D, but into a vtkImageData object rather than into the
-render window, see
-[ImageText](/Cxx/Images/ImageText)/ImageText]]([../VectorText]].).
+render window, see [ImageText](../../Images/ImageText).
 
 !!! seealso
-    [TextWidget](/Cxx/Widgets/TextWidget)
+    [TextWidget](../../Widgets/TextWidget)

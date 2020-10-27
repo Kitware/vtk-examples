@@ -11,4 +11,4 @@ To give a pleasing visual effect we move the disk in small, user-specified incre
 from one peg to the next. Option `-s` controls the user-defined increments. The option `-c 2` freezes a disk in mid air moving from one peg to another.
 
 !!! info
-    See [Figure 12-20c](/VTKBook/12Chapter12/#Figure%2012-20c) in [Chapter 12](/VTKBook/12Chapter12) the [VTK Textbook](/VTKBook/01Chapter1).
+    See [Figure 12-20c](../../../VTKBook/12Chapter12/#Figure%2012-20c) in [Chapter 12](../../../VTKBook/12Chapter12) the [VTK Textbook](../../../VTKBook/01Chapter1).

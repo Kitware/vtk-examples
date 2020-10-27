@@ -20,7 +20,7 @@ def main():
     actor.SetMapper(mapper)
     actor.GetProperty().SetSpecular(0.6)
     actor.GetProperty().SetSpecularPower(30)
-    actor.GetProperty().SetColor(colors.GetColor3d("LightSkyBlue"))
+    actor.GetProperty().SetColor(colors.GetColor3d('LightSkyBlue'))
 
     camera = vtk.vtkCamera()
     camera.SetPosition(0, 0, 100)
@@ -32,12 +32,14 @@ def main():
 
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
+    renderWindow.SetWindowName('Camera')
+    
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actor to the scene
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("MistyRose"))
+    renderer.SetBackground(colors.GetColor3d('MistyRose'))
 
     # Render and interact
     renderWindowInteractor.Initialize()

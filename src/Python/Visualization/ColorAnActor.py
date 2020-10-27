@@ -8,6 +8,7 @@ def main():
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
+    renWin.SetWindowName('ColorAnActor')
 
     # create a renderwindowinteractor
     iren = vtk.vtkRenderWindowInteractor()
