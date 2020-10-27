@@ -8,8 +8,8 @@ Here are some snippets and examples that highlight interesting features that may
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
-[CameraModel1](/Python/Visualization/CameraModel1) | vtkCameraActor | Illustrate camera movement around the focal point.
-[CameraModel2](/Python/Visualization/CameraModel2) | vtkCameraActor | camera movement centered at the camera position.
+[CameraModel1](/Python/Visualization/CameraModel1) | Illustrate camera movement around the focal point.
+[CameraModel2](/Python/Visualization/CameraModel2) | camera movement centered at the camera position.
 [CameraPosition](/Python/Snippets/CameraPosition) | Get the camera position while moving the image.
 [ShareCamera](/Python/Utilities/ShareCamera) | Use the same camera for all renderers.
 
