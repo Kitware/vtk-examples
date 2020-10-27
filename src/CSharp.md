@@ -1,13 +1,10 @@
 # CSharp Examples
 
-!!! info
-    [This table](/Coverage/CSharpVTKClassesUsed.md) shows the VTK classes covered by the examples. For each VTK class it lists examples using it. It is really useful when searching for example(s) using a particular class.
+## VTK Classes Summary
 
-!!! info
-    [This table](/Coverage/CSharpVTKClassesNotUsed.md) shows VTK classes that do not have an example. Please add examples in your area of expertise!
+- [VTK Classes with Examples](/Coverage/CSharpVTKClassesUsed.md), this table is really useful when searching for example(s) using a particular class.
 
-| Example Name | Classes Demonstrated | Description | Image |
-| -------------- | ---------------------- | ------------- | ------- |
+- [VTK Classes with No Examples](/Coverage/CSharpVTKClassesNotUsed.md), please add examples in your area of expertise!
 
 ## Simple Operations
 
