@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-
 import math
 
 import vtk
 
 # Available surfaces are:
-SURFACE_TYPE = {"TORUS", "PARAMETRIC_HILLS", "PARAMETRIC_TORUS"}
+SURFACE_TYPE = {'TORUS', 'PARAMETRIC_HILLS', 'PARAMETRIC_TORUS'}
 
 
 def WritePNG(ren, fn, magnification=1):
@@ -418,24 +416,24 @@ def DisplaySurface(st):
     """
     surface = st.upper()
     if not (surface in SURFACE_TYPE):
-        print(st, "is not a surface.")
+        print(st, 'is not a surface.')
         iren = vtk.vtkRenderWindowInteractor()
         return iren
 
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [179, 204, 255, 255])
+    colors.SetColor('BkgColor', [179, 204, 255, 255])
 
     # ------------------------------------------------------------
     # Create the surface, lookup tables, contour filter etc.
     # ------------------------------------------------------------
     src = vtk.vtkPolyData()
-    if surface == "TORUS":
+    if surface == 'TORUS':
         src = MakeTorus()
-    elif surface == "PARAMETRIC_TORUS":
+    elif surface == 'PARAMETRIC_TORUS':
         src = MakeParametricTorus()
-    elif surface == "PARAMETRIC_HILLS":
+    elif surface == 'PARAMETRIC_HILLS':
         src = Clipper(MakeParametricHills(), 0.5, 0.5, 0.0)
     # Here we are assuming that the active scalars are the curvatures.
     curvatureName = src.GetPointData().GetScalars().GetName()
@@ -449,7 +447,7 @@ def DisplaySurface(st):
     lut = MakeLUT()
     numberOfBands = lut.GetNumberOfTableValues()
     bands = MakeBands(scalarRange, numberOfBands, False)
-    if surface == "PARAMETRIC_HILLS":
+    if surface == 'PARAMETRIC_HILLS':
         # Comment this out if you want to see how allocating
         # equally spaced bands works.
         bands = MakeCustomBands(scalarRange, numberOfBands)
@@ -508,7 +506,7 @@ def DisplaySurface(st):
 
     edgeActor = vtk.vtkActor()
     edgeActor.SetMapper(edgeMapper)
-    edgeActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    edgeActor.GetProperty().SetColor(colors.GetColor3d('Black'))
     edgeActor.RotateX(-45)
     edgeActor.RotateZ(45)
 
@@ -550,8 +548,10 @@ def DisplaySurface(st):
     ren.AddViewProp(glyphActor)
     ren.AddActor2D(scalarBar)
 
-    ren.SetBackground(colors.GetColor3d("BkgColor"))
+    ren.SetBackground(colors.GetColor3d('BkgColor'))
     renWin.SetSize(800, 800)
+    renWin.SetWindowName('CurvatureBandsWithGlyphs')
+
     renWin.Render()
 
     ren.GetActiveCamera().Zoom(1.5)
@@ -561,10 +561,10 @@ def DisplaySurface(st):
 
 if __name__ == '__main__':
     # interactor = vtk.vtkRenderWindowInteractor()
-    # interactor = DisplaySurface("TORUS")
-    # interactor = DisplaySurface("PARAMETRIC_TORUS")
-    interactor = DisplaySurface("PARAMETRIC_HILLS")
+    # interactor = DisplaySurface('TORUS')
+    # interactor = DisplaySurface('PARAMETRIC_TORUS')
+    interactor = DisplaySurface('PARAMETRIC_HILLS')
     interactor.Render()
     interactor.Start()
     # WritePNG(interactor.GetRenderWindow().GetRenderers().GetFirstRenderer(),
-    #               "CurvatureBandsWithGlyphs.png")
+    #               'CurvatureBandsWithGlyphs.png')

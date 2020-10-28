@@ -6,11 +6,11 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    backgroundColor = colors.GetColor3d("Indigo")
+    backgroundColor = colors.GetColor3d("DarkSlateGray")
     actorColor = colors.GetColor3d("Tomato")
     axis1Color = colors.GetColor3d("Salmon")
     axis2Color = colors.GetColor3d("PaleGreen")
-    axis3Color = colors.GetColor3d("DodgerBlue")
+    axis3Color = colors.GetColor3d("LightSkyBlue")
 
     # Create a superquadric
     superquadricSource = vtk.vtkSuperquadricSource()
@@ -66,12 +66,13 @@ def main():
 
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
+    renderWindow.SetWindowName('CubeAxesActor')
 
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
-    renderWindow.SetWindowName('CubeAxesActor')
     renderWindow.Render()
+    renderer.GetActiveCamera().Zoom(0.8)
     renderWindowInteractor.Start()
 
 

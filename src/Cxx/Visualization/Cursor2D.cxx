@@ -1,72 +1,63 @@
-#include <vtkSmartPointer.h>
+#include <vtkActor.h>
 #include <vtkCursor2D.h>
-
-#include <vtkSphereSource.h>
-#include <vtkProperty.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
- 
-#include <vtkNamedColors.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(0.0, 0.0, 0.0);
   sphereSource->SetRadius(5.0);
   sphereSource->Update();
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
- 
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
- 
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
+
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("Cursor2D");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
- 
+
   // Add the actor to the scene
   renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
- 
-  vtkSmartPointer<vtkCursor2D> cursor = 
-    vtkSmartPointer<vtkCursor2D>::New();
-  cursor->SetModelBounds(-10,10,-10,10,0,0);
+  vtkNew<vtkCursor2D> cursor;
+  cursor->SetModelBounds(-10, 10, -10, 10, 0, 0);
   cursor->AllOn();
-  cursor->SetFocalPoint (5.0, 5.0, 0.0);
+  cursor->SetFocalPoint(5.0, 5.0, 0.0);
   cursor->OutlineOn();
   cursor->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> cursorMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cursorMapper;
   cursorMapper->SetInputConnection(cursor->GetOutputPort());
-  vtkSmartPointer<vtkActor> cursorActor = 
-    vtkSmartPointer<vtkActor>::New();
-  cursorActor->GetProperty()->SetColor(1,0,0);
+  vtkNew<vtkActor> cursorActor;
+  cursorActor->GetProperty()->SetColor(colors->GetColor3d("Red").GetData());
   cursorActor->SetMapper(cursorMapper);
   renderer->AddActor(cursorActor);
-   
+
   // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();
- 
+
   return EXIT_SUCCESS;
 }
