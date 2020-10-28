@@ -13,5 +13,6 @@ def main():
     Hanoi.gv.configuration = 1
     Hanoi.hanoi()
 
+
 if __name__ == '__main__':
     main()

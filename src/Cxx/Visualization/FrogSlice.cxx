@@ -4,6 +4,7 @@
 #include <vtkLookupTable.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlaneSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPolyDataNormals.h>
@@ -11,6 +12,7 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
 #include <vtkTexture.h>
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
@@ -20,7 +22,7 @@
 #include <string>
 
 namespace {
-void CreateFrogLut(vtkSmartPointer<vtkLookupTable>& colorLut);
+void CreateFrogLut(vtkLookupTable* colorLut);
 void SliceOrder(
     std::map<std::string, vtkSmartPointer<vtkTransform>>& sliceOrder);
 } // namespace
@@ -40,120 +42,99 @@ int main(int argc, char* argv[])
   std::map<std::string, vtkSmartPointer<vtkTransform>> sliceOrder;
   SliceOrder(sliceOrder);
 
+  vtkNew<vtkNamedColors> colors;
+
   // Now create the RenderWindow, Renderer and Interactor
   //
-  auto ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
-  auto ren2 =
-    vtkSmartPointer<vtkRenderer>::New();
-  auto ren3 =
-    vtkSmartPointer<vtkRenderer>::New();
-  auto renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren1;
+  vtkNew<vtkRenderer> ren2;
+  vtkNew<vtkRenderer> ren3;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
   renWin->AddRenderer(ren2);
   renWin->AddRenderer(ren3);
+  renWin->SetWindowName("FrogSlice");
 
-  auto iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  auto greyReader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
+  vtkNew<vtkMetaImageReader> greyReader;
   greyReader->SetFileName(argv[1]);
   greyReader->Update();
 
-  auto greyPadder =
-    vtkSmartPointer<vtkImageConstantPad>::New();
+  vtkNew<vtkImageConstantPad> greyPadder;
   greyPadder->SetInputConnection(greyReader->GetOutputPort());
   greyPadder->SetOutputWholeExtent(0, 511, 0, 511, sliceNumber, sliceNumber);
   greyPadder->SetConstant(0);
 
-  auto greyPlane =
-    vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> greyPlane;
 
-  auto greyTransform =
-    vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> greyTransform;
   greyTransform->SetTransform(sliceOrder["hfsi"]);
   greyTransform->SetInputConnection(greyPlane->GetOutputPort());
 
-  auto greyNormals =
-    vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> greyNormals;
   greyNormals->SetInputConnection(greyTransform->GetOutputPort());
   greyNormals->FlipNormalsOff();
 
-  auto wllut =
-    vtkSmartPointer<vtkWindowLevelLookupTable>::New();
+  vtkNew<vtkWindowLevelLookupTable> wllut;
   wllut->SetWindow(255);
   wllut->SetLevel(128);
   wllut->SetTableRange(0, 255);
   wllut->Build();
 
-  auto greyMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> greyMapper;
   greyMapper->SetInputConnection(greyPlane->GetOutputPort());
 
-  auto greyTexture =
-    vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkTexture> greyTexture;
   greyTexture->SetInputConnection(greyPadder->GetOutputPort());
   greyTexture->SetLookupTable(wllut);
   greyTexture->SetColorModeToMapScalars();
   greyTexture->InterpolateOn();
 
-  auto greyActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> greyActor;
   greyActor->SetMapper(greyMapper);
   greyActor->SetTexture(greyTexture);
 
-  auto segmentReader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
+  vtkNew<vtkMetaImageReader> segmentReader;
   segmentReader->SetFileName(argv[2]);
   segmentReader->Update();
 
-  auto segmentPadder =
-    vtkSmartPointer<vtkImageConstantPad>::New();
+  vtkNew<vtkImageConstantPad> segmentPadder;
   segmentPadder->SetInputConnection(segmentReader->GetOutputPort());
   segmentPadder->SetOutputWholeExtent(0, 511, 0, 511, sliceNumber, sliceNumber);
   segmentPadder->SetConstant(0);
 
-  auto segmentPlane =
-    vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> segmentPlane;
 
-  auto segmentTransform =
-    vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> segmentTransform;
   segmentTransform->SetTransform(sliceOrder["hfsi"]);
   segmentTransform->SetInputConnection(segmentPlane->GetOutputPort());
 
-  auto segmentNormals =
-    vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> segmentNormals;
   segmentNormals->SetInputConnection(segmentTransform->GetOutputPort());
   segmentNormals->FlipNormalsOn();
 
-  auto colorLut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> colorLut;
   colorLut->SetNumberOfColors(17);
   colorLut->SetTableRange(0, 16);
   colorLut->Build();
   CreateFrogLut(colorLut);
 
-  auto segmentMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> segmentMapper;
   segmentMapper->SetInputConnection(segmentPlane->GetOutputPort());
 
-  auto segmentTexture =
-    vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkTexture> segmentTexture;
   segmentTexture->SetInputConnection(segmentPadder->GetOutputPort());
   segmentTexture->SetLookupTable(colorLut);
   segmentTexture->SetColorModeToMapScalars();
   segmentTexture->InterpolateOff();
 
-  auto segmentActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> segmentActor;
   segmentActor->SetMapper(segmentMapper);
   segmentActor->SetTexture(segmentTexture);
 
-  auto segmentOverlayActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> segmentOverlayActor;
   segmentOverlayActor->SetMapper(segmentMapper);
   segmentOverlayActor->SetTexture(segmentTexture);
 
@@ -167,8 +148,7 @@ int main(int argc, char* argv[])
   ren2->SetViewport(.5, .5, 1, 1);
   ren2->AddActor(segmentActor);
 
-  auto cam1 =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> cam1;
   cam1->SetViewUp(0, -1, 0);
   cam1->SetPosition(0, 0, -1);
   ren1->SetActiveCamera(cam1);
@@ -180,9 +160,12 @@ int main(int argc, char* argv[])
 
   ren3->AddActor(greyActor);
   ren3->AddActor(segmentOverlayActor);
-  segmentOverlayActor->SetPosition(0, 0, -.01);
+  segmentOverlayActor->SetPosition(0, 0, -0.01);
 
-  ren3->SetBackground(0, 0, 0);
+  ren1->SetBackground(colors->GetColor3d("SlateGray").GetData());
+  ren2->SetBackground(colors->GetColor3d("SlateGray").GetData());
+  ren3->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
   ren3->SetViewport(0, 0, 1, .5);
 
   ren2->SetActiveCamera(ren1->GetActiveCamera());
@@ -195,20 +178,19 @@ int main(int argc, char* argv[])
 }
 
 namespace {
-void CreateFrogLut(vtkSmartPointer<vtkLookupTable>& colorLut)
+void CreateFrogLut(vtkLookupTable* colorLut)
 {
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-  colorLut->SetTableValue(0,
-                          colors->GetColor4d("black").GetData());
+  vtkNew<vtkNamedColors> colors;
+  colorLut->SetTableValue(0, colors->GetColor4d("black").GetData());
   colorLut->SetTableValue(1,
                           colors->GetColor4d("salmon").GetData()); // blood
   colorLut->SetTableValue(2,
                           colors->GetColor4d("beige").GetData()); // brain
   colorLut->SetTableValue(3,
                           colors->GetColor4d("orange").GetData()); // duodenum
-  colorLut->SetTableValue(4,
-                          colors->GetColor4d("misty_rose").GetData()); // eye_retina
+  colorLut->SetTableValue(
+      4,
+      colors->GetColor4d("misty_rose").GetData()); // eye_retina
   colorLut->SetTableValue(5,
                           colors->GetColor4d("white").GetData()); // eye_white
   colorLut->SetTableValue(6,
@@ -239,9 +221,9 @@ void SliceOrder(
   //
   // these transformations permute medical image data to maintain proper
   // orientation regardless of the acquisition order. After applying these
-  // transforms with vtkTransformFilter, a view up of 0,-1,0 will result in the
-  // body part facing the viewer. NOTE: some transformations have a -1 scale
-  // factor for one of the components.
+  // transforms with vtkTransformFilter, a view up of 0,-1,0 will result in
+  // the body part facing the viewer. NOTE: some transformations have a -1
+  // scale factor for one of the components.
   //       To ensure proper polygon orientation and normal direction, you must
   //       apply the vtkPolyDataNormals filter.
   //
@@ -254,82 +236,70 @@ void SliceOrder(
   // rl - right to left
   //
   double siMatrix[16] = {1, 0, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1};
-  auto si =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> si;
   si->SetMatrix(siMatrix);
   sliceOrder["si"] = si;
 
   double isMatrix[16] = {1, 0, 0, 0, 0, 0, -1, 0, 0, -1, 0, 0, 0, 0, 0, 1};
-  auto is =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> is;
   is->SetMatrix(isMatrix);
   sliceOrder["is"] = is;
 
-  auto ap =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> ap;
   ap->Scale(1, -1, 1);
   sliceOrder["ap"] = ap;
 
-  auto pa =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> pa;
   pa->Scale(1, -1, -1);
   sliceOrder["pa"] = pa;
 
   double lrMatrix[16] = {0, 0, -1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1};
-  auto lr =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> lr;
   lr->SetMatrix(lrMatrix);
   sliceOrder["lr"] = lr;
 
   double rlMatrix[16] = {0, 0, 1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1};
-  auto rl =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> rl;
   rl->SetMatrix(rlMatrix);
   sliceOrder["rl"] = rl;
 
   //
   // The previous transforms assume radiological views of the slices (viewed
-  // from the feet). other modalities such as physical sectioning may view from
-  // the head. these transforms modify the original with a 180 rotation about y
+  // from the feet). other modalities such as physical sectioning may view
+  // from the head. these transforms modify the original with a 180 rotation
+  // about y
   //
   double hfMatrix[16] = {-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1};
-  auto hf =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> hf;
   hf->SetMatrix(hfMatrix);
   sliceOrder["hf"] = hf;
 
-  auto hfsi =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> hfsi;
   hfsi->Concatenate(hf->GetMatrix());
   hfsi->Concatenate(si->GetMatrix());
   sliceOrder["hfsi"] = hfsi;
 
-  auto hfis =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> hfis;
   hfis->Concatenate(hf->GetMatrix());
   hfis->Concatenate(is->GetMatrix());
   sliceOrder["hfis"] = hfis;
 
-  auto hfap =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> hfap;
   hfap->Concatenate(hf->GetMatrix());
   hfap->Concatenate(ap->GetMatrix());
   sliceOrder["hfap"] = hfap;
 
-  auto hfpa =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> hfpa;
   hfpa->Concatenate(hf->GetMatrix());
   hfpa->Concatenate(pa->GetMatrix());
   sliceOrder["hfpa"] = hfpa;
 
-  auto hflr =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> hflr;
   hflr->Concatenate(hf->GetMatrix());
   hflr->Concatenate(lr->GetMatrix());
   sliceOrder[""] = hflr;
 
-  auto hfrl =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> hfrl;
   hfrl->Concatenate(hf->GetMatrix());
   hfrl->Concatenate(rl->GetMatrix());
   sliceOrder["hfrl"] = hfrl;

@@ -1,82 +1,71 @@
-#include <vtkSmartPointer.h>
-#include <vtkEdgePoints.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
+#include <vtkEdgePoints.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
 #include <array>
 #include <string>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    cout << "Usage: " << argv[0] << " file.mhd" << endl;
+    cout << "Usage: " << argv[0] << " file.mhd e.g. mhd 500" << endl;
     return EXIT_FAILURE;
   }
 
   double isoValue = 0.0;
-    if (argc > 2)
-    {
-      isoValue = std::stod(std::string(argv[2]));
-    }
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  if (argc > 2)
+  {
+    isoValue = std::stod(std::string(argv[2]));
+  }
+  vtkNew<vtkNamedColors> colors;
 
-  std::array<unsigned char , 4> isoColor{{255, 125, 64}};
-    colors->SetColor("IsoColor", isoColor.data());
-  std::array<unsigned char , 4> bkg{{51, 77, 102, 255}};
-    colors->SetColor("BkgColor", bkg.data());
+  std::array<unsigned char, 4> isoColor{{255, 125, 64}};
+  colors->SetColor("IsoColor", isoColor.data());
+  std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
+  colors->SetColor("BkgColor", bkg.data());
 
-  vtkSmartPointer<vtkRenderer> aRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> aRenderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(aRenderer);
+  renWin->SetWindowName("EdgePoints");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  vtkSmartPointer<vtkMetaImageReader> reader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
-  reader->SetFileName (argv[1]);
+  vtkNew<vtkMetaImageReader> reader;
+  reader->SetFileName(argv[1]);
 
-  vtkSmartPointer<vtkEdgePoints> isoExtractor =
-    vtkSmartPointer<vtkEdgePoints>::New();
+  vtkNew<vtkEdgePoints> isoExtractor;
   isoExtractor->SetInputConnection(reader->GetOutputPort());
   isoExtractor->SetValue(isoValue);
 
-  vtkSmartPointer<vtkPolyDataMapper> isoMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> isoMapper;
   isoMapper->SetInputConnection(isoExtractor->GetOutputPort());
   isoMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> iso =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> iso;
   iso->SetMapper(isoMapper);
-  iso->GetProperty()->SetDiffuseColor(colors->GetColor3d("IsoColor").GetData());
+  iso->GetProperty()->SetDiffuseColor(colors->GetColor3d("Bisque").GetData());
 
   // An outline provides context around the data.
   //
-  vtkSmartPointer<vtkOutlineFilter> outlineData =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outlineData;
   outlineData->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> mapOutline =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapOutline;
   mapOutline->SetInputConnection(outlineData->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outline =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outline;
   outline->SetMapper(mapOutline);
   outline->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
@@ -84,11 +73,10 @@ int main (int argc, char *argv[])
   // and Position form a vector direction. Later on (ResetCamera() method)
   // this vector is used to position the camera to look at the data in
   // this direction.
-  vtkSmartPointer<vtkCamera> aCamera =
-    vtkSmartPointer<vtkCamera>::New();
-  aCamera->SetViewUp (0, 0, -1);
-  aCamera->SetPosition (0, -1, 0);
-  aCamera->SetFocalPoint (0, 0, 0);
+  vtkNew<vtkCamera> aCamera;
+  aCamera->SetViewUp(0, 0, -1);
+  aCamera->SetPosition(0, -1, 0);
+  aCamera->SetFocalPoint(0, 0, 0);
   aCamera->ComputeViewPlaneNormal();
   aCamera->Azimuth(30.0);
   aCamera->Elevation(30.0);
@@ -99,8 +87,8 @@ int main (int argc, char *argv[])
   aRenderer->AddActor(outline);
   aRenderer->AddActor(iso);
   aRenderer->SetActiveCamera(aCamera);
-  aRenderer->ResetCamera ();
-  aCamera->Dolly(1.5);
+  aRenderer->ResetCamera();
+  aCamera->Dolly(1.1);
 
   // Set a background color for the renderer and set the size of the
   // render window (expressed in pixels).
@@ -113,7 +101,7 @@ int main (int argc, char *argv[])
   // near plane clips out objects in front of the plane; the far plane
   // clips out objects behind the plane. This way only what is drawn
   // between the planes is actually rendered.
-  aRenderer->ResetCameraClippingRange ();
+  aRenderer->ResetCameraClippingRange();
 
   // Initialize the event loop and then start it.
   renWin->Render();

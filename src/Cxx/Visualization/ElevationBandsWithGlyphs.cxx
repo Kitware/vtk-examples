@@ -8,6 +8,7 @@
 #include <vtkLookupTable.h>
 #include <vtkMaskPoints.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkParametricFunctionSource.h>
 #include <vtkParametricRandomHills.h>
 #include <vtkPlaneSource.h>
@@ -15,12 +16,11 @@
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkReverseSense.h>
 #include <vtkScalarBarActor.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkVariantArray.h>
 
@@ -45,25 +45,29 @@ enum SURFACE_TYPE
   PARAMETRIC_SURFACE
 };
 
-namespace
-{
+namespace {
 //! Some STL Utilities.
 class STLHelpers
 {
 public:
   //---------------------------------------------------------------------------
-  STLHelpers() {}
+  STLHelpers()
+  {
+  }
 
   //---------------------------------------------------------------------------
-  virtual ~STLHelpers() {}
+  virtual ~STLHelpers()
+  {
+  }
 
   //-----------------------------------------------------------------------------
   // An implementation of the C++11 next(iter,n) found in the header <iterator>.
   // ForwardIt must meet the requirements of ForwardIterator.
   // Return the nth successor of iterator it.
   template <typename ForwardIt>
-  ForwardIt Next(ForwardIt iter,
-    typename std::iterator_traits<ForwardIt>::difference_type n = 1)
+  ForwardIt
+  Next(ForwardIt iter,
+       typename std::iterator_traits<ForwardIt>::difference_type n = 1)
   {
     std::advance(iter, n);
     return iter;
@@ -88,8 +92,9 @@ public:
 @param nearestInteger - if True then [floor(min), ceil(max)] is used.
 @return A List consisting of [min, midpoint, max] for each band.
 */
-std::vector<std::vector<double>> MakeBands(
-  double const dR[2], int const& numberOfBands, bool const& nearestInteger);
+std::vector<std::vector<double>> MakeBands(double const dR[2],
+                                           int const& numberOfBands,
+                                           bool const& nearestInteger);
 
 //! Divide a range into integral bands
 /*!
@@ -149,8 +154,8 @@ void ReverseLUT(vtkLookupTable* lut, vtkLookupTable* lutr);
 @param src - the vtkPolyData source.
 @return The frequencies of the scalars in each band.
 */
-std::vector<int> Frequencies(
-  std::vector<std::vector<double>> const& bands, vtkPolyData* src);
+std::vector<int> Frequencies(std::vector<std::vector<double>> const& bands,
+                             vtkPolyData* src);
 
 //! Print the frequency table.
 /*!
@@ -164,8 +169,8 @@ void PrintFrequencies(std::vector<int>& freq);
 @param reverseNormals - if True the normals on the surface are reversed.
 @param glyph - The glyphs.
 */
-void MakeGlyphs(
-  vtkPolyData* src, bool const& reverseNormals, vtkGlyph3D* glyph);
+void MakeGlyphs(vtkPolyData* src, bool const& reverseNormals,
+                vtkGlyph3D* glyph);
 
 //! Assemble the surface for display.
 /*!
@@ -176,14 +181,13 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren);
 
 //-----------------------------------------------------------------------------
 
-}
+} // namespace
 
 //-----------------------------------------------------------------------------
 //! Make and display the surface.
-int main(int, char* [])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   // Select the surface you want displayed.
   // Display(PLANE, iren);
   // Display(SPHERE, iren);
@@ -194,11 +198,11 @@ int main(int, char* [])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
+namespace {
 //-----------------------------------------------------------------------------
-std::vector<std::vector<double>> MakeBands(
-  double const dR[2], int const& numberOfBands, bool const& nearestInteger)
+std::vector<std::vector<double>> MakeBands(double const dR[2],
+                                           int const& numberOfBands,
+                                           bool const& nearestInteger)
 {
   std::vector<std::vector<double>> bands;
   if ((dR[1] < dR[0]) || (numberOfBands <= 0))
@@ -293,8 +297,7 @@ void MakeElevations(vtkPolyData* src, vtkPolyData* elev)
 {
   double bounds[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
   src->GetBounds(bounds);
-  vtkSmartPointer<vtkElevationFilter> elevFilter =
-    vtkSmartPointer<vtkElevationFilter>::New();
+  vtkNew<vtkElevationFilter> elevFilter;
   elevFilter->SetInputData(src);
   elevFilter->SetLowPoint(0, bounds[2], 0);
   elevFilter->SetHighPoint(0, bounds[3], 0);
@@ -306,8 +309,7 @@ void MakeElevations(vtkPolyData* src, vtkPolyData* elev)
 //-----------------------------------------------------------------------------
 void MakeSphere(vtkPolyData* src)
 {
-  vtkSmartPointer<vtkSphereSource> source =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> source;
   source->SetCenter(0.0, 0.0, 0.0);
   source->SetRadius(10.0);
   source->SetThetaResolution(32);
@@ -319,8 +321,7 @@ void MakeSphere(vtkPolyData* src)
 //-----------------------------------------------------------------------------
 void MakePlane(vtkPolyData* src)
 {
-  vtkSmartPointer<vtkPlaneSource> source =
-    vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> source;
   source->SetOrigin(-10.0, -10.0, 0.0);
   source->SetPoint2(-10.0, 10.0, 0.0);
   source->SetPoint1(10.0, -10.0, 0.0);
@@ -333,8 +334,7 @@ void MakePlane(vtkPolyData* src)
 //-----------------------------------------------------------------------------
 void MakeParametricSurface(vtkPolyData* src)
 {
-  vtkSmartPointer<vtkParametricRandomHills> fn =
-    vtkSmartPointer<vtkParametricRandomHills>::New();
+  vtkNew<vtkParametricRandomHills> fn;
   fn->AllowRandomGenerationOn();
   fn->SetRandomSeed(1);
   fn->SetNumberOfHills(30);
@@ -345,8 +345,7 @@ void MakeParametricSurface(vtkPolyData* src)
     fn->ClockwiseOrderingOff();
   }
 
-  vtkSmartPointer<vtkParametricFunctionSource> source =
-    vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricFunctionSource> source;
   source->SetParametricFunction(fn);
   source->SetUResolution(50);
   source->SetVResolution(50);
@@ -362,8 +361,7 @@ void MakeParametricSurface(vtkPolyData* src)
 void MakeLUT(vtkLookupTable* lut)
 {
   // Make the lookup table.
-  vtkSmartPointer<vtkColorSeries> colorSeries =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> colorSeries;
   // Select a color scheme.
   int colorSeriesEnum;
   // colorSeriesEnum = colorSeries->BREWER_DIVERGING_BROWN_BLUE_GREEN_9;
@@ -402,8 +400,8 @@ void ReverseLUT(vtkLookupTable* lut, vtkLookupTable* lutr)
 }
 
 //-----------------------------------------------------------------------------
-std::vector<int> Frequencies(
-  std::vector<std::vector<double>> const& bands, vtkPolyData* src)
+std::vector<int> Frequencies(std::vector<std::vector<double>> const& bands,
+                             vtkPolyData* src)
 {
   std::vector<int> freq(bands.size(), 0);
   vtkIdType tuples = src->GetPointData()->GetScalars()->GetNumberOfTuples();
@@ -452,10 +450,8 @@ void MakeGlyphs(vtkPolyData* src, bool const& reverseNormals, vtkGlyph3D* glyph)
   // Sometimes the contouring algorithm can create a volume whose gradient
   // vector and ordering of polygon(using the right hand rule) are
   // inconsistent. vtkReverseSense cures this problem.
-  vtkSmartPointer<vtkReverseSense> reverse =
-    vtkSmartPointer<vtkReverseSense>::New();
-  vtkSmartPointer<vtkMaskPoints> maskPts =
-    vtkSmartPointer<vtkMaskPoints>::New();
+  vtkNew<vtkReverseSense> reverse;
+  vtkNew<vtkMaskPoints> maskPts;
   maskPts->SetOnRatio(5);
   maskPts->RandomModeOn();
   if (reverseNormals)
@@ -471,8 +467,7 @@ void MakeGlyphs(vtkPolyData* src, bool const& reverseNormals, vtkGlyph3D* glyph)
   }
 
   // Source for the glyph filter
-  vtkSmartPointer<vtkArrowSource> arrow =
-    vtkSmartPointer<vtkArrowSource>::New();
+  vtkNew<vtkArrowSource> arrow;
   arrow->SetTipResolution(16);
   arrow->SetTipLength(0.3);
   arrow->SetTipRadius(0.1);
@@ -492,55 +487,48 @@ void MakeGlyphs(vtkPolyData* src, bool const& reverseNormals, vtkGlyph3D* glyph)
 void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
 {
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
-  std::array<unsigned char , 4> bkg{{179, 204, 255, 255}};
-    colors->SetColor("BkgColor", bkg.data());
+  std::array<unsigned char, 4> bkg{{179, 204, 255, 255}};
+  colors->SetColor("BkgColor", bkg.data());
 
   // ------------------------------------------------------------
   // Create the surface, lookup tables, contour filter etc.
   // ------------------------------------------------------------
-  vtkSmartPointer<vtkPolyData> src =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> src;
   switch (st)
   {
-    case PLANE:
-    {
-      MakePlane(src);
-      break;
-    }
-    case SPHERE:
-    {
-      MakeSphere(src);
-      break;
-    }
-    case PARAMETRIC_SURFACE:
-    {
-      MakeParametricSurface(src);
-      // The scalars are named "Scalars"by default
-      // in the parametric surfaces, so change the name.
-      src->GetPointData()->GetScalars()->SetName("Elevation");
-      break;
-    }
-    default:
-    {
-      std::cout << "No surface specified." << std::endl;
-      return;
-    }
+  case PLANE: {
+    MakePlane(src);
+    break;
+  }
+  case SPHERE: {
+    MakeSphere(src);
+    break;
+  }
+  case PARAMETRIC_SURFACE: {
+    MakeParametricSurface(src);
+    // The scalars are named "Scalars"by default
+    // in the parametric surfaces, so change the name.
+    src->GetPointData()->GetScalars()->SetName("Elevation");
+    break;
+  }
+  default: {
+    std::cout << "No surface specified." << std::endl;
+    return;
+  }
   }
   double scalarRange[2];
   src->GetScalarRange(scalarRange);
 
-  vtkSmartPointer<vtkLookupTable> lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   MakeLUT(lut);
   lut->SetTableRange(scalarRange);
   vtkIdType numberOfBands = lut->GetNumberOfTableValues();
 
   std::vector<std::vector<double>> bands =
-    MakeBands(scalarRange, numberOfBands, false);
+      MakeBands(scalarRange, numberOfBands, false);
   // PrintBands(bands);
 
   // Let's do a frequency table.
@@ -559,8 +547,7 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
   }
 
   // Annotate
-  vtkSmartPointer<vtkVariantArray> values =
-    vtkSmartPointer<vtkVariantArray>::New();
+  vtkNew<vtkVariantArray> values;
   for (size_t i = 0; i < labels.size(); ++i)
   {
     values->InsertNextValue(vtkVariant(labels[i]));
@@ -571,13 +558,11 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
   }
 
   // Create a lookup table with the colors reversed.
-  vtkSmartPointer<vtkLookupTable> lutr =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lutr;
   ReverseLUT(lut, lutr);
 
   // Create the contour bands.
-  vtkSmartPointer<vtkBandedPolyDataContourFilter> bcf =
-    vtkSmartPointer<vtkBandedPolyDataContourFilter>::New();
+  vtkNew<vtkBandedPolyDataContourFilter> bcf;
   bcf->SetInputData(src);
   // Use either the minimum or maximum value for each band.
   int i = 0;
@@ -592,42 +577,36 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
   bcf->GenerateContourEdgesOn();
 
   // Generate the glyphs on the original surface.
-  vtkSmartPointer<vtkGlyph3D> glyph =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> glyph;
   MakeGlyphs(src, false, glyph);
 
   // ------------------------------------------------------------
   // Create the mappers and actors
   // ------------------------------------------------------------
 
-  vtkSmartPointer<vtkPolyDataMapper> srcMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> srcMapper;
   srcMapper->SetInputConnection(bcf->GetOutputPort());
   srcMapper->SetScalarRange(scalarRange);
   srcMapper->SetLookupTable(lut);
   srcMapper->SetScalarModeToUseCellData();
 
-  vtkSmartPointer<vtkActor> srcActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> srcActor;
   srcActor->SetMapper(srcMapper);
   srcActor->RotateX(-45);
   srcActor->RotateZ(45);
 
   // Create contour edges
-  vtkSmartPointer<vtkPolyDataMapper> edgeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> edgeMapper;
   edgeMapper->SetInputData(bcf->GetContourEdgesOutput());
   edgeMapper->SetResolveCoincidentTopologyToPolygonOffset();
 
-  vtkSmartPointer<vtkActor> edgeActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> edgeActor;
   edgeActor->SetMapper(edgeMapper);
   edgeActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
   edgeActor->RotateX(-45);
   edgeActor->RotateZ(45);
 
-  vtkSmartPointer<vtkPolyDataMapper> glyphMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> glyphMapper;
   glyphMapper->SetInputConnection(glyph->GetOutputPort());
   glyphMapper->SetScalarModeToUsePointFieldData();
   glyphMapper->SetColorModeToMapScalars();
@@ -638,15 +617,13 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
   // use whatever lookup table you like.
   glyphMapper->SetScalarRange(scalarRange);
 
-  vtkSmartPointer<vtkActor> glyphActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> glyphActor;
   glyphActor->SetMapper(glyphMapper);
   glyphActor->RotateX(-45);
   glyphActor->RotateZ(45);
 
   // Add a scalar bar->
-  vtkSmartPointer<vtkScalarBarActor> scalarBar =
-    vtkSmartPointer<vtkScalarBarActor>::New();
+  vtkNew<vtkScalarBarActor> scalarBar;
   // This LUT puts the lowest value at the top of the scalar bar.
   // scalarBar->SetLookupTable(lut);
   // Use this LUT if you want the highest value at the top.
@@ -656,10 +633,8 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
   // ------------------------------------------------------------
   // Create the RenderWindow, Renderer and Interactor
   // ------------------------------------------------------------
-  vtkSmartPointer<vtkRenderer> ren =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
 
   renWin->AddRenderer(ren);
   iren->SetRenderWindow(renWin);
@@ -672,9 +647,10 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
 
   ren->SetBackground(colors->GetColor3d("BkgColor").GetData());
   renWin->SetSize(800, 800);
+  renWin->SetWindowName("ElevationBandsWithGlyphs");
   renWin->Render();
 
   ren->GetActiveCamera()->Zoom(1.5);
 }
 
-}
+} // namespace

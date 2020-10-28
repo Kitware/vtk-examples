@@ -5,6 +5,7 @@
 
 import vtk
 
+
 def view_frog(fileName, tissues):
     colors = vtk.vtkNamedColors()
 
@@ -20,12 +21,11 @@ def view_frog(fileName, tissues):
 
     for tissue in tissues:
         actor = CreateFrogActor(fileName, tissueMap[tissue])
-        actor.GetProperty().SetDiffuseColor( colorLut.GetTableValue(tissueMap[tissue])[:3])
+        actor.GetProperty().SetDiffuseColor(colorLut.GetTableValue(tissueMap[tissue])[:3])
         actor.GetProperty().SetSpecular(.5)
         actor.GetProperty().SetSpecularPower(10)
         renderer.AddActor(actor)
         # print("Tissue:", tissue, ", Label:", tissueMap[tissue])
-
 
     renderer.GetActiveCamera().SetViewUp(0, 0, -1)
     renderer.GetActiveCamera().SetPosition(0, -1, 0)
@@ -41,6 +41,7 @@ def view_frog(fileName, tissues):
     renderWindow.Render()
 
     renderWindowInteractor.Start()
+
 
 def main():
     fileName, tissues = get_program_parameters()
@@ -58,7 +59,7 @@ def get_program_parameters():
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('filename', help='frogtissue.mhd.')
-    parser.add_argument('tissues', nargs='+',  help='List of one or more tissues.')
+    parser.add_argument('tissues', nargs='+', help='List of one or more tissues.')
     args = parser.parse_args()
     return args.filename, args.tissues
 

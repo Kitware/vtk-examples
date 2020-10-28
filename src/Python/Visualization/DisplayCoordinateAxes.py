@@ -21,11 +21,12 @@ def main():
     # Create an actor
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
+    actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     # A renderer and render window
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Display Coordinate Axes")
+    renderWindow.SetWindowName('DisplayCoordinateAxes')
     renderWindow.AddRenderer(renderer)
 
     # An interactor
@@ -34,13 +35,13 @@ def main():
 
     # Add the actors to the scene
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
     axes = vtk.vtkAxesActor()
 
     widget = vtk.vtkOrientationMarkerWidget()
     rgba = [0] * 4
-    colors.GetColor("Carrot", rgba)
+    colors.GetColor('Carrot', rgba)
     widget.SetOutlineColor(rgba[0], rgba[1], rgba[2])
     widget.SetOrientationMarker(axes)
     widget.SetInteractor(renderWindowInteractor)

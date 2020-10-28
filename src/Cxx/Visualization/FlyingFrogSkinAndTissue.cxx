@@ -107,9 +107,9 @@ int main(int argc, char* argv[])
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
+  // The skin.
   if (!noSkin)
   {
-    // The skin.
     vtkNew<vtkActor> skinActor;
     skinActor->GetProperty()->SetColor(
         colors->GetColor3d("LimeGreen").GetData());

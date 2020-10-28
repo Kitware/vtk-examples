@@ -45,7 +45,6 @@ pegStack = [[], [], []]
 
 
 def hanoi():
-
     colors = vtk.vtkNamedColors()
 
     # Create the renderer and render window interactor.
@@ -150,6 +149,7 @@ def hanoi():
     # Render the image.
     iren.Initialize()
     iren.Start()
+
 
 def main():
     maxPucks = 20
