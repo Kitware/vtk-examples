@@ -1,57 +1,49 @@
-#include <vtkSmartPointer.h>
-#include <vtkCubeAxesActor.h>
-
-#include <vtkPolyDataMapper.h>
-#include <vtkTextProperty.h>
+#include <vtkActor.h>
 #include <vtkActorCollection.h>
 #include <vtkCamera.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkProperty.h>
-#include <vtkSuperquadricSource.h>
-#include <vtkActor.h>
-
-#include <vtkNamedColors.h>
 #include <vtkColor.h>
+#include <vtkCubeAxesActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSuperquadricSource.h>
+#include <vtkTextProperty.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
   // Define colors for this example
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkColor3d backgroundColor = colors->GetColor3d("Indigo");
+  vtkColor3d backgroundColor = colors->GetColor3d("DarkSlateGray");
   vtkColor3d actorColor = colors->GetColor3d("Tomato");
   vtkColor3d axis1Color = colors->GetColor3d("Salmon");
   vtkColor3d axis2Color = colors->GetColor3d("PaleGreen");
-  vtkColor3d axis3Color = colors->GetColor3d("DodgerBlue");
+  vtkColor3d axis3Color = colors->GetColor3d("LightSkyBlue");
 
   // Create a superquadric
-  vtkSmartPointer<vtkSuperquadricSource> superquadricSource = 
-    vtkSmartPointer<vtkSuperquadricSource>::New();
+  vtkNew<vtkSuperquadricSource> superquadricSource;
   superquadricSource->SetPhiRoundness(3.1);
   superquadricSource->SetThetaRoundness(1.0);
   superquadricSource->Update(); // needed to GetBounds later
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(superquadricSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> superquadricActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> superquadricActor;
   superquadricActor->SetMapper(mapper);
   superquadricActor->GetProperty()->SetDiffuseColor(actorColor.GetData());
   superquadricActor->GetProperty()->SetDiffuse(.7);
   superquadricActor->GetProperty()->SetSpecular(.7);
   superquadricActor->GetProperty()->SetSpecularPower(50.0);
-  
-  vtkSmartPointer<vtkCubeAxesActor> cubeAxesActor =
-    vtkSmartPointer<vtkCubeAxesActor>::New();
+
+  vtkNew<vtkCubeAxesActor> cubeAxesActor;
   cubeAxesActor->SetUseTextActor3D(1);
   cubeAxesActor->SetBounds(superquadricSource->GetOutput()->GetBounds());
   cubeAxesActor->SetCamera(renderer->GetActiveCamera());
@@ -72,10 +64,9 @@ int main(int, char *[])
   cubeAxesActor->SetGridLineLocation(VTK_GRID_LINES_FURTHEST);
 #endif
 #if VTK_MAJOR_VERSION > 6
-  cubeAxesActor->SetGridLineLocation(
-    cubeAxesActor->VTK_GRID_LINES_FURTHEST);
+  cubeAxesActor->SetGridLineLocation(cubeAxesActor->VTK_GRID_LINES_FURTHEST);
 #endif
-  
+
   cubeAxesActor->XAxisMinorTickVisibilityOff();
   cubeAxesActor->YAxisMinorTickVisibilityOff();
   cubeAxesActor->ZAxisMinorTickVisibilityOff();
@@ -89,17 +80,16 @@ int main(int, char *[])
   renderer->ResetCamera();
   renderer->SetBackground(backgroundColor.GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
-
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  renderWindowInteractor->SetRenderWindow(renderWindow);
   renderWindow->SetWindowName("CubeAxesActor");
 
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  renderWindowInteractor->SetRenderWindow(renderWindow);
+
   renderWindow->Render();
+  renderer->GetActiveCamera()->Zoom(0.8);
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;

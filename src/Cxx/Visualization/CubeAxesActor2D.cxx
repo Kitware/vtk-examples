@@ -1,29 +1,33 @@
-#include <vtkNew.h>
-#include <vtkPlatonicSolidSource.h>
-#include <vtkPolyDataNormals.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkLODActor.h>
-#include <vtkOutlineFilter.h>
 #include <vtkActor.h>
 #include <vtkCamera.h>
+#include <vtkCubeAxesActor2D.h>
+#include <vtkLODActor.h>
 #include <vtkLight.h>
-#include <vtkRenderer.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkOutlineFilter.h>
+#include <vtkPlatonicSolidSource.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkPolyDataNormals.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkProperty.h>
+#include <vtkRenderer.h>
 #include <vtkTextProperty.h>
-#include <vtkCubeAxesActor2D.h>
 
 // The vtkCubeAxesActor2D draws axes on the bounding box of the data set and
 // labels the axes with x-y-z coordinates.
 
 //----------------------------------------------------------------------------//
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   vtkNew<vtkPlatonicSolidSource> icosahedron;
   icosahedron->SetSolidTypeToIcosahedron();
 
-  // Create a vtkPolyDataNormals filter to calculate the normals of the data set.
+  // Create a vtkPolyDataNormals filter to calculate the normals of the data
+  // set.
   vtkNew<vtkPolyDataNormals> normals;
   normals->SetInputConnection(icosahedron->GetOutputPort());
 
@@ -34,7 +38,8 @@ int main(int, char *[])
 
   vtkNew<vtkLODActor> icosahedron_actor;
   icosahedron_actor->SetMapper(icosahedron_mapper.GetPointer());
-  icosahedron_actor->GetProperty()->SetColor(0.8, .1, .9);
+  icosahedron_actor->GetProperty()->SetColor(
+      colors->GetColor3d("Plum").GetData());
 
   // Create a vtkOutlineFilter to draw the bounding box of the data set.
   // Also create the associated mapper and actor.
@@ -46,7 +51,7 @@ int main(int, char *[])
 
   vtkNew<vtkActor> outline_actor;
   outline_actor->SetMapper(map_outline.GetPointer());
-  outline_actor->GetProperty()->SetColor(0., 0., 0.);
+  outline_actor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
   // Create the Renderers.  Assign them the appropriate viewport
   // coordinates, active camera, and light.
@@ -65,8 +70,8 @@ int main(int, char *[])
   vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren.GetPointer());
   renWin->AddRenderer(ren2.GetPointer());
-  renWin->SetWindowName("VTK - Cube Axes");
-  renWin->SetSize(600, 300);
+  renWin->SetWindowName("CubeAxesActor2D");
+  renWin->SetSize(1200, 600);
 
   vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin.GetPointer());
@@ -77,12 +82,12 @@ int main(int, char *[])
   ren2->AddViewProp(icosahedron_actor.GetPointer());
   ren2->AddViewProp(outline_actor.GetPointer());
 
-  ren->SetBackground(0.1, 0.2, 0.4);
-  ren2->SetBackground(0.1, 0.2, 0.4);
+  ren->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
+  ren2->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
 
   // Create a text property for both cube axes
   vtkNew<vtkTextProperty> tprop;
-  tprop->SetColor(1, 1, 1);
+  tprop->SetColor(colors->GetColor3d("Yellow").GetData());
   tprop->ShadowOn();
   tprop->SetFontSize(20);
 

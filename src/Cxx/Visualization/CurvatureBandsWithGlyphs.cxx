@@ -12,6 +12,7 @@
 #include <vtkLookupTable.h>
 #include <vtkMaskPoints.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkParametricFunctionSource.h>
 #include <vtkParametricRandomHills.h>
 #include <vtkParametricTorus.h>
@@ -21,12 +22,11 @@
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkReverseSense.h>
 #include <vtkScalarBarActor.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkSuperquadricSource.h>
 #include <vtkTriangleFilter.h>
@@ -53,17 +53,20 @@ enum SURFACE_TYPE
   PARAMETRIC_TORUS
 };
 
-namespace
-{
+namespace {
 //! Some STL Utilities.
 class STLHelpers
 {
 public:
   //---------------------------------------------------------------------------
-  STLHelpers() {}
+  STLHelpers()
+  {
+  }
 
   //---------------------------------------------------------------------------
-  virtual ~STLHelpers() {}
+  virtual ~STLHelpers()
+  {
+  }
 
   //-----------------------------------------------------------------------------
   // Convert a string to lowercase.
@@ -71,14 +74,14 @@ public:
   {
     std::string s;
     std::transform(str.begin(), str.end(), std::back_inserter(s),
-      (int (*)(int))std::tolower);
+                   (int (*)(int))std::tolower);
     return s;
   }
 
   //-----------------------------------------------------------------------------
   // Replace all occurrences of old_value in a string with new_value.
   std::string ReplaceAll(std::string& str, const std::string& old_value,
-    const std::string& new_value)
+                         const std::string& new_value)
   {
     size_t start_pos = 0;
     while ((start_pos = str.find(old_value, start_pos)) != std::string::npos)
@@ -95,8 +98,9 @@ public:
   // ForwardIt must meet the requirements of ForwardIterator.
   // Return the nth successor of iterator it.
   template <typename ForwardIt>
-  ForwardIt Next(ForwardIt iter,
-    typename std::iterator_traits<ForwardIt>::difference_type n = 1)
+  ForwardIt
+  Next(ForwardIt iter,
+       typename std::iterator_traits<ForwardIt>::difference_type n = 1)
   {
     std::advance(iter, n);
     return iter;
@@ -121,8 +125,9 @@ public:
 @param nearestInteger - if True then [floor(min), ceil(max)] is used.
 @return A List consisting of [min, midpoint, max] for each band.
 */
-std::vector<std::vector<double>> MakeBands(
-  double const dR[2], int const& numberOfBands, bool const& nearestInteger);
+std::vector<std::vector<double>> MakeBands(double const dR[2],
+                                           int const& numberOfBands,
+                                           bool const& nearestInteger);
 
 //! Divide a range into custom bands
 /*!
@@ -135,8 +140,8 @@ like this: x = [[r1, r2], [r2, r3], [r3, r4]...]
 @param numberOfBands - the number of bands, a positive integer.
 @return A List consisting of [min, midpoint, max] for each band.
 */
-std::vector<std::vector<double>> MakeCustomBands(
-  double const dR[2], int const& numberOfBands);
+std::vector<std::vector<double>> MakeCustomBands(double const dR[2],
+                                                 int const& numberOfBands);
 
 //! Divide a range into integral bands
 /*!
@@ -190,7 +195,7 @@ this operation the source is clipped by the cube.
 @param clipped - clipped vtkPolyData.
 */
 void Clipper(vtkPolyData* src, double const& dx, double const& dy,
-  double const& dz, vtkPolyData* clipped);
+             double const& dz, vtkPolyData* clipped);
 
 //! Calculate curvatures.
 /*!
@@ -218,8 +223,8 @@ void ReverseLUT(vtkLookupTable* lut, vtkLookupTable* lutr);
 @param src - the vtkPolyData source.
 @return The frequencies of the scalars in each band.
 */
-std::vector<int> Frequencies(
-  std::vector<std::vector<double>> const& bands, vtkPolyData* src);
+std::vector<int> Frequencies(std::vector<std::vector<double>> const& bands,
+                             vtkPolyData* src);
 
 //! Print the frequency table.
 /*!
@@ -233,8 +238,8 @@ void PrintFrequencies(std::vector<int>& freq);
 @param reverseNormals - if True the normals on the surface are reversed.
 @param glyph - The glyphs.
 */
-void MakeGlyphs(
-  vtkPolyData* src, bool const& reverseNormals, vtkGlyph3D* glyph);
+void MakeGlyphs(vtkPolyData* src, bool const& reverseNormals,
+                vtkGlyph3D* glyph);
 
 //! Assemble the surface for display.
 /*!
@@ -244,14 +249,13 @@ void MakeGlyphs(
 void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren);
 //-----------------------------------------------------------------------------
 
-}
+} // namespace
 
 //-----------------------------------------------------------------------------
 //! Make and display the surface.
-int main(int, char* [])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   // Select the surface you want displayed.
   // Display(TORUS, iren);
   // Display(PARAMETRIC_TORUS, iren);
@@ -262,11 +266,11 @@ int main(int, char* [])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
+namespace {
 //-----------------------------------------------------------------------------
-std::vector<std::vector<double>> MakeBands(
-  double const dR[2], int const& numberOfBands, bool const& nearestInteger)
+std::vector<std::vector<double>> MakeBands(double const dR[2],
+                                           int const& numberOfBands,
+                                           bool const& nearestInteger)
 {
   std::vector<std::vector<double>> bands;
   if ((dR[1] < dR[0]) || (numberOfBands <= 0))
@@ -300,8 +304,8 @@ std::vector<std::vector<double>> MakeBands(
 }
 
 //-----------------------------------------------------------------------------
-std::vector<std::vector<double>> MakeCustomBands(
-  double const dR[2], int const& numberOfBands)
+std::vector<std::vector<double>> MakeCustomBands(double const dR[2],
+                                                 int const& numberOfBands)
 {
   std::vector<std::vector<double>> bands;
   if ((dR[1] < dR[0]) || (numberOfBands <= 0))
@@ -309,8 +313,8 @@ std::vector<std::vector<double>> MakeCustomBands(
     return bands;
   }
   // We can do this much better in c++11!
-  double myBands[][2] = {{-0.7, -0.05}, {-0.05, 0}, {0, 0.13}, {0.13, 1.07},
-    {1.07, 35.4}, {35.4, 37.1}};
+  double myBands[][2] = {{-0.7, -0.05}, {-0.05, 0},   {0, 0.13},
+                         {0.13, 1.07},  {1.07, 35.4}, {35.4, 37.1}};
   std::vector<std::vector<double>> x;
   for (int i = 0; i < 6; ++i)
   {
@@ -322,8 +326,8 @@ std::vector<std::vector<double>> MakeCustomBands(
   // Set the minimum to match the range minimum.
   x[0][0] = dR[0];
   size_t sz = (static_cast<size_t>(numberOfBands) < x.size())
-                ? static_cast<size_t>(numberOfBands)
-                : x.size();
+      ? static_cast<size_t>(numberOfBands)
+      : x.size();
   // Adjust the last band.
   if (x[sz - 1][0] > dR[1])
   {
@@ -403,8 +407,7 @@ void MakeElevations(vtkPolyData* src, vtkPolyData* elev)
 {
   double bounds[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
   src->GetBounds(bounds);
-  vtkSmartPointer<vtkElevationFilter> elevFilter =
-    vtkSmartPointer<vtkElevationFilter>::New();
+  vtkNew<vtkElevationFilter> elevFilter;
   elevFilter->SetInputData(src);
   elevFilter->SetLowPoint(0, bounds[2], 0);
   elevFilter->SetHighPoint(0, bounds[3], 0);
@@ -416,8 +419,7 @@ void MakeElevations(vtkPolyData* src, vtkPolyData* elev)
 //-----------------------------------------------------------------------------
 void MakeTorus(vtkPolyData* src)
 {
-  vtkSmartPointer<vtkSuperquadricSource> source =
-    vtkSmartPointer<vtkSuperquadricSource>::New();
+  vtkNew<vtkSuperquadricSource> source;
   source->SetCenter(0.0, 0.0, 0.0);
   source->SetCenter(1.0, 1.0, 1.0);
   source->SetPhiResolution(64);
@@ -430,21 +432,18 @@ void MakeTorus(vtkPolyData* src)
 
   // The quadric is made of strips, so pass it through a triangle filter as
   // the curvature filter only operates on polys
-  vtkSmartPointer<vtkTriangleFilter> tri =
-    vtkSmartPointer<vtkTriangleFilter>::New();
+  vtkNew<vtkTriangleFilter> tri;
   tri->SetInputConnection(source->GetOutputPort());
 
   // The quadric has nasty discontinuities from the way the edges are generated
   // so let's pass it though a CleanPolyDataFilter and merge any points which
   // are coincident, or very close
-  vtkSmartPointer<vtkCleanPolyData> cleaner =
-    vtkSmartPointer<vtkCleanPolyData>::New();
+  vtkNew<vtkCleanPolyData> cleaner;
   cleaner->SetInputConnection(tri->GetOutputPort());
   cleaner->SetTolerance(0.005);
   cleaner->Update();
 
-  vtkSmartPointer<vtkPolyData> elev =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> elev;
   MakeElevations(cleaner->GetOutput(), elev);
   CalculateCurvatures(elev, src);
 }
@@ -452,13 +451,11 @@ void MakeTorus(vtkPolyData* src)
 //-----------------------------------------------------------------------------
 void MakeParametricTorus(vtkPolyData* src)
 {
-  vtkSmartPointer<vtkParametricTorus> fn =
-    vtkSmartPointer<vtkParametricTorus>::New();
+  vtkNew<vtkParametricTorus> fn;
   fn->SetRingRadius(5);
   fn->SetCrossSectionRadius(2);
 
-  vtkSmartPointer<vtkParametricFunctionSource> source =
-    vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricFunctionSource> source;
   source->SetParametricFunction(fn);
   source->SetUResolution(50);
   source->SetVResolution(50);
@@ -474,8 +471,7 @@ void MakeParametricTorus(vtkPolyData* src)
 //-----------------------------------------------------------------------------
 void MakeParametricHills(vtkPolyData* src)
 {
-  vtkSmartPointer<vtkParametricRandomHills> fn =
-    vtkSmartPointer<vtkParametricRandomHills>::New();
+  vtkNew<vtkParametricRandomHills> fn;
   fn->AllowRandomGenerationOn();
   fn->SetRandomSeed(1);
   fn->SetNumberOfHills(30);
@@ -486,8 +482,7 @@ void MakeParametricHills(vtkPolyData* src)
     fn->ClockwiseOrderingOff();
   }
 
-  vtkSmartPointer<vtkParametricFunctionSource> source =
-    vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricFunctionSource> source;
   source->SetParametricFunction(fn);
   source->SetUResolution(50);
   source->SetVResolution(50);
@@ -502,43 +497,36 @@ void MakeParametricHills(vtkPolyData* src)
 
 //-----------------------------------------------------------------------------
 void Clipper(vtkPolyData* src, double const& dx, double const& dy,
-  double const& dz, vtkPolyData* clipped)
+             double const& dz, vtkPolyData* clipped)
 {
   double bounds[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
   src->GetBounds(bounds);
 
-  vtkSmartPointer<vtkPlane> plane1 =
-    vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane1;
   plane1->SetOrigin(bounds[0] + dx, 0, 0);
   plane1->SetNormal(1, 0, 0);
 
-  vtkSmartPointer<vtkPlane> plane2 =
-    vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane2;
   plane2->SetOrigin(bounds[1] - dx, 0, 0);
   plane2->SetNormal(-1, 0, 0);
 
-  vtkSmartPointer<vtkPlane> plane3 =
-    vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane3;
   plane3->SetOrigin(0, bounds[2] + dy, 0);
   plane3->SetNormal(0, 1, 0);
 
-  vtkSmartPointer<vtkPlane> plane4 =
-    vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane4;
   plane4->SetOrigin(0, bounds[3] - dy, 0);
   plane4->SetNormal(0, -1, 0);
 
-  vtkSmartPointer<vtkPlane> plane5 =
-    vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane5;
   plane5->SetOrigin(0, 0, bounds[4] + dz);
   plane5->SetNormal(0, 0, 1);
 
-  vtkSmartPointer<vtkPlane> plane6 =
-    vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane6;
   plane6->SetOrigin(0, 0, bounds[5] - dz);
   plane6->SetNormal(0, 0, -1);
 
-  vtkSmartPointer<vtkImplicitBoolean> clipFunction =
-    vtkSmartPointer<vtkImplicitBoolean>::New();
+  vtkNew<vtkImplicitBoolean> clipFunction;
   clipFunction->SetOperationTypeToUnion();
   clipFunction->AddFunction(plane1);
   clipFunction->AddFunction(plane2);
@@ -548,8 +536,7 @@ void Clipper(vtkPolyData* src, double const& dx, double const& dy,
   clipFunction->AddFunction(plane6);
 
   // Create clipper for the random hills
-  vtkSmartPointer<vtkClipPolyData> clipper =
-    vtkSmartPointer<vtkClipPolyData>::New();
+  vtkNew<vtkClipPolyData> clipper;
   clipper->SetClipFunction(clipFunction);
   clipper->SetInputData(src);
   clipper->GenerateClipScalarsOff();
@@ -563,8 +550,7 @@ void Clipper(vtkPolyData* src, double const& dx, double const& dy,
 void CalculateCurvatures(vtkPolyData* src, vtkPolyData* curv)
 {
   // Calculate the curvature.
-  vtkSmartPointer<vtkCurvatures> curvature =
-    vtkSmartPointer<vtkCurvatures>::New();
+  vtkNew<vtkCurvatures> curvature;
   curvature->SetCurvatureTypeToGaussian();
   curvature->SetInputData(src);
   curvature->Update();
@@ -575,8 +561,7 @@ void CalculateCurvatures(vtkPolyData* src, vtkPolyData* curv)
 void MakeLUT(vtkLookupTable* lut)
 {
   // Make the lookup table.
-  vtkSmartPointer<vtkColorSeries> colorSeries =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> colorSeries;
   // Select a color scheme.
   int colorSeriesEnum;
   // colorSeriesEnum = colorSeries->BREWER_DIVERGING_BROWN_BLUE_GREEN_9;
@@ -619,8 +604,8 @@ void ReverseLUT(vtkLookupTable* lut, vtkLookupTable* lutr)
 }
 
 //-----------------------------------------------------------------------------
-std::vector<int> Frequencies(
-  std::vector<std::vector<double>> const& bands, vtkPolyData* src)
+std::vector<int> Frequencies(std::vector<std::vector<double>> const& bands,
+                             vtkPolyData* src)
 {
   std::vector<int> freq(bands.size(), 0);
   vtkIdType tuples = src->GetPointData()->GetScalars()->GetNumberOfTuples();
@@ -669,10 +654,8 @@ void MakeGlyphs(vtkPolyData* src, bool const& reverseNormals, vtkGlyph3D* glyph)
   // Sometimes the contouring algorithm can create a volume whose gradient
   // vector and ordering of polygon(using the right hand rule) are
   // inconsistent. vtkReverseSense cures this problem.
-  vtkSmartPointer<vtkReverseSense> reverse =
-    vtkSmartPointer<vtkReverseSense>::New();
-  vtkSmartPointer<vtkMaskPoints> maskPts =
-    vtkSmartPointer<vtkMaskPoints>::New();
+  vtkNew<vtkReverseSense> reverse;
+  vtkNew<vtkMaskPoints> maskPts;
   maskPts->SetOnRatio(5);
   maskPts->RandomModeOn();
   if (reverseNormals)
@@ -688,8 +671,7 @@ void MakeGlyphs(vtkPolyData* src, bool const& reverseNormals, vtkGlyph3D* glyph)
   }
 
   // Source for the glyph filter
-  vtkSmartPointer<vtkArrowSource> arrow =
-    vtkSmartPointer<vtkArrowSource>::New();
+  vtkNew<vtkArrowSource> arrow;
   arrow->SetTipResolution(16);
   arrow->SetTipLength(0.3);
   arrow->SetTipRadius(0.1);
@@ -708,43 +690,36 @@ void MakeGlyphs(vtkPolyData* src, bool const& reverseNormals, vtkGlyph3D* glyph)
 void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
 {
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
-  std::array<unsigned char , 4> bkg{{179, 204, 255, 255}};
-    colors->SetColor("BkgColor", bkg.data());
+  std::array<unsigned char, 4> bkg{{179, 204, 255, 255}};
+  colors->SetColor("BkgColor", bkg.data());
 
   // ------------------------------------------------------------
   // Create the surface, lookup tables, contour filter etc.
   // ------------------------------------------------------------
-  vtkSmartPointer<vtkPolyData> src =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> src;
   switch (st)
   {
-    case TORUS:
-    {
-      MakeTorus(src);
-      break;
-    }
-    case PARAMETRIC_TORUS:
-    {
-      MakeParametricTorus(src);
-      break;
-    }
-    case PARAMETRIC_HILLS:
-    {
-      vtkSmartPointer<vtkPolyData> hills =
-        vtkSmartPointer<vtkPolyData>::New();
-      MakeParametricHills(hills);
-      Clipper(hills, 0.5, 0.5, 0.0, src);
-      break;
-    }
-    default:
-    {
-      std::cout << "No surface specified." << std::endl;
-      return;
-    }
+  case TORUS: {
+    MakeTorus(src);
+    break;
+  }
+  case PARAMETRIC_TORUS: {
+    MakeParametricTorus(src);
+    break;
+  }
+  case PARAMETRIC_HILLS: {
+    vtkNew<vtkPolyData> hills;
+    MakeParametricHills(hills);
+    Clipper(hills, 0.5, 0.5, 0.0, src);
+    break;
+  }
+  default: {
+    std::cout << "No surface specified." << std::endl;
+    return;
+  }
   }
   //  Here we are assuming that the active scalars are the curvatures.
   // in the parametric surfaces, so change the name.
@@ -760,8 +735,7 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
   scalarRange[0] = scalarRangeCurvatures[0];
   scalarRange[1] = scalarRangeCurvatures[1];
 
-  vtkSmartPointer<vtkLookupTable> lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   MakeLUT(lut);
   vtkIdType numberOfBands = lut->GetNumberOfTableValues();
   std::vector<std::vector<double>> bands;
@@ -798,8 +772,7 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
   }
 
   // Annotate
-  vtkSmartPointer<vtkVariantArray> values =
-    vtkSmartPointer<vtkVariantArray>::New();
+  vtkNew<vtkVariantArray> values;
   for (size_t i = 0; i < labels.size(); ++i)
   {
     values->InsertNextValue(vtkVariant(labels[i]));
@@ -810,13 +783,11 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
   }
 
   // Create a lookup table with the colors reversed.
-  vtkSmartPointer<vtkLookupTable> lutr =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lutr;
   ReverseLUT(lut, lutr);
 
   // Create the contour bands.
-  vtkSmartPointer<vtkBandedPolyDataContourFilter> bcf =
-    vtkSmartPointer<vtkBandedPolyDataContourFilter>::New();
+  vtkNew<vtkBandedPolyDataContourFilter> bcf;
   bcf->SetInputData(src);
   // Use either the minimum or maximum value for each band.
   int i = 0;
@@ -831,42 +802,36 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
   bcf->GenerateContourEdgesOn();
 
   // Generate the glyphs on the original surface.
-  vtkSmartPointer<vtkGlyph3D> glyph =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> glyph;
   MakeGlyphs(src, false, glyph);
 
   // ------------------------------------------------------------
   // Create the mappers and actors
   // ------------------------------------------------------------
 
-  vtkSmartPointer<vtkPolyDataMapper> srcMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> srcMapper;
   srcMapper->SetInputConnection(bcf->GetOutputPort());
   srcMapper->SetScalarRange(scalarRange);
   srcMapper->SetLookupTable(lut);
   srcMapper->SetScalarModeToUseCellData();
 
-  vtkSmartPointer<vtkActor> srcActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> srcActor;
   srcActor->SetMapper(srcMapper);
   srcActor->RotateX(-45);
   srcActor->RotateZ(45);
 
   // Create contour edges
-  vtkSmartPointer<vtkPolyDataMapper> edgeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> edgeMapper;
   edgeMapper->SetInputData(bcf->GetContourEdgesOutput());
   edgeMapper->SetResolveCoincidentTopologyToPolygonOffset();
 
-  vtkSmartPointer<vtkActor> edgeActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> edgeActor;
   edgeActor->SetMapper(edgeMapper);
   edgeActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
   edgeActor->RotateX(-45);
   edgeActor->RotateZ(45);
 
-  vtkSmartPointer<vtkPolyDataMapper> glyphMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> glyphMapper;
   glyphMapper->SetInputConnection(glyph->GetOutputPort());
   glyphMapper->SetScalarModeToUsePointFieldData();
   glyphMapper->SetColorModeToMapScalars();
@@ -877,15 +842,13 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
   // use whatever lookup table you like.
   glyphMapper->SetScalarRange(scalarRangeElevation);
 
-  vtkSmartPointer<vtkActor> glyphActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> glyphActor;
   glyphActor->SetMapper(glyphMapper);
   glyphActor->RotateX(-45);
   glyphActor->RotateZ(45);
 
   // Add a scalar bar->
-  vtkSmartPointer<vtkScalarBarActor> scalarBar =
-    vtkSmartPointer<vtkScalarBarActor>::New();
+  vtkNew<vtkScalarBarActor> scalarBar;
   // This LUT puts the lowest value at the top of the scalar bar.
   // scalarBar->SetLookupTable(lut);
   // Use this LUT if you want the highest value at the top.
@@ -895,10 +858,8 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
   // ------------------------------------------------------------
   // Create the RenderWindow, Renderer and Interactor
   // ------------------------------------------------------------
-  vtkSmartPointer<vtkRenderer> ren =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
 
   renWin->AddRenderer(ren);
   iren->SetRenderWindow(renWin);
@@ -911,10 +872,10 @@ void Display(SURFACE_TYPE st, vtkRenderWindowInteractor* iren)
 
   ren->SetBackground(colors->GetColor3d("BkgColor").GetData());
   renWin->SetSize(800, 800);
+  renWin->SetWindowName("CurvatureBandsWithGlyphs");
   renWin->Render();
 
   ren->GetActiveCamera()->Zoom(1.5);
 }
 
-
-}
+} // namespace
