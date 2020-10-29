@@ -1,35 +1,32 @@
-#include <vtkSmartPointer.h>
-#include <vtkRuledSurfaceFilter.h>
-
-#include <vtkParametricSpline.h>
-#include <vtkParametricFunctionSource.h>
-#include <vtkFrenetSerretFrame.h>
+#include <vtkActor.h>
 #include <vtkAppendPolyData.h>
+#include <vtkCamera.h>
 #include <vtkCleanPolyData.h>
-#include <vtkPolyDataNormals.h>
-
-#include <vtkFeatureEdges.h>
-#include <vtkStripper.h>
-#include <vtkPolyDataConnectivityFilter.h>
-
-#include <vtkMath.h>
-#include <vtkTransform.h>
-#include <vtkTransformPolyDataFilter.h>
-#include <vtkMatrix4x4.h>
 #include <vtkDiskSource.h>
+#include <vtkFeatureEdges.h>
+#include <vtkFrenetSerretFrame.h>
 #include <vtkLineSource.h>
+#include <vtkMath.h>
+#include <vtkMatrix4x4.h>
+#include <vtkNew.h>
+#include <vtkParametricFunctionSource.h>
+#include <vtkParametricSpline.h>
+#include <vtkPointData.h>
 #include <vtkPointSource.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
-#include <vtkPointData.h>
-
-#include <vtkProperty.h>
+#include <vtkPolyDataConnectivityFilter.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkCamera.h>
-#include <vtkActor.h>
+#include <vtkPolyDataNormals.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkRuledSurfaceFilter.h>
+#include <vtkSmartPointer.h>
+#include <vtkStripper.h>
+#include <vtkTransform.h>
+#include <vtkTransformPolyDataFilter.h>
 
 #include <vtkBYUReader.h>
 #include <vtkOBJReader.h>
@@ -40,44 +37,40 @@
 
 #include <vtksys/SystemTools.hxx>
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   // For testing
   vtkMath::RandomSeed(7859821);
   // Read a polydata
-  vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");;
-  
+  vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");
+  ;
+
   int numberOfContours = polyData->GetNumberOfLines();
   std::cout << "Number of contours: " << numberOfContours << std::endl;
 
   // Generate  some random points
-  int numberOfPoints = 10 ;
-  vtkSmartPointer<vtkPointSource> pointSource = 
-    vtkSmartPointer<vtkPointSource>::New();
+  int numberOfPoints = 10;
+  vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(numberOfPoints);
   pointSource->Update();
-  
+
   vtkPoints* points = pointSource->GetOutput()->GetPoints();
-    
-  vtkSmartPointer<vtkParametricSpline> spline = 
-    vtkSmartPointer<vtkParametricSpline>::New();
+
+  vtkNew<vtkParametricSpline> spline;
   spline->SetPoints(points);
 
-  vtkSmartPointer<vtkParametricFunctionSource> functionSource = 
-    vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricFunctionSource> functionSource;
   functionSource->SetParametricFunction(spline);
   functionSource->SetUResolution(50 * numberOfPoints);
   functionSource->SetVResolution(50 * numberOfPoints);
   functionSource->SetWResolution(50 * numberOfPoints);
 
   // Create the frame
-  vtkSmartPointer<vtkFrenetSerretFrame> frame =
-    vtkSmartPointer<vtkFrenetSerretFrame>::New();
+  vtkNew<vtkFrenetSerretFrame> frame;
   frame->SetInputConnection(functionSource->GetOutputPort());
   frame->ConsistentNormalsOn();
   frame->Update();
@@ -86,9 +79,9 @@ int main(int argc, char *argv[])
   frame->GetOutput()->GetPointData()->SetActiveVectors("FSTangents");
   frame->GetOutput()->GetPointData()->SetActiveVectors("FSBinormals");
 
-  vtkPoints *linePoints = frame->GetOutput()->GetPoints();
+  vtkPoints* linePoints = frame->GetOutput()->GetPoints();
 
-  std::vector<vtkSmartPointer<vtkAppendPolyData> >skeletons;
+  std::vector<vtkSmartPointer<vtkAppendPolyData>> skeletons;
   for (int i = 0; i < numberOfContours; ++i)
   {
     skeletons.push_back(vtkSmartPointer<vtkAppendPolyData>::New());
@@ -96,8 +89,7 @@ int main(int argc, char *argv[])
 
   for (int i = 0; i < linePoints->GetNumberOfPoints(); ++i)
   {
-    vtkSmartPointer<vtkTransform> transform =
-      vtkSmartPointer<vtkTransform>::New();
+    vtkNew<vtkTransform> transform;
 
     // Compute a basis
     double normalizedX[3];
@@ -111,8 +103,7 @@ int main(int argc, char *argv[])
     frame->GetOutput()->GetPointData()->GetVectors()->GetTuple(i, normalizedZ);
 
     // Create the direction cosine matrix
-    vtkSmartPointer<vtkMatrix4x4> matrix =
-      vtkSmartPointer<vtkMatrix4x4>::New();
+    vtkNew<vtkMatrix4x4> matrix;
     matrix->Identity();
     for (unsigned int j = 0; j < 3; ++j)
     {
@@ -121,24 +112,20 @@ int main(int argc, char *argv[])
       matrix->SetElement(j, 2, normalizedZ[j]);
     }
 
-    transform->Translate(linePoints->GetPoint(i)[0],
-                         linePoints->GetPoint(i)[1],
+    transform->Translate(linePoints->GetPoint(i)[0], linePoints->GetPoint(i)[1],
                          linePoints->GetPoint(i)[2]);
     transform->Scale(.02, .02, .02);
     transform->Concatenate(matrix);
 
-    vtkSmartPointer<vtkTransformPolyDataFilter> transformPD =
-      vtkSmartPointer<vtkTransformPolyDataFilter>::New();
-    vtkSmartPointer<vtkPolyData> polyDataCopy =
-      vtkSmartPointer<vtkPolyData>::New();
+    vtkNew<vtkTransformPolyDataFilter> transformPD;
+    vtkNew<vtkPolyData> polyDataCopy;
     polyDataCopy->DeepCopy(polyData);
 
     transformPD->SetTransform(transform);
     transformPD->SetInputData(polyDataCopy);
     transformPD->Update();
 
-    vtkSmartPointer<vtkPolyDataConnectivityFilter> contours =
-      vtkSmartPointer<vtkPolyDataConnectivityFilter>::New();
+    vtkNew<vtkPolyDataConnectivityFilter> contours;
     contours->SetInputConnection(transformPD->GetOutputPort());
     contours->Update();
     for (int r = 0; r < contours->GetNumberOfExtractedRegions(); ++r)
@@ -147,48 +134,39 @@ int main(int argc, char *argv[])
       contours->InitializeSpecifiedRegionList();
       contours->AddSpecifiedRegion(r);
       contours->Update();
-      vtkSmartPointer<vtkPolyData> skeleton =
-        vtkSmartPointer<vtkPolyData>::New();
+      vtkNew<vtkPolyData> skeleton;
       skeleton->DeepCopy(contours->GetOutput());
       skeletons[r]->AddInputData(skeleton);
     }
   }
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
   for (int i = 0; i < numberOfContours; ++i)
   {
-    vtkSmartPointer<vtkRuledSurfaceFilter> ruled = 
-      vtkSmartPointer<vtkRuledSurfaceFilter>::New();
+    vtkNew<vtkRuledSurfaceFilter> ruled;
     ruled->SetRuledModeToPointWalk();
     ruled->CloseSurfaceOff();
     ruled->SetOnRatio(1);
     ruled->SetDistanceFactor(10000000);
     ruled->SetInputConnection(skeletons[i]->GetOutputPort());
 
-    vtkSmartPointer<vtkPolyDataNormals> normals = 
-      vtkSmartPointer<vtkPolyDataNormals>::New();
+    vtkNew<vtkPolyDataNormals> normals;
     normals->SetInputConnection(ruled->GetOutputPort());
-    vtkSmartPointer<vtkPolyDataMapper> mapper = 
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputConnection(normals->GetOutputPort());
-    vtkSmartPointer<vtkProperty> backProp = 
-      vtkSmartPointer<vtkProperty>::New();
+    vtkNew<vtkProperty> backProp;
     backProp->SetColor(1.0, 0.3882, 0.278);
-    vtkSmartPointer<vtkActor> actor = 
-      vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> actor;
     actor->SetBackfaceProperty(backProp);
     actor->GetProperty()->SetColor(0.8900, 0.8100, 0.3400);
     actor->SetMapper(mapper);
     renderer->AddActor(actor);
-  }  
-  
+  }
+
   // Setup render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->SetBackground(.4, .5, .7);
@@ -203,43 +181,39 @@ int main(int argc, char *argv[])
   renderWindow->SetSize(512, 512);
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
-  std::string extension = vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
+  std::string extension =
+      vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    vtkSmartPointer<vtkPLYReader> reader =
-      vtkSmartPointer<vtkPLYReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPLYReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
 
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
 
     // Center the data
-    vtkSmartPointer<vtkTransform> transform =
-      vtkSmartPointer<vtkTransform>::New();
+    vtkNew<vtkTransform> transform;
     std::cout << reader->GetOutput()->GetCenter()[0] << ", "
               << reader->GetOutput()->GetCenter()[1] << ", "
               << reader->GetOutput()->GetCenter()[2] << std::endl;
     transform->Translate(-reader->GetOutput()->GetCenter()[0],
                          -reader->GetOutput()->GetCenter()[1],
                          -reader->GetOutput()->GetCenter()[2]);
-    vtkSmartPointer<vtkTransformPolyDataFilter> transformPD =
-      vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+    vtkNew<vtkTransformPolyDataFilter> transformPD;
     transformPD->SetTransform(transform);
     transformPD->SetInputData(reader->GetOutput());
     transformPD->Update();
@@ -248,69 +222,60 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
   }
   else if (extension == ".obj")
   {
-    vtkSmartPointer<vtkOBJReader> reader =
-      vtkSmartPointer<vtkOBJReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkOBJReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    vtkSmartPointer<vtkBYUReader> reader =
-      vtkSmartPointer<vtkBYUReader>::New();
-    reader->SetGeometryFileName (fileName);
+    vtkNew<vtkBYUReader> reader;
+    reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    vtkSmartPointer<vtkSTLReader> reader =
-      vtkSmartPointer<vtkSTLReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkSTLReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    vtkSmartPointer<vtkPolyDataReader> reader =
-      vtkSmartPointer<vtkPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    vtkSmartPointer<vtkDiskSource> diskSource = 
-      vtkSmartPointer<vtkDiskSource>::New();
+    vtkNew<vtkDiskSource> diskSource;
     diskSource->SetCircumferentialResolution(3);
 
-    vtkSmartPointer<vtkCleanPolyData> clean = 
-      vtkSmartPointer<vtkCleanPolyData>::New();
+    vtkNew<vtkCleanPolyData> clean;
     clean->SetInputConnection(diskSource->GetOutputPort());
 
-    vtkSmartPointer<vtkFeatureEdges> edges =
-      vtkSmartPointer<vtkFeatureEdges>::New();
+    vtkNew<vtkFeatureEdges> edges;
     edges->SetInputConnection(clean->GetOutputPort());
     edges->NonManifoldEdgesOff();
     edges->ManifoldEdgesOff();
     edges->BoundaryEdgesOn();
     edges->FeatureEdgesOff();
 
-    vtkSmartPointer<vtkStripper> stripper =
-      vtkSmartPointer<vtkStripper>::New();
+    vtkNew<vtkStripper> stripper;
     stripper->SetInputConnection(edges->GetOutputPort());
     stripper->Update();
     polyData = stripper->GetOutput();
 
 #if 0
-    vtkSmartPointer<vtkLineSource> lineSource = 
-      vtkSmartPointer<vtkLineSource>::New();
+    vtkNew<vtkLineSource> lineSource;
     lineSource->SetResolution(10);
     lineSource->Update();
-    
+
     polyData = lineSource->GetOutput();
 #endif
   }
   return polyData;
 }
-}
+} // namespace

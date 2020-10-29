@@ -1,58 +1,58 @@
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 #include <vtkTextActor.h>
 #include <vtkTextProperty.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource->SetCenter ( 0.0, 0.0, 0.0 );
-  sphereSource->SetRadius ( 5.0 );
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetCenter(0.0, 0.0, 0.0);
+  sphereSource->SetRadius(5.0);
   sphereSource->Update();
 
   // Create a mapper
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  mapper->SetInputData ( sphereSource->GetOutput() );
+  vtkNew<vtkPolyDataMapper> mapper;
+  mapper->SetInputData(sphereSource->GetOutput());
 
   // Create an actor
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
-  actor->SetMapper ( mapper );
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
 
   // Create a renderer
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  renderer->SetBackground ( 1, 1, 1 ); // Set background color to white
-  renderer->AddActor ( actor );
+  vtkNew<vtkRenderer> renderer;
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
+
+  renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Create a render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->AddRenderer ( renderer );
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("DrawText");
 
   // Create an interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  renderWindowInteractor->SetRenderWindow ( renderWindow );
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Setup the text and add it to the renderer
-  vtkSmartPointer<vtkTextActor> textActor = 
-    vtkSmartPointer<vtkTextActor>::New();
-  textActor->SetInput ( "Hello world" );
-  textActor->SetPosition2 ( 10, 40 );
-  textActor->GetTextProperty()->SetFontSize ( 24 );
-  textActor->GetTextProperty()->SetColor ( 1.0, 0.0, 0.0 );
-  renderer->AddActor2D ( textActor );
-  
+  vtkNew<vtkTextActor> textActor;
+  textActor->SetInput("Hello world");
+  textActor->SetPosition2(10, 40);
+  textActor->GetTextProperty()->SetFontSize(24);
+  textActor->GetTextProperty()->SetColor(colors->GetColor3d("Gold").GetData());
+  renderer->AddActor2D(textActor);
+
   // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();

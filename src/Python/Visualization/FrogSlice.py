@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
-
 import vtk
 
 
@@ -13,6 +10,8 @@ def main():
 
     sliceOrder = SliceOrder()
 
+    colors = vtk.vtkNamedColors()
+
     # Now create the RenderWindow, Renderer and Interactor
     #
     ren1 = vtk.vtkRenderer()
@@ -22,6 +21,7 @@ def main():
     renWin.AddRenderer(ren1)
     renWin.AddRenderer(ren2)
     renWin.AddRenderer(ren3)
+    renWin.SetWindowName('FrogSlice')
 
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
@@ -38,7 +38,7 @@ def main():
     greyPlane = vtk.vtkPlaneSource()
 
     greyTransform = vtk.vtkTransformPolyDataFilter()
-    greyTransform.SetTransform(sliceOrder["hfsi"])
+    greyTransform.SetTransform(sliceOrder['hfsi'])
     greyTransform.SetInputConnection(greyPlane.GetOutputPort())
 
     greyNormals = vtk.vtkPolyDataNormals()
@@ -76,7 +76,7 @@ def main():
     segmentPlane = vtk.vtkPlaneSource()
 
     segmentTransform = vtk.vtkTransformPolyDataFilter()
-    segmentTransform.SetTransform(sliceOrder["hfsi"])
+    segmentTransform.SetTransform(sliceOrder['hfsi'])
     segmentTransform.SetInputConnection(segmentPlane.GetOutputPort())
 
     segmentNormals = vtk.vtkPolyDataNormals()
@@ -124,9 +124,12 @@ def main():
 
     ren3.AddActor(greyActor)
     ren3.AddActor(segmentOverlayActor)
-    segmentOverlayActor.SetPosition(0, 0, -.01)
+    segmentOverlayActor.SetPosition(0, 0, -0.01)
 
-    ren3.SetBackground(0, 0, 0)
+    ren1.SetBackground(colors.GetColor3d('SlateGray'))
+    ren2.SetBackground(colors.GetColor3d('SlateGray'))
+    ren3.SetBackground(colors.GetColor3d('SlateGray'))
+
     ren3.SetViewport(0, 0, 1, .5)
 
     ren2.SetActiveCamera(ren1.GetActiveCamera())
@@ -163,21 +166,21 @@ def CreateFrogLut():
     colorLut.Build()
 
     colorLut.SetTableValue(0, 0, 0, 0, 0)
-    colorLut.SetTableValue(1, colors.GetColor4d("salmon"))  # blood
-    colorLut.SetTableValue(2, colors.GetColor4d("beige"))  # brain
-    colorLut.SetTableValue(3, colors.GetColor4d("orange"))  # duodenum
-    colorLut.SetTableValue(4, colors.GetColor4d("misty_rose"))  # eye_retina
-    colorLut.SetTableValue(5, colors.GetColor4d("white"))  # eye_white
-    colorLut.SetTableValue(6, colors.GetColor4d("tomato"))  # heart
-    colorLut.SetTableValue(7, colors.GetColor4d("raspberry"))  # ileum
-    colorLut.SetTableValue(8, colors.GetColor4d("banana"))  # kidney
-    colorLut.SetTableValue(9, colors.GetColor4d("peru"))  # l_intestine
-    colorLut.SetTableValue(10, colors.GetColor4d("pink"))  # liver
-    colorLut.SetTableValue(11, colors.GetColor4d("powder_blue"))  # lung
-    colorLut.SetTableValue(12, colors.GetColor4d("carrot"))  # nerve
-    colorLut.SetTableValue(13, colors.GetColor4d("wheat"))  # skeleton
-    colorLut.SetTableValue(14, colors.GetColor4d("violet"))  # spleen
-    colorLut.SetTableValue(15, colors.GetColor4d("plum"))  # stomach
+    colorLut.SetTableValue(1, colors.GetColor4d('salmon'))  # blood
+    colorLut.SetTableValue(2, colors.GetColor4d('beige'))  # brain
+    colorLut.SetTableValue(3, colors.GetColor4d('orange'))  # duodenum
+    colorLut.SetTableValue(4, colors.GetColor4d('misty_rose'))  # eye_retina
+    colorLut.SetTableValue(5, colors.GetColor4d('white'))  # eye_white
+    colorLut.SetTableValue(6, colors.GetColor4d('tomato'))  # heart
+    colorLut.SetTableValue(7, colors.GetColor4d('raspberry'))  # ileum
+    colorLut.SetTableValue(8, colors.GetColor4d('banana'))  # kidney
+    colorLut.SetTableValue(9, colors.GetColor4d('peru'))  # l_intestine
+    colorLut.SetTableValue(10, colors.GetColor4d('pink'))  # liver
+    colorLut.SetTableValue(11, colors.GetColor4d('powder_blue'))  # lung
+    colorLut.SetTableValue(12, colors.GetColor4d('carrot'))  # nerve
+    colorLut.SetTableValue(13, colors.GetColor4d('wheat'))  # skeleton
+    colorLut.SetTableValue(14, colors.GetColor4d('violet'))  # spleen
+    colorLut.SetTableValue(15, colors.GetColor4d('plum'))  # stomach
 
     return colorLut
 
@@ -206,30 +209,30 @@ def SliceOrder():
     siMatrix = [1, 0, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1]
     si = vtk.vtkTransform()
     si.SetMatrix(siMatrix)
-    sliceOrder["si"] = si
+    sliceOrder['si'] = si
 
     isMatrix = [1, 0, 0, 0, 0, 0, -1, 0, 0, -1, 0, 0, 0, 0, 0, 1]
     i_s = vtk.vtkTransform()  # 'is' is a keyword in Python, changed to 'i_s'
     i_s.SetMatrix(isMatrix)
-    sliceOrder["is"] = i_s
+    sliceOrder['is'] = i_s
 
     ap = vtk.vtkTransform()
     ap.Scale(1, -1, 1)
-    sliceOrder["ap"] = ap
+    sliceOrder['ap'] = ap
 
     pa = vtk.vtkTransform()
     pa.Scale(1, -1, -1)
-    sliceOrder["pa"] = pa
+    sliceOrder['pa'] = pa
 
     lrMatrix = [0, 0, -1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
     lr = vtk.vtkTransform()
     lr.SetMatrix(lrMatrix)
-    sliceOrder["lr"] = lr
+    sliceOrder['lr'] = lr
 
     rlMatrix = [0, 0, 1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
     rl = vtk.vtkTransform()
     rl.SetMatrix(rlMatrix)
-    sliceOrder["rl"] = rl
+    sliceOrder['rl'] = rl
 
     #
     # The previous transforms assume radiological views of the slices (viewed from the feet). other
@@ -239,37 +242,37 @@ def SliceOrder():
     hfMatrix = [-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1]
     hf = vtk.vtkTransform()
     hf.SetMatrix(hfMatrix)
-    sliceOrder["hf"] = hf
+    sliceOrder['hf'] = hf
 
     hfsi = vtk.vtkTransform()
     hfsi.Concatenate(hf.GetMatrix())
     hfsi.Concatenate(si.GetMatrix())
-    sliceOrder["hfsi"] = hfsi
+    sliceOrder['hfsi'] = hfsi
 
     hfis = vtk.vtkTransform()
     hfis.Concatenate(hf.GetMatrix())
     hfis.Concatenate(i_s.GetMatrix())
-    sliceOrder["hfis"] = hfis
+    sliceOrder['hfis'] = hfis
 
     hfap = vtk.vtkTransform()
     hfap.Concatenate(hf.GetMatrix())
     hfap.Concatenate(ap.GetMatrix())
-    sliceOrder["hfap"] = hfap
+    sliceOrder['hfap'] = hfap
 
     hfpa = vtk.vtkTransform()
     hfpa.Concatenate(hf.GetMatrix())
     hfpa.Concatenate(pa.GetMatrix())
-    sliceOrder["hfpa"] = hfpa
+    sliceOrder['hfpa'] = hfpa
 
     hflr = vtk.vtkTransform()
     hflr.Concatenate(hf.GetMatrix())
     hflr.Concatenate(lr.GetMatrix())
-    sliceOrder[""] = hflr
+    sliceOrder[''] = hflr
 
     hfrl = vtk.vtkTransform()
     hfrl.Concatenate(hf.GetMatrix())
     hfrl.Concatenate(rl.GetMatrix())
-    sliceOrder["hfrl"] = hfrl
+    sliceOrder['hfrl'] = hfrl
 
     return sliceOrder
 

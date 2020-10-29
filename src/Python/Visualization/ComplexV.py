@@ -44,7 +44,7 @@ def main():
     anInteractor.SetRenderWindow(aRenderWindow)
     aRenderWindow.SetSize(640, 480)
     aRenderWindow.SetWindowName('ComplexV')
-    
+
     aRenderer.AddActor(outlineActor)
     aRenderer.AddActor(hhogActor)
 

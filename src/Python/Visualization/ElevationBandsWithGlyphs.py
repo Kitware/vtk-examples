@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-
 import math
 
 import vtk
 
 # Available surfaces are:
-SURFACE_TYPE = {"PLANE", "SPHERE", "PARAMETRIC_SURFACE"}
+SURFACE_TYPE = {'PLANE', 'SPHERE', 'PARAMETRIC_SURFACE'}
 
 
 def WritePNG(ren, fn, magnification=1):
@@ -259,28 +257,28 @@ def DisplaySurface(st):
     """
     surface = st.upper()
     if not (surface in SURFACE_TYPE):
-        print(st, "is not a surface.")
+        print(st, 'is not a surface.')
         iren = vtk.vtkRenderWindowInteractor()
         return iren
 
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [179, 204, 255, 255])
+    colors.SetColor('BkgColor', [179, 204, 255, 255])
 
     # ------------------------------------------------------------
     # Create the surface, lookup tables, contour filter etc.
     # ------------------------------------------------------------
     src = vtk.vtkPolyData()
-    if surface == "PLANE":
+    if surface == 'PLANE':
         src = MakePlane()
-    elif surface == "SPHERE":
+    elif surface == 'SPHERE':
         src = MakeSphere()
-    elif surface == "PARAMETRIC_SURFACE":
+    elif surface == 'PARAMETRIC_SURFACE':
         src = MakeParametricSource()
-        # The scalars are named "Scalars"by default
+        # The scalars are named "Scalars" by default
         # in the parametric surfaces, so change the name.
-        src.GetPointData().GetScalars().SetName("Elevation")
+        src.GetPointData().GetScalars().SetName('Elevation')
     scalarRange = src.GetScalarRange()
 
     lut = MakeLUT()
@@ -342,7 +340,7 @@ def DisplaySurface(st):
 
     edgeActor = vtk.vtkActor()
     edgeActor.SetMapper(edgeMapper)
-    edgeActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    edgeActor.GetProperty().SetColor(colors.GetColor3d('Black'))
     edgeActor.RotateX(-45)
     edgeActor.RotateZ(45)
 
@@ -383,8 +381,9 @@ def DisplaySurface(st):
     ren.AddViewProp(glyphActor)
     ren.AddActor2D(scalarBar)
 
-    ren.SetBackground(colors.GetColor3d("BkgColor"))
+    ren.SetBackground(colors.GetColor3d('BkgColor'))
     renWin.SetSize(800, 800)
+    renWin.SetWindowName('ElevationBandsWithGlyphs')
     renWin.Render()
 
     ren.GetActiveCamera().Zoom(1.5)
@@ -393,10 +392,10 @@ def DisplaySurface(st):
 
 
 if __name__ == '__main__':
-    # interactor = DisplaySurface("PLANE")
-    # interactor = DisplaySurface("SPHERE")
-    interactor = DisplaySurface("PARAMETRIC_SURFACE")
+    # interactor = DisplaySurface('PLANE')
+    # interactor = DisplaySurface('SPHERE')
+    interactor = DisplaySurface('PARAMETRIC_SURFACE')
     interactor.Render()
     interactor.Start()
     # WritePNG(interactor.GetRenderWindow().GetRenderers().GetFirstRenderer(),
-    #               "ElevationBandsWithGlyphs.png")
+    #               'ElevationBandsWithGlyphs.png')

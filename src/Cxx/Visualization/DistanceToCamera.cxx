@@ -3,88 +3,84 @@
 #include <vtkDistanceToCamera.h>
 #include <vtkGlyph3D.h>
 #include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   //---------------------------------------------------------------------------
   // Draw some arrows that maintain a fixed size during zooming.
 
   // Create a set of points.
-  vtkSmartPointer<vtkPointSource> fixedPointSource = vtkSmartPointer<
-    vtkPointSource>::New();
+  vtkNew<vtkPointSource> fixedPointSource;
   fixedPointSource->SetNumberOfPoints(2);
 
   // Calculate the distance to the camera of each point.
-  vtkSmartPointer<vtkDistanceToCamera> distanceToCamera = vtkSmartPointer<
-    vtkDistanceToCamera>::New();
+  vtkNew<vtkDistanceToCamera> distanceToCamera;
   distanceToCamera->SetInputConnection(fixedPointSource->GetOutputPort());
   distanceToCamera->SetScreenSize(100.0);
 
   // Glyph each point with an arrow.
-  vtkSmartPointer<vtkArrowSource> arrow =
-    vtkSmartPointer<vtkArrowSource>::New();
-  vtkSmartPointer<vtkGlyph3D> fixedGlyph = vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkArrowSource> arrow;
+  vtkNew<vtkGlyph3D> fixedGlyph;
   fixedGlyph->SetInputConnection(distanceToCamera->GetOutputPort());
   fixedGlyph->SetSourceConnection(arrow->GetOutputPort());
 
   // Scale each point.
   fixedGlyph->SetScaleModeToScaleByScalar();
-  fixedGlyph->SetInputArrayToProcess(0, 0, 0,
-    vtkDataObject::FIELD_ASSOCIATION_POINTS, "DistanceToCamera");
+  fixedGlyph->SetInputArrayToProcess(
+      0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_POINTS, "DistanceToCamera");
 
   // Create a mapper.
-  vtkSmartPointer<vtkPolyDataMapper> fixedMapper = vtkSmartPointer<
-    vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> fixedMapper;
   fixedMapper->SetInputConnection(fixedGlyph->GetOutputPort());
   fixedMapper->SetScalarVisibility(false);
 
   // Create an actor.
-  vtkSmartPointer<vtkActor> fixedActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> fixedActor;
   fixedActor->SetMapper(fixedMapper);
-  fixedActor->GetProperty()->SetColor(0, 1, 1);
+  fixedActor->GetProperty()->SetColor(colors->GetColor3d("Cyan").GetData());
 
   //---------------------------------------------------------------------------
   // Draw some spheres that get bigger when zooming in.
   // Create a set of points.
-  vtkSmartPointer<vtkPointSource> pointSource =
-    vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(4);
 
   // Glyph each point with a sphere.
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
-  vtkSmartPointer<vtkGlyph3D> glyph = vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkSphereSource> sphere;
+  vtkNew<vtkGlyph3D> glyph;
   glyph->SetInputConnection(pointSource->GetOutputPort());
   glyph->SetSourceConnection(sphere->GetOutputPort());
   glyph->SetScaleFactor(0.1);
 
   // Create a mapper.
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(glyph->GetOutputPort());
   mapper->SetScalarVisibility(false);
 
   // Create an actor.
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(1, 1, 0);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Yellow").GetData());
 
   //---------------------------------------------------------------------------
 
   // A renderer and render window.
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-  renderer->SetBackground(1, 1, 1); // Background color white
-  vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<
-    vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("DistanceToCamera");
 
   // Give DistanceToCamera a pointer to the renderer.
   distanceToCamera->SetRenderer(renderer);
@@ -94,10 +90,8 @@ int main(int, char*[])
   renderer->AddActor(actor);
 
   // An interactor.
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkSmartPointer<
-    vtkInteractorStyleTrackballCamera>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleTrackballCamera> style;
   renderWindowInteractor->SetInteractorStyle(style);
   renderWindowInteractor->SetRenderWindow(renderWindow);
 

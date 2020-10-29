@@ -82,9 +82,10 @@ int main(int argc, char* argv[])
 {
   if (argc != 7)
   {
-    cerr << "Usage: " << argv[0] << " Theta Phi MaximumPeels "
-         << "OcclusionRatio ForceDepthSortingFlag "
-         << "DoNotUseAnyDepthRelatedAlgorithmFlag" << std::endl;
+    std::cerr << "Usage: " << argv[0] << " Theta Phi MaximumPeels "
+              << "OcclusionRatio ForceDepthSortingFlag "
+              << "DoNotUseAnyDepthRelatedAlgorithmFlag" << std::endl;
+    std::cerr << "100 100 50 0.1 0 0" << std::endl;
     return EXIT_FAILURE;
   }
 

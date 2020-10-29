@@ -2,23 +2,25 @@
 #include <vtkAxesActor.h>
 #include <vtkCamera.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPropAssembly.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(0.0, 0.0, 0.0);
   sphereSource->SetRadius(1.0);
   sphereSource->Update();
@@ -26,46 +28,40 @@ int main (int, char *[])
   vtkPolyData* polydata = sphereSource->GetOutput();
 
   // Create a mapper
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(polydata);
 
   // Create an actor
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetWindowName("Display Coordinate Axes");
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetWindowName("DisplayCoordinateAxes");
   renderWindow->AddRenderer(renderer);
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  vtkSmartPointer<vtkAxesActor> axes = 
-    vtkSmartPointer<vtkAxesActor>::New();
+  vtkNew<vtkAxesActor> axes;
 
-  vtkSmartPointer<vtkOrientationMarkerWidget> widget = 
-    vtkSmartPointer<vtkOrientationMarkerWidget>::New();
+  vtkNew<vtkOrientationMarkerWidget> widget;
   double rgba[4]{0.0, 0.0, 0.0, 0.0};
-  colors->GetColor("Carrot",rgba);
+  colors->GetColor("Carrot", rgba);
   widget->SetOutlineColor(rgba[0], rgba[1], rgba[2]);
-  widget->SetOrientationMarker( axes );
-  widget->SetInteractor( renderWindowInteractor );
-  widget->SetViewport( 0.0, 0.0, 0.4, 0.4 );
-  widget->SetEnabled( 1 );
+  widget->SetOrientationMarker(axes);
+  widget->SetInteractor(renderWindowInteractor);
+  widget->SetViewport(0.0, 0.0, 0.4, 0.4);
+  widget->SetEnabled(1);
   widget->InteractiveOn();
-  
+
   renderer->GetActiveCamera()->Azimuth(50);
   renderer->GetActiveCamera()->Elevation(-30);
 
