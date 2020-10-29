@@ -54,7 +54,7 @@ def hanoi():
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    ren.SetBackground(colors.GetColor3d("PapayaWhip"))
+    ren.SetBackground(colors.GetColor3d('PapayaWhip'))
 
     camera = vtk.vtkCamera()
     camera.SetPosition(41.0433, 27.9637, 30.442)
@@ -86,7 +86,7 @@ def hanoi():
     ren.AddActor(table)
     table.SetMapper(tableMapper)
     # table.GetProperty().SetColor(0.9569, 0.6431, 0.3765)
-    table.GetProperty().SetColor(colors.GetColor3d("SaddleBrown"))
+    table.GetProperty().SetColor(colors.GetColor3d('SaddleBrown'))
     table.AddPosition(gv.D, 0, 0)
     table.SetScale(4 * gv.D, 2 * gv.D, 3 * gv.D)
     table.RotateX(90)
@@ -100,7 +100,7 @@ def hanoi():
         ren.AddActor(peg[i])
         peg[i].SetMapper(pegMapper)
         # peg[i].GetProperty().SetColor(1, 1, 1)
-        peg[i].GetProperty().SetColor(colors.GetColor3d("Lavender"))
+        peg[i].GetProperty().SetColor(colors.GetColor3d('Lavender'))
         peg[i].AddPosition(i * gv.D, gv.H / 2, 0)
         peg[i].SetScale(1, gv.H, 1)
 
@@ -124,10 +124,10 @@ def hanoi():
 
     # Reset the camera to view all actors.
     renWin.Render()
-    renWin.SetWindowName("Towers of Hanoi")
+    renWin.SetWindowName('Hanoi')
 
     if gv.configuration == 3:
-        WriteImage("hanoi0.png", renWin, rgba=False)
+        WriteImage('hanoi0.png', renWin, rgba=False)
 
     if gv.configuration != 1:
         # Begin recursion.
@@ -138,7 +138,7 @@ def hanoi():
 
             renWin.Render()
             if gv.configuration == 3:
-                WriteImage("hanoi2.png", renWin, rgba=False)
+                WriteImage('hanoi2.png', renWin, rgba=False)
         # Report output.
         s = 'Number of moves: {:d}\nPolygons rendered each frame: {:d}\nTotal number of frames: {:d}'
         print(s.format(gv.numberOfMoves, 3 * 8 + 1 + gv.numberOfPucks * (2 + gv.puckResolution),
@@ -243,7 +243,7 @@ def MovePuck(peg1, peg2):
                 renWin.GetRenderers().GetFirstRenderer().SetActiveCamera(camera1)
                 renWin.Render()
                 if gv.configuration == 3:
-                    WriteImage("hanoi1.png", renWin, rgba=False)
+                    WriteImage('hanoi1.png', renWin, rgba=False)
                 if gv.configuration == 2:
                     gv.gotFigure2 = True
                     break
@@ -290,19 +290,19 @@ class OrientationObserver(object):
 
     def __call__(self, caller, ev):
         # Just do this to demonstrate who called callback and the event that triggered it.
-        print(caller.GetClassName(), "Event Id:", ev)
+        print(caller.GetClassName(), 'Event Id:', ev)
         # Now print the camera orientation.
         CameraOrientation(self.cam)
 
 
 def CameraOrientation(cam):
-    fmt1 = "{:>15s}"
-    fmt2 = "{:9.6g}"
-    print(fmt1.format("Position:"), ', '.join(map(fmt2.format, cam.GetPosition())))
-    print(fmt1.format("Focal point:"), ', '.join(map(fmt2.format, cam.GetFocalPoint())))
-    print(fmt1.format("Clipping range:"), ', '.join(map(fmt2.format, cam.GetClippingRange())))
-    print(fmt1.format("View up:"), ', '.join(map(fmt2.format, cam.GetViewUp())))
-    print(fmt1.format("Distance:"), fmt2.format(cam.GetDistance()))
+    fmt1 = '{:>15s}'
+    fmt2 = '{:9.6g}'
+    print(fmt1.format('Position:'), ', '.join(map(fmt2.format, cam.GetPosition())))
+    print(fmt1.format('Focal point:'), ', '.join(map(fmt2.format, cam.GetFocalPoint())))
+    print(fmt1.format('Clipping range:'), ', '.join(map(fmt2.format, cam.GetClippingRange())))
+    print(fmt1.format('View up:'), ', '.join(map(fmt2.format, cam.GetViewUp())))
+    print(fmt1.format('Distance:'), fmt2.format(cam.GetDistance()))
 
 
 def WriteImage(fileName, renWin1, rgba=True):

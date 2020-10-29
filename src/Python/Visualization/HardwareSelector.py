@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import vtk
 import vtk.util.numpy_support as VN
 
@@ -43,13 +41,13 @@ def main():
     sphereActor.GetProperty().SetColor(colors.GetColor3d('Bisque'))
 
     ren1.AddActor(sphereActor)
-    ren1.SetBackground(0.1, 0.2, 0.4)
     ren1.GetActiveCamera().ParallelProjectionOn()
     ren1.SetBackground(colors.GetColor3d('Navy'))
 
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren1)
     renWin.SetSize(300, 300)
+    renWin.SetWindowName('HardwareSelector')
 
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)

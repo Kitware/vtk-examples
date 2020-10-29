@@ -1,58 +1,51 @@
-#include <vtkSmartPointer.h>
+#include <vtkActor.h>
+#include <vtkCamera.h>
+#include <vtkCellArray.h>
 #include <vtkCubeSource.h>
-#include <vtkPolyData.h>
-#include <vtkPoints.h>
 #include <vtkFloatArray.h>
 #include <vtkGlyph3DMapper.h>
 #include <vtkNamedColors.h>
-#include <vtkCamera.h>
-#include <vtkCellArray.h>
-#include <vtkActor.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkUnsignedCharArray.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkPoints> points = 
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint(0,0,0);
-  points->InsertNextPoint(1,1,1);
-  points->InsertNextPoint(2,2,2);
-  
-  vtkSmartPointer<vtkFloatArray> scaleFactors =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(0, 0, 0);
+  points->InsertNextPoint(1, 1, 1);
+  points->InsertNextPoint(2, 2, 2);
+
+  vtkNew<vtkFloatArray> scaleFactors;
   scaleFactors->SetNumberOfComponents(3);
   scaleFactors->SetName("Scale Factors");
   scaleFactors->InsertNextTuple3(0.7, 1.0, 1.0);
   scaleFactors->InsertNextTuple3(1.0, 0.7, 1.0);
   scaleFactors->InsertNextTuple3(1.0, 1.0, 0.7);
 
-  vtkSmartPointer<vtkNamedColors> namedColors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> namedColors;
 
-  vtkSmartPointer<vtkUnsignedCharArray> colors =
-    vtkSmartPointer<vtkUnsignedCharArray>::New();
+  vtkNew<vtkUnsignedCharArray> colors;
   colors->SetName("Colors");
   colors->SetNumberOfComponents(3);
   colors->InsertNextTypedTuple(namedColors->GetColor3ub("Red").GetData());
   colors->InsertNextTypedTuple(namedColors->GetColor3ub("Green").GetData());
   colors->InsertNextTypedTuple(namedColors->GetColor3ub("Blue").GetData());
 
-  vtkSmartPointer<vtkPolyData> polydata = 
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   polydata->SetPoints(points);
   polydata->GetPointData()->AddArray(colors);
   polydata->GetPointData()->AddArray(scaleFactors);
-  
+
   // Create anything you want here, we will use a cube for the demo.
-  vtkSmartPointer<vtkCubeSource> cubeSource = 
-    vtkSmartPointer<vtkCubeSource>::New();
-  
-  vtkSmartPointer<vtkGlyph3DMapper> glyph3Dmapper = 
-    vtkSmartPointer<vtkGlyph3DMapper>::New();
+  vtkNew<vtkCubeSource> cubeSource;
+
+  vtkNew<vtkGlyph3DMapper> glyph3Dmapper;
   glyph3Dmapper->SetSourceConnection(cubeSource->GetOutputPort());
   glyph3Dmapper->SetInputData(polydata);
   glyph3Dmapper->SetScalarModeToUsePointFieldData();
@@ -61,30 +54,29 @@ int main(int, char *[])
   glyph3Dmapper->SelectColorArray("Colors");
   glyph3Dmapper->Update();
 
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(glyph3Dmapper);
- 
+
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("Glyph3DMapper");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
- 
+
   // Add the actor to the scene
   renderer->AddActor(actor);
+  renderer->SetBackground(namedColors->GetColor3d("SlateGray").GetData());
 
   // Position the camera
   renderer->GetActiveCamera()->SetPosition(-10, 5, 0);
   renderer->GetActiveCamera()->SetFocalPoint(1, 1, 1);
-  
+
   // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

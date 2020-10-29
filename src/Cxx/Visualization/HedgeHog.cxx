@@ -1,11 +1,10 @@
-#include <vtkHedgeHog.h>
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkFloatArray.h>
+#include <vtkHedgeHog.h>
 #include <vtkMath.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyDataMapper.h>
@@ -22,49 +21,43 @@ void CreateData(vtkStructuredGrid* sgrid);
 
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create the structured grid.
-  auto sgrid =
-    vtkSmartPointer<vtkStructuredGrid>::New();
+  vtkNew<vtkStructuredGrid> sgrid;
   CreateData(sgrid);
 
   // We create a simple pipeline to display the data.
-  auto hedgehog =
-    vtkSmartPointer<vtkHedgeHog>::New();
+  vtkNew<vtkHedgeHog> hedgehog;
   hedgehog->SetInputData(sgrid);
   hedgehog->SetScaleFactor(0.1);
 
-  auto sgridMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sgridMapper;
   sgridMapper->SetInputConnection(hedgehog->GetOutputPort());
 
-  auto sgridActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sgridActor;
   sgridActor->SetMapper(sgridMapper);
-  sgridActor->GetProperty()->SetColor(0, 0, 0);
+  sgridActor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
 
   // Create the usual rendering stuff
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  auto renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(renderer);
+  renWin->SetWindowName("HedgeHog");
 
-  auto iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   renderer->AddActor(sgridActor);
 
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
   renderer->GradientBackgroundOn();
-  renderer->SetBackground(colors->GetColor3d("Aqua").GetData());
-  renderer->SetBackground2(colors->GetColor3d("CadetBlue").GetData());
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
+  renderer->SetBackground2(colors->GetColor3d("RoyalBlue").GetData());
 
   renderer->ResetCamera();
   renderer->GetActiveCamera()->Elevation(60.0);
   renderer->GetActiveCamera()->Azimuth(30.0);
-  renderer->GetActiveCamera()->Zoom(1.25);
+  renderer->GetActiveCamera()->Zoom(0.9);
   renWin->SetSize(300, 300);
 
   // interact with data
@@ -86,13 +79,11 @@ void CreateData(vtkStructuredGrid* sgrid)
 
   // We also create the points and vectors. The points
   // form a hemi-cylinder of data.
-  auto vectors =
-    vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> vectors;
   vectors->SetNumberOfComponents(3);
   vectors->SetNumberOfTuples(dims[0] * dims[1] * dims[2]);
 
-  auto points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   points->Allocate(dims[0] * dims[1] * dims[2]);
 
   auto deltaZ = 2.0 / (dims[2] - 1);
