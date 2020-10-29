@@ -78,8 +78,12 @@ def main():
 
     ren = vtk.vtkRenderer()
     ren.AddActor(actor)
+    ren.SetBackground(colors.GetColor3d("DarkGray"))
+
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
+    renWin.SetWindowName('GlyphTable')
+
     iren = vtk.vtkRenderWindowInteractor()
     istyle = vtk.vtkInteractorStyleTrackballCamera()
     iren.SetInteractorStyle(istyle)

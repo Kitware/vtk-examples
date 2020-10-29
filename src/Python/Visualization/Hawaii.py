@@ -56,6 +56,7 @@ def main():
     # Match the window shape to the object.
     # renWin.SetSize(500, int(500 * bounds[1] / bounds[3]))
     renWin.SetSize(500, 500)
+    renWin.SetWindowName('Hawaii')
 
     iren.Initialize()
 

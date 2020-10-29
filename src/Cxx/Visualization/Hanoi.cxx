@@ -20,6 +20,7 @@ Usage:
 #include <vtkMath.h>
 #include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPNGWriter.h>
 #include <vtkPlaneSource.h>
 #include <vtkPolyDataMapper.h>
@@ -43,8 +44,7 @@ Usage:
 #include <string>
 #include <vector>
 
-namespace
-{
+namespace {
 void PrintCameraOrientation(vtkCamera* cam);
 
 /**
@@ -55,13 +55,16 @@ When the class is implemented, it becomes the callback function.
 class CameraModifiedCallback : public vtkCallbackCommand
 {
 public:
-  static CameraModifiedCallback* New() { return new CameraModifiedCallback; }
+  static CameraModifiedCallback* New()
+  {
+    return new CameraModifiedCallback;
+  }
   // Here we Create a vtkCallbackCommand and reimplement it.
   void Execute(vtkObject* caller, unsigned long evId, void*) override
   {
     // Note the use of reinterpret_cast to cast the caller to the expected type.
     vtkRenderWindowInteractor* interactor =
-      reinterpret_cast<vtkRenderWindowInteractor*>(caller);
+        reinterpret_cast<vtkRenderWindowInteractor*>(caller);
     // Just do this to demonstrate who called callback and the event that
     // triggered it.
     std::cout << interactor->GetClassName() << "  Event Id: " << evId
@@ -70,8 +73,7 @@ public:
     // Now print the camera orientation.
     PrintCameraOrientation(this->cam);
   }
-  CameraModifiedCallback()
-    : cam(nullptr)
+  CameraModifiedCallback() : cam(nullptr)
   {
   }
   // Set pointers to any clientData or callData here.
@@ -105,7 +107,8 @@ void MovePuck(vtkRenderWindow* renWin, PegArray& pegStack, int peg1, int peg2);
 * @param peg3 Helper.
 
 */
-void Hanoi(vtkRenderWindow* renWin, PegArray& pegStack, int n, int peg1, int peg2, int peg3);
+void Hanoi(vtkRenderWindow* renWin, PegArray& pegStack, int n, int peg1,
+           int peg2, int peg3);
 
 // Save a screenshot.
 void Screenshot(std::string fileName, vtkRenderWindow* renWin);
@@ -114,17 +117,17 @@ void Screenshot(std::string fileName, vtkRenderWindow* renWin);
 auto numberOfPucks = 5;
 auto numberOfSteps = 5;
 auto puckResolution = 48;
-auto configuration = 0; // Selecting output.
+auto configuration = 0;  // Selecting output.
 auto gotFigure2 = false; // Used to bail out of recursion if configuration == 2.
-auto L = 1.0; // Puck height.
+auto L = 1.0;            // Puck height.
 auto H = 1.1 * numberOfPucks * L; // Peg height.
-auto R = 0.5; // Peg radius.
-auto rMin = 4.0 * R; // The minimum allowable radius of disks.
-auto rMax = 12.0 * R; // The maximum allowable radius of disks
-auto D = 1.1 * 1.25 * rMax; // The distance between the pegs.
+auto R = 0.5;                     // Peg radius.
+auto rMin = 4.0 * R;              // The minimum allowable radius of disks.
+auto rMax = 12.0 * R;             // The maximum allowable radius of disks
+auto D = 1.1 * 1.25 * rMax;       // The distance between the pegs.
 auto numberOfMoves = 0;
 auto const maxPucks = 20;
-}
+} // namespace
 
 int main(int argc, char* argv[])
 {
@@ -197,24 +200,21 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Our rendering window.
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
 
   // Create renderer and render window interactor.
-  vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren;
   renWin->AddRenderer(ren);
   renWin->SetSize(1200, 750);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   ren->SetBackground(colors->GetColor3d("PapayaWhip").GetData());
 
-  vtkSmartPointer<vtkCamera> camera = vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
   camera->SetPosition(41.0433, 27.9637, 30.442);
   camera->SetFocalPoint(11.5603, -1.51931, 0.95899);
   camera->SetClippingRange(18.9599, 91.6042);
@@ -223,30 +223,24 @@ int main(int argc, char* argv[])
   ren->SetActiveCamera(camera);
 
   // Create geometry: table, pegs, and pucks.
-  vtkSmartPointer<vtkCylinderSource> pegGeometry =
-    vtkSmartPointer<vtkCylinderSource>::New();
+  vtkNew<vtkCylinderSource> pegGeometry;
   pegGeometry->SetResolution(8);
-  vtkSmartPointer<vtkPolyDataMapper> pegMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> pegMapper;
   pegMapper->SetInputConnection(pegGeometry->GetOutputPort());
 
-  vtkSmartPointer<vtkCylinderSource> puckGeometry =
-    vtkSmartPointer<vtkCylinderSource>::New();
+  vtkNew<vtkCylinderSource> puckGeometry;
   puckGeometry->SetResolution(puckResolution);
-  vtkSmartPointer<vtkPolyDataMapper> puckMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> puckMapper;
   puckMapper->SetInputConnection(puckGeometry->GetOutputPort());
 
-  vtkSmartPointer<vtkPlaneSource> tableGeometry =
-    vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> tableGeometry;
   tableGeometry->SetResolution(10, 10);
-  vtkSmartPointer<vtkPolyDataMapper> tableMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> tableMapper;
   tableMapper->SetInputConnection(tableGeometry->GetOutputPort());
 
   // Create the actors: table top, pegs, and pucks
   // The table
-  vtkSmartPointer<vtkActor> table = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> table;
   ren->AddActor(table);
   table->SetMapper(tableMapper);
   // table->GetProperty()->SetColor(0.9569, 0.6431, 0.3765);
@@ -275,8 +269,7 @@ int main(int argc, char* argv[])
 
   // The pucks (using cylinder geometry). Always loaded on peg# 0.
   std::vector<vtkSmartPointer<vtkActor>> puck;
-  vtkSmartPointer<vtkMinimalStandardRandomSequence> randomSequence =
-    vtkSmartPointer<vtkMinimalStandardRandomSequence>::New();
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
   randomSequence->SetSeed(1);
   for (auto i = 0; i < numberOfPucks; ++i)
   {
@@ -298,7 +291,7 @@ int main(int argc, char* argv[])
 
   // Reset the camera to view all actors.
   renWin->Render();
-  renWin->SetWindowName("Towers of Hanoi");
+  renWin->SetWindowName("Hanoi");
 
   if (configuration == 3)
   {
@@ -326,8 +319,7 @@ int main(int argc, char* argv[])
          << "Total number of frames: " << numberOfMoves * 3 * numberOfSteps
          << "\n";
   }
-  vtkSmartPointer<CameraModifiedCallback> getOrientation =
-    vtkSmartPointer<CameraModifiedCallback>::New();
+  vtkNew<CameraModifiedCallback> getOrientation;
   // Set the camera to use.
   getOrientation->cam = ren->GetActiveCamera();
   iren->AddObserver(vtkCommand::EndInteractionEvent, getOrientation);
@@ -338,8 +330,7 @@ int main(int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
+namespace {
 
 std::vector<std::string>::iterator FindParameter(std::string const& p,
                                                  std::vector<std::string>& v)
@@ -357,8 +348,8 @@ void MovePuck(vtkRenderWindow* renWin, PegArray& pegStack, int peg1, int peg2)
 
   // Get the distance to move up.
   auto distance =
-    (H - (L * (static_cast<int>(pegStack[peg1].size()) - 1)) + rMax) /
-    numberOfSteps;
+      (H - (L * (static_cast<int>(pegStack[peg1].size()) - 1)) + rMax) /
+      numberOfSteps;
   for (auto i = 0; i < numberOfSteps; i++)
   {
     movingActor->AddPosition(0, distance, 0);
@@ -378,8 +369,8 @@ void MovePuck(vtkRenderWindow* renWin, PegArray& pegStack, int peg1, int peg2)
       if (configuration == 3 || configuration == 2)
       {
         vtkCamera* cam =
-          renWin->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
-        vtkSmartPointer<vtkCamera> camera1 = vtkSmartPointer<vtkCamera>::New();
+            renWin->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+        vtkNew<vtkCamera> camera1;
         camera1->SetPosition(54.7263, 41.6467, 44.125);
         camera1->SetFocalPoint(11.5603, -1.51931, 0.95899);
         camera1->SetClippingRange(42.4226, 115.659);
@@ -409,7 +400,7 @@ void MovePuck(vtkRenderWindow* renWin, PegArray& pegStack, int peg1, int peg2)
 
   // Get the distance to move down.
   distance = ((L * (static_cast<int>(pegStack[peg2].size()) - 1)) - H - rMax) /
-             numberOfSteps;
+      numberOfSteps;
 
   for (auto i = 0; i < numberOfSteps; i++)
   {
@@ -420,7 +411,8 @@ void MovePuck(vtkRenderWindow* renWin, PegArray& pegStack, int peg1, int peg2)
   pegStack[peg2].push(movingActor);
 }
 
-void Hanoi(vtkRenderWindow* renWin, PegArray& pegStack, int n, int peg1, int peg2, int peg3)
+void Hanoi(vtkRenderWindow* renWin, PegArray& pegStack, int n, int peg1,
+           int peg2, int peg3)
 {
   // If gotFigure2 is true, we break out of the recursion.
   if (gotFigure2)
@@ -446,8 +438,7 @@ void Hanoi(vtkRenderWindow* renWin, PegArray& pegStack, int n, int peg1, int peg
 
 void Screenshot(std::string fileName, vtkRenderWindow* renWin)
 {
-  vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter =
-    vtkSmartPointer<vtkWindowToImageFilter>::New();
+  vtkNew<vtkWindowToImageFilter> windowToImageFilter;
   windowToImageFilter->SetInput(renWin);
 
 #if VTK_MAJOR_VERSION >= 8 || VTK_MAJOR_VERSION == 8 && VTK_MINOR_VERSION >= 90
@@ -463,7 +454,7 @@ void Screenshot(std::string fileName, vtkRenderWindow* renWin)
   windowToImageFilter->ReadFrontBufferOff();
   windowToImageFilter->Update();
 
-  vtkSmartPointer<vtkPNGWriter> writer = vtkSmartPointer<vtkPNGWriter>::New();
+  vtkNew<vtkPNGWriter> writer;
   writer->SetFileName(fileName.c_str());
   writer->SetInputConnection(windowToImageFilter->GetOutputPort());
   writer->Write();
@@ -472,8 +463,7 @@ void Screenshot(std::string fileName, vtkRenderWindow* renWin)
 /**
 Get a comma separated list.
 */
-template <typename T>
-std::string CommaSeparatedList(std::vector<T> v)
+template <typename T> std::string CommaSeparatedList(std::vector<T> v)
 {
   std::ostringstream os;
   std::copy(v.begin(), v.end() - 1, std::ostream_iterator<T>(os, ", "));
@@ -506,4 +496,4 @@ void PrintCameraOrientation(vtkCamera* cam)
             << CommaSeparatedList(std::vector<double>(vu, vu + 3)) << std::endl;
   std::cout << setw(width) << "Distance: " << cam->GetDistance() << std::endl;
 };
-}
+} // namespace
