@@ -19,6 +19,13 @@ Here are some snippets and examples that highlight interesting features that may
 | -------------- | ---------------------- | ------- |
 [ShareCamera](/Python/Utilities/ShareCamera) | Store background colors in a vector for later extraction of the red, green and blue components.
 
+## Glyphing
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[InteractorStyleTrackballCamera](/Python/Visualization/InteractorStyleTrackballCamera) | Here points are represented as glyphs.
+[PointToGlyph](/Python/Snippets/PointToGlyph) | How to represent points as glyphs.
+
 ## Image
 
 | Example Name | Comments | Image |

@@ -9,7 +9,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the furniture colors.
-    colors.SetColor("Furniture", [204, 204, 153, 255])
+    colors.SetColor('Furniture', [204, 204, 153, 255])
 
     scalarRange = [0.0, 0.0]
     maxTime = 0
@@ -45,7 +45,7 @@ def main():
     outlineMapper.SetInputConnection(outlineF.GetOutputPort())
     outline = vtk.vtkActor()
     outline.SetMapper(outlineMapper)
-    outline.GetProperty().SetColor(colors.GetColor3d("LampBlack"))
+    outline.GetProperty().SetColor(colors.GetColor3d('LampBlack'))
 
     #
     # Set up shaded surfaces (i.e., supporting geometry).
@@ -58,7 +58,7 @@ def main():
     mapDoor.ScalarVisibilityOff()
     door = vtk.vtkActor()
     door.SetMapper(mapDoor)
-    door.GetProperty().SetColor(colors.GetColor3d("Burlywood"))
+    door.GetProperty().SetColor(colors.GetColor3d('Burlywood'))
 
     window1Geom = vtk.vtkStructuredGridGeometryFilter()
     window1Geom.SetInputConnection(reader.GetOutputPort())
@@ -68,7 +68,7 @@ def main():
     mapWindow1.ScalarVisibilityOff()
     window1 = vtk.vtkActor()
     window1.SetMapper(mapWindow1)
-    window1.GetProperty().SetColor(colors.GetColor3d("SkyBlue"))
+    window1.GetProperty().SetColor(colors.GetColor3d('SkyBlue'))
     window1.GetProperty().SetOpacity(.6)
 
     window2Geom = vtk.vtkStructuredGridGeometryFilter()
@@ -79,7 +79,7 @@ def main():
     mapWindow2.ScalarVisibilityOff()
     window2 = vtk.vtkActor()
     window2.SetMapper(mapWindow2)
-    window2.GetProperty().SetColor(colors.GetColor3d("SkyBlue"))
+    window2.GetProperty().SetColor(colors.GetColor3d('SkyBlue'))
     window2.GetProperty().SetOpacity(.6)
 
     klower1Geom = vtk.vtkStructuredGridGeometryFilter()
@@ -90,7 +90,7 @@ def main():
     mapKlower1.ScalarVisibilityOff()
     klower1 = vtk.vtkActor()
     klower1.SetMapper(mapKlower1)
-    klower1.GetProperty().SetColor(colors.GetColor3d("EggShell"))
+    klower1.GetProperty().SetColor(colors.GetColor3d('EggShell'))
 
     klower2Geom = vtk.vtkStructuredGridGeometryFilter()
     klower2Geom.SetInputConnection(reader.GetOutputPort())
@@ -100,7 +100,7 @@ def main():
     mapKlower2.ScalarVisibilityOff()
     klower2 = vtk.vtkActor()
     klower2.SetMapper(mapKlower2)
-    klower2.GetProperty().SetColor(colors.GetColor3d("EggShell"))
+    klower2.GetProperty().SetColor(colors.GetColor3d('EggShell'))
 
     klower3Geom = vtk.vtkStructuredGridGeometryFilter()
     klower3Geom.SetInputConnection(reader.GetOutputPort())
@@ -110,7 +110,7 @@ def main():
     mapKlower3.ScalarVisibilityOff()
     klower3 = vtk.vtkActor()
     klower3.SetMapper(mapKlower3)
-    klower3.GetProperty().SetColor(colors.GetColor3d("EggShell"))
+    klower3.GetProperty().SetColor(colors.GetColor3d('EggShell'))
 
     klower4Geom = vtk.vtkStructuredGridGeometryFilter()
     klower4Geom.SetInputConnection(reader.GetOutputPort())
@@ -120,7 +120,7 @@ def main():
     mapKlower4.ScalarVisibilityOff()
     klower4 = vtk.vtkActor()
     klower4.SetMapper(mapKlower4)
-    klower4.GetProperty().SetColor(colors.GetColor3d("EggShell"))
+    klower4.GetProperty().SetColor(colors.GetColor3d('EggShell'))
 
     klower5Geom = vtk.vtkStructuredGridGeometryFilter()
     klower5Geom.SetInputConnection(reader.GetOutputPort())
@@ -130,7 +130,7 @@ def main():
     mapKlower5.ScalarVisibilityOff()
     klower5 = vtk.vtkActor()
     klower5.SetMapper(mapKlower5)
-    klower5.GetProperty().SetColor(colors.GetColor3d("EggShell"))
+    klower5.GetProperty().SetColor(colors.GetColor3d('EggShell'))
 
     klower6Geom = vtk.vtkStructuredGridGeometryFilter()
     klower6Geom.SetInputConnection(reader.GetOutputPort())
@@ -140,7 +140,7 @@ def main():
     mapKlower6.ScalarVisibilityOff()
     klower6 = vtk.vtkActor()
     klower6.SetMapper(mapKlower6)
-    klower6.GetProperty().SetColor(colors.GetColor3d("EggShell"))
+    klower6.GetProperty().SetColor(colors.GetColor3d('EggShell'))
 
     klower7Geom = vtk.vtkStructuredGridGeometryFilter()
     klower7Geom.SetInputConnection(reader.GetOutputPort())
@@ -150,7 +150,7 @@ def main():
     mapKlower7.ScalarVisibilityOff()
     klower7 = vtk.vtkActor()
     klower7.SetMapper(mapKlower7)
-    klower7.GetProperty().SetColor(colors.GetColor3d("EggShell"))
+    klower7.GetProperty().SetColor(colors.GetColor3d('EggShell'))
 
     hood1Geom = vtk.vtkStructuredGridGeometryFilter()
     hood1Geom.SetInputConnection(reader.GetOutputPort())
@@ -160,7 +160,7 @@ def main():
     mapHood1.ScalarVisibilityOff()
     hood1 = vtk.vtkActor()
     hood1.SetMapper(mapHood1)
-    hood1.GetProperty().SetColor(colors.GetColor3d("Silver"))
+    hood1.GetProperty().SetColor(colors.GetColor3d('Silver'))
 
     hood2Geom = vtk.vtkStructuredGridGeometryFilter()
     hood2Geom.SetInputConnection(reader.GetOutputPort())
@@ -170,7 +170,7 @@ def main():
     mapHood2.ScalarVisibilityOff()
     hood2 = vtk.vtkActor()
     hood2.SetMapper(mapHood2)
-    hood2.GetProperty().SetColor(colors.GetColor3d("Furniture"))
+    hood2.GetProperty().SetColor(colors.GetColor3d('Furniture'))
 
     hood3Geom = vtk.vtkStructuredGridGeometryFilter()
     hood3Geom.SetInputConnection(reader.GetOutputPort())
@@ -180,7 +180,7 @@ def main():
     mapHood3.ScalarVisibilityOff()
     hood3 = vtk.vtkActor()
     hood3.SetMapper(mapHood3)
-    hood3.GetProperty().SetColor(colors.GetColor3d("Furniture"))
+    hood3.GetProperty().SetColor(colors.GetColor3d('Furniture'))
 
     hood4Geom = vtk.vtkStructuredGridGeometryFilter()
     hood4Geom.SetInputConnection(reader.GetOutputPort())
@@ -190,7 +190,7 @@ def main():
     mapHood4.ScalarVisibilityOff()
     hood4 = vtk.vtkActor()
     hood4.SetMapper(mapHood4)
-    hood4.GetProperty().SetColor(colors.GetColor3d("Furniture"))
+    hood4.GetProperty().SetColor(colors.GetColor3d('Furniture'))
 
     hood6Geom = vtk.vtkStructuredGridGeometryFilter()
     hood6Geom.SetInputConnection(reader.GetOutputPort())
@@ -200,7 +200,7 @@ def main():
     mapHood6.ScalarVisibilityOff()
     hood6 = vtk.vtkActor()
     hood6.SetMapper(mapHood6)
-    hood6.GetProperty().SetColor(colors.GetColor3d("Furniture"))
+    hood6.GetProperty().SetColor(colors.GetColor3d('Furniture'))
 
     cookingPlateGeom = vtk.vtkStructuredGridGeometryFilter()
     cookingPlateGeom.SetInputConnection(reader.GetOutputPort())
@@ -210,7 +210,7 @@ def main():
     mapCookingPlate.ScalarVisibilityOff()
     cookingPlate = vtk.vtkActor()
     cookingPlate.SetMapper(mapCookingPlate)
-    cookingPlate.GetProperty().SetColor(colors.GetColor3d("Tomato"))
+    cookingPlate.GetProperty().SetColor(colors.GetColor3d('Tomato'))
 
     filterGeom = vtk.vtkStructuredGridGeometryFilter()
     filterGeom.SetInputConnection(reader.GetOutputPort())
@@ -220,7 +220,7 @@ def main():
     mapFilter.ScalarVisibilityOff()
     sgfilter = vtk.vtkActor()
     sgfilter.SetMapper(mapFilter)
-    sgfilter.GetProperty().SetColor(colors.GetColor3d("Furniture"))
+    sgfilter.GetProperty().SetColor(colors.GetColor3d('Furniture'))
     #
     # regular streamlines
     #
@@ -249,7 +249,7 @@ def main():
 
     lines = vtk.vtkActor()
     lines.SetMapper(streamersMapper)
-    lines.GetProperty().SetColor(colors.GetColor3d("Black"))
+    lines.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     aren.TwoSidedLightingOn()
 
@@ -274,7 +274,7 @@ def main():
     aren.AddActor(lines)
     aren.AddActor(rake)
 
-    aren.SetBackground(colors.GetColor3d("SlateGray"))
+    aren.SetBackground(colors.GetColor3d('SlateGray'))
 
     aCamera = vtk.vtkCamera()
     aren.SetActiveCamera(aCamera)
@@ -285,11 +285,12 @@ def main():
     aCamera.SetViewUp(0, 0, 1)
     aCamera.Azimuth(60)
     aCamera.Elevation(30)
-    aCamera.Dolly(1.5)
+    aCamera.Dolly(1.4)
     aren.ResetCameraClippingRange()
 
     renWin.SetSize(640, 512)
     renWin.Render()
+    renWin.SetWindowName('Kitchen')
 
     # interact with data
     iren.Start()

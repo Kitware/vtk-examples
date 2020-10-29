@@ -1,22 +1,21 @@
-#include <vtkSmartPointer.h>
+#include <vtkActor.h>
+#include <vtkCylinder.h>
+#include <vtkImageData.h>
+#include <vtkMarchingCubes.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProbeFilter.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSampleFunction.h>
 #include <vtkSphere.h>
-#include <vtkCylinder.h>
-#include <vtkMarchingCubes.h>
-#include <vtkProbeFilter.h>
-
-#include <vtkImageData.h>
-#include <vtkPointData.h>
-
-#include <vtkPolyDataMapper.h>
-#include <vtkProperty.h>
-#include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkUnsignedCharArray.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   int resolution = 50;
   if (argc > 1)
@@ -24,76 +23,65 @@ int main(int argc, char *argv[])
     resolution = atoi(argv[1]);
   }
 
+  vtkNew<vtkNamedColors> colors;
+
   // Create a sampled sphere
-  vtkSmartPointer<vtkSphere> implicitSphere =
-    vtkSmartPointer<vtkSphere>::New();
+  vtkNew<vtkSphere> implicitSphere;
   double radius = 1.0;
   implicitSphere->SetRadius(radius);
 
-  vtkSmartPointer<vtkSampleFunction> sampledSphere =
-    vtkSmartPointer<vtkSampleFunction>::New();
+  vtkNew<vtkSampleFunction> sampledSphere;
   sampledSphere->SetSampleDimensions(resolution, resolution, resolution);
   double xMin = -radius * 2.0;
-  double xMax =  radius * 2.0;
-  sampledSphere->SetModelBounds(xMin, xMax,
-                                xMin, xMax,
-                                xMin, xMax);
+  double xMax = radius * 2.0;
+  sampledSphere->SetModelBounds(xMin, xMax, xMin, xMax, xMin, xMax);
   sampledSphere->SetImplicitFunction(implicitSphere);
 
-  vtkSmartPointer<vtkMarchingCubes> isoSphere =
-    vtkSmartPointer<vtkMarchingCubes>:: New();
-  isoSphere->SetValue(0,1.0);
+  vtkNew<vtkMarchingCubes> isoSphere;
+  isoSphere->SetValue(0, 1.0);
   isoSphere->SetInputConnection(sampledSphere->GetOutputPort());
 
   // Create a sampled cylinder
-  vtkSmartPointer<vtkCylinder> implicitCylinder =
-    vtkSmartPointer<vtkCylinder>::New();
-  implicitCylinder->SetRadius(radius/2.0);
-  vtkSmartPointer<vtkSampleFunction> sampledCylinder =
-    vtkSmartPointer<vtkSampleFunction>::New();
+  vtkNew<vtkCylinder> implicitCylinder;
+  implicitCylinder->SetRadius(radius / 2.0);
+  vtkNew<vtkSampleFunction> sampledCylinder;
   sampledCylinder->SetSampleDimensions(resolution, resolution, resolution);
-  sampledCylinder->SetModelBounds(xMin, xMax,
-                                  xMin, xMax,
-                                  xMin, xMax);
+  sampledCylinder->SetModelBounds(xMin, xMax, xMin, xMax, xMin, xMax);
   sampledCylinder->SetImplicitFunction(implicitCylinder);
 
   // Probe cylinder with the sphere isosurface
-  vtkSmartPointer<vtkProbeFilter> probeCylinder =
-    vtkSmartPointer<vtkProbeFilter>::New();
+  vtkNew<vtkProbeFilter> probeCylinder;
   probeCylinder->SetInputConnection(0, isoSphere->GetOutputPort());
   probeCylinder->SetInputConnection(1, sampledCylinder->GetOutputPort());
   probeCylinder->Update();
 
   // Restore the original normals
   probeCylinder->GetOutput()->GetPointData()->SetNormals(
-    isoSphere->GetOutput()->GetPointData()->GetNormals());
+      isoSphere->GetOutput()->GetPointData()->GetNormals());
 
   std::cout << "Scalar range: "
             << probeCylinder->GetOutput()->GetScalarRange()[0] << ", "
             << probeCylinder->GetOutput()->GetScalarRange()[1] << std::endl;
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapSphere =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapSphere;
   mapSphere->SetInputConnection(probeCylinder->GetOutputPort());
   mapSphere->SetScalarRange(probeCylinder->GetOutput()->GetScalarRange());
 
-  vtkSmartPointer<vtkActor> sphere =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphere;
   sphere->SetMapper(mapSphere);
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("IsosurfaceSampling");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(sphere);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(colors->GetColor3d("AliceBlue").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();

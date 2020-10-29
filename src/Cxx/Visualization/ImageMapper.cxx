@@ -1,49 +1,59 @@
+#include <vtkActor2D.h>
 #include <vtkImageData.h>
-#include <vtkSmartPointer.h>
+#include <vtkImageMapper.h>
+#include <vtkImageSlice.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageMapper.h>
-#include <vtkActor2D.h>
-#include <vtkImageSlice.h>
 
-static void CreateColorImage(vtkImageData*);
+#include <array>
 
-int main(int, char *[])
+namespace {
+void CreateColorImage(vtkImageData*);
+}
+
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkImageData> colorImage = vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkImageData> colorImage;
   CreateColorImage(colorImage);
 
-  vtkSmartPointer<vtkImageMapper> imageMapper = vtkSmartPointer<vtkImageMapper>::New();
+  vtkNew<vtkImageMapper> imageMapper;
   imageMapper->SetInputData(colorImage);
   imageMapper->SetColorWindow(255);
   imageMapper->SetColorLevel(127.5);
 
-  vtkSmartPointer<vtkActor2D> imageActor = vtkSmartPointer<vtkActor2D>::New();
+  vtkNew<vtkActor2D> imageActor;
   imageActor->SetMapper(imageMapper);
   imageActor->SetPosition(20, 20);
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
   // Setup render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
 
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ImageMapper");
 
   // Setup render window interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
 
-  vtkSmartPointer<vtkInteractorStyleImage> style = vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
   // Render and start interaction
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  //renderer->AddViewProp(imageActor);
+  // renderer->AddViewProp(imageActor);
   renderer->AddActor2D(imageActor);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();
@@ -51,32 +61,49 @@ int main(int, char *[])
   return EXIT_SUCCESS;
 }
 
+namespace {
 void CreateColorImage(vtkImageData* image)
 {
+  vtkNew<vtkNamedColors> colors;
+
+  std::array<unsigned char, 3> drawColor1{0, 0, 0};
+  std::array<unsigned char, 3> drawColor2{0, 0, 0};
+  auto color1 = colors->GetColor3ub("HotPink").GetData();
+  auto color2 = colors->GetColor3ub("Chartreuse").GetData();
+  for (auto i = 0; i < 3; ++i)
+  {
+    drawColor1[i] = color1[i];
+    drawColor2[i] = color2[i];
+  }
+
   unsigned int dim = 20;
 
   image->SetDimensions(dim, dim, 1);
-  image->AllocateScalars(VTK_UNSIGNED_CHAR,3);
+  image->AllocateScalars(VTK_UNSIGNED_CHAR, 3);
 
-  for(unsigned int x = 0; x < dim; x++)
+  for (unsigned int x = 0; x < dim; x++)
   {
-    for(unsigned int y = 0; y < dim; y++)
+    for (unsigned int y = 0; y < dim; y++)
     {
-      unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(x,y,0));
-      if(x < dim/2)
+      auto pixel =
+          static_cast<unsigned char*>(image->GetScalarPointer(x, y, 0));
+      if (x < dim / 2)
       {
-	pixel[0] = 255;
-	pixel[1] = 0;
+        for (auto i = 0; i < 3; ++i)
+        {
+          pixel[i] = drawColor1[i];
+        }
       }
       else
       {
-	pixel[0] = 0;
-	pixel[1] = 255;
+        for (auto i = 0; i < 3; ++i)
+        {
+          pixel[i] = drawColor2[i];
+        }
       }
-
-      pixel[2] = 0;
     }
   }
 
   image->Modified();
 }
+} // namespace

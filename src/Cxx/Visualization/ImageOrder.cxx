@@ -1,56 +1,63 @@
 #include <vtkImageActor.h>
 #include <vtkImageData.h>
 #include <vtkInteractorStyleImage.h>
-#include <vtkRenderer.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 
-static void CreateWhiteImage(vtkSmartPointer<vtkImageData> image);
-static void CreateRedImage(vtkSmartPointer<vtkImageData> image);
+#include <array>
 
-int main(int, char* [])
+#define DISPLAY_FIRST_IMAGE
+// Comment this out to display the first image.
+#undef DISPLAY_FIRST_IMAGE
+
+namespace {
+void CreateColorImage(vtkImageData* image, std::string const& colorName);
+}
+
+int main(int, char*[])
 {
-  // Image 1
-  vtkSmartPointer<vtkImageData> whiteImage =
-    vtkSmartPointer<vtkImageData>::New();
-  CreateWhiteImage(whiteImage);
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkImageActor> whiteImageActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  whiteImageActor->SetInputData(whiteImage);
+  // Image 1
+  vtkNew<vtkImageData> firstImage;
+  CreateColorImage(firstImage, "DarkOliveGreen");
+
+  vtkNew<vtkImageActor> firstImageActor;
+  firstImageActor->SetInputData(firstImage);
 
   // Image 2
-  vtkSmartPointer<vtkImageData> redImage =
-    vtkSmartPointer<vtkImageData>::New();
-  CreateRedImage(redImage);
+  vtkNew<vtkImageData> secondImage;
+  CreateColorImage(secondImage, "DarkSalmon");
 
-  vtkSmartPointer<vtkImageActor> redImageActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  redImageActor->SetInputData(redImage);
+  vtkNew<vtkImageActor> secondImageActor;
+  secondImageActor->SetInputData(secondImage);
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  // Red image is displayed
-  renderer->AddActor(whiteImageActor);
-  renderer->AddActor(redImageActor);
+#ifdef DISPLAY_FIRST_IMAGE
+  // The first image is displayed
+  renderer->AddActor(secondImageActor);
+  renderer->AddActor(firstImageActor);
+#else
+  // The second image is displayed
+  renderer->AddActor(firstImageActor);
+  renderer->AddActor(secondImageActor);
+#endif
 
-  // White image is displayed
-  //renderer->AddActor(redImageActor);
-  //renderer->AddActor(whiteImageActor);
-
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
   renderer->ResetCamera();
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ImageOrder");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -62,42 +69,36 @@ int main(int, char* [])
   return EXIT_SUCCESS;
 }
 
-void CreateWhiteImage(vtkSmartPointer<vtkImageData> image)
+namespace {
+void CreateColorImage(vtkImageData* image, std::string const& colorName)
 {
-  // Create a white image
-  image->SetDimensions(10,10,1);
-  image->AllocateScalars(VTK_UNSIGNED_CHAR,3);
+  vtkNew<vtkNamedColors> colors;
 
-  int* dims = image->GetDimensions();
-
-  for (int y = 0; y < dims[1]; y++)
+  std::array<unsigned char, 3> drawColor{0, 0, 0};
+  auto color = colors->GetColor3ub(colorName).GetData();
+  for (auto i = 0; i < 3; ++i)
   {
-    for (int x = 0; x < dims[0]; x++)
+    drawColor[i] = color[i];
+  }
+
+  unsigned int dim = 10;
+
+  image->SetDimensions(dim, dim, 1);
+  image->AllocateScalars(VTK_UNSIGNED_CHAR, 3);
+
+  for (unsigned int x = 0; x < dim; x++)
+  {
+    for (unsigned int y = 0; y < dim; y++)
     {
-      unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(x,y,0));
-      pixel[0] = 255;
-      pixel[1] = 255;
-      pixel[2] = 255;
+      auto pixel =
+          static_cast<unsigned char*>(image->GetScalarPointer(x, y, 0));
+      for (auto i = 0; i < 3; ++i)
+      {
+        pixel[i] = drawColor[i];
+      }
     }
   }
+
+  image->Modified();
 }
-
-void CreateRedImage(vtkSmartPointer<vtkImageData> image)
-{
-  // Create a red image
-  image->SetDimensions(10,10,1);
-  image->AllocateScalars(VTK_UNSIGNED_CHAR,3);
-
-  int* dims = image->GetDimensions();
-
-  for (int y = 0; y < dims[1]; y++)
-  {
-    for (int x = 0; x < dims[0]; x++)
-    {
-      unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(x,y,0));
-      pixel[0] = 255;
-      pixel[1] = 0;
-      pixel[2] = 0;
-    }
-  }
-}
+} // namespace

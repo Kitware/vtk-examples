@@ -2,6 +2,7 @@
 #include <vtkCamera.h>
 #include <vtkLineSource.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -24,27 +25,22 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
   double range[2];
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the furniture colors.
   std::array<unsigned char, 4> furnColor{{204, 204, 153, 255}};
   colors->SetColor("Furniture", furnColor.data());
 
-  auto aren =
-    vtkSmartPointer<vtkRenderer>::New();
-  auto renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> aren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(aren);
 
-  auto iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
   //
   // Read data
   //
-  auto reader =
-    vtkSmartPointer<vtkStructuredGridReader>::New();
+  vtkNew<vtkStructuredGridReader> reader;
   reader->SetFileName(argv[1]);
   reader->Update(); // force a read to occur
   reader->GetOutput()->GetLength();
@@ -64,258 +60,200 @@ int main(int argc, char* argv[])
   //
   // Outline around data
   //
-  auto outlineF =
-    vtkSmartPointer<vtkStructuredGridOutlineFilter>::New();
+  vtkNew<vtkStructuredGridOutlineFilter> outlineF;
   outlineF->SetInputConnection(reader->GetOutputPort());
-  auto outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outlineF->GetOutputPort());
-  auto outline =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outline;
   outline->SetMapper(outlineMapper);
   outline->GetProperty()->SetColor(colors->GetColor3d("LampBlack").GetData());
   //
   // Set up shaded surfaces (i.e., supporting geometry)
   //
-  auto doorGeom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> doorGeom;
   doorGeom->SetInputConnection(reader->GetOutputPort());
   doorGeom->SetExtent(27, 27, 14, 18, 0, 11);
-  auto mapDoor =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapDoor;
   mapDoor->SetInputConnection(doorGeom->GetOutputPort());
   mapDoor->ScalarVisibilityOff();
-  auto door =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> door;
   door->SetMapper(mapDoor);
   door->GetProperty()->SetColor(colors->GetColor3d("Burlywood").GetData());
 
-  auto window1Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> window1Geom;
   window1Geom->SetInputConnection(reader->GetOutputPort());
   window1Geom->SetExtent(0, 0, 9, 18, 6, 12);
-  auto mapWindow1 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapWindow1;
   mapWindow1->SetInputConnection(window1Geom->GetOutputPort());
   mapWindow1->ScalarVisibilityOff();
-  auto window1 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> window1;
   window1->SetMapper(mapWindow1);
   window1->GetProperty()->SetColor(colors->GetColor3d("SkyBlue").GetData());
   window1->GetProperty()->SetOpacity(.6);
 
-  auto window2Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> window2Geom;
   window2Geom->SetInputConnection(reader->GetOutputPort());
   window2Geom->SetExtent(5, 12, 23, 23, 6, 12);
-  auto mapWindow2 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapWindow2;
   mapWindow2->SetInputConnection(window2Geom->GetOutputPort());
   mapWindow2->ScalarVisibilityOff();
-  auto window2 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> window2;
   window2->SetMapper(mapWindow2);
   window2->GetProperty()->SetColor(colors->GetColor3d("SkyBlue").GetData());
   window2->GetProperty()->SetOpacity(.6);
 
-  auto klower1Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> klower1Geom;
   klower1Geom->SetInputConnection(reader->GetOutputPort());
   klower1Geom->SetExtent(17, 17, 0, 11, 0, 6);
-  auto mapKlower1 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapKlower1;
   mapKlower1->SetInputConnection(klower1Geom->GetOutputPort());
   mapKlower1->ScalarVisibilityOff();
-  auto klower1 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> klower1;
   klower1->SetMapper(mapKlower1);
   klower1->GetProperty()->SetColor(colors->GetColor3d("EggShell").GetData());
 
-  auto klower2Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> klower2Geom;
   klower2Geom->SetInputConnection(reader->GetOutputPort());
   klower2Geom->SetExtent(19, 19, 0, 11, 0, 6);
-  auto mapKlower2 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapKlower2;
   mapKlower2->SetInputConnection(klower2Geom->GetOutputPort());
   mapKlower2->ScalarVisibilityOff();
-  auto klower2 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> klower2;
   klower2->SetMapper(mapKlower2);
   klower2->GetProperty()->SetColor(colors->GetColor3d("EggShell").GetData());
 
-  auto klower3Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> klower3Geom;
   klower3Geom->SetInputConnection(reader->GetOutputPort());
   klower3Geom->SetExtent(17, 19, 0, 0, 0, 6);
-  auto mapKlower3 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapKlower3;
   mapKlower3->SetInputConnection(klower3Geom->GetOutputPort());
   mapKlower3->ScalarVisibilityOff();
-  auto klower3 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> klower3;
   klower3->SetMapper(mapKlower3);
   klower3->GetProperty()->SetColor(colors->GetColor3d("EggShell").GetData());
 
-  auto klower4Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> klower4Geom;
   klower4Geom->SetInputConnection(reader->GetOutputPort());
   klower4Geom->SetExtent(17, 19, 11, 11, 0, 6);
-  auto mapKlower4 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapKlower4;
   mapKlower4->SetInputConnection(klower4Geom->GetOutputPort());
   mapKlower4->ScalarVisibilityOff();
-  auto klower4 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> klower4;
   klower4->SetMapper(mapKlower4);
   klower4->GetProperty()->SetColor(colors->GetColor3d("EggShell").GetData());
 
-  auto klower5Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> klower5Geom;
   klower5Geom->SetInputConnection(reader->GetOutputPort());
   klower5Geom->SetExtent(17, 19, 0, 11, 0, 0);
-  auto mapKlower5 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapKlower5;
   mapKlower5->SetInputConnection(klower5Geom->GetOutputPort());
   mapKlower5->ScalarVisibilityOff();
-  auto klower5 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> klower5;
   klower5->SetMapper(mapKlower5);
   klower5->GetProperty()->SetColor(colors->GetColor3d("EggShell").GetData());
 
-  auto klower6Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> klower6Geom;
   klower6Geom->SetInputConnection(reader->GetOutputPort());
   klower6Geom->SetExtent(17, 19, 0, 7, 6, 6);
-  auto mapKlower6 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapKlower6;
   mapKlower6->SetInputConnection(klower6Geom->GetOutputPort());
   mapKlower6->ScalarVisibilityOff();
-  auto klower6 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> klower6;
   klower6->SetMapper(mapKlower6);
   klower6->GetProperty()->SetColor(colors->GetColor3d("EggShell").GetData());
 
-  auto klower7Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> klower7Geom;
   klower7Geom->SetInputConnection(reader->GetOutputPort());
   klower7Geom->SetExtent(17, 19, 9, 11, 6, 6);
-  auto mapKlower7 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapKlower7;
   mapKlower7->SetInputConnection(klower7Geom->GetOutputPort());
   mapKlower7->ScalarVisibilityOff();
-  auto klower7 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> klower7;
   klower7->SetMapper(mapKlower7);
   klower7->GetProperty()->SetColor(colors->GetColor3d("EggShell").GetData());
 
-  auto hood1Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> hood1Geom;
   hood1Geom->SetInputConnection(reader->GetOutputPort());
   hood1Geom->SetExtent(17, 17, 0, 11, 11, 16);
-  auto mapHood1 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapHood1;
   mapHood1->SetInputConnection(hood1Geom->GetOutputPort());
   mapHood1->ScalarVisibilityOff();
-  auto hood1 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> hood1;
   hood1->SetMapper(mapHood1);
   hood1->GetProperty()->SetColor(colors->GetColor3d("Silver").GetData());
 
-  auto hood2Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> hood2Geom;
   hood2Geom->SetInputConnection(reader->GetOutputPort());
   hood2Geom->SetExtent(19, 19, 0, 11, 11, 16);
-  auto mapHood2 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapHood2;
   mapHood2->SetInputConnection(hood2Geom->GetOutputPort());
   mapHood2->ScalarVisibilityOff();
-  auto hood2 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> hood2;
   hood2->SetMapper(mapHood2);
   hood2->GetProperty()->SetColor(colors->GetColor3d("Furniture").GetData());
 
-  auto hood3Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> hood3Geom;
   hood3Geom->SetInputConnection(reader->GetOutputPort());
   hood3Geom->SetExtent(17, 19, 0, 0, 11, 16);
-  auto mapHood3 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapHood3;
   mapHood3->SetInputConnection(hood3Geom->GetOutputPort());
   mapHood3->ScalarVisibilityOff();
-  auto hood3 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> hood3;
   hood3->SetMapper(mapHood3);
   hood3->GetProperty()->SetColor(colors->GetColor3d("Furniture").GetData());
 
-  auto hood4Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> hood4Geom;
   hood4Geom->SetInputConnection(reader->GetOutputPort());
   hood4Geom->SetExtent(17, 19, 11, 11, 11, 16);
-  auto mapHood4 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapHood4;
   mapHood4->SetInputConnection(hood4Geom->GetOutputPort());
   mapHood4->ScalarVisibilityOff();
-  auto hood4 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> hood4;
   hood4->SetMapper(mapHood4);
   hood4->GetProperty()->SetColor(colors->GetColor3d("Furniture").GetData());
 
-  auto hood6Geom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> hood6Geom;
   hood6Geom->SetInputConnection(reader->GetOutputPort());
   hood6Geom->SetExtent(17, 19, 0, 11, 16, 16);
-  auto mapHood6 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapHood6;
   mapHood6->SetInputConnection(hood6Geom->GetOutputPort());
   mapHood6->ScalarVisibilityOff();
-  auto hood6 =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> hood6;
   hood6->SetMapper(mapHood6);
   hood6->GetProperty()->SetColor(colors->GetColor3d("Furniture").GetData());
 
-  auto cookingPlateGeom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> cookingPlateGeom;
   cookingPlateGeom->SetInputConnection(reader->GetOutputPort());
   cookingPlateGeom->SetExtent(17, 19, 7, 9, 6, 6);
-  auto mapCookingPlate =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapCookingPlate;
   mapCookingPlate->SetInputConnection(cookingPlateGeom->GetOutputPort());
   mapCookingPlate->ScalarVisibilityOff();
-  auto cookingPlate =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cookingPlate;
   cookingPlate->SetMapper(mapCookingPlate);
   cookingPlate->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
 
-  auto filterGeom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> filterGeom;
   filterGeom->SetInputConnection(reader->GetOutputPort());
   filterGeom->SetExtent(17, 19, 7, 9, 11, 11);
-  auto mapFilter =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapFilter;
   mapFilter->SetInputConnection(filterGeom->GetOutputPort());
   mapFilter->ScalarVisibilityOff();
-  auto filter =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> filter;
   filter->SetMapper(mapFilter);
   filter->GetProperty()->SetColor(colors->GetColor3d("Furniture").GetData());
   //
   // regular streamlines
   //
-  auto line =
-    vtkSmartPointer<vtkLineSource>::New();
+  vtkNew<vtkLineSource> line;
   line->SetResolution(39);
   line->SetPoint1(0.08, 2.50, 0.71);
   line->SetPoint2(0.08, 4.50, 0.71);
-  auto rakeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> rakeMapper;
   rakeMapper->SetInputConnection(line->GetOutputPort());
-  auto rake =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> rake;
   rake->SetMapper(rakeMapper);
 
-  auto streamers =
-    vtkSmartPointer<vtkStreamTracer>::New();
+  vtkNew<vtkStreamTracer> streamers;
   // streamers->DebugOn();
   streamers->SetInputConnection(reader->GetOutputPort());
   streamers->SetSourceConnection(line->GetOutputPort());
@@ -325,13 +263,11 @@ int main(int argc, char* argv[])
   streamers->SetIntegratorType(2);
   streamers->Update();
 
-  auto streamersMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> streamersMapper;
   streamersMapper->SetInputConnection(streamers->GetOutputPort());
   streamersMapper->SetScalarRange(range);
 
-  auto lines =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> lines;
   lines->SetMapper(streamersMapper);
   lines->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
@@ -360,8 +296,7 @@ int main(int argc, char* argv[])
 
   aren->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  auto aCamera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> aCamera;
   aren->SetActiveCamera(aCamera);
   aren->ResetCamera();
 
@@ -370,11 +305,12 @@ int main(int argc, char* argv[])
   aCamera->SetViewUp(0, 0, 1);
   aCamera->Azimuth(60);
   aCamera->Elevation(30);
-  aCamera->Dolly(1.5);
+  aCamera->Dolly(1.4);
   aren->ResetCameraClippingRange();
 
   renWin->SetSize(640, 512);
   renWin->Render();
+  renWin->SetWindowName("Kitchen");
 
   // interact with data
   iren->Start();
