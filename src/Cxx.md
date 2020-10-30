@@ -1015,10 +1015,6 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [HideActor](/Cxx/Visualization/HideActor) | vtkPropCollection vtkProp | visible
 [HideAllActors](/Cxx/Visualization/HideAllActors) | vtkRenderer | Hide all actors.
 [HyperStreamline](/Cxx/VisualizationAlgorithms/HyperStreamline) | vtkHyperStreamline | Example of hyperstreamlines, the four hyperstreamlines shown are integrated along the minor principle stress axis. A plane (colored with a different lookup table) is also shown.
-[ImageMapper](/Cxx/Visualization/ImageMapper) | vtkImageMapper | Display an image in 2D.
-[ImageOrder](/Cxx/Visualization/ImageOrder) | vtkRenderer | Determine the display order of a stack of images.
-[ImageOrientation](/Cxx/Visualization/ImageOrientation) | vtkInteractorStyleImage | Orientation of the view of an image.
-[ImageTransparency](/Cxx/Visualization/ImageTransparency) | vtkImageData | Set transparency of image pixels.
 [InterpolateCamera](Cxx/Rendering/InterpolateCamera) | vtkInterpolateCamera | Move a camera along a path generated from multiple camera views.
 [IronIsoSurface](/Cxx/VisualizationAlgorithms/IronIsoSurface) | vtkContourFilter | Marching cubes surface of iron-protein.
 [IsosurfaceSampling](/Cxx/Visualization/IsosurfaceSampling) | vtkProbeFilter | Demonstrates how to create point data on an isosurface.
@@ -1196,11 +1192,14 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [ImageIslandRemoval2D](/Cxx/Images/ImageIslandRemoval2D) | vtkImageIslandRemoval2D | Remove small patches from an image.
 [ImageMagnify](/Cxx/Images/ImageMagnify) | vtkImageMagnify | Supersample and stretch an image.
 [ImageMandelbrotSource](/Cxx/Images/ImageMandelbrotSource) | vtkImageMandelbrotSource | Create a Mandelbrot image.
+[ImageMapper](/Cxx/Images/ImageMapper) | vtkImageMapper | Display an image in 2D.
 [ImageMask](/Cxx/Images/ImageMask) | vtkImageMask | Mask a region of an image.
 [ImageMathematics](/Cxx/Images/ImageMathematics) | vtkImageMathematics | Perform mathematical operations on an image.
 [ImageMedian3D](/Cxx/Images/ImageMedian3D) | vtkImageMedian3D | Median filter a 3d or 2d image.
 [ImageMirrorPad](/Cxx/Images/ImageMirrorPad) | vtkImageMirrorPad | Pad the edges of an extended image by mirror existing pixels.
 [ImageNonMaximumSuppression](/Cxx/Images/ImageNonMaximumSuppression) | vtkImageNonMaximumSuppression | Find peaks in an image using non maximum suppression.
+[ImageOrder](/Cxx/Images/ImageOrder) | vtkRenderer | Determine the display order of a stack of images.
+[ImageOrientation](/Cxx/Images/ImageOrientation) | vtkInteractorStyleImage | Orientation of the view of an image.
 [ImageOpenClose3D](/Cxx/Images/ImageOpenClose3D) | vtkImageOpenClose3D | Open or close (morphologically) an image.
 [ImageRFFT](/Cxx/Images/ImageRFFT) | vtkImageRFFT | Inverse FFT.
 [ImageRange3D](/Cxx/Images/ImageRange3D) | vtkImageRange3D | Replace every pixel with the range of its neighbors according to a kernel.
@@ -1216,6 +1215,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [ImageThreshold](/Cxx/Images/ImageThreshold) | vtkImageThreshold | Threshold an image.
 [ImageToPolyDataFilter](/Cxx/Images/ImageToPolyDataFilter) | vtkImageToPolyDataFilter vtkImageQuantizeRGBToIndex | Convert a vtkImageData to a vtkPolyData.
 [ImageToStructuredPoints](/Cxx/Images/ImageToStructuredPoints) | vtkImageToStructuredPoints | Convert a vtkImageData to a vtkStructuredPoints.
+[ImageTransparency](/Cxx/Images/ImageTransparency) | vtkImageData | Set transparency of image pixels.
 [InteractWithImage](/Cxx/Images/InteractWithImage) | vtkImageActor vtkInteractorStyleImage | Visualize and interact with an image.
 [Interpolation](/Cxx/Images/Interpolation) | vtkImageSlice vtkImageProperty | Set the interpolation type for the display of an image. If pixels look blurry instead of sharp when zoomed in, change this.
 [MarkKeypoints](/Cxx/Images/MarkKeypoints) | vtkVectorText vtkFollower | Mark keypoints in an image.
