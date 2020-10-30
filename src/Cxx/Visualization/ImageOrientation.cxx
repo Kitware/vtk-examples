@@ -1,72 +1,70 @@
-#include <vtkSmartPointer.h>
+#include <vtkImageActor.h>
+#include <vtkImageCast.h>
 #include <vtkImageData.h>
+#include <vtkImageEllipsoidSource.h>
 #include <vtkImageMapper3D.h>
 #include <vtkImagePermute.h>
+#include <vtkInteractorStyleImage.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
-#include <vtkImageEllipsoidSource.h>
-#include <vtkImageCast.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  vtkSmartPointer<vtkImageEllipsoidSource > source = 
-    vtkSmartPointer<vtkImageEllipsoidSource >::New();
+  vtkNew<vtkImageEllipsoidSource> source;
   source->SetWholeExtent(0, 20, 0, 20, 0, 0);
-  source->SetCenter(10,10,0);
-  source->SetRadius(2,5,0);
+  source->SetCenter(10, 10, 0);
+  source->SetRadius(2, 5, 0);
+  source->SetOutputScalarTypeToUnsignedChar();
   source->Update();
 
-  vtkSmartPointer<vtkImagePermute> permuteFilter = 
-    vtkSmartPointer<vtkImagePermute>::New();
+  vtkNew<vtkImagePermute> permuteFilter;
   permuteFilter->SetInputConnection(source->GetOutputPort());
-  permuteFilter->SetFilteredAxes(1,0,2);
+  permuteFilter->SetFilteredAxes(1, 0, 2);
   permuteFilter->Update();
 
   // Create actors
-  vtkSmartPointer<vtkImageActor> originalActor =
-    vtkSmartPointer<vtkImageActor>::New();
-  originalActor->GetMapper()->SetInputConnection(
-    source->GetOutputPort());
+  vtkNew<vtkImageActor> originalActor;
+  originalActor->GetMapper()->SetInputConnection(source->GetOutputPort());
 
-  vtkSmartPointer<vtkImageActor> permutedActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> permutedActor;
   permutedActor->GetMapper()->SetInputConnection(
-    permuteFilter->GetOutputPort());
-  
+      permuteFilter->GetOutputPort());
+
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
   double originalViewport[4] = {0.0, 0.0, 0.5, 1.0};
   double permutedViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup renderers
-  vtkSmartPointer<vtkRenderer> originalRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> originalRenderer;
   originalRenderer->SetViewport(originalViewport);
   originalRenderer->AddActor(originalActor);
   originalRenderer->ResetCamera();
-  originalRenderer->SetBackground(.4, .5, .6);
+  originalRenderer->SetBackground(
+      colors->GetColor3d("CornflowerBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> permutedRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> permutedRenderer;
   permutedRenderer->SetViewport(permutedViewport);
   permutedRenderer->AddActor(permutedActor);
   permutedRenderer->ResetCamera();
-  permutedRenderer->SetBackground(.4, .5, .7);
+  permutedRenderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
   renderWindow->AddRenderer(originalRenderer);
   renderWindow->AddRenderer(permutedRenderer);
+  renderWindow->SetWindowName("ImageOrientation");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -75,6 +73,6 @@ int main(int, char *[])
   renderWindowInteractor->Initialize();
 
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

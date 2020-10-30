@@ -27,6 +27,7 @@ Here are some snippets and examples that highlight interesting features that may
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
+[PointToGlyph](/Cxx/Snippets/PointToGlyph) | How to represent points as glyphs.
 [QuantizePolyDataPoints](/Cxx/PolyData/QuantizePolyDataPoints) | Represent a point by a glyph.
 
 ## Image

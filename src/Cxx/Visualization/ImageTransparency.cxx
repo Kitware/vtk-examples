@@ -1,43 +1,50 @@
-#include <vtkSmartPointer.h>
-#include <vtkLookupTable.h>
+#include <vtkImageActor.h>
 #include <vtkImageData.h>
-#include <vtkImageMapper3D.h>
 #include <vtkImageMapToColors.h>
+#include <vtkImageMapper3D.h>
+#include <vtkInteractorStyleImage.h>
 #include <vtkJPEGReader.h>
+#include <vtkLookupTable.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleImage.h>
 #include <vtkRenderer.h>
-#include <vtkImageActor.h>
 
-static void CreateImage(vtkSmartPointer<vtkImageData> image);
+#include <array>
+
+namespace {
+void CreateColorImage(vtkImageData* image, std::string const& colorNameunsigned,
+                      unsigned char const alpha);
+}
 
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkImageData> image =
-    vtkSmartPointer<vtkImageData>::New();
-  CreateImage(image);
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkImageData> image;
+  // Use this to control the transparency [0 .. 255]
+  unsigned char alpha = 50;
+  CreateColorImage(image, "Gold", alpha);
 
   // Create actor
-  vtkSmartPointer<vtkImageActor> imageActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> imageActor;
   imageActor->GetMapper()->SetInputData(image);
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(imageActor);
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
   renderer->ResetCamera();
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ImageTransparency");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkNew<vtkInteractorStyleImage> style;
 
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -49,30 +56,44 @@ int main(int, char*[])
   return EXIT_SUCCESS;
 }
 
-void CreateImage(vtkSmartPointer<vtkImageData> image)
+namespace {
+void CreateColorImage(vtkImageData* image, std::string const& colorName,
+                      unsigned char const alpha)
 {
+  vtkNew<vtkNamedColors> colors;
+
+  std::array<unsigned char, 4> drawColor{0, 0, 0};
+  auto color = colors->GetColor4ub(colorName).GetData();
+  for (auto i = 0; i < 4; ++i)
+  {
+    drawColor[i] = color[i];
+  }
+
+  unsigned int dim = 10;
+
   // Specify the size of the image data
-  image->SetDimensions(10,10,1);
-  image->AllocateScalars(VTK_UNSIGNED_CHAR,4);
+  image->SetDimensions(dim, dim, 1);
+  image->AllocateScalars(VTK_UNSIGNED_CHAR, 4);
 
   int* dims = image->GetDimensions();
-  // int dims[3]; // can't do this
 
-  std::cout << "Dims: " << " x: " << dims[0] << " y: " << dims[1] << " z: " << dims[2] << std::endl;
+  std::cout << "Dims: "
+            << " x: " << dims[0] << " y: " << dims[1] << " z: " << dims[2]
+            << std::endl;
 
-  // Fill every entry of the image with "2"
-  for (int y = 0; y < dims[1]; y++)
+  for (unsigned char y = 0; y < dims[1]; y++)
   {
-    for (int x = 0; x < dims[0]; x++)
+    for (unsigned char x = 0; x < dims[0]; x++)
     {
-
-      unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(x,y,0));
-      pixel[0] = 255;
-      pixel[1] = 255;
-      pixel[2] = 255;
-      if(x<5)
+      auto pixel =
+          static_cast<unsigned char*>(image->GetScalarPointer(x, y, 0));
+      for (auto i = 0; i < 4; ++i)
       {
-        pixel[3] = 0;
+        pixel[i] = drawColor[i];
+      }
+      if (x < 5)
+      {
+        pixel[3] = alpha;
       }
       else
       {
@@ -81,4 +102,6 @@ void CreateImage(vtkSmartPointer<vtkImageData> image)
     }
   }
 
+  image->Modified();
 }
+} // namespace

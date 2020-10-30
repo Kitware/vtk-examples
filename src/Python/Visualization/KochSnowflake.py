@@ -7,9 +7,9 @@ LEVEL = 6
 
 
 def as_polyline(points, level):
-    """
+    '''
     Koch Snowflake as a vtkPolyLine
-    """
+    '''
     # Use the points from the previous iteration to create the points of the next
     # level. There is an assumption on my part that the curve is traversed in a
     # counterclockwise fashion. If the initial triangle above is written to
@@ -19,7 +19,7 @@ def as_polyline(points, level):
         # The first point of the previous vtkPoints is the first point of the next vtkPoints.
         temp.InsertNextPoint(*points.GetPoint(0))
 
-        # Iterate over "edges" in the vtkPoints
+        # Iterate over 'edges' in the vtkPoints
         for i in range(1, points.GetNumberOfPoints()):
             x0, y0, z0 = points.GetPoint(i - 1)
             x1, y1, z1 = points.GetPoint(i)
@@ -52,9 +52,9 @@ def as_polyline(points, level):
 
 
 def as_triangles(indices, cellarray, level, data):
-    """
+    '''
     Koch Snowflake as a collection of vtkTriangles
-    """
+    '''
     if len(indices) >= 3:
         stride = len(indices) // 4
         indices.append(indices[-1] + 1)
@@ -85,7 +85,7 @@ def main():
 
     outline_pd = as_polyline(points, LEVEL)
     # You have already gone through the trouble of putting the points in the
-    # right places - so "all" you need to do now is to create polygons from the
+    # right places - so 'all' you need to do now is to create polygons from the
     # points that are in the vtkPoints.
 
     # The points that are passed in, have an overlap of the beginning and the
@@ -102,7 +102,7 @@ def main():
     # the iteration of the Koch snowflake.
     data = vtk.vtkIntArray()
     data.SetNumberOfComponents(0)
-    data.SetName("Iteration Level")
+    data.SetName('Iteration Level')
 
     # This is the starting triangle.
     t = vtk.vtkTriangle()
@@ -157,9 +157,10 @@ def main():
     renw.AddRenderer(outline_ren)
     renw.AddRenderer(triangle_ren)
     renw.SetSize(800, 400)
+    renw.SetWindowName('KochSnowflake')
 
-    outline_ren.SetBackground(colors.GetColor3d("Maroon"))
-    triangle_ren.SetBackground(colors.GetColor3d("Maroon"))
+    outline_ren.SetBackground(colors.GetColor3d('CornFlowerBLue'))
+    triangle_ren.SetBackground(colors.GetColor3d('MistyRose'))
 
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renw)
