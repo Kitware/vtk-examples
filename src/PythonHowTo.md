@@ -4,6 +4,12 @@ Often you just need a "pointer" to an example that shows you how to do something
 
 Here are some snippets and examples that highlight interesting features that may help you:
 
+## Callback
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[CallBack](/Python/Interaction/CallBack) | Setting up a callback with client data. Two different methods are demonstrated.
+
 ## Camera
 
 | Example Name | Comments | Image |
@@ -23,7 +29,7 @@ Here are some snippets and examples that highlight interesting features that may
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
-[InteractorStyleTrackballCamera](/Python/Visualization/InteractorStyleTrackballCamera) | Here points are represented as glyphs.
+[InteractorStyleTrackballCamera](/Python/Interaction/InteractorStyleTrackballCamera) | Here points are represented as glyphs.
 [PointToGlyph](/Python/Snippets/PointToGlyph) | How to represent points as glyphs.
 
 ## Image
