@@ -9,7 +9,7 @@
  */
 
 #include <vtkNamedColors.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 
 #include <algorithm>
 #include <cctype>
@@ -111,12 +111,11 @@ private:
   std::string MakeSynonymColorTable();
 
 private:
-  vtkSmartPointer<vtkNamedColors> nc = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> nc;
   ColorStructures cs = ColorStructures();
   HTMLToFromRGBAColor htmlRGBA = HTMLToFromRGBAColor();
 };
 } // namespace
-
 
 int main(int argc, char* argv[])
 {
@@ -713,9 +712,10 @@ std::string HTMLTableMaker::MakeSynonymColorTable()
     // Make a lowercase key.
     std::string key;
     key.resize(p.size());
-    std::transform(
-        p.begin(), p.end(), key.begin(),
-        [](unsigned char const & c) -> unsigned char { return std::tolower(c); });
+    std::transform(p.begin(), p.end(), key.begin(),
+                   [](unsigned char const& c) -> unsigned char {
+                     return std::tolower(c);
+                   });
     d[key] = p;
   }
   // End point of first table.

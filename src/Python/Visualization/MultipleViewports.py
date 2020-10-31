@@ -8,14 +8,17 @@ def main():
     rw = vtk.vtkRenderWindow()
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(rw)
+
     # Define viewport ranges
     xmins = [0, .5, 0, .5]
     xmaxs = [0.5, 1, 0.5, 1]
     ymins = [0, 0, .5, .5]
     ymaxs = [0.5, 0.5, 1, 1]
+
     # Have some fun with colors
     ren_bkg = ['AliceBlue', 'GhostWhite', 'WhiteSmoke', 'Seashell']
     actor_color = ['Bisque', 'RosyBrown', 'Goldenrod', 'Chocolate']
+
     for i in range(4):
         ren = vtk.vtkRenderer()
         rw.AddRenderer(ren)
@@ -38,7 +41,7 @@ def main():
         ren.ResetCamera()
 
     rw.Render()
-    rw.SetWindowName('RW: Multiple ViewPorts')
+    rw.SetWindowName('MultipleViewPorts')
     iren.Start()
 
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""
+'''
 Create an iso-surface of the Lorenz attractor.
 
 Here we visualize a Lorenz strange attractor by integrating the Lorenz equations in a volume.
@@ -9,7 +9,7 @@ The surface is extracted via marching cubes using a visit value of 50.
 The number of integration steps is 10 million, in a volume of dimensions 200 x 200 x 200.
 The surface roughness is caused by the discrete nature of the evaluation function.
 
-"""
+'''
 import vtk
 
 
@@ -37,22 +37,27 @@ def main():
     yIncr = resolution / (ymax - ymin)
     zIncr = resolution / (zmax - zmin)
 
-    print("The Lorenz Attractor\n")
-    print(" Pr =", Pr)
-    print(" b =", b)
-    print(" r =", r)
-    print(" integration step size =", h)
-    print(" slice resolution =", resolution)
-    print(" # of iterations =", iter)
-    print(" specified range:")
-    print("     x: {:f}, {:f}".format(xmin, xmax))
-    print("     y: {:f}, {:f}".format(ymin, ymax))
-    print("     z: {:f}, {:f}".format(zmin, zmax))
+    print('The Lorenz Attractor\n')
+    print(' Pr =', Pr)
+    print(' b =', b)
+    print(' r =', r)
+    print(' integration step size =', h)
+    print(' slice resolution =', resolution)
+    print(' # of iterations =', iter)
+    print(' specified range:')
+    print('     x: {:f}, {:f}'.format(xmin, xmax))
+    print('     y: {:f}, {:f}'.format(ymin, ymax))
+    print('     z: {:f}, {:f}'.format(zmin, zmax))
 
-    x = vtk.vtkMath.Random(xmin, xmax)
-    y = vtk.vtkMath.Random(ymin, ymax)
-    z = vtk.vtkMath.Random(zmin, zmax)
-    print(" starting at {:f}, {:f}, {:f}".format(x, y, z))
+    randomSequence = vtk.vtkMinimalStandardRandomSequence()
+    randomSequence.SetSeed(8775070)
+    x = randomSequence.GetRangeValue(xmin, xmax)
+    randomSequence.Next()
+    y = randomSequence.GetRangeValue(ymin, ymax)
+    randomSequence.Next()
+    z = randomSequence.GetRangeValue(zmin, zmax)
+    randomSequence.Next()
+    print(' starting at {:f}, {:f}, {:f}'.format(x, y, z))
     # allocate memory for the slices
     sliceSize = resolution * resolution
     numPts = sliceSize * resolution
@@ -83,7 +88,7 @@ def main():
     volume.SetOrigin(xmin, ymin, zmin)
     volume.SetSpacing((xmax - xmin) / resolution, (ymax - ymin) / resolution, (zmax - zmin) / resolution)
 
-    print(" contouring...")
+    print(' contouring...')
     # Do the graphics dance.
     renderer = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
@@ -105,15 +110,23 @@ def main():
     # Create actor.
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d("PaleTurquoise"))
+    actor.GetProperty().SetColor(colors.GetColor3d('DodgerBlue'))
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("PeachPuff"))
+    renderer.SetBackground(colors.GetColor3d('PaleGoldenrod'))
 
     renWin.SetSize(640, 480)
 
     # interact with data
     renWin.Render()
+    renWin.SetWindowName('Lorenz')
+
+    camera = renderer.GetActiveCamera()
+    camera.SetPosition(-67.645167, -25.714343, 63.483516)
+    camera.SetFocalPoint(3.224902, -4.398594, 29.552112)
+    camera.SetViewUp(-0.232264, 0.965078, 0.121151)
+    camera.SetDistance(81.414176)
+    camera.SetClippingRange(18.428905, 160.896031)
 
     iren.Start()
 

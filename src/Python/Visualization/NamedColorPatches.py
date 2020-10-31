@@ -11,8 +11,6 @@ In this case Digital CCIR601 is used which gives less weight to the
 
 """
 
-from __future__ import print_function
-
 import vtk
 
 

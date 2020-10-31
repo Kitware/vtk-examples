@@ -17,12 +17,12 @@ def CameraModifiedCallback(caller, event):
     """
     print(caller.GetClassName(), "modified")
     # Print the interesting stuff.
-    res = f'\tcamera = renderer->GetActiveCamera()\n'
-    res += f'\tcamera.SetPosition({", ".join(map("{0:5.6f}".format, caller.GetPosition()))})\n'
-    res += f'\tcamera.SetFocalPoint({", ".join(map("{0:5.6f}".format, caller.GetFocalPoint()))})\n'
-    res += f'\tcamera.SetViewUp({", ".join(map("{0:5.6f}".format, caller.GetViewUp()))})\n'
-    res += f'\tcamera.SetDistance({"{0:5.6f}".format(caller.GetDistance())})\n'
-    res += f'\tcamera.SetClippingRange({", ".join(map("{0:5.6f}".format, caller.GetClippingRange()))})\n'
+    res = f'\tcamera = renderer.>GetActiveCamera()\n'
+    res += f'\tcamera.SetPosition({", ".join(map("{0:0.6f}".format, caller.GetPosition()))})\n'
+    res += f'\tcamera.SetFocalPoint({", ".join(map("{0:0.6f}".format, caller.GetFocalPoint()))})\n'
+    res += f'\tcamera.SetViewUp({", ".join(map("{0:0.6f}".format, caller.GetViewUp()))})\n'
+    res += f'\tcamera.SetDistance({"{0:0.6f}".format(caller.GetDistance())})\n'
+    res += f'\tcamera.SetClippingRange({", ".join(map("{0:0.6f}".format, caller.GetClippingRange()))})\n'
     print(res)
 
 ```
