@@ -500,8 +500,6 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [HeadBone](/Python/VisualizationAlgorithms/HeadBone) | vtkMarchingCubes | Marching cubes surface of human bone.
 [HeadSlice](/Python/VisualizationAlgorithms/HeadSlice) | vtkContourFilter | Marching squares used to generate contour lines.
 [HyperStreamline](/Python/VisualizationAlgorithms/HyperStreamline) | vtkHyperStreamline | Example of hyperstreamlines, the four hyperstreamlines shown are integrated along the minor principle stress axis. A plane (colored with a different lookup table) is also shown.
-[InteractorStyleTrackballActor](/Python/Visualization/InteractorStyleTrackballActor) | vtkInteractorStyleTrackBallActor |
-[InteractorStyleTrackballCamera](/Python/Visualization/InteractorStyleTrackballCamera) | vtkInteractorStyleTrackBallCamera |
 [IronIsoSurface](/Python/VisualizationAlgorithms/IronIsoSurface) | vtkContourFilter | Marching cubes surface of iron-protein.
 [Kitchen](/Python/Visualization/Kitchen) | vtkStreamTracer vtkStructuredGrid | Demonstrates stream tracing in a kitchen.
 [KochSnowflake](/Python/Visualization/KochSnowflake) | vtkPolyData vtkCellArray vtkPoints vtkPolyLine | This example draws a Koch snowflake fractal using recursive functions and some of the convenient tools in the toolkit.
@@ -569,6 +567,8 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [CallBack](/Python/Interaction/CallBack) | vtkCallbackCommand vtkOrientationMarkerWidget | Setting up a callback with client data. Two different methods are demonstrated.
 [HighlightPickedActor](/Python/Picking/HighlightPickedActor) | vtkPropPicker vtkInteractorStyleTrackballCamera | Pick and highlight an actor based on mouse clicks.
 [HighlightWithSilhouette](/Python/Picking/HighlightWithSilhouette) | vtkPropPicker vtkPolyDataSilhouette| Highlight a picked actor by adding a silhouette.
+[InteractorStyleTrackballActor](/Python/Interaction/InteractorStyleTrackballActor) | vtkInteractorStyleTrackBallActor |
+[InteractorStyleTrackballCamera](/Python/Interaction/InteractorStyleTrackballCamera) | vtkInteractorStyleTrackBallCamera |
 [MouseEvents](/Python/Interaction/MouseEvents) | vtkInteractorStyleTrackballCamera | Subclass the interactor style.
 [MouseEventsObserver](/Python/Interaction/MouseEventsObserver) | vtkCallbackCommand | Use an observer.
 
