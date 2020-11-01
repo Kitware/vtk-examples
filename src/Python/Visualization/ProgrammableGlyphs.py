@@ -59,9 +59,13 @@ def main():
     iren.SetRenderWindow(renWin)
     ren1.AddActor(planeActor)
     ren1.AddActor(glyphActor)
-    ren1.SetBackground(colors.GetColor3d('White'))
+    ren1.SetBackground(colors.GetColor3d('Silver'))
+
     renWin.SetSize(450, 450)
+    renWin.SetWindowName('ProgrammableGlyphs')
     renWin.Render()
+
+    ren1.GetActiveCamera().Zoom(1.3)
 
     iren.Start()
 

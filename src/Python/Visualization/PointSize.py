@@ -8,6 +8,7 @@ def main():
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
+    renWin.SetWindowName('PointSize')
 
     # create a renderwindowinteractor
     iren = vtk.vtkRenderWindowInteractor()
@@ -16,7 +17,7 @@ def main():
     # create source
     src = vtk.vtkPointSource()
     src.SetCenter(0, 0, 0)
-    src.SetNumberOfPoints(50)
+    src.SetNumberOfPoints(10)
     src.SetRadius(5)
     src.Update()
 
