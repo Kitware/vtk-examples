@@ -4,7 +4,6 @@
 """
     This example demonstrates the usage of the vtNamedColor class.
 """
-from __future__ import print_function
 
 import vtk
 

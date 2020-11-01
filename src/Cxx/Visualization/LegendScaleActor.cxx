@@ -1,50 +1,52 @@
-#include <vtkSmartPointer.h>
-#include <vtkLegendScaleActor.h>
-#include <vtkPolyData.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkLegendScaleActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkParametricEnneper.h>
+#include <vtkParametricFunctionSource.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource->Update();
-  
+  vtkNew<vtkNamedColors> colors;
+
+  // The next source will be a parametric function
+  vtkNew<vtkParametricEnneper> src;
+  vtkNew<vtkParametricFunctionSource> fnSrc;
+  fnSrc->SetParametricFunction(src);
+
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  mapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
+  mapper->SetInputConnection(fnSrc->GetOutputPort());
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
- 
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
+
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("LegendScaleActor");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
- 
-  vtkSmartPointer<vtkLegendScaleActor> legendScaleActor = 
-    vtkSmartPointer<vtkLegendScaleActor>::New();
-  
+
+  vtkNew<vtkLegendScaleActor> legendScaleActor;
+
   // Add the actor to the scene
   renderer->AddActor(actor);
   renderer->AddActor(legendScaleActor);
-  
-  renderer->SetBackground(.3, .2, .3);
- 
+
+  renderer->SetBackground(colors->GetColor3d("RoyalBlue").GetData());
+
   // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

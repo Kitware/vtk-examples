@@ -1,92 +1,94 @@
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkLODProp3D.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkSphereSource.h>
 #include <vtkCallbackCommand.h>
+#include <vtkLODProp3D.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-void RefreshCallback( vtkObject* vtkNotUsed(caller),
-                      long unsigned int vtkNotUsed(eventId),
-                      void* clientData,
-                      void* vtkNotUsed(callData) )
-{
-  vtkSmartPointer<vtkLODProp3D> lodProp = 
-    static_cast<vtkLODProp3D*>(clientData);
-  std::cout << "Last rendered LOD: " << lodProp->GetLastRenderedLODID() << std::endl;
+namespace {
+void RefreshCallback(vtkObject* vtkNotUsed(caller),
+                     long unsigned int vtkNotUsed(eventId), void* clientData,
+                     void* vtkNotUsed(callData));
 }
 
-int main (int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // High res sphere
-  vtkSmartPointer<vtkSphereSource> highResSphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> highResSphereSource;
   int res = 100;
   highResSphereSource->SetThetaResolution(res);
   highResSphereSource->SetPhiResolution(res);
   highResSphereSource->Update();
-  
-  vtkSmartPointer<vtkPolyDataMapper> highResMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+
+  vtkNew<vtkPolyDataMapper> highResMapper;
   highResMapper->SetInputConnection(highResSphereSource->GetOutputPort());
-  
+
   // Low res sphere
-  vtkSmartPointer<vtkSphereSource> lowResSphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
-    
-  vtkSmartPointer<vtkPolyDataMapper> lowResMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkSphereSource> lowResSphereSource;
+
+  vtkNew<vtkPolyDataMapper> lowResMapper;
   lowResMapper->SetInputConnection(lowResSphereSource->GetOutputPort());
-  
-  vtkSmartPointer<vtkProperty> propertyLowRes = 
-    vtkSmartPointer<vtkProperty>::New();
-  propertyLowRes->SetDiffuseColor(0.89, 0.81, 0.34);
+
+  vtkNew<vtkProperty> propertyLowRes;
+  propertyLowRes->SetDiffuseColor(
+      colors->GetColor3d("BlanchedAlmond").GetData());
   propertyLowRes->SetInterpolationToFlat();
 
-  vtkSmartPointer<vtkProperty> propertyHighRes = 
-    vtkSmartPointer<vtkProperty>::New();
-  propertyHighRes->SetDiffuseColor(1.0, 0.3882, 0.2784);
+  vtkNew<vtkProperty> propertyHighRes;
+  propertyHighRes->SetDiffuseColor(colors->GetColor3d("MistyRose").GetData());
   propertyHighRes->SetInterpolationToFlat();
 
-  vtkSmartPointer<vtkLODProp3D> prop = 
-      vtkSmartPointer<vtkLODProp3D>::New();
+  vtkNew<vtkLODProp3D> prop;
   prop->AddLOD(lowResMapper, propertyLowRes, 0.0);
   prop->AddLOD(highResMapper, propertyHighRes, 0.0);
-  
-  std::cout << "There are " << prop->GetNumberOfLODs() << " LODs" << std::endl;
-    
-  // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->AddRenderer(renderer);
 
-  //prop->SetAllocatedRenderTime(1e-6,renderer);
-  prop->SetAllocatedRenderTime(1e-10,renderer);
-      
+  std::cout << "There are " << prop->GetNumberOfLODs() << " LODs" << std::endl;
+
+  // A renderer and render window
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("LODProp3D");
+
+  // prop->SetAllocatedRenderTime(1e-6,renderer);
+  prop->SetAllocatedRenderTime(1e-12, renderer);
+
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
   renderer->AddActor(prop);
-  
-  vtkSmartPointer<vtkCallbackCommand> refreshCallback =
-    vtkSmartPointer<vtkCallbackCommand>::New();
-  refreshCallback->SetCallback (RefreshCallback);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
+  vtkNew<vtkCallbackCommand> refreshCallback;
+  refreshCallback->SetCallback(RefreshCallback);
   refreshCallback->SetClientData(prop);
 
-  renderWindow->AddObserver(vtkCommand::ModifiedEvent,refreshCallback);
-  
+  renderWindow->AddObserver(vtkCommand::ModifiedEvent, refreshCallback);
+
   renderWindow->Render();
 
   // Begin mouse interaction
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }
+
+namespace {
+void RefreshCallback(vtkObject* vtkNotUsed(caller),
+                     long unsigned int vtkNotUsed(eventId), void* clientData,
+                     void* vtkNotUsed(callData))
+{
+  auto lodProp = static_cast<vtkLODProp3D*>(clientData);
+  std::cout << "Last rendered LOD ID: " << lodProp->GetLastRenderedLODID()
+            << std::endl;
+}
+} // namespace

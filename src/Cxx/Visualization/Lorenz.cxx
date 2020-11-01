@@ -11,9 +11,11 @@
  */
 
 #include <vtkActor.h>
+#include <vtkCamera.h>
 #include <vtkContourFilter.h>
-#include <vtkMath.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -58,16 +60,20 @@ int main(int, char*[])
   printf("		y: %f, %f\n", ymin, ymax);
   printf("		z: %f, %f\n", zmin, zmax);
 
-  x = vtkMath::Random(xmin, xmax);
-  y = vtkMath::Random(ymin, ymax);
-  z = vtkMath::Random(zmin, zmax);
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(8775070);
+  x = randomSequence->GetRangeValue(xmin, xmax);
+  randomSequence->Next();
+  y = randomSequence->GetRangeValue(ymin, ymax);
+  randomSequence->Next();
+  z = randomSequence->GetRangeValue(zmin, zmax);
+  randomSequence->Next();
   printf("	starting at %f, %f, %f\n", x, y, z);
 
   // allocate memory for the slices
   auto sliceSize = resolution * resolution;
   auto numPts = sliceSize * resolution;
-  auto scalars =
-    vtkSmartPointer<vtkShortArray>::New();
+  vtkNew<vtkShortArray> scalars;
   auto s = scalars->WritePointer(0, numPts);
   for (auto i = 0; i < numPts; i++)
   {
@@ -95,11 +101,9 @@ int main(int, char*[])
     }
   }
 
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto volume =
-    vtkSmartPointer<vtkStructuredPoints>::New();
+  vtkNew<vtkStructuredPoints> volume;
   volume->GetPointData()->SetScalars(scalars);
   volume->SetDimensions(resolution, resolution, resolution);
   volume->SetOrigin(xmin, ymin, zmin);
@@ -108,41 +112,43 @@ int main(int, char*[])
 
   printf("	contouring...\n");
   // do the graphics dance
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  auto renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(renderer);
 
-  auto iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // create iso-surface
-  auto contour =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> contour;
   contour->SetInputData(volume);
   contour->SetValue(0, 50);
 
   // create mapper
-  auto mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(contour->GetOutputPort());
   mapper->ScalarVisibilityOff();
 
   // create actor
-  auto actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(colors->GetColor3d("PaleTurquoise").GetData());
+  actor->GetProperty()->SetColor(colors->GetColor3d("DodgerBlue").GetData());
 
   renderer->AddActor(actor);
-  renderer->SetBackground(colors->GetColor3d("PeachPuff").GetData());
+  renderer->SetBackground(colors->GetColor3d("PaleGoldenrod").GetData());
 
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("Lorenz");
 
   // interact with data
   renWin->Render();
+
+  auto camera = renderer->GetActiveCamera();
+  camera->SetPosition(-67.645167, -25.714343, 63.483516);
+  camera->SetFocalPoint(3.224902, -4.398594, 29.552112);
+  camera->SetViewUp(-0.232264, 0.965078, 0.121151);
+  camera->SetDistance(81.414176);
+  camera->SetClippingRange(18.428905, 160.896031);
 
   iren->Start();
 

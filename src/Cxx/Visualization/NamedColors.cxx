@@ -8,13 +8,13 @@ This example demonstrates the usage of the vtNamedColor class.
 #include <vtkElevationFilter.h>
 #include <vtkLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 
 #include <algorithm>
 #include <iostream>
@@ -45,7 +45,7 @@ std::vector<std::string> FindSynonyms(const std::string& color,
 // color it with the primary additive and subtractive colors.
 int main(int, char*[])
 {
-  auto namedColors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> namedColors;
 
   // We can print out the variables.
   // The color name and RGBA values are displayed.
@@ -57,7 +57,7 @@ int main(int, char*[])
   PrintSynonyms(namedColors);
 
   // Create a cone
-  auto coneSource = vtkSmartPointer<vtkConeSource>::New();
+  vtkNew<vtkConeSource> coneSource;
   coneSource->SetCenter(0.0, 0.0, 0.0);
   coneSource->SetRadius(5.0);
   coneSource->SetHeight(10);
@@ -68,12 +68,12 @@ int main(int, char*[])
   double bounds[6];
   coneSource->GetOutput()->GetBounds(bounds);
 
-  auto elevation = vtkSmartPointer<vtkElevationFilter>::New();
+  vtkNew<vtkElevationFilter> elevation;
   elevation->SetInputConnection(coneSource->GetOutputPort());
   elevation->SetLowPoint(0, bounds[2], 0);
   elevation->SetHighPoint(0, bounds[3], 0);
 
-  auto bcf = vtkSmartPointer<vtkBandedPolyDataContourFilter>::New();
+  vtkNew<vtkBandedPolyDataContourFilter> bcf;
   bcf->SetInputConnection(elevation->GetOutputPort());
   bcf->SetScalarModeToValue();
   bcf->GenerateContourEdgesOn();
@@ -107,7 +107,7 @@ int main(int, char*[])
   }
   // Build a simple lookup table of
   // primary additive and subtractive colors.
-  auto lut = vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   lut->SetNumberOfTableValues(7);
   lut->SetTableValue(0, namedColors->GetColor4d("My Red").GetData());
   // Let's make the dark green one partially transparent.
@@ -122,30 +122,29 @@ int main(int, char*[])
   lut->SetTableRange(elevation->GetScalarRange());
   lut->Build();
 
-  auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(bcf->GetOutputPort());
   mapper->SetScalarRange(elevation->GetScalarRange());
   mapper->SetLookupTable(lut);
   mapper->SetScalarModeToUseCellData();
 
-  auto contourLineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> contourLineMapper;
   contourLineMapper->SetInputData(bcf->GetContourEdgesOutput());
   contourLineMapper->SetScalarRange(elevation->GetScalarRange());
   contourLineMapper->SetResolveCoincidentTopologyToPolygonOffset();
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  auto contourLineActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> contourLineActor;
   contourLineActor->SetMapper(contourLineMapper);
   contourLineActor->GetProperty()->SetColor(
       namedColors->GetColor3d("Black").GetData());
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  auto renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);

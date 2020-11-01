@@ -34,10 +34,13 @@ def main():
     actor.SetMapper(mapper)
 
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("White"))
-    renWin.SetSize(640, 480)
+    renderer.SetBackground(colors.GetColor3d('LavenderBlush'))
+    renWin.SetSize(600, 600)
+    renWin.SetWindowName('LoopShrink')
 
     renWin.Render()
+
+    renderer.GetActiveCamera().Zoom(1.5)
 
     #  Interact with the data.
     iren.Start()

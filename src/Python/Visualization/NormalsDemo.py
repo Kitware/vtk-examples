@@ -75,6 +75,7 @@ def main():
     renwin.AddRenderer(ren[0])
     renwin.AddRenderer(ren[1])
     renwin.AddRenderer(ren[2])
+    renwin.SetWindowName('NormalsDemo')
 
     # An interactor.
     interactor = vtk.vtkRenderWindowInteractor()

@@ -1,55 +1,64 @@
-#include <vtkSphereSource.h>
-#include <vtkProperty.h>
-#include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-int main(int, char *[])
+#include <vector>
+
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
 
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Define viewport ranges
-  double xmins[4] = {0,.5,0,.5};
-  double xmaxs[4] = {0.5,1,0.5,1};
-  double ymins[4] = {0,0,.5,.5};
-  double ymaxs[4]= {0.5,0.5,1,1};
-  for(unsigned i = 0; i < 4; i++)
+  double xmins[4] = {0, .5, 0, .5};
+  double xmaxs[4] = {0.5, 1, 0.5, 1};
+  double ymins[4] = {0, 0, .5, .5};
+  double ymaxs[4] = {0.5, 0.5, 1, 1};
+  // Have some fun with colors
+  std::vector<std::string> renBkg{"AliceBlue", "GhostWhite", "WhiteSmoke",
+                                  "Seashell"};
+  std::vector<std::string> actorColor{"Bisque", "RosyBrown", "Goldenrod",
+                                      "Chocolate"};
+
+  for (unsigned i = 0; i < 4; i++)
   {
-    vtkSmartPointer<vtkRenderer> renderer =
-      vtkSmartPointer<vtkRenderer>::New();
+    vtkNew<vtkRenderer> renderer;
 
     renderWindow->AddRenderer(renderer);
-    renderer->SetViewport(xmins[i],ymins[i],xmaxs[i],ymaxs[i]);
+    renderer->SetViewport(xmins[i], ymins[i], xmaxs[i], ymaxs[i]);
 
     // Create a sphere
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetCenter(0.0, 0.0, 0.0);
     sphereSource->SetRadius(5);
     sphereSource->Update();
 
     // Create a mapper and actor
-    vtkSmartPointer<vtkPolyDataMapper> mapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputConnection(sphereSource->GetOutputPort());
-    vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> actor;
     actor->SetMapper(mapper);
-    renderer->AddActor(actor);
-    renderer->ResetCamera();
+    actor->GetProperty()->SetColor(colors->GetColor3d(actorColor[i]).GetData());
 
-    renderWindow->Render();
-    renderWindow->SetWindowName("Multiple ViewPorts");
+    renderer->AddActor(actor);
+    renderer->SetBackground(colors->GetColor3d(renBkg[i]).GetData());
+
+    renderer->ResetCamera();
   }
+  renderWindow->Render();
+  renderWindow->SetWindowName("MultipleViewPorts");
 
   renderWindowInteractor->Start();
 

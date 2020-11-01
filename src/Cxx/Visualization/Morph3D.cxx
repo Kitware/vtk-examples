@@ -1,19 +1,20 @@
-#include <vtkCamera.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkActor.h>
-#include <vtkPolyDataMapper.h>
+#include <vtkCamera.h>
 #include <vtkContourFilter.h>
-#include <vtkInterpolateDataSetAttributes.h>
 #include <vtkImplicitModeller.h>
-#include <vtkVectorText.h>
-#include <vtkProperty.h>
-
+#include <vtkInterpolateDataSetAttributes.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkVectorText.h>
+
 #include <vtksys/SystemTools.hxx>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   double t = 2.0;
   if (argc > 1)
@@ -21,87 +22,73 @@ int main (int argc, char *argv[])
     t = atof(argv[1]);
   }
 
-// make the letter v
-  vtkSmartPointer<vtkVectorText> letterV =
-    vtkSmartPointer<vtkVectorText>::New();
+  // make the letter v
+  vtkNew<vtkVectorText> letterV;
   letterV->SetText("v");
 
-// read the geometry file containing the letter t
-  vtkSmartPointer<vtkVectorText> letterT =
-    vtkSmartPointer<vtkVectorText>::New();
+  // read the geometry file containing the letter t
+  vtkNew<vtkVectorText> letterT;
   letterT->SetText("t");
 
-// read the geometry file containing the letter k
-  vtkSmartPointer<vtkVectorText> letterK =
-    vtkSmartPointer<vtkVectorText>::New();
+  // read the geometry file containing the letter k
+  vtkNew<vtkVectorText> letterK;
   letterK->SetText("k");
-    
-// create implicit models of each letter
-  vtkSmartPointer<vtkImplicitModeller> blobbyV =
-    vtkSmartPointer<vtkImplicitModeller>::New();
+
+  // create implicit models of each letter
+  vtkNew<vtkImplicitModeller> blobbyV;
   blobbyV->SetInputConnection(letterV->GetOutputPort());
   blobbyV->SetMaximumDistance(.2);
   blobbyV->SetSampleDimensions(50, 50, 12);
   blobbyV->SetModelBounds(-0.5, 1.5, -0.5, 1.5, -0.5, 0.5);
 
-  vtkSmartPointer<vtkImplicitModeller> blobbyT =
-    vtkSmartPointer<vtkImplicitModeller>::New();
+  vtkNew<vtkImplicitModeller> blobbyT;
   blobbyT->SetInputConnection(letterT->GetOutputPort());
   blobbyT->SetMaximumDistance(.2);
   blobbyT->SetSampleDimensions(50, 50, 12);
   blobbyT->SetModelBounds(-0.5, 1.5, -0.5, 1.5, -0.5, 0.5);
 
-  vtkSmartPointer<vtkImplicitModeller> blobbyK =
-    vtkSmartPointer<vtkImplicitModeller>::New();
+  vtkNew<vtkImplicitModeller> blobbyK;
   blobbyK->SetInputConnection(letterK->GetOutputPort());
   blobbyK->SetMaximumDistance(.2);
   blobbyK->SetSampleDimensions(50, 50, 12);
   blobbyK->SetModelBounds(-0.5, 1.5, -0.5, 1.5, -0.5, 0.5);
 
-// Interpolate the data
-  vtkSmartPointer<vtkInterpolateDataSetAttributes> interpolate =
-    vtkSmartPointer<vtkInterpolateDataSetAttributes>::New();
+  // Interpolate the data
+  vtkNew<vtkInterpolateDataSetAttributes> interpolate;
   interpolate->AddInputConnection(blobbyV->GetOutputPort());
   interpolate->AddInputConnection(blobbyT->GetOutputPort());
   interpolate->AddInputConnection(blobbyK->GetOutputPort());
   interpolate->SetT(0.0);
 
-// extract an iso surface
-  vtkSmartPointer<vtkContourFilter> blobbyIso =
-    vtkSmartPointer<vtkContourFilter>::New();
+  // extract an iso surface
+  vtkNew<vtkContourFilter> blobbyIso;
   blobbyIso->SetInputConnection(interpolate->GetOutputPort());
   blobbyIso->SetValue(0, 0.1);
 
-// map to rendering primitives
-  vtkSmartPointer<vtkPolyDataMapper> blobbyMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  // map to rendering primitives
+  vtkNew<vtkPolyDataMapper> blobbyMapper;
   blobbyMapper->SetInputConnection(blobbyIso->GetOutputPort());
   blobbyMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-// now an actor
-  vtkSmartPointer<vtkActor> blobby =
-    vtkSmartPointer<vtkActor>::New();
+  // now an actor
+  vtkNew<vtkActor> blobby;
   blobby->SetMapper(blobbyMapper);
-  blobby->GetProperty()->SetDiffuseColor(colors->GetColor3d("Banana").GetData());
+  blobby->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("Banana").GetData());
   blobby->GetProperty()->EdgeVisibilityOn();
 
-// Create the RenderWindow, Renderer and both Actors
-//
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  // Create the RenderWindow, Renderer and both Actors
+  //
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkCamera> camera =
-    vtkSmartPointer<vtkCamera>::New();
-  camera->SetClippingRange(0.265,13.2);
+  vtkNew<vtkCamera> camera;
+  camera->SetClippingRange(0.265, 13.2);
   camera->SetFocalPoint(0.539, 0.47464, 0);
   camera->SetPosition(0.539, 0.474674, 2.644);
   camera->SetViewUp(0, 1, 0);
@@ -109,8 +96,9 @@ int main (int argc, char *argv[])
   camera->Elevation(30.);
   renderer->SetActiveCamera(camera);
 
-//  now  make a renderer and tell it about lights and actors
-  renderWindow->SetSize(640,480);
+  //  now  make a renderer and tell it about lights and actors
+  renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("Morph3D");
 
   renderer->AddActor(blobby);
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
@@ -125,7 +113,7 @@ int main (int argc, char *argv[])
   interpolate->SetT(t);
   renderWindow->Render();
 
-// interact
+  // interact
   interactor->Start();
   return EXIT_SUCCESS;
-  }
+}

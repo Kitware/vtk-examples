@@ -1,55 +1,57 @@
-#include <vtkSmartPointer.h>
+#include <vtkActor.h>
+#include <vtkCamera.h>
 #include <vtkCubeSource.h>
-#include <vtkSphereSource.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkActor.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-int main(int, char *[])
-{ 
+int main(int, char*[])
+{
+  vtkNew<vtkNamedColors> colors;
+
   // Cube
-  vtkSmartPointer<vtkCubeSource> cubeSource = 
-    vtkSmartPointer<vtkCubeSource>::New();
-  vtkSmartPointer<vtkPolyDataMapper> cubeMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkCubeSource> cubeSource;
+  vtkNew<vtkPolyDataMapper> cubeMapper;
   cubeMapper->SetInputConnection(cubeSource->GetOutputPort());
-  
-  vtkSmartPointer<vtkActor> cubeActor = 
-    vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> cubeActor;
   cubeActor->GetProperty()->SetOpacity(0.5);
   cubeActor->SetMapper(cubeMapper);
-  
+  cubeActor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
+
   // Sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
-  vtkSmartPointer<vtkPolyDataMapper> sphereMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkSphereSource> sphereSource;
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
-  
-  vtkSmartPointer<vtkActor> sphereActor = 
-    vtkSmartPointer<vtkActor>::New();
-  sphereActor->GetProperty()->SetColor(0.5,1,0.5);
-  sphereActor->GetProperty()->SetOpacity(0.5);
+
+  vtkNew<vtkActor> sphereActor;
+  sphereActor->GetProperty()->SetColor(
+      colors->GetColor3d("LightGreen").GetData());
+  sphereActor->GetProperty()->SetOpacity(0.7);
   sphereActor->SetMapper(sphereMapper);
-  
+
   // Create renderers and add actors of plane and cube
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(cubeActor);
   renderer->AddActor(sphereActor);
-  
+
   // Add renderer to renderwindow and render
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("Opacity");
+
+  renderer->SetBackground(colors->GetColor3d("DimGray").GetData());
+  renderWindow->Render();
+  renderer->GetActiveCamera()->Azimuth(-22.5);
+  renderer->GetActiveCamera()->Elevation(30);
+
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
-  renderer->SetBackground(0,0,0);
   renderWindow->Render();
 
   interactor->Start();
