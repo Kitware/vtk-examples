@@ -64,7 +64,7 @@ void EllipticParaboloid()
   // F(x,y,z) = a0*x^2 + a1*y^2 + a2*z^2 + a3*x*y + a4*y*z + a5*x*z + a6*x +
   // a7*y + a8*z + a9 F(x,y,z) = 1*x^2 + 1*y^2
 
-  PlotFunction(quadric, 0.0);
+  PlotFunction(quadric, 10.0);
 }
 
 void HyperbolicParaboloid()
@@ -76,7 +76,7 @@ void HyperbolicParaboloid()
   // F(x,y,z) = a0*x^2 + a1*y^2 + a2*z^2 + a3*x*y + a4*y*z + a5*x*z + a6*x +
   // a7*y + a8*z + a9 F(x,y,z) = 1*x^2 - 1*y^2
 
-  PlotFunction(quadric, 1.0);
+  PlotFunction(quadric, 10.0);
 }
 
 void Cylinder()
@@ -124,7 +124,7 @@ void Ellipsoid()
   // F(x,y,z) = a0*x^2 + a1*y^2 + a2*z^2 + a3*x*y + a4*y*z + a5*x*z + a6*x +
   // a7*y + a8*z + a9 F(x,y,z) = 1*x^2 + 1*y^2 + 1*z^2
 
-  PlotFunction(quadric, 1.0);
+  PlotFunction(quadric, -1.0);
 }
 
 void Cone()
@@ -160,8 +160,8 @@ void PlotFunction(vtkQuadric* quadric, double value)
   sample->SetSampleDimensions(50, 50, 50);
   sample->SetImplicitFunction(quadric);
   // double xmin = 0, xmax=1, ymin=0, ymax=1, zmin=0, zmax=1;
-  double xmin = -10, xmax = 11, ymin = -10, ymax = 10, zmin = -10, zmax = 10;
-  sample->SetModelBounds(xmin, xmax, ymin, ymax, zmin, zmax);
+  double bounds[6]{-10, 11, -10, 10, -10, 10};
+  sample->SetModelBounds(bounds);
 
   // Create five surfaces F(x,y,z) = constant between range specified
   /*
@@ -211,7 +211,7 @@ void PlotFunction(vtkQuadric* quadric, double value)
   // add the actors to the scene
   ren1->AddActor(contourActor);
   ren1->AddActor(outlineActor);
-  ren1->SetBackground(colors->GetColor3d("SlateGray").GetData());
+  ren1->SetBackground(colors->GetColor3d("AliceBlue").GetData());
 
   // render and interact
   renWin->Render();

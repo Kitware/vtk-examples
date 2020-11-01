@@ -1,70 +1,68 @@
-#include <vtkSmartPointer.h>
+#include <vtkActor.h>
+#include <vtkActorCollection.h>
 #include <vtkConeSource.h>
-#include <vtkSphereSource.h>
 #include <vtkCubeSource.h>
-#include <vtkTransform.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkActorCollection.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
+#include <vtkTransform.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkRenderer> renderer;
 
   // Create a cone
-  vtkSmartPointer<vtkConeSource> coneSource =
-    vtkSmartPointer<vtkConeSource>::New();
+  vtkNew<vtkConeSource> coneSource;
   coneSource->SetHeight(3);
 
-  vtkSmartPointer<vtkPolyDataMapper> coneMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> coneMapper;
   coneMapper->SetInputConnection(coneSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> coneActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> coneActor;
   coneActor->SetMapper(coneMapper);
+  coneActor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // Create a cube
-  vtkSmartPointer<vtkCubeSource> cubeSource =
-    vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkCubeSource> cubeSource;
 
-  vtkSmartPointer<vtkPolyDataMapper> cubeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cubeMapper;
   cubeMapper->SetInputConnection(cubeSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> cubeActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cubeActor;
   cubeActor->SetMapper(cubeMapper);
+  cubeActor->GetProperty()->SetColor(colors->GetColor3d("Cornsilk").GetData());
 
   // Create a sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
 
-  vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> sphereActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
+  sphereActor->GetProperty()->SetColor(
+      colors->GetColor3d("Lavender").GetData());
+
   renderer->AddActor(sphereActor);
 
-  vtkSmartPointer<vtkActorCollection> actorCollection =
-    vtkSmartPointer<vtkActorCollection>::New();
+  vtkNew<vtkActorCollection> actorCollection;
   actorCollection->AddItem(cubeActor);
   actorCollection->AddItem(coneActor);
   actorCollection->InitTraversal();
 
-  vtkSmartPointer<vtkTransform> transform =
-    vtkSmartPointer<vtkTransform>::New();
-  transform->PostMultiply(); //this is the key line
+  vtkNew<vtkTransform> transform;
+  transform->PostMultiply(); // this is the key line
   transform->Translate(5.0, 0, 0);
 
-  //actorCollection->SetUserTransform(transform);
+  // actorCollection->SetUserTransform(transform);
 
-  for(vtkIdType i = 0; i < actorCollection->GetNumberOfItems(); i++)
+  for (vtkIdType i = 0; i < actorCollection->GetNumberOfItems(); i++)
   {
     vtkActor* actor = actorCollection->GetNextActor();
     actor->SetUserTransform(transform);
@@ -73,15 +71,15 @@ int main(int, char *[])
 
   // Create a renderer, render window, and interactor
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("TransformActorCollection");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
-  renderer->SetBackground(.2, .3, .4);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Render and interact
   renderWindow->Render();

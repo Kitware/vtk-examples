@@ -1,68 +1,73 @@
 #include <vtkActor.h>
 #include <vtkCellArray.h>
+#include <vtkCubeSource.h>
 #include <vtkDoubleArray.h>
 #include <vtkMath.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
-#include <vtkPoints.h>
 #include <vtkPointSource.h>
-#include <vtkPolyDataMapper.h>
+#include <vtkPoints.h>
 #include <vtkPolyData.h>
-#include <vtkRenderer.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
-#include <vtkCubeSource.h>
+#include <vtkRenderer.h>
 #include <vtkTensorGlyph.h>
 #include <vtkVertexGlyphFilter.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-    // Setup points
-    vtkSmartPointer<vtkPoints> points =
-      vtkSmartPointer<vtkPoints>::New();
-    points->InsertNextPoint(0.0, 0.0, 0.0);
-    points->InsertNextPoint(5.0, 0.0, 0.0);
+  vtkNew<vtkNamedColors> colors;
 
-    vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
-    polyData->SetPoints(points);
+  // Setup points
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(0.0, 0.0, 0.0);
+  points->InsertNextPoint(5.0, 0.0, 0.0);
 
-    vtkSmartPointer<vtkDoubleArray> tensors = vtkSmartPointer<vtkDoubleArray>::New();
-    tensors->SetNumberOfTuples(2);
-    tensors->SetNumberOfComponents(9);
+  vtkNew<vtkPolyData> polyData;
+  polyData->SetPoints(points);
 
-    tensors->InsertTuple9(0,1,0,0,0,1,0,0,0,1);
-    tensors->InsertTuple9(1,1,0,0,0,.7,.7,0,-.7,.7); // column major
+  vtkNew<vtkDoubleArray> tensors;
+  tensors->SetNumberOfTuples(2);
+  tensors->SetNumberOfComponents(9);
 
-    polyData->GetPointData()->SetTensors(tensors);
+  tensors->InsertTuple9(0, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+  tensors->InsertTuple9(1, 1, 0, 0, 0, 0.7, 0.7, 0, -0.7, 0.7); // column major
 
-    vtkSmartPointer<vtkCubeSource> cubeSource = vtkSmartPointer<vtkCubeSource>::New();
-    cubeSource->Update();
+  polyData->GetPointData()->SetTensors(tensors);
 
-    vtkSmartPointer<vtkTensorGlyph> tensorGlyph = vtkSmartPointer<vtkTensorGlyph>::New();
-    tensorGlyph->SetInputData(polyData);
-    tensorGlyph->SetSourceConnection(cubeSource->GetOutputPort());
-    tensorGlyph->ColorGlyphsOff();
-    tensorGlyph->ThreeGlyphsOff();
-    tensorGlyph->ExtractEigenvaluesOff();
-    tensorGlyph->Update();
+  vtkNew<vtkCubeSource> cubeSource;
+  cubeSource->Update();
 
-    vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-    mapper->SetInputData(tensorGlyph->GetOutput());
+  vtkNew<vtkTensorGlyph> tensorGlyph;
+  tensorGlyph->SetInputData(polyData);
+  tensorGlyph->SetSourceConnection(cubeSource->GetOutputPort());
+  tensorGlyph->ColorGlyphsOff();
+  tensorGlyph->ThreeGlyphsOff();
+  tensorGlyph->ExtractEigenvaluesOff();
+  tensorGlyph->Update();
 
-    vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-    actor->SetMapper(mapper);
-	
-    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-    renderer->AddActor(actor);
+  vtkNew<vtkPolyDataMapper> mapper;
+  mapper->SetInputData(tensorGlyph->GetOutput());
 
-    vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
-    renderWindow->AddRenderer( renderer );
- 
-    vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-        vtkSmartPointer<vtkRenderWindowInteractor>::New();
-    interactor->SetRenderWindow( renderWindow );
-    renderWindow->Render();
-    interactor->Start();
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("LightSalmon").GetData());
 
-    return 0;
+  vtkNew<vtkRenderer> renderer;
+  renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("TensorGlyph");
+
+  vtkNew<vtkRenderWindowInteractor> interactor;
+  interactor->SetRenderWindow(renderWindow);
+  renderWindow->Render();
+  interactor->Start();
+
+  return 0;
 }

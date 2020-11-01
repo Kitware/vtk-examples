@@ -52,10 +52,10 @@ def main():
     glrenderer.SetPass(cameraP)
 
     colors = vtk.vtkNamedColors()
-    boxColor = colors.GetColor3d("Tomato")
-    rectangleColor = colors.GetColor3d("Beige")
-    coneColor = colors.GetColor3d("Peacock")
-    sphereColor = colors.GetColor3d("Banana")
+    boxColor = colors.GetColor3d('Tomato')
+    rectangleColor = colors.GetColor3d('Beige')
+    coneColor = colors.GetColor3d('Peacock')
+    sphereColor = colors.GetColor3d('Banana')
 
     rectangleActor = vtk.vtkActor()
     rectangleActor.SetMapper(rectangleMapper)
@@ -122,7 +122,7 @@ def main():
     l1 = vtk.vtkLight()
     l1.SetPosition(-4.0, 4.0, -1.0)
     l1.SetFocalPoint(boxActor.GetPosition())
-    l1.SetColor(1.0, 1.0, 1.0)
+    l1.SetColor(colors.GetColor3d('White'))
     l1.PositionalOn()
     renderer.AddLight(l1)
     l1.SwitchOn()
@@ -131,7 +131,7 @@ def main():
     l2 = vtk.vtkLight()
     l2.SetPosition(4.0, 5.0, 1.0)
     l2.SetFocalPoint(sphereActor.GetPosition())
-    l2.SetColor(1.0, 0.0, 1.0)
+    l2.SetColor(colors.GetColor3d('Magenta'))
     l2.PositionalOn()
     renderer.AddLight(l2)
     l2.SwitchOn()
@@ -149,8 +149,8 @@ def main():
         la.SetLight(l2)
         renderer.AddViewProp(la)
 
-    renderer.SetBackground2(colors.GetColor3d("Silver"))
-    renderer.SetBackground(colors.GetColor3d("LightGrey"))
+    renderer.SetBackground2(colors.GetColor3d('Black'))
+    renderer.SetBackground(colors.GetColor3d('Silver'))
     renderer.SetGradientBackground(True)
 
     renderWindow.Render()

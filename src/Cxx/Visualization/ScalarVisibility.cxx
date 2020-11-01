@@ -1,31 +1,39 @@
 #include <vtkActor.h>
-#include <vtkPolyDataMapper.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointSource.h>
-#include <vtkProperty.h>
 #include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkPointSource> pointSource = vtkSmartPointer<vtkPointSource>::New();
-  vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkPointSource> pointSource;
+
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(pointSource->GetOutputPort());
   mapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-  actor->SetMapper( mapper );
-  unsigned char red[3] = {255, 0, 0};
-  actor->GetProperty()->SetColor(red[0], red[1], red[2]);
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-  renderer->AddActor(actor);
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
+  actor->GetProperty()->SetPointSize(2);
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->AddRenderer( renderer );
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  interactor->SetRenderWindow( renderWindow );
+  vtkNew<vtkRenderer> renderer;
+  renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
+
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ScalarVisibility");
+
+  vtkNew<vtkRenderWindowInteractor> interactor;
+  interactor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();
 

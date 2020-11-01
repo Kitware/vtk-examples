@@ -21,7 +21,7 @@ def get_program_parameters():
 def main():
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
+    # colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
 
     xyz_file, q_file = get_program_parameters()
 
@@ -65,6 +65,8 @@ def main():
     renderer = vtk.vtkRenderer()
     render_window = vtk.vtkRenderWindow()
     render_window.AddRenderer(renderer)
+    render_window.SetWindowName('StreamLines')
+
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
     render_window.SetInteractor(interactor)
@@ -72,7 +74,7 @@ def main():
     renderer.AddActor(streamline_actor)
     renderer.AddActor(outline_actor)
 
-    renderer.SetBackground(colors.GetColor3d('bkg'))
+    renderer.SetBackground(colors.GetColor3d('MidnightBlue'))
     interactor.Initialize()
     render_window.Render()
     renderer.GetActiveCamera().SetPosition(-32.8, -12.3, 46.3)

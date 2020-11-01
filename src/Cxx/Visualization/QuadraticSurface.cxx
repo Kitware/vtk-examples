@@ -1,58 +1,61 @@
-#include <vtkSmartPointer.h>
-#include <vtkQuadric.h>
-#include <vtkSampleFunction.h>
-#include <vtkContourFilter.h>
 #include <vtkActor.h>
-#include <vtkProperty.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkCamera.h>
+#include <vtkContourFilter.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkQuadric.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSampleFunction.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create the quadric function definition
-  vtkSmartPointer<vtkQuadric> quadric =
-    vtkSmartPointer<vtkQuadric>::New();
-  quadric->SetCoefficients(.5,1,.2,0,.1,0,0,.2,0,0);
- 
+  vtkNew<vtkQuadric> quadric;
+  quadric->SetCoefficients(.5, 1, .2, 0, .1, 0, 0, .2, 0, 0);
+
   // Sample the quadric function
-  vtkSmartPointer<vtkSampleFunction> sample =
-    vtkSmartPointer<vtkSampleFunction>::New();
-  sample->SetSampleDimensions(50,50,50);
+  vtkNew<vtkSampleFunction> sample;
+  sample->SetSampleDimensions(50, 50, 50);
   sample->SetImplicitFunction(quadric);
-  double xmin = 0, xmax=1, ymin=0, ymax=1, zmin=0, zmax=1;
+  double xmin = 0, xmax = 1, ymin = 0, ymax = 1, zmin = 0, zmax = 1;
   sample->SetModelBounds(xmin, xmax, ymin, ymax, zmin, zmax);
- 
-  vtkSmartPointer<vtkContourFilter> contourFilter =
-    vtkSmartPointer<vtkContourFilter>::New();
+
+  vtkNew<vtkContourFilter> contourFilter;
   contourFilter->SetInputConnection(sample->GetOutputPort());
   contourFilter->GenerateValues(1, 1.0, 1.0);
   contourFilter->Update();
-  
+
   // Visualize
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(contourFilter->GetOutputPort());
- 
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
- 
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("QuadraticSurface");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
- 
+
   renderer->AddActor(actor);
-  renderer->SetBackground(.3, .6, .3); // Background color green
- 
+  renderer->SetBackground(colors->GetColor3d("LimeGreen").GetData());
+
   renderWindow->Render();
-  renderWindowInteractor->Start();	
- 
+
+  renderer->GetActiveCamera()->Elevation(-45);
+  renderer->GetActiveCamera()->Azimuth(45);
+  renderer->ResetCamera();
+
+  renderWindowInteractor->Start();
+
   return EXIT_SUCCESS;
 }

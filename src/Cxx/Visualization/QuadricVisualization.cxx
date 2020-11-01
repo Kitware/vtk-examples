@@ -5,6 +5,7 @@
 #include <vtkDataSetMapper.h>
 #include <vtkExtractVOI.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -15,40 +16,30 @@
 #include <vtkSampleFunction.h>
 #include <vtkUnstructuredGrid.h>
 
-namespace
-{
-void CreateIsosurface(vtkSmartPointer<vtkSampleFunction> &function,
-                      vtkSmartPointer<vtkActor> &actor,
+namespace {
+void CreateIsosurface(vtkSampleFunction* function, vtkActor* actor,
                       unsigned int numberOfContours = 5);
 
-void CreatePlanes(vtkSmartPointer<vtkSampleFunction> &function,
-                  vtkSmartPointer<vtkActor> &actor,
+void CreatePlanes(vtkSampleFunction* function, vtkActor* actor,
                   unsigned numberOfPlanes);
 
-void CreateContours(vtkSmartPointer<vtkSampleFunction> &function,
-                    vtkSmartPointer<vtkActor> &actor,
-                    unsigned numberOfPlanes,
-                    unsigned numberOfContours);
+void CreateContours(vtkSampleFunction* function, vtkActor* actor,
+                    unsigned numberOfPlanes, unsigned numberOfContours);
 
-void CreateOutline(vtkSmartPointer<vtkSampleFunction> &function,
-                   vtkSmartPointer<vtkActor> &actor);
+void CreateOutline(vtkSampleFunction* function, vtkActor* actor);
 
-}
+} // namespace
 
-int main( int, char *[] )
-{ 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+int main(int, char*[])
+{
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
   renderWindow->SetSize(640, 480);
 
@@ -58,36 +49,28 @@ int main( int, char *[] )
   // double range[2];
 
   // Sample quadric function
-  vtkSmartPointer<vtkQuadric> quadric =
-    vtkSmartPointer<vtkQuadric>::New();
-  quadric->SetCoefficients(1,2,3,0,1,0,0,0,0,0);
+  vtkNew<vtkQuadric> quadric;
+  quadric->SetCoefficients(1, 2, 3, 0, 1, 0, 0, 0, 0, 0);
 
-  vtkSmartPointer<vtkSampleFunction> sample =
-    vtkSmartPointer<vtkSampleFunction>::New();
-  sample->SetSampleDimensions(25,25,25);
+  vtkNew<vtkSampleFunction> sample;
+  sample->SetSampleDimensions(25, 25, 25);
   sample->SetImplicitFunction(quadric);
 
-  vtkSmartPointer<vtkActor> isoActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> isoActor;
   CreateIsosurface(sample, isoActor);
-  vtkSmartPointer<vtkActor> outlineIsoActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineIsoActor;
   CreateOutline(sample, outlineIsoActor);
 
-  vtkSmartPointer<vtkActor> planesActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> planesActor;
   CreatePlanes(sample, planesActor, 3);
-  vtkSmartPointer<vtkActor> outlinePlanesActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlinePlanesActor;
   CreateOutline(sample, outlinePlanesActor);
   planesActor->AddPosition(isoActor->GetBounds()[0] * 2.0, 0, 0);
   outlinePlanesActor->AddPosition(isoActor->GetBounds()[0] * 2.0, 0, 0);
 
-  vtkSmartPointer<vtkActor> contourActor=
-    vtkSmartPointer<vtkActor>::New();
-  CreateContours(sample,contourActor, 3, 15);
-  vtkSmartPointer<vtkActor> outlineContourActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> contourActor;
+  CreateContours(sample, contourActor, 3, 15);
+  vtkNew<vtkActor> outlineContourActor;
   CreateOutline(sample, outlineContourActor);
   contourActor->AddPosition(isoActor->GetBounds()[0] * 4.0, 0, 0);
   outlineContourActor->AddPosition(isoActor->GetBounds()[0] * 4.0, 0, 0);
@@ -99,15 +82,14 @@ int main( int, char *[] )
   renderer->AddActor(isoActor);
   renderer->AddActor(outlineIsoActor);
 
-
   renderer->TwoSidedLightingOn();
 
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Try to set camera to match figure on book
-  renderer->GetActiveCamera()->SetPosition (0, -1, 0);
-  renderer->GetActiveCamera()->SetFocalPoint (0, 0, 0);
-  renderer->GetActiveCamera()->SetViewUp (0, 0, -1);
+  renderer->GetActiveCamera()->SetPosition(0, -1, 0);
+  renderer->GetActiveCamera()->SetFocalPoint(0, 0, 0);
+  renderer->GetActiveCamera()->SetViewUp(0, 0, -1);
   renderer->ResetCamera();
   renderer->GetActiveCamera()->Elevation(20);
   renderer->GetActiveCamera()->Azimuth(10);
@@ -115,6 +97,8 @@ int main( int, char *[] )
   renderer->ResetCameraClippingRange();
 
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("QuadricVisualization");
+
   renderWindow->Render();
 
   // interact with data
@@ -123,99 +107,86 @@ int main( int, char *[] )
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-void CreateIsosurface(vtkSmartPointer<vtkSampleFunction> &function,
-                      vtkSmartPointer<vtkActor> &actor,
+namespace {
+void CreateIsosurface(vtkSampleFunction* function, vtkActor* actor,
                       unsigned int numberOfContours)
 {
   double range[2];
   // Generate implicit surface
-  vtkSmartPointer<vtkContourFilter> contour =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> contour;
   contour->SetInputConnection(function->GetOutputPort());
-  range[0] = 1.0; range[1] = 6.0;
+  range[0] = 1.0;
+  range[1] = 6.0;
   contour->GenerateValues(numberOfContours, range);
 
   // Map contour
-  vtkSmartPointer<vtkPolyDataMapper> contourMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> contourMapper;
   contourMapper->SetInputConnection(contour->GetOutputPort());
-  contourMapper->SetScalarRange(0,7);
+  contourMapper->SetScalarRange(0, 7);
 
   actor->SetMapper(contourMapper);
   return;
 }
 
-void CreatePlanes(vtkSmartPointer<vtkSampleFunction> &function,
-                  vtkSmartPointer<vtkActor> &actor,
+void CreatePlanes(vtkSampleFunction* function, vtkActor* actor,
                   unsigned int numberOfPlanes)
 {
   //
   // Extract planes from implicit function
   //
 
-  vtkSmartPointer<vtkAppendFilter> append =
-    vtkSmartPointer<vtkAppendFilter>::New();
+  vtkNew<vtkAppendFilter> append;
 
   int dims[3];
   function->GetSampleDimensions(dims);
   int sliceIncr = (dims[2] - 1) / (numberOfPlanes + 1);
 
   int slice = -4;
-  for (unsigned int i = 0; i< numberOfPlanes; ++i)
+  for (unsigned int i = 0; i < numberOfPlanes; ++i)
   {
-    vtkSmartPointer<vtkExtractVOI> extract =
-      vtkSmartPointer<vtkExtractVOI>::New();
+    vtkNew<vtkExtractVOI> extract;
     extract->SetInputConnection(function->GetOutputPort());
-    extract->SetVOI(0, dims[0] - 1,
-                    0, dims[1] - 1,
-                    slice + sliceIncr, slice + sliceIncr);
+    extract->SetVOI(0, dims[0] - 1, 0, dims[1] - 1, slice + sliceIncr,
+                    slice + sliceIncr);
     append->AddInputConnection(extract->GetOutputPort());
     slice += sliceIncr;
   }
   append->Update();
 
   // Map planes
-  vtkSmartPointer<vtkDataSetMapper> planesMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> planesMapper;
   planesMapper->SetInputConnection(append->GetOutputPort());
-  planesMapper->SetScalarRange(0,7);
+  planesMapper->SetScalarRange(0, 7);
 
   actor->SetMapper(planesMapper);
   actor->GetProperty()->SetAmbient(1.);
   return;
 }
 
-void CreateContours(vtkSmartPointer<vtkSampleFunction> &function,
-                    vtkSmartPointer<vtkActor> &actor,
-                    unsigned int numberOfPlanes,
-                    unsigned int numberOfContours)
+void CreateContours(vtkSampleFunction* function, vtkActor* actor,
+                    unsigned int numberOfPlanes, unsigned int numberOfContours)
 {
   //
   // Extract planes from implicit function
   //
 
-  vtkSmartPointer<vtkAppendFilter> append =
-    vtkSmartPointer<vtkAppendFilter>::New();
+  vtkNew<vtkAppendFilter> append;
 
   int dims[3];
   function->GetSampleDimensions(dims);
   int sliceIncr = (dims[2] - 1) / (numberOfPlanes + 1);
 
   int slice = -4;
-  for (unsigned int i = 0; i< numberOfPlanes; ++i)
+  for (unsigned int i = 0; i < numberOfPlanes; ++i)
   {
-    vtkSmartPointer<vtkExtractVOI> extract =
-      vtkSmartPointer<vtkExtractVOI>::New();
+    vtkNew<vtkExtractVOI> extract;
     extract->SetInputConnection(function->GetOutputPort());
-    extract->SetVOI(0, dims[0] - 1,
-                    0, dims[1] - 1,
-                    slice + sliceIncr, slice + sliceIncr);
+    extract->SetVOI(0, dims[0] - 1, 0, dims[1] - 1, slice + sliceIncr,
+                    slice + sliceIncr);
     double range[2];
-    range[0] = 1.0; range[1] = 6.0;
-    vtkSmartPointer<vtkContourFilter> contour =
-      vtkSmartPointer<vtkContourFilter>::New();
+    range[0] = 1.0;
+    range[1] = 6.0;
+    vtkNew<vtkContourFilter> contour;
     contour->SetInputConnection(extract->GetOutputPort());
     contour->GenerateValues(numberOfContours, range);
     append->AddInputConnection(contour->GetOutputPort());
@@ -224,28 +195,22 @@ void CreateContours(vtkSmartPointer<vtkSampleFunction> &function,
   append->Update();
 
   // Map planes
-  vtkSmartPointer<vtkDataSetMapper> planesMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> planesMapper;
   planesMapper->SetInputConnection(append->GetOutputPort());
-  planesMapper->SetScalarRange(0,7);
+  planesMapper->SetScalarRange(0, 7);
 
   actor->SetMapper(planesMapper);
   actor->GetProperty()->SetAmbient(1.);
   return;
 }
 
-void CreateOutline(vtkSmartPointer<vtkSampleFunction> &source,
-                   vtkSmartPointer<vtkActor> &actor)
+void CreateOutline(vtkSampleFunction* source, vtkActor* actor)
 {
-  vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(source->GetOutputPort());
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(outline->GetOutputPort());
   actor->SetMapper(mapper);
   return;
 }
-}
-
-
+} // namespace

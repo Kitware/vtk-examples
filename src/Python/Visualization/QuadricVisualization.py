@@ -69,6 +69,8 @@ def main():
     renderer.ResetCameraClippingRange()
 
     renderWindow.SetSize(640, 480)
+    renderWindow.SetWindowName('QuadricVisualization');
+
     renderWindow.Render()
 
     # interact with data
@@ -165,5 +167,5 @@ def CreateOutline(source, actor):
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

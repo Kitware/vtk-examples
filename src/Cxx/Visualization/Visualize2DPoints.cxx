@@ -1,62 +1,59 @@
-#include <vtkSmartPointer.h>
+#include <vtkActor2D.h>
+#include <vtkCellArray.h>
+#include <vtkMath.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper2D.h>
+#include <vtkProperty.h>
+#include <vtkProperty2D.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSphereSource.h>
-#include <vtkPolyDataMapper2D.h>
-#include <vtkActor2D.h>
-#include <vtkMath.h>
-#include <vtkProperty2D.h>
-#include <vtkCellArray.h>
-#include <vtkPolyData.h>
 #include <vtkXMLPolyDataReader.h>
 
 int main(int argc, char* argv[])
 {
-  if(argc != 2)
+  if (argc != 2)
   {
-    std::cout << "Required parameters: Filename" << std::endl;
+    std::cout << "Required parameters: Filename e.g. Ring.vtp" << std::endl;
     return EXIT_FAILURE;
   }
 
+  vtkNew<vtkNamedColors> colors;
+
   std::string inputFilename = argv[1];
 
-  vtkSmartPointer<vtkXMLPolyDataReader> reader =
-    vtkSmartPointer<vtkXMLPolyDataReader>::New();
+  vtkNew<vtkXMLPolyDataReader> reader;
   reader->SetFileName(inputFilename.c_str());
   reader->Update();
   vtkPolyData* polydata = reader->GetOutput();
-  //vtkPoints* Points = Polydata->GetPoints();
+  // vtkPoints* Points = Polydata->GetPoints();
 
-  vtkSmartPointer<vtkActor2D> actor =
-    vtkSmartPointer<vtkActor2D>::New();
-  double color[3] = {1,1,1};
-
-  vtkSmartPointer<vtkPolyDataMapper2D> mapper =
-    vtkSmartPointer<vtkPolyDataMapper2D>::New();
-  mapper->SetInputData( polydata );
+  vtkNew<vtkPolyDataMapper2D> mapper;
+  mapper->SetInputData(polydata);
   mapper->ScalarVisibilityOff();
-  actor->SetMapper( mapper );
+  vtkNew<vtkActor2D> actor;
+  actor->SetMapper(mapper);
 
-  vtkProperty2D *property2D = actor->GetProperty();
-  property2D->SetColor( color );
-  property2D->SetPointSize( 2.0 );
+  vtkProperty2D* property2D = actor->GetProperty();
+  property2D->SetColor(colors->GetColor3d("Gold").GetData());
+  property2D->SetPointSize(2.0);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
 
   // Renderer and RenderWindow
-  renderer->SetBackground( 0, 0, 0);
   renderer->ResetCamera();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->SetWindowName("Visualize2DPoints");
 
-  renderWindow->SetSize( 200,200 );
-  renderWindow->AddRenderer( renderer );
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  renderWindowInteractor->SetRenderWindow( renderWindow );
+  renderWindow->SetSize(200, 200);
+  renderWindow->AddRenderer(renderer);
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();
   renderWindowInteractor->Initialize();

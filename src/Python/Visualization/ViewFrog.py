@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-"""
-"""
+'''
+'''
 
 import vtk
 
@@ -25,7 +25,8 @@ def view_frog(fileName, tissues):
         actor.GetProperty().SetSpecular(.5)
         actor.GetProperty().SetSpecularPower(10)
         renderer.AddActor(actor)
-        # print("Tissue:", tissue, ", Label:", tissueMap[tissue])
+        print('Tissue: {:>9s}, Label: {:2d}'.format(tissue, tissueMap[tissue]))
+        # print('Tissue:', tissue, ', Label:', tissueMap[tissue])
 
     renderer.GetActiveCamera().SetViewUp(0, 0, -1)
     renderer.GetActiveCamera().SetPosition(0, -1, 0)
@@ -35,9 +36,10 @@ def view_frog(fileName, tissues):
     renderer.ResetCamera()
     renderer.ResetCameraClippingRange()
     renderer.GetActiveCamera().Dolly(1.5)
-    renderer.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
     renderWindow.SetSize(640, 480)
+    renderWindow.SetWindowName('ViewFrog')
     renderWindow.Render()
 
     renderWindowInteractor.Start()
@@ -73,42 +75,42 @@ def CreateFrogLut():
     colorLut.Build()
 
     colorLut.SetTableValue(0, 0, 0, 0, 0)
-    colorLut.SetTableValue(1, colors.GetColor4d("salmon"))  # blood
-    colorLut.SetTableValue(2, colors.GetColor4d("beige"))  # brain
-    colorLut.SetTableValue(3, colors.GetColor4d("orange"))  # duodenum
-    colorLut.SetTableValue(4, colors.GetColor4d("misty_rose"))  # eye_retina
-    colorLut.SetTableValue(5, colors.GetColor4d("white"))  # eye_white
-    colorLut.SetTableValue(6, colors.GetColor4d("tomato"))  # heart
-    colorLut.SetTableValue(7, colors.GetColor4d("raspberry"))  # ileum
-    colorLut.SetTableValue(8, colors.GetColor4d("banana"))  # kidney
-    colorLut.SetTableValue(9, colors.GetColor4d("peru"))  # l_intestine
-    colorLut.SetTableValue(10, colors.GetColor4d("pink"))  # liver
-    colorLut.SetTableValue(11, colors.GetColor4d("powder_blue"))  # lung
-    colorLut.SetTableValue(12, colors.GetColor4d("carrot"))  # nerve
-    colorLut.SetTableValue(13, colors.GetColor4d("wheat"))  # skeleton
-    colorLut.SetTableValue(14, colors.GetColor4d("violet"))  # spleen
-    colorLut.SetTableValue(15, colors.GetColor4d("plum"))  # stomach
+    colorLut.SetTableValue(1, colors.GetColor4d('salmon'))  # blood
+    colorLut.SetTableValue(2, colors.GetColor4d('beige'))  # brain
+    colorLut.SetTableValue(3, colors.GetColor4d('orange'))  # duodenum
+    colorLut.SetTableValue(4, colors.GetColor4d('misty_rose'))  # eye_retina
+    colorLut.SetTableValue(5, colors.GetColor4d('white'))  # eye_white
+    colorLut.SetTableValue(6, colors.GetColor4d('tomato'))  # heart
+    colorLut.SetTableValue(7, colors.GetColor4d('raspberry'))  # ileum
+    colorLut.SetTableValue(8, colors.GetColor4d('banana'))  # kidney
+    colorLut.SetTableValue(9, colors.GetColor4d('peru'))  # l_intestine
+    colorLut.SetTableValue(10, colors.GetColor4d('pink'))  # liver
+    colorLut.SetTableValue(11, colors.GetColor4d('powder_blue'))  # lung
+    colorLut.SetTableValue(12, colors.GetColor4d('carrot'))  # nerve
+    colorLut.SetTableValue(13, colors.GetColor4d('wheat'))  # skeleton
+    colorLut.SetTableValue(14, colors.GetColor4d('violet'))  # spleen
+    colorLut.SetTableValue(15, colors.GetColor4d('plum'))  # stomach
 
     return colorLut
 
 
 def CreateTissueMap():
     tissueMap = dict()
-    tissueMap["blood"] = 1
-    tissueMap["brain"] = 2
-    tissueMap["duodenum"] = 3
-    tissueMap["eyeRetina"] = 4
-    tissueMap["eyeWhite"] = 5
-    tissueMap["heart"] = 6
-    tissueMap["ileum"] = 7
-    tissueMap["kidney"] = 8
-    tissueMap["intestine"] = 9
-    tissueMap["liver"] = 10
-    tissueMap["lung"] = 11
-    tissueMap["nerve"] = 12
-    tissueMap["skeleton"] = 13
-    tissueMap["spleen"] = 14
-    tissueMap["stomach"] = 15
+    tissueMap['blood'] = 1
+    tissueMap['brain'] = 2
+    tissueMap['duodenum'] = 3
+    tissueMap['eyeRetina'] = 4
+    tissueMap['eyeWhite'] = 5
+    tissueMap['heart'] = 6
+    tissueMap['ileum'] = 7
+    tissueMap['kidney'] = 8
+    tissueMap['intestine'] = 9
+    tissueMap['liver'] = 10
+    tissueMap['lung'] = 11
+    tissueMap['nerve'] = 12
+    tissueMap['skeleton'] = 13
+    tissueMap['spleen'] = 14
+    tissueMap['stomach'] = 15
 
     return tissueMap
 

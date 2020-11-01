@@ -1,23 +1,24 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkImageViewer.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPNGWriter.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderLargeImage.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkXMLPolyDataReader.h>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 3)
   {
     std::cerr << "Usage: " << argv[0]
-              << " Input(.vtp) Output(.png) [Magnification]"
-              << std::endl;
+              << " Input(.vtp) Output(.png) [Magnification]" << std::endl;
+    std::cerr << "e.g. Bunny.vtp Bunny.png 4" << std::endl;
     return EXIT_FAILURE;
   }
   int magnification = 4;
@@ -26,28 +27,26 @@ int main (int argc, char *argv[])
     magnification = atoi(argv[3]);
   }
 
-  vtkSmartPointer<vtkXMLPolyDataReader> reader =
-    vtkSmartPointer<vtkXMLPolyDataReader>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkXMLPolyDataReader> reader;
   reader->SetFileName(argv[1]);
 
-  vtkSmartPointer<  vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Tan").GetData());
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("RenderLargeImage");
 
   renderer->AddActor(actor);
 
@@ -57,7 +56,7 @@ int main (int argc, char *argv[])
   renderer->ResetCamera();
   renderer->GetActiveCamera()->Dolly(1.4);
   renderer->ResetCameraClippingRange();
-  renderer->SetBackground(.3, .4, .5);
+  renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
   renderWindow->SetSize(640, 480);
   renderWindow->Render();
@@ -67,18 +66,14 @@ int main (int argc, char *argv[])
   interactor->Start();
   std::cout << "Generating large image size: "
             << renderWindow->GetSize()[0] * magnification << " by "
-            << renderWindow->GetSize()[1] * magnification
-            << std::endl;
+            << renderWindow->GetSize()[1] * magnification << std::endl;
 
-
-  vtkSmartPointer<vtkRenderLargeImage> renderLarge =
-    vtkSmartPointer<vtkRenderLargeImage>::New();
+  vtkNew<vtkRenderLargeImage> renderLarge;
   renderLarge->SetInput(renderer);
   renderLarge->SetMagnification(magnification);
 
   std::cout << "Saving image in " << argv[2] << std::endl;
-  vtkSmartPointer<vtkPNGWriter> writer =
-    vtkSmartPointer<vtkPNGWriter>::New();
+  vtkNew<vtkPNGWriter> writer;
   writer->SetFileName(argv[2]);
   writer->SetInputConnection(renderLarge->GetOutputPort());
   writer->Write();

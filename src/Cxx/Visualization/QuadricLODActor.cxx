@@ -1,48 +1,49 @@
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkQuadricLODActor.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkProperty.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // High res sphere
-  vtkSmartPointer<vtkSphereSource> highResSphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> highResSphereSource;
   highResSphereSource->SetThetaResolution(200);
   highResSphereSource->SetPhiResolution(200);
   highResSphereSource->Update();
-  
-  vtkSmartPointer<vtkPolyDataMapper> highResMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+
+  vtkNew<vtkPolyDataMapper> highResMapper;
   highResMapper->SetInputConnection(highResSphereSource->GetOutputPort());
-  
-  vtkSmartPointer<vtkQuadricLODActor> actor = 
-    vtkSmartPointer<vtkQuadricLODActor>::New();
+
+  vtkNew<vtkQuadricLODActor> actor;
   actor->SetMapper(highResMapper);
   actor->GetProperty()->SetInterpolationToFlat();
-  
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
+
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("QuadricLODActor");
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderWindowInteractor->SetDesiredUpdateRate(1e20);
-      
+
   renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

@@ -1,65 +1,73 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkImageCanvasSource2D.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlaneSource.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkTexture.h>
 
-int main(int, char *[])
+#include <array>
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
+  std::array<double, 3> drawColor1{0, 0, 0};
+  std::array<double, 3> drawColor2{0, 0, 0};
+  auto color1 = colors->GetColor3ub("ForestGreen").GetData();
+  auto color2 = colors->GetColor3ub("DarkMagenta").GetData();
+  for (auto i = 0; i < 3; ++i)
+  {
+    drawColor1[i] = color1[i];
+    drawColor2[i] = color2[i];
+  }
+
   // Create an image
-  vtkSmartPointer<vtkImageCanvasSource2D> imageSource = 
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> imageSource;
   imageSource->SetScalarTypeToUnsignedChar();
   imageSource->SetExtent(0, 20, 0, 20, 0, 0);
   imageSource->SetNumberOfScalarComponents(3);
-  imageSource->SetDrawColor(127,255,100);
-  imageSource->FillBox(0,20,0,20);
-  imageSource->SetDrawColor(20,20,20);
+  imageSource->SetDrawColor(drawColor1.data());
+  imageSource->FillBox(0, 20, 0, 20);
+  imageSource->SetDrawColor(drawColor2.data());
   imageSource->DrawSegment(0, 0, 19, 19);
   imageSource->DrawSegment(19, 0, 0, 19);
   imageSource->Update();
-  
+
   // Create a plane
-  vtkSmartPointer<vtkPlaneSource> plane = 
-    vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> plane;
   plane->SetCenter(0.0, 0.0, 0.0);
   plane->SetNormal(0.0, 0.0, 1.0);
-  
+
   // Apply the texture
-  vtkSmartPointer<vtkTexture> texture = 
-    vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkTexture> texture;
   texture->SetInputConnection(imageSource->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> planeMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> planeMapper;
   planeMapper->SetInputConnection(plane->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> texturedPlane = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> texturedPlane;
   texturedPlane->SetMapper(planeMapper);
   texturedPlane->SetTexture(texture);
 
   // Visualize the textured plane
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(texturedPlane);
-  renderer->SetBackground(1,1,1); // Background color white
+  renderer->SetBackground(colors->GetColor3d("Silver").GetData());
   renderer->ResetCamera();
-  
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->AddRenderer(renderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("TextureMapImageData");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
-  
+
   renderWindow->Render();
-  
+
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
