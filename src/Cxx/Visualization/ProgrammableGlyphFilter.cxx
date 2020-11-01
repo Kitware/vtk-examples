@@ -1,107 +1,104 @@
-#include <vtkSmartPointer.h>
-#include <vtkPointData.h>
-#include <vtkCubeSource.h>
-#include <vtkConeSource.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyData.h>
-#include <vtkPoints.h>
-#include <vtkProgrammableGlyphFilter.h>
-#include <vtkCellArray.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkCamera.h>
+#include <vtkCellArray.h>
+#include <vtkConeSource.h>
+#include <vtkCubeSource.h>
 #include <vtkFloatArray.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProgrammableGlyphFilter.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-void CalcGlyph(void *arg)
+void CalcGlyph(void* arg)
 {
 
-  vtkProgrammableGlyphFilter *glyphFilter = (vtkProgrammableGlyphFilter*) arg;
+  vtkProgrammableGlyphFilter* glyphFilter = (vtkProgrammableGlyphFilter*)arg;
 
-  if(!glyphFilter)
+  if (!glyphFilter)
   {
     std::cerr << "glyphFilter is not valid!" << std::endl;
   }
   double pointCoords[3];
   glyphFilter->GetPoint(pointCoords);
 
-  std::cout << "Calling CalcGlyph for point "
-            << glyphFilter->GetPointId() << std::endl;
-  std::cout << "Point coords are: "
-            << pointCoords[0] << " "
-            << pointCoords[1] << " "
-            << pointCoords[2] << std::endl;
-  if(glyphFilter->GetPointId() == 0)
+  std::cout << "Calling CalcGlyph for point " << glyphFilter->GetPointId()
+            << std::endl;
+  std::cout << "Point coords are: " << pointCoords[0] << " " << pointCoords[1]
+            << " " << pointCoords[2] << std::endl;
+  if (glyphFilter->GetPointId() == 0)
   {
-    vtkSmartPointer<vtkConeSource> coneSource =
-      vtkSmartPointer<vtkConeSource>::New();
+    vtkNew<vtkConeSource> coneSource;
     coneSource->SetCenter(pointCoords);
     glyphFilter->SetSourceConnection(coneSource->GetOutputPort());
   }
-  else if(glyphFilter->GetPointId() == 1)
+  else if (glyphFilter->GetPointId() == 1)
   {
-    vtkSmartPointer<vtkCubeSource> cubeSource =
-      vtkSmartPointer<vtkCubeSource>::New();
+    vtkNew<vtkCubeSource> cubeSource;
     cubeSource->SetCenter(pointCoords);
     glyphFilter->SetSourceConnection(cubeSource->GetOutputPort());
   }
-  else if(glyphFilter->GetPointId() == 2)
+  else if (glyphFilter->GetPointId() == 2)
   {
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetCenter(pointCoords);
     glyphFilter->SetSourceConnection(sphereSource->GetOutputPort());
   }
 }
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create points
-  vtkSmartPointer<vtkPoints> points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint(0,0,0);
-  points->InsertNextPoint(5,0,0);
-  points->InsertNextPoint(10,0,0);
+  vtkNew<vtkPoints> points;
+  points->InsertNextPoint(0, 0, 0);
+  points->InsertNextPoint(5, 0, 0);
+  points->InsertNextPoint(10, 0, 0);
 
   // Combine into a polydata
-  vtkSmartPointer<vtkPolyData> polydata =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   polydata->SetPoints(points);
 
-  vtkSmartPointer<vtkProgrammableGlyphFilter> glyphFilter =
-    vtkSmartPointer<vtkProgrammableGlyphFilter>::New();
+  vtkNew<vtkProgrammableGlyphFilter> glyphFilter;
   glyphFilter->SetInputData(polydata);
   glyphFilter->SetGlyphMethod(CalcGlyph, glyphFilter);
-  //need a default glyph, but this should not be used
-  vtkSmartPointer<vtkConeSource> coneSource =
-    vtkSmartPointer<vtkConeSource>::New();
+  // need a default glyph, but this should not be used
+  vtkNew<vtkConeSource> coneSource;
   glyphFilter->SetSourceConnection(coneSource->GetOutputPort());
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(glyphFilter->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("Gold").GetData());
 
   // Create a renderer, render window, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("ProgrammableGlyphFilter");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actor to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(.2, .3, .4);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Render and interact
   renderWindow->Render();
+
+  renderer->GetActiveCamera()->Zoom(0.9);
+
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;

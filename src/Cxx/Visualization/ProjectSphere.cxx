@@ -1,69 +1,60 @@
-#include <vtkSmartPointer.h>
-
-#include <vtkProjectSphereFilter.h>
-#include <vtkElevationFilter.h>
-
-#include <vtkParametricSuperEllipsoid.h>
-#include <vtkParametricFunctionSource.h>
-
-#include <vtkPolyDataMapper.h>
-#include <vtkCamera.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
+#include <vtkCamera.h>
+#include <vtkElevationFilter.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkParametricFunctionSource.h>
+#include <vtkParametricSuperEllipsoid.h>
 #include <vtkPointData.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProjectSphereFilter.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkParametricSuperEllipsoid> surface =
-    vtkSmartPointer<vtkParametricSuperEllipsoid>::New();
+  vtkNew<vtkParametricSuperEllipsoid> surface;
   surface->SetN1(2.0);
   surface->SetN2(0.5);
 
-  vtkSmartPointer<vtkParametricFunctionSource> source =
-    vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricFunctionSource> source;
   source->SetParametricFunction(surface);
 
-  vtkSmartPointer<vtkElevationFilter> elevationFilter =
-    vtkSmartPointer<vtkElevationFilter>::New();
+  vtkNew<vtkElevationFilter> elevationFilter;
   elevationFilter->SetInputConnection(source->GetOutputPort());
   elevationFilter->SetLowPoint(0.0, 0.0, -4.0);
   elevationFilter->SetHighPoint(0.0, 0.0, 4.0);
   elevationFilter->Update();
 
   // Deep copy the point data since in some versions of VTK,
-  // the ProjectSphereFilter modifies the input point data 
- vtkSmartPointer<vtkPolyData> pd1 =
-    vtkSmartPointer<vtkPolyData>::New();
+  // the ProjectSphereFilter modifies the input point data
+  vtkNew<vtkPolyData> pd1;
   pd1->DeepCopy(elevationFilter->GetOutput());
 
-  vtkSmartPointer<vtkProjectSphereFilter> sphereProject1 =
-    vtkSmartPointer<vtkProjectSphereFilter>::New();
+  vtkNew<vtkProjectSphereFilter> sphereProject1;
   sphereProject1->SetInputConnection(elevationFilter->GetOutputPort());
   sphereProject1->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper1 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper1;
   mapper1->SetInputConnection(sphereProject1->GetOutputPort());
-  mapper1->SetScalarRange(sphereProject1->GetOutput()->GetPointData()->GetScalars()->GetRange());
-  vtkSmartPointer<vtkActor> actor1 =
-    vtkSmartPointer<vtkActor>::New();
+  mapper1->SetScalarRange(
+      sphereProject1->GetOutput()->GetPointData()->GetScalars()->GetRange());
+  vtkNew<vtkActor> actor1;
   actor1->SetMapper(mapper1);
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper2 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper2;
   mapper2->SetInputData(pd1);
-  mapper2->SetScalarRange(pd1->GetPointData()->GetScalars()->GetRange());  
-  vtkSmartPointer<vtkActor> actor2 =
-    vtkSmartPointer<vtkActor>::New();
+  mapper2->SetScalarRange(pd1->GetPointData()->GetScalars()->GetRange());
+  vtkNew<vtkActor> actor2;
   actor2->SetMapper(mapper2);
 
   // A render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
@@ -71,24 +62,21 @@ int main (int, char *[])
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
   // Setup both renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  leftRenderer->SetBackground(.6, .5, .4);
+  leftRenderer->SetBackground(colors->GetColor3d("RosyBrown").GetData());
 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  rightRenderer->SetBackground(.4, .5, .6);
+  rightRenderer->SetBackground(colors->GetColor3d("CadetBlue").GetData());
 
   leftRenderer->AddActor(actor2);
   rightRenderer->AddActor(actor1);
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   leftRenderer->GetActiveCamera()->Azimuth(30);
@@ -97,10 +85,12 @@ int main (int, char *[])
 
   // Render an image (lights and cameras are created automatically)
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("ProjectSphere");
+
   renderWindow->Render();
 
   // Begin mouse interaction
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

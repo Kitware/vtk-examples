@@ -1,24 +1,22 @@
-#include <vtkProteinRibbonFilter.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkNew.h>
-#include <vtkProperty.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkPDBReader.h>
 #include <vtkInteractorStyleSwitch.h>
-
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPDBReader.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkProteinRibbonFilter.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0] << " file.pdb" << std::endl;
-    return EXIT_FAILURE;                                                                                
+    std::cout << "Usage: " << argv[0] << " file.pdb e.g. 2j6g.pdb" << std::endl;
+    return EXIT_FAILURE;
   }
   std::string fileName(argv[1]);
 
@@ -48,16 +46,20 @@ int main(int argc, char *argv[])
   vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
   vtkInteractorStyleSwitch* style =
-    dynamic_cast<vtkInteractorStyleSwitch*>(interactor->GetInteractorStyle());
+      dynamic_cast<vtkInteractorStyleSwitch*>(interactor->GetInteractorStyle());
   style->SetCurrentStyleToTrackballCamera();
 
   vtkNew<vtkNamedColors> colors;
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
   renderWindow->SetSize(640, 480);
-  
+  renderWindow->SetWindowName("ProteinRibbons");
+
+  renderWindow->Render();
   renderer->ResetCamera();
-  renderer->GetActiveCamera()->Zoom(1.5);
+  renderer->GetActiveCamera()->Azimuth(45);
+  renderer->GetActiveCamera()->Elevation(45);
+  renderer->GetActiveCamera()->Zoom(1.7);
   renderer->ResetCameraClippingRange();
   renderWindow->Render();
 

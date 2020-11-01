@@ -20,7 +20,7 @@ def GetProgramParameters():
          and number of points to use for the normals.
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue)
-    parser.add_argument('sourceToUse', help='The surface to use.', nargs='?', default='Cone')
+    parser.add_argument('sourceToUse', help='The surface to use.', nargs='?', default='Boy')
     parser.add_argument('-g', '--glyphPoints', help='Number of points to be used for glyphing.', nargs='?', default=50,
                         type=int)
     parser.add_argument('--no-normals', help='Do not display normals.', dest='displayNormals', action='store_false')
@@ -298,6 +298,7 @@ def MakeLabel(textLabel, renWinSize):
     actor = vtk.vtkActor2D()
     actor.SetMapper(mapper)
     actor.SetPosition(renWinSize / 2.0, 16)
+    actor.GetProperty().SetColor(nc.GetColor3d("Gold"))
     return actor
 
 
@@ -460,7 +461,7 @@ def main():
     renWin.SetSize(renWinXSize, renWinYSize)
     renWin.Render()
     # renWin.SetWindowName() needs to be called after renWin.Render()
-    renWin.SetWindowName('Point Data Subdivision Example')
+    renWin.SetWindowName('PointDataSubdivision')
 
     iren.Initialize()
     # WritePNG(iren.GetRenderWindow().GetRenderers().GetFirstRenderer(), "TestPointDataSubdivision.png")
