@@ -68,7 +68,7 @@ def main():
     # Create the RenderWindow, Renderer and Interactor.
     #
     renderer1 = vtk.vtkRenderer()
-    renderer1.SetViewport(0., 0.0, 0.5, 1.0)
+    renderer1.SetViewport(0.0, 0.0, 0.5, 1.0)
 
     renderer2 = vtk.vtkRenderer()
     renderer2.SetViewport(0.5, 0.0, 1.0, 1.0)
@@ -76,6 +76,7 @@ def main():
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer1)
     renderWindow.AddRenderer(renderer2)
+    renderWindow.SetWindowName('DecimateFran')
 
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)

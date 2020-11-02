@@ -59,6 +59,7 @@ def main():
     aren.GetActiveCamera().Elevation(30)
 
     renWin.SetSize(640, 512)
+    renWin.SetWindowName('ContourQuadric')
     renWin.Render()
 
     # interact with data

@@ -2,6 +2,7 @@
 #include <vtkCamera.h>
 #include <vtkContourFilter.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -11,66 +12,54 @@
 #include <vtkRenderer.h>
 #include <vtkSampleFunction.h>
 
-int main( int, char *[] )
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> aren =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> aren;
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(aren);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-//
-// Create surfaces F(x,y,z) = constant
-//
+  //
+  // Create surfaces F(x,y,z) = constant
+  //
   // Sample quadric function
-  vtkSmartPointer<vtkQuadric> quadric =
-    vtkSmartPointer<vtkQuadric>::New();
-  quadric->SetCoefficients(.5,1,.2,0,.1,0,0,.2,0,0);
-  vtkSmartPointer<vtkSampleFunction> sample =
-    vtkSmartPointer<vtkSampleFunction>::New();
-  sample->SetSampleDimensions(50,50,50);
+  vtkNew<vtkQuadric> quadric;
+  quadric->SetCoefficients(.5, 1, .2, 0, .1, 0, 0, .2, 0, 0);
+  vtkNew<vtkSampleFunction> sample;
+  sample->SetSampleDimensions(50, 50, 50);
   sample->SetImplicitFunction(quadric);
 
-  vtkSmartPointer<vtkContourFilter> contour =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> contour;
   contour->SetInputConnection(sample->GetOutputPort());
-  contour->GenerateValues(5,0,1.2);
+  contour->GenerateValues(5, 0, 1.2);
 
-  vtkSmartPointer<vtkPolyDataMapper> contourMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> contourMapper;
   contourMapper->SetInputConnection(contour->GetOutputPort());
-  contourMapper->SetScalarRange(0,1.2);
+  contourMapper->SetScalarRange(0, 1.2);
 
-  vtkSmartPointer<vtkActor> contourActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> contourActor;
   contourActor->SetMapper(contourMapper);
 
   // Create outline
-  vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(sample->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Brown").GetData());
   outlineActor->GetProperty()->SetLineWidth(3.0);
 
-//
-// Rendering stuff
-//
+  //
+  // Rendering stuff
+  //
   aren->SetBackground(colors->GetColor3d("SlateGray").GetData());
   aren->AddActor(contourActor);
   aren->AddActor(outlineActor);
@@ -81,6 +70,7 @@ int main( int, char *[] )
 
   renWin->SetSize(640, 512);
   renWin->Render();
+  renWin->SetWindowName("ContourQuadric");
 
   // interact with data
   iren->Start();

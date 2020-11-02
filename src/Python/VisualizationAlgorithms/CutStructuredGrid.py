@@ -53,7 +53,7 @@ def main():
     planeActor = vtk.vtkActor()
     planeActor.SetMapper(planeMapper)
     planeActor.GetProperty().SetRepresentationToWireframe()
-    planeActor.GetProperty().SetColor(colors.GetColor3d("Wheat"))
+    planeActor.GetProperty().SetColor(colors.GetColor3d('Wheat'))
 
     # Outline.
     outline = vtk.vtkStructuredGridOutlineFilter()
@@ -64,22 +64,24 @@ def main():
 
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Wheat"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Wheat'))
 
     # Add the actors to the renderer, set the background and size.
     #
     ren1.AddActor(outlineActor)
     ren1.AddActor(planeActor)
     ren1.AddActor(cutActor)
-    ren1.SetBackground(colors.GetColor3d("SlateGray"))
-    renWin.SetSize(640, 480)
+    ren1.SetBackground(colors.GetColor3d('SlateGray'))
 
-    ren1.GetActiveCamera().SetClippingRange(3.95297, 50)
-    ren1.GetActiveCamera().SetFocalPoint(9.71821, 0.458166, 29.3999)
-    ren1.GetActiveCamera().SetPosition(2.7439, -37.3196, 38.7167)
-    ren1.GetActiveCamera().SetViewUp(-0.16123, 0.264271, 0.950876)
-    ren1.ResetCamera()
-    ren1.GetActiveCamera().Elevation(30)
+    renWin.SetSize(640, 480)
+    renWin.SetWindowName('CutStructuredGrid')
+
+    camera = ren1.GetActiveCamera()
+    camera.SetPosition(5.02611, -23.535, 50.3979)
+    camera.SetFocalPoint(9.33614, 0.0414149, 30.112)
+    camera.SetViewUp(-0.0676794, 0.657814, 0.750134)
+    camera.SetDistance(31.3997)
+    camera.SetClippingRange(12.1468, 55.8147)
 
     # Render the image.
     #

@@ -39,7 +39,7 @@ def main():
 
     outline = vtk.vtkActor()
     outline.SetMapper(outlineMapper)
-    outline.GetProperty().SetColor(colors.GetColor3d("Moccasin"))
+    outline.GetProperty().SetColor(colors.GetColor3d('Moccasin'))
     outline.GetProperty().SetLineWidth(2.0)
 
     #
@@ -55,7 +55,7 @@ def main():
 
     wallActor = vtk.vtkActor()
     wallActor.SetMapper(wallMap)
-    wallActor.GetProperty().SetColor(colors.GetColor3d("Silver"))
+    wallActor.GetProperty().SetColor(colors.GetColor3d('Silver'))
 
     fin = vtk.vtkStructuredGridGeometryFilter()
     fin.SetInputData(pd)
@@ -67,7 +67,7 @@ def main():
 
     finActor = vtk.vtkActor()
     finActor.SetMapper(finMap)
-    finActor.GetProperty().SetColor(colors.GetColor3d("Silver"))
+    finActor.GetProperty().SetColor(colors.GetColor3d('Silver'))
     #
     # regular streamlines
     #
@@ -81,7 +81,7 @@ def main():
 
     rake1 = vtk.vtkActor()
     rake1.SetMapper(rakeMapper)
-    rake1.GetProperty().SetColor(0.0, 0.0, 0.0)
+    rake1.GetProperty().SetColor(colors.GetColor3d('Black'))
     rake1.GetProperty().SetLineWidth(5)
 
     streamers = vtk.vtkStreamTracer()
@@ -89,8 +89,8 @@ def main():
     streamers.SetInputConnection(reader.GetOutputPort())
     streamers.SetSourceConnection(line1.GetOutputPort())
     streamers.SetMaximumPropagation(maxTime)
-    streamers.SetInitialIntegrationStep(.2)
-    streamers.SetMinimumIntegrationStep(.01)
+    streamers.SetInitialIntegrationStep(0.2)
+    streamers.SetMinimumIntegrationStep(0.01)
     streamers.SetIntegratorType(2)
     streamers.Update()
 
@@ -106,7 +106,7 @@ def main():
     aren.AddActor(finActor)
     aren.AddActor(rake1)
     aren.AddActor(lines)
-    aren.SetBackground(0.5, 0.5, 0.5)
+    aren.SetBackground(colors.GetColor3d('Gray'))
 
     aren.ResetCamera()
     aren.GetActiveCamera().Elevation(30.0)
@@ -115,6 +115,7 @@ def main():
     aren.ResetCameraClippingRange()
 
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('BluntStreamlines')
     renWin.Render()
 
     # Interact with the data.

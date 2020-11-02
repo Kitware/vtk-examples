@@ -11,6 +11,7 @@
 #include <vtkElevationFilter.h>
 #include <vtkLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPropAssembly.h>
@@ -51,18 +52,18 @@ int main(int, char*[])
 {
   // Basic stuff setup
   // Set up the renderer, window, and interactor
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto ren = vtkSmartPointer<vtkRenderer>::New();
-  auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
   renWin->SetSize(640, 480);
-  auto iRen = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iRen;
   iRen->SetRenderWindow(renWin);
 
   // Create a cone with an elliptical base whose major axis is in the
   // X-direction.
-  auto coneSource = vtkSmartPointer<vtkConeSource>::New();
+  vtkNew<vtkConeSource> coneSource;
   coneSource->SetCenter(0.0, 0.0, 0.0);
   coneSource->SetRadius(5.0);
   coneSource->SetHeight(15.0);
@@ -70,56 +71,56 @@ int main(int, char*[])
   coneSource->SetResolution(60);
   coneSource->Update();
 
-  auto transform = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform;
   transform->Scale(1.0, 1.0, 0.75);
 
-  auto transF = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> transF;
   transF->SetInputConnection(coneSource->GetOutputPort());
   transF->SetTransform(transform);
 
   double bounds[6];
   transF->GetOutput()->GetBounds(bounds);
 
-  auto elevation = vtkSmartPointer<vtkElevationFilter>::New();
+  vtkNew<vtkElevationFilter> elevation;
   elevation->SetInputConnection(transF->GetOutputPort());
   elevation->SetLowPoint(0, bounds[2], 0);
   elevation->SetHighPoint(0, bounds[3], 0);
 
-  auto bandedContours = vtkSmartPointer<vtkBandedPolyDataContourFilter>::New();
+  vtkNew<vtkBandedPolyDataContourFilter> bandedContours;
   bandedContours->SetInputConnection(elevation->GetOutputPort());
   bandedContours->SetScalarModeToValue();
   bandedContours->GenerateContourEdgesOn();
   bandedContours->GenerateValues(11, elevation->GetScalarRange());
 
   // Make a lookup table using a color series.
-  auto colorSeries = vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> colorSeries;
   colorSeries->SetColorScheme(vtkColorSeries::BREWER_DIVERGING_SPECTRAL_11);
 
-  auto lut = vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   colorSeries->BuildLookupTable(lut, vtkColorSeries::ORDINAL);
 
-  auto coneMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> coneMapper;
   coneMapper->SetInputConnection(bandedContours->GetOutputPort());
   coneMapper->SetScalarRange(elevation->GetScalarRange());
   coneMapper->SetLookupTable(lut);
 
-  auto coneActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> coneActor;
   coneActor->SetMapper(coneMapper);
 
   // Contouring
-  auto contourLineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> contourLineMapper;
   contourLineMapper->SetInputData(bandedContours->GetContourEdgesOutput());
   contourLineMapper->SetScalarRange(elevation->GetScalarRange());
   contourLineMapper->SetResolveCoincidentTopologyToPolygonOffset();
 
-  auto contourLineActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> contourLineActor;
   contourLineActor->SetMapper(contourLineMapper);
   contourLineActor->GetProperty()->SetColor(
       colors->GetColor3d("DimGray").GetData());
 
   // Set up the Orientation Marker Widget.
   auto prop_assembly = MakeAnnotatedCubeActor(colors);
-  auto om1 = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
+  vtkNew<vtkOrientationMarkerWidget> om1;
   om1->SetOrientationMarker(prop_assembly);
   om1->SetInteractor(iRen);
   om1->SetDefaultRenderer(ren);
@@ -130,7 +131,7 @@ int main(int, char*[])
   std::array<double, 3> scale{{1.0, 1.0, 1.0}};
   auto axes = MakeAxesActor(scale, xyzLabels);
 
-  auto om2 = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
+  vtkNew<vtkOrientationMarkerWidget> om2;
   om2->SetOrientationMarker(axes);
   // Position lower right in the viewport.
   om2->SetViewport(0.8, 0, 1.0, 0.2);
@@ -160,7 +161,7 @@ namespace {
 vtkSmartPointer<vtkPropAssembly> MakeAnnotatedCubeActor(vtkNamedColors* colors)
 {
   // Annotated Cube setup
-  auto annotated_cube = vtkSmartPointer<vtkAnnotatedCubeActor>::New();
+  vtkNew<vtkAnnotatedCubeActor> annotated_cube;
   annotated_cube->SetFaceTextScale(0.366667);
 
   // Anatomic labeling
@@ -195,10 +196,10 @@ vtkSmartPointer<vtkPropAssembly> MakeAnnotatedCubeActor(vtkNamedColors* colors)
   annotated_cube->GetCubeProperty()->SetOpacity(0);
 
   // Colored faces cube setup
-  auto cube_source = vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkCubeSource> cube_source;
   cube_source->Update();
 
-  auto face_colors = vtkSmartPointer<vtkUnsignedCharArray>::New();
+  vtkNew<vtkUnsignedCharArray> face_colors;
   face_colors->SetNumberOfComponents(3);
   auto face_x_plus = colors->GetColor3ub("Red").GetData();
   auto face_x_minus = colors->GetColor3ub("Green").GetData();
@@ -216,15 +217,15 @@ vtkSmartPointer<vtkPropAssembly> MakeAnnotatedCubeActor(vtkNamedColors* colors)
   cube_source->GetOutput()->GetCellData()->SetScalars(face_colors);
   cube_source->Update();
 
-  auto cube_mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cube_mapper;
   cube_mapper->SetInputData(cube_source->GetOutput());
   cube_mapper->Update();
 
-  auto cube_actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cube_actor;
   cube_actor->SetMapper(cube_mapper);
 
   // Assemble the colored cube and annotated cube texts into a composite prop.
-  auto prop_assembly = vtkSmartPointer<vtkPropAssembly>::New();
+  vtkNew<vtkPropAssembly> prop_assembly;
   prop_assembly->AddPart(annotated_cube);
   prop_assembly->AddPart(cube_actor);
   return prop_assembly;
@@ -234,7 +235,7 @@ vtkSmartPointer<vtkAxesActor>
 MakeAxesActor(std::array<double, 3>& scale,
               std::array<std::string, 3>& xyzLabels)
 {
-  auto axes = vtkSmartPointer<vtkAxesActor>::New();
+  vtkNew<vtkAxesActor> axes;
   axes->SetScale(scale[0], scale[1], scale[2]);
   axes->SetShaftTypeToCylinder();
   axes->SetXAxisLabelText(xyzLabels[0].c_str());

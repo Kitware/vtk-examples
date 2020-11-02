@@ -1,4 +1,5 @@
 #include <vtkActor.h>
+#include <vtkCamera.h>
 #include <vtkCubeSource.h>
 #include <vtkCutter.h>
 #include <vtkNamedColors.h>
@@ -9,43 +10,37 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 
-int main(int, char *[]) {
-    
+int main(int, char*[])
+{
+
   vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkCubeSource> cube =
-      vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkCubeSource> cube;
   cube->SetXLength(40);
   cube->SetYLength(30);
   cube->SetZLength(20);
-  vtkSmartPointer<vtkPolyDataMapper> cubeMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cubeMapper;
   cubeMapper->SetInputConnection(cube->GetOutputPort());
 
   // Create a plane to cut,here it cuts in the XZ direction (xz
   // normal=(1,0,0);XY =(0,0,1),YZ =(0,1,0)
-  vtkSmartPointer<vtkPlane> plane = 
-      vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane;
   plane->SetOrigin(10, 0, 0);
   plane->SetNormal(1, 0, 0);
 
   // Create cutter
-  vtkSmartPointer<vtkCutter> cutter = 
-      vtkSmartPointer<vtkCutter>::New();
+  vtkNew<vtkCutter> cutter;
   cutter->SetCutFunction(plane);
   cutter->SetInputConnection(cube->GetOutputPort());
   cutter->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> cutterMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cutterMapper;
   cutterMapper->SetInputConnection(cutter->GetOutputPort());
   cutterMapper->SetResolveCoincidentTopologyToPolygonOffset();
 
   // Create plane actor
-  vtkSmartPointer<vtkActor> planeActor = 
-      vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> planeActor;
   planeActor->GetProperty()->SetColor(colors->GetColor3d("Yellow").GetData());
   planeActor->GetProperty()->SetLineWidth(2);
   planeActor->GetProperty()->SetAmbient(1.0);
@@ -53,30 +48,36 @@ int main(int, char *[]) {
   planeActor->SetMapper(cutterMapper);
 
   // Create cube actor
-  vtkSmartPointer<vtkActor> cubeActor = 
-      vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cubeActor;
   cubeActor->GetProperty()->SetColor(
       colors->GetColor3d("Aquamarine").GetData());
   cubeActor->GetProperty()->SetOpacity(0.5);
   cubeActor->SetMapper(cubeMapper);
 
   // Create renderers and add actors of plane and cube
-  vtkSmartPointer<vtkRenderer> renderer = 
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(planeActor); // display the rectangle resulting from the
                                   // cut
-  renderer->AddActor(cubeActor); // display the cube
+  renderer->AddActor(cubeActor);  // display the cube
 
   // Add renderer to renderwindow and render
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(600, 600);
+  renderWindow->SetWindowName("Cutter");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
   renderer->SetBackground(colors->GetColor3d("Silver").GetData());
+  renderWindow->Render();
+
+  auto camera = renderer->GetActiveCamera();
+  camera->SetPosition(-37.2611, -86.2155, 44.841);
+  camera->SetFocalPoint(0.569422, -1.65124, -2.49482);
+  camera->SetViewUp(0.160129, 0.42663, 0.890138);
+  camera->SetDistance(104.033);
+  camera->SetClippingRange(55.2019, 165.753);
+
   renderWindow->Render();
 
   interactor->Start();

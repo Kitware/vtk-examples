@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
   auto rake1 =
     vtkSmartPointer<vtkActor>::New();
   rake1->SetMapper(rakeMapper);
-  rake1->GetProperty()->SetColor(0.0, 0.0, 0.0);
+  rake1->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
   rake1->GetProperty()->SetLineWidth(5);
 
   auto streamers =
@@ -133,8 +133,8 @@ int main(int argc, char* argv[])
   streamers->SetInputConnection(reader->GetOutputPort());
   streamers->SetSourceConnection(line1->GetOutputPort());
   streamers->SetMaximumPropagation(maxTime);
-  streamers->SetInitialIntegrationStep(.2);
-  streamers->SetMinimumIntegrationStep(.01);
+  streamers->SetInitialIntegrationStep(0.2);
+  streamers->SetMinimumIntegrationStep(0.01);
   streamers->SetIntegratorType(2);
   streamers->Update();
 
@@ -152,7 +152,7 @@ int main(int argc, char* argv[])
   aren->AddActor(finActor);
   aren->AddActor(rake1);
   aren->AddActor(lines);
-  aren->SetBackground(0.5, 0.5, 0.5);
+  aren->SetBackground(colors->GetColor3d("Gray").GetData());
 
   aren->ResetCamera();
   aren->GetActiveCamera()->Elevation(30.0);
@@ -161,6 +161,7 @@ int main(int argc, char* argv[])
   aren->ResetCameraClippingRange();
 
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("BluntStreamlines");
   renWin->Render();
 
   // interact with data

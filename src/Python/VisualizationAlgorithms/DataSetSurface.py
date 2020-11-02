@@ -48,11 +48,11 @@ def main():
     aBeamActor.SetMapper(aBeamMapper)
     aBeamActor.AddPosition(0, 0, 0)
     aBeamActor.GetProperty().SetColor(
-        colors.GetColor3d("Yellow"))
+        colors.GetColor3d('Yellow'))
     aBeamActor.GetProperty().SetOpacity(0.60)
     aBeamActor.GetProperty().EdgeVisibilityOn()
     aBeamActor.GetProperty().SetEdgeColor(
-        colors.GetColor3d("Black"))
+        colors.GetColor3d('Black'))
     aBeamActor.GetProperty().SetLineWidth(1.5)
 
     # Create a plane to cut, here it cuts in the XZ direction
@@ -72,15 +72,16 @@ def main():
     # Create plane actor
     planeActor = vtk.vtkActor()
     planeActor.GetProperty().SetColor(
-        colors.GetColor3d("Red"))
+        colors.GetColor3d('Red'))
     planeActor.GetProperty().SetLineWidth(2)
     planeActor.SetMapper(cutterMapper)
 
     # Create a renderer, render window, and interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetWindowName("Dataset Surface")
+    renderWindow.SetWindowName('DatasetSurface')
     renderWindow.AddRenderer(renderer)
+
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
@@ -88,10 +89,10 @@ def main():
     renderer.AddActor(aBeamActor)
     renderer.AddActor(planeActor)
     renderer.SetBackground(
-        colors.GetColor3d("Seashell"))
+        colors.GetColor3d('Seashell'))
 
     renderer.ResetCamera()
-    renderer.GetActiveCamera().Azimuth(30)
+    renderer.GetActiveCamera().Azimuth(-25)
     renderer.GetActiveCamera().Elevation(30)
 
     # Render and interact

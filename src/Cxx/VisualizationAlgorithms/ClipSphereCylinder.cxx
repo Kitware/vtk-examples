@@ -4,46 +4,42 @@
 #include <vtkCylinder.h>
 #include <vtkImplicitBoolean.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlaneSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSphere.h>
 #include <vtkTransform.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
-// Demonstrate the use of clipping on polygonal data
-//
-  
-// create pipeline
-//
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  // Demonstrate the use of clipping on polygonal data
+  //
 
-  vtkSmartPointer<vtkPlaneSource> plane =
-    vtkSmartPointer<vtkPlaneSource>::New();
+  // create pipeline
+  //
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkPlaneSource> plane;
   plane->SetXResolution(25);
   plane->SetYResolution(25);
   plane->SetOrigin(-1, -1, 0);
   plane->SetPoint1(1, -1, 0);
   plane->SetPoint2(-1, 1, 0);
 
-  vtkSmartPointer<vtkTransform> transformSphere =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transformSphere;
   transformSphere->Identity();
   transformSphere->Translate(.4, -.4, 0);
   transformSphere->Inverse();
 
-  vtkSmartPointer<vtkSphere> sphere =
-    vtkSmartPointer<vtkSphere>::New();
+  vtkNew<vtkSphere> sphere;
   sphere->SetTransform(transformSphere);
   sphere->SetRadius(.5);
 
-  vtkSmartPointer<vtkTransform> transformCylinder =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transformCylinder;
   transformCylinder->Identity();
   transformCylinder->Translate(-.4, .4, 0);
   transformCylinder->RotateZ(30);
@@ -51,60 +47,52 @@ int main (int, char *[])
   transformCylinder->RotateX(90);
   transformCylinder->Inverse();
 
-  vtkSmartPointer<vtkCylinder> cylinder =
-    vtkSmartPointer<vtkCylinder>::New();
+  vtkNew<vtkCylinder> cylinder;
   cylinder->SetTransform(transformCylinder);
   cylinder->SetRadius(.3);
 
-  vtkSmartPointer<vtkImplicitBoolean> boolean =
-    vtkSmartPointer<vtkImplicitBoolean>::New();
+  vtkNew<vtkImplicitBoolean> boolean;
   boolean->AddFunction(cylinder);
   boolean->AddFunction(sphere);
 
-  vtkSmartPointer<vtkClipPolyData> clipper =
-    vtkSmartPointer<vtkClipPolyData>::New();
+  vtkNew<vtkClipPolyData> clipper;
   clipper->SetInputConnection(plane->GetOutputPort());
   clipper->SetClipFunction(boolean);
   clipper->GenerateClippedOutputOn();
   clipper->GenerateClipScalarsOn();
   clipper->SetValue(0);
 
-  vtkSmartPointer<vtkPolyDataMapper> clipMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> clipMapper;
   clipMapper->SetInputConnection(clipper->GetOutputPort());
   clipMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> clipActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> clipActor;
   clipActor->SetMapper(clipMapper);
-  clipActor->GetProperty()->SetDiffuseColor(colors->GetColor3d("Black").GetData());
+  clipActor->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("MidnightBlue").GetData());
   clipActor->GetProperty()->SetRepresentationToWireframe();
 
-  vtkSmartPointer<vtkPolyDataMapper> clipInsideMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> clipInsideMapper;
   clipInsideMapper->SetInputData(clipper->GetClippedOutput());
   clipInsideMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> clipInsideActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> clipInsideActor;
   clipInsideActor->SetMapper(clipInsideMapper);
-  clipInsideActor->GetProperty()->SetDiffuseColor(colors->GetColor3d("Dim_Gray").GetData());
+  clipInsideActor->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("LightBlue").GetData());
 
-// Create graphics stuff
-//
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
+  // Create graphics stuff
+  //
+  vtkNew<vtkRenderer> ren1;
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-// Add the actors to the renderer, set the background and size
-//
+  // Add the actors to the renderer, set the background and size
+  //
   ren1->AddActor(clipActor);
 
   ren1->AddActor(clipInsideActor);
@@ -114,9 +102,10 @@ int main (int, char *[])
   ren1->ResetCameraClippingRange();
 
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("ClipSphereCylinder");
 
-// render the image
-//
+  // render the image
+  //
   renWin->Render();
   iren->Start();
 
