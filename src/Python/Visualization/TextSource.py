@@ -8,6 +8,7 @@ def main():
     textSource.SetText("Hello")
     textSource.SetForegroundColor(colors.GetColor3d('DarkSlateGray'))
     textSource.SetBackgroundColor(colors.GetColor3d('NavajoWhite'))
+    # Turn off if you don't want the background drawn with the text.
     textSource.BackingOn()
     textSource.Update()
 
@@ -22,6 +23,8 @@ def main():
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
+    renderWindow.SetWindowName('TextSource')
+
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 

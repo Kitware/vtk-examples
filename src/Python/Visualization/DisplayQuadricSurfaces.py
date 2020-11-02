@@ -108,13 +108,8 @@ def PlotFunction(quadric, value):
     sample.SetSampleDimensions(50, 50, 50)
     sample.SetImplicitFunction(quadric)
     # double xmin = 0, xmax=1, ymin=0, ymax=1, zmin=0, zmax=1
-    xmin = -10
-    xmax = 11
-    ymin = -10
-    ymax = 10
-    zmin = -10
-    zmax = 10
-    sample.SetModelBounds(xmin, xmax, ymin, ymax, zmin, zmax)
+    bounds = [-10, 11, -10, 10, -10, 10]
+    sample.SetModelBounds(bounds)
 
     # create the 0 isosurface
     contours = vtk.vtkContourFilter()
@@ -149,6 +144,8 @@ def PlotFunction(quadric, value):
     ren1 = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren1)
+    renWin.SetWindowName('DisplayQuadricSurfaces')
+
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
@@ -159,6 +156,9 @@ def PlotFunction(quadric, value):
 
     # render and interact
     renWin.Render()
+    ren1.GetActiveCamera().Azimuth(-55)
+    ren1.GetActiveCamera().Elevation(15)
+
     iren.Start()
 
 

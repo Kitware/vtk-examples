@@ -1,36 +1,34 @@
-#include <vtkSmartPointer.h>
-
-#include <vtkStreamTracer.h>
-
-#include <vtkNamedColors.h>
 #include <vtkActor.h>
-#include <vtkMultiBlockPLOT3DReader.h>
+#include <vtkCamera.h>
+#include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkMultiBlockDataSet.h>
+#include <vtkMultiBlockPLOT3DReader.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlaneSource.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkStreamTracer.h>
 #include <vtkStructuredGridOutlineFilter.h>
-#include <vtkProperty.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  if(argc < 3)
+  if (argc < 3)
   {
-    std::cerr << "Required arguments: xyzFile qFile" << std::endl;
+    std::cerr << "Required arguments: xyzFile qFile e.g. combxyz.bin combq.bin"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
-  vtkSmartPointer<vtkNamedColors> namedColors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> namedColors;
 
   std::string xyzFile = argv[1]; // "combxyz.bin";
-  std::string qFile = argv[2]; // "combq.bin";
+  std::string qFile = argv[2];   // "combq.bin";
 
-  vtkSmartPointer<vtkMultiBlockPLOT3DReader> pl3d =
-    vtkSmartPointer<vtkMultiBlockPLOT3DReader>::New();
+  vtkNew<vtkMultiBlockPLOT3DReader> pl3d;
   pl3d->SetXYZFileName(xyzFile.c_str());
   pl3d->SetQFileName(qFile.c_str());
   pl3d->SetScalarFunctionNumber(100);
@@ -38,17 +36,15 @@ int main(int argc, char *argv[])
   pl3d->Update();
 
   // Source of the streamlines
-  vtkSmartPointer<vtkPlaneSource> seeds = 
-    vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> seeds;
   seeds->SetXResolution(4);
   seeds->SetYResolution(4);
-  seeds->SetOrigin(2,-2,26);
-  seeds->SetPoint1(2,2,26);
-  seeds->SetPoint2(2,-2,32);
-  
+  seeds->SetOrigin(2, -2, 26);
+  seeds->SetPoint1(2, 2, 26);
+  seeds->SetPoint2(2, -2, 32);
+
   // Streamline itself
-  vtkSmartPointer<vtkStreamTracer> streamLine = 
-    vtkSmartPointer<vtkStreamTracer>::New();
+  vtkNew<vtkStreamTracer> streamLine;
   pl3d->Update();
   streamLine->SetInputData(pl3d->GetOutput()->GetBlock(0));
   streamLine->SetSourceConnection(seeds->GetOutputPort());
@@ -56,56 +52,53 @@ int main(int argc, char *argv[])
   streamLine->SetInitialIntegrationStep(0.1);
   streamLine->SetIntegrationDirectionToBoth();
 
-  //streamLine->SetStartPosition(2,-2,30);
+  // streamLine->SetStartPosition(2,-2,30);
   // as alternative to the SetSource(), which can handle multiple
   // streamlines, you can set a SINGLE streamline from
   // SetStartPosition()
 
-  vtkSmartPointer<vtkPolyDataMapper> streamLineMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> streamLineMapper;
   streamLineMapper->SetInputConnection(streamLine->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> streamLineActor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> streamLineActor;
   streamLineActor->SetMapper(streamLineMapper);
   streamLineActor->VisibilityOn();
 
   // Outline-Filter for the grid
-  vtkSmartPointer<vtkStructuredGridOutlineFilter> outline = 
-    vtkSmartPointer<vtkStructuredGridOutlineFilter>::New();
+  vtkNew<vtkStructuredGridOutlineFilter> outline;
   outline->SetInputData(pl3d->GetOutput()->GetBlock(0));
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
-  outlineActor->GetProperty()->SetColor(1, 1, 1);
+  outlineActor->GetProperty()->SetColor(
+      namedColors->GetColor3d("White").GetData());
 
   // Create the RenderWindow, Renderer and Actors
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("StreamLines");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = 
-    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+  vtkNew<vtkInteractorStyleTrackballCamera> style;
   interactor->SetInteractorStyle(style);
 
   renderer->AddActor(streamLineActor);
   renderer->AddActor(outlineActor);
 
   // Add the actors to the renderer, set the background and size
-  renderer->SetBackground(namedColors->GetColor3d("Cadet").GetData());
+  renderer->SetBackground(namedColors->GetColor3d("MidnightBlue").GetData());
   renderWindow->SetSize(300, 300);
   interactor->Initialize();
+  renderWindow->Render();
+  renderer->GetActiveCamera()->SetPosition(-32.8, -12.3, 46.3);
+  renderer->GetActiveCamera()->SetFocalPoint(8.3, 0.03, 29.8);
+  renderer->GetActiveCamera()->SetViewUp(0.2, 0.5, 0.9);
   renderWindow->Render();
 
   interactor->Start();

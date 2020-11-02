@@ -1,24 +1,25 @@
-#include <vtkSmartPointer.h>
-#include <vtkSampleFunction.h>
-#include <vtkSphereSource.h>
+#include <vtkActor.h>
 #include <vtkCone.h>
+#include <vtkDataSetMapper.h>
 #include <vtkGlyph3D.h>
-#include <vtkProbeFilter.h>
+#include <vtkImageData.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
 #include <vtkPointSource.h>
+#include <vtkProbeFilter.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSampleFunction.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
 #include <vtkThreshold.h>
 #include <vtkThresholdPoints.h>
-#include <vtkImageData.h>
-#include <vtkPointData.h>
-
-#include <vtkDataSetMapper.h>
-#include <vtkProperty.h>
-#include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkUnsignedCharArray.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   int resolution = 50;
   if (argc > 1)
@@ -26,77 +27,68 @@ int main(int argc, char *argv[])
     resolution = atoi(argv[1]);
   }
 
+  vtkNew<vtkNamedColors> colors;
+
   // Create a sampled cone
-  vtkSmartPointer<vtkCone> implicitCone =
-    vtkSmartPointer<vtkCone>::New();
+  vtkNew<vtkCone> implicitCone;
   implicitCone->SetAngle(30.0);
 
   double radius = 1.0;
-  vtkSmartPointer<vtkSampleFunction> sampledCone =
-    vtkSmartPointer<vtkSampleFunction>::New();
+  vtkNew<vtkSampleFunction> sampledCone;
   sampledCone->SetSampleDimensions(resolution, resolution, resolution);
   double xMin = -radius * 2.0;
-  double xMax =  radius * 2.0;
-  sampledCone->SetModelBounds(xMin, xMax,
-                              xMin, xMax,
-                              xMin, xMax);
+  double xMax = radius * 2.0;
+  sampledCone->SetModelBounds(xMin, xMax, xMin, xMax, xMin, xMax);
   sampledCone->SetImplicitFunction(implicitCone);
 
-  vtkSmartPointer<vtkThreshold> thresholdCone =
-    vtkSmartPointer<vtkThreshold>:: New();
+  vtkNew<vtkThreshold> thresholdCone;
   thresholdCone->SetInputConnection(sampledCone->GetOutputPort());
   thresholdCone->ThresholdByLower(0);
 
-  vtkSmartPointer<vtkPointSource> randomPoints =
-    vtkSmartPointer<vtkPointSource>::New();
-  randomPoints->SetCenter (0.0, 0.0, 0.0);
+  vtkNew<vtkPointSource> randomPoints;
+  randomPoints->SetCenter(0.0, 0.0, 0.0);
   randomPoints->SetNumberOfPoints(10000);
   randomPoints->SetDistributionToUniform();
   randomPoints->SetRadius(xMax);
 
   // Probe the cone dataset with random points
-  vtkSmartPointer<vtkProbeFilter> randomProbe =
-    vtkSmartPointer<vtkProbeFilter>::New();
+  vtkNew<vtkProbeFilter> randomProbe;
   randomProbe->SetInputConnection(0, randomPoints->GetOutputPort());
   randomProbe->SetInputConnection(1, thresholdCone->GetOutputPort());
   randomProbe->Update();
-  randomProbe->GetOutput()->GetPointData()->SetActiveScalars("vtkValidPointMask");
+  randomProbe->GetOutput()->GetPointData()->SetActiveScalars(
+      "vtkValidPointMask");
 
-  vtkSmartPointer<vtkThresholdPoints> selectPoints =
-    vtkSmartPointer<vtkThresholdPoints>::New();
+  vtkNew<vtkThresholdPoints> selectPoints;
   selectPoints->SetInputConnection(randomProbe->GetOutputPort());
   selectPoints->ThresholdByUpper(1.0);
 
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphere->SetRadius(.05);
+  vtkNew<vtkSphereSource> sphere;
+  sphere->SetRadius(0.025);
 
-  vtkSmartPointer<vtkGlyph3D> glyph =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkNew<vtkGlyph3D> glyph;
   glyph->SetSourceConnection(sphere->GetOutputPort());
   glyph->SetInputConnection(selectPoints->GetOutputPort());
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkDataSetMapper> mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(glyph->GetOutputPort());
   mapper->ScalarVisibilityOff();
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // Visualize
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("RandomProbe");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(actor);
-  renderer->SetBackground(.1, .5, .8);
+  renderer->SetBackground(colors->GetColor3d("RoyalBlue").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();

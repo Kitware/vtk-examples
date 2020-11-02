@@ -5,7 +5,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     textSource = vtk.vtkVectorText()
-    textSource.SetText("Hello")
+    textSource.SetText('Hello')
     textSource.Update()
 
     # Create a mapper and actor
@@ -20,6 +20,8 @@ def main():
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
+    renderWindow.SetWindowName('VectorText')
+
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 

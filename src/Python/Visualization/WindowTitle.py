@@ -13,12 +13,12 @@ def main():
     mapper.SetInputConnection(sphereSource.GetOutputPort())
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(colors.GetColor3d('Bisque'))
+    actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     # Setup a renderer, render window, and interactor
     renderer = vtk.vtkRenderer()
     renderWindow = vtk.vtkRenderWindow()
-    # renderWindow.SetWindowName("Test")
+    # renderWindow.SetWindowName('Test')
 
     renderWindow.AddRenderer(renderer)
     renderWindowInteractor = vtk.vtkRenderWindowInteractor()
@@ -26,12 +26,12 @@ def main():
 
     # Add the actor to the scene
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d('Navy'))
+    renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
     # Render and interact
     renderWindow.Render()
     # *** SetWindowName after renderWindow.Render() is called ***
-    renderWindow.SetWindowName("Test")
+    renderWindow.SetWindowName('WindowTitle')
     renderWindowInteractor.Start()
 
 

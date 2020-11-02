@@ -5,6 +5,7 @@
 #include <vtkImageSlice.h>
 #include <vtkImageSliceMapper.h>
 #include <vtkInteractorStyleImage.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
@@ -12,14 +13,19 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkXMLPolyDataWriter.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
+
 
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create an image
-  auto image =
-    vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> image;
 
   // Specify the size of the image data
   image->SetDimensions(50, 50, 1);
@@ -42,6 +48,7 @@ int main(int, char*[])
     }
   }
 
+  //Set two vectors
   {
     auto pixel = static_cast<float*>(image->GetScalarPointer(20, 20, 0));
     pixel[0] = -10.0;
@@ -62,12 +69,10 @@ int main(int, char*[])
   // image->GetPointData()->SetActiveVectors("ImageScalars");
 
   // Setup the arrows
-  auto arrowSource =
-    vtkSmartPointer<vtkArrowSource>::New();
+  vtkNew<vtkArrowSource> arrowSource;
   arrowSource->Update();
 
-  auto glyphFilter =
-    vtkSmartPointer<vtkGlyph2D>::New();
+  vtkNew<vtkGlyph2D> glyphFilter;
   glyphFilter->SetSourceConnection(arrowSource->GetOutputPort());
   glyphFilter->OrientOn();
   glyphFilter->SetVectorModeToUseVector();
@@ -75,38 +80,32 @@ int main(int, char*[])
   glyphFilter->Update();
 
   // Create actors
-  auto imageMapper =
-    vtkSmartPointer<vtkImageSliceMapper>::New();
+  vtkNew<vtkImageSliceMapper> imageMapper;
   imageMapper->SetInputData(image);
 
-  auto imageSlice =
-    vtkSmartPointer<vtkImageSlice>::New();
+  vtkNew<vtkImageSlice> imageSlice;
   imageSlice->SetMapper(imageMapper);
 
-  auto vectorMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> vectorMapper;
   vectorMapper->SetInputConnection(glyphFilter->GetOutputPort());
-  auto vectorActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> vectorActor;
   vectorActor->SetMapper(vectorMapper);
 
   // Setup renderer
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddViewProp(imageSlice);
   renderer->AddViewProp(vectorActor);
   renderer->ResetCamera();
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
 
   // Setup render window
-  auto renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("VectorField");
 
   // Setup render window interactor
-  auto renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  // auto style =
-  //  vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  // vtkNew<vtkInteractorStyleImage> style;
   // renderWindowInteractor->SetInteractorStyle(style);
 
   // Render and start interaction

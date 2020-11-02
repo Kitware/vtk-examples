@@ -6,6 +6,7 @@
 #include <vtkMarchingCubes.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPolyDataNormals.h>
 #include <vtkProperty.h>
@@ -15,52 +16,46 @@
 #include <vtkStripper.h>
 #include <vtkWindowedSincPolyDataFilter.h>
 
+#include <iomanip>
+#include <iostream>
 #include <map>
 
-namespace
-{
-void CreateFrogLut(vtkSmartPointer<vtkLookupTable> &colorLut);
-void CreateFrogActor(std::string fileName,
-                     int tissue,
-                     vtkSmartPointer<vtkActor> &actor);
-void CreateTissueMap(std::map<std::string, int> &tissueMap);
-}
-int main (int argc, char *argv[])
+namespace {
+void CreateFrogLut(vtkLookupTable* colorLut);
+void CreateFrogActor(std::string fileName, int tissue, vtkActor* actor);
+void CreateTissueMap(std::map<std::string, int>& tissueMap);
+} // namespace
+
+int main(int argc, char* argv[])
 {
   std::map<std::string, int> tissueMap;
   CreateTissueMap(tissueMap);
 
-  vtkSmartPointer<vtkLookupTable> colorLut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> colorLut;
   colorLut->SetNumberOfColors(17);
   colorLut->SetTableRange(0, 16);
   colorLut->Build();
 
   CreateFrogLut(colorLut);
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   // Setup render window, renderer, and interactor
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   for (int i = 2; i < argc; ++i)
   {
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
-  actor->GetProperty()->SetDiffuseColor(
-    colorLut->GetTableValue(tissueMap[argv[i]]));
-  actor->GetProperty()->SetSpecular(.5);
-  actor->GetProperty()->SetSpecularPower(10);
-  CreateFrogActor(argv[1], tissueMap[argv[i]], actor);
-  renderer->AddActor(actor);
-  std::cout << "Tissue: " << argv[i]
-            << ", Label: " << tissueMap[argv[i]] << std::endl;
+    vtkNew<vtkActor> actor;
+    actor->GetProperty()->SetDiffuseColor(
+        colorLut->GetTableValue(tissueMap[argv[i]]));
+    actor->GetProperty()->SetSpecular(.5);
+    actor->GetProperty()->SetSpecularPower(10);
+    CreateFrogActor(argv[1], tissueMap[argv[i]], actor);
+    renderer->AddActor(actor);
+    std::cout << "Tissue: " << std::setw(9) << argv[i] << ", Label: " << setw(2)
+              << tissueMap[argv[i]] << std::endl;
   }
 
   renderer->GetActiveCamera()->SetViewUp(0, 0, -1);
@@ -74,6 +69,7 @@ int main (int argc, char *argv[])
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("ViewFrog");
   renderWindow->Render();
 
   renderWindowInteractor->Start();
@@ -81,9 +77,8 @@ int main (int argc, char *argv[])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-void CreateTissueMap(std::map<std::string, int> &tissueMap)
+namespace {
+void CreateTissueMap(std::map<std::string, int>& tissueMap)
 {
   tissueMap["blood"] = 1;
   tissueMap["brain"] = 2;
@@ -102,17 +97,14 @@ void CreateTissueMap(std::map<std::string, int> &tissueMap)
   tissueMap["stomach"] = 15;
   return;
 }
-void CreateFrogActor(std::string fileName,
-                     int tissue,
-                     vtkSmartPointer<vtkActor> &actor)
+
+void CreateFrogActor(std::string fileName, int tissue, vtkActor* actor)
 {
-  vtkSmartPointer<vtkMetaImageReader> reader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
+  vtkNew<vtkMetaImageReader> reader;
   reader->SetFileName(fileName.c_str());
   reader->Update();
 
-  vtkSmartPointer<vtkImageThreshold> selectTissue =
-    vtkSmartPointer<vtkImageThreshold>::New();
+  vtkNew<vtkImageThreshold> selectTissue;
   selectTissue->ThresholdBetween(tissue, tissue);
   selectTissue->SetInValue(255);
   selectTissue->SetOutValue(0);
@@ -120,19 +112,15 @@ void CreateFrogActor(std::string fileName,
 
   int gaussianRadius = 1;
   double gaussianStandardDeviation = 2.0;
-  vtkSmartPointer<vtkImageGaussianSmooth> gaussian =
-    vtkSmartPointer<vtkImageGaussianSmooth>::New();
-  gaussian->SetStandardDeviations (gaussianStandardDeviation,
-                                   gaussianStandardDeviation,
-                                   gaussianStandardDeviation);
-  gaussian->SetRadiusFactors (gaussianRadius,
-                              gaussianRadius,
-                              gaussianRadius);
+  vtkNew<vtkImageGaussianSmooth> gaussian;
+  gaussian->SetStandardDeviations(gaussianStandardDeviation,
+                                  gaussianStandardDeviation,
+                                  gaussianStandardDeviation);
+  gaussian->SetRadiusFactors(gaussianRadius, gaussianRadius, gaussianRadius);
   gaussian->SetInputConnection(selectTissue->GetOutputPort());
 
   double isoValue = 127.5;
-  vtkSmartPointer<vtkMarchingCubes> mcubes =
-    vtkSmartPointer<vtkMarchingCubes>::New();
+  vtkNew<vtkMarchingCubes> mcubes;
   mcubes->SetInputConnection(gaussian->GetOutputPort());
   mcubes->ComputeScalarsOff();
   mcubes->ComputeGradientsOff();
@@ -142,8 +130,7 @@ void CreateFrogActor(std::string fileName,
   int smoothingIterations = 5;
   double passBand = 0.001;
   double featureAngle = 60.0;
-  vtkSmartPointer<vtkWindowedSincPolyDataFilter> smoother =
-    vtkSmartPointer<vtkWindowedSincPolyDataFilter>::New();
+  vtkNew<vtkWindowedSincPolyDataFilter> smoother;
   smoother->SetInputConnection(mcubes->GetOutputPort());
   smoother->SetNumberOfIterations(smoothingIterations);
   smoother->BoundarySmoothingOff();
@@ -154,58 +141,54 @@ void CreateFrogActor(std::string fileName,
   smoother->NormalizeCoordinatesOn();
   smoother->Update();
 
-  vtkSmartPointer<vtkPolyDataNormals> normals =
-    vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> normals;
   normals->SetInputConnection(smoother->GetOutputPort());
   normals->SetFeatureAngle(featureAngle);
 
-  vtkSmartPointer<vtkStripper> stripper =
-    vtkSmartPointer<vtkStripper>::New();
+  vtkNew<vtkStripper> stripper;
   stripper->SetInputConnection(normals->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(stripper->GetOutputPort());
 
   actor->SetMapper(mapper);
   return;
 }
 
-void CreateFrogLut(vtkSmartPointer<vtkLookupTable> &colorLut)
+void CreateFrogLut(vtkLookupTable* colorLut)
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-  colorLut->SetTableValue(0,
-                          0, 0, 0, 0);
+  vtkNew<vtkNamedColors> colors;
+  colorLut->SetTableValue(0, 0, 0, 0, 0);
   colorLut->SetTableValue(1,
-                          colors->GetColor4d("salmon").GetData()); //blood
+                          colors->GetColor4d("salmon").GetData()); // blood
   colorLut->SetTableValue(2,
-                          colors->GetColor4d("beige").GetData()); //brain
+                          colors->GetColor4d("beige").GetData()); // brain
   colorLut->SetTableValue(3,
-                          colors->GetColor4d("orange").GetData()); //duodenum
-  colorLut->SetTableValue(4,
-                          colors->GetColor4d("misty_rose").GetData()); //eye_retina
+                          colors->GetColor4d("orange").GetData()); // duodenum
+  colorLut->SetTableValue(
+      4,
+      colors->GetColor4d("misty_rose").GetData()); // eye_retina
   colorLut->SetTableValue(5,
-                          colors->GetColor4d("white").GetData()); //eye_white
+                          colors->GetColor4d("white").GetData()); // eye_white
   colorLut->SetTableValue(6,
-                          colors->GetColor4d("tomato").GetData()); //heart
+                          colors->GetColor4d("tomato").GetData()); // heart
   colorLut->SetTableValue(7,
-                          colors->GetColor4d("raspberry").GetData()); //ileum
+                          colors->GetColor4d("raspberry").GetData()); // ileum
   colorLut->SetTableValue(8,
-                          colors->GetColor4d("banana").GetData()); //kidney
+                          colors->GetColor4d("banana").GetData()); // kidney
   colorLut->SetTableValue(9,
-                          colors->GetColor4d("peru").GetData()); //l_intestine
+                          colors->GetColor4d("peru").GetData()); // l_intestine
   colorLut->SetTableValue(10,
-                          colors->GetColor4d("pink").GetData()); //liver
+                          colors->GetColor4d("pink").GetData()); // liver
   colorLut->SetTableValue(11,
-                          colors->GetColor4d("powder_blue").GetData()); //lung
+                          colors->GetColor4d("powder_blue").GetData()); // lung
   colorLut->SetTableValue(12,
-                          colors->GetColor4d("carrot").GetData()); //nerve
+                          colors->GetColor4d("carrot").GetData()); // nerve
   colorLut->SetTableValue(13,
-                          colors->GetColor4d("wheat").GetData()); //skeleton
+                          colors->GetColor4d("wheat").GetData()); // skeleton
   colorLut->SetTableValue(14,
-                          colors->GetColor4d("violet").GetData()); //spleen
+                          colors->GetColor4d("violet").GetData()); // spleen
   colorLut->SetTableValue(15,
-                          colors->GetColor4d("plum").GetData()); //stomach
+                          colors->GetColor4d("plum").GetData()); // stomach
 }
-}
+} // namespace

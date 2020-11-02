@@ -1,49 +1,52 @@
-#include <vtkSmartPointer.h>
-#include <vtkShepardMethod.h>
-#include <vtkContourFilter.h>
-#include <vtkProbeFilter.h>
-#include <vtkSphereSource.h>
-
-#include <vtkNamedColors.h>
-#include <vtkImageData.h>
-#include <vtkPointData.h>
-
+#include <vtkActor.h>
 #include <vtkBYUReader.h>
+#include <vtkCamera.h>
+#include <vtkContourFilter.h>
+#include <vtkImageData.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOBJReader.h>
 #include <vtkPLYReader.h>
-#include <vtkPolyDataReader.h>
-#include <vtkSTLReader.h>
-#include <vtkXMLPolyDataReader.h>
-#include <vtksys/SystemTools.hxx>
-
-#include <vtkActor.h>
+#include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkPolyDataReader.h>
+#include <vtkProbeFilter.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkCamera.h>
+#include <vtkSTLReader.h>
+#include <vtkShepardMethod.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
+#include <vtkXMLPolyDataReader.h>
+#include <vtksys/SystemTools.hxx>
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
 }
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  // Parse input arguments
+  if (argc != 2)
+  {
+    std::cout
+        << "Required parameters: Filename  resolution e.g. cowHead.vtp 100"
+        << std::endl;
+    return EXIT_FAILURE;
+  }
 
-  vtkSmartPointer<vtkPolyData> polyData =
-    ReadPolyData(argc > 1 ? argv[1] : "");
+  vtkNew<vtkNamedColors> colors;
+
+  auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
   unsigned int resolution = 100;
   if (argc >= 3)
   {
     resolution = std::atoi(argv[2]);
   }
-  vtkSmartPointer<vtkShepardMethod> interpolator =
-    vtkSmartPointer<vtkShepardMethod>::New();
+  vtkNew<vtkShepardMethod> interpolator;
   interpolator->SetInputData(polyData);
   interpolator->SetModelBounds(polyData->GetBounds());
   interpolator->SetSampleDimensions(resolution, resolution, resolution);
@@ -51,52 +54,45 @@ int main (int argc, char *argv[])
   interpolator->Update();
   std::cout << "Scalar Range: "
             << interpolator->GetOutput()->GetScalarRange()[0] << ", "
-            << interpolator->GetOutput()->GetScalarRange()[1]
-            << std::endl;
-    
-  vtkSmartPointer<vtkProbeFilter> probe =
-    vtkSmartPointer<vtkProbeFilter>::New();
+            << interpolator->GetOutput()->GetScalarRange()[1] << std::endl;
+
+  vtkNew<vtkProbeFilter> probe;
   probe->SetInputData(0, polyData);
   probe->SetInputConnection(1, interpolator->GetOutputPort());
 
-  vtkSmartPointer<vtkContourFilter> interpolatedContour =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> interpolatedContour;
   interpolatedContour->SetInputConnection(probe->GetOutputPort());
   interpolatedContour->SetValue(0, 0.0);
 
-  vtkSmartPointer<vtkContourFilter> originalContour =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> originalContour;
   originalContour->SetInputData(polyData);
   originalContour->SetValue(0, 0.0);
 
-  vtkSmartPointer<vtkPolyDataMapper> interpolatedMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> interpolatedMapper;
   interpolatedMapper->SetInputConnection(interpolatedContour->GetOutputPort());
   interpolatedMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> interpolatedActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> interpolatedActor;
   interpolatedActor->SetMapper(interpolatedMapper);
-  interpolatedActor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
+  interpolatedActor->GetProperty()->SetColor(
+      colors->GetColor3d("Banana").GetData());
   interpolatedActor->GetProperty()->SetLineWidth(4.0);
 
-  vtkSmartPointer<vtkPolyDataMapper> originalMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> originalMapper;
   originalMapper->SetInputConnection(originalContour->GetOutputPort());
   originalMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> originalActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> originalActor;
   originalActor->SetMapper(originalMapper);
-  originalActor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
+  originalActor->GetProperty()->SetColor(
+      colors->GetColor3d("Tomato").GetData());
   originalActor->GetProperty()->SetLineWidth(4.0);
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("ShepardInterpolation");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(interpolatedActor);
@@ -116,67 +112,60 @@ int main (int argc, char *argv[])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName)
+namespace {
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
 {
   vtkSmartPointer<vtkPolyData> polyData;
-  std::string extension = vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
+  std::string extension =
+      vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
   if (extension == ".ply")
   {
-    vtkSmartPointer<vtkPLYReader> reader =
-      vtkSmartPointer<vtkPLYReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPLYReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtp")
   {
-    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkXMLPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".obj")
   {
-    vtkSmartPointer<vtkOBJReader> reader =
-      vtkSmartPointer<vtkOBJReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkOBJReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".stl")
   {
-    vtkSmartPointer<vtkSTLReader> reader =
-      vtkSmartPointer<vtkSTLReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkSTLReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".vtk")
   {
-    vtkSmartPointer<vtkPolyDataReader> reader =
-      vtkSmartPointer<vtkPolyDataReader>::New();
-    reader->SetFileName (fileName);
+    vtkNew<vtkPolyDataReader> reader;
+    reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else if (extension == ".g")
   {
-    vtkSmartPointer<vtkBYUReader> reader =
-      vtkSmartPointer<vtkBYUReader>::New();
-    reader->SetGeometryFileName (fileName);
+    vtkNew<vtkBYUReader> reader;
+    reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
   }
   else
   {
-    vtkSmartPointer<vtkSphereSource> source =
-      vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> source;
     source->Update();
     polyData = source->GetOutput();
   }
   return polyData;
 }
-}
+} // namespace

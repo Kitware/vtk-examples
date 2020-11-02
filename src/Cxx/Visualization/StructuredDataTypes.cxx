@@ -1,99 +1,94 @@
 #include <vtkDataSetMapper.h>
 #include <vtkDoubleArray.h>
 #include <vtkImageData.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkProperty.h>
 #include <vtkRectilinearGrid.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkStructuredGrid.h>
 #include <vtkTransform.h>
 #include <vtkXMLImageDataWriter.h>
 #include <vtkXMLRectilinearGridWriter.h>
 #include <vtkXMLStructuredGridWriter.h>
 
-namespace
-{
-  void ImageData(vtkImageData* data, const int gridSize);
-  void RectilinearGrid(vtkRectilinearGrid* data, const int gridSize);
-  void StructuredGrid(vtkStructuredGrid* data, const int gridSize);
-}
+namespace {
+void ImageData(vtkImageData* data, const int gridSize);
+void RectilinearGrid(vtkRectilinearGrid* data, const int gridSize);
+void StructuredGrid(vtkStructuredGrid* data, const int gridSize);
+} // namespace
 
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   int gridSize = 5;
-  vtkSmartPointer<vtkImageData> imageData =
-    vtkSmartPointer<vtkImageData>::New();
+  vtkNew<vtkImageData> imageData;
   ImageData(imageData, gridSize);
-  vtkSmartPointer<vtkDataSetMapper> imageDataMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> imageDataMapper;
   imageDataMapper->SetInputData(imageData);
   imageDataMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> imageDataActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> imageDataActor;
   imageDataActor->GetProperty()->SetRepresentationToWireframe();
   imageDataActor->SetMapper(imageDataMapper);
+  imageDataActor->GetProperty()->SetColor(
+      colors->GetColor3d("MidnightBlue").GetData());
 
-  vtkSmartPointer<vtkRectilinearGrid> rectilinearGrid =
-    vtkSmartPointer<vtkRectilinearGrid>::New();
+  vtkNew<vtkRectilinearGrid> rectilinearGrid;
   RectilinearGrid(rectilinearGrid, gridSize);
-  vtkSmartPointer<vtkDataSetMapper> rectilinearGridMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> rectilinearGridMapper;
   rectilinearGridMapper->SetInputData(rectilinearGrid);
 
-  vtkSmartPointer<vtkActor> rectilinearGridActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> rectilinearGridActor;
   rectilinearGridActor->GetProperty()->SetRepresentationToWireframe();
   rectilinearGridActor->SetMapper(rectilinearGridMapper);
+  rectilinearGridActor->GetProperty()->SetColor(
+      colors->GetColor3d("MidnightBlue").GetData());
 
-  vtkSmartPointer<vtkStructuredGrid> structuredGrid =
-    vtkSmartPointer<vtkStructuredGrid>::New();
+  vtkNew<vtkStructuredGrid> structuredGrid;
   StructuredGrid(structuredGrid, gridSize);
-  vtkSmartPointer<vtkDataSetMapper> structuredGridMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> structuredGridMapper;
   structuredGridMapper->SetInputData(structuredGrid);
 
-  vtkSmartPointer<vtkActor> structuredGridActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> structuredGridActor;
   structuredGridActor->GetProperty()->SetRepresentationToWireframe();
   structuredGridActor->SetMapper(structuredGridMapper);
+  structuredGridActor->GetProperty()->SetColor(
+      colors->GetColor3d("MidnightBlue").GetData());
 
   // There will be one render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
+  renderWindow->SetWindowName("StructuredDataTypes");
 
   // And one interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Define viewport ranges
   // (xmin, ymin, xmax, ymax)
-  double leftViewport[4] = { 0.0, 0.0, 0.33, 1.0 };
-  double centerViewport[4] = { 0.33, 0.0, 0.66, 1.0 };
-  double rightViewport[4] = { 0.66, 0.0, 1.0, 1.0 };
+  double leftViewport[4] = {0.0, 0.0, 0.33, 1.0};
+  double centerViewport[4] = {0.33, 0.0, 0.66, 1.0};
+  double rightViewport[4] = {0.66, 0.0, 1.0, 1.0};
 
   // Setup three renderers
-  vtkSmartPointer<vtkRenderer> leftRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
-  leftRenderer->SetBackground(.6, .5, .4);
+  leftRenderer->SetBackground(colors->GetColor3d("BurlyWood").GetData());
 
-  vtkSmartPointer<vtkRenderer> centerRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> centerRenderer;
   renderWindow->AddRenderer(centerRenderer);
   centerRenderer->SetViewport(centerViewport);
-  centerRenderer->SetBackground(.4, .5, .6);
+  centerRenderer->SetBackground(colors->GetColor3d("CadetBlue").GetData());
 
-  vtkSmartPointer<vtkRenderer> rightRenderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> rightRenderer;
   renderWindow->AddRenderer(rightRenderer);
   rightRenderer->SetViewport(rightViewport);
-  rightRenderer->SetBackground(.5, .4, .6);
+  rightRenderer->SetBackground(colors->GetColor3d("Plum").GetData());
 
   // Add the image on the left, rectilinear in the center, structured on the
   // right
@@ -112,99 +107,91 @@ int main(int, char*[])
   return EXIT_SUCCESS;
 }
 
-namespace
+namespace {
+
+void ImageData(vtkImageData* data, const int gridSize)
 {
 
-  void ImageData(vtkImageData* data, const int gridSize)
-  {
+  data->SetExtent(0, gridSize - 1, 0, gridSize - 1, 0, gridSize - 1);
+  data->AllocateScalars(VTK_DOUBLE, 1);
 
-    data->SetExtent(0, gridSize - 1, 0, gridSize - 1, 0, gridSize - 1);
-    data->AllocateScalars(VTK_DOUBLE, 1);
-
-    vtkSmartPointer<vtkXMLImageDataWriter> writer =
-      vtkSmartPointer<vtkXMLImageDataWriter>::New();
-    writer->SetFileName("imagedata.vti");
-    writer->SetInputData(data);
-    writer->Write();
-  }
-
-  void RectilinearGrid(vtkRectilinearGrid* data, const int gridSize)
-  {
-
-    data->SetExtent(0, gridSize - 1, 0, gridSize - 1, 0, gridSize - 1);
-
-    vtkSmartPointer<vtkDoubleArray> xCoords =
-      vtkSmartPointer<vtkDoubleArray>::New();
-    xCoords->SetNumberOfComponents(1);
-    vtkSmartPointer<vtkDoubleArray> yCoords =
-      vtkSmartPointer<vtkDoubleArray>::New();
-    yCoords->SetNumberOfComponents(1);
-    vtkSmartPointer<vtkDoubleArray> zCoords =
-      vtkSmartPointer<vtkDoubleArray>::New();
-    zCoords->SetNumberOfComponents(1);
-
-    for (int i = 0; i < gridSize; i++)
-    {
-      if (i == 0)
-      {
-        xCoords->InsertNextValue(0);
-        yCoords->InsertNextValue(0);
-        zCoords->InsertNextValue(0);
-        continue;
-      }
-      double oldX = xCoords->GetValue(i - 1);
-      double oldY = xCoords->GetValue(i - 1);
-      double oldZ = xCoords->GetValue(i - 1);
-      xCoords->InsertNextValue(oldX + i * i);
-      yCoords->InsertNextValue(oldY + i * i);
-      zCoords->InsertNextValue(oldZ + i * i);
-    }
-
-    data->SetXCoordinates(xCoords);
-    data->SetYCoordinates(yCoords);
-    data->SetZCoordinates(zCoords);
-
-    vtkSmartPointer<vtkXMLRectilinearGridWriter> writer =
-      vtkSmartPointer<vtkXMLRectilinearGridWriter>::New();
-    writer->SetFileName("rectilineargrid.vtr");
-    writer->SetInputData(data);
-    writer->Write();
-  }
-
-  void StructuredGrid(vtkStructuredGrid* data, const int gridSize)
-  {
-    data->SetExtent(0, gridSize - 1, 0, gridSize - 1, 0, gridSize - 1);
-    vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-
-    vtkSmartPointer<vtkTransform> transform =
-      vtkSmartPointer<vtkTransform>::New();
-    transform->RotateZ(30);
-
-    for (int k = 0; k < gridSize; k++)
-    {
-      for (int j = 0; j < gridSize; j++)
-      {
-        for (int i = 0; i < gridSize; i++)
-        {
-          double p[4];
-          p[0] = i;
-          p[1] = j;
-          p[2] = k;
-          p[3] = 1;
-          double pout[4];
-          transform->MultiplyPoint(p, pout);
-
-          points->InsertNextPoint(pout[0], pout[1], pout[2]);
-        }
-      }
-    }
-
-    data->SetPoints(points);
-
-    vtkSmartPointer<vtkXMLStructuredGridWriter> writer =
-      vtkSmartPointer<vtkXMLStructuredGridWriter>::New();
-    writer->SetFileName("structuredgrid.vts");
-    writer->SetInputData(data);
-    writer->Write();
-  }
+  vtkNew<vtkXMLImageDataWriter> writer;
+  writer->SetFileName("imagedata.vti");
+  writer->SetInputData(data);
+  writer->Write();
 }
+
+void RectilinearGrid(vtkRectilinearGrid* data, const int gridSize)
+{
+
+  data->SetExtent(0, gridSize - 1, 0, gridSize - 1, 0, gridSize - 1);
+
+  vtkNew<vtkDoubleArray> xCoords;
+  xCoords->SetNumberOfComponents(1);
+  vtkNew<vtkDoubleArray> yCoords;
+  yCoords->SetNumberOfComponents(1);
+  vtkNew<vtkDoubleArray> zCoords;
+  zCoords->SetNumberOfComponents(1);
+
+  for (int i = 0; i < gridSize; i++)
+  {
+    if (i == 0)
+    {
+      xCoords->InsertNextValue(0);
+      yCoords->InsertNextValue(0);
+      zCoords->InsertNextValue(0);
+      continue;
+    }
+    double oldX = xCoords->GetValue(i - 1);
+    double oldY = xCoords->GetValue(i - 1);
+    double oldZ = xCoords->GetValue(i - 1);
+    xCoords->InsertNextValue(oldX + i * i);
+    yCoords->InsertNextValue(oldY + i * i);
+    zCoords->InsertNextValue(oldZ + i * i);
+  }
+
+  data->SetXCoordinates(xCoords);
+  data->SetYCoordinates(yCoords);
+  data->SetZCoordinates(zCoords);
+
+  vtkNew<vtkXMLRectilinearGridWriter> writer;
+  writer->SetFileName("rectilineargrid.vtr");
+  writer->SetInputData(data);
+  writer->Write();
+}
+
+void StructuredGrid(vtkStructuredGrid* data, const int gridSize)
+{
+  data->SetExtent(0, gridSize - 1, 0, gridSize - 1, 0, gridSize - 1);
+  vtkNew<vtkPoints> points;
+
+  vtkNew<vtkTransform> transform;
+  transform->RotateZ(30);
+
+  for (int k = 0; k < gridSize; k++)
+  {
+    for (int j = 0; j < gridSize; j++)
+    {
+      for (int i = 0; i < gridSize; i++)
+      {
+        double p[4];
+        p[0] = i;
+        p[1] = j;
+        p[2] = k;
+        p[3] = 1;
+        double pout[4];
+        transform->MultiplyPoint(p, pout);
+
+        points->InsertNextPoint(pout[0], pout[1], pout[2]);
+      }
+    }
+  }
+
+  data->SetPoints(points);
+
+  vtkNew<vtkXMLStructuredGridWriter> writer;
+  writer->SetFileName("structuredgrid.vts");
+  writer->SetInputData(data);
+  writer->Write();
+}
+} // namespace
