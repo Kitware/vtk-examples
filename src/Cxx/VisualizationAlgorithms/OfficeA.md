@@ -1,10 +1,10 @@
 ### Description
 
-This example runs [Office.cxx](/Cxx/VisualizationAlgorithms/Office) as follows:
+This example runs [Office.cxx](../Office) as follows:
 
-```
-  ./OfficeA office.binary.vtk 0 -E 50)
+``` c++
+  ./OfficeA office.binary.vtk 0)
 ```
 
 !!! info
-    See [Figure 9-47](/VTKBook/09Chapter9/#Figure%209-47) in [Chapter 9](/VTKBook/09Chapter9) in the [VTK Textbook](/VTKBook/01Chapter1/).
+    See [Figure 9-47](../../../VTKBook/09Chapter9/#Figure%209-47) in [Chapter 9](../../../VTKBook/09Chapter9) in the [VTK Textbook](../../../VTKBook/01Chapter1/).
