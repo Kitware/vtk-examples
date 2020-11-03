@@ -1,42 +1,44 @@
-#include <vtkSmartPointer.h>
-
-#include <vtkCellLocator.h>
-#include <vtkXMLUnstructuredGridReader.h>
-#include <vtkDataObject.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkIdList.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
+#include <vtkNew.h>
 #include <vtkCellArray.h>
-
-#include <vtkUnsignedCharArray.h>
+#include <vtkCellLocator.h>
+#include <vtkDataObject.h>
+#include <vtkIdList.h>
+#include <vtkUnstructuredGrid.h>
+#include <vtkXMLUnstructuredGridReader.h>
 #include <vtkCellData.h>
 #include <vtkLineSource.h>
-
+#include <vtkUnsignedCharArray.h>
 #include <vtkShrinkFilter.h>
-
-#include <vtkDataSetSurfaceFilter.h>
-#include <vtkDataSetMapper.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderer.h>
+#include <vtkCamera.h>
+#include <vtkDataSetMapper.h>
+#include <vtkDataSetSurfaceFilter.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkProperty.h>
-#include <vtkCamera.h>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0] << " filename.vtu" << std::endl;
+    std::cout << "Usage: " << argv[0] << " filename.vtu e.g. Disc_BiQuadraticQuads_0_0.vtu" << std::endl;
     return EXIT_FAILURE;
   }
+
+  vtkNew<vtkNamedColors> colors;
 
   // Get the filename from the command line
   std::string inputFilename = argv[1];
 
   // Read a xml unstructured grid dataset
-  vtkSmartPointer<vtkXMLUnstructuredGridReader> reader =
-    vtkSmartPointer<vtkXMLUnstructuredGridReader>::New();
+  vtkNew<vtkXMLUnstructuredGridReader> reader;
   reader->SetFileName(inputFilename.c_str());
   reader->Update();
 
@@ -55,104 +57,96 @@ int main (int argc, char *argv[])
   endRay[0] = bounds[1] + center[0];
   endRay[1] = center[1];
   endRay[2] = center[2];
-  std::cout << "center: "
-            << center[0] << ", "
-            << center[1] << ", "
-            << center[2] << std::endl;
-  std::cout << "startRay: "
-            << startRay[0] << ", "
-            << startRay[1] << ", "
+  std::cout << "center: " << center[0] << ", " << center[1] << ", " << center[2]
+            << std::endl;
+  std::cout << "startRay: " << startRay[0] << ", " << startRay[1] << ", "
             << startRay[2] << std::endl;
-  std::cout << "endRay: "
-            << endRay[0] << ", "
-            << endRay[1] << ", "
-            << endRay[2] << std::endl;
+  std::cout << "endRay: " << endRay[0] << ", " << endRay[1] << ", " << endRay[2]
+            << std::endl;
 
   // Initialize all of the cell data colors
-  vtkSmartPointer<vtkUnsignedCharArray> cellData =
-    vtkSmartPointer<vtkUnsignedCharArray>::New();
+  vtkNew<vtkUnsignedCharArray> cellData;
   cellData->SetNumberOfComponents(3);
   cellData->SetNumberOfTuples(reader->GetOutput()->GetNumberOfCells());
   reader->GetOutput()->GetCellData()->SetScalars(cellData);
 
+  // A lambda to scale the contents of the array x by 255
+  auto scale = [](double* x) {
+    for (int i = 0; i < 3; ++i)
+    {
+      x[i] = x[i] * 255;
+    };
+  };
+
+  double rgb[3]{0, 0, 0};
+  colors->GetColorRGB("Banana", rgb);
+  scale(rgb);
   for (int i = 0; i < cellData->GetNumberOfTuples(); ++i)
   {
-    float rgb[3];
-    rgb[0] = 227.0; rgb[1] = 207.0; rgb[2] =  87.0; // banana
     cellData->InsertTuple(i, rgb);
   }
 
   // Find the cells that intersect the line and color those cells
-  vtkSmartPointer<vtkIdList> cellIds =
-    vtkSmartPointer<vtkIdList>::New();
-  vtkSmartPointer<vtkCellLocator> locator =
-    vtkSmartPointer<vtkCellLocator>::New();
+  vtkNew<vtkIdList> cellIds;
+  vtkNew<vtkCellLocator> locator;
   locator->SetDataSet(reader->GetOutput());
   locator->BuildLocator();
-  locator->FindCellsAlongLine(startRay, endRay, .001, cellIds);
+  locator->FindCellsAlongLine(startRay, endRay, 0.001, cellIds);
 
+  colors->GetColorRGB("Tomato", rgb);
+  scale(rgb);
   for (vtkIdType i = 0; i < cellIds->GetNumberOfIds(); ++i)
   {
-    float rgb[3];
-    rgb[0] = 255; rgb[1] = 99; rgb[2] = 71; // tomato
     cellData->InsertTuple(cellIds->GetId(i), rgb);
   }
 
   // Shrink each cell to make them visible
-  vtkSmartPointer<vtkShrinkFilter> shrink =
-    vtkSmartPointer<vtkShrinkFilter>::New();
+  vtkNew<vtkShrinkFilter> shrink;
   shrink->SetInputConnection(reader->GetOutputPort());
-  shrink->SetShrinkFactor(.95);
+  shrink->SetShrinkFactor(0.95);
 
   // Convert the cells to polydata
-  vtkSmartPointer<vtkDataSetSurfaceFilter> surface =
-    vtkSmartPointer<vtkDataSetSurfaceFilter>::New();
+  vtkNew<vtkDataSetSurfaceFilter> surface;
   surface->SetInputConnection(shrink->GetOutputPort());
   surface->SetNonlinearSubdivisionLevel(2);
   surface->Update();
 
   // Create a line
-  vtkSmartPointer<vtkLineSource> lineSource =
-    vtkSmartPointer<vtkLineSource>::New();
+  vtkNew<vtkLineSource> lineSource;
   lineSource->SetPoint1(startRay);
   lineSource->SetPoint2(endRay);
-  vtkSmartPointer<vtkPolyDataMapper> lineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> lineMapper;
   lineMapper->SetInputConnection(lineSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> lineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> lineActor;
   lineActor->SetMapper(lineMapper);
 
   // Render the results
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(surface->GetOutputPort());
   mapper->ScalarVisibilityOn();
   mapper->SetScalarModeToUseCellData();
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
   renderer->AddActor(lineActor);
-  renderer->SetBackground(.2, .3, .4);
+  renderer->SetBackground(colors->GetColor3d("Cobalt").GetData());
 
   // Make an oblique view
   renderer->GetActiveCamera()->Azimuth(30);
   renderer->GetActiveCamera()->Elevation(30);
   renderer->ResetCamera();
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  vtkSmartPointer<vtkRenderWindowInteractor>
-    iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindow> renWin;
+  vtkNew<vtkRenderWindowInteractor> iren;
 
   iren->SetRenderWindow(renWin);
   renWin->AddRenderer(renderer);
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("FindCellIntersections");
+
   renWin->Render();
 
   iren->Start();

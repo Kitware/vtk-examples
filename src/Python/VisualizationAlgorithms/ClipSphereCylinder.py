@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
-
 import vtk
 
 
@@ -59,7 +56,7 @@ def main():
 
     clipActor = vtk.vtkActor()
     clipActor.SetMapper(clipMapper)
-    clipActor.GetProperty().SetDiffuseColor(colors.GetColor3d("Black"))
+    clipActor.GetProperty().SetDiffuseColor(colors.GetColor3d('MidnightBlue'))
     clipActor.GetProperty().SetRepresentationToWireframe()
 
     clipInsideMapper = vtk.vtkPolyDataMapper()
@@ -68,7 +65,7 @@ def main():
 
     clipInsideActor = vtk.vtkActor()
     clipInsideActor.SetMapper(clipInsideMapper)
-    clipInsideActor.GetProperty().SetDiffuseColor(colors.GetColor3d("Dim_Gray"))
+    clipInsideActor.GetProperty().SetDiffuseColor(colors.GetColor3d('LightBlue'))
 
     # Create graphics stuff
     #
@@ -76,6 +73,7 @@ def main():
 
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren1)
+    renWin.SetWindowName('ClipSphereCylinder')
 
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
@@ -85,7 +83,7 @@ def main():
     ren1.AddActor(clipActor)
 
     ren1.AddActor(clipInsideActor)
-    ren1.SetBackground(colors.GetColor3d("Wheat"))
+    ren1.SetBackground(colors.GetColor3d('Wheat'))
     ren1.ResetCamera()
     ren1.GetActiveCamera().Dolly(1.4)
     ren1.ResetCameraClippingRange()

@@ -114,8 +114,8 @@ int main(int argc, char* argv[])
   ren1->GetActiveCamera()->Dolly(1.5);
   ren1->ResetCameraClippingRange();
 
-  renWin->SetSize(640, 480);
-  renWin->SetWindowName("Full Head");
+  renWin->SetSize(640, 640);
+  renWin->SetWindowName("FlyingHeadSlice");
   renWin->Render();
 
   iren->Start();

@@ -1,73 +1,68 @@
-#include <vtkSmartPointer.h>
-#include <vtkVRMLImporter.h>
-#include <vtkXMLUnstructuredGridReader.h>
-#include <vtkContourFilter.h>
-#include <vtkStreamTracer.h>
-#include <vtkGenericOutlineFilter.h>
-#include <vtkPointSource.h>
-#include <vtkTubeFilter.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkSphereSource.h>
-
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkActor.h>
 #include <vtkCamera.h>
-#include <vtkProperty.h>
-
-#include <vtkPolyDataMapper.h>
-
+#include <vtkContourFilter.h>
+#include <vtkGenericOutlineFilter.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointSource.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+#include <vtkStreamTracer.h>
+#include <vtkTubeFilter.h>
+#include <vtkUnstructuredGrid.h>
+#include <vtkVRMLImporter.h>
+#include <vtkXMLUnstructuredGridReader.h>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  if (argc < 3)
+  {
+    std::cerr << "Usage: " << argv[0]
+              << "  geometry.wrl velocity.vtu e.g. room_vis.wrl fire_ug.vtu"
+              << std::endl;
+    return EXIT_FAILURE;
+  }
+  vtkNew<vtkNamedColors> colors;
   vtkColor3d isoSurfaceColor = colors->GetColor3d("WhiteSmoke");
   vtkColor3d sphereColor = colors->GetColor3d("hotpink");
   vtkColor3d backgroundColor = colors->GetColor3d("SlateGray");
 
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->UseHiddenLineRemovalOn();
 
-  auto renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
-  auto renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Import the VRML Files that define the geometry
-  auto vrmlImport =
-    vtkSmartPointer<vtkVRMLImporter>::New();
+  vtkNew<vtkVRMLImporter> vrmlImport;
   vrmlImport->SetRenderWindow(renderWindow);
   vrmlImport->SetFileName(argv[1]);
   vrmlImport->Update();
 
   // Read the UnstructuredGrid define the solution
-  auto solution =
-    vtkSmartPointer<vtkXMLUnstructuredGridReader>::New();
+  vtkNew<vtkXMLUnstructuredGridReader> solution;
   solution->SetFileName(argv[2]);
   solution->Update();
 
   // Create an outline
-  auto outline =
-    vtkSmartPointer<vtkGenericOutlineFilter>::New();
+  vtkNew<vtkGenericOutlineFilter> outline;
   outline->SetInputConnection(solution->GetOutputPort());
 
   // Create Seeds
-  auto seeds =
-    vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> seeds;
   seeds->SetRadius(0.2);
   seeds->SetCenter(3.5, 0.625, 1.25);
   seeds->SetNumberOfPoints(50);
 
-  // Create streamlines  
-  auto streamTracer =
-    vtkSmartPointer<vtkStreamTracer>::New();
+  // Create streamlines
+  vtkNew<vtkStreamTracer> streamTracer;
   streamTracer->SetIntegrationDirectionToBoth();
   streamTracer->SetInputConnection(solution->GetOutputPort());
   streamTracer->SetSourceConnection(seeds->GetOutputPort());
@@ -76,52 +71,44 @@ int main (int argc, char *argv[])
   streamTracer->SetMinimumIntegrationStep(.01);
   streamTracer->SetIntegratorType(1);
   streamTracer->SetComputeVorticity(1);
-  
-  auto tubes =
-    vtkSmartPointer<vtkTubeFilter>::New();
+
+  vtkNew<vtkTubeFilter> tubes;
   tubes->SetInputConnection(streamTracer->GetOutputPort());
   tubes->SetNumberOfSides(8);
   tubes->SetRadius(.02);
   tubes->SetVaryRadius(0);
 
-  auto mapTubes =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapTubes;
   mapTubes->SetInputConnection(tubes->GetOutputPort());
   mapTubes->SetScalarRange(solution->GetOutput()->GetScalarRange());
 
-  auto tubesActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> tubesActor;
   tubesActor->SetMapper(mapTubes);
 
   // Create an Isosurface
-  auto isoSurface =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> isoSurface;
   isoSurface->SetValue(0, 550.0);
   isoSurface->SetInputConnection(solution->GetOutputPort());
 
-  auto isoSurfaceMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> isoSurfaceMapper;
   isoSurfaceMapper->SetInputConnection(isoSurface->GetOutputPort());
   isoSurfaceMapper->ScalarVisibilityOff();
 
-  auto isoSurfaceActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> isoSurfaceActor;
   isoSurfaceActor->SetMapper(isoSurfaceMapper);
   isoSurfaceActor->GetProperty()->SetOpacity(.5);
   isoSurfaceActor->GetProperty()->SetDiffuseColor(isoSurfaceColor.GetData());
 
-  auto sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphere;
   sphere->SetCenter(seeds->GetCenter());
   sphere->SetRadius(seeds->GetRadius());
   sphere->SetThetaResolution(20);
-  sphere->SetPhiResolution(11);;
-  auto sphereMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  sphere->SetPhiResolution(11);
+  ;
+  vtkNew<vtkPolyDataMapper> sphereMapper;
   sphereMapper->SetInputConnection(sphere->GetOutputPort());
 
-  auto sphereActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> sphereActor;
   sphereActor->SetMapper(sphereMapper);
   sphereActor->GetProperty()->SetOpacity(1.0);
   sphereActor->GetProperty()->SetSpecular(.4);
@@ -134,9 +121,11 @@ int main (int argc, char *argv[])
 
   renderer->SetBackground(backgroundColor.GetData());
   renderWindow->SetSize(640, 512);
+  renderWindow->SetWindowName("FireFlow");
   renderWindow->Render();
-  renderer->GetActiveCamera()->Azimuth(15.0);
-  renderer->GetActiveCamera()->Elevation(15.0);
+
+  renderer->GetActiveCamera()->Azimuth(20.0);
+  renderer->GetActiveCamera()->Elevation(10.0);
   renderer->GetActiveCamera()->Dolly(1.25);
   renderer->ResetCameraClippingRange();
 

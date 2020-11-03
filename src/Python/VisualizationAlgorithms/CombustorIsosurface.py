@@ -43,7 +43,7 @@ def main():
 
     isoActor = vtk.vtkActor()
     isoActor.SetMapper(isoMapper)
-    isoActor.GetProperty().SetColor(colors.GetColor3d("bisque"))
+    isoActor.GetProperty().SetColor(colors.GetColor3d('WhiteSmoke'))
 
     outline = vtk.vtkStructuredGridOutlineFilter()
     outline.SetInputConnection(pl3d.GetOutputPort())
@@ -58,12 +58,14 @@ def main():
     #
     ren1.AddActor(outlineActor)
     ren1.AddActor(isoActor)
-    ren1.SetBackground(colors.GetColor3d("SlateGray"))
+    ren1.SetBackground(colors.GetColor3d('DarkSlateGray'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('CombustorIsosurface')
 
     ren1.GetActiveCamera().SetFocalPoint(9.71821, 0.458166, 29.3999)
     ren1.GetActiveCamera().SetPosition(2.7439, -37.3196, 38.7167)
     ren1.GetActiveCamera().SetViewUp(-0.16123, 0.264271, 0.950876)
+    ren1.GetActiveCamera().Zoom(1.3)
     ren1.ResetCameraClippingRange()
 
     # Render the image.

@@ -90,13 +90,14 @@ def main():
     ren1.AddActor(isoActor)
     ren1.SetBackground(colors.GetColor3d("Wheat"))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('CarotidFlowGlyphs')
 
     cam1 = vtk.vtkCamera()
     cam1.SetClippingRange(17.4043, 870.216)
     cam1.SetFocalPoint(136.71, 104.025, 23)
     cam1.SetPosition(204.747, 258.939, 63.7925)
     cam1.SetViewUp(-0.102647, -0.210897, 0.972104)
-    cam1.Zoom(1.6)
+    cam1.Zoom(1.2)
     ren1.SetActiveCamera(cam1)
 
     # Render the image.

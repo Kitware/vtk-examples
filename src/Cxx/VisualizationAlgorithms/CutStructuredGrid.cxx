@@ -5,6 +5,7 @@
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiBlockPLOT3DReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlane.h>
 #include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
@@ -16,7 +17,7 @@
 #include <vtkStructuredGridGeometryFilter.h>
 #include <vtkStructuredGridOutlineFilter.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 3)
   {
@@ -24,101 +25,88 @@ int main(int argc, char *argv[])
     return EXIT_FAILURE;
   }
 
-// Create the RenderWindow, Renderer and both Actors
-//
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  // Create the RenderWindow, Renderer and both Actors
+  //
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren1;
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-// cut data
-  vtkSmartPointer<vtkMultiBlockPLOT3DReader> pl3d =
-    vtkSmartPointer<vtkMultiBlockPLOT3DReader>::New();
+  // cut data
+  vtkNew<vtkMultiBlockPLOT3DReader> pl3d;
   pl3d->SetXYZFileName(argv[1]);
   pl3d->SetQFileName(argv[2]);
   pl3d->SetScalarFunctionNumber(100);
   pl3d->SetVectorFunctionNumber(202);
   pl3d->Update();
 
-  vtkStructuredGrid *sg =
-    dynamic_cast<vtkStructuredGrid*>(pl3d->GetOutput()->GetBlock(0));
+  vtkStructuredGrid* sg =
+      dynamic_cast<vtkStructuredGrid*>(pl3d->GetOutput()->GetBlock(0));
 
-  vtkSmartPointer<vtkPlane> plane =
-    vtkSmartPointer<vtkPlane>::New();
+  vtkNew<vtkPlane> plane;
   plane->SetOrigin(sg->GetCenter());
   plane->SetNormal(-0.287, 0, 0.9579);
 
-  vtkSmartPointer<vtkCutter> planeCut =
-    vtkSmartPointer<vtkCutter>::New();
+  vtkNew<vtkCutter> planeCut;
   planeCut->SetInputData(pl3d->GetOutput()->GetBlock(0));
   planeCut->SetCutFunction(plane);
 
-  vtkSmartPointer<vtkDataSetMapper> cutMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> cutMapper;
   cutMapper->SetInputConnection(planeCut->GetOutputPort());
   cutMapper->SetScalarRange(sg->GetPointData()->GetScalars()->GetRange());
 
-  vtkSmartPointer<vtkActor> cutActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cutActor;
   cutActor->SetMapper(cutMapper);
 
-//extract plane
-  vtkSmartPointer<vtkStructuredGridGeometryFilter> compPlane =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  // extract plane
+  vtkNew<vtkStructuredGridGeometryFilter> compPlane;
   compPlane->SetInputData(sg);
   compPlane->SetExtent(0, 100, 0, 100, 9, 9);
 
-  vtkSmartPointer<vtkPolyDataMapper> planeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> planeMapper;
   planeMapper->SetInputConnection(compPlane->GetOutputPort());
   planeMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> planeActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> planeActor;
   planeActor->SetMapper(planeMapper);
   planeActor->GetProperty()->SetRepresentationToWireframe();
   planeActor->GetProperty()->SetColor(colors->GetColor3d("Wheat").GetData());
 
-//outline
-  vtkSmartPointer<vtkStructuredGridOutlineFilter> outline =
-    vtkSmartPointer<vtkStructuredGridOutlineFilter>::New();
+  // outline
+  vtkNew<vtkStructuredGridOutlineFilter> outline;
   outline->SetInputData(pl3d->GetOutput()->GetBlock(0));
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Wheat").GetData());
 
-// Add the actors to the renderer, set the background and size
-//
+  // Add the actors to the renderer, set the background and size
+  //
   ren1->AddActor(outlineActor);
   ren1->AddActor(planeActor);
   ren1->AddActor(cutActor);
   ren1->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("CutStructuredGrid");
 
-  ren1->GetActiveCamera()->SetClippingRange(3.95297, 50);
-  ren1->GetActiveCamera()->SetFocalPoint(9.71821, 0.458166, 29.3999);
-  ren1->GetActiveCamera()->SetPosition(2.7439, -37.3196, 38.7167);
-  ren1->GetActiveCamera()->SetViewUp(-0.16123, 0.264271, 0.950876);
-  ren1->ResetCamera();
-  ren1->GetActiveCamera()->Elevation(30);
+  auto camera = ren1->GetActiveCamera();
+  camera->SetPosition(5.02611, -23.535, 50.3979);
+  camera->SetFocalPoint(9.33614, 0.0414149, 30.112);
+  camera->SetViewUp(-0.0676794, 0.657814, 0.750134);
+  camera->SetDistance(31.3997);
+  camera->SetClippingRange(12.1468, 55.8147);
 
-// render the image
-//
+  // render the image
+  //
   renWin->Render();
   iren->Start();
 

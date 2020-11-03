@@ -56,6 +56,7 @@ def main():
     ren1.ResetCameraClippingRange()
 
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('CreateBFont')
 
     # Render the image.
     #

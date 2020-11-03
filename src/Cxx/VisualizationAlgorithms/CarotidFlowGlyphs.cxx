@@ -17,7 +17,7 @@
 #include <vtkStructuredPointsReader.h>
 #include <vtkThresholdPoints.h>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
@@ -26,50 +26,45 @@ int main (int argc, char *argv[])
   }
 
   vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+      vtkSmartPointer<vtkNamedColors>::New();
 
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkSmartPointer<vtkRenderer> ren1 = vtkSmartPointer<vtkRenderer>::New();
 
   vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+      vtkSmartPointer<vtkRenderWindow>::New();
   renWin->AddRenderer(ren1);
 
   vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+      vtkSmartPointer<vtkRenderWindowInteractor>::New();
   iren->SetRenderWindow(renWin);
 
-// create pipeline
-//
+  // create pipeline
+  //
   vtkSmartPointer<vtkStructuredPointsReader> reader =
-    vtkSmartPointer<vtkStructuredPointsReader>::New();
+      vtkSmartPointer<vtkStructuredPointsReader>::New();
   reader->SetFileName(argv[1]);
 
   vtkSmartPointer<vtkThresholdPoints> threshold =
-    vtkSmartPointer<vtkThresholdPoints>::New();
+      vtkSmartPointer<vtkThresholdPoints>::New();
   threshold->SetInputConnection(reader->GetOutputPort());
   threshold->ThresholdByUpper(200);
 
-  vtkSmartPointer<vtkMaskPoints> mask =
-    vtkSmartPointer<vtkMaskPoints>::New();
+  vtkSmartPointer<vtkMaskPoints> mask = vtkSmartPointer<vtkMaskPoints>::New();
   mask->SetInputConnection(threshold->GetOutputPort());
   mask->SetOnRatio(5);
 
-  vtkSmartPointer<vtkConeSource> cone =
-    vtkSmartPointer<vtkConeSource>::New();
+  vtkSmartPointer<vtkConeSource> cone = vtkSmartPointer<vtkConeSource>::New();
   cone->SetResolution(11);
   cone->SetHeight(1);
   cone->SetRadius(0.25);
 
-  vtkSmartPointer<vtkGlyph3D> cones =
-    vtkSmartPointer<vtkGlyph3D>::New();
+  vtkSmartPointer<vtkGlyph3D> cones = vtkSmartPointer<vtkGlyph3D>::New();
   cones->SetInputConnection(mask->GetOutputPort());
   cones->SetSourceConnection(cone->GetOutputPort());
   cones->SetScaleFactor(0.4);
   cones->SetScaleModeToScaleByVector();
 
-  vtkSmartPointer<vtkLookupTable> lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkSmartPointer<vtkLookupTable> lut = vtkSmartPointer<vtkLookupTable>::New();
   lut->SetHueRange(.667, 0.0);
   lut->Build();
 
@@ -80,65 +75,62 @@ int main (int argc, char *argv[])
   std::cout << "range: " << range[0] << ", " << range[1] << std::endl;
 
   vtkSmartPointer<vtkPolyDataMapper> vectorMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+      vtkSmartPointer<vtkPolyDataMapper>::New();
   vectorMapper->SetInputConnection(cones->GetOutputPort());
   vectorMapper->SetScalarRange(range[0], range[1]);
   vectorMapper->SetLookupTable(lut);
 
-  vtkSmartPointer<vtkActor> vectorActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkSmartPointer<vtkActor> vectorActor = vtkSmartPointer<vtkActor>::New();
   vectorActor->SetMapper(vectorMapper);
 
-// contours of speed
+  // contours of speed
   vtkSmartPointer<vtkContourFilter> iso =
-    vtkSmartPointer<vtkContourFilter>::New();
+      vtkSmartPointer<vtkContourFilter>::New();
   iso->SetInputConnection(reader->GetOutputPort());
   iso->SetValue(0, 175);
 
   vtkSmartPointer<vtkPolyDataMapper> isoMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+      vtkSmartPointer<vtkPolyDataMapper>::New();
   isoMapper->SetInputConnection(iso->GetOutputPort());
   isoMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> isoActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkSmartPointer<vtkActor> isoActor = vtkSmartPointer<vtkActor>::New();
   isoActor->SetMapper(isoMapper);
   isoActor->GetProperty()->SetRepresentationToWireframe();
   isoActor->GetProperty()->SetOpacity(0.25);
 
-// outline
+  // outline
   vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+      vtkSmartPointer<vtkOutlineFilter>::New();
   outline->SetInputConnection(reader->GetOutputPort());
 
   vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+      vtkSmartPointer<vtkPolyDataMapper>::New();
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkSmartPointer<vtkActor> outlineActor = vtkSmartPointer<vtkActor>::New();
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
-// Add the actors to the renderer, set the background and size
-//
+  // Add the actors to the renderer, set the background and size
+  //
   ren1->AddActor(outlineActor);
   ren1->AddActor(vectorActor);
   ren1->AddActor(isoActor);
   ren1->SetBackground(colors->GetColor3d("Wheat").GetData());
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("CarotidFlowGlyphs");
 
-  vtkSmartPointer<vtkCamera> cam1 =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkSmartPointer<vtkCamera> cam1 = vtkSmartPointer<vtkCamera>::New();
   cam1->SetClippingRange(17.4043, 870.216);
   cam1->SetFocalPoint(136.71, 104.025, 23);
   cam1->SetPosition(204.747, 258.939, 63.7925);
   cam1->SetViewUp(-0.102647, -0.210897, 0.972104);
-  cam1->Zoom(1.6);
+  cam1->Zoom(1.2);
   ren1->SetActiveCamera(cam1);
 
-// render the image
-//
+  // render the image
+  //
   renWin->Render();
   iren->Start();
 

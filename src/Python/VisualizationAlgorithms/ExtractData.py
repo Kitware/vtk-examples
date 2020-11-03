@@ -15,7 +15,7 @@ def main():
     iren.SetRenderWindow(renWin)
 
     quadric = vtk.vtkQuadric()
-    quadric.SetCoefficients(.5, 1, .2, 0, .1, 0, 0, .2, 0, 0)
+    quadric.SetCoefficients(0.5, 1, 0.2, 0, 0.1, 0, 0, 0.2, 0, 0)
 
     sample = vtk.vtkSampleFunction()
     sample.SetSampleDimensions(50, 50, 50)
@@ -23,14 +23,14 @@ def main():
     sample.ComputeNormalsOff()
 
     trans = vtk.vtkTransform()
-    trans.Scale(1, .5, .333)
+    trans.Scale(1, 0.5, 0.333)
 
     sphere = vtk.vtkSphere()
     sphere.SetRadius(0.25)
     sphere.SetTransform(trans)
 
     trans2 = vtk.vtkTransform()
-    trans2.Scale(.25, .5, 1.0)
+    trans2.Scale(0.25, 0.5, 1.0)
 
     sphere2 = vtk.vtkSphere()
     sphere2.SetRadius(0.25)
@@ -69,13 +69,14 @@ def main():
     #
     ren1.AddActor(outlineActor)
     ren1.AddActor(dataActor)
-
     ren1.SetBackground(colors.GetColor3d("SlateGray"))
+
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('ExtractData')
+
     renWin.Render()
     ren1.GetActiveCamera().Azimuth(30)
     ren1.GetActiveCamera().Elevation(30)
-    ren1.GetActiveCamera().Zoom(1.5)
 
     renWin.Render()
     iren.Start()

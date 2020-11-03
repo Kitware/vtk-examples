@@ -3,6 +3,7 @@
 #include <vtkContourFilter.h>
 #include <vtkDoubleArray.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlane.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
@@ -12,15 +13,16 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkXMLPolyDataReader.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0]
-              << " inputFilename(.vtp) [numberOfCuts]" << std::endl;
+    std::cout << "Usage: " << argv[0] << " inputFilename(.vtp) [numberOfCuts]"
+              << std::endl;
+    std::cout << "where: inputFilename is Torso.vtp and";
+    std::cout << " numberOfCuts is 20." << std::endl;
     return EXIT_FAILURE;
   }
   std::string inputFilename = argv[1];
@@ -31,34 +33,28 @@ int main(int argc, char *argv[])
     numberOfCuts = atoi(argv[2]);
   }
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkXMLPolyDataReader> reader =
-    vtkSmartPointer<vtkXMLPolyDataReader>::New();
+  vtkNew<vtkXMLPolyDataReader> reader;
   reader->SetFileName(inputFilename.c_str());
   reader->Update();
 
   double bounds[6];
   reader->GetOutput()->GetBounds(bounds);
-  std::cout << "Bounds: "
-            << bounds[0] << ", " << bounds[1] << " "
-            << bounds[2] << ", " << bounds[3] << " "
-            << bounds[4] << ", " << bounds[5] << std::endl;
+  std::cout << "Bounds: " << bounds[0] << ", " << bounds[1] << " " << bounds[2]
+            << ", " << bounds[3] << " " << bounds[4] << ", " << bounds[5]
+            << std::endl;
 
-  vtkSmartPointer<vtkPlane> plane =
-    vtkSmartPointer<vtkPlane>::New();
-  plane->SetOrigin((bounds[1] + bounds[0]) / 2.0,
-                   (bounds[3] + bounds[2]) / 2.0,
+  vtkNew<vtkPlane> plane;
+  plane->SetOrigin((bounds[1] + bounds[0]) / 2.0, (bounds[3] + bounds[2]) / 2.0,
                    (bounds[5] + bounds[4]) / 2.0);
-  plane->SetNormal(0,0,1);
+  plane->SetNormal(0, 0, 1);
 
   // Create Scalars
-  vtkSmartPointer<vtkDoubleArray> scalars =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> scalars;
   int numberOfPoints = reader->GetOutput()->GetNumberOfPoints();
   scalars->SetNumberOfTuples(numberOfPoints);
-  vtkPoints *pts = reader->GetOutput()->GetPoints();
+  vtkPoints* pts = reader->GetOutput()->GetPoints();
   for (int i = 0; i < numberOfPoints; ++i)
   {
     double point[3];
@@ -69,53 +65,46 @@ int main(int argc, char *argv[])
   reader->GetOutput()->GetPointData()->GetScalars()->GetRange();
 
   // Create cutter
-  vtkSmartPointer<vtkContourFilter> cutter =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> cutter;
   cutter->SetInputConnection(reader->GetOutputPort());
   cutter->ComputeScalarsOff();
   cutter->ComputeNormalsOff();
   cutter->GenerateValues(
-    numberOfCuts,
-    .99 * reader->GetOutput()->GetPointData()->GetScalars()->GetRange()[0],
-    .99 * reader->GetOutput()->GetPointData()->GetScalars()->GetRange()[1]);
+      numberOfCuts,
+      .99 * reader->GetOutput()->GetPointData()->GetScalars()->GetRange()[0],
+      .99 * reader->GetOutput()->GetPointData()->GetScalars()->GetRange()[1]);
 
-  vtkSmartPointer<vtkPolyDataMapper> cutterMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  cutterMapper->SetInputConnection( cutter->GetOutputPort());
+  vtkNew<vtkPolyDataMapper> cutterMapper;
+  cutterMapper->SetInputConnection(cutter->GetOutputPort());
   cutterMapper->ScalarVisibilityOff();
 
   // Create cut actor
-  vtkSmartPointer<vtkActor> cutterActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cutterActor;
   cutterActor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
   cutterActor->GetProperty()->SetLineWidth(2);
   cutterActor->SetMapper(cutterMapper);
 
   // Create model actor
-  vtkSmartPointer<vtkPolyDataMapper> modelMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  modelMapper->SetInputConnection( reader->GetOutputPort());
+  vtkNew<vtkPolyDataMapper> modelMapper;
+  modelMapper->SetInputConnection(reader->GetOutputPort());
   modelMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> modelActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> modelActor;
   modelActor->GetProperty()->SetColor(colors->GetColor3d("Flesh").GetData());
   modelActor->SetMapper(modelMapper);
 
   // Create renderers and add actors of plane and model
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(cutterActor);
   renderer->AddActor(modelActor);
 
   // Add renderer to renderwindow and render
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(600, 600);
+  renderWindow->SetWindowName("CutWithScalars");
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer->SetBackground(colors->GetColor3d("Burlywood").GetData());

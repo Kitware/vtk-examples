@@ -72,12 +72,13 @@ def main():
 
     # Assign our actor to the renderer.
     ren.AddActor(carpet)
-    ren.SetBackground(colors.GetColor3d("Beige"))
+    ren.SetBackground(colors.GetColor3d('Beige'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('ExponentialCosine')
 
     # draw the resulting scene
     ren.ResetCamera()
-    ren.GetActiveCamera().Zoom(1.4)
+    ren.GetActiveCamera().Zoom(1.35)
     ren.GetActiveCamera().Elevation(-55)
     ren.GetActiveCamera().Azimuth(25)
     ren.ResetCameraClippingRange()

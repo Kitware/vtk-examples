@@ -7,6 +7,7 @@
 #include <vtkDataSetMapper.h>
 #include <vtkDoubleArray.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlaneSource.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
@@ -14,7 +15,6 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
 #include <vtkWarpScalar.h>
@@ -22,30 +22,23 @@
 int main(int, char*[])
 {
 
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  auto ren =
-    vtkSmartPointer<vtkRenderer>::New();
-  auto renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
 
-  auto iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // create plane to warp
-  auto plane =
-    vtkSmartPointer<vtkPlaneSource>::New();
+  vtkNew<vtkPlaneSource> plane;
   plane->SetResolution(300, 300);
 
-  auto transform =
-    vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform;
   transform->Scale(10.0, 10.0, 1.0);
 
-  auto transF =
-    vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> transF;
   transF->SetInputConnection(plane->GetOutputPort());
   transF->SetTransform(transform);
   transF->Update();
@@ -56,16 +49,13 @@ int main(int, char*[])
   auto input = transF->GetOutput();
   auto numPts = input->GetNumberOfPoints();
 
-  auto newPts =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> newPts;
   newPts->SetNumberOfPoints(numPts);
 
-  auto derivs =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> derivs;
   derivs->SetNumberOfTuples(numPts);
 
-  auto bessel =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> bessel;
   bessel->CopyStructure(input);
   bessel->SetPoints(newPts);
   bessel->GetPointData()->SetScalars(derivs);
@@ -83,32 +73,30 @@ int main(int, char*[])
   }
 
   // warp plane
-  auto warp =
-    vtkSmartPointer<vtkWarpScalar>::New();
+  vtkNew<vtkWarpScalar> warp;
   warp->SetInputData(bessel);
   warp->XYPlaneOn();
   warp->SetScaleFactor(0.5);
 
   // mapper and actor
-  auto mapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> mapper;
   mapper->SetInputConnection(warp->GetOutputPort());
   double tmp[2];
   bessel->GetScalarRange(tmp);
   mapper->SetScalarRange(tmp[0], tmp[1]);
 
-  auto carpet =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> carpet;
   carpet->SetMapper(mapper);
 
   // assign our actor to the renderer
   ren->AddActor(carpet);
   ren->SetBackground(colors->GetColor3d("Beige").GetData());
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("ExponentialCosine");
 
   // draw the resulting scene
   ren->ResetCamera();
-  ren->GetActiveCamera()->Zoom(1.4);
+  ren->GetActiveCamera()->Zoom(1.35);
   ren->GetActiveCamera()->Elevation(-55);
   ren->GetActiveCamera()->Azimuth(25);
   ren->ResetCameraClippingRange();

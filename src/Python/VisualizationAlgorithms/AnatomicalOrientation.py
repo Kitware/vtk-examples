@@ -78,7 +78,7 @@ def main():
     humanMapper = vtk.vtkPolyDataMapper()
     humanMapper.SetInputConnection(reader.GetOutputPort())
     humanMapper.SetScalarModeToUsePointFieldData()
-    humanMapper.SelectColorArray("Color")
+    humanMapper.SelectColorArray('Color')
     humanMapper.SetColorModeToDirectScalars()
 
     humanActor = vtk.vtkActor()
@@ -109,7 +109,7 @@ def main():
     ren.ResetCameraClippingRange()
     renWin.Render()
     # Call SetWindowName after renWin.Render() is called.
-    renWin.SetWindowName("Anatomical Orientation")
+    renWin.SetWindowName('AnatomicalOrientation')
 
     iren.Initialize()
     iren.Start()
@@ -258,7 +258,7 @@ def AddTextToPlanes():
     scale = [0.04, 0.04, 0.04]
 
     text1 = vtk.vtkVectorText()
-    text1.SetText("Transverse\nPlane\n\nSuperior\nCranial")
+    text1.SetText('Transverse\nPlane\n\nSuperior\nCranial')
     trnf1 = vtk.vtkTransform()
     trnf1.RotateZ(-90)
     tpdPlane1 = vtk.vtkTransformPolyDataFilter()
@@ -273,7 +273,7 @@ def AddTextToPlanes():
     textActors.append(textActor1)
 
     text2 = vtk.vtkVectorText()
-    text2.SetText("Transverse\nPlane\n\nInferior\n(Caudal)")
+    text2.SetText('Transverse\nPlane\n\nInferior\n(Caudal)')
     trnf2 = vtk.vtkTransform()
     trnf2.RotateZ(270)
     trnf2.RotateWXYZ(*[180, 0, 1, 0])
@@ -289,7 +289,7 @@ def AddTextToPlanes():
     textActors.append(textActor2)
 
     text3 = vtk.vtkVectorText()
-    text3.SetText("Sagittal\nPlane\n\nLeft")
+    text3.SetText('Sagittal\nPlane\n\nLeft')
     trnf3 = vtk.vtkTransform()
     trnf3.RotateX(90)
     trnf3.RotateWXYZ(*[-90, 0, 1, 0])
@@ -305,7 +305,7 @@ def AddTextToPlanes():
     textActors.append(textActor3)
 
     text4 = vtk.vtkVectorText()
-    text4.SetText("Sagittal\nPlane\n\nRight")
+    text4.SetText('Sagittal\nPlane\n\nRight')
     trnf4 = vtk.vtkTransform()
     trnf4.RotateX(90)
     trnf4.RotateWXYZ(*[-270, 0, 1, 0])
@@ -321,7 +321,7 @@ def AddTextToPlanes():
     textActors.append(textActor4)
 
     text5 = vtk.vtkVectorText()
-    text5.SetText("Coronal\nPlane\n\nAnterior")
+    text5.SetText('Coronal\nPlane\n\nAnterior')
     trnf5 = vtk.vtkTransform()
     trnf5.RotateY(-180)
     trnf5.RotateWXYZ(*[-90, 1, 0, 0])
@@ -337,7 +337,7 @@ def AddTextToPlanes():
     textActors.append(textActor5)
 
     text6 = vtk.vtkVectorText()
-    text6.SetText("Coronal\nPlane\n\nPosterior")
+    text6.SetText('Coronal\nPlane\n\nPosterior')
     trnf6 = vtk.vtkTransform()
     trnf6.RotateWXYZ(*[90, 1, 0, 0])
     tpdPlane6 = vtk.vtkTransformPolyDataFilter()
@@ -353,5 +353,5 @@ def AddTextToPlanes():
     return textActors
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

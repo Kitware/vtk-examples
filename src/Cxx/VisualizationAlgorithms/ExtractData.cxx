@@ -4,6 +4,7 @@
 #include <vtkExtractGeometry.h>
 #include <vtkImplicitBoolean.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -16,100 +17,82 @@
 #include <vtkSphere.h>
 #include <vtkTransform.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
-// extract data
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  // extract data
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren1;
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  vtkSmartPointer<vtkQuadric> quadric =
-    vtkSmartPointer<vtkQuadric>::New();
-  quadric->SetCoefficients(.5, 1, .2, 0, .1, 0, 0, .2, 0, 0);
+  vtkNew<vtkQuadric> quadric;
+  quadric->SetCoefficients(0.5, 1, 0.2, 0, 0.1, 0, 0, 0.2, 0, 0);
 
-  vtkSmartPointer<vtkSampleFunction> sample =
-    vtkSmartPointer<vtkSampleFunction>::New();
+  vtkNew<vtkSampleFunction> sample;
   sample->SetSampleDimensions(50, 50, 50);
   sample->SetImplicitFunction(quadric);
   sample->ComputeNormalsOff();
 
-  vtkSmartPointer<vtkTransform> trans =
-    vtkSmartPointer<vtkTransform>::New();
-  trans->Scale(1, .5, .333);
+  vtkNew<vtkTransform> trans;
+  trans->Scale(1, 0.5, 0.333);
 
-  vtkSmartPointer<vtkSphere> sphere =
-    vtkSmartPointer<vtkSphere>::New();
+  vtkNew<vtkSphere> sphere;
   sphere->SetRadius(0.25);
   sphere->SetTransform(trans);
 
-  vtkSmartPointer<vtkTransform> trans2 =
-    vtkSmartPointer<vtkTransform>::New();
-  trans2->Scale(.25, .5, 1.0);
+  vtkNew<vtkTransform> trans2;
+  trans2->Scale(0.25, 0.5, 1.0);
 
-  vtkSmartPointer<vtkSphere> sphere2 =
-    vtkSmartPointer<vtkSphere>::New();
+  vtkNew<vtkSphere> sphere2;
   sphere2->SetRadius(0.25);
   sphere2->SetTransform(trans2);
 
-  vtkSmartPointer<vtkImplicitBoolean> booleanUnion =
-    vtkSmartPointer<vtkImplicitBoolean>::New();
+  vtkNew<vtkImplicitBoolean> booleanUnion;
   booleanUnion->AddFunction(sphere);
   booleanUnion->AddFunction(sphere2);
   booleanUnion->SetOperationType(0); // boolean Union
 
-  vtkSmartPointer<vtkExtractGeometry> extract =
-    vtkSmartPointer<vtkExtractGeometry>::New();
+  vtkNew<vtkExtractGeometry> extract;
   extract->SetInputConnection(sample->GetOutputPort());
   extract->SetImplicitFunction(booleanUnion);
 
-  vtkSmartPointer<vtkShrinkFilter> shrink =
-    vtkSmartPointer<vtkShrinkFilter>::New();
+  vtkNew<vtkShrinkFilter> shrink;
   shrink->SetInputConnection(extract->GetOutputPort());
   shrink->SetShrinkFactor(0.5);
 
-  vtkSmartPointer<vtkDataSetMapper> dataMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> dataMapper;
   dataMapper->SetInputConnection(shrink->GetOutputPort());
-  vtkSmartPointer<vtkActor> dataActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> dataActor;
   dataActor->SetMapper(dataMapper);
 
-// outline
-  vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  // outline
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(sample->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(0, 0, 0);
 
-
-// Add the actors to the renderer, set the background and size
-//
+  // Add the actors to the renderer, set the background and size
+  //
   ren1->AddActor(outlineActor);
   ren1->AddActor(dataActor);
-
   ren1->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("ExtractData");
   renWin->Render();
+
   ren1->GetActiveCamera()->Azimuth(30);
   ren1->GetActiveCamera()->Elevation(30);
-  ren1->GetActiveCamera()->Zoom(1.5);
 
   iren->Start();
 

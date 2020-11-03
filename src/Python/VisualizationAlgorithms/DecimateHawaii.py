@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
-
 import vtk
 
 
@@ -36,7 +33,7 @@ def main():
 
     decimatedActor = vtk.vtkActor()
     decimatedActor.SetMapper(decimatedMapper)
-    decimatedActor.GetProperty().SetColor(colors.GetColor3d("Aqua"))
+    decimatedActor.GetProperty().SetColor(colors.GetColor3d('Sienna'))
     decimatedActor.GetProperty().SetRepresentationToWireframe()
 
     originalMapper = vtk.vtkPolyDataMapper()
@@ -44,7 +41,7 @@ def main():
 
     originalActor = vtk.vtkActor()
     originalActor.SetMapper(originalMapper)
-    originalActor.GetProperty().SetColor(colors.GetColor3d("Aqua"))
+    originalActor.GetProperty().SetColor(colors.GetColor3d('Sienna'))
 
     # Create the RenderWindow, Renderer and Interactor.
     #
@@ -65,22 +62,19 @@ def main():
     #
     renderer1.AddActor(originalActor)
     renderer2.AddActor(decimatedActor)
-    renderer1.SetBackground(colors.GetColor3d("Wheat"))
-    renderer2.SetBackground(colors.GetColor3d("Papaya_Whip"))
+    renderer1.SetBackground(colors.GetColor3d('Wheat'))
+    renderer2.SetBackground(colors.GetColor3d('Papaya_Whip'))
     renderWindow.SetSize(800, 400)
+    renderWindow.SetWindowName('DecimateHawaii')
 
     # Render the image.
     #
     cam1 = vtk.vtkCamera()
-    cam1.SetFocalPoint(0, 0, 0)
-    cam1.SetPosition(0, 0, 1)
-    cam1.SetViewUp(0, 1, 0)
     renderer1.SetActiveCamera(cam1)
     renderer2.SetActiveCamera(cam1)
     renderer1.ResetCamera()
-    cam1.Azimuth(30)
-    cam1.Elevation(30)
-    cam1.Dolly(1.3)
+    cam1.Elevation(-30)
+    cam1.Dolly(1.2)
     renderer1.ResetCameraClippingRange()
     renderWindow.Render()
     interactor.Start()

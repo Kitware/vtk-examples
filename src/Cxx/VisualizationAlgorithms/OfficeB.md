@@ -1,9 +1,9 @@
 ### Description
 
-Using random point seeds to create streamlines. 
+Using random point seeds to create streamlines.
 
-This example runs [Office.cxx](/Cxx/VisualizationAlgoriths) as follows:
+This example runs [Office.cxx](../Office) as follows:
 
-```
-  ./Office office.binary.vtk 0
+``` c++
+  ./OfficeB office.binary.vtk 0
 ```

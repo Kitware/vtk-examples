@@ -4,6 +4,7 @@
 #include <vtkImageDataGeometryFilter.h>
 #include <vtkImageGaussianSmooth.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPNMReader.h>
 #include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
@@ -12,46 +13,38 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0] << " image.pgm" << std::endl;
+    std::cout << "Usage: " << argv[0] << " image.pgm e.g. B.pgm" << std::endl;
     return EXIT_FAILURE;
   }
-// Now create the RenderWindow, Renderer and Interactor
-//
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  // Now create the RenderWindow, Renderer and Interactor
+  //
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren1;
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-  vtkSmartPointer<vtkPNMReader> imageIn =
-    vtkSmartPointer<vtkPNMReader>::New();
+  vtkNew<vtkPNMReader> imageIn;
   imageIn->SetFileName(argv[1]);
 
-  vtkSmartPointer<vtkImageGaussianSmooth> gaussian =
-    vtkSmartPointer<vtkImageGaussianSmooth>::New();
+  vtkNew<vtkImageGaussianSmooth> gaussian;
   gaussian->SetStandardDeviations(2, 2);
   gaussian->SetDimensionality(2);
   gaussian->SetRadiusFactors(1, 1);
   gaussian->SetInputConnection(imageIn->GetOutputPort());
 
-  vtkSmartPointer<vtkImageDataGeometryFilter> geometry =
-    vtkSmartPointer<vtkImageDataGeometryFilter>::New();
+  vtkNew<vtkImageDataGeometryFilter> geometry;
   geometry->SetInputConnection(gaussian->GetOutputPort());
 
-  vtkSmartPointer<vtkClipPolyData> aClipper =
-  vtkSmartPointer<vtkClipPolyData>::New();
+  vtkNew<vtkClipPolyData> aClipper;
   aClipper->SetInputConnection(geometry->GetOutputPort());
   aClipper->SetValue(127.5);
   aClipper->GenerateClipScalarsOff();
@@ -59,17 +52,16 @@ int main (int argc, char *argv[])
   aClipper->GetOutput()->GetPointData()->CopyScalarsOff();
   aClipper->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(aClipper->GetOutputPort());
   mapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> letter =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> letter;
   letter->SetMapper(mapper);
 
   ren1->AddActor(letter);
-  letter->GetProperty()->SetDiffuseColor(colors->GetColor3d("LampBlack").GetData());
+  letter->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("LampBlack").GetData());
   letter->GetProperty()->SetRepresentationToWireframe();
 
   ren1->SetBackground(colors->GetColor3d("WhiteSmoke").GetData());
@@ -78,10 +70,12 @@ int main (int argc, char *argv[])
   ren1->ResetCameraClippingRange();
 
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("CreateBFont");
 
-// render the image
-//
+  // render the image
+  //
   renWin->Render();
   iren->Start();
+
   return EXIT_SUCCESS;
-  }
+}

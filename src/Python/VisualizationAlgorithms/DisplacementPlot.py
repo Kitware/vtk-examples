@@ -56,6 +56,7 @@ def main():
     ren.AddActor(plateActor)
     ren.SetBackground(colors.GetColor3d("Wheat"))
     renWin.SetSize(512, 512)
+    renWin.SetWindowName('DisplacementPlot')
 
     ren.GetActiveCamera().SetPosition(13.3991, 14.0764, 9.97787)
     ren.GetActiveCamera().SetFocalPoint(1.50437, 0.481517, 4.52992)
