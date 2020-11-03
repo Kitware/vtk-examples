@@ -9,6 +9,7 @@ This code is based on the VTK file: /IO/Geometry/Testing/Python/motor.py.
 #include <vtkFloatArray.h>
 #include <vtkImplicitTextureCoords.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlanes.h>
 #include <vtkPoints.h>
 #include <vtkPolyDataNormals.h>
@@ -36,22 +37,19 @@ int main(int argc, char* argv[])
   std::string textureFile = argv[1];
   std::string motorFile = argv[2];
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create the Renderer, RenderWindow and RenderWindowInteractor.
-  vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Create the cutting planes.
-  vtkSmartPointer<vtkPlanes> planes = vtkSmartPointer<vtkPlanes>::New();
-  vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-  vtkSmartPointer<vtkFloatArray> norms = vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkPlanes> planes;
+  vtkNew<vtkPoints> points;
+  vtkNew<vtkFloatArray> norms;
 
   norms->SetNumberOfComponents(3);
   points->InsertPoint(0, 0.0, 0.0, 0.0);
@@ -62,10 +60,9 @@ int main(int argc, char* argv[])
   planes->SetNormals(norms);
 
   // Get the texture.
-  vtkSmartPointer<vtkStructuredPointsReader> texReader =
-    vtkSmartPointer<vtkStructuredPointsReader>::New();
+  vtkNew<vtkStructuredPointsReader> texReader;
   texReader->SetFileName(textureFile.c_str());
-  vtkSmartPointer<vtkTexture> texture = vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkTexture> texture;
   texture->SetInputConnection(texReader->GetOutputPort());
   texture->InterpolateOff();
   texture->RepeatOff();
@@ -106,7 +103,7 @@ int main(int argc, char* argv[])
     byuActor[i]->SetMapper(byuMapper[i]);
     byuActor[i]->SetTexture(texture);
     byuActor[i]->GetProperty()->SetColor(
-      colors->GetColor3d(partColours[i]).GetData());
+        colors->GetColor3d(partColours[i]).GetData());
 
     ren->AddActor(byuActor[i]);
     if (displayParts[i])
@@ -122,8 +119,9 @@ int main(int argc, char* argv[])
   ren->SetBackground(colors->GetColor3d("AliceBlue").GetData());
 
   renWin->SetSize(512, 512);
+  renWin->SetWindowName("Motor");
 
-  vtkSmartPointer<vtkCamera> camera = vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
   camera->SetFocalPoint(0.0286334, 0.0362996, 0.0379685);
   camera->SetPosition(1.37067, 1.08629, -1.30349);
   camera->SetViewAngle(17.673);

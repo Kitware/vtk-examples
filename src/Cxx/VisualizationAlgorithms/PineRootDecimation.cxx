@@ -1,14 +1,12 @@
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkCellArray.h>
-#ifdef VTK_CELL_ARRAY_V2
-#include <vtkCellArrayIterator.h>
-#endif // VTK_CELL_ARRAY_V2
 #include <vtkConnectivityFilter.h>
 #include <vtkDataSetMapper.h>
 #include <vtkDecimatePro.h>
 #include <vtkMCubesReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -16,6 +14,9 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#ifdef VTK_CELL_ARRAY_V2
+#include <vtkCellArrayIterator.h>
+#endif // VTK_CELL_ARRAY_V2
 
 int main(int argc, char* argv[])
 {
@@ -105,12 +106,10 @@ int main(int argc, char* argv[])
 
   std::string fileName = argv[1];
 
-  vtkSmartPointer<vtkNamedColors> colors =
-      vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create the pipeline.
-  vtkSmartPointer<vtkMCubesReader> reader =
-      vtkSmartPointer<vtkMCubesReader>::New();
+  vtkNew<vtkMCubesReader> reader;
   reader->SetFileName(fileName.c_str());
   reader->FlipNormalsOff();
   reader->Update();
@@ -118,7 +117,7 @@ int main(int argc, char* argv[])
   std::cout << "There are: " << NumberofTriangles(reader->GetOutput())
             << " triangles." << std::endl;
 
-  vtkSmartPointer<vtkDecimatePro> deci = vtkSmartPointer<vtkDecimatePro>::New();
+  vtkNew<vtkDecimatePro> deci;
   deci->SetInputConnection(reader->GetOutputPort());
   deci->SetTargetReduction(0.9);
   deci->SetAbsoluteError(0.0005);
@@ -131,8 +130,7 @@ int main(int argc, char* argv[])
   std::cout << "There are: " << NumberofTriangles(deci->GetOutput())
             << " triangles." << std::endl;
 
-  vtkSmartPointer<vtkConnectivityFilter> connect =
-      vtkSmartPointer<vtkConnectivityFilter>::New();
+  vtkNew<vtkConnectivityFilter> connect;
   connect->SetInputConnection(deci->GetOutputPort());
   connect->SetExtractionModeToLargestRegion();
   connect->Update();
@@ -143,32 +141,27 @@ int main(int argc, char* argv[])
                    dynamic_cast<vtkPolyData*>(connect->GetOutput()))
             << " triangles." << std::endl;
 
-  vtkSmartPointer<vtkDataSetMapper> isoMapper =
-      vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> isoMapper;
   isoMapper->SetInputConnection(connect->GetOutputPort());
   isoMapper->ScalarVisibilityOff();
-  vtkSmartPointer<vtkActor> isoActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> isoActor;
   isoActor->SetMapper(isoMapper);
   isoActor->GetProperty()->SetColor(colors->GetColor3d("raw_sienna").GetData());
 
   // Get an outline of the data set for context.
-  vtkSmartPointer<vtkOutlineFilter> outline =
-      vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(reader->GetOutputPort());
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
-  vtkSmartPointer<vtkActor> outlineActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
   // Create the Renderer, RenderWindow and RenderWindowInteractor.
-  vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Add the actors to the renderer, set the background and size.
@@ -176,6 +169,8 @@ int main(int argc, char* argv[])
   ren->AddActor(isoActor);
   // renWin->SetSize(750, 750);
   renWin->SetSize(512, 512);
+  renWin->SetWindowName("PineRootDecimation");
+
   ren->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   vtkCamera* cam = ren->GetActiveCamera();

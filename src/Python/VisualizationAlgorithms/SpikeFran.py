@@ -20,7 +20,7 @@ def main():
 
     franActor = vtk.vtkActor()
     franActor.SetMapper(franMapper)
-    franActor.GetProperty().SetColor(colors.GetColor3d("Flesh"))
+    franActor.GetProperty().SetColor(colors.GetColor3d('Flesh'))
 
     # We subsample the dataset because we want to glyph just a subset of
     # the points. Otherwise the display is cluttered and cannot be easily
@@ -60,7 +60,7 @@ def main():
 
     spikeActor = vtk.vtkActor()
     spikeActor.SetMapper(spikeMapper)
-    spikeActor.GetProperty().SetColor(colors.GetColor3d("Emerald_Green"))
+    spikeActor.GetProperty().SetColor(colors.GetColor3d('Emerald_Green'))
 
     # Create the RenderWindow, Renderer and Interactor.
     #
@@ -77,7 +77,9 @@ def main():
     ren1.AddActor(spikeActor)
 
     renWin.SetSize(640, 480)
-    ren1.SetBackground(colors.GetColor3d("SlateGray"))
+    renWin.SetWindowName('SpikeFran')
+
+    ren1.SetBackground(colors.GetColor3d('SlateGray'))
 
     # Render the image.
     #

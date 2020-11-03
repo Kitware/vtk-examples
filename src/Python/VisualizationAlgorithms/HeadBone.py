@@ -44,7 +44,7 @@ def main():
 
     isoActor = vtk.vtkActor()
     isoActor.SetMapper(isoMapper)
-    isoActor.GetProperty().SetColor(colors.GetColor3d("Wheat"))
+    isoActor.GetProperty().SetColor(colors.GetColor3d('Wheat'))
 
     outline = vtk.vtkOutlineFilter()
     outline.SetInputConnection(reader.GetOutputPort())
@@ -59,7 +59,7 @@ def main():
     #
     ren1.AddActor(outlineActor)
     ren1.AddActor(isoActor)
-    ren1.SetBackground(colors.GetColor3d("SlateGray"))
+    ren1.SetBackground(colors.GetColor3d('SlateGray'))
     ren1.GetActiveCamera().SetFocalPoint(0, 0, 0)
     ren1.GetActiveCamera().SetPosition(0, -1, 0)
     ren1.GetActiveCamera().SetViewUp(0, 0, -1)
@@ -68,6 +68,7 @@ def main():
     ren1.ResetCameraClippingRange()
 
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('HeadBone')
 
     renWin.Render()
     iren.Start()

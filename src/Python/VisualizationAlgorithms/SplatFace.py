@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
-
 import vtk
 
 
@@ -51,7 +48,7 @@ def main():
 
     splatActor = vtk.vtkActor()
     splatActor.SetMapper(splatMapper)
-    splatActor.GetProperty().SetColor(colors.GetColor3d("Flesh"))
+    splatActor.GetProperty().SetColor(colors.GetColor3d('Flesh'))
 
     cyberMapper = vtk.vtkPolyDataMapper()
     cyberMapper.SetInputConnection(cyber.GetOutputPort())
@@ -60,14 +57,15 @@ def main():
     cyberActor = vtk.vtkActor()
     cyberActor.SetMapper(cyberMapper)
     cyberActor.GetProperty().SetRepresentationToWireframe()
-    cyberActor.GetProperty().SetColor(colors.GetColor3d("Turquoise"))
+    cyberActor.GetProperty().SetColor(colors.GetColor3d('Turquoise'))
 
     # Add the actors to the renderer, set the background and size.
     #
     ren1.AddActor(cyberActor)
     ren1.AddActor(splatActor)
-    ren1.SetBackground(colors.GetColor3d("Wheat"))
+    ren1.SetBackground(colors.GetColor3d('Wheat'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('SplatFace')
 
     camera = vtk.vtkCamera()
     camera.SetClippingRange(0.0332682, 1.66341)

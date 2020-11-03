@@ -69,7 +69,7 @@ def main():
 
     coneActor = vtk.vtkActor()
     coneActor.SetMapper(coneMapper)
-    coneActor.GetProperty().SetColor(colors.GetColor3d("chocolate"))
+    coneActor.GetProperty().SetColor(colors.GetColor3d('Chocolate'))
 
     # The same here for the ice cream.
     #
@@ -89,7 +89,7 @@ def main():
 
     creamActor = vtk.vtkActor()
     creamActor.SetMapper(creamMapper)
-    creamActor.GetProperty().SetDiffuseColor(colors.GetColor3d("mint"))
+    creamActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Mint'))
     creamActor.GetProperty().SetSpecular(.6)
     creamActor.GetProperty().SetSpecularPower(50)
 
@@ -107,8 +107,10 @@ def main():
     #
     ren1.AddActor(coneActor)
     ren1.AddActor(creamActor)
-    ren1.SetBackground(colors.GetColor3d("SlateGray"))
+    ren1.SetBackground(colors.GetColor3d('SlateGray'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('IceCream')
+
     ren1.ResetCamera()
     ren1.GetActiveCamera().Roll(90)
     ren1.GetActiveCamera().Dolly(1.25)

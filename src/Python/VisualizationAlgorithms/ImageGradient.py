@@ -73,7 +73,8 @@ def main():
     viewer.SetColorWindow(255.0)
     viewer.SetColorLevel(127.0)
     viewer.GetRenderWindow().SetSize(512, 512)
-    viewer.GetRenderer().SetBackground(colors.GetColor3d("Silver"))
+    viewer.GetRenderer().SetBackground(colors.GetColor3d('Silver'))
+    viewer.GetRenderWindow().SetWindowName('ImageGradient')
 
     # Create the RenderWindowInteractor.
     iren = vtk.vtkRenderWindowInteractor()

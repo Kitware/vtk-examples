@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
 
 import vtk
 
@@ -66,7 +64,7 @@ def main():
     outlineMapper.SetInputConnection(outline.GetOutputPort())
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Brown"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Brown'))
 
     # Create cone to indicate direction.
     cone = vtk.vtkConeSource()
@@ -78,16 +76,17 @@ def main():
     coneActor.SetScale(0.75, 0.75, 0.75)
     coneActor.RotateZ(45.0)
     coneActor.AddPosition(0.50, 0.50, 0.0)
-    coneActor.GetProperty().SetColor(colors.GetColor3d("DeepPink"))
+    coneActor.GetProperty().SetColor(colors.GetColor3d('DeepPink'))
     #
     # Rendering stuff.
     #
-    aren.SetBackground(colors.GetColor3d("Beige"))
+    aren.SetBackground(colors.GetColor3d('Beige'))
     aren.AddActor(splatActor)
     aren.AddActor(outlineActor)
     aren.AddActor(coneActor)
 
-    renWin.SetSize(640, 480)
+    renWin.SetSize(640, 640)
+    renWin.SetWindowName('SingleSplat')
     renWin.Render()
 
     # Interact with the data.

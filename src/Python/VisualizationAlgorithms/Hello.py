@@ -7,19 +7,19 @@ def main():
     fileName = get_program_parameters()
 
     colors = vtk.vtkNamedColors()
-    
-    # Create lines which serve as the "seed" geometry. The lines spell the
-    # word "hello".
+
+    # Create lines which serve as the 'seed' geometry. The lines spell the
+    # word 'hello'.
     #
-    reader= vtk.vtkPolyDataReader()
+    reader = vtk.vtkPolyDataReader()
     reader.SetFileName(fileName)
 
-    lineMapper= vtk.vtkPolyDataMapper()
+    lineMapper = vtk.vtkPolyDataMapper()
     lineMapper.SetInputConnection(reader.GetOutputPort())
 
-    lineActor= vtk.vtkActor()
+    lineActor = vtk.vtkActor()
     lineActor.SetMapper(lineMapper)
-    lineActor.GetProperty().SetColor(colors.GetColor3d("Tomato"))
+    lineActor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
     lineActor.GetProperty().SetLineWidth(3.0)
 
     # Create implicit model with vtkImplicitModeller. This computes a scalar
@@ -27,47 +27,48 @@ def main():
     # filter then extracts the geometry at the distance value 0.25 from the
     # generating geometry.
     #
-    imp= vtk.vtkImplicitModeller()
+    imp = vtk.vtkImplicitModeller()
     imp.SetInputConnection(reader.GetOutputPort())
     imp.SetSampleDimensions(110, 40, 20)
     imp.SetMaximumDistance(0.25)
     imp.SetModelBounds(-1.0, 10.0, -1.0, 3.0, -1.0, 1.0)
 
-    contour= vtk.vtkContourFilter()
+    contour = vtk.vtkContourFilter()
     contour.SetInputConnection(imp.GetOutputPort())
     contour.SetValue(0, 0.25)
 
-    impMapper= vtk.vtkPolyDataMapper()
+    impMapper = vtk.vtkPolyDataMapper()
     impMapper.SetInputConnection(contour.GetOutputPort())
     impMapper.ScalarVisibilityOff()
 
-    impActor= vtk.vtkActor()
+    impActor = vtk.vtkActor()
     impActor.SetMapper(impMapper)
-    impActor.GetProperty().SetColor(colors.GetColor3d("Peacock"))
+    impActor.GetProperty().SetColor(colors.GetColor3d('Peacock'))
     impActor.GetProperty().SetOpacity(0.5)
 
     # Create the usual graphics stuff.
     # Create the RenderWindow, Renderer and Interactor.
     #
-    ren1= vtk.vtkRenderer()
+    ren1 = vtk.vtkRenderer()
 
-    renWin= vtk.vtkRenderWindow()
+    renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren1)
+    renWin.SetWindowName('Hello')
 
-    iren= vtk.vtkRenderWindowInteractor()
+    iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size
     #
     ren1.AddActor(lineActor)
     ren1.AddActor(impActor)
-    ren1.SetBackground(colors.GetColor3d("Wheat"))
+    ren1.SetBackground(colors.GetColor3d('Wheat'))
     renWin.SetSize(640, 480)
 
-    camera= vtk.vtkCamera()
-    camera.SetFocalPoint(4.5, 1,  0)
+    camera = vtk.vtkCamera()
+    camera.SetFocalPoint(4.5, 1, 0)
     camera.SetPosition(4.5, 1.0, 6.73257)
-    camera.SetViewUp(0,  1,  0)
+    camera.SetViewUp(0, 1, 0)
 
     ren1.SetActiveCamera(camera)
     ren1.ResetCamera()

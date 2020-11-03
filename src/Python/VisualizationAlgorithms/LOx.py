@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
-
 import vtk
 
 
@@ -42,7 +39,7 @@ def main():
     floorActor = vtk.vtkActor()
     floorActor.SetMapper(floorMapper)
     floorActor.GetProperty().SetRepresentationToWireframe()
-    floorActor.GetProperty().SetColor(colors.GetColor3d("Beige"))
+    floorActor.GetProperty().SetColor(colors.GetColor3d('Beige'))
     floorActor.GetProperty().SetLineWidth(2)
 
     subFloorComp = vtk.vtkStructuredGridGeometryFilter()
@@ -83,7 +80,7 @@ def main():
 
     postActor = vtk.vtkActor()
     postActor.SetMapper(postMapper)
-    postActor.GetProperty().SetColor(colors.GetColor3d("Beige"))
+    postActor.GetProperty().SetColor(colors.GetColor3d('Beige'))
 
     fanComp = vtk.vtkStructuredGridGeometryFilter()
     fanComp.SetExtent(0, 37, 38, 38, 0, 37)
@@ -97,7 +94,7 @@ def main():
     fanActor = vtk.vtkActor()
 
     fanActor.SetMapper(fanMapper)
-    fanActor.GetProperty().SetColor(colors.GetColor3d("Beige"))
+    fanActor.GetProperty().SetColor(colors.GetColor3d('Beige'))
 
     # streamers
     #
@@ -125,7 +122,7 @@ def main():
     tubes = vtk.vtkTubeFilter()
     tubes.SetInputConnection(streamers.GetOutputPort())
     tubes.SetNumberOfSides(8)
-    tubes.SetRadius(.08)
+    tubes.SetRadius(0.08)
     tubes.SetVaryRadius(0)
 
     mapTubes = vtk.vtkPolyDataMapper()
@@ -145,7 +142,7 @@ def main():
 
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Beige"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Beige'))
 
     # Create graphics stuff.
     ren1 = vtk.vtkRenderer()
@@ -172,9 +169,10 @@ def main():
     #  aCam.Dolly(4.0)
     aCam.SetClippingRange(1, 100)
 
-    ren1.SetBackground(colors.GetColor3d("SlateGray"))
+    ren1.SetBackground(colors.GetColor3d('SlateGray'))
     ren1.SetActiveCamera(aCam)
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('LOx')
 
     renWin.Render()
     iren.Start()

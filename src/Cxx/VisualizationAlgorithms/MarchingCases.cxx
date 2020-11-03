@@ -7,6 +7,7 @@
 #include <vtkGlyph3D.h>
 #include <vtkIdList.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyDataMapper.h>
@@ -129,14 +130,11 @@ int main(int argc, char* argv[])
   }
   std::cout << "Rotated: " << rotation * 90 << " degrees." << std::endl;
 
-  vtkSmartPointer<vtkNamedColors> color =
-      vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> color;
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->SetSize(640, 480);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Always use a grid of four columns unless number of cases < 4.
@@ -148,7 +146,7 @@ int main(int argc, char* argv[])
   for (int i = 0; i < gridSize; ++i)
   {
     // Create the Renderer
-    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+    vtkNew<vtkRenderer> renderer;
     renderers.push_back(renderer);
     // Set the background color.
     renderers[i]->SetBackground(color->GetColor3d("slate_grey").GetData());
@@ -158,8 +156,7 @@ int main(int argc, char* argv[])
   for (size_t i = 0; i < mcCases.size(); ++i)
   {
     // Define a Single Cube
-    vtkSmartPointer<vtkFloatArray> Scalars =
-        vtkSmartPointer<vtkFloatArray>::New();
+    vtkNew<vtkFloatArray> Scalars;
     Scalars->InsertNextValue(1.0);
     Scalars->InsertNextValue(0.0);
     Scalars->InsertNextValue(0.0);
@@ -169,7 +166,7 @@ int main(int argc, char* argv[])
     Scalars->InsertNextValue(0.0);
     Scalars->InsertNextValue(0.0);
 
-    vtkSmartPointer<vtkPoints> Points = vtkSmartPointer<vtkPoints>::New();
+    vtkNew<vtkPoints> Points;
     Points->InsertNextPoint(0, 0, 0);
     Points->InsertNextPoint(1, 0, 0);
     Points->InsertNextPoint(1, 1, 0);
@@ -179,7 +176,7 @@ int main(int argc, char* argv[])
     Points->InsertNextPoint(1, 1, 1);
     Points->InsertNextPoint(0, 1, 1);
 
-    vtkSmartPointer<vtkIdList> Ids = vtkSmartPointer<vtkIdList>::New();
+    vtkNew<vtkIdList> Ids;
     Ids->InsertNextId(0);
     Ids->InsertNextId(1);
     Ids->InsertNextId(2);
@@ -189,42 +186,36 @@ int main(int argc, char* argv[])
     Ids->InsertNextId(6);
     Ids->InsertNextId(7);
 
-    vtkSmartPointer<vtkUnstructuredGrid> Grid =
-        vtkSmartPointer<vtkUnstructuredGrid>::New();
+    vtkNew<vtkUnstructuredGrid> Grid;
     Grid->Allocate(10, 10);
     Grid->InsertNextCell(12, Ids);
     Grid->SetPoints(Points);
     Grid->GetPointData()->SetScalars(Scalars);
 
     // Find the triangles that lie along the 0.5 contour in this cube.
-    vtkSmartPointer<vtkContourFilter> Marching =
-        vtkSmartPointer<vtkContourFilter>::New();
+    vtkNew<vtkContourFilter> Marching;
     Marching->SetInputData(Grid);
     Marching->SetValue(0, 0.5);
     Marching->Update();
 
     // Extract the edges of the triangles just found.
-    vtkSmartPointer<vtkExtractEdges> triangleEdges =
-        vtkSmartPointer<vtkExtractEdges>::New();
+    vtkNew<vtkExtractEdges> triangleEdges;
     triangleEdges->SetInputConnection(Marching->GetOutputPort());
 
     // Draw the edges as tubes instead of lines.  Also create the associated
     // mapper and actor to display the tubes.
-    vtkSmartPointer<vtkTubeFilter> triangleEdgeTubes =
-        vtkSmartPointer<vtkTubeFilter>::New();
+    vtkNew<vtkTubeFilter> triangleEdgeTubes;
     triangleEdgeTubes->SetInputConnection(triangleEdges->GetOutputPort());
     triangleEdgeTubes->SetRadius(.005);
     triangleEdgeTubes->SetNumberOfSides(6);
     triangleEdgeTubes->UseDefaultNormalOn();
     triangleEdgeTubes->SetDefaultNormal(.577, .577, .577);
 
-    vtkSmartPointer<vtkPolyDataMapper> triangleEdgeMapper =
-        vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> triangleEdgeMapper;
     triangleEdgeMapper->SetInputConnection(triangleEdgeTubes->GetOutputPort());
     triangleEdgeMapper->ScalarVisibilityOff();
 
-    vtkSmartPointer<vtkActor> triangleEdgeActor =
-        vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> triangleEdgeActor;
     triangleEdgeActor->SetMapper(triangleEdgeMapper);
     triangleEdgeActor->GetProperty()->SetDiffuseColor(
         color->GetColor3d("lamp_black").GetData());
@@ -233,17 +224,15 @@ int main(int argc, char* argv[])
 
     // Shrink the triangles we found earlier.  Create the associated mapper
     // and actor.  Set the opacity of the shrunken triangles.
-    vtkSmartPointer<vtkShrinkPolyData> aShrinker =
-        vtkSmartPointer<vtkShrinkPolyData>::New();
+    vtkNew<vtkShrinkPolyData> aShrinker;
     aShrinker->SetShrinkFactor(1);
     aShrinker->SetInputConnection(Marching->GetOutputPort());
 
-    vtkSmartPointer<vtkPolyDataMapper> aMapper =
-        vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> aMapper;
     aMapper->ScalarVisibilityOff();
     aMapper->SetInputConnection(aShrinker->GetOutputPort());
 
-    vtkSmartPointer<vtkActor> Triangles = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> Triangles;
     Triangles->SetMapper(aMapper);
     Triangles->GetProperty()->SetDiffuseColor(
         color->GetColor3d("banana").GetData());
@@ -253,26 +242,22 @@ int main(int argc, char* argv[])
     // created previously.  Extract the edges because we only want to see
     // the outline of the cube.  Pass the edges through a vtkTubeFilter so
     // they are displayed as tubes rather than lines.
-    vtkSmartPointer<vtkCubeSource> CubeModel =
-        vtkSmartPointer<vtkCubeSource>::New();
+    vtkNew<vtkCubeSource> CubeModel;
     CubeModel->SetCenter(.5, .5, .5);
 
-    vtkSmartPointer<vtkExtractEdges> Edges =
-        vtkSmartPointer<vtkExtractEdges>::New();
+    vtkNew<vtkExtractEdges> Edges;
     Edges->SetInputConnection(CubeModel->GetOutputPort());
 
-    vtkSmartPointer<vtkTubeFilter> Tubes =
-        vtkSmartPointer<vtkTubeFilter>::New();
+    vtkNew<vtkTubeFilter> Tubes;
     Tubes->SetInputConnection(Edges->GetOutputPort());
     Tubes->SetRadius(.01);
     Tubes->SetNumberOfSides(6);
     Tubes->UseDefaultNormalOn();
     Tubes->SetDefaultNormal(.577, .577, .577);
     // Create the mapper and actor to display the cube edges.
-    vtkSmartPointer<vtkPolyDataMapper> TubeMapper =
-        vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> TubeMapper;
     TubeMapper->SetInputConnection(Tubes->GetOutputPort());
-    vtkSmartPointer<vtkActor> CubeEdges = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> CubeEdges;
     CubeEdges->SetMapper(TubeMapper);
     CubeEdges->GetProperty()->SetDiffuseColor(
         color->GetColor3d("khaki").GetData());
@@ -280,44 +265,39 @@ int main(int argc, char* argv[])
     CubeEdges->GetProperty()->SetSpecularPower(10);
 
     // Create a sphere to use as a glyph source for vtkGlyph3D.
-    vtkSmartPointer<vtkSphereSource> Sphere =
-        vtkSmartPointer<vtkSphereSource>::New();
+    vtkNew<vtkSphereSource> Sphere;
     Sphere->SetRadius(0.04);
     Sphere->SetPhiResolution(20);
     Sphere->SetThetaResolution(20);
     // Remove the part of the cube with data values below 0.5.
-    vtkSmartPointer<vtkThresholdPoints> ThresholdIn =
-        vtkSmartPointer<vtkThresholdPoints>::New();
+    vtkNew<vtkThresholdPoints> ThresholdIn;
     ThresholdIn->SetInputData(Grid);
     ThresholdIn->ThresholdByUpper(.5);
     // Display spheres at the vertices remaining in the cube data set after
     // it was passed through vtkThresholdPoints.
-    vtkSmartPointer<vtkGlyph3D> Vertices = vtkSmartPointer<vtkGlyph3D>::New();
+    vtkNew<vtkGlyph3D> Vertices;
     Vertices->SetInputConnection(ThresholdIn->GetOutputPort());
     Vertices->SetSourceConnection(Sphere->GetOutputPort());
     // Create a mapper and actor to display the glyphs.
-    vtkSmartPointer<vtkPolyDataMapper> SphereMapper =
-        vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> SphereMapper;
     SphereMapper->SetInputConnection(Vertices->GetOutputPort());
     SphereMapper->ScalarVisibilityOff();
 
-    vtkSmartPointer<vtkActor> CubeVertices = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> CubeVertices;
     CubeVertices->SetMapper(SphereMapper);
     CubeVertices->GetProperty()->SetDiffuseColor(
         color->GetColor3d("tomato").GetData());
 
     // Define the text for the label
-    vtkSmartPointer<vtkVectorText> caseLabel =
-        vtkSmartPointer<vtkVectorText>::New();
+    vtkNew<vtkVectorText> caseLabel;
     caseLabel->SetText("Case 1");
 
-    vtkSmartPointer<vtkActor> labelActor = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> labelActor;
 
     if (label)
     {
       // Set up a transform to move the label to a new position.
-      vtkSmartPointer<vtkTransform> aLabelTransform =
-          vtkSmartPointer<vtkTransform>::New();
+      vtkNew<vtkTransform> aLabelTransform;
       aLabelTransform->Identity();
       // Position the label according to the rotation of the figure.
       switch (rotation)
@@ -345,31 +325,27 @@ int main(int argc, char* argv[])
       }
 
       // Move the label to a new position.
-      vtkSmartPointer<vtkTransformPolyDataFilter> labelTransform =
-          vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+      vtkNew<vtkTransformPolyDataFilter> labelTransform;
       labelTransform->SetTransform(aLabelTransform);
       labelTransform->SetInputConnection(caseLabel->GetOutputPort());
 
       // Create a mapper and actor to display the text.
-      vtkSmartPointer<vtkPolyDataMapper> labelMapper =
-          vtkSmartPointer<vtkPolyDataMapper>::New();
+      vtkNew<vtkPolyDataMapper> labelMapper;
       labelMapper->SetInputConnection(labelTransform->GetOutputPort());
 
       labelActor->SetMapper(labelMapper);
     }
     // Define the base that the cube sits on.  Create its associated mapper
     // and actor.  Set the position of the actor.
-    vtkSmartPointer<vtkCubeSource> baseModel =
-        vtkSmartPointer<vtkCubeSource>::New();
+    vtkNew<vtkCubeSource> baseModel;
     baseModel->SetXLength(1.5);
     baseModel->SetYLength(.01);
     baseModel->SetZLength(1.5);
 
-    vtkSmartPointer<vtkPolyDataMapper> baseMapper =
-        vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> baseMapper;
     baseMapper->SetInputConnection(baseModel->GetOutputPort());
 
-    vtkSmartPointer<vtkActor> base = vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> base;
     base->SetMapper(baseMapper);
     base->SetPosition(.5, -0.09, .5);
 
@@ -435,6 +411,8 @@ int main(int argc, char* argv[])
             << yGridDimensions << ")" << std::endl;
   renWin->SetSize(rendererSize * xGridDimensions,
                   rendererSize * yGridDimensions);
+  renWin->SetWindowName("MarchingCases");
+
   for (int row = 0; row < yGridDimensions; row++)
   {
     for (int col = 0; col < xGridDimensions; col++)

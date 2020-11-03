@@ -1,6 +1,7 @@
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPointSource.h>
 #include <vtkPolyDataMapper.h>
@@ -23,23 +24,23 @@ int main(int argc, char* argv[])
   {
     std::cout << "Usage: " << argv[0] << " filename [center]" << std::endl;
     std::cout
-      << "Demonstrate the use of vtkPointSource to generate streamlines."
-      << std::endl;
+        << "Demonstrate the use of vtkPointSource to generate streamlines."
+        << std::endl;
     std::cout << "Where: " << std::endl;
     std::cout << "       filename: office.binary.vtk" << std::endl;
     std::cout << "       center: An optional parameter choosing the center for "
                  "the seeds."
               << std::endl;
     std::cout
-      << "               0 - Corresponds to Fig 9-47(a) in the VTK textbook."
-      << std::endl;
+        << "               0 - Corresponds to Fig 9-47(a) in the VTK textbook."
+        << std::endl;
     std::cout << "               1 - A slight shift to the left." << std::endl;
     std::cout << "               2 - A slight shift to the upper left. (from "
                  "the Original code)."
               << std::endl;
     std::cout
-      << "               3 - The default, a slight shift to the upper left."
-      << std::endl;
+        << "               3 - The default, a slight shift to the upper left."
+        << std::endl;
     std::cout << "                   Roughly corresponds to Fig 9-47(b) in the "
                  "VTK textbook."
               << std::endl;
@@ -53,13 +54,12 @@ int main(int argc, char* argv[])
   }
   // These are the centers for the streamline seed.
   std::vector<std::array<double, 3>> seedCenters{
-    {0.0, 2.1, 0.5}, {0.1, 2.1, 0.5}, {0.1, 2.7, 0.5}, {0.08, 2.7, 0.5}};
+      {0.0, 2.1, 0.5}, {0.1, 2.1, 0.5}, {0.1, 2.7, 0.5}, {0.08, 2.7, 0.5}};
   center = (center < static_cast<int>(seedCenters.size()))
-             ? center
-             : static_cast<int>(seedCenters.size()) - 1;
+      ? center
+      : static_cast<int>(seedCenters.size()) - 1;
 
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
   std::array<double, 3> tableTopColor = {0.59, 0.427, 0.392};
   std::array<double, 3> filingCabinetColor = {0.8, 0.8, 0.6};
   std::array<double, 3> bookShelfColor = {0.8, 0.8, 0.6};
@@ -71,297 +71,239 @@ int main(int argc, char* argv[])
 
   // We read a data file that represents a CFD analysis of airflow in an office
   // (with ventilation and a burning cigarette).
-  auto reader =
-    vtkSmartPointer<vtkStructuredGridReader>::New();
+  vtkNew<vtkStructuredGridReader> reader;
   reader->SetFileName(argv[1]);
 
   // Create the scene.
   // We generate a whole bunch of planes which correspond to
   // the geometry in the analysis; tables, bookshelves and so on.
-  auto table1 =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> table1;
   table1->SetInputConnection(reader->GetOutputPort());
   table1->SetExtent(11, 15, 7, 9, 8, 8);
-  auto mapTable1 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapTable1;
   mapTable1->SetInputConnection(table1->GetOutputPort());
   mapTable1->ScalarVisibilityOff();
 
-  auto table1Actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> table1Actor;
   table1Actor->SetMapper(mapTable1);
   table1Actor->GetProperty()->SetColor(
-    colors->GetColor3d("TableTop").GetData());
+      colors->GetColor3d("TableTop").GetData());
 
-  auto table2 =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> table2;
   table2->SetInputConnection(reader->GetOutputPort());
   table2->SetExtent(11, 15, 10, 12, 8, 8);
-  auto mapTable2 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapTable2;
   mapTable2->SetInputConnection(table2->GetOutputPort());
   mapTable2->ScalarVisibilityOff();
-  auto table2Actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> table2Actor;
   table2Actor->SetMapper(mapTable2);
   table2Actor->GetProperty()->SetColor(
-    colors->GetColor3d("TableTop").GetData());
+      colors->GetColor3d("TableTop").GetData());
 
-  auto FilingCabinet1 =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> FilingCabinet1;
   FilingCabinet1->SetInputConnection(reader->GetOutputPort());
   FilingCabinet1->SetExtent(15, 15, 7, 9, 0, 8);
-  auto mapFilingCabinet1 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapFilingCabinet1;
   mapFilingCabinet1->SetInputConnection(FilingCabinet1->GetOutputPort());
   mapFilingCabinet1->ScalarVisibilityOff();
-  auto FilingCabinet1Actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> FilingCabinet1Actor;
   FilingCabinet1Actor->SetMapper(mapFilingCabinet1);
   FilingCabinet1Actor->GetProperty()->SetColor(
-    colors->GetColor3d("FilingCabinet").GetData());
+      colors->GetColor3d("FilingCabinet").GetData());
 
-  auto FilingCabinet2 =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> FilingCabinet2;
   FilingCabinet2->SetInputConnection(reader->GetOutputPort());
   FilingCabinet2->SetExtent(15, 15, 10, 12, 0, 8);
-  auto mapFilingCabinet2 =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapFilingCabinet2;
   mapFilingCabinet2->SetInputConnection(FilingCabinet2->GetOutputPort());
   mapFilingCabinet2->ScalarVisibilityOff();
-  auto FilingCabinet2Actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> FilingCabinet2Actor;
   FilingCabinet2Actor->SetMapper(mapFilingCabinet2);
   FilingCabinet2Actor->GetProperty()->SetColor(
-    colors->GetColor3d("FilingCabinet").GetData());
+      colors->GetColor3d("FilingCabinet").GetData());
 
-  auto bookshelf1Top =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf1Top;
   bookshelf1Top->SetInputConnection(reader->GetOutputPort());
   bookshelf1Top->SetExtent(13, 13, 0, 4, 0, 11);
-  auto mapBookshelf1Top =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf1Top;
 
   mapBookshelf1Top->SetInputConnection(bookshelf1Top->GetOutputPort());
   mapBookshelf1Top->ScalarVisibilityOff();
-  auto bookshelf1TopActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf1TopActor;
   bookshelf1TopActor->SetMapper(mapBookshelf1Top);
   bookshelf1TopActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto bookshelf1Bottom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf1Bottom;
   bookshelf1Bottom->SetInputConnection(reader->GetOutputPort());
   bookshelf1Bottom->SetExtent(20, 20, 0, 4, 0, 11);
-  auto mapBookshelf1Bottom =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf1Bottom;
   mapBookshelf1Bottom->SetInputConnection(bookshelf1Bottom->GetOutputPort());
   mapBookshelf1Bottom->ScalarVisibilityOff();
-  auto bookshelf1BottomActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf1BottomActor;
   bookshelf1BottomActor->SetMapper(mapBookshelf1Bottom);
   bookshelf1BottomActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto bookshelf1Front =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf1Front;
   bookshelf1Front->SetInputConnection(reader->GetOutputPort());
   bookshelf1Front->SetExtent(13, 20, 0, 0, 0, 11);
-  auto mapBookshelf1Front =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf1Front;
   mapBookshelf1Front->SetInputConnection(bookshelf1Front->GetOutputPort());
   mapBookshelf1Front->ScalarVisibilityOff();
-  auto bookshelf1FrontActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf1FrontActor;
   bookshelf1FrontActor->SetMapper(mapBookshelf1Front);
   bookshelf1FrontActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto bookshelf1Back =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf1Back;
   bookshelf1Back->SetInputConnection(reader->GetOutputPort());
   bookshelf1Back->SetExtent(13, 20, 4, 4, 0, 11);
-  auto mapBookshelf1Back =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf1Back;
   mapBookshelf1Back->SetInputConnection(bookshelf1Back->GetOutputPort());
   mapBookshelf1Back->ScalarVisibilityOff();
-  auto bookshelf1BackActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf1BackActor;
   bookshelf1BackActor->SetMapper(mapBookshelf1Back);
   bookshelf1BackActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto bookshelf1LHS =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf1LHS;
   bookshelf1LHS->SetInputConnection(reader->GetOutputPort());
   bookshelf1LHS->SetExtent(13, 20, 0, 4, 0, 0);
-  auto mapBookshelf1LHS =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf1LHS;
   mapBookshelf1LHS->SetInputConnection(bookshelf1LHS->GetOutputPort());
   mapBookshelf1LHS->ScalarVisibilityOff();
-  auto bookshelf1LHSActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf1LHSActor;
   bookshelf1LHSActor->SetMapper(mapBookshelf1LHS);
   bookshelf1LHSActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto bookshelf1RHS =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf1RHS;
   bookshelf1RHS->SetInputConnection(reader->GetOutputPort());
   bookshelf1RHS->SetExtent(13, 20, 0, 4, 11, 11);
-  auto mapBookshelf1RHS =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf1RHS;
   mapBookshelf1RHS->SetInputConnection(bookshelf1RHS->GetOutputPort());
   mapBookshelf1RHS->ScalarVisibilityOff();
-  auto bookshelf1RHSActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf1RHSActor;
   bookshelf1RHSActor->SetMapper(mapBookshelf1RHS);
   bookshelf1RHSActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto bookshelf2Top =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf2Top;
   bookshelf2Top->SetInputConnection(reader->GetOutputPort());
   bookshelf2Top->SetExtent(13, 13, 15, 19, 0, 11);
-  auto mapBookshelf2Top =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf2Top;
   mapBookshelf2Top->SetInputConnection(bookshelf2Top->GetOutputPort());
   mapBookshelf2Top->ScalarVisibilityOff();
-  auto bookshelf2TopActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf2TopActor;
   bookshelf2TopActor->SetMapper(mapBookshelf2Top);
   bookshelf2TopActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto bookshelf2Bottom =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf2Bottom;
   bookshelf2Bottom->SetInputConnection(reader->GetOutputPort());
   bookshelf2Bottom->SetExtent(20, 20, 15, 19, 0, 11);
-  auto mapBookshelf2Bottom =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf2Bottom;
   mapBookshelf2Bottom->SetInputConnection(bookshelf2Bottom->GetOutputPort());
   mapBookshelf2Bottom->ScalarVisibilityOff();
-  auto bookshelf2BottomActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf2BottomActor;
   bookshelf2BottomActor->SetMapper(mapBookshelf2Bottom);
   bookshelf2BottomActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto bookshelf2Front =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf2Front;
   bookshelf2Front->SetInputConnection(reader->GetOutputPort());
   bookshelf2Front->SetExtent(13, 20, 15, 15, 0, 11);
-  auto mapBookshelf2Front =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf2Front;
   mapBookshelf2Front->SetInputConnection(bookshelf2Front->GetOutputPort());
   mapBookshelf2Front->ScalarVisibilityOff();
-  auto bookshelf2FrontActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf2FrontActor;
 
   bookshelf2FrontActor->SetMapper(mapBookshelf2Front);
   bookshelf2FrontActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto bookshelf2Back =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf2Back;
   bookshelf2Back->SetInputConnection(reader->GetOutputPort());
   bookshelf2Back->SetExtent(13, 20, 19, 19, 0, 11);
-  auto mapBookshelf2Back =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf2Back;
   mapBookshelf2Back->SetInputConnection(bookshelf2Back->GetOutputPort());
   mapBookshelf2Back->ScalarVisibilityOff();
-  auto bookshelf2BackActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf2BackActor;
   bookshelf2BackActor->SetMapper(mapBookshelf2Back);
   bookshelf2BackActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto bookshelf2LHS =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf2LHS;
 
   bookshelf2LHS->SetInputConnection(reader->GetOutputPort());
   bookshelf2LHS->SetExtent(13, 20, 15, 19, 0, 0);
-  auto mapBookshelf2LHS =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf2LHS;
   mapBookshelf2LHS->SetInputConnection(bookshelf2LHS->GetOutputPort());
   mapBookshelf2LHS->ScalarVisibilityOff();
-  auto bookshelf2LHSActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf2LHSActor;
   bookshelf2LHSActor->SetMapper(mapBookshelf2LHS);
   bookshelf2LHSActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto bookshelf2RHS =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> bookshelf2RHS;
   bookshelf2RHS->SetInputConnection(reader->GetOutputPort());
   bookshelf2RHS->SetExtent(13, 20, 15, 19, 11, 11);
-  auto mapBookshelf2RHS =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapBookshelf2RHS;
   mapBookshelf2RHS->SetInputConnection(bookshelf2RHS->GetOutputPort());
   mapBookshelf2RHS->ScalarVisibilityOff();
-  auto bookshelf2RHSActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> bookshelf2RHSActor;
   bookshelf2RHSActor->SetMapper(mapBookshelf2RHS);
   bookshelf2RHSActor->GetProperty()->SetColor(
-    colors->GetColor3d("BookShelf").GetData());
+      colors->GetColor3d("BookShelf").GetData());
 
-  auto window =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> window;
   window->SetInputConnection(reader->GetOutputPort());
   window->SetExtent(20, 20, 6, 13, 10, 13);
-  auto mapWindow =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapWindow;
 
   mapWindow->SetInputConnection(window->GetOutputPort());
   mapWindow->ScalarVisibilityOff();
-  auto windowActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> windowActor;
   windowActor->SetMapper(mapWindow);
   windowActor->GetProperty()->SetColor(colors->GetColor3d("Window").GetData());
 
-  auto outlet =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> outlet;
   outlet->SetInputConnection(reader->GetOutputPort());
   outlet->SetExtent(0, 0, 9, 10, 14, 16);
-  auto mapOutlet =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapOutlet;
   mapOutlet->SetInputConnection(outlet->GetOutputPort());
   mapOutlet->ScalarVisibilityOff();
-  auto outletActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outletActor;
   outletActor->SetMapper(mapOutlet);
   outletActor->GetProperty()->SetColor(
-    colors->GetColor3d("lamp_black").GetData());
+      colors->GetColor3d("lamp_black").GetData());
 
-  auto inlet =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> inlet;
   inlet->SetInputConnection(reader->GetOutputPort());
   inlet->SetExtent(0, 0, 9, 10, 0, 6);
-  auto mapInlet =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapInlet;
   mapInlet->SetInputConnection(inlet->GetOutputPort());
   mapInlet->ScalarVisibilityOff();
-  auto inletActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> inletActor;
   inletActor->SetMapper(mapInlet);
   inletActor->GetProperty()->SetColor(
-    colors->GetColor3d("lamp_black").GetData());
+      colors->GetColor3d("lamp_black").GetData());
 
-  auto outline =
-    vtkSmartPointer<vtkStructuredGridOutlineFilter>::New();
+  vtkNew<vtkStructuredGridOutlineFilter> outline;
   outline->SetInputConnection(reader->GetOutputPort());
-  auto mapOutline =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapOutline;
   mapOutline->SetInputConnection(outline->GetOutputPort());
-  auto outlineActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(mapOutline);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
   // Create the source for the streamtubes.
-  auto seeds =
-    vtkSmartPointer<vtkPointSource>::New();
+  vtkNew<vtkPointSource> seeds;
   seeds->SetRadius(0.075);
   seeds->SetCenter(seedCenters[center].data());
   seeds->SetNumberOfPoints(25);
-  auto streamers =
-    vtkSmartPointer<vtkStreamTracer>::New();
+  vtkNew<vtkStreamTracer> streamers;
   streamers->SetInputConnection(reader->GetOutputPort());
   streamers->SetSourceConnection(seeds->GetOutputPort());
   streamers->SetMaximumPropagation(500);
@@ -370,21 +312,18 @@ int main(int argc, char* argv[])
   streamers->SetInitialIntegrationStep(0.2);
   streamers->SetIntegratorType(2);
   streamers->Update();
-  auto mapStreamers =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapStreamers;
   mapStreamers->SetInputConnection(streamers->GetOutputPort());
   mapStreamers->SetScalarRange(
-    reader->GetOutput()->GetPointData()->GetScalars()->GetRange());
-  auto streamersActor = vtkSmartPointer<vtkActor>::New();
+      reader->GetOutput()->GetPointData()->GetScalars()->GetRange());
+  vtkNew<vtkActor> streamersActor;
   streamersActor->SetMapper(mapStreamers);
 
   // Now create the usual graphics stuff.
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  auto interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderer->AddActor(table1Actor);
@@ -412,8 +351,7 @@ int main(int argc, char* argv[])
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Here we specify a particular view.
-  auto aCamera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> aCamera;
   aCamera->SetClippingRange(0.726079, 36.3039);
   aCamera->SetFocalPoint(2.43584, 2.15046, 1.11104);
   aCamera->SetPosition(-4.76183, -10.4426, 3.17203);
@@ -424,6 +362,8 @@ int main(int argc, char* argv[])
   renderer->SetActiveCamera(aCamera);
 
   renderWindow->SetSize(640, 400);
+  renderWindow->SetWindowName("Office");
+
   renderWindow->Render();
   interactor->Start();
 

@@ -2,6 +2,7 @@
 #include <vtkCamera.h>
 #include <vtkContourFilter.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -10,7 +11,7 @@
 #include <vtkRenderer.h>
 #include <vtkStructuredPointsReader.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
@@ -18,65 +19,55 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
   }
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-// Create the RenderWindow, Renderer and both Actors
-//
+  // Create the RenderWindow, Renderer and both Actors
+  //
 
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren1;
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-// create pipeline
-//
-  vtkSmartPointer<vtkStructuredPointsReader> reader =
-    vtkSmartPointer<vtkStructuredPointsReader>::New();
+  // create pipeline
+  //
+  vtkNew<vtkStructuredPointsReader> reader;
   reader->SetFileName(argv[1]);
 
-  vtkSmartPointer<vtkContourFilter> iso =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> iso;
   iso->SetInputConnection(reader->GetOutputPort());
   iso->SetValue(0, 128);
 
-  vtkSmartPointer<vtkPolyDataMapper> isoMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> isoMapper;
   isoMapper->SetInputConnection(iso->GetOutputPort());
   isoMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> isoActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> isoActor;
   isoActor->SetMapper(isoMapper);
   isoActor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
 
-  vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
 
-// Add the actors to the renderer, set the background and size
-//
+  // Add the actors to the renderer, set the background and size
+  //
   ren1->AddActor(outlineActor);
   ren1->AddActor(isoActor);
   ren1->SetBackground(colors->GetColor3d("SlateGray").GetData());
-  renWin->SetSize(640, 512);
+  renWin->SetSize(640, 640);
+  renWin->SetWindowName("IronIsoSurface");
 
-// render the image
-//
+  // render the image
+  //
   ren1->ResetCamera();
   ren1->GetActiveCamera()->Azimuth(30);
   ren1->GetActiveCamera()->Elevation(30);

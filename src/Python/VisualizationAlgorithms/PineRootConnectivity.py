@@ -5,11 +5,11 @@ import vtk
 
 def pine_root_connectivity(fileName, noConnectivity):
     def NumberOfTriangles(pd):
-        """
+        '''
         Count the number of triangles.
         :param pd: vtkPolyData.
         :return: The number of triangles.
-        """
+        '''
         cells = pd.GetPolys()
         numOfTriangles = 0
         idList = vtk.vtkIdList()
@@ -27,16 +27,16 @@ def pine_root_connectivity(fileName, noConnectivity):
     reader.SetFileName(fileName)
     if not noConnectivity:
         reader.Update()
-        print("Before Connectivity.")
-        print("There are: ", NumberOfTriangles(reader.GetOutput()), "triangles")
+        print('Before Connectivity.')
+        print('There are: ', NumberOfTriangles(reader.GetOutput()), 'triangles')
 
     connect = vtk.vtkPolyDataConnectivityFilter()
     connect.SetInputConnection(reader.GetOutputPort())
     connect.SetExtractionModeToLargestRegion()
     if not noConnectivity:
         connect.Update()
-        print("After Connectivity.")
-        print("There are: ", NumberOfTriangles(connect.GetOutput()), "triangles")
+        print('After Connectivity.')
+        print('There are: ', NumberOfTriangles(connect.GetOutput()), 'triangles')
 
     isoMapper = vtk.vtkPolyDataMapper()
     if noConnectivity:
@@ -46,7 +46,7 @@ def pine_root_connectivity(fileName, noConnectivity):
     isoMapper.ScalarVisibilityOff()
     isoActor = vtk.vtkActor()
     isoActor.SetMapper(isoMapper)
-    isoActor.GetProperty().SetColor(colors.GetColor3d("raw_sienna"))
+    isoActor.GetProperty().SetColor(colors.GetColor3d('raw_sienna'))
 
     #  Get an outline of the data set for context.
     outline = vtk.vtkOutlineFilter()
@@ -55,7 +55,7 @@ def pine_root_connectivity(fileName, noConnectivity):
     outlineMapper.SetInputConnection(outline.GetOutputPort())
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # Create the Renderer, RenderWindow and RenderWindowInteractor.
     ren = vtk.vtkRenderer()
@@ -68,7 +68,9 @@ def pine_root_connectivity(fileName, noConnectivity):
     ren.AddActor(outlineActor)
     ren.AddActor(isoActor)
     renWin.SetSize(512, 512)
-    ren.SetBackground(colors.GetColor3d("SlateGray"))
+    renWin.SetWindowName('PineRootConnectivity')
+
+    ren.SetBackground(colors.GetColor3d('SlateGray'))
 
     # render the image
     #
@@ -84,6 +86,7 @@ def pine_root_connectivity(fileName, noConnectivity):
     iren.Initialize()
     renWin.Render()
     iren.Start()
+
 
 def main():
     fileName, noConnectivity = get_program_parameters()
