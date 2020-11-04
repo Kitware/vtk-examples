@@ -7,6 +7,7 @@
 #include <vtkImageDataGeometryFilter.h>
 #include <vtkLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPointLoad.h>
 #include <vtkPolyDataMapper.h>
@@ -16,102 +17,88 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkTensorGlyph.h>
 
-namespace
-{
+namespace {
 void MakeLogLUT(vtkLookupTable* lut);
 }
 
 int main(int, char*[])
 {
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Create the RenderWindow, Renderer and interactive renderer.
   //
-  vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Generate the tensors.
-  vtkSmartPointer<vtkPointLoad> ptLoad = vtkSmartPointer<vtkPointLoad>::New();
+  vtkNew<vtkPointLoad> ptLoad;
   ptLoad->SetLoadValue(100.0);
   ptLoad->SetSampleDimensions(6, 6, 6);
   ptLoad->ComputeEffectiveStressOn();
   ptLoad->SetModelBounds(-10, 10, -10, 10, -10, 10);
 
   // Extract a plane of data.
-  vtkSmartPointer<vtkImageDataGeometryFilter> plane =
-    vtkSmartPointer<vtkImageDataGeometryFilter>::New();
+  vtkNew<vtkImageDataGeometryFilter> plane;
   plane->SetInputConnection(ptLoad->GetOutputPort());
   plane->SetExtent(2, 2, 0, 99, 0, 99);
 
   // Generate the ellipsoids.
-  vtkSmartPointer<vtkSphereSource> sphere =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphere;
   sphere->SetThetaResolution(8);
   sphere->SetPhiResolution(8);
-  vtkSmartPointer<vtkTensorGlyph> tensorEllipsoids =
-    vtkSmartPointer<vtkTensorGlyph>::New();
+  vtkNew<vtkTensorGlyph> tensorEllipsoids;
   tensorEllipsoids->SetInputConnection(ptLoad->GetOutputPort());
   tensorEllipsoids->SetSourceConnection(sphere->GetOutputPort());
   tensorEllipsoids->SetScaleFactor(10);
   tensorEllipsoids->ClampScalingOn();
 
-  vtkSmartPointer<vtkPolyDataNormals> ellipNormals =
-    vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> ellipNormals;
   ellipNormals->SetInputConnection(tensorEllipsoids->GetOutputPort());
 
   // Map contour.
-  vtkSmartPointer<vtkLookupTable> lut = vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lut;
   MakeLogLUT(lut);
-  vtkSmartPointer<vtkPolyDataMapper> tensorEllipsoidsMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> tensorEllipsoidsMapper;
   tensorEllipsoidsMapper->SetInputConnection(ellipNormals->GetOutputPort());
   tensorEllipsoidsMapper->SetLookupTable(lut);
   plane->Update(); // force update for scalar range
   tensorEllipsoidsMapper->SetScalarRange(plane->GetOutput()->GetScalarRange());
 
-  vtkSmartPointer<vtkActor> tensorActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> tensorActor;
   tensorActor->SetMapper(tensorEllipsoidsMapper);
 
   // Create an outline around the data.
   //
-  vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(ptLoad->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
   // Create a cone whose apex indicates the application of load.
   //
-  vtkSmartPointer<vtkConeSource> coneSrc =
-    vtkSmartPointer<vtkConeSource>::New();
+  vtkNew<vtkConeSource> coneSrc;
   coneSrc->SetRadius(0.5);
   coneSrc->SetHeight(2);
-  vtkSmartPointer<vtkPolyDataMapper> coneMap =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> coneMap;
   coneMap->SetInputConnection(coneSrc->GetOutputPort());
-  vtkSmartPointer<vtkActor> coneActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> coneActor;
   coneActor->SetMapper(coneMap);
   coneActor->SetPosition(0, 0, 11);
   coneActor->RotateY(90);
   coneActor->GetProperty()->SetColor(colors->GetColor3d("Red").GetData());
 
-  vtkSmartPointer<vtkCamera> camera = vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
   camera->SetFocalPoint(0.113766, -1.13665, -1.01919);
   camera->SetPosition(-29.4886, -63.1488, 26.5807);
   camera->SetViewAngle(24.4617);
@@ -125,6 +112,7 @@ int main(int, char*[])
   ren->SetActiveCamera(camera);
 
   renWin->SetSize(512, 512);
+  renWin->SetWindowName("TensorEllipsoids");
 
   iren->Initialize();
   renWin->Render();
@@ -133,13 +121,11 @@ int main(int, char*[])
   return EXIT_SUCCESS;
 }
 
-namespace
-{
+namespace {
 void MakeLogLUT(vtkLookupTable* lut)
 {
   // Make the lookup using a Brewer palette.
-  vtkSmartPointer<vtkColorSeries> colorSeries =
-    vtkSmartPointer<vtkColorSeries>::New();
+  vtkNew<vtkColorSeries> colorSeries;
   colorSeries->SetNumberOfColors(8);
   int colorSeriesEnum = colorSeries->BREWER_DIVERGING_SPECTRAL_8;
   colorSeries->SetColorScheme(colorSeriesEnum);
@@ -151,4 +137,4 @@ void MakeLogLUT(vtkLookupTable* lut)
   // lut->SetHueRange(.6667, 0.0);
   // lut->Build();
 }
-}
+} // namespace

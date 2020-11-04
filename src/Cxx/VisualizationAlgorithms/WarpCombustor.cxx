@@ -4,6 +4,7 @@
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiBlockPLOT3DReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPolyDataNormals.h>
 #include <vtkProperty.h>
@@ -24,7 +25,7 @@
 // in the direction of the local normal at each point. This gives a sort of
 // "velocity profile" that indicates the nature of the flow.
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 3)
   {
@@ -35,107 +36,93 @@ int main (int argc, char *argv[])
   // in a gas turbine (e.g., a jet engine) and the hot gas eventually makes its
   // way to the turbine section.
   //
-  vtkSmartPointer<vtkMultiBlockPLOT3DReader> pl3d =
-    vtkSmartPointer<vtkMultiBlockPLOT3DReader>::New();
+  vtkNew<vtkMultiBlockPLOT3DReader> pl3d;
   pl3d->SetXYZFileName(argv[1]);
   pl3d->SetQFileName(argv[2]);
   pl3d->SetScalarFunctionNumber(100);
   pl3d->SetVectorFunctionNumber(202);
   pl3d->Update();
 
-  vtkStructuredGrid *pl3dOutput =
-    dynamic_cast<vtkStructuredGrid*>(pl3d->GetOutput()->GetBlock(0));
+  vtkStructuredGrid* pl3dOutput =
+      dynamic_cast<vtkStructuredGrid*>(pl3d->GetOutput()->GetBlock(0));
 
   // Planes are specified using a imin,imax, jmin,jmax, kmin,kmax coordinate
   // specification. Min and max i,j,k values are clamped to 0 and maximum value.
   //
-  vtkSmartPointer<vtkStructuredGridGeometryFilter> plane =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> plane;
   plane->SetInputData(pl3dOutput);
   plane->SetExtent(10, 10, 1, 100, 1, 100);
-  
-  vtkSmartPointer<vtkStructuredGridGeometryFilter> plane2 =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+
+  vtkNew<vtkStructuredGridGeometryFilter> plane2;
   plane2->SetInputData(pl3dOutput);
   plane2->SetExtent(30, 30, 1, 100, 1, 100);
-  vtkSmartPointer<vtkStructuredGridGeometryFilter> plane3 =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> plane3;
   plane3->SetInputData(pl3dOutput);
   plane3->SetExtent(45, 45, 1, 100, 1, 100);
 
   // We use an append filter because that way we can do the warping, etc. just
   // using a single pipeline and actor.
   //
-  vtkSmartPointer<vtkAppendPolyData> appendF =
-    vtkSmartPointer<vtkAppendPolyData>::New();
+  vtkNew<vtkAppendPolyData> appendF;
   appendF->AddInputConnection(plane->GetOutputPort());
   appendF->AddInputConnection(plane2->GetOutputPort());
   appendF->AddInputConnection(plane3->GetOutputPort());
 
-  vtkSmartPointer<vtkWarpScalar> warp =
-    vtkSmartPointer<vtkWarpScalar>::New();
+  vtkNew<vtkWarpScalar> warp;
   warp->SetInputConnection(appendF->GetOutputPort());
   warp->UseNormalOn();
   warp->SetNormal(1.0, 0.0, 0.0);
   warp->SetScaleFactor(2.5);
 
-  vtkSmartPointer<vtkPolyDataNormals> normals =
-    vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> normals;
   normals->SetInputConnection(warp->GetOutputPort());
   normals->SetFeatureAngle(60);
 
-  vtkSmartPointer<vtkPolyDataMapper> planeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> planeMapper;
   planeMapper->SetInputConnection(normals->GetOutputPort());
   planeMapper->SetScalarRange(pl3dOutput->GetScalarRange());
 
-  vtkSmartPointer<vtkActor> planeActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> planeActor;
   planeActor->SetMapper(planeMapper);
 
   // The outline provides context for the data and the planes.
-  vtkSmartPointer<vtkStructuredGridOutlineFilter> outline =
-    vtkSmartPointer<vtkStructuredGridOutlineFilter>::New();
+  vtkNew<vtkStructuredGridOutlineFilter> outline;
   outline->SetInputData(pl3dOutput);
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkActor> outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
   // Create the usual graphics stuff/
   //
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren1;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   ren1->AddActor(outlineActor);
   ren1->AddActor(planeActor);
   ren1->SetBackground(colors->GetColor3d("Silver").GetData());
-  renWin->SetSize(640, 480);
 
-// Create an initial view.
+  renWin->SetSize(640, 480);
+  renWin->SetWindowName("WarpCombustor");
+
+  // Create an initial view.
   ren1->GetActiveCamera()->SetClippingRange(3.95297, 50);
   ren1->GetActiveCamera()->SetFocalPoint(8.88908, 0.595038, 29.3342);
   ren1->GetActiveCamera()->SetPosition(-12.3332, 31.7479, 41.2387);
   ren1->GetActiveCamera()->SetViewUp(0.060772, -0.319905, 0.945498);
   iren->Initialize();
 
-// render the image
-//
+  // render the image
+  //
   renWin->Render();
   iren->Start();
   return EXIT_SUCCESS;

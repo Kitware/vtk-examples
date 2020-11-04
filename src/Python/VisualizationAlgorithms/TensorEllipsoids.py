@@ -64,7 +64,7 @@ def main():
 
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # Create a cone whose apex indicates the application of load.
     #
@@ -77,7 +77,7 @@ def main():
     coneActor.SetMapper(coneMap)
     coneActor.SetPosition(0, 0, 11)
     coneActor.RotateY(90)
-    coneActor.GetProperty().SetColor(colors.GetColor3d("Red"))
+    coneActor.GetProperty().SetColor(colors.GetColor3d('Red'))
 
     camera = vtk.vtkCamera()
     camera.SetFocalPoint(0.113766, -1.13665, -1.01919)
@@ -89,10 +89,11 @@ def main():
     ren.AddActor(tensorActor)
     ren.AddActor(outlineActor)
     ren.AddActor(coneActor)
-    ren.SetBackground(colors.GetColor3d("WhiteSmoke"))
+    ren.SetBackground(colors.GetColor3d('WhiteSmoke'))
     ren.SetActiveCamera(camera)
 
     renWin.SetSize(512, 512)
+    renWin.SetWindowName('TensorEllipsoids')
 
     iren.Initialize()
     renWin.Render()

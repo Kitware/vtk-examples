@@ -7,13 +7,13 @@
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiBlockPLOT3DReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPolyDataNormals.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkStructuredGrid.h>
 #include <vtkStructuredGridGeometryFilter.h>
 #include <vtkStructuredGridOutlineFilter.h>
@@ -24,11 +24,11 @@
 
 int main(int argc, char* argv[])
 {
-//   auto Scale = [](std::vector<double>& v, double scale) {
-//     std::transform(std::begin(v), std::end(v), std::begin(v),
-//                    [=](double const& n) { return n / scale; });
-//     return;
-//   };
+  //   auto Scale = [](std::vector<double>& v, double scale) {
+  //     std::transform(std::begin(v), std::end(v), std::begin(v),
+  //                    [=](double const& n) { return n / scale; });
+  //     return;
+  //   };
 
   if (argc < 2)
   {
@@ -43,16 +43,14 @@ int main(int argc, char* argv[])
   std::string fileName1 = argv[1];
   std::string fileName2 = argv[2];
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-  std::array<unsigned char , 4> bkg{{65, 99, 149}};
-    colors->SetColor("BkgColor", bkg.data());
+  std::array<unsigned char, 4> bkg{{65, 99, 149}};
+  colors->SetColor("BkgColor", bkg.data());
 
   // Read a vtk file
   //
-  vtkSmartPointer<vtkMultiBlockPLOT3DReader> pl3d =
-    vtkSmartPointer<vtkMultiBlockPLOT3DReader>::New();
+  vtkNew<vtkMultiBlockPLOT3DReader> pl3d;
   pl3d->SetXYZFileName(fileName1.c_str());
   pl3d->SetQFileName(fileName2.c_str());
   pl3d->SetScalarFunctionNumber(100); // Density
@@ -60,7 +58,7 @@ int main(int argc, char* argv[])
   pl3d->Update();
 
   vtkStructuredGrid* pl3dOutput =
-    dynamic_cast<vtkStructuredGrid*>(pl3d->GetOutput()->GetBlock(0));
+      dynamic_cast<vtkStructuredGrid*>(pl3d->GetOutput()->GetBlock(0));
 
   // What do we know about the data?
   // Get the extent of the data: imin,imax, jmin,jmax, kmin,kmax
@@ -73,71 +71,61 @@ int main(int argc, char* argv[])
   // specification. Min and max i,j,k values are clamped to 0 and maximum value.
   // See the variable named extent for the values.
   //
-  vtkSmartPointer<vtkStructuredGridGeometryFilter> plane =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> plane;
   plane->SetInputData(pl3dOutput);
   plane->SetExtent(10, 10, 1, extent[3], 1, extent[5]);
 
-  vtkSmartPointer<vtkStructuredGridGeometryFilter> plane2 =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> plane2;
   plane2->SetInputData(pl3dOutput);
   plane2->SetExtent(30, 30, 1, extent[3], 1, extent[5]);
 
-  vtkSmartPointer<vtkStructuredGridGeometryFilter> plane3 =
-    vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+  vtkNew<vtkStructuredGridGeometryFilter> plane3;
   plane3->SetInputData(pl3dOutput);
   plane3->SetExtent(45, 45, 1, extent[3], 1, extent[5]);
 
   // We use an append filter because that way we can do the warping, etc. just
   // using a single pipeline and actor.
   //
-  vtkSmartPointer<vtkAppendPolyData> appendF =
-    vtkSmartPointer<vtkAppendPolyData>::New();
+  vtkNew<vtkAppendPolyData> appendF;
   appendF->AddInputConnection(plane->GetOutputPort());
   appendF->AddInputConnection(plane2->GetOutputPort());
   appendF->AddInputConnection(plane3->GetOutputPort());
 
   // Warp
-  vtkSmartPointer<vtkWarpVector> warp = vtkSmartPointer<vtkWarpVector>::New();
+  vtkNew<vtkWarpVector> warp;
   warp->SetInputConnection(appendF->GetOutputPort());
   warp->SetScaleFactor(0.005);
   warp->Update();
 
-  vtkSmartPointer<vtkPolyDataNormals> normals =
-    vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> normals;
   normals->SetInputData(warp->GetPolyDataOutput());
   normals->SetFeatureAngle(45);
 
-  vtkSmartPointer<vtkPolyDataMapper> planeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> planeMapper;
   planeMapper->SetInputConnection(normals->GetOutputPort());
   planeMapper->SetScalarRange(scalarRange);
 
-  vtkSmartPointer<vtkActor> planeActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> planeActor;
   planeActor->SetMapper(planeMapper);
 
   // The outline provides context for the data and the planes.
-  vtkSmartPointer<vtkStructuredGridOutlineFilter> outline =
-    vtkSmartPointer<vtkStructuredGridOutlineFilter>::New();
+  vtkNew<vtkStructuredGridOutlineFilter> outline;
   outline->SetInputData(pl3dOutput);
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
   // Create the RenderWindow, Renderer and both Actors
   //
-  vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Add the actors to the renderer, set the background and size
@@ -145,7 +133,9 @@ int main(int argc, char* argv[])
   ren->AddActor(planeActor);
   ren->AddActor(outlineActor);
   ren->SetBackground(colors->GetColor3d("BkgColor").GetData());
+
   renWin->SetSize(512, 512);
+  renWin->SetWindowName("VelocityProfile");
 
   iren->Initialize();
 

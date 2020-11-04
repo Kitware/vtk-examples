@@ -1,60 +1,61 @@
-#include <vtkSmartPointer.h>
-
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
+#include <vtkNew.h>
 #include <vtkParametricFunctionSource.h>
-#include <vtkTupleInterpolator.h>
-#include <vtkTubeFilter.h>
 #include <vtkParametricSpline.h>
-
+#include <vtkTubeFilter.h>
+#include <vtkTupleInterpolator.h>
 #include <vtkDoubleArray.h>
+#include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
-#include <vtkPointData.h>
-
+#include <vtkActor.h>
+#include <vtkNamedColors.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkActor.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkNamedColors.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  auto points =
-    vtkSmartPointer<vtkPoints>::New();
-  points->InsertPoint(0,1,0,0);
-  points->InsertPoint(1,2,0,0);
-  points->InsertPoint(2,3,1,0);
-  points->InsertPoint(3,4,1,0);
-  points->InsertPoint(4,5,0,0);
-  points->InsertPoint(5,6,0,0);
+  vtkNew<vtkPoints> points;
+  points->InsertPoint(0, 1, 0, 0);
+  points->InsertPoint(1, 2, 0, 0);
+  points->InsertPoint(2, 3, 1, 0);
+  points->InsertPoint(3, 4, 1, 0);
+  points->InsertPoint(4, 5, 0, 0);
+  points->InsertPoint(5, 6, 0, 0);
 
   // Fit a spline to the points
-  auto spline =
-    vtkSmartPointer<vtkParametricSpline>::New();
+  vtkNew<vtkParametricSpline> spline;
   spline->SetPoints(points);
-  auto functionSource =
-    vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricFunctionSource> functionSource;
   functionSource->SetParametricFunction(spline);
   functionSource->SetUResolution(10 * points->GetNumberOfPoints());
   functionSource->Update();
 
   // Interpolate the scalars
   double rad;
-  auto interpolatedRadius =
-    vtkSmartPointer<vtkTupleInterpolator> ::New();
+  vtkNew<vtkTupleInterpolator> interpolatedRadius;
   interpolatedRadius->SetInterpolationTypeToLinear();
   interpolatedRadius->SetNumberOfComponents(1);
-  rad = .2; interpolatedRadius->AddTuple(0,&rad);
-  rad = .2; interpolatedRadius->AddTuple(1,&rad);
-  rad = .2; interpolatedRadius->AddTuple(2,&rad);
-  rad = .1; interpolatedRadius->AddTuple(3,&rad);
-  rad = .1; interpolatedRadius->AddTuple(4,&rad);
-  rad = .1; interpolatedRadius->AddTuple(5,&rad);
+  rad = .2;
+  interpolatedRadius->AddTuple(0, &rad);
+  rad = .2;
+  interpolatedRadius->AddTuple(1, &rad);
+  rad = .2;
+  interpolatedRadius->AddTuple(2, &rad);
+  rad = .1;
+  interpolatedRadius->AddTuple(3, &rad);
+  rad = .1;
+  interpolatedRadius->AddTuple(4, &rad);
+  rad = .1;
+  interpolatedRadius->AddTuple(5, &rad);
 
   // Generate the radius scalars
-  auto tubeRadius =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> tubeRadius;
   unsigned int n = functionSource->GetOutput()->GetNumberOfPoints();
   tubeRadius->SetNumberOfTuples(n);
   tubeRadius->SetName("TubeRadius");
@@ -74,46 +75,38 @@ int main(int, char *[])
   tubePolyData->GetPointData()->SetActiveScalars("TubeRadius");
 
   // Create the tubes
-  auto tuber =
-    vtkSmartPointer<vtkTubeFilter>::New();
+  vtkNew<vtkTubeFilter> tuber;
   tuber->SetInputData(tubePolyData);
   tuber->SetNumberOfSides(20);
   tuber->SetVaryRadiusToVaryRadiusByAbsoluteScalar();
 
   //--------------
   // Setup actors and mappers
-  auto lineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> lineMapper;
   lineMapper->SetInputData(tubePolyData);
   lineMapper->SetScalarRange(tubePolyData->GetScalarRange());
 
-  auto tubeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> tubeMapper;
   tubeMapper->SetInputConnection(tuber->GetOutputPort());
   tubeMapper->SetScalarRange(tubePolyData->GetScalarRange());
 
-  auto lineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> lineActor;
   lineActor->SetMapper(lineMapper);
   lineActor->GetProperty()->SetLineWidth(3);
-  auto tubeActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> tubeActor;
   tubeActor->SetMapper(tubeMapper);
-  tubeActor->GetProperty()->SetOpacity(.6);
+  tubeActor->GetProperty()->SetOpacity(0.6);
 
   // Setup render window, renderer, and interactor
-  auto colors =
-    vtkSmartPointer<vtkNamedColors>::New();
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkNamedColors> colors;
+  vtkNew<vtkRenderer> renderer;
   renderer->UseHiddenLineRemovalOn();
-  auto renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
+  renderWindow->SetWindowName("TubesFromSplines");
 
-  auto renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderer->AddActor(lineActor);
   renderer->AddActor(tubeActor);

@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
 
 import vtk
 
@@ -72,7 +70,7 @@ def main():
 
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # Create the usual graphics stuff.
     #
@@ -85,8 +83,10 @@ def main():
 
     ren1.AddActor(outlineActor)
     ren1.AddActor(planeActor)
-    ren1.SetBackground(colors.GetColor3d("Silver"))
+    ren1.SetBackground(colors.GetColor3d('Silver'))
+
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('WarpCombustor')
 
     # Create an initial view.
     ren1.GetActiveCamera().SetClippingRange(3.95297, 50)

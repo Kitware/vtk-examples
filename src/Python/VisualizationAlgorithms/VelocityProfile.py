@@ -11,7 +11,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
-    colors.SetColor("BkgColor", [65, 99, 149, 255])
+    colors.SetColor('BkgColor', [65, 99, 149, 255])
 
     # Read a vtk file
     #
@@ -79,7 +79,7 @@ def main():
 
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # Create the RenderWindow, Renderer and both Actors
     #
@@ -94,8 +94,10 @@ def main():
     #
     ren.AddActor(planeActor)
     ren.AddActor(outlineActor)
-    ren.SetBackground(colors.GetColor3d("BkgColor"))
+    ren.SetBackground(colors.GetColor3d('BkgColor'))
+
     renWin.SetSize(512, 512)
+    renWin.SetWindowName('VelocityProfile')
 
     iren.Initialize()
 

@@ -57,3 +57,18 @@ If you want to ensure that the same random points/colors are used in C++ and oth
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
 [Model](/Python/Rendering/Model) | Multiple render windows.
+
+## StructuredDataset
+
+How to visualise the information in a structured dataset. All these examples use the combustor dataset.
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[CombustorIsosurface](/Python/VisualizationAlgorithms/CombustorIsosurface) | Generate an isosurface of constant flow density.
+[CutStructuredGrid](/Python/VisualizationAlgorithms/CutStructuredGrid) | Cut through structured grid with plane. The cut plane is shown solid shaded. A computational plane of constant k value is shown in wireframe for comparison. The colors correspond to flow density. Cutting surfaces are not necessarily planes: implicit functions such as spheres, cylinders, and quadrics can also be used.
+[ProbeCombustor](/Python/VisualizationAlgorithms/ProbeCombustor) | Probing data in a combustor.  Probes are regular arrays of 50 by 50 points that are then passed through a contouring filter.
+[Rainbow](/Python/Rendering/Rainbow) | Using different vtkLookupTables.
+[StreamLines](/Python/Visualization/StreamLines) | Seed streamlines with vectors from a structured grid.
+[StreamlinesWithLineWidget](/Python/VisualizationAlgorithms/StreamlinesWithLineWidget) | Interact with the streamlines in the combustor dataset.
+[VelocityProfile](/Python/VisualizationAlgorithms/VelocityProfile) | Warping the geometry of three planes to show flow momentum.
+[WarpCombustor](/Python/VisualizationAlgorithms/WarpCombustor) | Carpet plots of combustor flow energy in a structured grid. Colors and plane displacement represent energy values.

@@ -1,33 +1,33 @@
 #include <math.h>
-
-#include <vtkCellArray.h>
-#include <vtkDoubleArray.h>
-#include <vtkPointData.h>
-#include <vtkPoints.h>
-#include <vtkPolyData.h>
-#include <vtkUnsignedCharArray.h>
-
+#include <vtkActor.h>
+#include <vtkCamera.h>
 #include <vtkCell.h>
+#include <vtkCellArray.h>
 #include <vtkCellData.h>
 #include <vtkDataSet.h>
 #include <vtkDataSetAttributes.h>
-#include <vtkProperty.h>
-#include <vtkSmartPointer.h>
-#include <vtkTubeFilter.h>
-
-#include <vtkActor.h>
-#include <vtkCamera.h>
 #include <vtkDataSetMapper.h>
+#include <vtkDoubleArray.h>
 #include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkMath.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-
-#include <vtkMath.h>
+#include <vtkSmartPointer.h>
+#include <vtkTubeFilter.h>
+#include <vtkUnsignedCharArray.h>
 
 int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> nc;
+
   // Spiral tube
   unsigned int nV = 256;       // No. of vertices
   unsigned int nCyc = 5;       // No. of spiral cycles
@@ -37,8 +37,7 @@ int main(int, char*[])
   unsigned int nTv = 8;        // No. of surface elements for each tube vertex
 
   // Create points and cells for the spiral
-  auto points =
-    vtkSmartPointer<vtkPoints>::New();
+  vtkNew<vtkPoints> points;
   for (unsigned int i = 0; i < nV; i++)
   {
     // Spiral coordinates
@@ -48,22 +47,19 @@ int main(int, char*[])
     points->InsertPoint(i, vX, vY, vZ);
   }
 
-  auto lines =
-    vtkSmartPointer<vtkCellArray>::New();
+  vtkNew<vtkCellArray> lines;
   lines->InsertNextCell(nV);
   for (unsigned int i = 0; i < nV; i++)
   {
     lines->InsertCellPoint(i);
   }
 
-  auto polyData =
-    vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polyData;
   polyData->SetPoints(points);
   polyData->SetLines(lines);
 
   // Varying tube radius using sine-function
-  auto tubeRadius =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkNew<vtkDoubleArray> tubeRadius;
   tubeRadius->SetName("TubeRadius");
   tubeRadius->SetNumberOfTuples(nV);
   for (unsigned int i = 0; i < nV; i++)
@@ -76,8 +72,7 @@ int main(int, char*[])
 
   // RBG array (could add Alpha channel too I guess...)
   // Varying from blue to red
-  auto colors =
-    vtkSmartPointer<vtkUnsignedCharArray>::New();
+  vtkNew<vtkUnsignedCharArray> colors;
   colors->SetName("Colors");
   colors->SetNumberOfComponents(3);
   colors->SetNumberOfTuples(nV);
@@ -88,45 +83,39 @@ int main(int, char*[])
   }
   polyData->GetPointData()->AddArray(colors);
 
-  auto tube =
-    vtkSmartPointer<vtkTubeFilter>::New();
+  vtkNew<vtkTubeFilter> tube;
   tube->SetInputData(polyData);
   tube->SetNumberOfSides(nTv);
   tube->SetVaryRadiusToVaryRadiusByAbsoluteScalar();
 
-  auto mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(tube->GetOutputPort());
   mapper->ScalarVisibilityOn();
   mapper->SetScalarModeToUsePointFieldData();
   mapper->SelectColorArray("Colors");
 
-  auto actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(actor);
-  renderer->SetBackground(.2, .3, .4);
+  renderer->SetBackground(nc->GetColor3d("SteelBlue").GetData());
 
   // Make an oblique view
   renderer->GetActiveCamera()->Azimuth(30);
   renderer->GetActiveCamera()->Elevation(30);
   renderer->ResetCamera();
 
-  auto renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  auto iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindow> renWin;
+  vtkNew<vtkRenderWindowInteractor> iren;
 
   iren->SetRenderWindow(renWin);
   renWin->AddRenderer(renderer);
   renWin->SetSize(500, 500);
   renWin->Render();
+  renWin->SetWindowName("TubesWithVaryingRadiusAndColors");
 
-  auto style =
-    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+  vtkNew<vtkInteractorStyleTrackballCamera> style;
   iren->SetInteractorStyle(style);
 
   iren->Start();
