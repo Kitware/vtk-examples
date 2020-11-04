@@ -5,11 +5,11 @@ import vtk
 
 def main():
     def NumberOfTriangles(pd):
-        """
+        '''
         Count the number of triangles.
         :param pd: vtkPolyData.
         :return: The number of triangles.
-        """
+        '''
         cells = pd.GetPolys()
         numOfTriangles = 0
         idList = vtk.vtkIdList()
@@ -29,8 +29,8 @@ def main():
     reader.SetFileName(fileName)
     reader.FlipNormalsOff()
     reader.Update()
-    print("Before Decimation.")
-    print("There are: ", NumberOfTriangles(reader.GetOutput()), "triangles")
+    print('Before Decimation.')
+    print('There are: ', NumberOfTriangles(reader.GetOutput()), 'triangles')
 
     deci = vtk.vtkDecimatePro()
     deci.SetInputConnection(reader.GetOutputPort())
@@ -42,22 +42,22 @@ def main():
     deci.AccumulateErrorOn()
     # deci.SplittingOff()
     deci.Update()
-    print("After Decimation.")
-    print("There are: ", NumberOfTriangles(deci.GetOutput()), "triangles")
+    print('After Decimation.')
+    print('There are: ', NumberOfTriangles(deci.GetOutput()), 'triangles')
 
     connect = vtk.vtkConnectivityFilter()
     connect.SetInputConnection(deci.GetOutputPort())
     connect.SetExtractionModeToLargestRegion()
     connect.Update()
-    print("After Connectivity.")
-    print("There are: ", NumberOfTriangles(connect.GetOutput()), "triangles")
+    print('After Connectivity.')
+    print('There are: ', NumberOfTriangles(connect.GetOutput()), 'triangles')
 
     isoMapper = vtk.vtkDataSetMapper()
     isoMapper.SetInputConnection(connect.GetOutputPort())
     isoMapper.ScalarVisibilityOff()
     isoActor = vtk.vtkActor()
     isoActor.SetMapper(isoMapper)
-    isoActor.GetProperty().SetColor(colors.GetColor3d("raw_sienna"))
+    isoActor.GetProperty().SetColor(colors.GetColor3d('raw_sienna'))
 
     #  Get an outline of the data set for context.
     outline = vtk.vtkOutlineFilter()
@@ -66,7 +66,7 @@ def main():
     outlineMapper.SetInputConnection(outline.GetOutputPort())
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     #  Create the Renderer, RenderWindow and RenderWindowInteractor.
     ren = vtk.vtkRenderer()
@@ -81,7 +81,9 @@ def main():
     ren.SetBackground(1, 1, 1)
     # renWin.SetSize(750, 750)
     renWin.SetSize(512, 512)
-    ren.SetBackground(colors.GetColor3d("SlateGray"))
+    renWin.SetWindowName('PineRootDecimation')
+
+    ren.SetBackground(colors.GetColor3d('SlateGray'))
 
     # render the image
 

@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
-
 import vtk
 
 
@@ -137,8 +134,9 @@ def main():
     ren1.AddActor(tpd1Actor)
     ren1.AddActor(tpd2Actor)
     ren1.AddActor(tpd3Actor)
-    ren1.SetBackground(colors.GetColor3d("Gainsboro"))
+    ren1.SetBackground(colors.GetColor3d('Gainsboro'))
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('ProbeCombustor')
 
     ren1.ResetCamera()
     ren1.GetActiveCamera().SetClippingRange(3.95297, 50)

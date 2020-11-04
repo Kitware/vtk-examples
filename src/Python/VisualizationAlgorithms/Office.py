@@ -21,10 +21,10 @@ def office(fileName, center):
     filingCabinetColor = [0.8, 0.8, 0.6]
     bookShelfColor = [0.8, 0.8, 0.6]
     windowColor = [0.3, 0.3, 0.5]
-    colors.SetColor("TableTop", *tableTopColor)
-    colors.SetColor("FilingCabinet", *filingCabinetColor)
-    colors.SetColor("BookShelf", *bookShelfColor)
-    colors.SetColor("WindowColor", *windowColor)
+    colors.SetColor('TableTop', *tableTopColor)
+    colors.SetColor('FilingCabinet', *filingCabinetColor)
+    colors.SetColor('BookShelf', *bookShelfColor)
+    colors.SetColor('WindowColor', *windowColor)
 
     # We read a data file that represents a CFD analysis of airflow in an office
     # (with ventilation and a burning cigarette).
@@ -42,7 +42,7 @@ def office(fileName, center):
     mapTable1.ScalarVisibilityOff()
     table1Actor = vtk.vtkActor()
     table1Actor.SetMapper(mapTable1)
-    table1Actor.GetProperty().SetColor(colors.GetColor3d("TableTop"))
+    table1Actor.GetProperty().SetColor(colors.GetColor3d('TableTop'))
 
     table2 = vtk.vtkStructuredGridGeometryFilter()
     table2.SetInputData(reader.GetStructuredGridOutput())
@@ -52,7 +52,7 @@ def office(fileName, center):
     mapTable2.ScalarVisibilityOff()
     table2Actor = vtk.vtkActor()
     table2Actor.SetMapper(mapTable2)
-    table2Actor.GetProperty().SetColor(colors.GetColor3d("TableTop"))
+    table2Actor.GetProperty().SetColor(colors.GetColor3d('TableTop'))
 
     FilingCabinet1 = vtk.vtkStructuredGridGeometryFilter()
     FilingCabinet1.SetInputData(reader.GetStructuredGridOutput())
@@ -62,7 +62,7 @@ def office(fileName, center):
     mapFilingCabinet1.ScalarVisibilityOff()
     FilingCabinet1Actor = vtk.vtkActor()
     FilingCabinet1Actor.SetMapper(mapFilingCabinet1)
-    FilingCabinet1Actor.GetProperty().SetColor(colors.GetColor3d("FilingCabinet"))
+    FilingCabinet1Actor.GetProperty().SetColor(colors.GetColor3d('FilingCabinet'))
 
     FilingCabinet2 = vtk.vtkStructuredGridGeometryFilter()
     FilingCabinet2.SetInputData(reader.GetStructuredGridOutput())
@@ -72,7 +72,7 @@ def office(fileName, center):
     mapFilingCabinet2.ScalarVisibilityOff()
     FilingCabinet2Actor = vtk.vtkActor()
     FilingCabinet2Actor.SetMapper(mapFilingCabinet2)
-    FilingCabinet2Actor.GetProperty().SetColor(colors.GetColor3d("FilingCabinet"))
+    FilingCabinet2Actor.GetProperty().SetColor(colors.GetColor3d('FilingCabinet'))
 
     bookshelf1Top = vtk.vtkStructuredGridGeometryFilter()
     bookshelf1Top.SetInputData(reader.GetStructuredGridOutput())
@@ -82,7 +82,7 @@ def office(fileName, center):
     mapBookshelf1Top.ScalarVisibilityOff()
     bookshelf1TopActor = vtk.vtkActor()
     bookshelf1TopActor.SetMapper(mapBookshelf1Top)
-    bookshelf1TopActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf1TopActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     bookshelf1Bottom = vtk.vtkStructuredGridGeometryFilter()
     bookshelf1Bottom.SetInputData(reader.GetStructuredGridOutput())
@@ -92,7 +92,7 @@ def office(fileName, center):
     mapBookshelf1Bottom.ScalarVisibilityOff()
     bookshelf1BottomActor = vtk.vtkActor()
     bookshelf1BottomActor.SetMapper(mapBookshelf1Bottom)
-    bookshelf1BottomActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf1BottomActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     bookshelf1Front = vtk.vtkStructuredGridGeometryFilter()
     bookshelf1Front.SetInputData(reader.GetStructuredGridOutput())
@@ -102,7 +102,7 @@ def office(fileName, center):
     mapBookshelf1Front.ScalarVisibilityOff()
     bookshelf1FrontActor = vtk.vtkActor()
     bookshelf1FrontActor.SetMapper(mapBookshelf1Front)
-    bookshelf1FrontActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf1FrontActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     bookshelf1Back = vtk.vtkStructuredGridGeometryFilter()
     bookshelf1Back.SetInputData(reader.GetStructuredGridOutput())
@@ -112,7 +112,7 @@ def office(fileName, center):
     mapBookshelf1Back.ScalarVisibilityOff()
     bookshelf1BackActor = vtk.vtkActor()
     bookshelf1BackActor.SetMapper(mapBookshelf1Back)
-    bookshelf1BackActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf1BackActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     bookshelf1LHS = vtk.vtkStructuredGridGeometryFilter()
     bookshelf1LHS.SetInputData(reader.GetStructuredGridOutput())
@@ -122,7 +122,7 @@ def office(fileName, center):
     mapBookshelf1LHS.ScalarVisibilityOff()
     bookshelf1LHSActor = vtk.vtkActor()
     bookshelf1LHSActor.SetMapper(mapBookshelf1LHS)
-    bookshelf1LHSActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf1LHSActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     bookshelf1RHS = vtk.vtkStructuredGridGeometryFilter()
     bookshelf1RHS.SetInputData(reader.GetStructuredGridOutput())
@@ -132,7 +132,7 @@ def office(fileName, center):
     mapBookshelf1RHS.ScalarVisibilityOff()
     bookshelf1RHSActor = vtk.vtkActor()
     bookshelf1RHSActor.SetMapper(mapBookshelf1RHS)
-    bookshelf1RHSActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf1RHSActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     bookshelf2Top = vtk.vtkStructuredGridGeometryFilter()
     bookshelf2Top.SetInputData(reader.GetStructuredGridOutput())
@@ -142,7 +142,7 @@ def office(fileName, center):
     mapBookshelf2Top.ScalarVisibilityOff()
     bookshelf2TopActor = vtk.vtkActor()
     bookshelf2TopActor.SetMapper(mapBookshelf2Top)
-    bookshelf2TopActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf2TopActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     bookshelf2Bottom = vtk.vtkStructuredGridGeometryFilter()
     bookshelf2Bottom.SetInputData(reader.GetStructuredGridOutput())
@@ -152,7 +152,7 @@ def office(fileName, center):
     mapBookshelf2Bottom.ScalarVisibilityOff()
     bookshelf2BottomActor = vtk.vtkActor()
     bookshelf2BottomActor.SetMapper(mapBookshelf2Bottom)
-    bookshelf2BottomActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf2BottomActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     bookshelf2Front = vtk.vtkStructuredGridGeometryFilter()
     bookshelf2Front.SetInputData(reader.GetStructuredGridOutput())
@@ -162,7 +162,7 @@ def office(fileName, center):
     mapBookshelf2Front.ScalarVisibilityOff()
     bookshelf2FrontActor = vtk.vtkActor()
     bookshelf2FrontActor.SetMapper(mapBookshelf2Front)
-    bookshelf2FrontActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf2FrontActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     bookshelf2Back = vtk.vtkStructuredGridGeometryFilter()
     bookshelf2Back.SetInputData(reader.GetStructuredGridOutput())
@@ -172,7 +172,7 @@ def office(fileName, center):
     mapBookshelf2Back.ScalarVisibilityOff()
     bookshelf2BackActor = vtk.vtkActor()
     bookshelf2BackActor.SetMapper(mapBookshelf2Back)
-    bookshelf2BackActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf2BackActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     bookshelf2LHS = vtk.vtkStructuredGridGeometryFilter()
     bookshelf2LHS.SetInputData(reader.GetStructuredGridOutput())
@@ -182,7 +182,7 @@ def office(fileName, center):
     mapBookshelf2LHS.ScalarVisibilityOff()
     bookshelf2LHSActor = vtk.vtkActor()
     bookshelf2LHSActor.SetMapper(mapBookshelf2LHS)
-    bookshelf2LHSActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf2LHSActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     bookshelf2RHS = vtk.vtkStructuredGridGeometryFilter()
     bookshelf2RHS.SetInputData(reader.GetStructuredGridOutput())
@@ -192,7 +192,7 @@ def office(fileName, center):
     mapBookshelf2RHS.ScalarVisibilityOff()
     bookshelf2RHSActor = vtk.vtkActor()
     bookshelf2RHSActor.SetMapper(mapBookshelf2RHS)
-    bookshelf2RHSActor.GetProperty().SetColor(colors.GetColor3d("BookShelf"))
+    bookshelf2RHSActor.GetProperty().SetColor(colors.GetColor3d('BookShelf'))
 
     window = vtk.vtkStructuredGridGeometryFilter()
     window.SetInputData(reader.GetStructuredGridOutput())
@@ -202,7 +202,7 @@ def office(fileName, center):
     mapWindow.ScalarVisibilityOff()
     windowActor = vtk.vtkActor()
     windowActor.SetMapper(mapWindow)
-    windowActor.GetProperty().SetColor(colors.GetColor3d("WindowColor"))
+    windowActor.GetProperty().SetColor(colors.GetColor3d('WindowColor'))
 
     outlet = vtk.vtkStructuredGridGeometryFilter()
     outlet.SetInputData(reader.GetStructuredGridOutput())
@@ -212,7 +212,7 @@ def office(fileName, center):
     mapOutlet.ScalarVisibilityOff()
     outletActor = vtk.vtkActor()
     outletActor.SetMapper(mapOutlet)
-    outletActor.GetProperty().SetColor(colors.GetColor3d("lamp_black"))
+    outletActor.GetProperty().SetColor(colors.GetColor3d('lamp_black'))
 
     inlet = vtk.vtkStructuredGridGeometryFilter()
     inlet.SetInputData(reader.GetStructuredGridOutput())
@@ -222,7 +222,7 @@ def office(fileName, center):
     mapInlet.ScalarVisibilityOff()
     inletActor = vtk.vtkActor()
     inletActor.SetMapper(mapInlet)
-    inletActor.GetProperty().SetColor(colors.GetColor3d("lamp_black"))
+    inletActor.GetProperty().SetColor(colors.GetColor3d('lamp_black'))
 
     outline = vtk.vtkStructuredGridOutlineFilter()
     outline.SetInputData(reader.GetStructuredGridOutput())
@@ -230,7 +230,7 @@ def office(fileName, center):
     mapOutline.SetInputConnection(outline.GetOutputPort())
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(mapOutline)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # Create the source for the streamtubes.
     seeds = vtk.vtkPointSource()
@@ -244,6 +244,7 @@ def office(fileName, center):
     streamers.SetMinimumIntegrationStep(0.1)
     streamers.SetMaximumIntegrationStep(1.0)
     streamers.SetInitialIntegrationStep(0.2)
+    streamers.SetIntegratorType(2)
     streamers.Update()
     mapStreamers = vtk.vtkPolyDataMapper()
     mapStreamers.SetInputConnection(streamers.GetOutputPort())
@@ -255,6 +256,8 @@ def office(fileName, center):
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
+    renWin.SetWindowName('Office')
+
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
@@ -281,7 +284,7 @@ def office(fileName, center):
     ren.AddActor(outlineActor)
     ren.AddActor(streamersActor)
 
-    ren.SetBackground(colors.GetColor3d("SlateGray"))
+    ren.SetBackground(colors.GetColor3d('SlateGray'))
 
     aCamera = vtk.vtkCamera()
     aCamera.SetClippingRange(0.726079, 36.3039)

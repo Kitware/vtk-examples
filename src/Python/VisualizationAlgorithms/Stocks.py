@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
 
 import os
 
@@ -11,7 +9,8 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    fileNames = get_program_parameters()
+    fileNames, useRibbons = get_program_parameters()
+    useTubes = not useRibbons
 
     # Set up the stocks
     renderers = list()
@@ -22,8 +21,8 @@ def main():
 
     zPosition = 0.0
     for fn in fileNames:
-        zPosition = AddStock(renderers, fn, os.path.basename((os.path.splitext(fn)[0])), zPosition)
-        
+        zPosition = AddStock(renderers, fn, os.path.basename((os.path.splitext(fn)[0])), zPosition, useTubes)
+
     # Setup the render window and interactor.
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderers[0])
@@ -50,6 +49,7 @@ def main():
     renderers[1].SetBackground(colors.GetColor3d("LightSteelBlue"))
 
     renderWindow.SetSize(500, 800)
+    renderWindow.SetWindowName('Stocks')
     renderWindow.Render()
 
     renderWindowInteractor.Start()
@@ -63,12 +63,15 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filenames', nargs='+', help='List of one or more filenames corresponding to stocks.')
+    parser.add_argument('filenames', nargs='+',
+                        help='List of one or more filenames corresponding to stocks. e.g. GE.vtk GM.vtk IBM.vtk DEC.vtk')
+    parser.add_argument('-r', dest='useRibbons', action='store_true', help='Use ribbons instead of tubes.')
+
     args = parser.parse_args()
-    return args.filenames
+    return args.filenames, args.useRibbons
 
 
-def AddStock(renderers, filename, name, zPosition):
+def AddStock(renderers, filename, name, zPosition, useTubes):
     print("Adding", name)
 
     # Read the data
@@ -90,6 +93,13 @@ def AddStock(renderers, filename, name, zPosition):
     y = nameLocation[1] + 5.0
     z = zPosition
 
+    # Create a tube and ribbpn filter. One or the other will be used
+    TubeFilter = vtk.vtkTubeFilter()
+    TubeFilter.SetInputConnection(PolyDataRead.GetOutputPort())
+    TubeFilter.SetNumberOfSides(8)
+    TubeFilter.SetRadius(0.5)
+    TubeFilter.SetRadiusFactor(10000)
+
     RibbonFilter = vtk.vtkRibbonFilter()
     RibbonFilter.SetInputConnection(PolyDataRead.GetOutputPort())
     RibbonFilter.VaryWidthOn()
@@ -110,6 +120,12 @@ def AddStock(renderers, filename, name, zPosition):
     TransformFilter = vtk.vtkTransformPolyDataFilter()
     TransformFilter.SetInputConnection(Extrude.GetOutputPort())
     TransformFilter.SetTransform(Transform)
+
+    # Select tubes or ribbons
+    if useTubes:
+        TransformFilter.SetInputConnection(TubeFilter.GetOutputPort())
+    else:
+        TransformFilter.SetInputConnection(Extrude.GetOutputPort())
 
     for r in range(0, len(renderers)):
         LabelMapper = vtk.vtkPolyDataMapper()

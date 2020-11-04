@@ -6,6 +6,7 @@
 #include <vtkImageDataGeometryFilter.h>
 #include <vtkLogLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPointLoad.h>
 #include <vtkPolyDataMapper.h>
@@ -14,39 +15,33 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
-int main (int, char *[])
+int main(int, char*[])
 {
-// Create the RenderWindow, Renderer and interactive renderer
-//
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  // Create the RenderWindow, Renderer and interactive renderer
+  //
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren1;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->SetMultiSamples(0);
   renWin->AddRenderer(ren1);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-//set VTK_INTEGRATE_BOTH_DIRECTIONS 2
+  // set VTK_INTEGRATE_BOTH_DIRECTIONS 2
 
-//
-// generate tensors
-  vtkSmartPointer<vtkPointLoad> ptLoad =
-    vtkSmartPointer<vtkPointLoad>::New();
+  //
+  // generate tensors
+  vtkNew<vtkPointLoad> ptLoad;
   ptLoad->SetLoadValue(100.0);
   ptLoad->SetSampleDimensions(20, 20, 20);
   ptLoad->ComputeEffectiveStressOn();
   ptLoad->SetModelBounds(-10, 10, -10, 10, -10, 10);
   ptLoad->Update();
 
-// Generate hyperstreamlines
-  vtkSmartPointer<vtkHyperStreamline> s1 =
-    vtkSmartPointer<vtkHyperStreamline>::New();
+  // Generate hyperstreamlines
+  vtkNew<vtkHyperStreamline> s1;
   s1->SetInputData(ptLoad->GetOutput());
   s1->SetStartPosition(9, 9, -9);
   s1->IntegrateMinorEigenvector();
@@ -58,23 +53,19 @@ int main (int, char *[])
   s1->SetIntegrationDirectionToIntegrateBothDirections();
   s1->Update();
 
-// Map hyperstreamlines
-  vtkSmartPointer<vtkLogLookupTable> lut =
-    vtkSmartPointer<vtkLogLookupTable>::New();
+  // Map hyperstreamlines
+  vtkNew<vtkLogLookupTable> lut;
   lut->SetHueRange(.6667, 0.0);
 
-  vtkSmartPointer<vtkPolyDataMapper> s1Mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> s1Mapper;
   s1Mapper->SetInputConnection(s1->GetOutputPort());
   s1Mapper->SetLookupTable(lut);
   s1Mapper->SetScalarRange(ptLoad->GetOutput()->GetScalarRange());
 
-  vtkSmartPointer<vtkActor> s1Actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> s1Actor;
   s1Actor->SetMapper(s1Mapper);
 
-  vtkSmartPointer<vtkHyperStreamline> s2 =
-    vtkSmartPointer<vtkHyperStreamline>::New();
+  vtkNew<vtkHyperStreamline> s2;
   s2->SetInputData(ptLoad->GetOutput());
   s2->SetStartPosition(-9, -9, -9);
   s2->IntegrateMinorEigenvector();
@@ -86,18 +77,15 @@ int main (int, char *[])
   s2->SetIntegrationDirectionToIntegrateBothDirections();
   s2->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> s2Mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> s2Mapper;
   s2Mapper->SetInputConnection(s2->GetOutputPort());
   s2Mapper->SetLookupTable(lut);
   s2Mapper->SetScalarRange(ptLoad->GetOutput()->GetScalarRange());
 
-  vtkSmartPointer<vtkActor> s2Actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> s2Actor;
   s2Actor->SetMapper(s2Mapper);
 
-  vtkSmartPointer<vtkHyperStreamline> s3 =
-    vtkSmartPointer<vtkHyperStreamline>::New();
+  vtkNew<vtkHyperStreamline> s3;
   s3->SetInputData(ptLoad->GetOutput());
   s3->SetStartPosition(9, -9, -9);
   s3->IntegrateMinorEigenvector();
@@ -109,18 +97,15 @@ int main (int, char *[])
   s3->SetIntegrationDirectionToIntegrateBothDirections();
   s3->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> s3Mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> s3Mapper;
   s3Mapper->SetInputConnection(s3->GetOutputPort());
   s3Mapper->SetLookupTable(lut);
   s3Mapper->SetScalarRange(ptLoad->GetOutput()->GetScalarRange());
 
-  vtkSmartPointer<vtkActor> s3Actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> s3Actor;
   s3Actor->SetMapper(s3Mapper);
 
-  vtkSmartPointer<vtkHyperStreamline> s4 =
-    vtkSmartPointer<vtkHyperStreamline>::New();
+  vtkNew<vtkHyperStreamline> s4;
   s4->SetInputData(ptLoad->GetOutput());
   s4->SetStartPosition(-9, 9, -9);
   s4->IntegrateMinorEigenvector();
@@ -132,68 +117,56 @@ int main (int, char *[])
   s4->SetIntegrationDirectionToIntegrateBothDirections();
   s4->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> s4Mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> s4Mapper;
   s4Mapper->SetInputConnection(s4->GetOutputPort());
   s4Mapper->SetLookupTable(lut);
   s4Mapper->SetScalarRange(ptLoad->GetOutput()->GetScalarRange());
 
-  vtkSmartPointer<vtkActor> s4Actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> s4Actor;
   s4Actor->SetMapper(s4Mapper);
 
-// plane for context
-//
-  vtkSmartPointer<vtkImageDataGeometryFilter> g =
-    vtkSmartPointer<vtkImageDataGeometryFilter>::New();
+  // plane for context
+  //
+  vtkNew<vtkImageDataGeometryFilter> g;
   g->SetInputData(ptLoad->GetOutput());
   g->SetExtent(0, 100, 0, 100, 0, 0);
-  g->Update(); //for scalar range
+  g->Update(); // for scalar range
 
-  vtkSmartPointer<vtkPolyDataMapper> gm =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> gm;
   gm->SetInputConnection(g->GetOutputPort());
   gm->SetScalarRange(g->GetOutput()->GetScalarRange());
 
-  vtkSmartPointer<vtkActor> ga =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> ga;
   ga->SetMapper(gm);
 
-// Create outline around data
-//
-  vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  // Create outline around data
+  //
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputData(ptLoad->GetOutput());
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
-// Create cone indicating application of load
-//
-  vtkSmartPointer<vtkConeSource> coneSrc =
-    vtkSmartPointer<vtkConeSource>::New();
-  coneSrc->SetRadius(.5);
+  // Create cone indicating application of load
+  //
+  vtkNew<vtkConeSource> coneSrc;
+  coneSrc->SetRadius(0.5);
   coneSrc->SetHeight(2);
 
-  vtkSmartPointer<vtkPolyDataMapper> coneMap =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> coneMap;
   coneMap->SetInputConnection(coneSrc->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> coneActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> coneActor;
   coneActor->SetMapper(coneMap);
   coneActor->SetPosition(0, 0, 11);
   coneActor->RotateY(90);
   coneActor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
 
-  vtkSmartPointer<vtkCamera> camera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
   camera->SetFocalPoint(0.113766, -1.13665, -1.01919);
   camera->SetPosition(-29.4886, -63.1488, 26.5807);
   camera->SetViewAngle(24.4617);
@@ -211,6 +184,8 @@ int main (int, char *[])
   ren1->SetActiveCamera(camera);
 
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("HyperStreamline");
+
   renWin->Render();
   iren->Start();
 

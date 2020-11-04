@@ -14,9 +14,9 @@
 #include <vtkImageViewer.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 
 #include <iomanip>
 #include <iostream>
@@ -36,54 +36,47 @@ int main(int argc, char* argv[])
 
   std::string fileName = argv[1];
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Read the CT data of the human head.
-  vtkSmartPointer<vtkMetaImageReader> reader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
+  vtkNew<vtkMetaImageReader> reader;
   reader->SetFileName(fileName.c_str());
   reader->Update();
 
-  vtkSmartPointer<vtkImageCast> cast = vtkSmartPointer<vtkImageCast>::New();
+  vtkNew<vtkImageCast> cast;
   cast->SetInputConnection(reader->GetOutputPort());
   cast->SetOutputScalarTypeToFloat();
 
   // Magnify the image.
-  vtkSmartPointer<vtkImageMagnify> magnify =
-    vtkSmartPointer<vtkImageMagnify>::New();
+  vtkNew<vtkImageMagnify> magnify;
   magnify->SetInputConnection(cast->GetOutputPort());
   magnify->SetMagnificationFactors(2, 2, 1);
   magnify->InterpolateOn();
 
   // Smooth the data.
   // Remove high frequency artifacts due to linear interpolation.
-  vtkSmartPointer<vtkImageGaussianSmooth> smooth =
-    vtkSmartPointer<vtkImageGaussianSmooth>::New();
+  vtkNew<vtkImageGaussianSmooth> smooth;
   smooth->SetInputConnection(magnify->GetOutputPort());
   smooth->SetDimensionality(2);
   smooth->SetStandardDeviations(1.5, 1.5, 0.0);
   smooth->SetRadiusFactors(2.01, 2.01, 0.0);
 
   // Compute the 2D gradient.
-  vtkSmartPointer<vtkImageGradient> gradient =
-    vtkSmartPointer<vtkImageGradient>::New();
+  vtkNew<vtkImageGradient> gradient;
   gradient->SetInputConnection(smooth->GetOutputPort());
   gradient->SetDimensionality(2);
 
   // Convert the data to polar coordinates.
   // The image magnitude is mapped into saturation value,
   //  whilst the gradient direction is mapped into hue value.
-  vtkSmartPointer<vtkImageEuclideanToPolar> polar =
-    vtkSmartPointer<vtkImageEuclideanToPolar>::New();
+  vtkNew<vtkImageEuclideanToPolar> polar;
   polar->SetInputConnection(gradient->GetOutputPort());
   polar->SetThetaMaximum(255.0);
 
   // Add a third component to the data.
   // This is needed since the gradient filter only generates two components,
   //  and we need three components to represent color.
-  vtkSmartPointer<vtkImageConstantPad> pad =
-    vtkSmartPointer<vtkImageConstantPad>::New();
+  vtkNew<vtkImageConstantPad> pad;
   pad->SetInputConnection(polar->GetOutputPort());
   pad->SetOutputNumberOfScalarComponents(3);
   pad->SetConstant(200.0);
@@ -91,14 +84,12 @@ int main(int argc, char* argv[])
   // At this point we have Hue, Value, Saturation.
   // Permute components so saturation will be constant.
   // Re-arrange components into HSV order.
-  vtkSmartPointer<vtkImageExtractComponents> permute =
-    vtkSmartPointer<vtkImageExtractComponents>::New();
+  vtkNew<vtkImageExtractComponents> permute;
   permute->SetInputConnection(pad->GetOutputPort());
   permute->SetComponents(0, 2, 1);
 
   // Convert back into RGB values.
-  vtkSmartPointer<vtkImageHSVToRGB> rgb =
-    vtkSmartPointer<vtkImageHSVToRGB>::New();
+  vtkNew<vtkImageHSVToRGB> rgb;
   rgb->SetInputConnection(permute->GetOutputPort());
   rgb->SetMaximum(255.0);
 
@@ -107,18 +98,17 @@ int main(int argc, char* argv[])
   // around
   // vtkActor2D, vtkImageMapper, vtkRenderer, and vtkRenderWindow.
   // So all that needs to be supplied is the interactor.
-  vtkSmartPointer<vtkImageViewer> viewer =
-    vtkSmartPointer<vtkImageViewer>::New();
+  vtkNew<vtkImageViewer> viewer;
   viewer->SetInputConnection(rgb->GetOutputPort());
   viewer->SetZSlice(22);
   viewer->SetColorWindow(255.0);
   viewer->SetColorLevel(127.0);
   viewer->GetRenderWindow()->SetSize(512, 512);
   viewer->GetRenderer()->SetBackground(colors->GetColor3d("Silver").GetData());
+  viewer->GetRenderWindow()->SetWindowName("ImageGradient");
 
   // Create the RenderWindowInteractor.
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   viewer->SetupInteractor(iren);
   viewer->Render();
 

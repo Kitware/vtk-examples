@@ -3,7 +3,7 @@
 This example runs [Office.cxx](../Office) as follows:
 
 ``` c++
-  ./OfficeA office.binary.vtk 0)
+  ./OfficeA office.binary.vtk 0
 ```
 
 !!! info

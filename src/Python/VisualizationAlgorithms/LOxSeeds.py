@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
-
 import vtk
 
 
@@ -47,7 +44,7 @@ def main():
         floorActor = vtk.vtkActor()
         floorActor.SetMapper(floorMapper)
         floorActor.GetProperty().SetRepresentationToWireframe()
-        floorActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+        floorActor.GetProperty().SetColor(colors.GetColor3d('Black'))
         floorActor.GetProperty().SetLineWidth(2)
 
         postComp = vtk.vtkStructuredGridGeometryFilter()
@@ -61,7 +58,7 @@ def main():
 
         postActor = vtk.vtkActor()
         postActor.SetMapper(postMapper)
-        postActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+        postActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
         # streamers
         #
@@ -84,7 +81,7 @@ def main():
         tubes = vtk.vtkTubeFilter()
         tubes.SetInputConnection(streamers.GetOutputPort())
         tubes.SetNumberOfSides(8)
-        tubes.SetRadius(.08)
+        tubes.SetRadius(0.08)
         tubes.SetVaryRadius(0)
 
         mapTubes = vtk.vtkPolyDataMapper()
@@ -100,7 +97,7 @@ def main():
         renderer.AddActor(floorActor)
         renderer.AddActor(postActor)
         renderer.AddActor(tubesActor)
-        renderer.SetBackground(colors.GetColor3d("SlateGray"))
+        renderer.SetBackground(colors.GetColor3d('SlateGray'))
         renderers.append(renderer)
 
     renderWindow = vtk.vtkRenderWindow()
@@ -134,6 +131,7 @@ def main():
     interactor.SetRenderWindow(renderWindow)
 
     renderWindow.SetSize(512, 512)
+    renderWindow.SetWindowName('LOxSeeds')
 
     renderWindow.Render()
     interactor.Start()

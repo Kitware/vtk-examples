@@ -82,6 +82,7 @@ def main():
     ren.SetBackground(colors.GetColor3d('AliceBlue'))
 
     renWin.SetSize(512, 512)
+    renWin.SetWindowName('Motor')
 
     camera = vtk.vtkCamera()
     camera.SetFocalPoint(0.0286334, 0.0362996, 0.0379685)

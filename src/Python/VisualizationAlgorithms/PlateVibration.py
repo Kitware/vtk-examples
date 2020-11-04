@@ -9,8 +9,8 @@ def main():
     colors = vtk.vtkNamedColors()
 
     # Set the colors.
-    colors.SetColor("PlateColor", [255, 160, 140, 255])
-    colors.SetColor("BkgColor", [65, 99, 149, 255])
+    colors.SetColor('PlateColor', [255, 160, 140, 255])
+    colors.SetColor('BkgColor', [65, 99, 149, 255])
 
     # Read a vtk file
     #
@@ -19,7 +19,7 @@ def main():
     plate.Update()
     bounds = [0] * 6
     plate.GetOutput().GetBounds(bounds)
-    plate.SetVectorsName("mode2")
+    plate.SetVectorsName('mode2')
 
     normals = vtk.vtkPolyDataNormals()
     normals.SetInputConnection(plate.GetOutputPort())
@@ -33,7 +33,7 @@ def main():
     plateActor = vtk.vtkActor()
     plateActor.SetMapper(plateMapper)
     plateActor.GetProperty().SetColor(
-        colors.GetColor3d("PlateColor"))
+        colors.GetColor3d('PlateColor'))
     plateActor.RotateX(-90)
 
     # Create the outline.
@@ -45,7 +45,7 @@ def main():
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(spikeMapper)
     outlineActor.RotateX(-90)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("White"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('White'))
 
     # Create the RenderWindow, Renderer and both Actors
     #
@@ -61,10 +61,11 @@ def main():
     ren.AddActor(plateActor)
     ren.AddActor(outlineActor)
     renWin.SetSize(500, 500)
+    renWin.SetWindowName('PlateVibration')
 
     # Render the image.
     renWin.Render()
-    ren.SetBackground(colors.GetColor3d("BkgColor"))
+    ren.SetBackground(colors.GetColor3d('BkgColor'))
     # This closely matches the original illustration.
     ren.GetActiveCamera().SetPosition(-3.7, 13, 15.5)
     ren.ResetCameraClippingRange()

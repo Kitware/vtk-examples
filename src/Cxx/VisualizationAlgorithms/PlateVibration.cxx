@@ -6,6 +6,7 @@
 #include <vtkDataSetMapper.h>
 #include <vtkLookupTable.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -16,7 +17,6 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkVectorDot.h>
 #include <vtkWarpVector.h>
 
@@ -36,71 +36,63 @@ int main(int argc, char* argv[])
     std::cout << "Usage: " << argv[0] << " filename" << std::endl;
     std::cout << "where: filename is the file plate.vtk." << std::endl;
     std::cout
-      << "Produces figure 6-14(a) Beam displacement from the VTK Textbook."
-      << std::endl;
+        << "Produces figure 6-14(a) Beam displacement from the VTK Textbook."
+        << std::endl;
     return EXIT_FAILURE;
   }
 
   std::string fileName = argv[1];
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color and plate color.
-  std::array<unsigned char , 4> bar{{255, 160, 140}};
-    colors->SetColor("PlateColor", bar.data());
-  std::array<unsigned char , 4> bkg{{65, 99, 149}};
-    colors->SetColor("BkgColor", bkg.data());
+  std::array<unsigned char, 4> bar{{255, 160, 140}};
+  colors->SetColor("PlateColor", bar.data());
+  std::array<unsigned char, 4> bkg{{65, 99, 149}};
+  colors->SetColor("BkgColor", bkg.data());
 
   // Read a vtk file
   //
-  vtkSmartPointer<vtkPolyDataReader> plate =
-    vtkSmartPointer<vtkPolyDataReader>::New();
+  vtkNew<vtkPolyDataReader> plate;
   plate->SetFileName(fileName.c_str());
   plate->Update();
   double bounds[6];
   plate->GetOutput()->GetBounds(bounds);
   plate->SetVectorsName("mode2");
 
-  vtkSmartPointer<vtkPolyDataNormals> normals =
-    vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> normals;
   normals->SetInputConnection(plate->GetOutputPort());
-  vtkSmartPointer<vtkWarpVector> warp = vtkSmartPointer<vtkWarpVector>::New();
+  vtkNew<vtkWarpVector> warp;
   warp->SetInputConnection(normals->GetOutputPort());
   warp->SetScaleFactor(0.5);
-  vtkSmartPointer<vtkVectorDot> color = vtkSmartPointer<vtkVectorDot>::New();
+  vtkNew<vtkVectorDot> color;
   color->SetInputConnection(warp->GetOutputPort());
-  vtkSmartPointer<vtkDataSetMapper> plateMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
+  vtkNew<vtkDataSetMapper> plateMapper;
   plateMapper->SetInputConnection(warp->GetOutputPort());
-  vtkSmartPointer<vtkActor> plateActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> plateActor;
   plateActor->SetMapper(plateMapper);
   plateActor->GetProperty()->SetColor(
-    colors->GetColor3d("PlateColor").GetData());
+      colors->GetColor3d("PlateColor").GetData());
   plateActor->RotateX(-90);
 
   // Create the outline.
   //
-  vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(plate->GetOutputPort());
-  vtkSmartPointer<vtkPolyDataMapper> spikeMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> spikeMapper;
   spikeMapper->SetInputConnection(outline->GetOutputPort());
-  vtkSmartPointer<vtkActor> outlineActor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(spikeMapper);
   outlineActor->RotateX(-90);
   outlineActor->GetProperty()->SetColor(colors->GetColor3d("White").GetData());
 
   // Create the RenderWindow, Renderer and both Actors
   //
-  vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
   // Add the actors to the renderer, set the background and size
@@ -108,6 +100,7 @@ int main(int argc, char* argv[])
   ren->AddActor(plateActor);
   ren->AddActor(outlineActor);
   renWin->SetSize(500, 500);
+  renWin->SetWindowName("PlateVibration");
 
   // Render the image.
   renWin->Render();

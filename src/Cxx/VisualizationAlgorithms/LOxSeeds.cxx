@@ -4,12 +4,13 @@
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiBlockPLOT3DReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPointSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkStreamTracer.h>
 #include <vtkStructuredGrid.h>
 #include <vtkStructuredGridGeometryFilter.h>
@@ -18,17 +19,16 @@
 
 //// LOx post CFD case study
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 3)
   {
     std::cout << "Usage: " << argv[0] << " postxyz.bin postq.bin" << std::endl;
     return EXIT_FAILURE;
   }
-// read data
-//
-  vtkSmartPointer<vtkMultiBlockPLOT3DReader> pl3d =
-    vtkSmartPointer<vtkMultiBlockPLOT3DReader>::New();
+  // read data
+  //
+  vtkNew<vtkMultiBlockPLOT3DReader> pl3d;
   pl3d->AutoDetectFormatOn();
   pl3d->SetXYZFileName(argv[1]);
   pl3d->SetQFileName(argv[2]);
@@ -36,19 +36,17 @@ int main (int argc, char *argv[])
   pl3d->SetVectorFunctionNumber(200);
   pl3d->Update();
 
-  vtkStructuredGrid *sg =
-    dynamic_cast<vtkStructuredGrid*>(pl3d->GetOutput()->GetBlock(0));
+  vtkStructuredGrid* sg =
+      dynamic_cast<vtkStructuredGrid*>(pl3d->GetOutput()->GetBlock(0));
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-//blue to red lut
-//
-  vtkSmartPointer<vtkLookupTable> lut =
-    vtkSmartPointer<vtkLookupTable>::New();
+  // blue to red lut
+  //
+  vtkNew<vtkLookupTable> lut;
   lut->SetHueRange(0.667, 0.0);
 
-  std::vector<double *> seeds;
+  std::vector<double*> seeds;
   double seed1[3] = {-0.74, 0.0, 0.3};
   double seed2[3] = {-0.74, 0.0, 1.0};
   double seed3[3] = {-0.74, 0.0, 2.0};
@@ -63,56 +61,48 @@ int main (int argc, char *argv[])
   for (size_t s = 0; s < seeds.size(); ++s)
   {
     // computational planes
-    vtkSmartPointer<vtkStructuredGridGeometryFilter> floorComp =
-      vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+    vtkNew<vtkStructuredGridGeometryFilter> floorComp;
     floorComp->SetExtent(0, 37, 0, 75, 0, 0);
     floorComp->SetInputData(sg);
     floorComp->Update();
-  
-    vtkSmartPointer<vtkPolyDataMapper> floorMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+
+    vtkNew<vtkPolyDataMapper> floorMapper;
     floorMapper->SetInputConnection(floorComp->GetOutputPort());
     floorMapper->ScalarVisibilityOff();
     floorMapper->SetLookupTable(lut);
-  
-    vtkSmartPointer<vtkActor> floorActor =
-      vtkSmartPointer<vtkActor>::New();
+
+    vtkNew<vtkActor> floorActor;
     floorActor->SetMapper(floorMapper);
     floorActor->GetProperty()->SetRepresentationToWireframe();
     floorActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
     floorActor->GetProperty()->SetLineWidth(2);
 
-    vtkSmartPointer<vtkStructuredGridGeometryFilter> postComp =
-      vtkSmartPointer<vtkStructuredGridGeometryFilter>::New();
+    vtkNew<vtkStructuredGridGeometryFilter> postComp;
     postComp->SetExtent(10, 10, 0, 75, 0, 37);
     postComp->SetInputData(sg);
 
-    vtkSmartPointer<vtkPolyDataMapper> postMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> postMapper;
     postMapper->SetInputConnection(postComp->GetOutputPort());
     postMapper->SetLookupTable(lut);
     postMapper->SetScalarRange(sg->GetScalarRange());
-    postMapper->ScalarVisibilityOff();
+    // postMapper->ScalarVisibilityOff();
 
-    vtkSmartPointer<vtkActor> postActor =
-      vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> postActor;
     postActor->SetMapper(postMapper);
-    postActor->GetProperty()->SetRepresentationToWireframe();
+    // postActor->GetProperty()->SetRepresentationToWireframe();
     postActor->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
 
-  // streamers
-  //
-  // spherical seed points
-    vtkSmartPointer<vtkPointSource> rake =
-      vtkSmartPointer<vtkPointSource>::New();
+    // streamers
+    //
+    // spherical seed points
+    vtkNew<vtkPointSource> rake;
     rake->SetCenter(seeds[s]);
     rake->SetNumberOfPoints(10);
 
-    vtkSmartPointer<vtkStreamTracer> streamers =
-      vtkSmartPointer<vtkStreamTracer>::New();
+    vtkNew<vtkStreamTracer> streamers;
     streamers->SetInputConnection(pl3d->GetOutputPort());
 
-  // streamers SetSource [rake GetOutput]
+    // streamers SetSource [rake GetOutput]
     streamers->SetSourceConnection(rake->GetOutputPort());
     streamers->SetMaximumPropagation(250);
     streamers->SetInitialIntegrationStep(.2);
@@ -120,25 +110,21 @@ int main (int argc, char *argv[])
     streamers->SetIntegratorType(2);
     streamers->Update();
 
-    vtkSmartPointer<vtkTubeFilter> tubes =
-      vtkSmartPointer<vtkTubeFilter>::New();
+    vtkNew<vtkTubeFilter> tubes;
     tubes->SetInputConnection(streamers->GetOutputPort());
     tubes->SetNumberOfSides(8);
-    tubes->SetRadius(.08);
+    tubes->SetRadius(0.08);
     tubes->SetVaryRadius(0);
 
-    vtkSmartPointer<vtkPolyDataMapper> mapTubes =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
+    vtkNew<vtkPolyDataMapper> mapTubes;
 
     mapTubes->SetInputConnection(tubes->GetOutputPort());
     mapTubes->SetScalarRange(sg->GetScalarRange());
 
-    vtkSmartPointer<vtkActor> tubesActor =
-      vtkSmartPointer<vtkActor>::New();
+    vtkNew<vtkActor> tubesActor;
     tubesActor->SetMapper(mapTubes);
 
-    vtkSmartPointer<vtkRenderer> renderer =
-      vtkSmartPointer<vtkRenderer>::New();
+    vtkNew<vtkRenderer> renderer;
 
     renderer->AddActor(floorActor);
     renderer->AddActor(postActor);
@@ -147,32 +133,30 @@ int main (int argc, char *argv[])
     renderers.push_back(renderer);
   }
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
 
   // Setup viewports for the renderers
   int rendererSize = 256;
   unsigned int xGridDimensions = 2;
   unsigned int yGridDimensions = 2;
-  renderWindow->SetSize(
-    rendererSize * xGridDimensions, rendererSize * yGridDimensions);
+  renderWindow->SetSize(rendererSize * xGridDimensions,
+                        rendererSize * yGridDimensions);
   for (int row = 0; row < static_cast<int>(yGridDimensions); row++)
   {
     for (int col = 0; col < static_cast<int>(xGridDimensions); col++)
     {
       int index = row * xGridDimensions + col;
       // (xmin, ymin, xmax, ymax)
-       double viewport[4] = {
-         static_cast<double>(col) / xGridDimensions,
-         static_cast<double>(yGridDimensions - (row + 1)) / yGridDimensions,
-         static_cast<double>(col + 1) / xGridDimensions,
-         static_cast<double>(yGridDimensions - row) / yGridDimensions};
+      double viewport[4] = {
+          static_cast<double>(col) / xGridDimensions,
+          static_cast<double>(yGridDimensions - (row + 1)) / yGridDimensions,
+          static_cast<double>(col + 1) / xGridDimensions,
+          static_cast<double>(yGridDimensions - row) / yGridDimensions};
       renderers[index]->SetViewport(viewport);
     }
   }
 
-  vtkSmartPointer<vtkCamera> camera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
   camera->SetFocalPoint(0.918037, -0.0779233, 2.69513);
   camera->SetPosition(0.840735, -23.6176, 8.50211);
   camera->SetViewUp(0.00227904, 0.239501, 0.970893);
@@ -187,11 +171,11 @@ int main (int argc, char *argv[])
       renderers[r]->SetActiveCamera(camera);
     }
   }
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   renderWindow->SetSize(512, 512);
+  renderWindow->SetWindowName("LOxSeeds");
 
   renderWindow->Render();
   interactor->Start();

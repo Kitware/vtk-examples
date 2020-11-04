@@ -4,6 +4,7 @@
 #include <vtkExtractVOI.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -11,7 +12,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
@@ -19,64 +20,52 @@ int main (int argc, char *argv[])
     return EXIT_FAILURE;
   }
 
-// Create the RenderWindow, Renderer and both Actors
-//
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  // Create the RenderWindow, Renderer and both Actors
+  //
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren1;
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-// create pipeline
-//
+  // create pipeline
+  //
 
-  vtkSmartPointer<vtkMetaImageReader> reader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
+  vtkNew<vtkMetaImageReader> reader;
   reader->SetFileName(argv[1]);
   reader->Update();
 
-  vtkSmartPointer<vtkExtractVOI> extractVOI =
-      vtkSmartPointer<vtkExtractVOI>::New();
+  vtkNew<vtkExtractVOI> extractVOI;
   extractVOI->SetInputConnection(reader->GetOutputPort());
   extractVOI->SetVOI(0, 255, 0, 255, 45, 45);
 
-  vtkSmartPointer<vtkContourFilter> iso =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> iso;
   iso->SetInputConnection(extractVOI->GetOutputPort());
   iso->GenerateValues(12, 500, 1150);
 
-  vtkSmartPointer<vtkPolyDataMapper> isoMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> isoMapper;
   isoMapper->SetInputConnection(iso->GetOutputPort());
   isoMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> isoActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> isoActor;
   isoActor->SetMapper(isoMapper);
   isoActor->GetProperty()->SetColor(colors->GetColor3d("Wheat").GetData());
 
-  vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(extractVOI->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
 
-// Add the actors to the renderer, set the background and size
-//
+  // Add the actors to the renderer, set the background and size
+  //
   ren1->AddActor(outlineActor);
   ren1->AddActor(isoActor);
   ren1->SetBackground(colors->GetColor3d("SlateGray").GetData());
@@ -84,7 +73,8 @@ int main (int argc, char *argv[])
   ren1->GetActiveCamera()->Dolly(1.5);
   ren1->ResetCameraClippingRange();
 
-  renWin->SetSize(640, 480);
+  renWin->SetSize(640, 640);
+  renWin->SetWindowName("HeadSlice");
 
   renWin->Render();
   iren->Start();

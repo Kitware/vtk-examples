@@ -50,7 +50,8 @@ def main():
     ren1.AddActor(outlineActor)
     ren1.AddActor(isoActor)
     ren1.SetBackground(colors.GetColor3d("SlateGray"))
-    renWin.SetSize(640, 512)
+    renWin.SetSize(640, 640)
+    renWin.SetWindowName('IronIsoSurface')
 
     # Render the image.
     #

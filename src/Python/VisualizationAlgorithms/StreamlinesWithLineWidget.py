@@ -123,6 +123,8 @@ def main():
     ren.AddActor(streamline)
     ren.AddActor(streamline2)
     renWin.SetSize(512, 512)
+    renWin.SetWindowName('StreamlinesWithLineWidget')
+
     cam = ren.GetActiveCamera()
     if illustration:
         # We need to directly display the streamlines in this case.
@@ -177,16 +179,20 @@ If the fourth parameter is non-zero, it is used to generate
     args = parser.parse_args()
     return args.filename1, args.filename2, args.numOfStreamLines, args.illustration
 
+
 class EnableActorCallback(object):
     def __init__(self, actor):
         self.actor = actor
+
     def __call__(self, caller, ev):
         self.actor.VisibilityOn()
+
 
 class GenerateStreamlinesCallback(object):
     def __init__(self, polyData, renWin):
         self.polyData = polyData
         self.renWin = renWin
+
     def __call__(self, caller, ev):
         caller.GetPolyData(self.polyData)
         self.renWin.Render()

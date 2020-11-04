@@ -82,7 +82,7 @@ def marching_cubes(mcCases, rotation=0, label=True):
         renderer = vtk.vtkRenderer()
         renderers.append(renderer)
         # Set the background color.
-        renderers[i].SetBackground(color.GetColor3d("slate_grey"))
+        renderers[i].SetBackground(color.GetColor3d('slate_grey'))
         renWin.AddRenderer(renderer)
 
     for i in range(0, len(mcCases)):
@@ -149,7 +149,7 @@ def marching_cubes(mcCases, rotation=0, label=True):
         triangleEdgeActor = vtk.vtkActor()
         triangleEdgeActor.SetMapper(triangleEdgeMapper)
         triangleEdgeActor.GetProperty().SetDiffuseColor(
-            color.GetColor3d("lamp_black"))
+            color.GetColor3d('lamp_black'))
         triangleEdgeActor.GetProperty().SetSpecular(.4)
         triangleEdgeActor.GetProperty().SetSpecularPower(10)
 
@@ -166,7 +166,7 @@ def marching_cubes(mcCases, rotation=0, label=True):
         Triangles = vtk.vtkActor()
         Triangles.SetMapper(aMapper)
         Triangles.GetProperty().SetDiffuseColor(
-            color.GetColor3d("banana"))
+            color.GetColor3d('banana'))
         Triangles.GetProperty().SetOpacity(.6)
 
         # Draw a cube the same size and at the same position as the one
@@ -191,7 +191,7 @@ def marching_cubes(mcCases, rotation=0, label=True):
         CubeEdges = vtk.vtkActor()
         CubeEdges.SetMapper(TubeMapper)
         CubeEdges.GetProperty().SetDiffuseColor(
-            color.GetColor3d("khaki"))
+            color.GetColor3d('khaki'))
         CubeEdges.GetProperty().SetSpecular(.4)
         CubeEdges.GetProperty().SetSpecularPower(10)
 
@@ -217,11 +217,11 @@ def marching_cubes(mcCases, rotation=0, label=True):
         CubeVertices = vtk.vtkActor()
         CubeVertices.SetMapper(SphereMapper)
         CubeVertices.GetProperty().SetDiffuseColor(
-            color.GetColor3d("tomato"))
+            color.GetColor3d('tomato'))
 
         # Define the text for the label
         caseLabel = vtk.vtkVectorText()
-        caseLabel.SetText("Case 1")
+        caseLabel.SetText('Case 1')
 
         if label:
             # Set up a transform to move the label to a new position.
@@ -313,9 +313,10 @@ def marching_cubes(mcCases, rotation=0, label=True):
     if len(mcCases) < 4:
         xGridDimensions = len(mcCases)
     yGridDimensions = (len(mcCases) - 1) // 4 + 1
-    print("Grid dimensions, (x, y): ({:d}, {:d})".format(xGridDimensions, yGridDimensions))
+    print('Grid dimensions, (x, y): ({:d}, {:d})'.format(xGridDimensions, yGridDimensions))
     renWin.SetSize(
         rendererSize * xGridDimensions, rendererSize * yGridDimensions)
+    renWin.SetWindowName('MarchingCases')
     for row in range(0, yGridDimensions):
         for col in range(0, xGridDimensions):
             index = row * xGridDimensions + col
@@ -344,9 +345,9 @@ def case0(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, OUT)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 0 - 00000000")
+        caseLabel.SetText('Case 0 - 00000000')
     else:
-        caseLabel.SetText("Case 0c - 11111111")
+        caseLabel.SetText('Case 0c - 11111111')
 
 
 def case1(scalars, caseLabel, IN, OUT):
@@ -359,9 +360,9 @@ def case1(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, OUT)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 1 - 00000001")
+        caseLabel.SetText('Case 1 - 00000001')
     else:
-        caseLabel.SetText("Case 1c - 11111110")
+        caseLabel.SetText('Case 1c - 11111110')
 
 
 def case2(scalars, caseLabel, IN, OUT):
@@ -374,9 +375,9 @@ def case2(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, OUT)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 2 - 00000011")
+        caseLabel.SetText('Case 2 - 00000011')
     else:
-        caseLabel.SetText("Case 2c - 11111100")
+        caseLabel.SetText('Case 2c - 11111100')
 
 
 def case3(scalars, caseLabel, IN, OUT):
@@ -389,9 +390,9 @@ def case3(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, OUT)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 3 - 00000101")
+        caseLabel.SetText('Case 3 - 00000101')
     else:
-        caseLabel.SetText("Case 3c - 11111010")
+        caseLabel.SetText('Case 3c - 11111010')
 
 
 def case4(scalars, caseLabel, IN, OUT):
@@ -404,9 +405,9 @@ def case4(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, IN)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 4 - 01000001")
+        caseLabel.SetText('Case 4 - 01000001')
     else:
-        caseLabel.SetText("Case 4c - 10111110")
+        caseLabel.SetText('Case 4c - 10111110')
 
 
 def case5(scalars, caseLabel, IN, OUT):
@@ -419,9 +420,9 @@ def case5(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, OUT)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 5 - 00110010")
+        caseLabel.SetText('Case 5 - 00110010')
     else:
-        caseLabel.SetText("Case 5c - 11001101")
+        caseLabel.SetText('Case 5c - 11001101')
 
 
 def case6(scalars, caseLabel, IN, OUT):
@@ -434,9 +435,9 @@ def case6(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, OUT)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 6 - 00011010")
+        caseLabel.SetText('Case 6 - 00011010')
     else:
-        caseLabel.SetText("Case 6c - 11100101")
+        caseLabel.SetText('Case 6c - 11100101')
 
 
 def case7(scalars, caseLabel, IN, OUT):
@@ -449,9 +450,9 @@ def case7(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, IN)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 7 - 01000011")
+        caseLabel.SetText('Case 7 - 01000011')
     else:
-        caseLabel.SetText("Case 7c - 10111100")
+        caseLabel.SetText('Case 7c - 10111100')
 
 
 def case8(scalars, caseLabel, IN, OUT):
@@ -464,9 +465,9 @@ def case8(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, OUT)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 8 - 00110011")
+        caseLabel.SetText('Case 8 - 00110011')
     else:
-        caseLabel.SetText("Case 8c - 11001100")
+        caseLabel.SetText('Case 8c - 11001100')
 
 
 def case9(scalars, caseLabel, IN, OUT):
@@ -479,9 +480,9 @@ def case9(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, IN)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 9 - 01001110")
+        caseLabel.SetText('Case 9 - 01001110')
     else:
-        caseLabel.SetText("Case 9c - 10110001")
+        caseLabel.SetText('Case 9c - 10110001')
 
 
 def case10(scalars, caseLabel, IN, OUT):
@@ -494,9 +495,9 @@ def case10(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, IN)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 10 - 01101001")
+        caseLabel.SetText('Case 10 - 01101001')
     else:
-        caseLabel.SetText("Case 10c - 10010110")
+        caseLabel.SetText('Case 10c - 10010110')
 
 
 def case11(scalars, caseLabel, IN, OUT):
@@ -509,9 +510,9 @@ def case11(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, IN)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 11 - 01110001")
+        caseLabel.SetText('Case 11 - 01110001')
     else:
-        caseLabel.SetText("Case 11c - 10001110")
+        caseLabel.SetText('Case 11c - 10001110')
 
 
 def case12(scalars, caseLabel, IN, OUT):
@@ -524,9 +525,9 @@ def case12(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, OUT)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 12 - 00111010")
+        caseLabel.SetText('Case 12 - 00111010')
     else:
-        caseLabel.SetText("Case 12c - 11000101")
+        caseLabel.SetText('Case 12c - 11000101')
 
 
 def case13(scalars, caseLabel, IN, OUT):
@@ -539,9 +540,9 @@ def case13(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, IN)
     scalars.InsertValue(7, OUT)
     if IN == 1:
-        caseLabel.SetText("Case 13 - 01011010")
+        caseLabel.SetText('Case 13 - 01011010')
     else:
-        caseLabel.SetText("Case 13c - 10100101")
+        caseLabel.SetText('Case 13c - 10100101')
 
 
 def case14(scalars, caseLabel, IN, OUT):
@@ -554,9 +555,9 @@ def case14(scalars, caseLabel, IN, OUT):
     scalars.InsertValue(6, IN)
     scalars.InsertValue(7, IN)
     if IN == 1:
-        caseLabel.SetText("Case 14 - 11101101")
+        caseLabel.SetText('Case 14 - 11101101')
     else:
-        caseLabel.SetText("Case 14c - 00010010")
+        caseLabel.SetText('Case 14c - 00010010')
 
 
 cases = [case0, case1, case2, case3, case4, case5, case6, case7, case8, case9, case10, case11, case12, case13, case14]

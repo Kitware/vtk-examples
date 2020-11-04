@@ -4,15 +4,16 @@
 #include <vtkGaussianSplatter.h>
 #include <vtkMaskPoints.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPolyDataNormals.h>
 #include <vtkPolyDataReader.h>
 #include <vtkProperty.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
@@ -20,40 +21,31 @@ int main (int argc, char *argv[])
     return EXIT_FAILURE;
   }
 
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
-
-// Create the RenderWindow, Renderer and both Actors
-//
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  // Create the RenderWindow, Renderer and both Actors
+  //
+  vtkNew<vtkRenderer> ren1;
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
-  
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-// read cyberware file
-//
-  vtkSmartPointer<vtkPolyDataReader> cyber =
-    vtkSmartPointer<vtkPolyDataReader>::New();
+  // read cyberware file
+  //
+  vtkNew<vtkPolyDataReader> cyber;
   cyber->SetFileName(argv[1]);
 
-  vtkSmartPointer<vtkPolyDataNormals> normals =
-    vtkSmartPointer<vtkPolyDataNormals>::New();
+  vtkNew<vtkPolyDataNormals> normals;
   normals->SetInputConnection(cyber->GetOutputPort());
 
-  vtkSmartPointer<vtkMaskPoints> mask =
-    vtkSmartPointer<vtkMaskPoints>::New();
+  vtkNew<vtkMaskPoints> mask;
   mask->SetInputConnection(normals->GetOutputPort());
   mask->SetOnRatio(8);
-//   mask->RandomModeOn();
+  //   mask->RandomModeOn();
 
-  vtkSmartPointer<vtkGaussianSplatter> splatter =
-    vtkSmartPointer<vtkGaussianSplatter>::New();
+  vtkNew<vtkGaussianSplatter> splatter;
   splatter->SetInputConnection(mask->GetOutputPort());
   splatter->SetSampleDimensions(100, 100, 100);
   splatter->SetEccentricity(2.5);
@@ -61,41 +53,37 @@ int main (int argc, char *argv[])
   splatter->SetScaleFactor(1.0);
   splatter->SetRadius(0.025);
 
-  vtkSmartPointer<vtkContourFilter> contour =
-    vtkSmartPointer<vtkContourFilter>::New();
+  vtkNew<vtkContourFilter> contour;
   contour->SetInputConnection(splatter->GetOutputPort());
   contour->SetValue(0, 0.25);
 
-  vtkSmartPointer<vtkPolyDataMapper> splatMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> splatMapper;
   splatMapper->SetInputConnection(contour->GetOutputPort());
   splatMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> splatActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> splatActor;
   splatActor->SetMapper(splatMapper);
   splatActor->GetProperty()->SetColor(colors->GetColor3d("Flesh").GetData());
 
-  vtkSmartPointer<vtkPolyDataMapper> cyberMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> cyberMapper;
   cyberMapper->SetInputConnection(cyber->GetOutputPort());
   cyberMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> cyberActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> cyberActor;
   cyberActor->SetMapper(cyberMapper);
   cyberActor->GetProperty()->SetRepresentationToWireframe();
-  cyberActor->GetProperty()->SetColor(colors->GetColor3d("Turquoise").GetData());
+  cyberActor->GetProperty()->SetColor(
+      colors->GetColor3d("Turquoise").GetData());
 
-// Add the actors to the renderer, set the background and size
-//
+  // Add the actors to the renderer, set the background and size
+  //
   ren1->AddActor(cyberActor);
   ren1->AddActor(splatActor);
   ren1->SetBackground(colors->GetColor3d("Wheat").GetData());
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("SplatFace");
 
-  vtkSmartPointer<vtkCamera> camera =
-    vtkSmartPointer<vtkCamera>::New();
+  vtkNew<vtkCamera> camera;
   camera->SetClippingRange(0.0332682, 1.66341);
   camera->SetFocalPoint(0.0511519, -0.127555, -0.0554379);
   camera->SetPosition(0.516567, -0.124763, -0.349538);
@@ -103,8 +91,8 @@ int main (int argc, char *argv[])
   camera->SetViewUp(-0.013125, 0.99985, -0.0112779);
   ren1->SetActiveCamera(camera);
 
-// render the image
-//
+  // render the image
+  //
   renWin->Render();
   iren->Start();
 

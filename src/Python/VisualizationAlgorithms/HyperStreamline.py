@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
-
 import vtk
 
 
@@ -134,12 +131,12 @@ def main():
 
     outlineActor = vtk.vtkActor()
     outlineActor.SetMapper(outlineMapper)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Black"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # Create a cone indicating the application of the load.
     #
     coneSrc = vtk.vtkConeSource()
-    coneSrc.SetRadius(.5)
+    coneSrc.SetRadius(0.5)
     coneSrc.SetHeight(2)
 
     coneMap = vtk.vtkPolyDataMapper()
@@ -149,7 +146,7 @@ def main():
     coneActor.SetMapper(coneMap)
     coneActor.SetPosition(0, 0, 11)
     coneActor.RotateY(90)
-    coneActor.GetProperty().SetColor(colors.GetColor3d("Tomato"))
+    coneActor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
 
     camera = vtk.vtkCamera()
     camera.SetFocalPoint(0.113766, -1.13665, -1.01919)
@@ -165,10 +162,12 @@ def main():
     ren1.AddActor(outlineActor)
     ren1.AddActor(coneActor)
     ren1.AddActor(ga)
-    ren1.SetBackground(colors.GetColor3d("SlateGray"))
+    ren1.SetBackground(colors.GetColor3d('SlateGray'))
     ren1.SetActiveCamera(camera)
 
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('HyperStreamline')
+
     renWin.Render()
     iren.Start()
 

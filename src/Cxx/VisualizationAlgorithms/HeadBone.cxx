@@ -4,6 +4,7 @@
 #include <vtkMergePoints.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -11,7 +12,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
@@ -19,68 +20,56 @@ int main (int argc, char *argv[])
     return EXIT_FAILURE;
   }
 
-// Create the RenderWindow, Renderer and both Actors
-//
-  vtkSmartPointer<vtkNamedColors> colors =
-    vtkSmartPointer<vtkNamedColors>::New();
+  // Create the RenderWindow, Renderer and both Actors
+  //
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> ren1;
 
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> iren =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> iren;
   iren->SetRenderWindow(renWin);
 
-// create pipeline
-//
+  // create pipeline
+  //
 
-  vtkSmartPointer<vtkMetaImageReader> reader =
-    vtkSmartPointer<vtkMetaImageReader>::New();
+  vtkNew<vtkMetaImageReader> reader;
   reader->SetFileName(argv[1]);
   reader->Update();
 
-  vtkSmartPointer<vtkMergePoints> locator =
-    vtkSmartPointer<vtkMergePoints>::New();
+  vtkNew<vtkMergePoints> locator;
   locator->SetDivisions(64, 64, 92);
   locator->SetNumberOfPointsPerBucket(2);
   locator->AutomaticOff();
 
-  vtkSmartPointer<vtkMarchingCubes> iso =
-    vtkSmartPointer<vtkMarchingCubes>::New();
+  vtkNew<vtkMarchingCubes> iso;
   iso->SetInputConnection(reader->GetOutputPort());
   iso->ComputeGradientsOn();
   iso->ComputeScalarsOff();
   iso->SetValue(0, 1150);
   iso->SetLocator(locator);
 
-  vtkSmartPointer<vtkPolyDataMapper> isoMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> isoMapper;
   isoMapper->SetInputConnection(iso->GetOutputPort());
   isoMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> isoActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> isoActor;
   isoActor->SetMapper(isoMapper);
   isoActor->GetProperty()->SetColor(colors->GetColor3d("Wheat").GetData());
 
-  vtkSmartPointer<vtkOutlineFilter> outline =
-    vtkSmartPointer<vtkOutlineFilter>::New();
+  vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(reader->GetOutputPort());
 
-  vtkSmartPointer<vtkPolyDataMapper> outlineMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> outlineMapper;
   outlineMapper->SetInputConnection(outline->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> outlineActor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> outlineActor;
   outlineActor->SetMapper(outlineMapper);
 
-// Add the actors to the renderer, set the background and size
-//
+  // Add the actors to the renderer, set the background and size
+  //
   ren1->AddActor(outlineActor);
   ren1->AddActor(isoActor);
   ren1->SetBackground(colors->GetColor3d("SlateGray").GetData());
@@ -92,9 +81,9 @@ int main (int argc, char *argv[])
   ren1->ResetCameraClippingRange();
 
   renWin->SetSize(640, 480);
+  renWin->SetWindowName("HeadBone");
 
   renWin->Render();
   iren->Start();
   return EXIT_SUCCESS;
 }
-
