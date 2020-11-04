@@ -425,7 +425,7 @@ These examples demonstrate how to create an display one of the many vtkParametri
 
 | Example Name | Classes Demonstrated | Description | Image |
 | -------------- | ---------------------- | ------------- | ------- |
-[ColorIsosurface](/Cxx/VisualizationAlgorithms/ColorIsosurface) | vtkPolyDataMapper | Color an isosurcae with and Array Component.
+[ColorIsosurface](/Cxx/VisualizationAlgorithms/ColorIsosurface) | vtkPolyDataMapper | Color an isosurface with a data array.
 [CompareExtractSurface](/Cxx/Points/CompareExtractSurface) | vtkExractSurface | Compare three extract surface algorithms.
 [DensifyPoints](/Cxx/Points/DensifyPoints) | vtkDensifyPointCloudFilter | Add points to a point cloud.
 [DownsamplePointCloud](/Cxx/PolyData/DownsamplePointCloud) | vtkCleanPolyData | Down sample a point cloud. Remove points so that there are no points within a tolerance of any point.
@@ -960,7 +960,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [ColoredAnnotatedCube](/Cxx/VisualizationAlgorithms/ColoredAnnotatedCube) | vtkAnnotatedCubeActor vtkAxesActor vtkCubeSource vtkPropAssembly vtkOrientationMarkerWidget | How to color the individual faces of an annotated cube.
 [ColorGlyphs](/Cxx/Visualization/ColorGlyphs) | vtkGlyph3D vtkGlyph3D | Color glyphs.
 [ColorSeriesPatches](/Cxx/Visualization/ColorSeriesPatches) | vtkColorSeries | Creates a HTML file called [VTKColorSeriesPatches](http://htmlpreview.github.com/?https://github.com/lorensen/VTKExamples/blob/master/src/Python/Visualization/VTKColorSeriesPatches.html)
-[CombustorIsosurface](/Cxx/VisualizationAlgorithms/CombustorIsosurface) | vtkContourFilter | Marching cubes surface of flow density.
+[CombustorIsosurface](/Cxx/VisualizationAlgorithms/CombustorIsosurface) | vtkContourFilter | Generate an isosurface of constant flow density.
 [ComplexV](/Cxx/Visualization/ComplexV) | vtkHedgeHog | ComplexV from the VTK Textbook.
 [ContourQuadric](/Cxx/VisualizationAlgorithms/ContourQuadric) | vtkQuadric vtkSampleFunction vtkContourFilter | Contouring a quadric function.
 [CornerAnnotation](/Cxx/Visualization/CornerAnnotation) | vtkCornerAnnotation | Write text in the corners of a window.
@@ -1074,7 +1074,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [SpikeFran](/Cxx/VisualizationAlgorithms/SpikeFran) | vtkGlyph3D | Glyphs indicate surface normals on model of human face. Glyph positions are randomly selected.
 [SplatFace](/Cxx/VisualizationAlgorithms/SplatFace) | vtkGaussianSplatter | Elliptical splatting. (b) Surface reconstructed using elliptical splats into 100^3 volume followed by isosurface extraction. Points regularly subsampled and overlaid on original mesh.
 [Stocks](/Cxx/VisualizationAlgorithms/Stocks) | vtkRibbonFilter vtkLinearExtrusionFilter | Two views from the stock visualization script. The top shows closing price over time; the bottom shows volume over time.
-[StreamLines](/Cxx/Visualization/StreamLines) | vtkStreamTracer | Streamlines.
+[StreamLines](/Cxx/Visualization/StreamLines) | vtkStreamTracer | Seed streamlines with vectors from a structured grid.
 [StreamlinesWithLineWidget](/Cxx/VisualizationAlgorithms/StreamlinesWithLineWidget) | vtkCallbackCommand vtkLineWidget | Using the vtkLineWidget to produce streamlines in the combustor dataset.  The StartInteractionEvent turns the visibility of the streamlines on; the InteractionEvent causes the streamlines to regenerate themselves.
 [StructuredDataTypes](/Cxx/Visualization/StructuredDataTypes) |  | Demonstration of structured data types.
 [TensorAxes](/Cxx/VisualizationAlgorithms/TensorAxes) | vtkPointLoad vtkTensorGlyph | Display the scaled and oriented principal axes of the stress tensor.
@@ -1098,7 +1098,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [VisualizeImageData](/Cxx/Visualization/VisualizeImageData) | vtkDataSetMapper | Visualize the points of an ImageData.
 [VisualizeVTP](/Cxx/Visualization/VisualizeVTP) | vtkXMLPolyDataReader vtkPolyDataMapper | Visualize a VTP File.
 [VoxelsOnBoundary](/Cxx/ImageData/VoxelsOnBoundary) | vtkMultiThreshold vtkMetaImageReader | Extract voxels on the border of an isosurface.
-[WarpCombustor](/Cxx/VisualizationAlgorithms/WarpCombustor) | vtkWarpScalar vtkMultiBlockPLOT3DReader | Carpet plots. Carpet plot of combustor flow energy in a structured grid. Colors and plane displacement represent energy values.
+[WarpCombustor](/Cxx/VisualizationAlgorithms/WarpCombustor) | vtkWarpScalar vtkMultiBlockPLOT3DReader | Carpet plots of combustor flow energy in a structured grid. Colors and plane displacement represent energy values.
 [WindowSize](/Cxx/Visualization/WindowSize) | vtkRenderWindow:SetSize | Change the size of a window.
 [WindowTitle](/Cxx/Visualization/WindowTitle) | vtkRenderWindow | Change the title of a window.
 [Wireframe](/Cxx/Visualization/Wireframe) | vtkActor |

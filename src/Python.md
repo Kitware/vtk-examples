@@ -472,7 +472,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [ColorAnActor](/Python/Visualization/ColorAnActor) | | Colour the actor.
 [ColoredAnnotatedCube](/Python/VisualizationAlgorithms/ColoredAnnotatedCube) | vtkAnnotatedCubeActor vtkAxesActor vtkCubeSource vtkPropAssembly vtkOrientationMarkerWidget | How to color the individual faces of an annotated cube.
 [ColorSeriesPatches](/Python/Visualization/ColorSeriesPatches) | vtkColorSeries | Creates a HTML file called [VTKColorSeriesPatches](http://htmlpreview.github.com/?https://github.com/lorensen/VTKExamples/blob/master/src/Python/Visualization/VTKColorSeriesPatches.html)
-[CombustorIsosurface](/Python/VisualizationAlgorithms/CombustorIsosurface) | vtkContourFilter | Marching cubes surface of flow density.
+[CombustorIsosurface](/Python/VisualizationAlgorithms/CombustorIsosurface) | vtkContourFilter | Generate an isosurface of constant flow density.
 [ComplexV](/Python/Visualization/ComplexV) | vtkHedgeHog | ComplexV from the VTK Textbook.
 [ContourQuadric](/Python/VisualizationAlgorithms/ContourQuadric) | vtkQuadric vtkSampleFunction vtkContourFilter | Contouring a quadric function.
 [CreateBFont](/Python/VisualizationAlgorithms/CreateBFont) | vtkClipPolyData vtkImageDataGeometryFilter | A scanned image clipped with a scalar value of 1/2 its maximum intensity produces a mixture of quadrilaterals and triangles.
@@ -531,7 +531,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [SpikeFran](/Python/VisualizationAlgorithms/SpikeFran) | vtkGlyph3D | Glyphs indicate surface normals on model of human face. Glyph positions are randomly selected.
 [SplatFace](/Python/VisualizationAlgorithms/SplatFace) | vtkGaussianSplatter | Elliptical splatting. (b) Surface reconstructed using elliptical splats into 100^3 volume followed by isosurface extraction. Points regularly subsampled and overlaid on original mesh.
 [Stocks](/Python/VisualizationAlgorithms/Stocks) | vtkRibbonFilter vtkLinearExtrusionFilter | Two views from the stock visualization script. The top shows closing price over time; the bottom shows volume over time.
-[StreamLines](/Python/Visualization/StreamLines) | vtkStreamLine | Seed streamlines with vectors from a structured grid
+[StreamLines](/Python/Visualization/StreamLines) | vtkStreamLine | Seed streamlines with vectors from a structured grid.
 [StreamlinesWithLineWidget](/Python/VisualizationAlgorithms/StreamlinesWithLineWidget) | vtkCallbackCommand vtkLineWidget | Using the vtkLineWidget to produce streamlines in the combustor dataset.  The StartInteractionEvent turns the visibility of the streamlines on; the InteractionEvent causes the streamlines to regenerate themselves.
 [TensorAxes](/Python/VisualizationAlgorithms/TensorAxes) | vtkPointLoad vtkTensorGlyph | Display the scaled and oriented principal axes of the stress tensor.
 [TensorEllipsoids](/Python/VisualizationAlgorithms/TensorEllipsoids) | vtkPointLoad vtkTensorGlyph | Display the scaled and oriented principal axes as tensor ellipsoids representing the stress tensor.
@@ -542,7 +542,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [ViewFrogA](/Python/Visualization/ViewFrogA) | vtkMetaImageReader vtkMarchingCubes vtkImageGaussianSmooth vtkWindowedSincPolyDataFilter | The complete frog without skin or skeleton.
 [ViewFrogBoth](/Python/Visualization/ViewFrogBoth) | vtkMetaImageReader vtkMarchingCubes vtkImageGaussianSmooth vtkImageGaussianSmooth | The frog’s brain. Model extracted without smoothing (left) and with smoothing (right).
 [ViewFrogSkinAndTissue](/Python/Visualization/ViewFrogSkinAndTissue) | vtkMetaImageReader vtkMarchingCubes vtkWindowedSincPolyDataFilter vtkImageGaussianSmooth | All frog parts and translucent skin.
-[WarpCombustor](/Python/VisualizationAlgorithms/WarpCombustor) | vtkWarpScalar vtkMultiBlockPLOT3DReader | Carpet plots. Carpet plot of combustor flow energy in a structured grid. Colors and plane displacement represent energy values.
+[WarpCombustor](/Python/VisualizationAlgorithms/WarpCombustor) | vtkWarpScalar vtkMultiBlockPLOT3DReader | Carpet plots of combustor flow energy in a structured grid. Colors and plane displacement represent energy values.
 [WindowTitle](/Python/Visualization/WindowTitle) | vtkRenderWindow::SetWindowName |
 
 ## Working with vtkImageData
