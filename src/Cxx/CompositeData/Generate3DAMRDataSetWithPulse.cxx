@@ -72,7 +72,7 @@ int main(int, char*[])
   // STEP 1: Get the AMR dataset
   auto amrDataSet = GetAMRDataSet();
   AMRCommon::WriteAMRData(amrDataSet, "Gaussian3D");
-  return 0;
+  return EXIT_SUCCESS;
 }
 namespace {
 //=============================================================================

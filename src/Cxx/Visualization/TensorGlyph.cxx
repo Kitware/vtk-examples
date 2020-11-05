@@ -69,5 +69,5 @@ int main(int, char*[])
   renderWindow->Render();
   interactor->Start();
 
-  return 0;
+  return EXIT_SUCCESS;
 }
