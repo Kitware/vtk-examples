@@ -56,13 +56,14 @@ def main():
     volume.SetProperty(volumeProperty)
 
     ren1.AddVolume(volume)
-    ren1.SetBackground(colors.GetColor3d("Wheat"))
+    ren1.SetBackground(colors.GetColor3d('Wheat'))
     ren1.GetActiveCamera().Azimuth(45)
     ren1.GetActiveCamera().Elevation(30)
     ren1.ResetCameraClippingRange()
     ren1.ResetCamera()
 
     renWin.SetSize(600, 600)
+    renWin.SetWindowName('SimpleRayCast')
     renWin.Render()
 
     iren.Start()

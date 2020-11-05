@@ -65,8 +65,8 @@ def main():
 
     isoActor = vtk.vtkActor()
     isoActor.SetMapper(isoMapper)
-    isoActor.GetProperty().SetDiffuseColor(colors.GetColor3d("Tomato"))
-    isoActor.GetProperty().SetSpecularColor(colors.GetColor3d("White"))
+    isoActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Tomato'))
+    isoActor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
     isoActor.GetProperty().SetDiffuse(0.8)
     isoActor.GetProperty().SetSpecular(0.5)
     isoActor.GetProperty().SetSpecularPower(30)
@@ -100,7 +100,7 @@ def main():
     # Add the actors to the renderer, set the background and size.
     #
     ren1.AddActor(outlineActor)
-    outlineActor.GetProperty().SetColor(colors.GetColor3d("Banana"))
+    outlineActor.GetProperty().SetColor(colors.GetColor3d('Banana'))
     ren1.AddActor(isoActor)
     isoActor.VisibilityOn()
     ren1.AddActor(cut)
@@ -108,8 +108,10 @@ def main():
     n = 20
     opacity = 1.0 / float(n) * 5.0
     cut.GetProperty().SetOpacity(1)
-    ren1.SetBackground(colors.GetColor3d("SlateGray"))
+    ren1.SetBackground(colors.GetColor3d('SlateGray'))
+
     renWin.SetSize(640, 480)
+    renWin.SetWindowName('PseudoVolumeRendering')
 
     ren1.GetActiveCamera().SetClippingRange(3.95297, 50)
     ren1.GetActiveCamera().SetFocalPoint(9.71821, 0.458166, 29.3999)

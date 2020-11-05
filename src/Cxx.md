@@ -1055,7 +1055,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [PointSize](/Cxx/Visualization/PointSize) | vtkActor |
 [ProbeCombustor](/Cxx/VisualizationAlgorithms/ProbeCombustor) | vtkProbeFilter | Probing data in a combustor.  Probes are regular arrays of 50 by 50 points that are then passed through a contouring filter.
 [ProgrammableGlyphFilter](/Cxx/Visualization/ProgrammableGlyphFilter) | vtkProgrammableGlyphFilter | Generate a custom glyph at each point.
-[PseudoVolumeRendering](/Cxx/VolumeRendering/PseudoVolumeRendering) | vtkCutter vtkContourFilter | 100 cut planes with opacity of 0.05. Rendered back-to-front to simulate volume rendering.
+[PseudoVolumeRendering](/Cxx/VolumeRendering/PseudoVolumeRendering) | vtkCutter vtkContourFilter | Here we use 100 cut planes, each with an opacity of 0.05. They are then rendered back-to-front to simulate volume rendering.
 [QuadraticSurface](/Cxx/Visualization/QuadraticSurface) | vtkQuadric | Display a quadratic surface.
 [QuadricLODActor](/Cxx/Visualization/QuadricLODActor) | vtkQuadricLODActor | Level of detail adjustment.
 [QuadricVisualization](/Cxx/Visualization/QuadricVisualization) | vtkQuadric vtkSampleFunction vtkContourFilter | Visualizing a quadric function.

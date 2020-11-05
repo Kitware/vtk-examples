@@ -524,7 +524,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [PointSize](/Python/Visualization/PointSize) | vtkActor |
 [ProbeCombustor](/Python/VisualizationAlgorithms/ProbeCombustor) | vtkProbeFilter | Probing data in a combustor.  Probes are regular arrays of 50 by 50 points that are then passed through a contouring filter.
 [ProgrammableGlyphs](/Python/Visualization/ProgrammableGlyphs) | vtkProgrammableGlyphFilter | Generate programmable glyphs.
-[PseudoVolumeRendering](/Python/VolumeRendering/PseudoVolumeRendering) | vtkCutter vtkContourFilter | 100 cut planes with opacity of 0.05. Rendered back-to-front to simulate volume rendering.
+[PseudoVolumeRendering](/Python/VolumeRendering/PseudoVolumeRendering) | vtkCutter vtkContourFilter | Here we use 100 cut planes, each with an opacity of 0.05. They are then rendered back-to-front to simulate volume rendering.
 [QuadricVisualization](/Python/Visualization/QuadricVisualization) | vtkQuadric vtkSampleFunction vtkContourFilter | Visualizing a quadric function.
 [SingleSplat](/Python/VisualizationAlgorithms/SingleSplat) | vtkGaussianSplatter | Elliptical splatting. (a) Single elliptical splat with eccentricity E=10.  Cone shows orientation of vector.
 [SphereTexture](/Python/Visualization/SphereTexture) | vtkTextureMapToSphere | Apply an ImageData texture to an sphere
