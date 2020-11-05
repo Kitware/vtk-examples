@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+
 import vtk
 from PyQt4 import QtGui
 from vtk.qt4.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
@@ -46,7 +47,6 @@ class MainWindow(QtGui.QMainWindow):
 
 
 if __name__ == "__main__":
-
     app = QtGui.QApplication(sys.argv)
 
     window = MainWindow()

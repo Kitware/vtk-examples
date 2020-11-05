@@ -1,4 +1,5 @@
 ### Description
+
 This example illustrates the Rectilinear Wipe widget. This widget is
 useful for comparing two images. There are 7 different image
 comparison modes.  A rectilinear wipe is a 2x2 checkerboard pattern
@@ -10,4 +11,4 @@ separator.
 
 Pressing keys 0-6 select the various wipe modes.
 
-For an alternative image comparison widget try the [Checkerboard widget](CheckerboardWidget). 
+For an alternative image comparison widget try the [Checkerboard widget](../CheckerboardWidget).

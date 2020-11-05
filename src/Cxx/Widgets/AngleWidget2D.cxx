@@ -1,42 +1,43 @@
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
-#include <vtkSphereSource.h>
-#include <vtkAngleWidget.h>
 #include <vtkAngleRepresentation2D.h>
+#include <vtkAngleWidget.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-int main(int /* argc */, char * /* argv */ [])
+int main(int /* argc */, char* /* argv */[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("AngleWidget2D");
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   double pos1[3] = {50.0, 200.0, 0.0};
   double pos2[3] = {200.0, 20.0, 0.0};
   double center[3] = {100.0, 100.0, 0.0};
-  vtkSmartPointer<vtkAngleRepresentation2D> rep =
-    vtkSmartPointer<vtkAngleRepresentation2D>::New();
+  vtkNew<vtkAngleRepresentation2D> rep;
   rep->ArcVisibilityOff();
 
-  vtkSmartPointer<vtkAngleWidget> angleWidget =
-    vtkSmartPointer<vtkAngleWidget>::New();
+  vtkNew<vtkAngleWidget> angleWidget;
   angleWidget->CreateDefaultRepresentation();
   angleWidget->SetRepresentation(rep);
   angleWidget->SetInteractor(renderWindowInteractor);
 
   renderWindow->Render();
+
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
 
   renderWindowInteractor->Initialize();
   renderWindow->Render();
