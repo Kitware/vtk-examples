@@ -1,74 +1,71 @@
-#include <vtkSmartPointer.h>
-
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkImageData.h>
-
-#include <vtkCoordinate.h>
-#include <vtkSphereSource.h>
 #include <vtkButtonWidget.h>
+#include <vtkCoordinate.h>
+#include <vtkImageData.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 #include <vtkTexturedButtonRepresentation2D.h>
 
-static void CreateImage(vtkSmartPointer<vtkImageData> image,
-                        unsigned char *color1,
-                        unsigned char *color2);
+#include <array>
 
-int main(int, char *[])
+namespace {
+void CreateImage(vtkImageData* image, std::string const& color1,
+                 std::string const& color2);
+}
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create two images for texture
-  vtkSmartPointer<vtkImageData> image1 =
-    vtkSmartPointer<vtkImageData>::New();
-  vtkSmartPointer<vtkImageData> image2 =
-    vtkSmartPointer<vtkImageData>::New();
-  unsigned char banana[3] = { 227, 207, 87 };
-  unsigned char tomato[3] = { 255, 99, 71 };
-  CreateImage(image1, banana, tomato);
-  CreateImage(image2, tomato, banana);
+  vtkNew<vtkImageData> image1;
+  vtkNew<vtkImageData> image2;
+  unsigned char banana[3] = {227, 207, 87};
+  unsigned char tomato[3] = {255, 99, 71};
+  CreateImage(image1, "Banana", "Tomato");
+  CreateImage(image2, "Tomato", "Banana");
 
   // Create some geometry
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("TexturedButtonWidget");
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Create the widget and its representation
-  vtkSmartPointer<vtkTexturedButtonRepresentation2D> buttonRepresentation =
-    vtkSmartPointer<vtkTexturedButtonRepresentation2D>::New();
+  vtkNew<vtkTexturedButtonRepresentation2D> buttonRepresentation;
   buttonRepresentation->SetNumberOfStates(2);
   buttonRepresentation->SetButtonTexture(0, image1);
   buttonRepresentation->SetButtonTexture(1, image2);
 
-  vtkSmartPointer<vtkButtonWidget> buttonWidget =
-    vtkSmartPointer<vtkButtonWidget>::New();
+  vtkNew<vtkButtonWidget> buttonWidget;
   buttonWidget->SetInteractor(renderWindowInteractor);
   buttonWidget->SetRepresentation(buttonRepresentation);
 
   // Add the actors to the scene
   renderer->AddActor(actor);
-  renderer->SetBackground(.1, .2, .5);
+  renderer->SetBackground(colors->GetColor3d("MidnightBLue").GetData());
 
   renderWindow->SetSize(640, 480);
   renderWindow->Render();
@@ -76,8 +73,7 @@ int main(int, char *[])
   // Place the widget. Must be done after a render so that the
   // viewport is defined.
   // Here the widget placement is in normalized display coordinates
-  vtkSmartPointer<vtkCoordinate> upperRight =
-    vtkSmartPointer<vtkCoordinate>::New();
+  vtkNew<vtkCoordinate> upperRight;
   upperRight->SetCoordinateSystemToNormalizedDisplay();
   upperRight->SetValue(1.0, 1.0);
 
@@ -101,10 +97,22 @@ int main(int, char *[])
   return EXIT_SUCCESS;
 }
 
-void CreateImage(vtkSmartPointer<vtkImageData> image,
-                 unsigned char* color1,
-                 unsigned char* color2)
+namespace {
+void CreateImage(vtkImageData* image, std::string const& color1,
+                 std::string const& color2)
 {
+  vtkNew<vtkNamedColors> colors;
+
+  std::array<unsigned char, 3> dc1{0, 0, 0};
+  std::array<unsigned char, 3> dc2{0, 0, 0};
+  auto c1 = colors->GetColor3ub(color1).GetData();
+  auto c2 = colors->GetColor3ub(color2).GetData();
+  for (auto i = 0; i < 3; ++i)
+  {
+    dc1[i] = c1[i];
+    dc2[i] = c2[i];
+  }
+
   // Specify the size of the image data
   image->SetDimensions(10, 10, 1);
   image->AllocateScalars(VTK_UNSIGNED_CHAR, 3);
@@ -117,19 +125,19 @@ void CreateImage(vtkSmartPointer<vtkImageData> image,
     for (int x = 0; x < dims[0]; x++)
     {
       unsigned char* pixel =
-        static_cast<unsigned char*>(image->GetScalarPointer(x, y, 0));
-      if (x < 5)
+          static_cast<unsigned char*>(image->GetScalarPointer(x, y, 0));
+      for (int i = 0; i < 3; ++i)
       {
-        pixel[0] = color1[0];
-        pixel[1] = color1[1];
-        pixel[2] = color1[2];
-      }
-      else
-      {
-        pixel[0] = color2[0];
-        pixel[1] = color2[1];
-        pixel[2] = color2[2];
+        if (x < 5)
+        {
+          pixel[i] = dc1[i];
+        }
+        else
+        {
+          pixel[i] = dc2[i];
+        }
       }
     }
   }
 }
+} // namespace

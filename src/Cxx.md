@@ -1298,7 +1298,8 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [ImplicitPlaneWidget2](/Cxx/Widgets/ImplicitPlaneWidget2) | vtkImplicitPlaneWidget2 | Clip polydata with an implicit plane.
 [LineWidget2](/Cxx/Widgets/LineWidget2) | vtkLineWidget2 |
 [LogoWidget](/Cxx/Widgets/LogoWidget) | vtkLogoWidget | Logo widget.
-[OrientationMarkerWidget](/Cxx/Widgets/OrientationMarkerWidget) | vtkOrientationMarkerWidget | Display a polydata as an orientation icon.
+[OrientationMarkerWidget](/Cxx/Widgets/OrientationMarkerWidget) | vtkOrientationMarkerWidget | Draws two cubes. One of them can be clicked to be rotated, and will rotate the second one. The second one has annotations on it, and can also be moved.
+[OrientationMarkerWidget1](/Cxx/Widgets/OrientationMarkerWidget1) | vtkOrientationMarkerWidget | Display a polydata as an orientation icon.
 [PlaneWidget](/Cxx/Widgets/PlaneWidget) | vtkPlaneWidget | Interact with a plane.
 [PolygonalSurfacePointPlacer](/Cxx/PolyData/PolygonalSurfacePointPlacer) | vtkPolygonalSurfacePointPlacer | Used in conjunction with vtkContourWidget to draw curves on a surface.
 [RectilinearWipeWidget](/Cxx/Widgets/RectilinearWipeWidget) | vtkImageRectilinearWipe vtkRectilinearWipeWidget vtkRectilinearWipeRepresentation | Compare two images.
@@ -1307,6 +1308,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [SeedWidgetWithCustomCallback](/Cxx/Widgets/SeedWidgetWithCustomCallback) | vtkCommand vtkPointHandleRepresentation2D | How to place points in a scene using a custom callback.
 [Slider](/Cxx/Widgets/Slider) | vtkSliderWidget vtkSliderRepresentation3D | 3D Slider.
 [Slider2D](/Cxx/Widgets/Slider2D) | vtkSliderWidget vtkSliderRepresentation2D | 2D Slider.
+[ScalarBarWidget](/Cxx/Widgets/ScalarBarWidget) | vtkScalarBarWidget | The ScalarBarWidget displays a scalar bar that is movable and changes orientation automatically when close to the borders of the image. It needs a ScalarBarActor
 [SphereWidget](/Cxx/Widgets/SphereWidget) | vtkSphereWidget | Sphere widget.
 [SphereWidget2](/Cxx/Widgets/SphereWidget2) | vtkSphereWidget2 |
 [SphereWidgetEvents](/Cxx/Widgets/SphereWidgetEvents) | vtkSphereWidget | Sphere widget events.

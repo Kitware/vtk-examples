@@ -1,57 +1,60 @@
-#include <vtkSmartPointer.h>
-
-#include <vtkXMLPolyDataReader.h>
-#include <vtkSphereSource.h>
+#include <vtkActor.h>
+#include <vtkCamera.h>
 #include <vtkClipPolyData.h>
-#include <vtkPlane.h>
-
 #include <vtkCommand.h>
-#include <vtkImplicitPlaneWidget2.h>
 #include <vtkImplicitPlaneRepresentation.h>
-
+#include <vtkImplicitPlaneWidget2.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPlane.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkActor.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+#include <vtkXMLPolyDataReader.h>
 
+namespace {
 // Callback for the interaction
 // This does the actual work: updates the vtkPlane implicit function.
 // This in turn causes the pipeline to update and clip the object.
 class vtkIPWCallback : public vtkCommand
 {
 public:
-  static vtkIPWCallback *New()
-    { return new vtkIPWCallback; }
-  virtual void Execute(vtkObject *caller, unsigned long, void*)
+  static vtkIPWCallback* New()
   {
-    vtkImplicitPlaneWidget2 *planeWidget =
-      reinterpret_cast<vtkImplicitPlaneWidget2*>(caller);
-    vtkImplicitPlaneRepresentation *rep =
-      reinterpret_cast<vtkImplicitPlaneRepresentation*>(planeWidget->GetRepresentation());
+    return new vtkIPWCallback;
+  }
+  virtual void Execute(vtkObject* caller, unsigned long, void*)
+  {
+    vtkImplicitPlaneWidget2* planeWidget =
+        reinterpret_cast<vtkImplicitPlaneWidget2*>(caller);
+    vtkImplicitPlaneRepresentation* rep =
+        reinterpret_cast<vtkImplicitPlaneRepresentation*>(
+            planeWidget->GetRepresentation());
     rep->GetPlane(this->Plane);
   }
-  vtkIPWCallback():Plane(0),Actor(0) {}
-  vtkPlane *Plane;
-  vtkActor *Actor;
-
+  vtkIPWCallback() : Plane(0), Actor(0)
+  {
+  }
+  vtkPlane* Plane;
+  vtkActor* Actor;
 };
+} // namespace
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetRadius(10.0);
 
-  vtkSmartPointer<vtkXMLPolyDataReader> reader =
-    vtkSmartPointer<vtkXMLPolyDataReader>::New();
+  vtkNew<vtkXMLPolyDataReader> reader;
 
   // Setup a visualization pipeline
-  vtkSmartPointer<vtkPlane> plane =
-    vtkSmartPointer<vtkPlane>::New();
-  vtkSmartPointer<vtkClipPolyData> clipper =
-    vtkSmartPointer<vtkClipPolyData>::New();
+  vtkNew<vtkPlane> plane;
+  vtkNew<vtkClipPolyData> clipper;
   clipper->SetClipFunction(plane);
   clipper->InsideOutOn();
   if (argc < 2)
@@ -65,51 +68,50 @@ int main(int argc, char *argv[])
   }
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(clipper->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  vtkSmartPointer<vtkProperty> backFaces =
-    vtkSmartPointer<vtkProperty>::New();
-  backFaces->SetDiffuseColor(.8, .8, .4);
+  vtkNew<vtkProperty> backFaces;
+  backFaces->SetDiffuseColor(colors->GetColor3d("Gold").GetData());
 
   actor->SetBackfaceProperty(backFaces);
 
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ImplicitPlaneWidget2");
+
   renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   renderWindow->Render();
 
+  renderer->GetActiveCamera()->Azimuth(-60);
+  renderer->GetActiveCamera()->Elevation(30);
+  renderer->ResetCamera();
+  renderer->GetActiveCamera()->Zoom(0.75);
+
   // The callback will do the work
-  vtkSmartPointer<vtkIPWCallback> myCallback =
-    vtkSmartPointer<vtkIPWCallback>::New();
+  vtkNew<vtkIPWCallback> myCallback;
   myCallback->Plane = plane;
   myCallback->Actor = actor;
 
-  vtkSmartPointer<vtkImplicitPlaneRepresentation> rep =
-    vtkSmartPointer<vtkImplicitPlaneRepresentation>::New();
+  vtkNew<vtkImplicitPlaneRepresentation> rep;
   rep->SetPlaceFactor(1.25); // This must be set prior to placing the widget
   rep->PlaceWidget(actor->GetBounds());
   rep->SetNormal(plane->GetNormal());
 
-  vtkSmartPointer<vtkImplicitPlaneWidget2> planeWidget =
-    vtkSmartPointer<vtkImplicitPlaneWidget2>::New();
+  vtkNew<vtkImplicitPlaneWidget2> planeWidget;
   planeWidget->SetInteractor(renderWindowInteractor);
   planeWidget->SetRepresentation(rep);
-  planeWidget->AddObserver(vtkCommand::InteractionEvent,myCallback);
+  planeWidget->AddObserver(vtkCommand::InteractionEvent, myCallback);
 
   // Render
 

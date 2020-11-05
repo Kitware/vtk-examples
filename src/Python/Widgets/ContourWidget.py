@@ -9,22 +9,23 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
+    # colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
 
     # Create the RenderWindow, Renderer and both Actors
 
     renderer = vtk.vtkRenderer()
+    renderer.SetBackground(colors.GetColor3d('MidnightBlue'))
+
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
+    renderWindow.SetWindowName('ContourWidget')
+    renderWindow.SetSize(600, 600)
 
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
-    renderer.SetBackground(colors.GetColor3d("bkg"))
-    renderWindow.SetSize(600, 600)
-
     contourRep = vtk.vtkOrientedGlyphContourRepresentation()
-    contourRep.GetLinesProperty().SetColor(colors.GetColor3d("Red"))
+    contourRep.GetLinesProperty().SetColor(colors.GetColor3d('Red'))
 
     contourWidget = vtk.vtkContourWidget()
     contourWidget.SetInteractor(interactor)
@@ -32,13 +33,13 @@ def main():
     contourWidget.On()
 
     for arg in sys.argv:
-        if "-Shift" == arg:
+        if '-Shift' == arg:
             contourWidget.GetEventTranslator().RemoveTranslation(
                 vtk.vtkCommand.LeftButtonPressEvent)
             contourWidget.GetEventTranslator().SetTranslation(
                 vtk.vtkCommand.LeftButtonPressEvent,
                 vtk.vtkWidgetEvent.Translate)
-        elif "-Scale" == arg:
+        elif '-Scale' == arg:
             contourWidget.GetEventTranslator().RemoveTranslation(
                 vtk.vtkCommand.LeftButtonPressEvent)
             contourWidget.GetEventTranslator().SetTranslation(

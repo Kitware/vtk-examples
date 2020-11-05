@@ -9,32 +9,28 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
+    # colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
 
     source = vtk.vtkSphereSource()
-    output = source.GetOutput()
 
     mapper = vtk.vtkPolyDataMapper()
-    mapper.SetInputData(output)
+    mapper.SetInputConnection(source.GetOutputPort())
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
+    actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     renderer = vtk.vtkRenderer()
-    renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d('bkg'))
-
     render_window = vtk.vtkRenderWindow()
     render_window.AddRenderer(renderer)
-    render_window.SetSize(300, 300)
 
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)
 
     # Create the TextActor
     text_actor = vtk.vtkTextActor()
-    text_actor.SetInput("This is a test")
-    text_actor.GetTextProperty().SetColor(colors.GetColor3d('Cyan'))
+    text_actor.SetInput('This is a test')
+    text_actor.GetTextProperty().SetColor(colors.GetColor3d('Lime'))
 
     # Create the text representation. Used for positioning the text_actor
     text_representation = vtk.vtkTextRepresentation()
@@ -47,17 +43,23 @@ def main():
     #
     # SelectableOn/Off indicates whether the interior region of the widget can be
     # selected or not. If not, then events (such as left mouse down) allow the user
-    # to "move" the widget, and no selection is possible. Otherwise the
+    # to 'move' the widget, and no selection is possible. Otherwise the
     # SelectRegion() method is invoked.
     text_widget = vtk.vtkTextWidget()
     text_widget.SetRepresentation(text_representation)
+
     text_widget.SetInteractor(interactor)
     text_widget.SetTextActor(text_actor)
     text_widget.SelectableOff()
-    text_widget.On()
+
+    renderer.AddActor(actor)
+    renderer.SetBackground(colors.GetColor3d('MidnightBLue'))
+    render_window.SetSize(300, 300)
+    render_window.SetWindowName('TextWidget')
 
     interactor.Initialize()
     render_window.Render()
+    text_widget.On()
     interactor.Start()
 
 

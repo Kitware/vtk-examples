@@ -1,66 +1,74 @@
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
+#include <vtkCommand.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
+#include <vtkSphereRepresentation.h>
 #include <vtkSphereSource.h>
 #include <vtkSphereWidget.h>
-#include <vtkSphereRepresentation.h>
-#include <vtkCommand.h>
 
+namespace {
 class SphereCallback : public vtkCommand
 {
-  public:
-    static SphereCallback *New()
-    {
-      return new SphereCallback;
-    }
-    SphereCallback(){}
-    
-    virtual void Execute(vtkObject *caller, unsigned long, void*)
-    {
-      
-      vtkSphereWidget *sphereWidget = 
-          reinterpret_cast<vtkSphereWidget*>(caller);
-      
-      double center[3];
-      sphereWidget->GetCenter(center);
-      std::cout << "Center: " << center[0] << " " << center[1] << " " << center[2] << std::endl;
-    }
-    
-};
+public:
+  static SphereCallback* New()
+  {
+    return new SphereCallback;
+  }
+  SphereCallback()
+  {
+  }
 
-int main(int, char *[])
+  virtual void Execute(vtkObject* caller, unsigned long, void*)
+  {
+
+    vtkSphereWidget* sphereWidget = reinterpret_cast<vtkSphereWidget*>(caller);
+
+    double center[3];
+    sphereWidget->GetCenter(center);
+    std::cout << "Center: " << center[0] << " " << center[1] << " " << center[2]
+              << std::endl;
+  }
+};
+} // namespace
+
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
+
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  
+  renderWindow->SetWindowName("SphereWidget");
+
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkSphereWidget> sphereWidget = 
-    vtkSmartPointer<vtkSphereWidget>::New();
+  vtkNew<vtkSphereWidget> sphereWidget;
   sphereWidget->SetInteractor(renderWindowInteractor);
   sphereWidget->SetRepresentationToSurface();
-  
-  vtkSmartPointer<SphereCallback> sphereCallback = 
-    vtkSmartPointer<SphereCallback>::New();
- 
-  sphereWidget->AddObserver(vtkCommand::InteractionEvent,sphereCallback);
-  
+  sphereWidget->GetSphereProperty()->SetColor(
+      colors->GetColor3d("BurlyWood").GetData());
+
+  vtkNew<SphereCallback> sphereCallback;
+
+  sphereWidget->AddObserver(vtkCommand::InteractionEvent, sphereCallback);
+
   renderWindow->Render();
   renderWindowInteractor->Initialize();
   renderWindow->Render();
   sphereWidget->On();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

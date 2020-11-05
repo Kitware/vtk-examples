@@ -21,12 +21,12 @@ def get_program_parameters():
 def main():
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
+    # colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
 
     # The source file
     file_name = get_program_parameters()
 
-    # Create a custom lut. The lut is used both at the mapper and at the
+    # Create a custom lut. The lut is used for both at the mapper and at the
     # scalar_bar
     lut = vtk.vtkLookupTable()
     lut.Build()
@@ -48,11 +48,12 @@ def main():
 
     renderer = vtk.vtkRenderer()
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d('bkg'))
+    renderer.SetBackground(colors.GetColor3d('MidnightBLue'))
 
     render_window = vtk.vtkRenderWindow()
     render_window.AddRenderer(renderer)
     render_window.SetSize(300, 300)
+    render_window.SetWindowName("ScalarBarWidget")
 
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)

@@ -1,75 +1,83 @@
 #include <vtkActor.h>
 #include <vtkCommand.h>
 #include <vtkHoverWidget.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkRenderer.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 
+namespace {
 class vtkHoverCallback : public vtkCommand
 {
-  public:
-    static vtkHoverCallback *New()
-    {
-      return new vtkHoverCallback;
-    }
+public:
+  static vtkHoverCallback* New()
+  {
+    return new vtkHoverCallback;
+  }
 
-    vtkHoverCallback() {}
+  vtkHoverCallback()
+  {
+  }
 
-    virtual void Execute(vtkObject*, unsigned long event, void *vtkNotUsed(calldata))
+  virtual void Execute(vtkObject*, unsigned long event,
+                       void* vtkNotUsed(calldata))
+  {
+    switch (event)
     {
-      switch (event)
-      {
-        case vtkCommand::TimerEvent:
-          std::cout << "TimerEvent -> the mouse stopped moving and the widget hovered" << std::endl;
-          break;
-        case vtkCommand::EndInteractionEvent:
-          std::cout << "EndInteractionEvent -> the mouse started to move" << std::endl;
-          break;
-      }
+    case vtkCommand::TimerEvent:
+      std::cout
+          << "TimerEvent -> the mouse stopped moving and the widget hovered"
+          << std::endl;
+      break;
+    case vtkCommand::EndInteractionEvent:
+      std::cout << "EndInteractionEvent -> the mouse started to move"
+                << std::endl;
+      break;
     }
+  }
 };
+} // namespace
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("HoverWidget");
+
   renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Create the widget
-  vtkSmartPointer<vtkHoverWidget> hoverWidget =
-    vtkSmartPointer<vtkHoverWidget>::New();
+  vtkNew<vtkHoverWidget> hoverWidget;
   hoverWidget->SetInteractor(renderWindowInteractor);
   hoverWidget->SetTimerDuration(1000);
 
   // Create a callback to listen to the widget's two VTK events
-  vtkSmartPointer<vtkHoverCallback> hoverCallback =
-    vtkSmartPointer<vtkHoverCallback>::New();
-  hoverWidget->AddObserver(vtkCommand::TimerEvent,hoverCallback);
-  hoverWidget->AddObserver(vtkCommand::EndInteractionEvent,hoverCallback);
+  vtkNew<vtkHoverCallback> hoverCallback;
+  hoverWidget->AddObserver(vtkCommand::TimerEvent, hoverCallback);
+  hoverWidget->AddObserver(vtkCommand::EndInteractionEvent, hoverCallback);
 
   renderWindow->Render();
 

@@ -3,8 +3,10 @@
 #include <vtkImageActor.h>
 #include <vtkImageCanvasSource2D.h>
 #include <vtkInteractorStyleImage.h>
+#include <vtkNew.h>
 #include <vtkPointHandleRepresentation2D.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkProperty2D.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
@@ -13,7 +15,12 @@
 #include <vtkSeedWidget.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 
+#include <array>
+
+namespace {
 class vtkSeedImageCallback : public vtkCommand
 {
 public:
@@ -70,61 +77,66 @@ private:
   vtkSeedRepresentation* SeedRepresentation = nullptr;
   vtkSeedWidget* SeedWidget = nullptr;
 };
+} // namespace
 
 int main(int /* argc */, char* /* argv */[])
 {
+  vtkNew<vtkNamedColors> colors;
+
+  std::array<double, 3> drawColor1{0, 0, 0};
+  std::array<double, 3> drawColor2{0, 0, 0};
+  auto color1 = colors->GetColor3ub("MidnightBlue").GetData();
+  auto color2 = colors->GetColor3ub("Tomato").GetData();
+  for (auto i = 0; i < 3; ++i)
+  {
+    drawColor1[i] = color1[i];
+    drawColor2[i] = color2[i];
+  }
   // Create an image
-  auto drawing =
-    vtkSmartPointer<vtkImageCanvasSource2D>::New();
+  vtkNew<vtkImageCanvasSource2D> drawing;
   drawing->SetScalarTypeToUnsignedChar();
   drawing->SetNumberOfScalarComponents(3);
   drawing->SetExtent(0, 20, 0, 50, 0, 0);
   // Make a blue background
-  drawing->SetDrawColor(0, 0, 255);
+  drawing->SetDrawColor(drawColor1.data());
   drawing->FillBox(0, 20, 0, 50);
   // Make a red circle
-  drawing->SetDrawColor(255, 0, 0, 0);
+  drawing->SetDrawColor(drawColor2.data());
   drawing->DrawCircle(9, 10, 5);
   drawing->Update();
 
-  auto imageActor =
-    vtkSmartPointer<vtkImageActor>::New();
+  vtkNew<vtkImageActor> imageActor;
   imageActor->SetInputData(drawing->GetOutput());
 
   // Create a renderer and render window
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
+  vtkNew<vtkRenderer> renderer;
   renderer->AddActor(imageActor);
-  auto renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
+
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("SeedWidgetImage");
 
   // An interactor
-  auto renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Setup interactor style
-  auto interactorStyleImage =
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  vtkNew<vtkInteractorStyleImage> interactorStyleImage;
   renderWindowInteractor->SetInteractorStyle(interactorStyleImage);
 
   // Create the representation
-  auto handle =
-    vtkSmartPointer<vtkPointHandleRepresentation2D>::New();
+  vtkNew<vtkPointHandleRepresentation2D> handle;
   handle->GetProperty()->SetColor(1, 0, 0);
-  auto rep =
-    vtkSmartPointer<vtkSeedRepresentation>::New();
+  vtkNew<vtkSeedRepresentation> rep;
   rep->SetHandleRepresentation(handle);
 
   // Seed widget
-  auto seedWidget =
-    vtkSmartPointer<vtkSeedWidget>::New();
+  vtkNew<vtkSeedWidget> seedWidget;
   seedWidget->SetInteractor(renderWindowInteractor);
   seedWidget->SetRepresentation(rep);
 
-  auto seedCallback =
-    vtkSmartPointer<vtkSeedImageCallback>::New();
+  vtkNew<vtkSeedImageCallback> seedCallback;
   seedCallback->SetRepresentation(rep);
   seedCallback->SetWidget(seedWidget);
   seedWidget->AddObserver(vtkCommand::PlacePointEvent, seedCallback);

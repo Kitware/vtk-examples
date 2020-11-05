@@ -1,68 +1,72 @@
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
-#include <vtkSphereSource.h>
 #include <vtkImagePlaneWidget.h>
 #include <vtkInteractorStyleTrackballActor.h>
 #include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkNew.h>
+#include <vtkSphereSource.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
+#include <vtkCamera.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkSphereSource> sphereSource = 
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkNamedColors> colors;
+
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->Update();
 
   // Create a mapper and actor
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
+
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("ImagePlaneWidget");
+
   renderer->AddActor(actor);
-  
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  
-  //vtkSmartPointer<vtkInteractorStyleTrackballActor> style = 
-    //vtkSmartPointer<vtkInteractorStyleTrackballActor>::New();
-  vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = 
-    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-  
-  renderWindowInteractor->SetInteractorStyle( style );
-  
-  vtkSmartPointer<vtkImagePlaneWidget> planeWidget = 
-    vtkSmartPointer<vtkImagePlaneWidget>::New();
+  // vtkNew<vtkInteractorStyleTrackballActor> style;
+  vtkNew<vtkInteractorStyleTrackballCamera> style;
+
+  renderWindowInteractor->SetInteractorStyle(style);
+
+  vtkNew<vtkImagePlaneWidget> planeWidget;
   planeWidget->SetInteractor(renderWindowInteractor);
   planeWidget->TextureVisibilityOff();
-  
-  double origin[3] = {0, 1,0};
+
+  double origin[3] = {0, 1, 0};
   planeWidget->SetOrigin(origin);
   planeWidget->UpdatePlacement();
-    
+
   // Render
   renderWindow->Render();
-  
+
+  renderer->GetActiveCamera()->Azimuth(-45);
+  renderer->GetActiveCamera()->Zoom(0.85);
+
   renderWindowInteractor->Initialize();
   renderWindow->Render();
   planeWidget->On();
-  
+
   // Begin mouse interaction
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

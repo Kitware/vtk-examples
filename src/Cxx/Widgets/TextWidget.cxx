@@ -1,54 +1,50 @@
-#include <vtkSmartPointer.h>
-#include <vtkTextWidget.h>
-#include <vtkSphereSource.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
+#include <vtkCommand.h>
+#include <vtkCoordinate.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 #include <vtkTextActor.h>
 #include <vtkTextProperty.h>
 #include <vtkTextRepresentation.h>
-#include <vtkCoordinate.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkCommand.h>
+#include <vtkTextWidget.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // Create the RenderWindow, Renderer and both Actors
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
 
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Create a test pipeline
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkSphereSource> sphereSource;
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
   // Create the widget
-  vtkSmartPointer<vtkTextActor> textActor =
-    vtkSmartPointer<vtkTextActor>::New();
+  vtkNew<vtkTextActor> textActor;
   textActor->SetInput("This is a test");
-  textActor->GetTextProperty()->SetColor( 0.0, 1.0, 0.0 );
+  textActor->GetTextProperty()->SetColor(colors->GetColor3d("Lime").GetData());
 
-  vtkSmartPointer<vtkTextWidget> textWidget =
-    vtkSmartPointer<vtkTextWidget>::New();
+  vtkNew<vtkTextWidget> textWidget;
 
-  vtkSmartPointer<vtkTextRepresentation> textRepresentation =
-    vtkSmartPointer<vtkTextRepresentation>::New();
-  textRepresentation->GetPositionCoordinate()->SetValue( .15, .15 );
-  textRepresentation->GetPosition2Coordinate()->SetValue( .7, .2 );
-  textWidget ->SetRepresentation( textRepresentation );
+  vtkNew<vtkTextRepresentation> textRepresentation;
+  textRepresentation->GetPositionCoordinate()->SetValue(0.15, 0.15);
+  textRepresentation->GetPosition2Coordinate()->SetValue(0.7, 0.2);
+  textWidget->SetRepresentation(textRepresentation);
 
   textWidget->SetInteractor(interactor);
   textWidget->SetTextActor(textActor);
@@ -56,8 +52,9 @@ int main(int, char *[])
 
   // Add the actors to the renderer, set the background and size
   renderer->AddActor(actor);
-  renderer->SetBackground(0.1, 0.2, 0.4);
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
   renderWindow->SetSize(300, 300);
+  renderWindow->SetWindowName("TextWidget");
 
   interactor->Initialize();
   renderWindow->Render();
@@ -65,7 +62,6 @@ int main(int, char *[])
   renderWindow->Render();
 
   interactor->Start();
-  
-  return EXIT_SUCCESS;
 
+  return EXIT_SUCCESS;
 }

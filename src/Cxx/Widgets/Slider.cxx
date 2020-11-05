@@ -1,24 +1,22 @@
-#include <vtkSphereSource.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyData.h>
-#include <vtkSliderWidget.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkPolyData.h>
-#include <vtkSmartPointer.h>
-#include <vtkSphereSource.h>
-#include <vtkCommand.h>
-#include <vtkWidgetEvent.h>
 #include <vtkCallbackCommand.h>
-#include <vtkWidgetEventTranslator.h>
+#include <vtkCommand.h>
 #include <vtkInteractorStyleTrackballCamera.h>
-#include <vtkSliderWidget.h>
-#include <vtkSliderRepresentation3D.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSliderRepresentation3D.h>
+#include <vtkSliderWidget.h>
+#include <vtkSphereSource.h>
+#include <vtkWidgetEvent.h>
+#include <vtkWidgetEventTranslator.h>
 
+namespace {
 // The callback does the work.
 // The callback keeps a pointer to the sphere whose resolution is
 // controlled. After constructing the callback, the program sets the
@@ -27,84 +25,89 @@
 class vtkSliderCallback : public vtkCommand
 {
 public:
-  static vtkSliderCallback *New()
+  static vtkSliderCallback* New()
   {
     return new vtkSliderCallback;
   }
-  virtual void Execute(vtkObject *caller, unsigned long, void*)
+  virtual void Execute(vtkObject* caller, unsigned long, void*)
   {
-    vtkSliderWidget *sliderWidget =
-      reinterpret_cast<vtkSliderWidget*>(caller);
-    this->SphereSource->SetPhiResolution(static_cast<vtkSliderRepresentation *>(sliderWidget->GetRepresentation())->GetValue()/2);
-    this->SphereSource->SetThetaResolution(static_cast<vtkSliderRepresentation *>(sliderWidget->GetRepresentation())->GetValue());
+    vtkSliderWidget* sliderWidget = reinterpret_cast<vtkSliderWidget*>(caller);
+    this->SphereSource->SetPhiResolution(
+        static_cast<vtkSliderRepresentation*>(sliderWidget->GetRepresentation())
+            ->GetValue() /
+        2);
+    this->SphereSource->SetThetaResolution(
+        static_cast<vtkSliderRepresentation*>(sliderWidget->GetRepresentation())
+            ->GetValue());
   }
-  vtkSliderCallback():SphereSource(0) {}
-  vtkSphereSource *SphereSource;
+  vtkSliderCallback() : SphereSource(0)
+  {
+  }
+  vtkSphereSource* SphereSource;
 };
+} // namespace
 
-int main (int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // A sphere
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
+  vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(0.0, 0.0, 0.0);
   sphereSource->SetRadius(4.0);
   sphereSource->SetPhiResolution(4);
   sphereSource->SetThetaResolution(8);
 
-  vtkSmartPointer<vtkPolyDataMapper> mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(sphereSource->GetOutputPort());
 
-  vtkSmartPointer<vtkActor> actor =
-    vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
   actor->GetProperty()->SetInterpolationToFlat();
+  actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
+  actor->GetProperty()->SetEdgeColor(colors->GetColor3d("Tomato").GetData());
+  actor->GetProperty()->EdgeVisibilityOn();
 
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("Slider");
 
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
   renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Render an image (lights and cameras are created automatically)
   renderWindow->Render();
 
-  vtkSmartPointer<vtkSliderRepresentation3D> sliderRep =
-    vtkSmartPointer<vtkSliderRepresentation3D>::New();
+  vtkNew<vtkSliderRepresentation3D> sliderRep;
   sliderRep->SetMinimumValue(3.0);
   sliderRep->SetMaximumValue(50.0);
   sliderRep->SetValue(sphereSource->GetThetaResolution());
   sliderRep->SetTitleText("Sphere Resolution");
   sliderRep->GetPoint1Coordinate()->SetCoordinateSystemToWorld();
-  sliderRep->GetPoint1Coordinate()->SetValue(-4,6,0);
+  sliderRep->GetPoint1Coordinate()->SetValue(-4, 6, 0);
   sliderRep->GetPoint2Coordinate()->SetCoordinateSystemToWorld();
-  sliderRep->GetPoint2Coordinate()->SetValue(4,6,0);
+  sliderRep->GetPoint2Coordinate()->SetValue(4, 6, 0);
   sliderRep->SetSliderLength(0.075);
   sliderRep->SetSliderWidth(0.05);
   sliderRep->SetEndCapLength(0.05);
 
-  vtkSmartPointer<vtkSliderWidget> sliderWidget =
-    vtkSmartPointer<vtkSliderWidget>::New();
+  vtkNew<vtkSliderWidget> sliderWidget;
   sliderWidget->SetInteractor(renderWindowInteractor);
   sliderWidget->SetRepresentation(sliderRep);
   sliderWidget->SetAnimationModeToAnimate();
   sliderWidget->EnabledOn();
 
-  vtkSmartPointer<vtkSliderCallback> callback =
-    vtkSmartPointer<vtkSliderCallback>::New();
+  vtkNew<vtkSliderCallback> callback;
   callback->SphereSource = sphereSource;
 
-  sliderWidget->AddObserver(vtkCommand::InteractionEvent,callback);
+  sliderWidget->AddObserver(vtkCommand::InteractionEvent, callback);
 
   renderWindowInteractor->Initialize();
   renderWindow->Render();
