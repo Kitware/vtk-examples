@@ -73,6 +73,7 @@ How to visualise the information in a structured dataset. All these examples use
 [CombustorIsosurface](/Cxx/VisualizationAlgorithms/CombustorIsosurface) | Generate an isosurface of constant flow density.
 [CutStructuredGrid](/Cxx/VisualizationAlgorithms/CutStructuredGrid) | Cut through structured grid with plane. The cut plane is shown solid shaded. A computational plane of constant k value is shown in wireframe for comparison. The colors correspond to flow density. Cutting surfaces are not necessarily planes: implicit functions such as spheres, cylinders, and quadrics can also be used.
 [ProbeCombustor](/Cxx/VisualizationAlgorithms/ProbeCombustor) | Probing data in a combustor.  Probes are regular arrays of 50 by 50 points that are then passed through a contouring filter.
+[PseudoVolumeRendering](/Cxx/VolumeRendering/PseudoVolumeRendering)  | Here we use 100 cut planes, each with an opacity of 0.05. They are then rendered back-to-front to simulate volume rendering.
 [Rainbow](/Cxx/Rendering/Rainbow) | Using different vtkLookupTables.
 [StreamLines](/Cxx/Visualization/StreamLines) | Seed streamlines with vectors from a structured grid.
 [StreamlinesWithLineWidget](/Cxx/VisualizationAlgorithms/StreamlinesWithLineWidget) | Interact with the streamlines in the combustor dataset.
