@@ -2,17 +2,20 @@
 #include <vtkBorderRepresentation.h>
 #include <vtkBorderWidget.h>
 #include <vtkCommand.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkObjectFactory.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkWidgetCallbackMapper.h>
 #include <vtkWidgetEvent.h>
 
+namespace {
 class vtkCustomBorderWidget : public vtkBorderWidget
 {
 public:
@@ -26,6 +29,56 @@ public:
 
 vtkStandardNewMacro(vtkCustomBorderWidget);
 
+} // namespace
+
+int main(int, char*[])
+{
+  vtkNew<vtkNamedColors> colors;
+
+  // Sphere
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetRadius(4.0);
+  sphereSource->Update();
+
+  vtkNew<vtkPolyDataMapper> mapper;
+  mapper->SetInputConnection(sphereSource->GetOutputPort());
+
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+  actor->GetProperty()->SetColor(
+      colors->GetColor3d("DarkOliveGreen").GetData());
+
+  // A renderer and render window
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("BorderWidget");
+
+  // An interactor
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  renderWindowInteractor->SetRenderWindow(renderWindow);
+
+  vtkNew<vtkCustomBorderWidget> borderWidget;
+  borderWidget->SetInteractor(renderWindowInteractor);
+  borderWidget->CreateDefaultRepresentation();
+  borderWidget->SelectableOff();
+
+  // Add the actors to the scene
+  renderer->AddActor(actor);
+  renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
+
+  // Render an image (lights and cameras are created automatically)
+  renderWindowInteractor->Initialize();
+  renderWindow->Render();
+  borderWidget->On();
+
+  // Begin mouse interaction
+  renderWindowInteractor->Start();
+
+  return EXIT_SUCCESS;
+}
+
+namespace {
 vtkCustomBorderWidget::vtkCustomBorderWidget()
 {
   this->CallbackMapper->SetCallbackMethod(
@@ -38,8 +91,7 @@ void vtkCustomBorderWidget::EndSelectAction(vtkAbstractWidget* w)
   vtkBorderWidget* borderWidget = dynamic_cast<vtkBorderWidget*>(w);
 
   // Get the actual box coordinates/planes
-  // vtkSmartPointer<vtkPolyData> polydata =
-  //  vtkSmartPointer<vtkPolyData>::New();
+  // vtkNew<vtkPolyData> polydata;
 
   // Get the bottom left corner
   auto lowerLeft =
@@ -56,51 +108,4 @@ void vtkCustomBorderWidget::EndSelectAction(vtkAbstractWidget* w)
 
   vtkBorderWidget::EndSelectAction(w);
 }
-
-int main(int, char*[])
-{
-  // Sphere
-  auto sphereSource =
-    vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource->SetRadius(4.0);
-  sphereSource->Update();
-
-  auto mapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  mapper->SetInputConnection(sphereSource->GetOutputPort());
-
-  auto actor =
-    vtkSmartPointer<vtkActor>::New();
-  actor->SetMapper(mapper);
-
-  // A renderer and render window
-  auto renderer =
-    vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->AddRenderer(renderer);
-
-  // An interactor
-  auto renderWindowInteractor =
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  renderWindowInteractor->SetRenderWindow(renderWindow);
-
-  auto borderWidget =
-    vtkSmartPointer<vtkCustomBorderWidget>::New();
-  borderWidget->SetInteractor(renderWindowInteractor);
-  borderWidget->CreateDefaultRepresentation();
-  borderWidget->SelectableOff();
-
-  // Add the actors to the scene
-  renderer->AddActor(actor);
-
-  // Render an image (lights and cameras are created automatically)
-  renderWindowInteractor->Initialize();
-  renderWindow->Render();
-  borderWidget->On();
-
-  // Begin mouse interaction
-  renderWindowInteractor->Start();
-
-  return EXIT_SUCCESS;
-}
+} // namespace

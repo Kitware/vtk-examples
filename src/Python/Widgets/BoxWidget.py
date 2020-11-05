@@ -20,15 +20,16 @@ def main():
     coneMapper.SetInputConnection(cone.GetOutputPort())
     coneActor = vtk.vtkActor()
     coneActor.SetMapper(coneMapper)
-    coneActor.GetProperty().SetColor(colors.GetColor3d("BurlyWood"))
+    coneActor.GetProperty().SetColor(colors.GetColor3d('BurlyWood'))
 
     # A renderer and render window
     renderer = vtk.vtkRenderer()
-    renderer.SetBackground(colors.GetColor3d("Blue"))
+    renderer.SetBackground(colors.GetColor3d('Blue'))
     renderer.AddActor(coneActor)
 
     renwin = vtk.vtkRenderWindow()
     renwin.AddRenderer(renderer)
+    renwin.SetWindowName('BoxWidget')
 
     # An interactor
     interactor = vtk.vtkRenderWindowInteractor()
@@ -43,7 +44,7 @@ def main():
     boxWidget.On()
 
     # Connect the event to a function
-    boxWidget.AddObserver("InteractionEvent", boxCallback)
+    boxWidget.AddObserver('InteractionEvent', boxCallback)
 
     # Start
     interactor.Initialize()

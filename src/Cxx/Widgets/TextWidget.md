@@ -1,5 +1,5 @@
 ### Description
 
 !!! seealso
-    [DrawText](/Cxx/Visualization/DrawText)
+    [DrawText](../../Visualization/DrawText)
 

@@ -1,4 +1,3 @@
 ### Description
 
-Draws two cubes. One of them can be clicked to be rotated, and will rotate the second one.
-The second one has annotations on it, and can also be moved.
+This example uses a polydata as an orientation icon. You can get the bunny data [here](https://gitlab.kitware.com/lorensen/VTKExamples/raw/master/Testing/Data/Bunny.vtp).

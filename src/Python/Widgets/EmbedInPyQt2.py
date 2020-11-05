@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # Contributed by Eric E Monson
 
+import sys
+
+import vtk
 from PyQt4 import QtGui
 from PyQt4.QtGui import QApplication
-import vtk
 from vtk.qt4.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
-import sys
 
 
 class Ui_MainWindow(object):
@@ -46,7 +47,6 @@ class SimpleView(QtGui.QMainWindow):
 
 
 if __name__ == "__main__":
-
     app = QApplication(sys.argv)
     window = SimpleView()
     window.show()
