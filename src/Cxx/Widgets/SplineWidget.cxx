@@ -1,32 +1,35 @@
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 #include <vtkSplineWidget2.h>
 
-int main(int, char *[])
+int main(int, char*[])
 {
+  vtkNew<vtkNamedColors> colors;
+
   // A renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  renderer->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
+
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  
+  renderWindow->SetWindowName("SplineWidget");
+
   // An interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkSplineWidget2> splineWidget = 
-    vtkSmartPointer<vtkSplineWidget2>::New();
+  vtkNew<vtkSplineWidget2> splineWidget;
   splineWidget->SetInteractor(renderWindowInteractor);
-  
+
   renderWindowInteractor->Initialize();
   renderWindow->Render();
   splineWidget->On();
   renderer->ResetCamera();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }

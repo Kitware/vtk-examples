@@ -6,16 +6,17 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    colors.SetColor('bkg', [0.2, 0.3, 0.7, 1.0])
+    # colors.SetColor('bkg', [0.2, 0.3, 0.7, 1.0])
 
     # create a rendering window and renderer
     ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
-    renWin.AddRenderer(ren)
+    ren_win = vtk.vtkRenderWindow()
+    ren_win.AddRenderer(ren)
+    ren_win.SetWindowName('OrientationMarkerWidget')
 
     # create a renderwindowinteractor
     iren = vtk.vtkRenderWindowInteractor()
-    iren.SetRenderWindow(renWin)
+    iren.SetRenderWindow(ren_win)
 
     cube = vtk.vtkCubeSource()
     cube.SetXLength(200)
@@ -27,23 +28,25 @@ def main():
     ca = vtk.vtkActor()
     ca.SetMapper(cm)
     ca.GetProperty().SetColor(colors.GetColor3d("BurlyWood"))
+    ca.GetProperty().EdgeVisibilityOn()
+    ca.GetProperty().SetEdgeColor(colors.GetColor3d("Red"))
 
     # assign actor to the renderer
     ren.AddActor(ca)
-    ren.SetBackground(colors.GetColor3d('bkg'))
+    ren.SetBackground(colors.GetColor3d('CornflowerBlue'))
 
-    axesActor = vtk.vtkAnnotatedCubeActor()
-    axesActor.SetXPlusFaceText('R')
-    axesActor.SetXMinusFaceText('L')
-    axesActor.SetYMinusFaceText('H')
-    axesActor.SetYPlusFaceText('F')
-    axesActor.SetZMinusFaceText('P')
-    axesActor.SetZPlusFaceText('A')
-    axesActor.GetTextEdgesProperty().SetColor(colors.GetColor3d("Yellow"))
-    axesActor.GetTextEdgesProperty().SetLineWidth(2)
-    axesActor.GetCubeProperty().SetColor(colors.GetColor3d("Blue"))
+    axes_actor = vtk.vtkAnnotatedCubeActor()
+    axes_actor.SetXPlusFaceText('L')
+    axes_actor.SetXMinusFaceText('R')
+    axes_actor.SetYMinusFaceText('I')
+    axes_actor.SetYPlusFaceText('S')
+    axes_actor.SetZMinusFaceText('P')
+    axes_actor.SetZPlusFaceText('A')
+    axes_actor.GetTextEdgesProperty().SetColor(colors.GetColor3d("Yellow"))
+    axes_actor.GetTextEdgesProperty().SetLineWidth(2)
+    axes_actor.GetCubeProperty().SetColor(colors.GetColor3d("Blue"))
     axes = vtk.vtkOrientationMarkerWidget()
-    axes.SetOrientationMarker(axesActor)
+    axes.SetOrientationMarker(axes_actor)
     axes.SetInteractor(iren)
     axes.EnabledOn()
     axes.InteractiveOn()
@@ -51,10 +54,10 @@ def main():
 
     # enable user interface interactor
     iren.Initialize()
-    renWin.Render()
-    ren.GetActiveCamera().SetPosition(-151.5, 540.1, 364.0)
-    ren.GetActiveCamera().SetViewUp(0.2, 0.6, -0.8)
-    renWin.Render()
+    ren_win.Render()
+    ren.GetActiveCamera().Azimuth(45)
+    ren.GetActiveCamera().Elevation(30)
+    ren_win.Render()
     iren.Start()
 
 

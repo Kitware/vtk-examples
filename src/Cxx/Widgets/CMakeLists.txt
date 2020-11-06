@@ -11,6 +11,7 @@ if(NOT VTK_BINARY_DIR)
     vtkFiltersSources
     vtkGeovisCore
     vtkIOImage
+    IOLegacy
     vtkIOXML
     vtkImagingGeneral
     vtkImagingHybrid
@@ -53,23 +54,29 @@ if (BUILD_TESTING)
 
   set(NEEDS_ARGS
     CheckerboardWidget
-    OrientationMarkerWidget
-    Slicer2D
+    OrientationMarkerWidget1
     RectilinearWipeWidget
+    ScalarBarWidget
+    Slicer2D
     )
 
   set(DATA ${WikiExamples_SOURCE_DIR}/src/Testing/Data)
-  add_test(${KIT}-OrientationMarkerWidget ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestOrientationMarkerWidget ${DATA}/Bunny.vtp)
-
-  add_test(${KIT}-RectilinearWipeWidget ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestRectilinearWipeWidget ${DATA}/Gourds2.jpg ${DATA}/Ox.jpg)
 
   add_test(${KIT}-CheckerboardWidget ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestCheckerboardWidget ${DATA}/Gourds2.jpg ${DATA}/Ox.jpg)
 
+  add_test(${KIT}-OrientationMarkerWidget1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestOrientationMarkerWidget1 ${DATA}/Bunny.vtp)
+
+  add_test(${KIT}-RectilinearWipeWidget ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestRectilinearWipeWidget ${DATA}/Gourds2.jpg ${DATA}/Ox.jpg)
+
+  add_test(${KIT}-ScalarBarWidget ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestScalarBarWidget ${DATA}/uGridEx.vtk )
+
   add_test(${KIT}-Slider2D ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestSlider2D -E 25)
+
   include(${WikiExamples_SOURCE_DIR}/CMake/ExamplesTesting.cmake)
 
 endif()

@@ -1,33 +1,34 @@
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 #include <vtkPlaneWidget.h>
-#include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
 
-int main(int, char *[])
-{  
-  vtkSmartPointer<vtkRenderer> renderer = 
-    vtkSmartPointer<vtkRenderer>::New();
+int main(int, char*[])
+{
+  vtkNew<vtkNamedColors> colors;
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderer> renderer;
+  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindow->SetWindowName("PlaneWidget");
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkPlaneWidget> planeWidget = 
-      vtkSmartPointer<vtkPlaneWidget>::New();
+  vtkNew<vtkPlaneWidget> planeWidget;
   planeWidget->SetInteractor(renderWindowInteractor);
-  
+
   planeWidget->On();
 
   renderWindowInteractor->Initialize();
-  
+
   renderer->ResetCamera();
   renderWindow->Render();
   renderWindowInteractor->Start();
-  
+
   return EXIT_SUCCESS;
 }
