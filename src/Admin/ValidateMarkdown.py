@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-"""
 
 import os
 import re
@@ -50,8 +48,11 @@ def split_file_name(full_path):
 def main():
     ifn = get_program_parameters()
     ifn = os.path.abspath(ifn)
-    allowed_files = {'CSharp': ['CSharp', 'cs'], 'Cxx': ['Cxx', 'cxx'], 'Java': ['Java', 'java'],
-                     'Python': ['Python', 'py'], 'VTKBookFigures': ['Cxx', 'cxx']}
+    allowed_files = {'CSharp': ['CSharp', 'cs'], 'CSharpHowTo': ['CSharp', 'cs', 'md'],
+                     'Cxx': ['Cxx', 'cxx'], 'CxxHowTo': ['Cxx', 'cxx', 'md'],
+                     'Java': ['Java', 'java'], 'JavaHowTo': ['Java', 'java', 'md'],
+                     'Python': ['Python', 'py'], 'PythonHowTo': ['Python', 'py', 'md'],
+                     'VTKBookFigures': ['Cxx', 'cxx']}
     # Split the input file name into [path, file name, extension, [sub directory, language]].
     file_parameters = split_file_name(ifn)
     if not (file_parameters[1] in allowed_files.keys() and file_parameters[2] == 'md'):
@@ -66,9 +67,24 @@ def main():
     title = re.compile(r'^[#]+[ ]*\w')
     title_line = re.compile(r'^([#]+)\s*(.*)$')
     info_line = re.compile(r'^[!]{3}[ ]+info$')
-    header = re.compile(r'(^\|[^|]+)(\|[^|]+)(\|[^|]+)(\|[^|]+)\|')
-    row = re.compile(r'(^[^|]+[|])([^|]*[|])([^|]*[^|])?$')
+    # Four columns
+    header_4 = re.compile(r'(^\|[^|]+)(\|[^|]+)(\|[^|]+)(\|[^|]+)\|')
+    row_4 = re.compile(r'(^[^|]+[|])([^|]*[|])([^|]*[^|])?$')
     row_key = re.compile(r'\[(.*?)\].*\((.*?)\)')
+    # Three columns
+    header_3 = re.compile(r'(^\|[^|]+)(\|[^|]+)(\|[^|]+)\|')
+    row_3 = re.compile(r'(^[^|]+[|])([^|]*[^|])?$')
+
+    # if 'HowTo' not in file_parameters[1]:
+    #     header = header_4
+    #     row = row_4
+    # else:
+    #     header = header_3
+    #     row = row_3
+    header = header_3
+    row = row_3
+
+    has_how_to = 'HowTo' in file_parameters[1]
 
     with open(ifn) as f:
         """
@@ -98,19 +114,29 @@ def main():
                             if v.strip('/').split('/')[0] != file_parameters[3][0]:
                                 problems['link - wrong language'][last_title].append(ls)
                                 continue
-                            if not os.path.isfile(
-                                    os.path.join(file_parameters[0], '.'.join((v, file_parameters[3][1]))[1:])):
+                            lang_path = os.path.join(file_parameters[0], '.'.join((v, file_parameters[3][1]))[1:])
+                            if os.path.isfile(lang_path):
+                                sl[0] = '[' + k + ']' + '(' + v + ')'
+                                tbl[k] = sl
+                                # continue
+                            elif has_how_to:
+                                # Markdown files are allowed in HowTo files.
+                                md_path = os.path.join(file_parameters[0],
+                                                       '.'.join((v, file_parameters[3][2]))[1:])
+                                if os.path.isfile(md_path):
+                                    sl[0] = '[' + k + ']' + '(' + v + ')'
+                                    tbl[k] = sl
+                                else:
+                                    problems['link - target not found'][last_title].append(ls)
+                            else:
                                 problems['link - target not found'][last_title].append(ls)
-                                continue
-                            sl[0] = '[' + k + ']' + '(' + v + ')'
-                            tbl[k] = sl
                         else:
                             problems['No key'][last_title].append(ls)
                             continue
                     else:
                         problems['Bad row'][last_title].append(ls)
                         continue
-                    continue
+                    # continue
                 else:
                     find_rows = False
                     keys = sorted(tbl.keys())
