@@ -6,17 +6,6 @@ import os
 import re
 from collections import defaultdict
 
-
-def eliminate_duplicate_lines(lines):
-    lines_seen = set()
-    no_duplicates = list()
-    for l in lines:
-        if l not in lines_seen:
-            no_duplicates.append(l)
-            lines_seen.add(l)
-    return no_duplicates
-
-
 def remove_consecutive_duplicates(lines):
     ncd = list()
     for l in lines:
@@ -26,7 +15,6 @@ def remove_consecutive_duplicates(lines):
         else:
             ncd.append(l)
     return ncd
-
 
 def split_file_name(full_path):
     """
@@ -48,10 +36,10 @@ def split_file_name(full_path):
 def main():
     ifn = get_program_parameters()
     ifn = os.path.abspath(ifn)
-    allowed_files = {'CSharpHowTo': ['CSharp', 'cs'], 'CSharp': ['CSharp', 'cs'],
-                     'Cxx': ['Cxx', 'cxx'], 'CxxHowTo': ['Cxx', 'cxx'],
-                     'Java': ['Java', 'java'], 'JavaHowTo': ['Java', 'java'],
-                     'Python': ['Python', 'py'], 'PythonHowTo': ['Python', 'py'],
+    allowed_files = {'CSharp': ['CSharp', 'cs'],
+                     'Cxx': ['Cxx', 'cxx'],
+                     'Java': ['Java', 'java'],
+                     'Python': ['Python', 'py'],
                      'VTKBookFigures': ['Cxx', 'cxx']}
     # Split the input file name into [path, file name, extension, [sub directory, language]].
     file_parameters = split_file_name(ifn)
@@ -68,21 +56,9 @@ def main():
     title_line = re.compile(r'^([#]+)\s*(.*)$')
     info_line = re.compile(r'^[!]{3}[ ]+info$')
     # Four columns
-    header_4 = re.compile(r'(^\|[^|]+)(\|[^|]+)(\|[^|]+)(\|[^|]+)\|')
-    row_4 = re.compile(r'(^[^|]+[|])([^|]*[|])([^|]*[^|])?$')
+    header = re.compile(r'(^\|[^|]+)(\|[^|]+)(\|[^|]+)(\|[^|]+)\|')
+    row = re.compile(r'(^[^|]+[|])([^|]*[|])([^|]*[^|])?$')
     row_key = re.compile(r'\[(.*?)\].*\((.*?)\)')
-    # Three columns
-    header_3 = re.compile(r'(^\|[^|]+)(\|[^|]+)(\|[^|]+)\|')
-    row_3 = re.compile(r'(^[^|]+[|])([^|]*[^|])?$')
-
-    # if 'HowTo' not in file_parameters[1]:
-    #     header = header_4
-    #     row = row_4
-    # else:
-    #     header = header_3
-    #     row = row_3
-    header = header_3
-    row = row_3
 
     with open(ifn) as f:
         """
@@ -104,6 +80,7 @@ def main():
                 if not (title.match(ls) or header.match(ls)) and ls:
                     if row.match(ls):
                         sl = [x.strip() for x in ls.split('|')]
+                        sl = sl[:1] + sl[2:]
                         match = re.search(row_key, sl[0])
                         if match:
                             # Check the link to see if it is valid.
@@ -158,6 +135,7 @@ def main():
 
             if header.match(line):
                 sl = [x.strip() for x in ls.split('|')]
+                sl = sl[:2]+sl[3:]
                 res.append((' | '.join(sl)).strip())
                 header_line_no += 1
                 if header_line_no > 1:
@@ -196,7 +174,7 @@ def main():
 
 def get_program_parameters():
     import argparse
-    description = 'This program parses a markdown file that is used to generate the web page.'
+    description = 'This program removes the "Classes Demonstrated" column.'
     epilogue = '''
     Assume that the file you are checking is called Cxx.md.
     1) If errors are found a log file called Cxx.md.log is written and the markdown file being parsed is not updated.
