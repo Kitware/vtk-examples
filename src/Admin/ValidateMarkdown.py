@@ -48,10 +48,10 @@ def split_file_name(full_path):
 def main():
     ifn = get_program_parameters()
     ifn = os.path.abspath(ifn)
-    allowed_files = {'CSharpHowTo': ['CSharp', 'cs'], 'CSharp': ['CSharp', 'cs'],
-                     'Cxx': ['Cxx', 'cxx'], 'CxxHowTo': ['Cxx', 'cxx'],
-                     'Java': ['Java', 'java'], 'JavaHowTo': ['Java', 'java'],
-                     'Python': ['Python', 'py'], 'PythonHowTo': ['Python', 'py'],
+    allowed_files = {'CSharp': ['CSharp', 'cs'], 'CSharpHowTo': ['CSharp', 'cs', 'md'],
+                     'Cxx': ['Cxx', 'cxx'], 'CxxHowTo': ['Cxx', 'cxx', 'md'],
+                     'Java': ['Java', 'java'], 'JavaHowTo': ['Java', 'java', 'md'],
+                     'Python': ['Python', 'py'], 'PythonHowTo': ['Python', 'py', 'md'],
                      'VTKBookFigures': ['Cxx', 'cxx']}
     # Split the input file name into [path, file name, extension, [sub directory, language]].
     file_parameters = split_file_name(ifn)
@@ -84,6 +84,8 @@ def main():
     header = header_3
     row = row_3
 
+    has_how_to = 'HowTo' in file_parameters[1]
+
     with open(ifn) as f:
         """
         We expect:
@@ -112,19 +114,29 @@ def main():
                             if v.strip('/').split('/')[0] != file_parameters[3][0]:
                                 problems['link - wrong language'][last_title].append(ls)
                                 continue
-                            if not os.path.isfile(
-                                    os.path.join(file_parameters[0], '.'.join((v, file_parameters[3][1]))[1:])):
+                            lang_path = os.path.join(file_parameters[0], '.'.join((v, file_parameters[3][1]))[1:])
+                            if os.path.isfile(lang_path):
+                                sl[0] = '[' + k + ']' + '(' + v + ')'
+                                tbl[k] = sl
+                                # continue
+                            elif has_how_to:
+                                # Markdown files are allowed in HowTo files.
+                                md_path = os.path.join(file_parameters[0],
+                                                       '.'.join((v, file_parameters[3][2]))[1:])
+                                if os.path.isfile(md_path):
+                                    sl[0] = '[' + k + ']' + '(' + v + ')'
+                                    tbl[k] = sl
+                                else:
+                                    problems['link - target not found'][last_title].append(ls)
+                            else:
                                 problems['link - target not found'][last_title].append(ls)
-                                continue
-                            sl[0] = '[' + k + ']' + '(' + v + ')'
-                            tbl[k] = sl
                         else:
                             problems['No key'][last_title].append(ls)
                             continue
                     else:
                         problems['Bad row'][last_title].append(ls)
                         continue
-                    continue
+                    # continue
                 else:
                     find_rows = False
                     keys = sorted(tbl.keys())
