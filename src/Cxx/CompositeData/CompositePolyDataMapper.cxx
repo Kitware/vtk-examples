@@ -44,14 +44,14 @@ int main(int /* argc */, char* /* argv */[])
   // Alternatively, one can set attributes directly through the mapper using
   // flat indices.
   //
-  // This sets the block at flat index 3 red
+  // This sets the block at flat index 2 red
   // Note that the index is the flat index in the tree, so the whole multiblock
   // is index 0 and the blocks are flat indexes 1, 2 and 3.  This affects
   // the block returned by mbds->GetBlock(2).
-  mapper->SetBlockColor(3, colors->GetColor3d("Red").GetData());
+  mapper->SetBlockColor(2, colors->GetColor3d("Red").GetData());
   // Color the spheres.
   mapper->SetBlockColor(1, colors->GetColor3d("LavenderBlush").GetData());
-  mapper->SetBlockColor(2, colors->GetColor3d("Lavender").GetData());
+  mapper->SetBlockColor(3, colors->GetColor3d("Lavender").GetData());
 
   vtkNew<vtkActor> actor;
   actor->SetMapper(mapper.Get());

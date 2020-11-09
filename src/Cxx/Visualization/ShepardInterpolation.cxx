@@ -29,7 +29,7 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
 int main(int argc, char* argv[])
 {
   // Parse input arguments
-  if (argc != 2)
+  if (argc < 3)
   {
     std::cout
         << "Required parameters: Filename  resolution e.g. cowHead.vtp 100"

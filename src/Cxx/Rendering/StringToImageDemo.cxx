@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
   //std::uniform_int_distribution<> fontDist(6, 42);
   //std::uniform_real_distribution<double> orientationDist(-90, 90);
 
-    vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
   randomSequence->SetSeed(8775070);
 
 
@@ -149,9 +149,9 @@ int main(int argc, char* argv[])
   imageViewer->GetRenderer()->ResetCamera();
   imageViewer->GetRenderWindow()->SetWindowName("StringToImageDemo");
 
-  vtkCamera* camera = imageViewer->GetRenderer()->GetActiveCamera();
+  auto camera = imageViewer->GetRenderer()->GetActiveCamera();
   camera->ParallelProjectionOn();
-  camera->SetParallelScale(640 * .4);
+  camera->SetParallelScale(640 * 0.4);
   imageViewer->GetRenderWindow()->Render();
   interactor->Initialize();
   interactor->Start();

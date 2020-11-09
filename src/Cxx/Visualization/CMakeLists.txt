@@ -48,7 +48,7 @@ if(NOT VTK_BINARY_DIR)
   vtkRenderingLabel
   vtkRenderingOpenGL2
   vtkTestingRendering
-  ${optional}  
+  ${optional}
   QUIET
 )
   if (VTK_VERSION VERSION_LESS "8.90.0")
