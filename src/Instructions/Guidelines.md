@@ -66,11 +66,17 @@ See [clang-format](https://clang.llvm.org/docs/ClangFormat.html) for more inform
 * If arguments are required, a check similar to the following should be made at the start of the main program.
 
 ``` c++
-    if (argc != 3)
-    {
-      std::cerr << "Usage: " << argv[0] << "Alpha InputFile OutputFile" << std::endl;
-      return EXIT_FAILURE;
-    }
+  float alpha = 0.5;
+  if (argc < 2)
+  {
+    std::cout << "Usage: " << argv[0] << " filename.vtp [alpha] e.g. Bunny.vtp"
+              << std::endl;
+    return EXIT_FAILURE;
+  }
+  if (argc > 2)
+  {
+    alpha = atof(argv[2]);
+  }
 ```
 
 * An example should **never call exit()**. If the main program executes successfully, it should
@@ -85,25 +91,19 @@ See [clang-format](https://clang.llvm.org/docs/ClangFormat.html) for more inform
     return EXIT_FAILURE;
 ```
 
-* The use of SmartPointers is preferred in VTK examples.
-
-``` c++
-    vtkSmartPointer<vtkCutter> cutter = vtkSmartPointer<vtkCutter>::New();
-```
-
-  or
+* The use of SmartPointers is preferred in VTK examples, generally use `vtkNew` and only use `vtkSmartPointer`where appropriate.
 
 ``` c++
     vtkNew<vtkCutter> cutter;
 ```
 
-  is preferred over
+  or (where needed)
 
 ``` c++
-    vtkCutter *cutter = vtkCutter::New();
+    auto cutter = vtkSmartPointer<vtkCutter>::New();
 ```
 
-* When building pipelines, the new `SetInputConnection()`, `GetOutputPort()` methods should be used instead of `SetInput()`, `GetOutput()`
+* When building pipelines, the new `SetInputConnection()`, `GetOutputPort()` methods should be used.
 
 * Input/Output filenames
 
@@ -111,18 +111,17 @@ See [clang-format](https://clang.llvm.org/docs/ClangFormat.html) for more inform
 
 * If there are just a few parameters for the example, these should be passed in as arguments. This increases the utility of the example and facilitates testing.
 
-  For example, this program
+    For example, this program
 
 ``` c++
-    Delaunay3DAlpha Alpha InputPolydataFileName(.vtp) OutputUnstructuredGridFilename(.vtu)
+    Delaunay3D InputPolydataFileName(.vtp) Alpha
 ```
 
-  would use the arguments in this manner
+    would use the arguments in this manner
 
 ``` c++
-    reader->SetFileName (argv[2]);
-    delaunay3D->SetAlpha(atof(argv[1]));
-    writer->SetFileName ( argv[3] );
+    reader->SetFileName (argv[1]);
+    delaunay3D->SetAlpha(atof(argv[2]));
 ```
 
 * Always provide a background for the renderers. Avoid setting the background to white.
@@ -133,18 +132,20 @@ See [clang-format](https://clang.llvm.org/docs/ClangFormat.html) for more inform
   For example,
 
 ``` c++
-    #include <vtkNamedColors.h>
+  #include <vtkNamedColors.h>
 
-    vtkSmartPointer<vtkNamedColors> namedColors =
-        vtkSmartPointer<vtkNamedColors>::New();
+  int main(int, char*[])
+  {
 
-        renderer->SetBackground(namedColors->GetColor3d("Khaki").GetData());
+    vtkNew<vtkNamedColors> namedColors;
+
+    renderer->SetBackground(namedColors->GetColor3d("Khaki").GetData());
 ```
 
   is preferred over
 
 ``` c++
-        renderer->SetBackground(0.9412, 0.9020, 0.5490);
+    renderer->SetBackground(0.9412, 0.9020, 0.5490);
 ```
 
 * Use admonitions to warn/cite/info, etc. [Here is a summary of admonitions](__WEB_SITE_URL__/Instructions/ForAdministrators/#admonition).
@@ -174,7 +175,40 @@ if __name__ == '__main__':
 
 ```
 
-- [ ] *TODO: Add in a demo showing the use of* ***argparse***.
+Use `argparse` where needed:
+
+``` Python
+
+#!/usr/bin/env python
+
+import vtk
+
+
+def main(argv):
+    xyz_fn, q_fn = get_program_parameters(argv)
+    colors = vtk.vtkNamedColors()
+
+    # Do the work
+
+def get_program_parameters(argv):
+    import argparse
+    description = 'Some description.'
+    epilogue = '''
+    Extra information.
+    '''
+    parser = argparse.ArgumentParser(description=description, epilog=epilogue,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('xyz_filename', help='combxyz.bin.')
+    parser.add_argument('q_filename', help='combq.bin.')
+    args = parser.parse_args()
+    return args.xyz_filename, args.q_filename
+
+
+if __name__ == '__main__':
+    # import sys
+    main(sys.argv)
+
+```
 
 For the Input/Output of filenames and parameters. Use this snippet [GetProgramParameters](__WEB_SITE_URL__/Python/Snippets/GetProgramParameters/) 
 
@@ -189,4 +223,3 @@ Java code styling follows the usual style as implemented in the IDEs.
 However note:
 
 * No Tabs
-* Indentation must be two spaces

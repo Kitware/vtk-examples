@@ -27,7 +27,7 @@
 
 int main(int argc, char* argv[])
 {
-  float alpha = .5;
+  float alpha = 0.5;
   if (argc < 2)
   {
     std::cout << "Usage: " << argv[0] << " filename.vtp [alpha] e.g. Bunny.vtp"
