@@ -8,18 +8,7 @@ These are fully independent, compilable examples. There is significant overlap i
 
 - [VTK Classes with No Examples](/Coverage/CxxVTKClassesNotUsed.md), please add examples in your area of expertise!
 
-## Tutorial
-
-If you are new to VTK then these tutorials will help to get you started.
-
-| Tutorial | Description | Image |
-| -------------- | ------------- | ------- |
-[Step 1](/Cxx/Tutorial/Tutorial_Step1) | Create a cone, render it and rotate it through 360°.
-[Step 2](/Cxx/Tutorial/Tutorial_Step2) | Adding an observer.
-[Step 3](/Cxx/Tutorial/Tutorial_Step3) | Using multiple renderers within a render window.
-[Step 4](/Cxx/Tutorial/Tutorial_Step4) | The creation of multiple actors and the manipulation of their properties and transformations.
-[Step 5](/Cxx/Tutorial/Tutorial_Step5) | Introducing the concept of interaction.
-[Step 6](/Cxx/Tutorial/Tutorial_Step6) | Using a 3D widget.
+If you are new to VTK then these [tutorials](#tutorial) will help to get you started.
 
 ## Hello World
 
@@ -935,6 +924,19 @@ This section includes vtkUnstructuredGrid.
 [TexturePlane](/Cxx/Texture/TexturePlane) | Example of texture mapping.
 [TextureThreshold](/Cxx/Texture/TextureThreshold) | Demonstrate the use of scalar thresholds to show values of flow density on three planes.
 [TexturedSphere](/Cxx/Texture/TexturedSphere) | Texture a sphere.
+
+## Tutorial
+
+If you are new to VTK then these tutorials will help to get you started.
+
+| Tutorial | Description | Image |
+| -------------- | ------------- | ------- |
+[Step 1](/Cxx/Tutorial/Tutorial_Step1) | Create a cone, render it and rotate it through 360°.
+[Step 2](/Cxx/Tutorial/Tutorial_Step2) | Adding an observer.
+[Step 3](/Cxx/Tutorial/Tutorial_Step3) | Using multiple renderers within a render window.
+[Step 4](/Cxx/Tutorial/Tutorial_Step4) | The creation of multiple actors and the manipulation of their properties and transformations.
+[Step 5](/Cxx/Tutorial/Tutorial_Step5) | Introducing the concept of interaction.
+[Step 6](/Cxx/Tutorial/Tutorial_Step6) | Using a 3D widget.
 
 ## Visualization
 

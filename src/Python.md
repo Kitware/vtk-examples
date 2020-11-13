@@ -10,18 +10,7 @@ It would be appreciated if there are any Python VTK experts who could convert an
 
 - [VTK Classes with No Examples](/Coverage/PythonVTKClassesNotUsed.md), please add examples in your area of expertise!
 
-## Tutorial
-
-If you are new to VTK then these tutorials will help to get you started.
-
-| Tutorial | Description | Image |
-| -------------- | ------------- | ------- |
-[Step 1](/Python/Tutorial/Tutorial_Step1) | Create a cone, render it and rotate it through 360°.
-[Step 2](/Python/Tutorial/Tutorial_Step2) | Adding an observer.
-[Step 3](/Python/Tutorial/Tutorial_Step3) | Using multiple renderers within a render window.
-[Step 4](/Python/Tutorial/Tutorial_Step4) | The creation of multiple actors and the manipulation of their properties and transformations.
-[Step 5](/Python/Tutorial/Tutorial_Step5) | Introducing the concept of interaction.
-[Step 6](/Python/Tutorial/Tutorial_Step6) | Using a 3D widget.
+If you are new to VTK then these [tutorials](#tutorial) will help to get you started.
 
 ## Hello World
 
@@ -461,6 +450,20 @@ This section includes vtkUnstructuredGrid.
 [TextureCutSphere](/Python/Texture/TextureCutSphere) | Examples of texture thresholding. (b) Boolean combination of two planes to cut nested spheres.
 [TexturePlane](/Python/Texture/TexturePlane) | Example of texture mapping.
 [TextureThreshold](/Python/Texture/TextureThreshold) | Demonstrate the use of scalar thresholds to show values of flow density on three planes.
+
+
+## Tutorial
+
+If you are new to VTK then these tutorials will help to get you started.
+
+| Tutorial | Description | Image |
+| -------------- | ------------- | ------- |
+[Step 1](/Python/Tutorial/Tutorial_Step1) | Create a cone, render it and rotate it through 360°.
+[Step 2](/Python/Tutorial/Tutorial_Step2) | Adding an observer.
+[Step 3](/Python/Tutorial/Tutorial_Step3) | Using multiple renderers within a render window.
+[Step 4](/Python/Tutorial/Tutorial_Step4) | The creation of multiple actors and the manipulation of their properties and transformations.
+[Step 5](/Python/Tutorial/Tutorial_Step5) | Introducing the concept of interaction.
+[Step 6](/Python/Tutorial/Tutorial_Step6) | Using a 3D widget.
 
 ## Visualization
 
