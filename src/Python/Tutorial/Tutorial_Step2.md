@@ -1,7 +1,7 @@
 ### Description
 
 This example shows how to add an observer to a Python program. It extends
-the [Tutorial_Step1](../Tutorial_Step1.py) example (see that example for information on
+the [Tutorial_Step1](../Tutorial_Step1) example (see that example for information on
 the basic setup).
 
 VTK uses a command/observer design pattern. That is, observers watch for
