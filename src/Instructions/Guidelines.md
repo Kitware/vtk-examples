@@ -161,7 +161,7 @@ Python code is tested in a similar manner to C++ code, so it must follow this la
 ``` Python
 #!/usr/bin/env python
 
-#import vtk
+import vtk
 
 def main(argv):
     """
@@ -171,6 +171,7 @@ def main(argv):
 
 
 if __name__ == '__main__':
+    import sys
     main(sys.argv)
 
 ```
