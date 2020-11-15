@@ -1,4 +1,5 @@
 ### Description
+
 This example uses the [PoissonReconstruction remote module](https://github.com/lorensen/PoissonReconstruction) to reconstruct surfaces from unorganized points. This code was, with permission, adapted directly from the original implementation by Kazhdan, Bolitho, and Hugues. The original implementation can be found [here](http://www.cs.jhu.edu/~misha/Code/IsoOctree/).
 
 PoissonReconstruction requires that the vtkPolyData input have vtkNormals. If normals are not included in the vtkPointData, the example uses vtkPCANormalEstimation to create normals.

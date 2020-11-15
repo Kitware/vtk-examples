@@ -10,6 +10,8 @@ It would be appreciated if there are any Python VTK experts who could convert an
 
 - [VTK Classes with No Examples](/Coverage/PythonVTKClassesNotUsed.md), please add examples in your area of expertise!
 
+## Tutorials
+
 If you are new to VTK then these [tutorials](#tutorial) will help to get you started.
 
 ## Hello World

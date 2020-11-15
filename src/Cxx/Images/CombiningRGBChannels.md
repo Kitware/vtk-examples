@@ -5,5 +5,5 @@ This example creates three images of a square. Each square slightly overlaps the
     You MUST add 3 inputs or no output will be produced.
 
 !!! seealso
-    For the reverse operation, see [ExtractComponents](/Cxx/Images/ExtractComponents).
+    For the reverse operation, see [ExtractComponents](../ExtractComponents).
 

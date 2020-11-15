@@ -3,8 +3,7 @@ This example loosely follows the most excellent paper by Curless and Levoy: ["A 
 
 If the example is run without an argument, the example uses random points on a spherical shell. With a filename, the example uses the points on the vtkPolyData.
 
-The image was created using the [Armadillo dataset](https://github.com/lorensen/VTKExamples/blob/master/src/Testing/Data/Armadillo.ply?raw=true)
-
+The image was created using the Armadillo dataset, `src/Testing/Data/Armadillo.ply`.
 
 !!! info
     [CompareExtractSurface](../CompareExtractSurface) compares three surface extraction algorithms.

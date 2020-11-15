@@ -13,7 +13,7 @@ Opening is the dual of closing. Opening removes small islands of pixels. It is i
 Connectivity filters can also remove small regions without affecting the remaining boundaries of segmented regions. This set of filters separate the segmented pixels into equivalence classes based on a neighbor relation. Two pixels belong to the same class if they are touching. There are two common neighbor relations in two-dimensional images: four connectivity considers pixels neighbors if they are edge neighbors, and eight connectivity considers pixels neighbors if pixels share any vertex.
 
 This example demonstrates various binary filters that can alter the shape of
-segmented regions. From left to right, top to bottom: original image, connectivity, erosion, dilation, opeoing, closing.
+segmented regions. From left to right, top to bottom: original image, connectivity, erosion, dilation, opening, closing.
 
 !!! info
-    See [this figure](/VTKBook/10Chapter10/#Figure%2010-14) in [Chapter 10](/VTKBook/10Chapter10) the [VTK Textbook](/VTKBook/01Chapter1).
+    See [this figure](../../../VTKBook/10Chapter10/#Figure%2010-14) in [Chapter 10](../../../VTKBook/10Chapter10) the [VTK Textbook](../../../VTKBook/01Chapter1).

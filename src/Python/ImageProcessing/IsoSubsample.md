@@ -6,8 +6,8 @@ Low-pass smoothing reduces the high frequency range of an image that would cause
 
 This example demonstrates aliasing that occurs when a high-frequency signal is sub-sampled. High frequencies appear as low frequency artifacts. The left image is an isosurface of a skull after sub-sampling. The right image used a low-pass filter before sub-sampling to reduce aliasing.
 
-!!! note
-    This example uses the [FullHead.mhd](https://github.com/lorensen/VTKExamples/blob/master/src/Testing/Data/FullHead.mhd), [FullHead.raw.gz](https://github.com/lorensen/VTKExamples/blob/master/src/Testing/Data/FullHead.raw.gz) dataset.
+!!! info
+    See [this figure](../../../VTKBook/10Chapter10/#Figure%2010-5) in [Chapter 10](../../../VTKBook/10Chapter10) the [VTK Textbook](../../../VTKBook/01Chapter1).
 
 !!! info
-    See [this figure](/VTKBook/10Chapter10/#Figure%2010-5) in [Chapter 10](/VTKBook/10Chapter10) the [VTK Textbook](/VTKBook/01Chapter1).
+    The example uses `src/Testing/Data/FullHead.mhd` which references `src/Testing/Data/FullHead.raw.gz`.

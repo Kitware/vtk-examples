@@ -1,2 +1,3 @@
 ### Description
-Works, but segfaults at the end?
+
+Renaming the normals array.

@@ -6,4 +6,4 @@ Here's the embedded video:
 <iframe width="256" src="https://www.youtube.com/embed/tfpb-2aBiyk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>a
 
 !!! seealso
-    [VisualizeOBBTree](/Cxx/DataStructures/VisualizeOBBTree) and [VisualizeModifiedBSPTree](/Cxx/DataStructures/VisualizeModifiedBSPTree).
+    [VisualizeOBBTree](../VisualizeOBBTree) and [VisualizeModifiedBSPTree](../VisualizeModifiedBSPTree).

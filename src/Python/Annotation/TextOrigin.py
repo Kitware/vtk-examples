@@ -16,14 +16,14 @@ def main():
 
     # Create the 3D text and the associated mapper and follower (a type of actor).  Position the text so it is displayed over the origin of the axes.
     atext = vtk.vtkVectorText()
-    atext.SetText("Origin")
+    atext.SetText('Origin')
     textMapper = vtk.vtkPolyDataMapper()
     textMapper.SetInputConnection(atext.GetOutputPort())
     textActor = vtk.vtkFollower()
     textActor.SetMapper(textMapper)
     textActor.SetScale(0.2, 0.2, 0.2)
     textActor.AddPosition(0, -0.1, 0)
-    textActor.GetProperty().SetColor(colors.GetColor3d("Peacock"))
+    textActor.GetProperty().SetColor(colors.GetColor3d('Peacock'))
 
     # Create the Renderer, RenderWindow, and RenderWindowInteractor.
     renderer = vtk.vtkRenderer()
@@ -41,13 +41,13 @@ def main():
     renderer.AddActor(axesActor)
     renderer.AddActor(textActor)
 
-    renderer.SetBackground(colors.GetColor3d("Silver"))
+    renderer.SetBackground(colors.GetColor3d('Silver'))
 
     # Zoom in closer.
     renderer.ResetCamera()
     renderer.GetActiveCamera().Zoom(1.6)
 
-    renderer.SetBackground(colors.GetColor3d("Silver"))
+    renderer.SetBackground(colors.GetColor3d('Silver'))
 
     # Reset the clipping range of the camera; set the camera of the follower; render.
     renderer.ResetCameraClippingRange()

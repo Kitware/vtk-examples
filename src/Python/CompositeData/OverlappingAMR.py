@@ -120,7 +120,7 @@ def main():
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(of.GetOutputPort())
     actor1 = vtk.vtkActor()
-    actor1.GetProperty().SetColor(colors.GetColor3d("Yellow"))
+    actor1.GetProperty().SetColor(colors.GetColor3d('Yellow'))
     actor1.SetMapper(mapper)
 
     # Associate the geometry with a mapper and the mapper to an actor.
@@ -132,7 +132,7 @@ def main():
     # Add the actor to the renderer and start handling events.
     aren.AddActor(actor1)
     aren.AddActor(actor2)
-    aren.SetBackground(colors.GetColor3d("CornflowerBlue"))
+    aren.SetBackground(colors.GetColor3d('CornflowerBlue'))
     renWin.SetWindowName('OverlappingAMR')
     renWin.Render()
     iren.Start()

@@ -1,5 +1,6 @@
 ### Description
-<source lang="cpp">
+
+``` C++
 #ifndef __vtkTestFilterProgressFilter_h
 #define __vtkTestFilterProgressFilter_h
  
@@ -26,4 +27,4 @@ private:
 };
 
 #endif
-</source>
+```

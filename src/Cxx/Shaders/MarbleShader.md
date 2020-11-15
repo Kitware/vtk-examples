@@ -2,7 +2,7 @@
 
 This example shows how to add user functions to a VTK shader. The example's fragment shader uses an implementation of [Ken Perlin's noise function](https://www.semanticscholar.org/paper/An-image-synthesizer-Perlin/e04d7772b91a83a901408eb0876bbb7814b1d4b5). Perlin received a Technical Achievement Academy Award for his work procedural texture.
 
-The file for the shader code is [here](https://github.com/lorensen/VTKExamples/blob/master/src/Testing/Data/Shaders/PerlinNoise.glsl)..
+The file for the shader code is `src/Testing/Data/Shaders/PerlinNoise.glsl`.
 
 #### Parameters
 

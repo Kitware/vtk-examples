@@ -54,13 +54,13 @@ def main():
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(0, polydata.GetOutputPort(0))
     actor = vtk.vtkActor()
-    actor.GetProperty().SetColor(colors.GetColor3d("Yellow"))
+    actor.GetProperty().SetColor(colors.GetColor3d('Yellow'))
     actor.GetProperty().SetLineWidth(2)
     actor.SetMapper(mapper)
 
     # Enable user interface interactor.
     renderer.AddActor(actor)
-    renderer.SetBackground(colors.GetColor3d("CornflowerBlue"))
+    renderer.SetBackground(colors.GetColor3d('CornflowerBlue'))
     renderWindow.SetWindowName('MultiBlockDataSet')
     renderWindow.Render()
     renderWindowInteractor.Start()

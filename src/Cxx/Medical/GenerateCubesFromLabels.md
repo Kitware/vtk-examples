@@ -1,8 +1,8 @@
 ### Description
 
-Sometimes it is helpful to view the results of a segmentation without any post processing. This example converts the point data from a labeled volume into cell data. The surfaces are displayed as vtkPolydata. If you want to created smoothed polydata models from your segmented volumes, see the example [GenerateModelsFromLabels](/Cxx/Medical/GenerateModelsFromLabels). The input volume must be in [MetaIO format](http://www.vtk.org/Wiki/MetaIO/Documentation).
+Sometimes it is helpful to view the results of a segmentation without any post processing. This example converts the point data from a labeled volume into cell data. The surfaces are displayed as vtkPolydata. If you want to created smoothed polydata models from your segmented volumes, see the example [GenerateModelsFromLabels](../GenerateModelsFromLabels). The input volume must be in [MetaIO format](http://www.vtk.org/Wiki/MetaIO/Documentation).
 
-```
+``` text
  Usage: GenerateCubesFromLabels FullHead.mhd StartLabel EndLabel
       where
         InputVolume is a meta file containing a 3 volume of discrete labels.

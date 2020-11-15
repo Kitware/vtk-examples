@@ -1,3 +1,3 @@
 ### Description
 
-*Contributed by Eric Monson
+* Contributed by Eric Monson

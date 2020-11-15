@@ -6,4 +6,4 @@ This example uses two vtkClipDataSet filters to achieve a "tissue lens" affect. 
     TissueLens FullHead.mhd
 
 !!! info
-    The example uses [FullHead.mhd](https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Data/FullHead.mhd) which references [FullHead.raw.gz](https://github.com/lorensen/VTKExamples/blob/master/src/Testing/Data/FullHead.raw.gz?raw=true).
+    The example uses `src/Testing/Data/FullHead.mhd` which references `src/Testing/Data/FullHead.raw.gz`.

@@ -4,7 +4,7 @@ This example shows how to add user functions to a VTK shader. The example's frag
 
 The shader code contains a variable "k" that controls the frequency of the noisy colors. The default value will provide reasonable results for all polydata.
 
-The file for the shader code is [here](https://github.com/lorensen/VTKExamples/blob/master/src/Testing/Data/Shaders/PerlinNoise.glsl)..
+The file for the shader code is `src/Testing/Data/Shaders/PerlinNoise.glsl`.
 
 !!! example "usage"
     BozoShader PerlinNoise.glsl horse.ply

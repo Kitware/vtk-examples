@@ -4,4 +4,4 @@ Create a terrain with regularly spaced points. The triangles are created manuall
 
 Left : initial terrain, middle : vtkLoopSubdivisionFilter, right : vtkButterflySubdivisionFilter
 
-*Contributed by Michka Popoff, with the help of Bill Lorensen and madz (madaramh).
+* Contributed by Michka Popoff, with the help of Bill Lorensen and madz (madaramh).

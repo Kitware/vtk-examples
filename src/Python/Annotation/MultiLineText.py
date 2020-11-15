@@ -29,11 +29,11 @@ def main():
 
     # The text is on a single line and bottom-justified.
     singleLineTextB = vtk.vtkTextMapper()
-    singleLineTextB.SetInput("Single line (bottom)")
+    singleLineTextB.SetInput('Single line (bottom)')
     tprop = singleLineTextB.GetTextProperty()
     tprop.ShallowCopy(singleLineTextProp)
     tprop.SetVerticalJustificationToBottom()
-    tprop.SetColor(colors.GetColor3d("Tomato"))
+    tprop.SetColor(colors.GetColor3d('Tomato'))
 
     singleLineTextActorB = vtk.vtkActor2D()
     singleLineTextActorB.SetMapper(singleLineTextB)
@@ -42,11 +42,11 @@ def main():
 
     # The text is on a single line and center-justified (vertical justification).
     singleLineTextC = vtk.vtkTextMapper()
-    singleLineTextC.SetInput("Single line (centered)")
+    singleLineTextC.SetInput('Single line (centered)')
     tprop = singleLineTextC.GetTextProperty()
     tprop.ShallowCopy(singleLineTextProp)
     tprop.SetVerticalJustificationToCentered()
-    tprop.SetColor(colors.GetColor3d("DarkGreen"))
+    tprop.SetColor(colors.GetColor3d('DarkGreen'))
     singleLineTextActorC = vtk.vtkActor2D()
 
     singleLineTextActorC.SetMapper(singleLineTextC)
@@ -55,11 +55,11 @@ def main():
 
     # The text is on a single line and top-justified.
     singleLineTextT = vtk.vtkTextMapper()
-    singleLineTextT.SetInput("Single line (top)")
+    singleLineTextT.SetInput('Single line (top)')
     tprop = singleLineTextT.GetTextProperty()
     tprop.ShallowCopy(singleLineTextProp)
     tprop.SetVerticalJustificationToTop()
-    tprop.SetColor(colors.GetColor3d("Peacock"))
+    tprop.SetColor(colors.GetColor3d('Peacock'))
 
     singleLineTextActorT = vtk.vtkActor2D()
     singleLineTextActorT.SetMapper(singleLineTextT)
@@ -68,12 +68,12 @@ def main():
 
     # The text is on multiple lines and left- and top-justified.
     textMapperL = vtk.vtkTextMapper()
-    textMapperL.SetInput("This is\nmulti-line\ntext output\n(left-top)")
+    textMapperL.SetInput('This is\nmulti-line\ntext output\n(left-top)')
     tprop = textMapperL.GetTextProperty()
     tprop.ShallowCopy(multiLineTextProp)
     tprop.SetJustificationToLeft()
     tprop.SetVerticalJustificationToTop()
-    tprop.SetColor(colors.GetColor3d("Tomato"))
+    tprop.SetColor(colors.GetColor3d('Tomato'))
 
     textActorL = vtk.vtkActor2D()
     textActorL.SetMapper(textMapperL)
@@ -82,12 +82,12 @@ def main():
 
     # The text is on multiple lines and center-justified (both horizontal and vertical).
     textMapperC = vtk.vtkTextMapper()
-    textMapperC.SetInput("This is\nmulti-line\ntext output\n(centered)")
+    textMapperC.SetInput('This is\nmulti-line\ntext output\n(centered)')
     tprop = textMapperC.GetTextProperty()
     tprop.ShallowCopy(multiLineTextProp)
     tprop.SetJustificationToCentered()
     tprop.SetVerticalJustificationToCentered()
-    tprop.SetColor(colors.GetColor3d("DarkGreen"))
+    tprop.SetColor(colors.GetColor3d('DarkGreen'))
 
     textActorC = vtk.vtkActor2D()
     textActorC.SetMapper(textMapperC)
@@ -96,12 +96,12 @@ def main():
 
     # The text is on multiple lines and right- and bottom-justified.
     textMapperR = vtk.vtkTextMapper()
-    textMapperR.SetInput("This is\nmulti-line\ntext output\n(right-bottom)")
+    textMapperR.SetInput('This is\nmulti-line\ntext output\n(right-bottom)')
     tprop = textMapperR.GetTextProperty()
     tprop.ShallowCopy(multiLineTextProp)
     tprop.SetJustificationToRight()
     tprop.SetVerticalJustificationToBottom()
-    tprop.SetColor(colors.GetColor3d("Peacock"))
+    tprop.SetColor(colors.GetColor3d('Peacock'))
 
     textActorR = vtk.vtkActor2D()
     textActorR.SetMapper(textMapperR)
@@ -165,7 +165,7 @@ def main():
     mapper.SetTransformCoordinate(normCoords)
     gridActor = vtk.vtkActor2D()
     gridActor.SetMapper(mapper)
-    gridActor.GetProperty().SetColor(colors.GetColor3d("DimGray"))
+    gridActor.GetProperty().SetColor(colors.GetColor3d('DimGray'))
 
     # Create the Renderer, RenderWindow, and RenderWindowInteractor
     renderer = vtk.vtkRenderer()
@@ -184,7 +184,7 @@ def main():
     renderer.AddActor2D(singleLineTextActorT)
     renderer.AddActor2D(gridActor)
 
-    renderer.SetBackground(colors.GetColor3d("Silver"))
+    renderer.SetBackground(colors.GetColor3d('Silver'))
     renderWindow.SetSize(640, 480)
     renderer.GetActiveCamera().Zoom(1.5)
 
