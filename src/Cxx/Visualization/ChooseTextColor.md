@@ -9,7 +9,7 @@ ChooseTextColor fontFile [background] [lightColor] [darkColor]
 ```
 
 !!! info
-    [VTKNamedColorPatches](http://htmlpreview.github.com/?https://kitware.github.io/vtk-examples/blob/master/src/Python/Visualization/VTKNamedColorPatches.html) shows the available colors.
+    [VTKNamedColorPatches](https://htmlpreview.github.io/?https://github.com/Kitware/vtk-examples/blob/gh-pages/VTKNamedColorPatches.html) shows the available colors.
 
 !!! info
     The *ChooseContrastingColor* procedure is reusable, Cut and paste the declarations and code into other examples.
