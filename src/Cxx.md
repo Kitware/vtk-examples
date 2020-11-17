@@ -974,7 +974,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [ColorActorEdges](/Cxx/Visualization/ColorActorEdges) | Color the edges of an Actor.
 [ColorAnActor](/Cxx/Visualization/ColorAnActor) | Color an Actor.
 [ColorGlyphs](/Cxx/Visualization/ColorGlyphs) | Color glyphs.
-[ColorSeriesPatches](/Cxx/Visualization/ColorSeriesPatches) | Creates a HTML file called [VTKColorSeriesPatches](http://htmlpreview.github.com/?https://github.com/lorensen/VTKExamples/blob/master/src/Python/Visualization/VTKColorSeriesPatches.html)
+[ColorSeriesPatches](/Cxx/Visualization/ColorSeriesPatches) | Creates a HTML file called [VTKColorSeriesPatches](https://htmlpreview.github.io/?https://github.com/Kitware/vtk-examples/blob/gh-pages/VTKColorSeriesPatches.html)
 [ColoredAnnotatedCube](/Cxx/VisualizationAlgorithms/ColoredAnnotatedCube) | How to color the individual faces of an annotated cube.
 [CombustorIsosurface](/Cxx/VisualizationAlgorithms/CombustorIsosurface) | Generate an isosurface of constant flow density.
 [ComplexV](/Cxx/Visualization/ComplexV) | ComplexV from the VTK Textbook.
@@ -1052,7 +1052,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [MoveActor](/Cxx/Visualization/MoveActor) | Moving an Actor.
 [MoveCamera](/Cxx/Visualization/MoveCamera) | Moving the Camera.
 [MultipleActors](/Cxx/Visualization/MultipleActors) | Multiple Actors.
-[NamedColorPatches](/Cxx/Visualization/NamedColorPatches) | Creates a HTML file called [VTKNamedColorPatches](http://htmlpreview.github.com/?https://github.com/lorensen/VTKExamples/blob/master/src/Python/Visualization/VTKNamedColorPatches.html)
+[NamedColorPatches](/Cxx/Visualization/NamedColorPatches) | Creates a HTML file called [VTKNamedColorPatches](https://htmlpreview.github.io/?https://github.com/Kitware/vtk-examples/blob/gh-pages/VTKNamedColorPatches.html)
 [NamedColors](/Cxx/Visualization/NamedColors) | Demonstrate the use of the vtkNamedColors class.
 [NoShading](/Cxx/Visualization/NoShading) |
 [NormalsDemo](/Cxx/Visualization/NormalsDemo) | Demo different options to generate normals.

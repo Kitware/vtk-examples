@@ -126,8 +126,8 @@ See [clang-format](https://clang.llvm.org/docs/ClangFormat.html) for more inform
 
 * Always provide a background for the renderers. Avoid setting the background to white.
 
-* Use [vtkNamedColors](http://www.vtk.org/doc/nightly/html/classvtkNamedColors.html) for setting colors of actors and renderer backgrounds.
-[VTKNamedColorPatches](http://htmlpreview.github.io/?__WEB_BLOB__/VTKNamedColorPatches.html) shows the colors that are available. If you are using a color series, then you can choose what you want from here [VTKColorSeriesPatches](http://htmlpreview.github.io/?__WEB_BLOB__/VTKColorSeriesPatches.html).
+* Use [vtkNamedColors](https://www.vtk.org/doc/nightly/html/classvtkNamedColors.html) for setting colors of actors and renderer backgrounds.
+[VTKNamedColorPatches](https://htmlpreview.github.io/?__WEB_BLOB__/VTKNamedColorPatches.html) shows the colors that are available. If you are using a color series, then you can choose what you want from here [VTKColorSeriesPatches](https://htmlpreview.github.io/?__WEB_BLOB__/VTKColorSeriesPatches.html).
 
   For example,
 
