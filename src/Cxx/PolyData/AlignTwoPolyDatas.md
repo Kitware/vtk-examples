@@ -17,7 +17,7 @@ The algorithm proceeds as follows:
 5. Using the transform that has the best distance metric, do a final, and display the source and target vtkPolyData's.
 
 !!! info
-    The example is run with [Grey_Nurse_Shark.stl](https://github.com/lorensen/VTKExamples/raw/master/src/Testing/Data/thingiverse/Grey_Nurse_Shark.stl) and [shark.ply](https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Data/shark.ply)
+    The example is run with `src/Testing/Data/thingiverse/Grey_Nurse_Shark.stl` and `src/Testing/Data/shark.ply`
 
 !!! info
-    You may need to orient the target using vtkTransformPolyDataFilter to get a better fit, for example when using  [Grey_Nurse_Shark.stl](https://github.com/lorensen/VTKExamples/raw/master/src/Testing/Data/thingiverse/Grey_Nurse_Shark.stl) and [greatWhite.stl](https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Data/greatWhite.stl), uncommenting the two rotations in vtkTransform will provide an excellent alignment.
+    You may need to orient the target using vtkTransformPolyDataFilter to get a better fit, for example when using `src/Testing/Data/thingiverse/Grey_Nurse_Shark.stl` and `src/Testing/Data/greatWhite.stl`, uncommenting the two rotations in the vtkTransform will provide an excellent alignment.

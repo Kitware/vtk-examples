@@ -18,6 +18,6 @@ KDTreeFindPointsWithinRadius dragon.ply
 
 !!! info
     See other locator demos:
-    [OctreeFindPointsWithinRadiusDemo](/Cxx/DataStructures/OctreeFindPointsWithinRadiusDemo),
-    [StaticLocatorFindPointsWithinRadiusDemo](/Cxx/DataStructures/StaticLocatorFindPointsWithinRadiusDemo),
-    [PointLocatorFindPointsWithinRadiusDemo](/Cxx/DataStructures/PointLocatorFindPointsWithinRadiusDemo)
+    [OctreeFindPointsWithinRadiusDemo](../OctreeFindPointsWithinRadiusDemo),
+    [StaticLocatorFindPointsWithinRadiusDemo](../StaticLocatorFindPointsWithinRadiusDemo),
+    [PointLocatorFindPointsWithinRadiusDemo](../PointLocatorFindPointsWithinRadiusDemo)

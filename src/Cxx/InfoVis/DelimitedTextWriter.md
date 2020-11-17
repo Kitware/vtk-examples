@@ -1,11 +1,13 @@
 ### Description
+
 Is the output of
-<source lang="cpp">
+
+``` C++
 "","",""
 0,1,2
 3,4,5
 6,7,8
-</source>
+```
 
 expected? What is the first line indicating? Simply that there are 3 string fields?
 

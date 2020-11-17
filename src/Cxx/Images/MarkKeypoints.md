@@ -1,3 +1,3 @@
 ### Description
 
-Thanks to Dean Inglis.
+* Thanks to Dean Inglis.

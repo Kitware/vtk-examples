@@ -10,11 +10,11 @@ def main():
     polydata.ShallowCopy(sphereSource.GetOutput())
 
     normals = polydata.GetPointData().GetNormals()
-    normals.SetName("TestN")
+    normals.SetName('TestN')
 
     writer = vtk.vtkXMLPolyDataWriter()
-    writer.SetFileName("Test.vtp")
-    writer.SetInput(polydata)
+    writer.SetFileName('Test.vtp')
+    writer.SetInputData(polydata)
     writer.Write()
 
 

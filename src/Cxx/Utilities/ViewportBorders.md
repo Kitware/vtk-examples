@@ -4,4 +4,4 @@ Sometimes multiple vtkRenderer viewports can be difficult to differentiate. This
 
 To run the example, provide 1-N vtkPolyDataReader files.
 
-This examples uses the data [v.vtk](https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Data/v.vtk), [t.vtk](https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Data/t.vtk) and [k.vtk](https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Data/k.vtk).
+This examples uses the data, `src/Testing/Data/v.vtk,`, `src/Testing/Data/t.vtk` and `src/Testing/Data/k.vtk`.

@@ -17,14 +17,14 @@ def main():
     voi.SetSampleRate(1, 1, 1)
     voi.Update()  # Necessary for GetScalarRange().
     srange = voi.GetOutput().GetScalarRange()  # Needs Update() before!
-    print("Range", srange)
+    print('Range', srange)
 
     # Prepare surface generation.
     contour = vtk.vtkDiscreteMarchingCubes()  # For label images.
     contour.SetInputConnection(voi.GetOutputPort())
     # contour.ComputeNormalsOn()
 
-    print("Doing label", index)
+    print('Doing label', index)
 
     contour.SetValue(0, index)
     contour.Update()  # Needed for GetNumberOfPolys()!!!
@@ -47,11 +47,11 @@ def main():
 
     # Find min and max z.
     se_range = smoother_error.GetRange()
-    print("Smoother error range:", se_range)
+    print('Smoother error range:', se_range)
     minz = se_range[0]  # min(smoother_error)
     maxz = se_range[1]  # max(smoother_error)
     if maxz > 1:
-        print("Big smoother error: min/max:", minz, maxz)
+        print('Big smoother error: min/max:', minz, maxz)
     # minz = 0.3  # This way colours of different particles are comparable.
     # maxz = 1
     # minz = 0.3
@@ -93,7 +93,7 @@ def main():
 
     # Create the renderer.
     ren = vtk.vtkRenderer()
-    ren.SetBackground(colors.GetColor3d("DimGray"))
+    ren.SetBackground(colors.GetColor3d('DimGray'))
     ren.AddActor(actor)
 
     # Create a window for the renderer of size 600X600

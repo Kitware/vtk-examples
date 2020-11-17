@@ -5,9 +5,7 @@ The vtkBooleanOperationPolyDataFilter works best with "clean" data, so this exam
 This example can be run in three ways:
 
 1.  *BooleanOperationPolyDataFilter* - Computes the intersection of two spheres
-
 2.  *BooleanOperationPolyDataFilter* **-o intersection|difference|union** - Computes the intersection(difference or union) of two spheres
-
 3.  *BooleanOperationPolyDataFilter* **-o intersection|difference|union input1.vtk input2.vtk** - Computes the intersection(difference or union) of two vtkPolyData's
 
 !!! cite

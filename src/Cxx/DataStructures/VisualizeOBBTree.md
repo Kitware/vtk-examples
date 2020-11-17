@@ -6,4 +6,4 @@ Here's he embeded video:
 <iframe width="256" src="https://www.youtube.com/embed/dHt6v1MjMhE" frameborder="0" allow="accelerometer; loop; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 !!! seealso
-    [VisualizeKDTree](/Cxx/DataStructures/VisualizeKDTree) and [VisualizeModifiedBSPTree](/Cxx/DataStructures/VisualizeModifiedBSPTree).
+    [VisualizeKDTree](../VisualizeKDTree) and [VisualizeModifiedBSPTree](../VisualizeModifiedBSPTree).

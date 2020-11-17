@@ -12,5 +12,6 @@ Explore the parameter space with the vtkSliderWidget.
 * _ warping_ - controls how much turbulent warping there will be e.g. 0.5
 * _veincolor_ - the color of the veins e.g. white: 1 1 1
 * _sharpness_ - controls how sharp or fuzzy the veins are (higher = sharper) e.g. 8
+
 !!! cite
     This shader is inspired by Larry Gritz's veined marble shader.

@@ -1,5 +1,5 @@
 ### Description
 
 !!! seealso
-    [ImageStencil](../../Images/ImageStencil) and [Transparency](../../Images/Transparency)
+    [ImageStencil](../ImageStencil) and [Transparency](../Images/Transparency)
 

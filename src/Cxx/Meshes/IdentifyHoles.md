@@ -1,4 +1,5 @@
 ### Description
+
 This example fills the holes in a mesh and then extracts the filled holes as seprate regions.
 
 The example proceeds as follow:
@@ -9,4 +10,4 @@ The example proceeds as follow:
 4. Use vtkConnectivityFilter on the filled polydata to identify the individual holes.
 
 !!! note
-    We have to use [vtkConnectivtyFilter](http://www.vtk.org/doc/nightly/html/classvtkConnectivityFilter.html) and not [vtkPolyDataConnectivityFilter](http://www.vtk.org/doc/nightly/html/classvtkPolyDataConnectivityFilter.html) since the later does not create RegionIds cell data.
+    We have to use vtkConnectivtyFilter and not vtkPolyDataConnectivityFilter since the later does not create RegionIds cell data.

@@ -5,4 +5,4 @@ High-pass filters can also be used to compress the range of an image. Since low 
 This example subtracts the Laplacian (middle) from the original image (left) resulting in edge enhancement or a sharpening operation (right).
 
 !!! info
-    See [this figure](/VTKBook/10Chapter10/#Figure%2010-9) in [Chapter 10](/VTKBook/10Chapter10) the [VTK Textbook](/VTKBook/01Chapter1).
+    See [this figure](../../../VTKBook/10Chapter10/#Figure%2010-9) in [Chapter 10](../../../VTKBook/10Chapter10) the [VTK Textbook](../../../VTKBook/01Chapter1).

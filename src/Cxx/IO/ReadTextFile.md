@@ -8,4 +8,4 @@ An example file may look like:
  7 8 9
 
 !!! note
-    for a simpler way to read such a file, see [SimplePointsReader](SimplePointsReader).
+    for a simpler way to read such a file, see [SimplePointsReader](../SimplePointsReader).
