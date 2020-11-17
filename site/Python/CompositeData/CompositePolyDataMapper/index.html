@@ -122,10 +122,10 @@ function registerListener(event, func) {
     <span class=c1># Note that the index is the flat index in the tree, so the whole multiblock</span>
     <span class=c1># is index 0 and the blocks are flat indexes 1, 2 and 3.  This affects</span>
     <span class=c1># the block returned by mbds.GetBlock(2).</span>
-    <span class=n>mapper</span><span class=o>.</span><span class=n>SetBlockColor</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Red&quot;</span><span class=p>))</span>
+    <span class=n>mapper</span><span class=o>.</span><span class=n>SetBlockColor</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>))</span>
     <span class=c1># Color the spheres.</span>
-    <span class=n>mapper</span><span class=o>.</span><span class=n>SetBlockColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;LavenderBlush&quot;</span><span class=p>))</span>
-    <span class=n>mapper</span><span class=o>.</span><span class=n>SetBlockColor</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Lavender&quot;</span><span class=p>))</span>
+    <span class=n>mapper</span><span class=o>.</span><span class=n>SetBlockColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LavenderBlush&#39;</span><span class=p>))</span>
+    <span class=n>mapper</span><span class=o>.</span><span class=n>SetBlockColor</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Lavender&#39;</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
@@ -139,7 +139,7 @@ function registerListener(event, func) {
 
     <span class=c1># Enable user interface interactor.</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;SteelBlue&quot;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SteelBlue&#39;</span><span class=p>))</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;CompositePolyDataMapper&#39;</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>renderWindowInteractor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
