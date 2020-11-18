@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
   auto pl3d_output =
       dynamic_cast<vtkStructuredGrid*>(pl3d->GetOutput()->GetBlock(0));
 
-  // Create three the line source to use for the probe lines.
+  // Create three line sources to use for the probe lines.
   vtkNew<vtkLineSource> line;
   line->SetResolution(30);
 
