@@ -31,7 +31,7 @@ Algorithms also can be classified according to the type of data they process. Th
 In the text that follows, we will use the attribute type classification scheme: scalar, vector, tensor, and modelling. In cases where the algorithms operate on a particular dataset type, we place them in the appropriate category according to our best judgment. Be forewarned, though, that alternative classification schemes do exist, and may be better suited to describing the true nature of the algorithm.
 
 <figure id="Figure 6-1">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-1.png?raw=true" width="640" alt="Figure6-1">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-1.png?raw=true" width="640" alt="Figure6-1">
   <figcaption style="color:blue"><b>Figure 6-1</b> Mapping scalars to colors via a lookup table. </figcaption>
 </figure>
 
@@ -62,7 +62,7 @@ The key to color mapping for scalar visualization is to choose the lookup table 
 Designing lookup tables is as much art as it is science. From a practical point of view, tables should accentuate important features, while minimizing less important or extraneous details. It is also desirable to use palettes that inherently contain scaling information. For example, a color rainbow scale from blue to red is often used to represent temperature scale, since many people associate "blue" with cold temperatures, and "red" with hot temperatures. However, even this scale is problematic: a physicist would say that blue is hotter than red, since hotter objects emit more blue light (i.e., shorter wavelength) than red. Also, there is no need to limit ourselves to "linear" lookup tables. Even though the mapping of scalars into colors has been presented as a linear operation (**Figure 6-1**), the table itself need not be linear. That is, tables can be designed to enhance small variations in scalar value using logarithmic or other schemes, improving the comfort level and engaging the human observer more deeply in the presentation of data improves the effectiveness of communication.
 
 <figure id="Figure 6-2">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-2.png?raw=true" width="640" alt="Figure6-2">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-2.png?raw=true" width="640" alt="Figure6-2">
   <figcaption style="color:blue"><b>Figure 6-2</b>. Transfer function for color components red, green and blue as a function of scalar value.</figcaption>
 </figure>
 
@@ -72,7 +72,7 @@ Designing lookup tables is as much art as it is science. From a practical point 
 </figure>
 
 <figure id="Figure 6-4">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-4.png?raw=true" width="640" alt="Figure6-4">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-4.png?raw=true" width="640" alt="Figure6-4">
   <figcaption style="color:blue"><b>Figure 6-4</b>. Contouring a 2D structured grid with contour line value = 5.</figcaption>
 </figure>
 
@@ -109,7 +109,7 @@ This procedure will construct independent geometric primitives in each cell. At 
 There are advantages and disadvantages to both the edge-tracking and marching cubes approaches. The marching squares algorithm is easy to implement. This is particularly important when we extend the technique into three dimensions, where isosurface tracking becomes much more difficult. On the other hand, the algorithm creates disconnected line segments and points, and the required merging operation requires extra computation resources. The tracking algorithm can be implemented to generate a single polyline per contour line, avoiding the need to merge coincident points.
 
 <figure id="Figure 6-5">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-5.png?raw=true" width="640" alt="Figure6-5">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-5.png?raw=true" width="640" alt="Figure6-5">
   <figcaption style="color:blue"><b>Figure 6-5</b>. Sixteen different marching squares cases. Dark vertices indicate scalar value is above contour value. Cases 5 and 10 are ambiguous.</figcaption>
 </figure>
 
@@ -119,7 +119,7 @@ There are advantages and disadvantages to both the edge-tracking and marching cu
 </figure>
 
 <figure id="Figure 6-7">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-7.png?raw=true" width="640" alt="Figure6-7">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-7.png?raw=true" width="640" alt="Figure6-7">
   <figcaption style="color:blue"><b>Figure 6-7</b>. Using marching triangles or marching tetrahedra to resolve ambiguous cases on rectangular lattice (only face of cube is shown). Choice of diagonal orientation may result in "bumps" in contour surface. In 2D, diagonal orientation can be chosen arbitrarily, but in 3D diagonal is constrained by neighbor.</figcaption>
 </figure>
 
@@ -139,12 +139,12 @@ In three dimensions the problem is more complex. We cannot simply choose an ambi
 Several different approaches have been taken to remedy this problem. One approach tessellates the cubes with tetrahedron, and uses a *marching tetrahedra* technique *.* This works because the marching tetrahedra exhibit no ambiguous cases. Unfortunately, the marching tetrahedra algorithm generates isosurfaces consisting of more triangles, and the tessellation of a cube with tetrahedra requires making a choice regarding the orientation of the tetrahedra. This choice may result in artificial "bumps" in the isosurface because of interpolation along the face diagonals as shown in **Figure 6-7**. Another approach evaluates the asymptotic behavior of the surface, and then chooses the cases to either join or break the contour. Nielson and Hamann <em style="color:green;background-color: white">\[Nielson91\]</em> have developed a technique based on this approach they call the *asymptotic decider*. It is based on an analysis of the variation of the scalar variable across an ambiguous face. The analysis determines how the edges of isosurface polygons should be connected.
 
 <figure id="Figure 6-8">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-8.png?raw=true" width="640" alt="Figure6-8">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-8.png?raw=true" width="640" alt="Figure6-8">
   <figcaption style="color:blue"><b>Figure 6-8</b>. Choosing a particular contour case will break (a) or join (b) the current contour. Case shown is marching squares case 10.</figcaption>
 </figure>
 
 <figure id="Figure 6-9">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-9.png?raw=true" width="640" alt="Figure6-9">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-9.png?raw=true" width="640" alt="Figure6-9">
   <figcaption style="color:blue"><b>Figure 6-9</b>. Arbitrarily choosing marching cubes cases leads to holes in the isosurface. </figcaption>
 </figure>
 
@@ -185,7 +185,7 @@ This example can be made more interesting by generalizing the problem. Although 
 
 <figure id="Figure 6-12">
   <figure id="Figure 6-12a">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-12a.png?raw=true" width="640" alt="Figure6-12a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-12a.png?raw=true" width="640" alt="Figure6-12a">
   </figure>
   <figure id="Figure 6-12b">
      <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestHawaii.png?raw=true" width="640" alt="Figure 6-12">
@@ -208,7 +208,7 @@ There are many variations of this technique (**Figure 6-13** (b)). Arrows may be
 
 <figure id="Figure 6-13">
   <figure id="Figure 6-13a">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-13.png?raw=true" width="640" alt="Figure6-13a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-13.png?raw=true" width="640" alt="Figure6-13a">
   </figure>
   <figure id="Figure 6-13a">
     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestComplexV.png?raw=true" width="640" alt="Figure 6-13">
@@ -251,7 +251,7 @@ A useful application of this technique is the study of vibration. In vibration a
 
 <figure id="Figure 6-15">
   <figure id="Figure 6-15a">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-15a.png?raw=true" width="640" alt="Figure6-15a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-15a.png?raw=true" width="640" alt="Figure6-15a">
   </figure>
   <figcaption style="color:blue"><b>Figure 6-15</b>. (a) Scalar Computation.</figcaption>
   <figure id="Figure 6-15b">
@@ -277,7 +277,7 @@ $$
 This suggests an extension to our previous techniques: repeatedly displace points over many time steps. **Figure 6-16** shows such an approach. Beginning with a sphere *S* centered about some point *C*, we move *S* repeatedly to generate the bubbles shown. The eye tends to trace out a path by connecting the bubbles, giving the observer a qualitative understanding of the fluid flow in that area. The bubbles may be displayed as an animation over time (giving the illusion of motion) or as a multiple exposure sequence (giving the appearance of a path).
 
 <figure id="Figure 6-16">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-16.png?raw=true" width="640" alt="Figure6-16">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-16.png?raw=true" width="640" alt="Figure6-16">
   <figcaption style="color:blue"><b>Figure 6-16</b>. Time animation of a point <b>C</b>. Although the spacing between points varies, the time increment between each point is constant.</figcaption>
 </figure>
 
@@ -308,7 +308,7 @@ step $\Delta{t}$.
 Euler's method has error on the order of $O(\Delta{t}^2)$, which is not accurate enough for some applications. One such example is shown in **Figure 6-17**. The velocity field describes perfect rotation about a central point. Using Euler's method we find that we will always diverge and, instead of generating circles, will generate spirals instead.
 
 <figure id="Figure 6-17">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-17.png?raw=true" width="640" alt="Figure6-17">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-17.png?raw=true" width="640" alt="Figure6-17">
   <figcaption style="color:blue"><b>Figure 6-17</b>. Euler's integration (b) and RungeKutta integration of order 2 (c) applied to uniform rotational vector field (a). Euler's method will always diverge.</figcaption>
 </figure>
 
@@ -391,7 +391,7 @@ $$
 Expanding this equation yields a $n^{th}$ degree polynomial in $\lambda$ whose roots are the eigenvalues. Thus, there are always $n$ eigenvalues, although they may not be distinct. In general, **Equation6-7** is not solved using polynomial root searching because of poor computational performance. (For matrices of order 3 root searching is acceptable because we can solve for the eigenvalues analytically.) Once we determine the eigenvalues, we can substitute each into **Equation6-7** to solve for the associated eigenvectors.
 
 <figure id="Figure 6-20">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-20.png?raw=true" width="640" alt="Figure6-20">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-20.png?raw=true" width="640" alt="Figure6-20">
   <figcaption style="color:blue"><b>Figure 6-20</b>. Stress and strain tensors. Normal stresses in the x-y-z coordinate directions indicated as *sigma*, shear stresses indicated as *tau*. Material displacement represented by (u, v, w) components.</figcaption>
 </figure>
 
@@ -425,7 +425,7 @@ $$
  (remember to read right to left). The eigenvectors can be directly plugged in to create the rotation matrix, while the point coordinates $x-y-z$ and eigenvalues $\lambda{_1} \geq \lambda{_2} \geq \lambda{_3}$ are inserted into the translation and scaling matrices. A concatenation of these matrices forms the final transformation matrix $T$.
 
 <figure id="Figure 6-21">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-21.png?raw=true" width="640" alt="Figure6-21">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-21.png?raw=true" width="640" alt="Figure6-21">
   <figcaption style="color:blue"><b>Figure 6-21</b>. Tensor ellipsoids. (a) Ellipsoid oriented along eigenvalues (i.e., principle axes) of tensor; (b) Pictorial description of Boussinesq's problem; (c) Analytic results according to Saada.</figcaption>
 </figure>
 
@@ -499,7 +499,7 @@ This simple relationship defines the three regions (on $F(x,y,z = 0)s on$the sph
 
 <figure id="Figure 6-23">
   <figure id="Figure 6-23a">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-23a.png?raw=true" width="640" alt="Figure6-23a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-23a.png?raw=true" width="640" alt="Figure6-23a">
   </figure>
   <figcaption style="color:blue"><b>Figure 6-23a</b>. (a) Sphere sampling</figcaption>
   </figure>
@@ -590,7 +590,7 @@ where $x$ is proportional to the fluid velocity in the fluid ring, $y$ and $z$z 
 Certainly these equations are not in the implicit form of **Equation6-11**, so how do we visualize them? Our solution is to treat the variables x, y, and z as the coordinates of a three-dimensional space, and integrate **Equation6-16** to generate the system "trajectory", that is, the state of the system through time. The integration is carried out within a volume and scalars are created by counting the number of times each voxel is visited. By integrating long enough, we can create a volume representing the "surface" of the strange attractor, **Figure 6-25**. The surface of the strange attractor is extracted by using marching cubes and a scalar value specifying the number of visits in a voxel.
 
 <figure id="Figure 6-26">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-26.png?raw=true" width="640" alt="Figure6-26">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-26.png?raw=true" width="640" alt="Figure6-26">
   <figcaption style="color:blue"><b>Figure 6-26</b>. Distance functions to a point, line, and triangle.</figcaption>
 </figure>
 
@@ -603,7 +603,7 @@ An extension of this approach, called implicit modeling, is similar to modeling 
 Used alone the generating primitives are limited in their ability to model complex geometry. By using boolean combinations of the primitives, however, complex geometry can be easily modeled. The boolean operations union, intersection, and difference (**Equation6-13**, **Equation6-14**, and **Equation6-15**, respectively) are illustrated in **Figure 6-27**. **Figure 6-28** shows the application of implicit modeling to "thicken" the line segments in the text symbol "HELLO". The isosurface is generated on a volume $110 \times 40 \times 20$ at  a distance offset of 0.25 units. The generating primitives were combined using the boolean union operator. Although Euclidean distance is always a nonnegative value, it is possible to use a signed distance function for objects that have an outside and an inside. A negative distance is the negated distance of a point inside the object to the surface of the object. Using a signed distance function allows us to create offset surfaces that are contained within the actual surface. Another interesting feature of implicit modeling is that when isosurfaces are generated, more than one connected surface can result. These situations occur when the generating primitives form concave features. **Figure 6-29** illustrates this situation. If desired, multiple surfaces can be separated by using the connectivity algorithm described in ["Connectivity"](/VTKBook/09Chapter9/#connectivity) in [Chapter 9](/VTKBook/09Chapter9).
 
 <figure id="Figure 6-27">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-27.png?raw=true" width="640" alt="Figure6-27">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-27.png?raw=true" width="640" alt="Figure6-27">
   <figcaption style="color:blue"><b>Figure 6-27</b>. Boolean operations using points and lines as generating primitives.</figcaption>
 </figure>
 
@@ -613,7 +613,7 @@ Used alone the generating primitives are limited in their ability to model compl
 </figure>
 
 <figure id="Figure 6-29">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-29.png?raw=true" width="640" alt="Figure6-29">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-29.png?raw=true" width="640" alt="Figure6-29">
   <figcaption style="color:blue"><b>Figure 6-29</b>. Concave features can result in multiple contour lines/surfaces.</figcaption>
 </figure>
 
@@ -680,11 +680,11 @@ Algorithms are implemented in the *Visualization Toolkit* as process objects. Th
 **Source Design.**
 <figure id="Figure 6-34">
   <figure id="Figure 6-34a">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-34a.png?raw=true" width="320" alt="Figure6-34a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-34a.png?raw=true" width="320" alt="Figure6-34a">
     <figcaption style="color:blue"> (a) Functional Model</figcaption>
   </figure>
   <figure id="Figure 6-34b">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-34b.png?raw=true" width="320" alt="Figure6-34b">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-34b.png?raw=true" width="320" alt="Figure6-34b">
     <figcaption style="color:blue"> (b) Object Models</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 6-34</b>. Source object design. Example shown is a source object that creates a polygonal representation of a sphere.</figcaption>
@@ -698,11 +698,11 @@ Filter objects have one or more inputs and one or more outputs as shown in **Fig
 
 <figure id="Figure 6-35">
   <figure id="Figure 6-35a">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-35a.png?raw=true" width="320" alt="Figure6-35a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-35a.png?raw=true" width="320" alt="Figure6-35a">
     <figcaption style="color:blue"> (a) Functional Model</figcaption>
   </figure>
   <figure id="Figure 6-35b">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-35b.png?raw=true" width="320" alt="Figure6-35b">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-35b.png?raw=true" width="320" alt="Figure6-35b">
     <figcaption style="color:blue"> (b) Object Models</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 6-35</b>. Filter object design. The example shown is for an object that receives a general dataset as input and creates polygonal data on output.</figcaption>
@@ -722,11 +722,11 @@ The architecture is simple enough that you can grasp it quickly.
 
 <figure id="Figure 6-36">
   <figure id="Figure 6-36a">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-36a.png?raw=true" width="320" alt="Figure6-36a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-36a.png?raw=true" width="320" alt="Figure6-36a">
     <figcaption style="color:blue"> (a) Functional Models</figcaption>
   </figure>
   <figure id="Figure 6-36b">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-36b.png?raw=true" width="320" alt="Figure6-36b">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-36b.png?raw=true" width="320" alt="Figure6-36b">
     <figcaption style="color:blue"> (b) Object Models</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 6-36</b>. Mapper object design. Graphics mapper shown (e.g., &#118;tkPolyDataMapper) maps polygonal data through graphics library primitives. Writer shown (e.g., &#118;tkSTLWriter) writes polygonal data to stereo lithography format.</figcaption>
@@ -798,7 +798,7 @@ You can also derive your own lookup table types. Look at vtkLogLookupTable for a
 ### Implicit Functions
 
 <figure id="Figure 6-37">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-37.png?raw=true" width="640" alt="Figure6-37">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-37.png?raw=true" width="640" alt="Figure6-37">
   <figcaption style="color:blue"><b>Figure 6-37</b>. Inheritance hierarchy of &#118;tkImplicitFunction and subclasses.</figcaption>
 </figure>
 
@@ -821,7 +821,7 @@ The execution times are normalized to the smallest dataset using the vtkMarching
 Although these results do not represent all implementations or the behavior of other algorithms, they do point to the cost of generality. Of course, there is a cost to specialization as well. This cost is typically in programmer time, since the programmer must rewrite code to adapt to new circumstances and data. Like all trade-offs, resolution of this issue requires knowledge of the application.
 
 <figure id="Figure 6-38">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-38.png?raw=true" width="640" alt="Figure6-38">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-38.png?raw=true" width="640" alt="Figure6-38">
   <figcaption style="color:blue"><b>Figure 6-38</b>. The cost of generality. Isosurface generation of three volumes of different sizes are compared. The results show normalized execution times for two different implementations of the marching cubes isosurface algorithm. The specialized filter is &#118;tkMarchingCubes. The general algorithms are first &#118;tkContourFilter and then in combination with &#118;tkPolyDataNormals.</figcaption>
 </figure>
 
@@ -858,7 +858,7 @@ vtkActor *outlineActor = vtkActor::New();
 </figure>
 
 <figure id="Figure 6-40">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-40.png?raw=true" width="320" alt="Figure6-40">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-40.png?raw=true" width="320" alt="Figure6-40">
   <figcaption style="color:blue"><b>Figure 6-40</b>. Data flow into and out of the &#118;tkGlyph3D class.</figcaption>
 </figure>
 
@@ -875,7 +875,7 @@ The behavior of an instance of vtkGlyph3D depends on the nature of the input dat
 We saw how to use vtkGlyph3D in the example given in **Figure4--20**. Cones were used as the glyph and were located at each point on the sphere, oriented along the sphere's surface normal.
 
 <figure id="Figure 6-41">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-41.png?raw=true" width="640" alt="Figure6-41">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-41.png?raw=true" width="640" alt="Figure6-41">
   <figcaption style="color:blue"><b>Figure 6-41</b>. Inheritance hierarchy for &#118;tkStreamer and subclasses.</figcaption>
 </figure>
 
@@ -894,7 +894,7 @@ Attribute transformations create or modify data attributes without changing the 
 Fortunately, there is a a solution to this dilemma. The solution is to use the "virtual constructor" NewInstance(). Although C++ does not allow virtual constructors, we can simulate it by creating a special virtual function that constructs a copy of the object that it is invoked on. For example, if this function is applied to a dataset instance of type vtkPolyData, the result will be a copy of that instance (**Figure 6-42**). (Note that we use reference counting to make copies and avoid duplicating memory.) The virtual constructor function NewInstance() is implemented in a number of VTK classes including datasets and cells.
 
 <figure id="Figure 6-42">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure6-42.png?raw=true" width="640" alt="Figure6-42">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-42.png?raw=true" width="640" alt="Figure6-42">
   <figcaption style="color:blue"><b>Figure 6-42</b>. Depiction of data flow for abstract filter output. The output object type is the same as the input type.</figcaption>
 </figure>
 

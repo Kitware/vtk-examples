@@ -24,7 +24,7 @@ When data has a regular spatial organization, it is possible to request the data
 Although regions of interest can have arbitrary shapes, the regular structure of the data samples determines optimal region configurations. An image stored in a Cartesian coordinate system easily divides into smaller rectangular regions, while data sampled on a polar coordinate grid is best divided into pie-shaped regions (**Figure 10-1**). Therefore, operating on regions of data means that we process "windows" of data specified by (min,max) ranges of each dimension, or axis. For example, a region in a 2D image of dimensions 100 x 100 might be specified as (25,49, 0,49), meaning that we would operate on a (25 x 50) window.
 
 <figure id="Figure 10-1">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure10-1.png?raw=true"" width="640" alt="Figure10-1">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure10-1.png?raw=true"" width="640" alt="Figure10-1">
   <figcaption style="color:blue"><b>Figure 10-1</b>. Axis aligned matrices naturally lend themselves to rectangular regions, and polar coordinate grids to pie-shaped regions.</figcaption>
 </figure>
 
@@ -117,14 +117,14 @@ To take advantage of all the available display contrast, images should have a un
 To achieve the goal of a uniform scalar histogram, transfer functions can be used to spread out clusters in the histogram and compress scalar ranges that are under-represented in the image. To maintain the general appearance of the image, the transfer function should be monotonically increasing so that the brightness relation is maintained. To spread out clusters in the histogram, the slope of the transfer function should be large where the scalar densities are the highest, and the slope should be small in empty regions of the histogram.
 
 <figure id="Figure 10-7">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure10-7.png?raw=true"" width="640" alt="Figure10-7">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure10-7.png?raw=true"" width="640" alt="Figure10-7">
   <figcaption style="color:blue"><b>Figure 10-7</b>. The top charts show two window-level transfer functions. The resulting images are displayed in the middle row. The bottom row shows image histograms of the images.</figcaption>
 </figure>
 
 Histogram equalization is an algorithm that automatically generates a tailored transfer function to increase contrast in an image. For continuous images, the transfer function is simply the cumulative distribution function (CDF) which is defined as the integral of the PDF. By definition, the CDF function has a large slope where the PDF has the largest value, and therefore gives the greatest contrast to scalar ranges that occur most frequently in an image. The result of using the CDF as a transfer function is an image with an ideal constant scalar distribution. For discrete images and image histograms, a discrete version of the CDF function can be used. However, because of the discrete approximation, the resulting image is not guaranteed to have a constant histogram (**Figure 10-8**).
 
 <figure id="Figure 10-8">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure10-8.png?raw=true"" width="640" alt="Figure10-8">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure10-8.png?raw=true"" width="640" alt="Figure10-8">
   <figcaption style="color:blue"><b>Figure 10-8</b>. Histogram equalization automatically computes a transfer function that produces an image with a nearly constant scalar histogram.</figcaption>
 </figure>
 
@@ -192,7 +192,7 @@ Images can be pre-processed to segment images based on more complex features suc
 Although preprocessing can do a lot to improve segmentation results, post-processing can also be useful. Morphological filters, which operate on binary or discrete images, can be useful for manipulating the shape of the segmented regions. In this brief discussion we will only consider operations that use circular footprints, even though these morphological filters can be defined much more generally. Erosion is implemented by removing pixels within a specified distance of a border. For each pixel not in the segmented region, all the neighbors in a circular region around the pixels are turned off. This erosion filter shrinks the segmented region and small isolated regions disappear.
 
 <figure id="Figure 10-13">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure10-13.png?raw=true"" width="640" alt="Figure10-13">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure10-13.png?raw=true"" width="640" alt="Figure10-13">
   <figcaption style="color:blue"><b>Figure 10-13</b>. A pipeline containing correlation, thresholding, dilation, and erosion is used here to segment a region composed of "C"s. The left image shows the original image. The right image shows the segmented region superimposed on the original image.</figcaption>
 </figure>
 
@@ -263,7 +263,7 @@ viewer->Render();
 ```
 
 <figure id="Figure 10-15">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure10-15.png?raw=true"" width="640" alt="Figure10-15">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure10-15.png?raw=true"" width="640" alt="Figure10-15">
   <figcaption style="color:blue"><b>Figure 10-15</b>. Creating an image of two interfering sinusoidal gratings in an image dataset. The resulting image has dimensions 256^2.</figcaption>
 </figure>
 
@@ -300,7 +300,7 @@ Our regression testing procedure cannot test the original implementation of an o
 </figure>
 
 <figure id="Figure 10-18">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure10-18.png?raw=true"" width="640" alt="Figure10-18">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure10-18.png?raw=true"" width="640" alt="Figure10-18">
   <figcaption style="color:blue"><b>Figure 10-18</b>. Software regression testing using image processing. A test image is taken from the renderer and compared with a valid image stored on disk. (a) shows the valid image. (b) shows the test image (artificially modified by slight camera rotation). (c) shows the image difference. The code fragment above is extracted from the regression testing procedure.</figcaption>
 </figure>
 
@@ -339,7 +339,7 @@ C. Charles Law, K. M. Martin, W. J. Schroeder, J. E. Temkin. A Multi-Threaded St
 K. M. Martin, B. Geveci, J. Ahrens, C. Law. Large Scale Data Visualization Using Parallel Data Streaming. IEEE Computer Graphics & Applications, July 2001.
 
 <figure id="Figure 10-19">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure10-19.png?raw=true"" width="640" alt="Figure10-19">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure10-19.png?raw=true"" width="640" alt="Figure10-19">
   <figcaption style="color:blue"><b>Figure 10-19</b>. Sample image for segmentation exercise</figcaption>
 </figure>
 

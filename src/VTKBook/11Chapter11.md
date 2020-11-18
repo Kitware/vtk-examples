@@ -26,7 +26,7 @@ While the World Wide Web received most of its attention in the early 1990s, its 
 This problem was quickly solved as Web browsers started to support other content types including animation formats such as MPEG, AVI, and QuickTime. Now a link in a HTML document can load an animation sequence for the user to view and interact with. The next step was to allow the client to control the generation of the animation sequence on the server. To facilitate this process, a mechanism for the client to send general information to the server was introduced. The Common Gateway Interface (CGI) along with HTML forms serves this purpose. In this two-pronged approach, an HTML form collects information from the client, passes it to the server that executes a CGI-BIN script, and then finally produces a result for the client to view.
 
 <figure id="Figure 11-1">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure11-1.png?raw=true" width="640" alt="Figure11-1">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure11-1.png?raw=true" width="640" alt="Figure11-1">
   <figcaption style="color:blue"><b>Figure 11-1</b>. MPEG visualization example.</figcaption>
 </figure>
 
@@ -46,7 +46,7 @@ Now let's use CGI and an HTML form to enable the client to change the isosurface
 
 
 <figure id="Figure 11-2">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure11-2.png?raw=true" width="640" alt="Figure11-2">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure11-2.png?raw=true" width="640" alt="Figure11-2">
   <figcaption style="color:blue"><b>Figure 11-2</b>. Example HTML form.</figcaption>
 </figure>
 
@@ -79,7 +79,7 @@ Once the client has submitted the form, the server will execute the `CGI-BIN` sc
 While these examples demonstrate a closed loop of interaction between the client and server, there are two remaining problems. First, this approach places the entire computational load on the server. While this may be viable for some applications, some servers literally receive millions of client requests a day, severely straining server resources. Second, while the process is interactive, the lag time between making a change and seeing the result can be considerable, depending on the length of the animation and the communication bandwidth. Better solutions are now available to improve interactivity.
 
 <figure id="Figure 11-3">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure11-3.png?raw=true" width="640" alt="Figure11-3">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure11-3.png?raw=true" width="640" alt="Figure11-3">
   <figcaption style="color:blue"><b>Figure 11-3</b>. A simple scene graph.</figcaption>
 </figure>
 
@@ -284,7 +284,7 @@ The resulting applet is shown in **Figure 11-4**.
 This demonstrates one of the advantages of using Java for Web visualization. VRML would require that the geometry of each vibrational mode be sent to the client for viewing. With Java and VTK the geometry can be sent once along with a set of scalar displacements for each vibrational mode. Then as the client switches between modes, the geometry can be modified quickly by the client without any additional network traffic. In fact the client could mix vibrational modes or perform an animation showing the vibration of the plate all without having to go back to the server, and without requiring much more data than a single VRML model of the plate. If the client decided to examine another geometry, say the vibrational modes of a disc, then it would likely return to the server for the new data. This is the flexibility that Java provides.
 
 <figure id="Figure 11-4">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure11-4.png?raw=true" width="640" alt="Figure11-4">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure11-4.png?raw=true" width="640" alt="Figure11-4">
   <figcaption style="color:blue"><b>Figure 11-4</b>. Two images from a Java (JNI) applet.</figcaption>
 </figure>
 
@@ -599,7 +599,7 @@ The last method in the applet draws a border around the two buttons when the app
 An excerpt from the VRML file has been included below. Note the use of the DEF keyword to name nodes that can then be accessed from Java. The resulting Java/VRML example can be seen in **Figure 11-5**.
 
 <figure id="Figure 11-5">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure11-5.png?raw=true" width="640" alt="Figure11-5">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure11-5.png?raw=true" width="640" alt="Figure11-5">
   <figcaption style="color:blue"><b>Figure 11-5</b>. Java and VRML combined using the EAI.</figcaption>
 </figure>
 

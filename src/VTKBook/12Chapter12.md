@@ -9,7 +9,7 @@ The visualization design process we go through is similar in each case. First, w
 Radiology is a medical discipline that deals with images of human anatomy. These images come from a variety of medical imaging devices, including X-ray, X-ray Computed Tomography (CT), Magnetic Resonance Imaging (MRI), and ultrasound. Each imaging technique, called an imaging modality, has particular diagnostic strengths. The choice of modality is the job of the radiologist and the referring physician. For the most part, radiologists deal with two-dimensional images, but there are situations when three-dimensional models can assist the radiologist's diagnosis. Radiologists have special training to interpret the two dimensional images and understand the complex anatomical relationships in these two-dimensional representations. However, in dealing with referring physicians and surgeons, the radiologist sometimes has difficulty communicating these relationships. After all, a surgeon works in three-dimensions during the planning and execution of an operation; moreover, they are much more comfortable looking at and working with three-dimensional models.
 
 <figure id="Figure 12-1">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-1.png?raw=true" width="640" alt="Figure 12-1">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure12-1.png?raw=true" width="640" alt="Figure 12-1">
   <figcaption style="color:blue"><b>Figure 12-1</b>. A CT slice through a human head.</figcaption>
 </figure>
 
@@ -239,7 +239,7 @@ The previous example described how to create models from gray-scale medical imag
 For our purposes we assume that someone (or many graduate students) have laboriously labeled each pixel in each slice of a volume of data with a tissue identifier. This identifier is an integer number that describes which tissue class each pixel belongs to. For example, we may be given a series of MRI slices of the knee with tissue numbers defining the meniscus, femur, muscles, and so forth. **Figure 12-5** shows two representations of a slice from a volume acquired from a patient's knee. The image on the left is the original MRI slice; the image on the right contains tissue labels for a number of important organs. The bottom image is a composite of the two images.
 
 <figure id="Figure 12-5">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-5.png?raw=true" width="640" alt="Figure 3-1">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure12-5.png?raw=true" width="640" alt="Figure 3-1">
   <figcaption style="color:blue"><b>Figure 12-5</b>. Magnetic Resonance Image  of a knee(left); segmented tissue(right); composite (bottom).(Data and segmentation courtesy of Brigham and Women's Hospital Surgical Planning Lab.)</figcaption>
 </figure>
 
@@ -291,7 +291,7 @@ The SetTransform() method defines how to arrange the data in memory. Medical ima
 All the other parameters are self-explanatory except for the last. In this script, we know that the pipeline will only be executed once. To conserve memory, we invoke the ReleaseDataFlagOn() method. This allows the VTK pipeline to release data once it has been processed by a filter. For large medical datasets, this can mean the difference between being able to process a dataset or not.
 
 <figure id="Figure 12-8">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-8.png?raw=true" width="640" alt="Figure12-8">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure12-8.png?raw=true" width="640" alt="Figure12-8">
   <figcaption style="color:blue"><b>Figure 12-8</b>. The segmented volume to triangle pipeline. Volume passes through image pipeline before isosurface extraction..</figcaption>
 </figure>
 
@@ -800,7 +800,7 @@ A legitimate complaint with **Figure 12-10** is that the changing width of the t
 The *Visualization Toolkit* has some useful geometric modelling capabilities. One of the most powerful features is implicit modelling. In this example we show how to use polygonal descriptions of objects and create "blobby" models of them using the implicit modelling objects in VTK. This example generates a logo for the *Visualization Toolkit* from polygonal representations of the letters *v*, *t*, and *k*.
 
 <figure id="Figure 12-12">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-12.png?raw=true" width="640" alt="Figure12-12">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure12-12.png?raw=true" width="640" alt="Figure12-12">
   <figcaption style="color:blue"><b>Figure 12-12</b>. The visualization pipeline for the VTK blobby logo.</figcaption>
 </figure>
 
@@ -1125,14 +1125,14 @@ To generate these images, we used a Tcl script shown in **Figure 12-18** and **F
 Visualization can be used to display algorithms and data structures. Representing this information often requires creative work on the part of the application programmer. For example, Robertson et al. <em style="color:green;background-color: white">\[Robertson91\]</em> have shown 3D techniques for visualizing directory structures and navigating through them. Their approach involves building three dimensional models (the so-called "cone trees") to represent files, directories, and associations between files and directories. Similar approaches can be used to visualize stacks, queues, linked lists, trees, and other data structures.
 
 <figure id="Figure 12-18">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-18.png?raw=true" width="640" alt="Figure12-18">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure12-18.png?raw=true" width="640" alt="Figure12-18">
   <figcaption style="color:blue"><b>Figure 12-18</b>. Tcl script to generate blow molding image. Network topology and initial portion of script are shown (Part one of two)</figcaption>
 </figure>
 
 In this example we will visualize the operation of the recursive Towers of Hanoi puzzle. In this puzzle there are three pegs ( **Figure 12-20** ). In the initial position there are one or more disks (or pucks) of varying diameter on the pegs. The disks are sorted according to disk diameter, so that the largest disk is on the bottom, followed by the next largest, and so on. The goal of the puzzle is to extract mold from mesh using connectivity vtkConnectivityFilter move the disks from one peg to another, moving the disks one at a time, and never placing a larger disk on top of a smaller disk.
 
 <figure id="Figure 12-19">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-19.png?raw=true" width="640" alt="Figure12-19">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure12-19.png?raw=true" width="640" alt="Figure12-19">
   <figcaption style="color:blue"><b>Figure 12-19</b>. Tcl script to generate blow molding image (Part two of two).</figcaption>
 </figure>
 
@@ -1154,12 +1154,12 @@ In this example we will visualize the operation of the recursive Towers of Hanoi
 </figure>
 
 <figure id="Figure 12-21">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-21.png?raw=true" width="640" alt="Figure12-21">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure12-21.png?raw=true" width="640" alt="Figure12-21">
   <figcaption style="color:blue"><b>Figure 12-21</b>. C++ code for recursive solution of Towers of Hanoi.</figcaption>
 </figure>
 
 <figure id="Figure 12-22">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-22.png?raw=true" width="640" alt="Figure12-22">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure12-22.png?raw=true" width="640" alt="Figure12-22">
   <figcaption style="color:blue"><b>Figure 12-22</b>. Function to move disks from one peg to another in the Towers of Hanoi example. The resulting motion is in small steps with an additional flip of the disk.</figcaption>
 </figure>
 

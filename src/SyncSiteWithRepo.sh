@@ -49,6 +49,7 @@ rsync -zavh src/Artifacts/ ${WEB_REPO_DIR}/src/Artifacts
 rsync -zavh src/Images/ ${WEB_REPO_DIR}/src/Images
 rsync -zavh src/stylesheets/ ${WEB_REPO_DIR}/src/stylesheets
 rsync -zavh src/Testing/Baseline/ ${WEB_REPO_DIR}/src/Testing/Baseline/
+rsync -zavh src/VTKBook/Figures/ ${WEB_REPO_DIR}/src/VTKBook/Figures/
 cp web_gitignore ${WEB_REPO_DIR}/.gitignore
 
 echo "2) Create coverage files"
