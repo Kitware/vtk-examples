@@ -8,5 +8,4 @@
 
 !!! info
     Similar examples setting the ambient and diffuse properties are:
-    See [AmbientSpheres.cxx](https://lorensen.github.io/VTKExamples/site/Cxx/Rendering/AmbientSpheres/), [AmbientSpheres.py](https://lorensen.github.io/VTKExamples/site/Python/Rendering/AmbientSpheres/), [AmbientSpheres.java](https://lorensen.github.io/VTKExamples/site/Java/Rendering/AmbientSpheres/) and [DiffuseSpheres.cxx](https://lorensen.github.io/VTKExamples/site/Cxx/Rendering/DiffuseSpheres/), [DiffuseSpheres.py](https://lorensen.github.io/VTKExamples/site/Python/Rendering/DiffuseSpheres/).
-    
+    See [AmbientSpheres.cxx](../../../Cxx/Rendering/AmbientSpheres/), [AmbientSpheres.py](../../../Python/Rendering/AmbientSpheres/), [AmbientSpheres.java](../AmbientSpheres/) and [DiffuseSpheres.cxx](../../../Cxx/Rendering/DiffuseSpheres/), [DiffuseSpheres.py](../../../Python/Rendering/DiffuseSpheres/).

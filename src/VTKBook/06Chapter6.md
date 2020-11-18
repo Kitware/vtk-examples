@@ -31,7 +31,7 @@ Algorithms also can be classified according to the type of data they process. Th
 In the text that follows, we will use the attribute type classification scheme: scalar, vector, tensor, and modelling. In cases where the algorithms operate on a particular dataset type, we place them in the appropriate category according to our best judgment. Be forewarned, though, that alternative classification schemes do exist, and may be better suited to describing the true nature of the algorithm.
 
 <figure id="Figure 6-1">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-1.png?raw=true" width="640" alt="Figure6-1">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-1.png?raw=true" width="640" alt="Figure6-1">
   <figcaption style="color:blue"><b>Figure 6-1</b> Mapping scalars to colors via a lookup table. </figcaption>
 </figure>
 
@@ -62,17 +62,17 @@ The key to color mapping for scalar visualization is to choose the lookup table 
 Designing lookup tables is as much art as it is science. From a practical point of view, tables should accentuate important features, while minimizing less important or extraneous details. It is also desirable to use palettes that inherently contain scaling information. For example, a color rainbow scale from blue to red is often used to represent temperature scale, since many people associate "blue" with cold temperatures, and "red" with hot temperatures. However, even this scale is problematic: a physicist would say that blue is hotter than red, since hotter objects emit more blue light (i.e., shorter wavelength) than red. Also, there is no need to limit ourselves to "linear" lookup tables. Even though the mapping of scalars into colors has been presented as a linear operation (**Figure 6-1**), the table itself need not be linear. That is, tables can be designed to enhance small variations in scalar value using logarithmic or other schemes, improving the comfort level and engaging the human observer more deeply in the presentation of data improves the effectiveness of communication.
 
 <figure id="Figure 6-2">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-2.png?raw=true" width="640" alt="Figure6-2">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-2.png?raw=true" width="640" alt="Figure6-2">
   <figcaption style="color:blue"><b>Figure 6-2</b>. Transfer function for color components red, green and blue as a function of scalar value.</figcaption>
 </figure>
 
 <figure id="Figure 6-3">
- <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Rendering/TestRainbow.png?raw=true" width="640" alt="Figure 6-3">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Rendering/TestRainbow.png?raw=true" width="640" alt="Figure 6-3">
  <figcaption style="color:blue"><b>Figure 6-3</b>. Flow density colored with different lookup tables. Top-left: grayscale; Top-right rainbow (blue to red); lower-left rainbow (red to blue); lower-right large contrast.<a href="../../Cxx/Rendering/Rainbow/" title="Rainbow"> See Rainbow.cxx</a><a href="../../Python/Rendering/Rainbow/" title="Rainbow"> and Rainbow.py</a>.</figcaption>
 </figure>
 
 <figure id="Figure 6-4">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-4.png?raw=true" width="640" alt="Figure6-4">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-4.png?raw=true" width="640" alt="Figure6-4">
   <figcaption style="color:blue"><b>Figure 6-4</b>. Contouring a 2D structured grid with contour line value = 5.</figcaption>
 </figure>
 
@@ -109,24 +109,24 @@ This procedure will construct independent geometric primitives in each cell. At 
 There are advantages and disadvantages to both the edge-tracking and marching cubes approaches. The marching squares algorithm is easy to implement. This is particularly important when we extend the technique into three dimensions, where isosurface tracking becomes much more difficult. On the other hand, the algorithm creates disconnected line segments and points, and the required merging operation requires extra computation resources. The tracking algorithm can be implemented to generate a single polyline per contour line, avoiding the need to merge coincident points.
 
 <figure id="Figure 6-5">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-5.png?raw=true" width="640" alt="Figure6-5">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-5.png?raw=true" width="640" alt="Figure6-5">
   <figcaption style="color:blue"><b>Figure 6-5</b>. Sixteen different marching squares cases. Dark vertices indicate scalar value is above contour value. Cases 5 and 10 are ambiguous.</figcaption>
 </figure>
 
 <figure id="Figure 6-6">
- <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestMarchingCasesA.png?raw=true" width="640" alt="Figure 6-6">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestMarchingCasesA.png?raw=true" width="640" alt="Figure 6-6">
  <figcaption style="color:blue"><b>Figure 6-6</b>. Marching Cubes cases for 3D isosurface generation. The 256 possible cases have been reduced to 15 cases using symmetry. Red vertices are greater than the selected isosurface value. <a href="../../Cxx/VisualizationAlgorithms/MarchingCasesA/" title="MarchingCasesA"> See MarchingCasesA.cxx</a> and <a href="../../Python/VisualizationAlgorithms/MarchingCasesA/" title="MarchingCasesA"> See MarchingCasesA.py</a>.</figcaption>
 </figure>
 
 <figure id="Figure 6-7">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-7.png?raw=true" width="640" alt="Figure6-7">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-7.png?raw=true" width="640" alt="Figure6-7">
   <figcaption style="color:blue"><b>Figure 6-7</b>. Using marching triangles or marching tetrahedra to resolve ambiguous cases on rectangular lattice (only face of cube is shown). Choice of diagonal orientation may result in "bumps" in contour surface. In 2D, diagonal orientation can be chosen arbitrarily, but in 3D diagonal is constrained by neighbor.</figcaption>
 </figure>
 
 As mentioned previously, the 3D analogy of marching squares is marching cubes. Here, there are 256 different combinations of scalar value, given that there are eight points in a cubical cell (i.e., $2^8$ combinations). **Figure 6-6** shows these combinations reduced to 15 cases by using arguments of symmetry. We use combinations of rotation and mirroring to produce topologically equivalent cases.
 
 <figure id="Figure 6-10">
- <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestMarchingCasesB.png?raw=true" width="640" Walt="Figure 6-10">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestMarchingCasesB.png?raw=true" width="640" Walt="Figure 6-10">
  <figcaption style="color:blue"><b>Figure 6-10</b> Marching Cubes complementary cases. <a href="../../Cxx/VisualizationAlgorithms/MarchingCasesB" title="MarchingCasesB"> See MarchingCasesB.cxx</a> <a href="../../Python/VisualizationAlgorithms/MarchingCasesB" title="MarchingCasesB"> and MarchingCasesB.py</a>.</figcaption>
 </figure>
 
@@ -139,12 +139,12 @@ In three dimensions the problem is more complex. We cannot simply choose an ambi
 Several different approaches have been taken to remedy this problem. One approach tessellates the cubes with tetrahedron, and uses a *marching tetrahedra* technique *.* This works because the marching tetrahedra exhibit no ambiguous cases. Unfortunately, the marching tetrahedra algorithm generates isosurfaces consisting of more triangles, and the tessellation of a cube with tetrahedra requires making a choice regarding the orientation of the tetrahedra. This choice may result in artificial "bumps" in the isosurface because of interpolation along the face diagonals as shown in **Figure 6-7**. Another approach evaluates the asymptotic behavior of the surface, and then chooses the cases to either join or break the contour. Nielson and Hamann <em style="color:green;background-color: white">\[Nielson91\]</em> have developed a technique based on this approach they call the *asymptotic decider*. It is based on an analysis of the variation of the scalar variable across an ambiguous face. The analysis determines how the edges of isosurface polygons should be connected.
 
 <figure id="Figure 6-8">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-8.png?raw=true" width="640" alt="Figure6-8">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-8.png?raw=true" width="640" alt="Figure6-8">
   <figcaption style="color:blue"><b>Figure 6-8</b>. Choosing a particular contour case will break (a) or join (b) the current contour. Case shown is marching squares case 10.</figcaption>
 </figure>
 
 <figure id="Figure 6-9">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-9.png?raw=true" width="640" alt="Figure6-9">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-9.png?raw=true" width="640" alt="Figure6-9">
   <figcaption style="color:blue"><b>Figure 6-9</b>. Arbitrarily choosing marching cubes cases leads to holes in the isosurface. </figcaption>
 </figure>
 
@@ -156,19 +156,19 @@ We can extend the general approach of marching squares and marching cubes to oth
 
 <figure id="Figure 6-11">
  <figure id="Figure 6-11a">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestHeadSlice.png?raw=true" width="640" alt="Figure 6-11a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestHeadSlice.png?raw=true" width="640" alt="Figure 6-11a">
   <figcaption style="color:blue">(a) Marching squares used to generate contour lines.</figcaption>
  </figure>
  <figure id="Figure 6-11b">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestHeadBone.png?raw=true" width="640" alt="Figure 6-11b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestHeadBone.png?raw=true" width="640" alt="Figure 6-11b">
   <figcaption style="color:blue">(b) Marching Cubes surface of human bone</figcaption>
  </figure>
  <figure id="Figure 6-11c">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCombustorIsosurface.png?raw=true" width="640" alt="Figure 6-11c">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCombustorIsosurface.png?raw=true" width="640" alt="Figure 6-11c">
   <figcaption style="color:blue">(c) Marching Cubes surface of flow density.</figcaption>
  </figure>
  <figure id="Figure 6-11d">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestIronIsoSurface.png?raw=true" width="640" alt="Figure 6-11d">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestIronIsoSurface.png?raw=true" width="640" alt="Figure 6-11d">
   <figcaption style="color:blue">(d) Marching Cubes surface of iron-protein</figcaption>
  </figure>
  <figcaption style="color:blue"><b>Figure 6-11</b>. Contouring examples. (a) Marching squares used to generate contour lines <a href="../../Cxx/VisualizationAlgorithms/HeadSlice" title="HeadSlice"> See HeadSlice.cxx</a> and <a href="../../Python/VisualizationAlgorithms/HeadSlice" title="HeadSlice"> HeadSlice.py</a>; (b) Marching Cubes surface of human bone.<a href="../../Cxx/VisualizationAlgorithms/HeadBone" title="HeadBone"> See HeadBone.cxx</a> and <a href="../../Python/VisualizationAlgorithms/HeadBone" title="HeadBone"> HeadBone.py</a>; (c) Marching Cubes surface of flow density<a href="../../Cxx/VisualizationAlgorithms/CombustorIsosurface" title="CombustorIsosurface"> See CombustorIsosurface.cxx</a> and <a href="
@@ -185,10 +185,10 @@ This example can be made more interesting by generalizing the problem. Although 
 
 <figure id="Figure 6-12">
   <figure id="Figure 6-12a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-12a.png?raw=true" width="640" alt="Figure6-12a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-12a.png?raw=true" width="640" alt="Figure6-12a">
   </figure>
   <figure id="Figure 6-12b">
-     <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestHawaii.png?raw=true" width="640" alt="Figure 6-12">
+     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestHawaii.png?raw=true" width="640" alt="Figure 6-12">
   </figure>
   <figcaption style="color:blue"><b>Figure 6-12</b>. Computing scalars using normalized dot product. Bottom half of figure illustrates technique applied to terrain data from Honolulu, Hawaii.<a href="../../Cxx/Visualization/Hawaii/" title="Hawaii"> See Hawaii.cxx</a> and <a href="../../Python/Visualization/Hawaii/" title="Hawaii">Hawaii.py</a>.</figcaption>
 </figure>
@@ -208,10 +208,10 @@ There are many variations of this technique (**Figure 6-13** (b)). Arrows may be
 
 <figure id="Figure 6-13">
   <figure id="Figure 6-13a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-13.png?raw=true" width="640" alt="Figure6-13a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-13.png?raw=true" width="640" alt="Figure6-13a">
   </figure>
   <figure id="Figure 6-13a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestComplexV.png?raw=true" width="640" alt="Figure 6-13">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestComplexV.png?raw=true" width="640" alt="Figure 6-13">
     <figcaption style="color:blue">(c) Complex display. </figcaption>
   </figure>
 <figcaption style="color:blue"><b>Figure 6-13</b>. Vector visualization techniques: (a) oriented lines; (b) using oriented glyphs; (c) complex vector visualization.<a href="../../Cxx/Visualization/ComplexV" title="ComplexVw"> See ComplexV.cxx</a> and <a href="../../Python/Visualization/ComplexV" title="ComplexV"> ComplexV.py</a>.</figcaption>
@@ -227,11 +227,11 @@ Vector data is often associated with "motion." The motion is in the form of velo
 
 <figure id="Figure 6-14">
   <figure id="Figure 6-14a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestPlateVibration.png?raw=true" width="640" alt="Figure 6-14a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestPlateVibration.png?raw=true" width="640" alt="Figure 6-14a">
     <figcaption style="color:blue">(a) Vibration of beam.</figcaption>
   </figure>
   <figure id="Figure 6-14b">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestVelocityProfile.png?raw=true" width="640" alt="Figure 6-14b">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestVelocityProfile.png?raw=true" width="640" alt="Figure 6-14b">
     <figcaption style="color:blue">(b) Momentum profiles.</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 6-14</b>. Warping geometry to show vector field. (a) Beam displacement <a href="../../Cxx/VisualizationAlgorithms/PlateVibration" title="PlateVibration"> See PlateVibration.cxx</a> and <a href="../../Python/VisualizationAlgorithms/PlateVibration" title="PlateVibration"> PlateVibration.py</a>.); (b) <a href="../../Cxx/VisualizationAlgorithms/VelocityProfile" title="VelocityProfile"> See VelocityProfile.cxx</a> and <a href="../../Python/VisualizationAlgorithms/VelocityProfile" title="VelocityProfile"> VelocityProfile.py</a>.</figcaption>
@@ -251,11 +251,11 @@ A useful application of this technique is the study of vibration. In vibration a
 
 <figure id="Figure 6-15">
   <figure id="Figure 6-15a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-15a.png?raw=true" width="640" alt="Figure6-15a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-15a.png?raw=true" width="640" alt="Figure6-15a">
   </figure>
   <figcaption style="color:blue"><b>Figure 6-15</b>. (a) Scalar Computation.</figcaption>
   <figure id="Figure 6-15b">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestDisplacementPlot.png?raw=true" width="640" alt="Figure 6-15b">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestDisplacementPlot.png?raw=true" width="640" alt="Figure 6-15b">
   </figure>
   <figcaption style="color:blue"><b>Figure 6-15</b>. Vector displacement plots. (a) Vector converted to scalar via dot product computation; (b) Surface plot of vibrating plate. Dark areas show nodal lines. Bright areas show maximum motion.<a href="../../Cxx/VisualizationAlgorithms/DisplacementPlot" title="DisplacementPlot"> See DisplacementPlot.cxx</a> and <a href="../../Python/VisualizationAlgorithms/DisplacementPlot" title="DisplacementPlot"> DisplacementPlot.py</a>.</figcaption>
   </figure>
@@ -277,7 +277,7 @@ $$
 This suggests an extension to our previous techniques: repeatedly displace points over many time steps. **Figure 6-16** shows such an approach. Beginning with a sphere *S* centered about some point *C*, we move *S* repeatedly to generate the bubbles shown. The eye tends to trace out a path by connecting the bubbles, giving the observer a qualitative understanding of the fluid flow in that area. The bubbles may be displayed as an animation over time (giving the illusion of motion) or as a multiple exposure sequence (giving the appearance of a path).
 
 <figure id="Figure 6-16">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-16.png?raw=true" width="640" alt="Figure6-16">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-16.png?raw=true" width="640" alt="Figure6-16">
   <figcaption style="color:blue"><b>Figure 6-16</b>. Time animation of a point <b>C</b>. Although the spacing between points varies, the time increment between each point is constant.</figcaption>
 </figure>
 
@@ -308,7 +308,7 @@ step $\Delta{t}$.
 Euler's method has error on the order of $O(\Delta{t}^2)$, which is not accurate enough for some applications. One such example is shown in **Figure 6-17**. The velocity field describes perfect rotation about a central point. Using Euler's method we find that we will always diverge and, instead of generating circles, will generate spirals instead.
 
 <figure id="Figure 6-17">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-17.png?raw=true" width="640" alt="Figure6-17">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-17.png?raw=true" width="640" alt="Figure6-17">
   <figcaption style="color:blue"><b>Figure 6-17</b>. Euler's integration (b) and RungeKutta integration of order 2 (c) applied to uniform rotational vector field (a). Euler's method will always diverge.</figcaption>
 </figure>
 
@@ -355,7 +355,7 @@ Streamlines, streaklines, and particle traces are equivalent to one another if t
 **Figure 6-18** shows forty streamlines in a small kitchen. The room has two windows, a door (with air leakage), and a cooking area with a hot stove. The air leakage and temperature variation combine to produce air convection currents throughout the kitchen. The starting positions of the streamlines were defined by creating a *rake*, or curve (and its associated points). Here the rake was a straight line. These streamlines clearly show features of the flow field. By releasing many streamlines simultaneously we obtain even more information, as the eye tends to assemble nearby streamlines into a "global" understanding of flow field features.
 
 <figure id="Figure 6-18">
- <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestKitchen.png?raw=true" width="640" alt="Figure 6-18">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestKitchen.png?raw=true" width="640" alt="Figure 6-18">
  <figcaption style="color:blue"><b>Figure 6-18</b>. Flow velocity computed for a small kitchen (top and side view). Forty streamlines start along the rake positioned under the window. Some eventually travel over the hot stove and are convected upwards.<a href="../../Cxx/Visualization/Kitchen" title="Kitchen"> See Kitchen.cxx</a> and <a href="../../Python/Visualization/Kitchen" title="Kitchen">Kitchen.py</a>.</figcaption>
 </figure>
 
@@ -368,13 +368,13 @@ As we mentioned earlier, tensor visualization is an active area of research. How
 In these tensors the diagonal coefficients are the so-called normal stresses and strains, and the off diagonal terms are the shear stresses and strains. Normal stresses and strains act perpendicular to a specified surface, while shear stresses and strains act tangentially to the surface. Normal stress is either compression or tension, depending on the sign of the coefficient.
 
 <figure id="Figure 6-19">
- <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestBluntStreamlines.png?raw=true" width="640" alt="Figure 6-19">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestBluntStreamlines.png?raw=true" width="640" alt="Figure 6-19">
  <figcaption style="color:blue"><b>Figure 6-19</b>. Vector visualization techniques.<a href="../../Cxx/VisualizationAlgorithms/BluntStreamlines" title="BluntStreamlines"> See BluntStreamlines.cxx</a> and <a href="../../Python/VisualizationAlgorithms/BluntStreamlines" title="BluntStreamlines"> See BluntStreamlines.py</a>.</figcaption>
 </figure>
 
 A $3 \times 3$ real symmetric matrix can be characterized by three vectors in 3D called the eigenvectors, and three numbers called the eigenvalues of the matrix. The eigenvectors form a 3D coordinate system whose axes are mutually perpendicular. In some applications, particularly the study of materials, these axes also are referred to as the principle axes of the tensor and are physically significant. For example, if the tensor is a stress tensor, then the principle axes are the directions of normal stress and no shear stress. Associated with each eigenvector is an eigenvalue. The eigenvalues are often physically significant as well. In the study of vibration, eigenvalues correspond to the resonant frequencies of a structure, and the eigenvectors are the associated mode shapes.
 
-Mathematically we can represent eigenvalues and eigenvectors as follows. Given a matrix the eigenvector and eigenvalue must satisfy the relation 
+Mathematically we can represent eigenvalues and eigenvectors as follows. Given a matrix the eigenvector and eigenvalue must satisfy the relation
 
 $$
 A \cdot \vec{x} = \lambda \vec{x}
@@ -391,7 +391,7 @@ $$
 Expanding this equation yields a $n^{th}$ degree polynomial in $\lambda$ whose roots are the eigenvalues. Thus, there are always $n$ eigenvalues, although they may not be distinct. In general, **Equation6-7** is not solved using polynomial root searching because of poor computational performance. (For matrices of order 3 root searching is acceptable because we can solve for the eigenvalues analytically.) Once we determine the eigenvalues, we can substitute each into **Equation6-7** to solve for the associated eigenvectors.
 
 <figure id="Figure 6-20">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-20.png?raw=true" width="640" alt="Figure6-20">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-20.png?raw=true" width="640" alt="Figure6-20">
   <figcaption style="color:blue"><b>Figure 6-20</b>. Stress and strain tensors. Normal stresses in the x-y-z coordinate directions indicated as *sigma*, shear stresses indicated as *tau*. Material displacement represented by (u, v, w) components.</figcaption>
 </figure>
 
@@ -425,7 +425,7 @@ $$
  (remember to read right to left). The eigenvectors can be directly plugged in to create the rotation matrix, while the point coordinates $x-y-z$ and eigenvalues $\lambda{_1} \geq \lambda{_2} \geq \lambda{_3}$ are inserted into the translation and scaling matrices. A concatenation of these matrices forms the final transformation matrix $T$.
 
 <figure id="Figure 6-21">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-21.png?raw=true" width="640" alt="Figure6-21">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-21.png?raw=true" width="640" alt="Figure6-21">
   <figcaption style="color:blue"><b>Figure 6-21</b>. Tensor ellipsoids. (a) Ellipsoid oriented along eigenvalues (i.e., principle axes) of tensor; (b) Pictorial description of Boussinesq's problem; (c) Analytic results according to Saada.</figcaption>
 </figure>
 
@@ -434,11 +434,11 @@ $$
 
 <figure id="Figure 6-22">
   <figure  id="Figure 6-22a">
-   <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestTensorAxes.png?raw=true" width="640" alt="Figure 6-22a">
+   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestTensorAxes.png?raw=true" width="640" alt="Figure 6-22a">
    <figcaption style="color:blue">(a) Tensor axes</figcaption>
   </figure>
   <figure id="Figure 6-22b">
-   <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestTensorEllipsoids.png?raw=true" width="640" alt="Figure 6-22b">
+   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestTensorEllipsoids.png?raw=true" width="640" alt="Figure 6-22b">
    <figcaption style="color:blue">(b) Tensor ellipsoids</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 6-22</b>. Tensor visualization techniques; (a) Tensor axes.<a href="../../Cxx/VisualizationAlgorithms/TensorAxes" title="TensorAxes"> See TensorAxes.cxx</a> and <a href="../../Python/VisualizationAlgorithms/TensorAxes" title="TensorAxes"> TensorAxes.py</a> (b) Tensor ellipsoids.<a href="../../Cxx/VisualizationAlgorithms/TensorEllipsoids" title="TensorEllipsoids"> See TensorEllipsoids.cxx</a> and <a href="../../Python/VisualizationAlgorithms/TensorEllipsoids" title="TensorEllipsoids"> TensorEllipsoids.py</a></figcaption>
@@ -484,7 +484,7 @@ important properties.
 
 - *Simple geometric description.* Implicit functions are convenient tools to describe common geometric shapes. This includes planes, spheres, cylinders, cones, ellipsoids, and quadrics.
 
-- *Region separation.* Implicit functions separate 3D Euclidean space into three distinct regions. These regions are inside, on, and outside the implicit function. These regions are defined as $F(x,y,z) < 0, F(x,y,z) = 0$ and $F(x,y,z) > 0$, respectively. 
+- *Region separation.* Implicit functions separate 3D Euclidean space into three distinct regions. These regions are inside, on, and outside the implicit function. These regions are defined as $F(x,y,z) < 0, F(x,y,z) = 0$ and $F(x,y,z) > 0$, respectively.
 
 - *Scalar generation.* Implicit functions convert a position in space into a scalar value. That is, given an implicit function we can sample it at a point $(x_i,y_i,z_i)$ to generate a scalar value $c_i$.
 
@@ -499,16 +499,16 @@ This simple relationship defines the three regions (on $F(x,y,z = 0)s on$the sph
 
 <figure id="Figure 6-23">
   <figure id="Figure 6-23a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-23a.png?raw=true" width="640" alt="Figure6-23a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-23a.png?raw=true" width="640" alt="Figure6-23a">
   </figure>
   <figcaption style="color:blue"><b>Figure 6-23a</b>. (a) Sphere sampling</figcaption>
   </figure>
   <figure id="Figure 6-23b">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/ImplicitFunctions/TestImplicitSphere.png?raw=true" width="640" alt="Figure 6-23b">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/ImplicitFunctions/TestImplicitSphere.png?raw=true" width="640" alt="Figure 6-23b">
     <figcaption style="color:blue">(b) Isosurface of Sphere</figcaption>
   </figure>
   <figure id="Figure 6-23c">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestIceCream.png?raw=true" width="640" alt="Figure 6-23c">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestIceCream.png?raw=true" width="640" alt="Figure 6-23c">
     <figcaption style="color:blue">(c) BooleanCombinations</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 6-23</b>. Sampling functions. (b) Isosurface of sampled sphere;<a href="../../Cxx/ImplicitFunctions/ImplicitSphere" title="ImplicitSphere"> See ImplicitSphere.cxx</a> and <a href="../../Python/ImplicitFunctions/ImplicitSphere" title="ImplicitSphere"> ImplicitSphere.py</a>; (c) Boolean combination of two spheres, a cone, and two planes. (One sphere intersects the other, the planes clip the cone.<a href="../../Cxx/VisualizationAlgorithms/IceCream" title="IceCream"> See IceCream.cxx</a> and <a href="../../Python/VisualizationAlgorithms/IceCream" title="IceCream"> IceCream.py</a>.</figcaption>
@@ -518,7 +518,7 @@ This simple relationship defines the three regions (on $F(x,y,z = 0)s on$the sph
 
 Implicit functions can be used alone or in combination to model geometric objects. For example, to model a surface described by an implicit function, we sample $F$ on a dataset and generate an isosurface at a contour value $c_i$. The result is a polygonal representation of the function. **Figure 6-23b* shows an isosurface for a sphere of radius=1 sampled on a volume. Note that we can choose nonzero contour values to generate a family of offset surfaces. This is useful for creating blending functions and other special effects.
 
-Implicit functions can be combined to create complex objects using the boolean operators union, intersection, and difference. The union operation between $F\cup G$ between two functions $F(x,y,z)$ and $G(x,y,z)$ is the minimum value 
+Implicit functions can be combined to create complex objects using the boolean operators union, intersection, and difference. The union operation between $F\cup G$ between two functions $F(x,y,z)$ and $G(x,y,z)$ is the minimum value
 
 $$
 \begin{equation*}
@@ -551,7 +551,7 @@ $$
 boolean combination
 
 <figure id="Figure 6-24">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestExtractData.png?raw=true" width="640" alt="Figure 6-24">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestExtractData.png?raw=true" width="640" alt="Figure 6-24">
   <figcaption style="color:blue"><b>Figure 6-24</b>. Implicit functions used to select data: (a) 2D cells lying in ellipse are selected; (b) Two ellipsoids combined using the union operation used to select voxels from a volume. Voxels shrunk 50 percent. <a href="../../Cxx/VisualizationAlgorithms/ExtractData" title="ExtractData"> See ExtractData.cxx</a> and <a href="../../Python/VisualizationAlgorithms/ExtractData" title="ExtractData"> ExtractData.py</a>.</figcaption>
 </figure>
 
@@ -570,7 +570,7 @@ Some functions, often discrete or probabilistic in nature, cannot be cast into t
 Strange attractors arise in the study of nonlinear dynamics and chaotic systems. In these systems, the usual types of dynamic motion --- equilibrium, periodic motion, or quasi-periodic motion --- are not present. Instead, the system exhibits chaotic motion. The resulting behavior of the system can change radically as a result of small perturbations in its initial conditions.
 
 <figure id="Figure 6-25">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestLorenz.png?raw=true" width="640" alt="Figure 6-25">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestLorenz.png?raw=true" width="640" alt="Figure 6-25">
 <figcaption style="color:blue"><b>Figure 6-25</b>. Visualizing a Lorenz strange attractor by integrating the Lorenz equations in a volume. The number of visits in each voxel is recorded as a scalar function. The surface is extracted via marching cubes using a visit value of 50. The number of integration steps is 10 million, in a volume of dimensions 200^3. The surface roughness is caused by the discrete nature of the evaluation function. <a href="../../Cxx/Visualization/Lorenz" title="Lorenz"> See Lorenz.cxx</a> and <a href="../../Python/Visualization/Lorenz" title="Lorenz"> Lorenz.py</a>.</figcaption>
 </figure>
 
@@ -590,7 +590,7 @@ where $x$ is proportional to the fluid velocity in the fluid ring, $y$ and $z$z 
 Certainly these equations are not in the implicit form of **Equation6-11**, so how do we visualize them? Our solution is to treat the variables x, y, and z as the coordinates of a three-dimensional space, and integrate **Equation6-16** to generate the system "trajectory", that is, the state of the system through time. The integration is carried out within a volume and scalars are created by counting the number of times each voxel is visited. By integrating long enough, we can create a volume representing the "surface" of the strange attractor, **Figure 6-25**. The surface of the strange attractor is extracted by using marching cubes and a scalar value specifying the number of visits in a voxel.
 
 <figure id="Figure 6-26">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-26.png?raw=true" width="640" alt="Figure6-26">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-26.png?raw=true" width="640" alt="Figure6-26">
   <figcaption style="color:blue"><b>Figure 6-26</b>. Distance functions to a point, line, and triangle.</figcaption>
 </figure>
 
@@ -603,17 +603,17 @@ An extension of this approach, called implicit modeling, is similar to modeling 
 Used alone the generating primitives are limited in their ability to model complex geometry. By using boolean combinations of the primitives, however, complex geometry can be easily modeled. The boolean operations union, intersection, and difference (**Equation6-13**, **Equation6-14**, and **Equation6-15**, respectively) are illustrated in **Figure 6-27**. **Figure 6-28** shows the application of implicit modeling to "thicken" the line segments in the text symbol "HELLO". The isosurface is generated on a volume $110 \times 40 \times 20$ at  a distance offset of 0.25 units. The generating primitives were combined using the boolean union operator. Although Euclidean distance is always a nonnegative value, it is possible to use a signed distance function for objects that have an outside and an inside. A negative distance is the negated distance of a point inside the object to the surface of the object. Using a signed distance function allows us to create offset surfaces that are contained within the actual surface. Another interesting feature of implicit modeling is that when isosurfaces are generated, more than one connected surface can result. These situations occur when the generating primitives form concave features. **Figure 6-29** illustrates this situation. If desired, multiple surfaces can be separated by using the connectivity algorithm described in ["Connectivity"](/VTKBook/09Chapter9/#connectivity) in [Chapter 9](/VTKBook/09Chapter9).
 
 <figure id="Figure 6-27">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-27.png?raw=true" width="640" alt="Figure6-27">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-27.png?raw=true" width="640" alt="Figure6-27">
   <figcaption style="color:blue"><b>Figure 6-27</b>. Boolean operations using points and lines as generating primitives.</figcaption>
 </figure>
 
 <figure id="Figure 6-28">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestHello.png?raw=true" width="640" alt="Figure 6-28">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestHello.png?raw=true" width="640" alt="Figure 6-28">
   <figcaption style="color:blue"><b>Figure 6-28</b>. Implicit modelling used to thicken a stroked font. Original lines can be seen within the translucent implicit surface.<a href="../../Cxx/VisualizationAlgorithms/Hello" title="Hello"> See Hello.cxx</a> and <a href="../../Python/VisualizationAlgorithms/Hello" title="Hello"> Hello.py</a>.</figcaption>
 </figure>
 
 <figure id="Figure 6-29">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-29.png?raw=true" width="640" alt="Figure6-29">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-29.png?raw=true" width="640" alt="Figure6-29">
   <figcaption style="color:blue"><b>Figure 6-29</b>. Concave features can result in multiple contour lines/surfaces.</figcaption>
 </figure>
 
@@ -624,7 +624,7 @@ Glyphs, sometimes referred to as icons, are a versatile technique to visualize d
 More elaborate glyphs are possible. In one creative visualization technique Chernoff <em style="color:green;background-color: white">\[Chernoff73\]</em> tied data values to an iconic representation of the human face. Eyebrows, nose, mouth, and other features were modified according to financial data values. This interesting technique built on the human capability to recognize facial expression. By tying appropriate data values to facial characteristics, rapid identification of important data points is possible.
 
 <figure id="Figure 6-30">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestSpikeFran.png?raw=true" width="640" alt="Figure 6-30">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestSpikeFran.png?raw=true" width="640" alt="Figure 6-30">
   <figcaption style="color:blue"><b>Figure 6-30</b> Glyphs indicate surface normals on model of human face. Glyph positions are randomly selected. <a href="../../Cxx/VisualizationAlgorithms/SpikeFran" title="SpikeFran"> See SpikeFran.cxx</a> and <a href="../../Python/VisualizationAlgorithms/SpikeFran" title="SpikeFran"> SpikeFran.py</a>.</figcaption>
 </figure>
 
@@ -646,7 +646,7 @@ This classification scheme can be extended to other visualization techniques suc
 Often we want to cut through a dataset with a surface and then display the interpolated data values on the surface. We refer to this technique as *data cutting* or simply *cutting*. The data cutting operation requires two pieces of information: a definition for the surface and a dataset to cut. We will assume that the cutting surface is defined by an implicit function. A typical application of cutting is to slice through a dataset with a plane, and color map the scalar data and/or warp the plane according to vector value.
 
 <figure id="Figure 6-31">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCutStructuredGrid.png?raw=true" width="640" alt="Figure 6-31">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCutStructuredGrid.png?raw=true" width="640" alt="Figure 6-31">
   <figcaption style="color:blue"><b>Figure 6-31</b>. Cut through structured grid with plane. The cut plane is shown solid shaded. A computational plane of constant value is shown in wireframe for comparison. The colors correspond to flow density. Cutting surfaces are not necessarily planes: implicit functions such as spheres, cylinders, and quadrics can also be used. <a href="../../Cxx/VisualizationAlgorithms/CutStructuredGrid" title="CutStructuredGrid"> See CutStructuredGrid.cxx</a> and <a href="../../Python/VisualizationAlgorithms/CutStructuredGrid" title="CutStructuredGrid"> CutStructuredGrid.py</a>.</figcaption>
 </figure>
 
@@ -659,7 +659,7 @@ The cutting algorithm proceeds as follows. For each cell, function values are ge
 We can easily make multiple planar cuts through a structured grid dataset by specifying multiple isovalues for the cutting algorithm. **Figure 6-32** shows 100 cut planes generated perpendicular to the camera's view plane normal. Rendering the planes from back to front with an opacity of 0.05 produces a simulation of volume rendering (see ["Volume Rendering"](/VTKBook/07Chapter7/#73-volume-rendering) in [Chapter 7](/VTKBook/07Chapter7)).
 
 <figure id="Figure 6-32">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VolumeRendering/TestPseudoVolumeRendering.png?raw=true" width="640" alt="Figure 6-32">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VolumeRendering/TestPseudoVolumeRendering.png?raw=true" width="640" alt="Figure 6-32">
   <figcaption style="color:blue"><b>Figure 6-32</b>. 100 cut planes with opacity of 0.05. Rendered back-to-front to simulate
 volume rendering. <a href="../../Cxx/VolumeRendering/PseudoVolumeRendering" title="PseudoVolumeRendering"> See PseudoVolumeRendering.cxx</a> and <a href="../../Python/VolumeRendering/PseudoVolumeRendering" title="PseudoVolumeRendering"> PseudoVolumeRendering.py</a>.</figcaption>
 </figure>
@@ -667,7 +667,7 @@ volume rendering. <a href="../../Cxx/VolumeRendering/PseudoVolumeRendering" titl
 This example illustrates that cutting the volumetric data in a structured grid dataset produced polygonal cells. Similarly, cutting polygonal data produces lines. Using a single plane equation, we can extract "contour lines" from a surface model defined with polygons. **Figure 6-33** shows contours extracted from a surface model of the skin. At each vertex in the surface model we evaluate the equation of the plane and $F(x.y.z) = c$ and store the value $c$ of the function as a scalar value. Cutting the data with 46 isovalues from 1.5 to 136.5 produces contour lines that are 3 units apart.
 
 <figure id="Figure 6-33">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCutWithScalars.png?raw=true" width="640" alt="Figure 6-33">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCutWithScalars.png?raw=true" width="640" alt="Figure 6-33">
   <figcaption style="color:blue"><b>Figure 6-33</b>. Cutting a surface model of the skin with a series of planes produces contour lines. Lines are wrapped with tubes for clarity. <a href="../../Cxx/VisualizationAlgorithms/CutWithScalars" title="CutWithScalars"> See CutWithScalars.cxx</a> and <a href="../../Python/VisualizationAlgorithms/CutWithScalars" title="CutWithScalars"> CutWithScalars.py</a>.</figcaption>
 </figure>
 
@@ -680,11 +680,11 @@ Algorithms are implemented in the *Visualization Toolkit* as process objects. Th
 **Source Design.**
 <figure id="Figure 6-34">
   <figure id="Figure 6-34a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-34a.png?raw=true" width="320" alt="Figure6-34a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-34a.png?raw=true" width="320" alt="Figure6-34a">
     <figcaption style="color:blue"> (a) Functional Model</figcaption>
   </figure>
   <figure id="Figure 6-34b">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-34b.png?raw=true" width="320" alt="Figure6-34b">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-34b.png?raw=true" width="320" alt="Figure6-34b">
     <figcaption style="color:blue"> (b) Object Models</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 6-34</b>. Source object design. Example shown is a source object that creates a polygonal representation of a sphere.</figcaption>
@@ -698,11 +698,11 @@ Filter objects have one or more inputs and one or more outputs as shown in **Fig
 
 <figure id="Figure 6-35">
   <figure id="Figure 6-35a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-35a.png?raw=true" width="320" alt="Figure6-35a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-35a.png?raw=true" width="320" alt="Figure6-35a">
     <figcaption style="color:blue"> (a) Functional Model</figcaption>
   </figure>
   <figure id="Figure 6-35b">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-35b.png?raw=true" width="320" alt="Figure6-35b">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-35b.png?raw=true" width="320" alt="Figure6-35b">
     <figcaption style="color:blue"> (b) Object Models</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 6-35</b>. Filter object design. The example shown is for an object that receives a general dataset as input and creates polygonal data on output.</figcaption>
@@ -722,11 +722,11 @@ The architecture is simple enough that you can grasp it quickly.
 
 <figure id="Figure 6-36">
   <figure id="Figure 6-36a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-36a.png?raw=true" width="320" alt="Figure6-36a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-36a.png?raw=true" width="320" alt="Figure6-36a">
     <figcaption style="color:blue"> (a) Functional Models</figcaption>
   </figure>
   <figure id="Figure 6-36b">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-36b.png?raw=true" width="320" alt="Figure6-36b">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-36b.png?raw=true" width="320" alt="Figure6-36b">
     <figcaption style="color:blue"> (b) Object Models</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 6-36</b>. Mapper object design. Graphics mapper shown (e.g., &#118;tkPolyDataMapper) maps polygonal data through graphics library primitives. Writer shown (e.g., &#118;tkSTLWriter) writes polygonal data to stereo lithography format.</figcaption>
@@ -798,7 +798,7 @@ You can also derive your own lookup table types. Look at vtkLogLookupTable for a
 ### Implicit Functions
 
 <figure id="Figure 6-37">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-37.png?raw=true" width="640" alt="Figure6-37">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-37.png?raw=true" width="640" alt="Figure6-37">
   <figcaption style="color:blue"><b>Figure 6-37</b>. Inheritance hierarchy of &#118;tkImplicitFunction and subclasses.</figcaption>
 </figure>
 
@@ -814,14 +814,14 @@ Contouring in VTK is implemented using variations of the marching cubes algorith
 
 The implication of this arrangement is that vtkContourFilter will generate point, line, and surface contouring primitives depending on the combination of input cell types. Thus vtkContourFilter is completely general. We have created another contour filter, vtkMarchingCubes, that is specific to the dataset type image data (in particular, 3D volumes). These two filters allow us to compare (at least for this one algorithm) the cost of generality.
 
-Recall from ["Generality Versus Efficiency"](/VTKBook/06Chapter6/#generality-versus-efficiency) the issues regarding the trade-offs between general and specific algorithms. **Figure 6-38** shows a comparison of CPU times for a volume dataset at, $64 \times 64 \times 93$, and resolution $128 \times 128 \times 93$. The volume  is a CT dataset of a human head. Three cases were run. In the first case the  vtkMarchingCubes object was used. The output of this filter is triangles plus point normals. In the second case, vtkContourFilter was run. The output of this filter is just triangles. In the last case, vtkContourFilter was combined with vtkPolyDataNormals (to generate point normals). The output of the combined filters is also triangles plus point normals. 
+Recall from ["Generality Versus Efficiency"](/VTKBook/06Chapter6/#generality-versus-efficiency) the issues regarding the trade-offs between general and specific algorithms. **Figure 6-38** shows a comparison of CPU times for a volume dataset at, $64 \times 64 \times 93$, and resolution $128 \times 128 \times 93$. The volume  is a CT dataset of a human head. Three cases were run. In the first case the  vtkMarchingCubes object was used. The output of this filter is triangles plus point normals. In the second case, vtkContourFilter was run. The output of this filter is just triangles. In the last case, vtkContourFilter was combined with vtkPolyDataNormals (to generate point normals). The output of the combined filters is also triangles plus point normals.
 
 The execution times are normalized to the smallest dataset using the vtkMarchingCubes object. The results are clear: The specific object outperforms the general object by a factor of 1.4 to 7, depending on data size and whether normals are computed. The larger differences occur on the smaller datasets. This is because the ratio of voxel cells containing the isosurface to the total number of voxels is larger for smaller datasets. (Generally the total number of voxels increases as the resolution cubed, while the voxels containing the isosurface increase as the resolution squared.) As a result, more voxels are processed in the smaller datasets relative to the total number of voxels than in the larger datasets. When the datasets become larger, more voxels are "empty" and are not processed.
 
 Although these results do not represent all implementations or the behavior of other algorithms, they do point to the cost of generality. Of course, there is a cost to specialization as well. This cost is typically in programmer time, since the programmer must rewrite code to adapt to new circumstances and data. Like all trade-offs, resolution of this issue requires knowledge of the application.
 
 <figure id="Figure 6-38">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-38.png?raw=true" width="640" alt="Figure6-38">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-38.png?raw=true" width="640" alt="Figure6-38">
   <figcaption style="color:blue"><b>Figure 6-38</b>. The cost of generality. Isosurface generation of three volumes of different sizes are compared. The results show normalized execution times for two different implementations of the marching cubes isosurface algorithm. The specialized filter is &#118;tkMarchingCubes. The general algorithms are first &#118;tkContourFilter and then in combination with &#118;tkPolyDataNormals.</figcaption>
 </figure>
 
@@ -853,12 +853,12 @@ vtkActor *outlineActor = vtkActor::New();
 ```
 
 <figure id="Figure 6-39">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestContourQuadric.png?raw=true" width="640" alt="Figure 6-39">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestContourQuadric.png?raw=true" width="640" alt="Figure 6-39">
   <figcaption style="color:blue"><b>Figure 6-39</b>. Contouring quadric function. Pipeline topology, C++ code, and resulting image are shown.<a href="../../Cxx/VisualizationAlgorithms/ContourQuadric" title="ContourQuadric"> See ContourQuadric.cxx</a> and <a href="../../Python/VisualizationAlgorithms/ContourQuadric" title="ContourQuadric"> ContourQuadric.py</a>.</figcaption>
 </figure>
 
 <figure id="Figure 6-40">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-40.png?raw=true" width="320" alt="Figure6-40">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-40.png?raw=true" width="320" alt="Figure6-40">
   <figcaption style="color:blue"><b>Figure 6-40</b>. Data flow into and out of the &#118;tkGlyph3D class.</figcaption>
 </figure>
 
@@ -875,7 +875,7 @@ The behavior of an instance of vtkGlyph3D depends on the nature of the input dat
 We saw how to use vtkGlyph3D in the example given in **Figure4--20**. Cones were used as the glyph and were located at each point on the sphere, oriented along the sphere's surface normal.
 
 <figure id="Figure 6-41">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-41.png?raw=true" width="640" alt="Figure6-41">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-41.png?raw=true" width="640" alt="Figure6-41">
   <figcaption style="color:blue"><b>Figure 6-41</b>. Inheritance hierarchy for &#118;tkStreamer and subclasses.</figcaption>
 </figure>
 
@@ -894,7 +894,7 @@ Attribute transformations create or modify data attributes without changing the 
 Fortunately, there is a a solution to this dilemma. The solution is to use the "virtual constructor" NewInstance(). Although C++ does not allow virtual constructors, we can simulate it by creating a special virtual function that constructs a copy of the object that it is invoked on. For example, if this function is applied to a dataset instance of type vtkPolyData, the result will be a copy of that instance (**Figure 6-42**). (Note that we use reference counting to make copies and avoid duplicating memory.) The virtual constructor function NewInstance() is implemented in a number of VTK classes including datasets and cells.
 
 <figure id="Figure 6-42">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure6-42.png?raw=true" width="640" alt="Figure6-42">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure6-42.png?raw=true" width="640" alt="Figure6-42">
   <figcaption style="color:blue"><b>Figure 6-42</b>. Depiction of data flow for abstract filter output. The output object type is the same as the input type.</figcaption>
 </figure>
 
@@ -948,12 +948,12 @@ vtkPolyDataMapper vecMapper
 ```
 
 <figure id="Figure 6-43">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCarotidFlowGlyphs.png?raw=true" width="640" alt="Figure 6-43">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCarotidFlowGlyphs.png?raw=true" width="640" alt="Figure 6-43">
   <figcaption style="color:blue"><b>Figure 6-43</b>. Visualizing blood flow in human carotid arteries. Cone glyphs indicate flow direction and magnitude.<a href="../../Cxx/VisualizationAlgorithms/CarotidFlowGlyphs" title="CarotidFlowGlyphs"> See CarotidFlowGlyphs.cxx</a> and <a href="../../Python/VisualizationAlgorithms/CarotidFlowGlyphs" title="CarotidFlowGlyphs"> CarotidFlowGlyphs.py</a>.</figcaption>
 </figure>
 
 <figure id="Figure 6-44">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCarotidFlow.png?raw=true" width="640" alt="Figure 6-44">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCarotidFlow.png?raw=true" width="640" alt="Figure 6-44">
   <figcaption style="color:blue"><b>Figure 6-44</b>. Visualizing blood flow in the human carotid arteries. Streamtubes of flow vectors (streamV.tcl).<a href="../../Cxx/VisualizationAlgorithms/CarotidFlow" title="CarotidFlow"> See CarotidFlow.cxx</a> and <a href="../../Python/VisualizationAlgorithms/CarotidFlow" title="CarotidFlow"> CarotidFlow.py</a>.</figcaption>
 </figure>
 
@@ -995,7 +995,7 @@ Blinn <em style="color:green;background-color: white">\[Blinn82\]</em>, Blooment
 
 <em style="color:green;background-color: white">\[Blinn82\]</em> J. F. Blinn. "A Generalization of Algebraic Surface Drawing." *ACM Transactions on Graphics*. 1(3):235--256, July 1982.
 
-<em style="color:green;background-color: white">\[Bloomenthal88\]</em> J. Bloomenthal. "Polygonization of Implicit Surfaces." *Computer Aided Geometric Design* *.* 5(4):341--355, November 1982. 
+<em style="color:green;background-color: white">\[Bloomenthal88\]</em> J. Bloomenthal. "Polygonization of Implicit Surfaces." *Computer Aided Geometric Design* *.* 5(4):341--355, November 1982.
 
 <em style="color:green;background-color: white">\[Bloomenthal97\]</em> J. Bloomenthal, editor. *Introduction to Implicit Surfaces*. Morgan Kaufmann Publishers, Inc., San Francisco, CA., 1997.
 
@@ -1016,7 +1016,7 @@ Blinn <em style="color:green;background-color: white">\[Blinn82\]</em>, Blooment
 
 <em style="color:green;background-color: white">\[Fuchs77\]</em> H. Fuchs, Z. M. Kedem, and S. P. Uselton. "Optimal Surface Reconstruction from Planar Contours." *Communications of the ACM*. 20(10):693--702, 1977.
 
-<em style="color:green;background-color: white">\[Fuller80\]</em>cA. J. Fuller and M.L.X. dosSantos. "Computer Generated Display of 3D Vector Fields." *Computer* *Aided Design*. 12(2):61--66, 1980. 
+<em style="color:green;background-color: white">\[Fuller80\]</em>cA. J. Fuller and M.L.X. dosSantos. "Computer Generated Display of 3D Vector Fields." *Computer* *Aided Design*. 12(2):61--66, 1980.
 
 <em style="color:green;background-color: white">\[Haber90\]</em> R. B. Haber and D. A. McNabb. "Visualization Idioms: A Conceptual Model to Scientific Visualization Systems." *Visualization in Scientific Computing,* G. M. Nielson, B. Shriver, L. J. Rosenblum, ed. IEEE Computer Society Press, pp. 61--73, 1990.
 
@@ -1030,29 +1030,29 @@ Blinn <em style="color:green;background-color: white">\[Blinn82\]</em>, Blooment
 
 <em style="color:green;background-color: white">\[Montani94\]</em>cC. Montani, R. Scateni, and R. Scopigno. "A Modified LookUp Table for Implicit Disambiguation of Marching Cubes." *Visual Computer* *.* (10):353--355, 1994.
 
-<em style="color:green;background-color: white">\[Moon87\]</em> F. C. Moon. *Chaotic Vibrations* *.* WileyInterscience, New York, NY, 1987. 
+<em style="color:green;background-color: white">\[Moon87\]</em> F. C. Moon. *Chaotic Vibrations* *.* WileyInterscience, New York, NY, 1987.
 
-<em style="color:green;background-color: white">\[Nielson91\]</em> G. M. Nielson and B. Hamann. "The Asymptotic Decider: Resolving the Ambiguity in Marching Cubes." In *Proceedings of Visualization '91*. pp. 83--91, IEEE Computer Society Press, Los Alamitos, CA, 1991. 
+<em style="color:green;background-color: white">\[Nielson91\]</em> G. M. Nielson and B. Hamann. "The Asymptotic Decider: Resolving the Ambiguity in Marching Cubes." In *Proceedings of Visualization '91*. pp. 83--91, IEEE Computer Society Press, Los Alamitos, CA, 1991.
 
 <em style="color:green;background-color: white">\[Rheingans92\]</em> P. Rheingans. "Color, Change, and Control for Quantitative Data Display." In *Proceedings of Visualization '92*. pp. 252--259, IEEE Computer Society Press, Los Alamitos, CA, 1992.
 
 <em style="color:green;background-color: white">\[Richter90\]</em> R. Richter, J. B. Vos, A. Bottaro, and S. Gavrilakis. "Visualization of Flow Simulations." *Scientific* *Visualization and Graphics Simulation*. D. Thalmann editor, pp. 161--171, John Wiley and Sons, 1990.
 
-<em style="color:green;background-color: white">\[Saada74\]</em> A. S. Saada. *Elasticity Theory and Applications.* Pergamon Press, Inc., New York, NY, 1974. 
+<em style="color:green;background-color: white">\[Saada74\]</em> A. S. Saada. *Elasticity Theory and Applications.* Pergamon Press, Inc., New York, NY, 1974.
 
-<em style="color:green;background-color: white">\[Timoshenko70\]</em> S. P. Timoshenko and J. N. Goodier. *Theory of Elasticity, 3d Edition*. McGrawHill Book Company, New York, NY, 1970. 
+<em style="color:green;background-color: white">\[Timoshenko70\]</em> S. P. Timoshenko and J. N. Goodier. *Theory of Elasticity, 3d Edition*. McGrawHill Book Company, New York, NY, 1970.
 
-<em style="color:green;background-color: white">\[Tufte83\]</em> E. R. Tufte. *The Visual Display of Quantitative Information.* Graphics Press, Cheshire, CT, 1990. 
+<em style="color:green;background-color: white">\[Tufte83\]</em> E. R. Tufte. *The Visual Display of Quantitative Information.* Graphics Press, Cheshire, CT, 1990.
 
-<em style="color:green;background-color: white">\[Volpe89\]</em> G. Volpe. "Streamlines and Streamribbons in Aerodynamics." Technical Report AIAA-89-0140, 27th Aerospace Sciences Meeting, 1989. 
+<em style="color:green;background-color: white">\[Volpe89\]</em> G. Volpe. "Streamlines and Streamribbons in Aerodynamics." Technical Report AIAA-89-0140, 27th Aerospace Sciences Meeting, 1989.
 
 <em style="color:green;background-color: white">\[Ware88\]</em> C. Ware. "Color Sequences for Univariate Maps: Theory, Experiments and Principles." *IEEE* *Computer Graphics and Applications*. 8(5):41--49, 1988.
 
 <em style="color:green;background-color: white">\[Watson92\]</em> D. F. Watson. *Contouring: A Guide to the Analysis and Display of Spatial Data*. Pergamon Press, 1992.
 
-<em style="color:green;background-color: white">\[Wyszecki82\]</em> G. Wyszecki and W. Stiles. *Color Science: Concepts and Methods, Quantitative Data and Formulae*. John Wiley and Sons, 1982. 
+<em style="color:green;background-color: white">\[Wyszecki82\]</em> G. Wyszecki and W. Stiles. *Color Science: Concepts and Methods, Quantitative Data and Formulae*. John Wiley and Sons, 1982.
 
-<em style="color:green;background-color: white">\[Wyvill86\]</em> G. Wyvill, C. McPheeters, B. Wyvill. "Data Structure for Soft Objects." *Visual Computer*. 2(4):227--234, 1986. 
+<em style="color:green;background-color: white">\[Wyvill86\]</em> G. Wyvill, C. McPheeters, B. Wyvill. "Data Structure for Soft Objects." *Visual Computer*. 2(4):227--234, 1986.
 
 ## 6.10 Exercises
 

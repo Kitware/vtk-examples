@@ -47,7 +47,7 @@ There is confusion surrounding the difference between imaging, computer graphics
 - *Imaging*, or image processing, is the study of 2D pictures, or images. This includes techniques to transform (e.g., rotate, scale, shear), extract information from, analyze, and enhance images.
 
 <figure id="Figure 1-1">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure1-1.png?raw=true" width="640" alt="Figure1-1">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure1-1.png?raw=true" width="640" alt="Figure1-1">
   <figcaption style="color:blue"><b>Figure 1-1</b>. The visualization process. Data from various sources is repeatedly transformed to extract, derive, and enhance information. The resulting data is mapped to a graphics system for display.</figcaption>
 </figure>
 
@@ -168,7 +168,7 @@ This chapter is a continuation of *Fundamental Algorithms* and covers algorithms
 
 ### [Chapter 10](/VTKBook/10Chapter10): Image Processing
 
-While 3D graphics and visualization is the focus of the book, image processing is an important tool for preprocessing and manipulating data. In this chapter we focus on several important image processing algorithms, as well as describe how we use a streaming data representation to process large datasets. 
+While 3D graphics and visualization is the focus of the book, image processing is an important tool for preprocessing and manipulating data. In this chapter we focus on several important image processing algorithms, as well as describe how we use a streaming data representation to process large datasets.
 
 ### [Chapter 11](/VTKBook/11Chapter11): Visualization on the Web
 
