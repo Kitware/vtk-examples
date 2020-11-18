@@ -7,7 +7,7 @@
 We will examine three different coordinate systems: the global, dataset, and structured coordinate systems. **Figure 8-1** shows the relationship between the global and dataset coordinate systems, and depicts the structured coordinate system.
 
 <figure id="Figure 8-1">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-1.png?raw=true"  width="640" alt="Figure8-1">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-1.png?raw=true"  width="640" alt="Figure8-1">
   <figcaption style="color:blue"><b>Figure 8-1</b>. Local and global coordinate systems.</figcaption>
 </figure>
 
@@ -16,7 +16,7 @@ We will examine three different coordinate systems: the global, dataset, and str
 The global coordinate system is a Cartesian, three-dimensional space. Each point is expressed as a triplet of values (x,y,z) along the x, y, and z axes. This is the same system that was described in ["Coordinate Systems"](/VTKBook/03Chapter3/#37-coordinate-transformation) in [Chapter 3 - Computer Graphics Primer](/VTKBook/03Chapter3)).
 
 The global coordinate system is always used to specify dataset geometry (i.e., the point coordinates), and data attributes such as normals and vectors. We will use the word "position" to indicate that we are using global coordinates.
-               
+
 ### Dataset Coordinate System
 
 The dataset, or local, coordinate system is based on combined topological and geometric coordinates. The topological coordinate is used to identify a particular cell (or possibly a subcell), and the geometric coordinate is used to identify a particular location within the cell. Together they uniquely specify a location in the dataset. Here we will use the word "location" to refer to local or dataset coordinates.
@@ -39,7 +39,7 @@ where the parametric coordinate $r$ is constrained between $(0,1)$. In this equa
 The number of parametric coordinates corresponds to the topological dimension of the cell. Three-dimensional cells will be characterized by the three parametric coordinates $(r, s, t)$. For cells of topological order less than three, we will ignore the last $(3 - n)$ parametric coordinates, where $n$ is the topological order of the cell. For convenience and consistency, we also will constrain each parametric coordinate to range between $(0,1)$.
 
 Every cell type will have its own parametric coordinate system. Later in this chapter we will describe the parametric coordinate systems in detail. But first we will examine another coordinate system, the _structured coordinate system_.
-                
+
 
 ### Structured Coordinate System
 
@@ -72,9 +72,9 @@ Here we have taken into account that there are one fewer cells along each topolo
 Computer visualization deals with discrete data. The data is either supplied at a finite number of points or created by sampling continuous data at a finite number of points. But we often need information at positions other than these discrete point locations. This may be for rendering or for sub-sampling the data during algorithm execution. We need to interpolate data from known points to some intermediate point using _interpolation functions_.
 
 Interpolation functions relate the values at cell points to the interior of the cell. Thus, we assume that information is defined at cell points, and that we must interpolate from these points. We can express the result as a weighted average of the data values at each cell point.
-               
+
 <figure id="Figure 8-2">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-2.png?raw=true width="640" alt="Figure8-2">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-2.png?raw=true width="640" alt="Figure8-2">
   <figcaption style="color:blue"><b>Figure 8-2</b>. Interpolation is a linear combination of local interpolation functions. Interpolation functions are scaled by data values at cell points.</figcaption>
 </figure>
 
@@ -128,28 +128,28 @@ Each cell type has its own interpolation functions. The weights $W_i$ are functi
 **Line.** **Figure 8-3** shows the parametric coordinate system and interpolation functions for a line.The line is described using the single parametric coordinate $r$.
 
 <figure id="Figure 8-3">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-3.png?raw=true width="640" alt="Figure8-3">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-3.png?raw=true width="640" alt="Figure8-3">
   <figcaption style="color:blue"><b>Figure 8-3</b>. Parametric coordinate system and interpolation functions for a line.</figcaption>
 </figure>
 
 **Pixel.** **Figure 8-4** shows the parametric coordinate system and interpolation functions for a pixel cell type. The pixel is described using the two parametric coordinates $(r,s)$. Note that the pixel edges are constrained to lie parallel to the global coordinate axes. These are often referred to as _bilinear interpolation_ functions.
 
 <figure id="Figure 8-4">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-4.png?raw=true width="640" alt="Figure8-4">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-4.png?raw=true width="640" alt="Figure8-4">
   <figcaption style="color:blue"><b>Figure 8-4</b>. Parametric coordinate system and interpolation functions for a pixel.</figcaption>
 </figure>
 
 **Quadrilateral.** **Figure 8-5** shows the parametric coordinate system and interpolation functions for a quadrilateral cell type. The quadrilateral is described using the two parametric coordinates $(r,s)$.
 
 <figure id="Figure 8-5">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-5.png?raw=true width="640" alt="Figure8-5">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-5.png?raw=true width="640" alt="Figure8-5">
   <figcaption style="color:blue"><b>Figure 8-5</b>. Parametric coordinate system and interpolation functions for a quadrilateral</figcaption>
 </figure>
 
 **Triangle.** **Figure 8-6** shows the parametric coordinate system and interpolation functions for a triangle cell type. The triangle is characterized using the two parametric coordinates $(r,s)$.
 
 <figure id="Figure 8-6">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-6.png?raw=true width="640" alt="Figure8-6">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-6.png?raw=true width="640" alt="Figure8-6">
   <figcaption style="color:blue"><b>Figure 8-6</b>. Parametric coordinate system and interpolation functions for a triangle.</figcaption>
 </figure>
 
@@ -160,119 +160,119 @@ The polygon poses a special problem since we do not know how many vertices defin
 The weighted distance squared interpolation functions work well in practice. However, there are certain rare cases where points topologically distant from the interior of a polygon have an undue effect on the polygon interior (**Figure 8-8**). These situations occur only if the polygon is concave and wraps around on itself.
 
 <figure id="Figure 8-7">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-7.png?raw=true width="640" alt="Figure8-7">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-7.png?raw=true width="640" alt="Figure8-7">
   <figcaption style="color:blue"><b>Figure 8-7</b>. Parametric coordinate system and interpolation functions for a polygon.</figcaption>
 </figure>
 
 <figure id="Figure 8-8">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-8.png?raw=true width="640" alt="Figure8-8">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-8.png?raw=true width="640" alt="Figure8-8">
   <figcaption style="color:blue"><b>Figure 8-8</b>. Potential problem with distance-based interpolation functions.</figcaption>
 </figure>
 
 **Tetrahedron.** **Figure 8-9** shows the parametric coordinate system and interpolation functions for a tetrahedron cell type. The tetrahedron is described using the three parametric coordinates $(r,s,t)$.
 
 <figure id="Figure 8-9">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-9.png?raw=true width="640" alt="Figure8-9">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-9.png?raw=true width="640" alt="Figure8-9">
   <figcaption style="color:blue"><b>Figure 8-9</b>. Parametric coordinate system and interpolation functions for a tetrahedron.</figcaption>
 </figure>
 
 **Voxel.** **Figure 8-10** shows the parametric coordinate system and interpolation functions for a voxel cell type. The voxel is described using the three parametric coordinates $(r,s,t)$. Note that the voxel edges are constrained to lie parallel to the global coordinate axes. These are often referred to as tri-linear interpolation functions.
 
 <figure id="Figure 8-10">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-10.png?raw=true width="640" alt="Figure8-10">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-10.png?raw=true width="640" alt="Figure8-10">
   <figcaption style="color:blue"><b>Figure 8-10</b>. Parametric coordinate system and interpolation functions for a voxel.</figcaption>
 </figure>
 
 ** Hexahedron.** **Figure 8-11** shows the parametric coordinate system and interpolation functions for a hexahedron cell type. The hexahedron is described using the three parametric coordinates $(r,s,t)$.
 
 <figure id="Figure 8-11">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-11.png?raw=true width="640" alt="Figure8-11">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-11.png?raw=true width="640" alt="Figure8-11">
   <figcaption style="color:blue"><b>Figure 8-11</b>. Parametric coordinate system and interpolation functions for a hexahedron.</figcaption>
 </figure>
 
 **Wedge.** **Figure 8-12** shows the parametric coordinate system and interpolation functions for a wedge cell type. The wedge is described using the three parametric coordinates $(r,s,t)$.
 
 <figure id="Figure 8-12">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-12.png?raw=true width="640" alt="Figure8-12">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-12.png?raw=true width="640" alt="Figure8-12">
   <figcaption style="color:blue"><b>Figure 8-12</b>. Parametric coordinate system and interpolation functions for a wedge.</figcaption>
 </figure>
 
 **Pyramid.** **Figure 8-13** shows the parametric coordinate system and interpolation functions for a pyramid cell type. The pyramid is described using the three parametric coordinates $(r,s,t)$.
 
 <figure id="Figure 8-13">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-13.png?raw=true width="640" alt="Figure8-13">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-13.png?raw=true width="640" alt="Figure8-13">
   <figcaption style="color:blue"><b>Figure 8-13</b>. Parametric coordinate system and interpolation functions for a pyramid.</figcaption>
 </figure>
 
 **Pentagonal Prism.** **Figure 8-14** shows the parametric coordinate system and interpolation functions for a pentagonal prism cell type. The pentagonal prism is described using the three parametric coordinates $(r,s,t)$.
 
 <figure id="Figure 8-14">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-14.png?raw=true width="640" alt="Figure8-14">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-14.png?raw=true width="640" alt="Figure8-14">
   <figcaption style="color:blue"><b>Figure 8-14</b> Parametric coordinate system and interpolation functions for a pentagonal prism.</figcaption>
 </figure>
 
 **Hexagonal Prism.** **Figure 8-15** shows the parametric coordinate system and interpolation functions for a hexagonal prism cell type. The hexagonal prism is described using the three parametric coordinates $(r,s,t)$.
 
 <figure id="Figure 8-15">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-15.png?raw=true width="640" alt="Figure8-15">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-15.png?raw=true width="640" alt="Figure8-15">
   <figcaption style="color:blue"><b>Figure 8-15</b>. Parametric coordinate system and interpolation functions for a hexagonal prism.</figcaption>
 </figure>
 
 **Quadratic Edge.** **Figure 8-16** shows the parametric coordinate system and interpolation functions for a quadratic edge cell type. The quadratic edge is described using the single parametric coordinate $r$.
 
 <figure id="Figure 8-16">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-16.png?raw=true width="640" alt="Figure8-16">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-16.png?raw=true width="640" alt="Figure8-16">
   <figcaption style="color:blue"><b>Figure 8-16</b>. Parametric coordinate system and interpolation functions for a quadratic edge.</figcaption>
 </figure>
 
 **Quadratic Triangle.** **Figure 8-17** shows the parametric coordinate system and interpolation functions for a quadratic triangle cell type. The quadratic triangle is described using the two parametric coordinates $(r,s)$.
 
 <figure id="Figure 8-17">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-17.png?raw=true width="640" alt="Figure8-17">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-17.png?raw=true width="640" alt="Figure8-17">
   <figcaption style="color:blue"><b>Figure 8-17</b> Parametric coordinate system and interpolation functions for a quadratic triangle. </figcaption>
 </figure>
 
 **Quadratic Quadrilateral.** **Figure 8-18** shows the parametric coordinate system and interpolation functions for a quadratic quadrilateral cell type. The quadratic quadrilateral is described using the two parametric coordinates (r,s). Note that because the interpolation functions are most easily expressed in the interval (-1,1), a coordinate shift is performed to the $(\xi, \eta) coordinates defined in this range. Also, the notation $\xi_i$ and $\eta_i$ is introduced. These are the parametric coordinates at the $i^{th}$ point.
-            
+
 <figure id="Figure 8-18">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-18.png?raw=true width="640" alt="Figure8-18">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-18.png?raw=true width="640" alt="Figure8-18">
   <figcaption style="color:blue"><b>Figure 8-18</b>.  Parametric coordinate system and interpolation functions for a quadratic quadrilateral. In VTK parametric coordinates (r,s) run between (0,1), hence the coordinate system shift into the (&xi;, &eta;) parametric system ranging from (-1,1). Note that &xi;<sub>i</sub>, &eta;<sub>i</sub> and &zeta;<sub>i</sub> refer to the parametric coordinates of the i<sup>th</sup> point.</figcaption>
 </figure>
 
 **Quadratic Tetrahedron.** **Figure 8-19** shows the parametric coordinate system and interpolation functions for a quadratic tetrahedron cell type. The quadratic tetrahedron is described using the three parametric coordinates $(r,s,t)$.
 
 <figure id="Figure 8-19">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-19.png?raw=true width="640" alt="Figure8-19">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-19.png?raw=true width="640" alt="Figure8-19">
   <figcaption style="color:blue"><b>Figure 8-19</b>. Parametric coordinate system and interpolation functions for a quadratic tetrahedron. In VTK parametric coordinates (r,s,t) run between (0,1), hence the coordinate system shift into the (&xi;, &eta; and &zeta;) parametric system ranging from (-1,1).</figcaption>
 </figure>
 
 **Quadratic Hexahedron.** **Figure 8-20** shows the parametric coordinate system and interpolation functions for a quadratic hexahedron cell type. The quadratic hexahedron is described using the three parametric coordinates $(r,s,t)$. Note that because the interpolation functions are most easily expressed in the interval (-1,1), a coordinate shift is performed to the $(\xi, \eta, \zeta)$ coordinates defined in this range. Also, the notation $\xi_i, \eta_i and \zeta_i$ is introduced. These are the parametric coordinates at the $i^{th}$ point.
 
 <figure id="Figure 8-20">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-20.png?raw=true width="640" alt="Figure8-20">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-20.png?raw=true width="640" alt="Figure8-20">
   <figcaption style="color:blue"><b>Figure 8-20</b>. Parametric coordinate system and interpolation functions for a quadratic hexahedron. In VTK parametric coordinates (r,s,t) run between (0,1), hence the coordinate system shift into the (&xi;, &eta; and &zeta;) parametric system ranging from (-1,1). Note that &xi;<sub>i</sub>, &eta;<sub>i</sub> amd &zeta;<sub>i</sub> refer to the parametric coordinates of the i<sup>th</sup> x  point.</figcaption>
 </figure>
 
 **Quadratic Wedge.** **Figure 8-21** shows the parametric coordinate system and interpolation functions for a quadratic wedge cell type. The quadratic wedge is described using the three parametric coordinate $(r,s,t)$.
 
 <figure id="Figure 8-21">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-21.png?raw=true width="640" alt="Figure8-21">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-21.png?raw=true width="640" alt="Figure8-21">
   <figcaption style="color:blue"><b>Figure 8-21</b>. Parametric coordinate system and interpolation functions for a quadratic wedge.</figcaption>
 </figure>
 
 **Quadratic Pyramid.** **Figure 8-22** shows the parametric coordinate system and interpolation functions for a quadratic pyramid cell type. The quadratic pyramid is described using the three parametric coordinates $(r,s,t)$. Note that because the interpolation functions are most easily expressed in the interval (-1,1), a coordinate shift is performed to the $(\xi, \eta, \zeta)$ coordinates system defined in this range. Also, the notation $\xi_i$, \eta_i$ and $\zeta_i$ is introduced, these are the parametric coordinate at the $i^{th}$ point. (The shape functions and derivatives were implemented thanks to the _Center For Aerospace Structures_ http://www.colorado.edu/engineering/CAS.)
 
 <figure id="Figure 8-22">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-22.png?raw=true width="640" alt="Figure8-22">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-22.png?raw=true width="640" alt="Figure8-22">
   <figcaption style="color:blue"><b>Figure 8-22</b>.  Parametric coordinate system and interpolation functions for a quadratic pyramid. In VTK parametric coordinates (r,s,t) run between (0,1), hence the coordinate system shift into the (&xi;,&eta;,&zeta;) parametric system ranging from (-1,1). Note that &xi;<sub>i</sub>, &eta;<sub>i</sub> and &zeta;<sub>i</sub> refer to the parametric coordinates of the i<sup>th</sup> x  point.</figcaption>.</figcaption>
 </figure>
 
-## 8.3 Cell Tessellation        
+## 8.3 Cell Tessellation
 
   As briefly introduced in [Chapter 5 - Data Representation](/VTKBook/05Chapter5), nonlinear cells are often used in various numerical techniques such as the finite element method. While some visualization systems support nonlinear cells directly, typically only quadratic and occasionally cubic formulations are supported (for example, VTK supports quadratic cells). This represents only a small subset of the formulations currently available in numerical packages, and ignores the unlimited potential cell formulations. To address this important problem, visualization systems may provide an adaptor framework (see **Figure 8-23**) that enables users to interface their own simulation system to the visualization system <em style="color:green;background-color: white">\[Schroeder06\]</em>. Such a framework requires writing adaptor classes that are derived from visualization dataset and cell base classes (in the figure these are labeled GenericDataSet and GenericAdaptorCell). These adaptors act like translators, converting data and method invocations to and from the forms expected by the visualization system and the numerical system. Like any other data objects, such adaptor cells and datasets can be processed directly by visualization algorithms. However, processing such general data objects is a difficult problem, since most visualization algorithms described in the scientific literature to date adopt the fundamental assumptions that cell geometry is linear. Removing this assumption may require introducing significant complexity into the algorithm, or may even require a new algorithm. For example, the marching cubes isocontouring algorithm assumes that the cells are ortho-rectilinear hexahedra; without this assumption elaborate transformations to and from parametric and global coordinate systems are required, and even then in highly curved nonlinear cells, degenerate or self-intersection isocontours may be generated without extensive topological and geometric checks. Thus the adaptor framework typically includes methods for tessellating nonlinear cells into the familiar linear cells, which can then be readily processed by conventional visualization algorithms. In the following section, we briefly described a simple method for tessellating higher order, nonlinear cells to produce linear cells.
 
 <figure id="Figure 8-23">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-23.png?raw=true width="640" alt="Figure8-23">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-23.png?raw=true width="640" alt="Figure8-23">
   <figcaption style="color:blue"><b>Figure 8-23</b>. Cell adaptor framework.</figcaption>
 </figure>
 
@@ -296,7 +296,7 @@ for each cell c to be processed
 
 It is important not to tessellate the entire dataset all at once, since this may produce excessive demands on memory resources, and many algorithms visit only a subset of a dataset's cells. Thus the pseudo-code above refers to a selection criterion, which varies depending on the nature of the algorithm. For example, an isocontouring algorithm may check to see whether the cell's scalar values span the current isocontour value.
 
-While many tessellation algorithms are possible, those based on edge subdivision are particularly simple. The idea behind the algorithm is simple: each cell edge $e$ is evaluated via an error metric $E$ and may be marked for subdivision if any error measure $\epsilon_i$ exceeds a corresponding error threshold $\epsilon $epsilon{^i}$  
+While many tessellation algorithms are possible, those based on edge subdivision are particularly simple. The idea behind the algorithm is simple: each cell edge $e$ is evaluated via an error metric $E$ and may be marked for subdivision if any error measure $\epsilon_i$ exceeds a corresponding error threshold $\epsilon $epsilon{^i}$
 
 $$
 \begin{equation*}
@@ -310,7 +310,7 @@ Based on the cell topology, and the particular edges requiring subdivision, temp
 Some templates for cell subdivision are shown in **Figure 8-24**. Note that in some cases a choice must be made in terms of which diagonal to select for tessellation (for example, the dashed line in **Figure 8-24**(b)). In 2D, this choice can be made arbitrarily, however in 3D the choice must be consistent with the cell's face neighbor. In order to preserve the simplicity of the algorithm, including avoiding inter-cell communication, simple tie-breaking rules for selecting the diagonal on the faces of 3D cells are adopted. These rules include using the shortest diagonal (measured in the global coordinate system), or using a topological decider based on selecting the diagonal with the smallest point id. (A topological decider is necessary when the geometric distance measure is inconclusive.)
 
 <figure id="Figure 8-24">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-24.png?raw=true width="640" alt="Figure8-24">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-24.png?raw=true width="640" alt="Figure8-24">
   <figcaption style="color:blue"><b>Figure 8-24</b>. Three cases from the subdivision table for a triangle. Filled circles indicate that the edge is marked for subdivision.</figcaption>
 </figure>
 
@@ -323,7 +323,7 @@ Our design allows for the definition of multiple error measures. As indicated in
 The following paragraphs describes several error measures that have been found to be useful in practice. Since the tessellator is designed to process a list of error measures, it is straightforward to add new ones (by deriving from the GenericSubdivisionErrorMetric class) and/or combine it with existing error measures.
 
 <figure id="Figure 8-25">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-25.png?raw=true width="640" alt="Figure8-25">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-25.png?raw=true width="640" alt="Figure8-25">
   <figcaption style="color:blue"><b>Figure 8-25</b>. Definition of the geometric and attribute error measures.</figcaption>
 </figure>
 
@@ -463,7 +463,7 @@ Fortunately, Newton's method converges quadratically (if it converges) and the i
 Interpolation functions enable us to compute data values at arbitrary locations within a cell. They also allow us to compute the rate of change, or derivatives, of data values. For example, given displacements at cell points we can compute cell strains and stresses or, given pressure values, we can compute the pressure gradient at a specified location.
 
 <figure id="Figure 8-26">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-26.png?raw=true width="640" alt="Figure8-26">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-26.png?raw=true width="640" alt="Figure8-26">
   <figcaption style="color:blue"><b>Figure 8-26</b>. Computing derivatives in an 1D line cell.</figcaption>
 </figure>
 
@@ -630,12 +630,12 @@ $$
 $$
 
 <figure id="Figure 8-27">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-27.png?raw=true width="640" alt="Figure8-27">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-27.png?raw=true width="640" alt="Figure8-27">
   <figcaption style="color:blue"><b>Figure 8-27</b>. Manifold and non-manifold surface topology. If the local neighborhood around a vertex is topologically a 2D disk (i.e., a small disk can be placed on the surface without tearing or overlapping), then the surface is manifold at that vertex.</figcaption>
 </figure>
 
 <figure id="Figure 8-28">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-28.png?raw=true width="640" alt="Figure8-28">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-28.png?raw=true width="640" alt="Figure8-28">
   <figcaption style="color:blue"><b>Figure 8-28</b>. Simplices of dimension three and lower.</figcaption>
 </figure>
 
@@ -650,7 +650,7 @@ Another useful cell operation returns the closest boundary cell of dimension d-1
 Another useful cell operation is cell decomposition into simplices. Every cell can be decomposed into a collection of simplices. By doing so, and by operating on the simplex decomposition rather than the cell itself, we can create algorithms that are independent of cell type. For example, if we want to intersect two datasets of varied cell type, without simplex decomposition we would have to create methods to intersect every possible combination of cells. With simplex decomposition, we can create a single intersection operation that operates on only the limited set of simplices. The significant advantage of this approach is that as new cells are added to the visualization system, only the cell object (including its method for simplex decomposition) must be implemented, and no other objects need be modified.
 
 <figure id="Figure 8-29">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-29.png?raw=true width="640" alt="Figure8-29">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-29.png?raw=true width="640" alt="Figure8-29">
   <figcaption style="color:blue"><b>Figure 8-29</b>. Closest boundary cell operation for quadrilateral cell.</figcaption>
 </figure>
 
@@ -695,7 +695,7 @@ The basic idea behind these spatial search structures is that the search space i
 We have two options when applying spatial search structures. We may insert points into the search structure, or we may insert cells, depending on the application. There are advantages and disadvantages to both approaches. Inserting cells into buckets is not a trivial operation. In general, cells are arbitrarily oriented and shaped, and will not fit completely into a single bucket. As a result, cells often span multiple buckets. To reliably determine whether a cell is in a bucket requires geometric intersection tests, a costly operation. Another approach is to use the bounding box of a cell to decide which bucket(s) a cell belongs in. We only need to intersect the bounding box with a bucket to determine whether the cell may belong in the bucket. Unfortunately, even though this operation is generally fast, often cells are associated with buckets even though they may not actually lie inside them, wasting (in large models) memory resources and extra processing time.
 
 <figure id="Figure 8-30">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-30.png?raw=true width="640" alt="Figure8-30">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-30.png?raw=true width="640" alt="Figure8-30">
   <figcaption style="color:blue"><b>Figure 8-30</b>. Using search structure (containing points) to find cells. (a) Points are associated with appropriate bucket. Point $p$ is used to index into bucket, and closest point(s) pi is found. Cells using pi are evaluated for the cell containing p. (b) Sometimes closest points pi are not used by cells containing p. </figcaption>
 </figure>
 
@@ -710,7 +710,7 @@ In the _Visualization Toolkit_ each cell must be capable of intersecting itself 
 Line/cell intersection for 0D, 1D, and 2D cells follows standard approaches. Intersection against 3D cells is difficult. This is because the surfaces of these cells are described parametrically and are not necessarily planar. For example, to intersect a line with a tetrahedron, we can intersect the line against the four triangular faces of the tetrahedron. Hexahedron, however, may have non-planar faces. Thus, we cannot intersect the line against six quadrilateral, planar faces. Instead, we use line/face intersection as an initial guess, and project the intersection point onto the surface of the cell. This produces an approximate result, but is accurate enough for most applications.
 
 <figure id="Figure 8-31">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-31.png?raw=true width="640" alt="Figure8-31">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-31.png?raw=true width="640" alt="Figure8-31">
   <figcaption style="color:blue"><b>Figure 8-31</b>. Summary of line/cell intersection operations for nine primitive cell types. Line is assumed normalized in parametric coordinate t with $0 \leq t \leq 1$.</figcaption>
 </figure>
 
@@ -749,9 +749,9 @@ A significant attraction of using 2and 3-dimensional image data is the speed and
 ### Coordinate Transformation
 
 Given a point $p$ we can find the structured coordinates by performing three division operations (**Figure 8-32**). Taking the integer floor function yields the structured coordinates. Taking the fractional part of the result yields the parametric coordinates of the cell. We can then use Equation 8-3 to convert to dataset coordinates.
-                   
+
 <figure id="Figure 8-32">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-32.png?raw=true width="640" alt="Figure8-32">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-32.png?raw=true width="640" alt="Figure8-32">
   <figcaption style="color:blue"><b>Figure 8-32</b>. Image data coordinate transformation.</figcaption>
 </figure>
 
@@ -771,7 +771,7 @@ $$
 (Note that at the boundary of the dataset, one-sided differences may be used.) We can use these equations to compute derivatives within the cell as well. We simply compute the derivatives at each cell point from Equation 8-28, and then use the cell interpolation functions to compute the derivative at the point inside the cell.
 
 <figure id="Figure 8-33">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-33.png?raw=true width="640" alt="Figure8-33">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-33.png?raw=true width="640" alt="Figure8-33">
   <figcaption style="color:blue"><b>Figure 8-33</b>. Using finite differences to compute derivatives on image data.</figcaption>
 </figure>
 
@@ -827,12 +827,12 @@ In [Chapter 5 - Data Representation](/VTKBook/05Chapter5) we described data repr
 The reason for this inefficiency is that the data representation is a "downward" hierarchy (**Figure 8-34**(b)). That is, given a cell we can quickly determine the topological features lower in the topological hierarchy such as faces, edges, and points. However, given a face, edge, or point we must search the cell array to determine the owning cells. To improve the efficiency of this data representation, we must introduce additional information into the hierarchy that allows "upward" hierarchy traversal (similar to that shown in **Figure 8-34**(a)).
 
 <figure id="Figure 8-34">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-34.png?raw=true width="640" alt="Figure8-34">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-34.png?raw=true width="640" alt="Figure8-34">
   <figcaption style="color:blue"><b>Figure 8-34</b>. Enhancing hierarchical unstructured data representation. (a) Conventional topological hierarchy for geometric model. (b) Basic unstructured data hierarchy. (c) Full unstructured data hierarchy. By introducing upward references from points to cells, the unstructured data hierarchy may be efficiently traversed in both directions, and is more compact than conventional topological hierarchies.</figcaption>
 </figure>
-                
+
 <figure id="Figure 8-35">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-35.png?raw=true width="640" alt="Figure8-35">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-35.png?raw=true width="640" alt="Figure8-35">
   <figcaption style="color:blue"><b>Figure 8-35</b>. Complete unstructured data representation including link lists. There are m cells and n points. The n structures in the link list are lists of cells that use each vertex. Each link list is variable in length.</figcaption>
 </figure>
 
@@ -912,8 +912,8 @@ With the completion of Chapters 5 and 8, we can summarize the abstract interface
      CopyStructure(dataSet)
           Update the current structure definition (i.e., geometry and topology) with the supplied dataset.
 ```
-                   
-**Cell Abstraction.** Cells are the atomic structures of VTK. Cells consist of a topology, defined by a sequence of ordered point ids, and a geometry, defined by point coordinates. The cell coordinate consists of a cell id, a subcell id, and a parametric coordinate. The subid specifies a primary cell that lies within a composite cell such as a triangle strip. Cell edges and faces are defined implicitly from the topology of the cell. 
+
+**Cell Abstraction.** Cells are the atomic structures of VTK. Cells consist of a topology, defined by a sequence of ordered point ids, and a geometry, defined by point coordinates. The cell coordinate consists of a cell id, a subcell id, and a parametric coordinate. The subid specifies a primary cell that lies within a composite cell such as a triangle strip. Cell edges and faces are defined implicitly from the topology of the cell.
 ```
     type = GetCellType()
           Return the type of the cell. Must be one of the twelve VTK cell types (or the empty cell
@@ -936,7 +936,7 @@ With the completion of Chapters 5 and 8, we can summarize the abstract interface
           Return the number of edges in the cell.
 
      edge = GetEdge(i)
-          Given an edge id ( $0 \leq i < numberEdges$ ) return a pointer to a cell that represents an 
+          Given an edge id ( $0 \leq i < numberEdges$ ) return a pointer to a cell that represents an
           edge of the cell.
 
      numberFaces = GetNumberOfFaces()
@@ -957,7 +957,7 @@ With the completion of Chapters 5 and 8, we can summarize the abstract interface
           the cell. That is, the point may satisfy parametric coordinate conditions but may lie off
           the surface of the cell (e.g., point lies above polygon). Use both inOutStatus and dist2
           to determine whether point is both topologically and geometrically in the cell.
-                   
+
      EvaluateLocation(subId, pcoords, x, weights)
           Given a point location (i.e., sub-id and parametric coordinates), return the position x of
           the point and the interpolation weights.
@@ -989,10 +989,10 @@ With the completion of Chapters 5 and 8, we can summarize the abstract interface
 
      Triangulate(index, ptIds, points)
           Decompose the cell into simplices of dimension equal to the topological cell dimension.
-          The index is an integer that controls the triangulation if more than one triangulation 
+          The index is an integer that controls the triangulation if more than one triangulation
           is possible. The simplices are defined by an ordered list of point ids and their
           corresponding coordinates.
-    
+
      bounds = GetBounds()
           Return the bounding box of the cell.
 ```
@@ -1049,7 +1049,7 @@ Many of the methods described below deal with moving data from the input to the 
 
      NullPoint(int ptId)
           Set the data value(s) of the specified output point id to a null value.
-                   
+
      SetScalars() / GetScalars()
           Set / return scalar data. The GetScalars() method may return a NULL value, in which
           case the scalars are not defined.
@@ -1080,7 +1080,7 @@ A simple solution is to traverse each cell and then obtain the edges (or faces) 
 A better solution to this problem is to traverse each cell as before, but only process intermediate topology if the current cell has the smallest cell id. (The current cell is the cell being visited in the traversal process.) To determine whether the current cell has the smallest cell id, we obtain all cells using the intermediate topology. This information can be obtained using the topological adjacency operators described earlier (e.g., Equation 8-25).
 
 To illustrate this process consider visiting the edges of a triangle mesh. We begin by visiting the first triangle, t, and then its edges. For each edge we determine the adjacent triangle(s) (if any) that use the edge. If the id of the adjacent triangle(s) is greater than triangle t's id, or there are no adjacent triangles, then we know to process the current edge. (Of course the first triangle will always have the smallest id but this will change as the traversal proceeds.) We then continue traversing the triangle list for new t's. In this way all the edges of the mesh will be visited.
-                   
+
 ### Color Scalar Data
 
 Multi-valued scalar data, or scalars represented by various color representations, are treated specially by the _Visualization Toolkit_. These data arise, for example, when using a color specification to directly control the color of objects rather than mapping a scalar value through a lookup table. (See ["Color Mapping"](/VTKBook/06Chapter6/#color-mapping) in [Chapter 6](/VTKBook/06Chapter6) for more information.)
@@ -1104,12 +1104,12 @@ vtkPointLocator is implemented as a regular grid of buckets (i.e., same topology
 Determining closest point to a point $p$ using vtkPointLocator (as well as other spatial search structures) is a three-step process. In the first step, the bucket containing $p$ is found using the appropriate insertion scheme. (For vtkPointLocator this is three divisions to determine bucket indices (i, j, k).) Next, the list of points in this bucket is searched to determine the closest point. However, as **Figure 8-36** shows, this may not be the true closest point, since points in neighboring buckets may be closer. Consequently, a final search of neighboring buckets is necessary. The search distance is a function of the distance to the current closest point. Once all neighbors within this distance are searched, the closest point is returned.
 
 <figure id="Figure 8-36">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-36.png?raw=true width="640" alt="Figure8-36">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-36.png?raw=true width="640" alt="Figure8-36">
   <figcaption style="color:blue"><b>Figure 8-36</b>. Determining closest point to $p$ in &#118;tkPointLocator. Initial search in bucket results in point a. Search must extend beyond local bucket as a function of search radius R, resulting in point b.</figcaption>
 </figure>
 
 <figure id="Figure 8-37">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-37.png?raw=true width="640" alt="Figure8-37">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-37.png?raw=true width="640" alt="Figure8-37">
   <figcaption style="color:blue"><b>Figure 8-37</b>. Structure of spatial search structure &#118;tkCellLocator. The data structure represents a uniformly subdivided octree.</figcaption>
 </figure>
 
@@ -1118,7 +1118,7 @@ vtkCellLocator is implemented as a uniformly subdivided octree with some peculia
 In contrast, vtkCellLocator uses a single array to represent the octree. The array is divided into two parts. The first part contains a list of parent octants, ordered according to level and octant child number. In the second part are the terminal, or leaf octants. The terminal octants are ordered on a regular array of buckets, just the same as vtkLocator. The terminal octants contain a list of the entities inside the octant. The parent octants maintain a value indicating whether the octant is empty, or whether something is inside it. (Both types of information are represented in the same portion of the octant structure.) Because the octree is uniformly subdivided, parent-child relationships, as well as octant locations, can be computed quickly using simple division operations.
 
 <figure id="Figure 8-38">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-38.png?raw=true width="640" alt="Figure8-38">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-38.png?raw=true width="640" alt="Figure8-38">
   <figcaption style="color:blue"><b>Figure 8-38</b>. The picking hierarchy in VTK. All subclasses of &#118;tkAbstractPropPicker return the picked instance of &#118;tkProp. The information is returned as a &#118;tkAssemblyPath. The assembly path is necessary because some props may exist in an assembly hierarchy. The classes &#118;tkWorldPointPicker and &#118;tkPropPicker are hardware accelerated picking classes. All others use software ray casting.</figcaption>
 </figure>
 
@@ -1153,12 +1153,12 @@ To conclude this section, we will examine how some of the dataset, cell, and poi
 **Find Free Edges.** In our first example we will take a peek inside the filter vtkLinearExtrusionFilter. This filter implements the following modelling operation. Given a polygonal mesh, extrude the mesh in a given direction, constructing a "skirt" or "walls" from the free edges. If the polygonal example is a single square, the result of this operation is a cube. Or, if the polygonal data consists of a single line, the result of the operation is a quadrilateral. A point will generate a line as shown in **Figure 8-40**(a).
 
 <figure id="Figure 8-39">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-39.png?raw=true width="640" alt="Figure8-39">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-39.png?raw=true width="640" alt="Figure8-39">
   <figcaption style="color:blue"><b>Figure 8-39</b>. Summary of picking operations. The top three pick classes (a)-(c) use software ray casting. The bottom two pick classes (d)-(e) use hardware acceleration.</figcaption>
 </figure>
 
 <figure id="Figure 8-40">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-40.png?raw=true width="640" alt="Figure8-40">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-40.png?raw=true width="640" alt="Figure8-40">
   <figcaption style="color:blue"><b>Figure 8-40</b>. Depiction of linear and rotational extrusion.</figcaption>
 </figure>
 
@@ -1200,15 +1200,15 @@ The picking process is conveniently managed in vtkRenderWindowInteractor. This o
 
 <figure id="Figure 8-41">
  <figure id="Figure 8-41a">
-   <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestAlphaFrequency.png?raw=true width="640" alt="Figure 8-41a">
+   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestAlphaFrequency.png?raw=true width="640" alt="Figure 8-41a">
    <figcaption style="color:blue">(a) Linearly extruded fonts to show letter frequency in text.</figcaption>
  </figure>
  <figure id="Figure 8-41b">
-   <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Modelling/TestBottle.png?raw=true width="640" alt="Figure 8-41b">
+   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Modelling/TestBottle.png?raw=true width="640" alt="Figure 8-41b">
    <figcaption style="color:blue">(b) Rotationally symmetric objects.</figcaption>
  </figure>
   <figure id="Figure 8-41c">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Modelling/TestSpring.png?raw=true width="640" alt="Figure 8-41c">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Modelling/TestSpring.png?raw=true width="640" alt="Figure 8-41c">
     <figcaption style="color:blue">(c) Rotation in combination with linear displacement and radius variation.</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 8-41</b>. Models created using linear and rotational extrusion. (a) <a href="../../Cxx/Visualization/AlphaFrequency" title="AlphaFrequency"> See AlphaFrequency.cxx</a> and <a href="../../Python/Visualization/AlphaFrequency" title="AlphaFrequency"> AlphaFrequency.py</a>.; (b).<a href="../../Cxx/Modelling/Bottle" title="Bottle"> See Bottle.cxx</a> and <a href="../../Python/Modelling/Bottle" title="Bottle"> Bottle.py</a>.; (c)<a href="../../Cxx/Modelling/Spring" title="Spring"> See Spring.cxx</a> and <a href="../../Python/Modelling/Spring" title="Spring"> Spring.py</a>.</figcaption>
@@ -1219,14 +1219,14 @@ The picking process is conveniently managed in vtkRenderWindowInteractor. This o
 The point probe is implemented using the dataset operation FindCell(). This method requires a point specified in global coordinates (our (x,y,z) value) and a tolerance. The tolerance is often necessary because of numerical precision or when picking near the surface of 3D cells, or on 0D, 1D, and 2D cells. The FindCell() operation returns the information we require, plus the interpolation weights of the cell containing our point probe. To determine the data value at our probe point, we need to retrieve the data values on the cell points. We can then use the interpolation functions of Equation 8-4 to determine the probe scalar value.
 
 <figure id="Figure 8-42">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-42.png?raw=true width="640" alt="Figure8-42">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-42.png?raw=true width="640" alt="Figure8-42">
   <figcaption style="color:blue"><b>Figure 8-42</b>. Selecting group of cells sharing a common point. (a) Original data. (b) Selected cells sharing point on corner. Cells shrunk for clarity. The small sphere indicates the selected point. (c) C++ code fragment in pick routine.</figcaption>
 </figure>
 
 **Figure 8-43** depicts this process and includes C++ code. In the example we use the combustor dataset with the objects vtkCursor3D, vtkProbeFilter, and vtkGlyph3D. The purpose of the cursor is to control the position of the probe point. The class vtkProbeFilter performs the probing  operation just described. (This filter has been generalized so that it can handle more than one input point.) vtkGlyph3D is used to place an oriented, scaled cone at the cursor focal point. This gives us visual feedback about the scalar and vector quantities at the probe. Of course, we can extract numeric values and display them to the user if this is important.
 
 <figure id="Figure 8-43">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-43.png?raw=true width="640" alt="Figure8-43">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-43.png?raw=true width="640" alt="Figure8-43">
   <figcaption style="color:blue"><b>Figure 8-43</b>. Creating a point probe. Visualization network shown in diagram above. C++ code shows inner loop of &#118;tkProbeFilter and resulting image for combustor data (probe.cxx).</figcaption>
 </figure>
 
@@ -1252,7 +1252,7 @@ There are extensive references regarding spatial search structures. Samet <em st
 
 ##8.14 References
 <em style="color:green;background-color: white">\[Baumgart74\]</em> B. G. Baumgart. "Geometric Modeling for Computer Vision." Ph.D. thesis, Stanford University, Palo Alto, CA, 1974.
-                   
+
 <em style="color:green;background-color: white">\[Bentley75\]</em> J. L. Bentley. "Multidimensional Binary Search Trees Used for Associative Search." Communications of the ACM. 18(9):509-516, 1975.
 
 <em style="color:green;background-color: white">\[Conte72\]</em> S. D. Conte and C. de Boor. Elementary Numerical Analysis. McGraw-Hill Book Company, 1972.
@@ -1282,7 +1282,7 @@ There are extensive references regarding spatial search structures. Samet <em st
 ## 8.15 Exercises
 
 <figure id="Figure 8-44">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure8-44.png?raw=true width="640" alt="Figure8-44">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure8-44.png?raw=true width="640" alt="Figure8-44">
   <figcaption style="color:blue"><b>Figure 8-44</b>. Exercise figures.</figcaption>
 </figure>
 
@@ -1322,7 +1322,7 @@ c) Voxel with x, y, z = (0.5, 0.4, 2.0).
 b) List the cells using point B.
 
 c) List cells using edge (A, B). How does this list correspond to your answers in parts a) and b) above?
-               
+
 8.6 Refer to **Figure 8-44**(e).
 
 a) How many boundary faces are there?

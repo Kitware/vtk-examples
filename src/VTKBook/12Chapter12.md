@@ -9,7 +9,7 @@ The visualization design process we go through is similar in each case. First, w
 Radiology is a medical discipline that deals with images of human anatomy. These images come from a variety of medical imaging devices, including X-ray, X-ray Computed Tomography (CT), Magnetic Resonance Imaging (MRI), and ultrasound. Each imaging technique, called an imaging modality, has particular diagnostic strengths. The choice of modality is the job of the radiologist and the referring physician. For the most part, radiologists deal with two-dimensional images, but there are situations when three-dimensional models can assist the radiologist's diagnosis. Radiologists have special training to interpret the two dimensional images and understand the complex anatomical relationships in these two-dimensional representations. However, in dealing with referring physicians and surgeons, the radiologist sometimes has difficulty communicating these relationships. After all, a surgeon works in three-dimensions during the planning and execution of an operation; moreover, they are much more comfortable looking at and working with three-dimensional models.
 
 <figure id="Figure 12-1">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure12-1.png?raw=true" width="640" alt="Figure 12-1">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-1.png?raw=true" width="640" alt="Figure 12-1">
   <figcaption style="color:blue"><b>Figure 12-1</b>. A CT slice through a human head.</figcaption>
 </figure>
 
@@ -116,7 +116,7 @@ iren->Start();
 ```
 
 <figure id="Figure 12-2">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Medical/TestMedicalDemo1.png?raw=true" width="640" alt="Figure 12-2">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Medical/TestMedicalDemo1.png?raw=true" width="640" alt="Figure 12-2">
   <figcaption style="color:blue"><b>Figure 12-2</b>. The skin extracted from a CT dataset of the head. <a href="../../Cxx/Medical/MedicalDemo1" title="MedicalDemo1"> See MedicalDemo1.cxx</a> and <a href="../../Python/Medical/MedicalDemo1" title="MedicalDemo1"> MedicalDemo1.py</a>.</figcaption>
 </figure>
 
@@ -125,7 +125,7 @@ To provide context for the isosurface an outline is created around the data. An 
 We can improve this visualization in a number of ways. First, we can choose a more appropriate color (and other surface properties) for the skin. We use the vtkProperty method SetDiffuseColor() to set the skin color to a fleshy tone. We also add a specular component to the skin surface. Next, we can add additional isosurfaces corresponding to various anatomical features. Here we choose to extract the bone surface by adding an additional pipeline segment. This consists of the filters vtkMarchingCubes, vtkPolyDataMapper, and vtkActor, just as we did with the skin. Finally, to improve rendering performance on our system, we create triangle strips from the output of the contouring process. This requires adding vtkStripper.
 
 <figure id="Figure 12-3">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Medical/TestMedicalDemo2.png?raw=true" width="640" alt="Figure 12-3">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Medical/TestMedicalDemo2.png?raw=true" width="640" alt="Figure 12-3">
   <figcaption style="color:blue"><b>Figure 12-3</b>. Skin and bone isosurfaces. <a href="../../Cxx/Medical/MedicalDemo2" title="MedicalDemo2"> See MedicalDemo2.cxx</a> and <a href="../../Python/Medical/MedicalDemo2" title="MedicalDemo2"> MedicalDemo2.py</a>.</figcaption>
 </figure>
 
@@ -184,7 +184,7 @@ vtkLookupTable *satLut = vtkLookupTable::New();
 ```
 
 <figure id="Figure 12-4">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Medical/TestMedicalDemo3.png?raw=true" width="640" alt="Figure 12-4">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Medical/TestMedicalDemo3.png?raw=true" width="640" alt="Figure 12-4">
   <figcaption style="color:blue"><b>Figure 12-4</b>. Composite image of three planes and translucent skin. <a href="../../Cxx/Medical/MedicalDemo3" title="MedicalDemo3"> See MedicalDemo3.cxx</a> and <a href="../../Python/Medical/MedicalDemo3" title="MedicalDemo3"> MedicalDemo3.py</a>.</figcaption>
 </figure>
 
@@ -239,7 +239,7 @@ The previous example described how to create models from gray-scale medical imag
 For our purposes we assume that someone (or many graduate students) have laboriously labeled each pixel in each slice of a volume of data with a tissue identifier. This identifier is an integer number that describes which tissue class each pixel belongs to. For example, we may be given a series of MRI slices of the knee with tissue numbers defining the meniscus, femur, muscles, and so forth. **Figure 12-5** shows two representations of a slice from a volume acquired from a patient's knee. The image on the left is the original MRI slice; the image on the right contains tissue labels for a number of important organs. The bottom image is a composite of the two images.
 
 <figure id="Figure 12-5">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure12-5.png?raw=true" width="640" alt="Figure 3-1">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-5.png?raw=true" width="640" alt="Figure 3-1">
   <figcaption style="color:blue"><b>Figure 12-5</b>. Magnetic Resonance Image  of a knee(left); segmented tissue(right); composite (bottom).(Data and segmentation courtesy of Brigham and Women's Hospital Surgical Planning Lab.)</figcaption>
 </figure>
 
@@ -250,7 +250,7 @@ Notice the difference in the information presented by each representation. The o
 To demonstrate the processing of segmented data we will use a dataset derived from a frog. This data was prepared at Lawrence Berkeley National Laboratories and is included with their permission on the CD-ROM accompanying this book. The data was acquired by physically slicing the frog and photographing the slices. The original segmented data is in the form of tissue masks with one file per tissue. There are 136 slices per tissue and 15 different tissues. Each slice is 470 by 500 pixels. (To accommodate the volume readers we have in VTK, we processed the mask files and combined them all in one file for each slice.) We used integer numbers 1--15 to represent the 15 tissues. **Figure 12-6** shows an original slice, a labeled slice, and a composite of the two representations.
 
 <figure id="Figure 12-6">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestFrogSlice.png?raw=true" width="640" alt="Figure 12-6">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestFrogSlice.png?raw=true" width="640" alt="Figure 12-6">
   <figcaption style="color:blue"><b>Figure 12-6</b>. Photographic slice of frog (upper left), segmented frog (upper right) and composite of photo and segmentation (bottom). The purple color represents the stomach and the kidneys are yellow. <a href="../../Cxx/Visualization/FrogSlice" title="FrogSlice"> See FrogSlice.cxx</a> and <a href="../../Python/Visualization/FrogSlice" title="FrogSlice"> FrogSlice.py</a>.</figcaption>
 </figure>
 
@@ -278,7 +278,7 @@ plus possibly many more parameters to control decimation, smoothing, and so fort
 We start by developing Tcl scripts to process the volume data. In these scripts, we use the convention that user-specified variables are in capital letters. First we show the elements of the pipeline and subsequently show sample files that extract 3D models of the frog's tissues.
 
 <figure id="Figure 12-7">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestViewFrogBoth.png?raw=true" width="640" alt="Figure 12-7">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestViewFrogBoth.png?raw=true" width="640" alt="Figure 12-7">
   <figcaption style="color:blue"><b>Figure 12-7</b>. The frog's brain. Model extracted without smoothing (left) and with smoothing (right). <a href="../../Cxx/Visualization/ViewFrogBoth" title="ViewFrogBoth"> See ViewFrogBoth.cxx</a> and <a href="../../Python/Visualization/ViewFrogBoth" title="ViewFrogBoth"> ViewFrogBoth.py</a>.</figcaption>
 </figure>
 
@@ -291,7 +291,7 @@ The SetTransform() method defines how to arrange the data in memory. Medical ima
 All the other parameters are self-explanatory except for the last. In this script, we know that the pipeline will only be executed once. To conserve memory, we invoke the ReleaseDataFlagOn() method. This allows the VTK pipeline to release data once it has been processed by a filter. For large medical datasets, this can mean the difference between being able to process a dataset or not.
 
 <figure id="Figure 12-8">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure12-8.png?raw=true" width="640" alt="Figure12-8">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-8.png?raw=true" width="640" alt="Figure12-8">
   <figcaption style="color:blue"><b>Figure 12-8</b>. The segmented volume to triangle pipeline. Volume passes through image pipeline before isosurface extraction..</figcaption>
 </figure>
 
@@ -364,7 +364,7 @@ if {$GAUSSIAN_STANDARD_DEVIATION != "0 0 0"} {
 
 **Generate Triangles**
 
-Now we can process the volume with marching cubes just as though we had obtained gray-scale data from a scanner. We added a few more bells and whistles to the pipeline. The filter runs faster if we turn off gradient and normal calculations. Marching cubes normally calculates vertex normals from the gradient of the volume data. In our pipeline, we have concocted a gray-scale representation and will subsequently decimate the triangle mesh and smooth the resulting vertices. This processing invalidates the normals that are calculated by marching cubes. 
+Now we can process the volume with marching cubes just as though we had obtained gray-scale data from a scanner. We added a few more bells and whistles to the pipeline. The filter runs faster if we turn off gradient and normal calculations. Marching cubes normally calculates vertex normals from the gradient of the volume data. In our pipeline, we have concocted a gray-scale representation and will subsequently decimate the triangle mesh and smooth the resulting vertices. This processing invalidates the normals that are calculated by marching cubes.
 
 ``` tcl
 vtkMarchingCubes mcubes
@@ -425,7 +425,7 @@ Triangle strips are a compact representation of large numbers of triangles. This
 
 ``` tcl
 vtkStripper stripper
-  stripper SetInputConnection [normals GetOutputPort] 
+  stripper SetInputConnection [normals GetOutputPort]
   [stripper GetOutput] ReleaseDataFlagOn
 ```
 
@@ -451,7 +451,7 @@ causes the pipeline to execute. In practice we do a bit more than just Update th
 
 **Specifying Parameters for the Pipeline**
 
-All of the variables mentioned above must be defined for each tissue to be processed. The parameters fall into two general categories. Some are specific to the particular study while some are specific to each tissue. For the frog, we collected the study specific parameters in a file frog.tcl that contains: 
+All of the variables mentioned above must be defined for each tissue to be processed. The parameters fall into two general categories. Some are specific to the particular study while some are specific to each tissue. For the frog, we collected the study specific parameters in a file frog.tcl that contains:
 
 ``` tcl
 set SLICE_ORDER hfsi
@@ -479,7 +479,7 @@ set NAME liver
 set TISSUE 10
 set START_SLICE 25
 set END_SLICE 126
-set VOI "167 297 154 304 $START_SLICE $END_SLICE" 
+set VOI "167 297 154 304 $START_SLICE $END_SLICE"
 source frogSegmentation.tcl
 ```
 
@@ -573,15 +573,15 @@ wm withdraw .
 
 <figure id="Figure 12-9">
  <figure id="Figure 12-9a">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestViewFrogSkinAndTissue.png?raw=true" width="640" alt="Figure 12-9a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestViewFrogSkinAndTissue.png?raw=true" width="640" alt="Figure 12-9a">
   <figcaption style="color:blue">(a) All frog parts and translucent skin.</figcaption>
  </figure>
  <figure id="Figure 12-9b">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestViewFrog.png?raw=true" width="640" alt="Figure 12-9b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestViewFrog.png?raw=true" width="640" alt="Figure 12-9b">
   <figcaption style="color:blue">(b) The comnplete frog without skin.</figcaption>
  </figure>
 <figure id="Figure 12-9c">
- <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestViewFrogA.png?raw=true" width="640" alt="Figure 12-9c">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestViewFrogA.png?raw=true" width="640" alt="Figure 12-9c">
  <figcaption style="color:blue">(c) No skin or skeleton.</figcaption>
 </figure>
 <figcaption style="color:blue"><b>Figure 12-9</b>. Various frog images. (a) <a href="../../Cxx/Visualization/ViewFrogSkinAndTissue" title="ViewFrogSkinAndTissue"> See ViewFrogSkinAndTissue.cxx</a> and <a href="../../Python/Visualization/ViewFrogSkinAndTissue" title="ViewFrogSkinAndTissue"> ViewFrogSkinAndTissue.py</a>.; (b).<a href="../../Cxx/Visualization/ViewFrog" title="ViewFrog"> See ViewFrog.cxx</a> and <a href="../../Python/Visualization/ViewFrog" title="ViewFrog"> ViewFrog.py</a>.; (c)<a href="../../Cxx/Visualization/ViewFrogA" title="ViewFrogA"> See ViewFrogA.cxx</a> and <a href="../../Python/Visualization/ViewFrogA" title="ViewFrogA"> ViewFrogA.py</a>.</figcaption>
@@ -630,10 +630,10 @@ Data values for stocknASCII\\n\\nDATASET POLYDATA"}
 { if (m == 3) d += 59}
 { if (m == 4) d += 90}
 { if (m == 5) d += 120}
-{ if (m == 6) d += 151} 
-{ if (m == 7) d += 181} 
-{ if (m == 8) d += 212} 
-{ if (m == 9) d += 243} 
+{ if (m == 6) d += 151}
+{ if (m == 7) d += 181}
+{ if (m == 8) d += 212}
+{ if (m == 9) d += 243}
 { if (m == 10) d += 273}
 { if (m == 11) d+= 304}
 { if (m == 12) d += 334}
@@ -751,7 +751,7 @@ proc AddStock {prefix name x y z} {
     [$prefix.StockActor GetProperty] SetDiffuse 0.5
 
   apf AddInput [$prefix.TransformFilter GetOutput]
-  
+
   ren1 AddActor $prefix.StockActor
   ren1 AddActor $prefix.LabelActor
   $prefix.LabelActor SetCamera [ren1 GetActiveCamera]
@@ -791,7 +791,7 @@ Back in the main body of the Tcl script, we invoke the AddStock procedure four t
 A legitimate complaint with **Figure 12-10** is that the changing width of the tube makes it more difficult to see the true shape of the price verses the time curve. We can solve this problem by using a ribbon filter followed by a linear extrusion filter, instead of the tube filter. The ribbon filter will create a ribbon whose width will vary in proportion to the scalar value of the data. We then use  the linear extrusion filter to extrude this ribbon along the *y*-axis so that it has a constant thickness. The resulting views are shown in **Figure 12-11**.
 
 <figure id="Figure 12-11">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestStocks.png?raw=true" width="640" alt="Figure 12-11">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestStocks.png?raw=true" width="640" alt="Figure 12-11">
   <figcaption style="color:blue"><b>Figure 12-11</b>. Two more views of the stock case study. Here the tube filter has been replaced by a ribbon filter followed with a linear extrusion filter.<a href="../../Cxx/VisualizationAlgorithms/Stocks" title="Stocks"> See Stocks.cxx</a> and <a href="../../Python/VisualizationAlgorithms/Stocks" title="Stocks"> Stocks.py</a>.</figcaption>
 </figure>
 
@@ -800,7 +800,7 @@ A legitimate complaint with **Figure 12-10** is that the changing width of the t
 The *Visualization Toolkit* has some useful geometric modelling capabilities. One of the most powerful features is implicit modelling. In this example we show how to use polygonal descriptions of objects and create "blobby" models of them using the implicit modelling objects in VTK. This example generates a logo for the *Visualization Toolkit* from polygonal representations of the letters *v*, *t*, and *k*.
 
 <figure id="Figure 12-12">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure12-12.png?raw=true" width="640" alt="Figure12-12">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-12.png?raw=true" width="640" alt="Figure12-12">
   <figcaption style="color:blue"><b>Figure 12-12</b>. The visualization pipeline for the VTK blobby logo.</figcaption>
 </figure>
 
@@ -898,7 +898,7 @@ blobbyLogo->SetMapper(blobbyLogoMapper);
 blobbyLogo->SetProperty (banana);
 ```
 
-To improve the look of our resulting visualization, we define a couple of organic colors. Softer colors show up better on some electronic media (e.g., VHS video tape) and are pleasing to the eye. 
+To improve the look of our resulting visualization, we define a couple of organic colors. Softer colors show up better on some electronic media (e.g., VHS video tape) and are pleasing to the eye.
 
 ``` c++
 vtkProperty *tomato = vtkProperty::New();
@@ -916,7 +916,7 @@ vtkProperty *banana = vtkProperty::New();
 These colors are then assigned to the appropriate actors.
 
 <figure id="Figure 12-13">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestBlobbyLogo.png?raw=true" width="640" alt="Figure 12-13">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestBlobbyLogo.png?raw=true" width="640" alt="Figure 12-13">
   <figcaption style="color:blue"><b>Figure 12-13</b>. A logo created with &#118;tkImplicitModeller.<a href="../../Cxx/Visualization/BlobbyLogo" title="BlobbyLogo"> See BlobbyLogo.cxx</a> and <a href="../../Python/Visualization/BlobbyLogo" title="BlobbyLogo"> BlobbyLogo.py</a>.</figcaption>
 </figure>
 
@@ -980,7 +980,7 @@ vtkActor floorActor
   [floorActor GetProperty] SetColor 0 0 0
   [floorActor GetProperty] SetRepresentationToWireframe
 
-##   the post 
+##   the post
 vtkStructuredGridGeometryFilter postComp
   postComp SetExtent 10 10 0 75 0 37
   postComp SetInputConnection [pl3d GetOutputPort]
@@ -1021,7 +1021,7 @@ vtkRenderWindowInteractor iren
   iren SetRenderWindow renWin
 
 #   Add the actors to the renderer, set the background and size
-#   
+#
 ren1 AddActor outlineActor
 ren1 AddActor floorActor
 ren1 AddActor postActor
@@ -1029,7 +1029,7 @@ ren1 AddActor fanActor
 ```
 
 <figure id="Figure 12-14">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestLOxGrid.png?raw=true" width="640" alt="Figure 12-14">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestLOxGrid.png?raw=true" width="640" alt="Figure 12-14">
   <figcaption style="color:blue"><b>Figure 12-14</b>. Portion of computational grid for the LOx post.<a href="../../Cxx/VisualizationAlgorithms/LOxGrid" title="LOxGrid"> See LOxGrid.cxx</a> and <a href="../../Python/VisualizationAlgorithms/LOxGrid" title="LOxGrid"> LOxGrid.py</a>.</figcaption>
 </figure>
 
@@ -1048,7 +1048,7 @@ floorMapper ScalarVisibilityOn
 floorMapper SetScalarRange [[pl3d GetOutput] GetScalarRange]
 ```
 
-Now, we explore the vector field using vtkPointSource. Recall that this object generates a random cloud of points around a spherical center point. We will use this cloud of points to generate stream-lines. We place the center of the cloud near the post since this is where the velocity seems to be changing most rapidly. During this exploration, we use streamlines rather than streamtubes for reasons of efficiency. The Tcl code is as follows. 
+Now, we explore the vector field using vtkPointSource. Recall that this object generates a random cloud of points around a spherical center point. We will use this cloud of points to generate stream-lines. We place the center of the cloud near the post since this is where the velocity seems to be changing most rapidly. During this exploration, we use streamlines rather than streamtubes for reasons of efficiency. The Tcl code is as follows.
 
 ``` tcl
 #   spherical seed points
@@ -1070,18 +1070,18 @@ vtkActor tubesActor
 ```
 
 <figure id="Figure 12-15">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestLOxSeeds.png?raw=true" width="640" alt="Figure 12-15">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestLOxSeeds.png?raw=true" width="640" alt="Figure 12-15">
   <figcaption style="color:blue"><b>Figure 12-15</b>. Streamlines seeded with spherical cloud of points. Four separate cloud positions are shown. <a href="../../Cxx/VisualizationAlgorithms/LOxSeeds" title="LOxSeeds"> See LOxSeeds.cxx</a> and <a href="../../Python/VisualizationAlgorithms/LOxSeeds" title="LOxSeeds"> LOxSeeds.py</a>.</figcaption>
 </figure>
 
 **Figure 12-15** shows streamlines seeded from four locations along the post. Notice how the structure of the flow begins to emerge as the starting positions for the streamlines are moved up and down in front of the post. This is particularly true if we do this interactively; the mind assembles the behavior of the streamlines into a global understanding of the flow field.
 
 <figure id="Figure 12-16">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestLOx.png?raw=true" width="640" alt="Figure 12-16">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestLOx.png?raw=true" width="640" alt="Figure 12-16">
   <figcaption style="color:blue"><b>Figure 12-16</b>. Streamtubes created by using the computational grid just in front of the post as a source for seeds.<a href="../../Cxx/VisualizationAlgorithms/LOx" title="LOx"> See LOx.cxx</a> and <a href="../../Python/VisualizationAlgorithms/LOx" title="LOx"> LOx.py</a>.</figcaption>
 </figure>
 
-For a final example, we use the computational grid to seed streamlines and then generate streamtubes as is shown in **Figure 12-16**. A nice feature of this approach is that we generate more streamlines in regions where the analyst constructed a denser grid. The only change we need to make is to replace the rake from the sphere source with a portion of the grid geometry. 
+For a final example, we use the computational grid to seed streamlines and then generate streamtubes as is shown in **Figure 12-16**. A nice feature of this approach is that we generate more streamlines in regions where the analyst constructed a denser grid. The only change we need to make is to replace the rake from the sphere source with a portion of the grid geometry.
 
 ``` tcl
 vtkStructuredGridGeometryFilter seedsComp
@@ -1114,7 +1114,7 @@ The results of one such analysis are shown in **Figure 12-17**. The polymer was 
 **Figure 12-17** illustrates 10 steps of one analysis. The color of the parison indicates its thickness. Using a rainbow scale, red areas are thinnest while blue regions are thickest. Our visualization shows clearly one problem with the analysis technique we are using. Note that while the nodes (i.e., points) of the finite element mesh are prevented from passing through the mold, the interior of the triangular elements are not. This is apparent from the occlusion of the mold wireframe by the parison mesh.
 
 <figure id="Figure 12-17">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestBlow.png?raw=true" width="640" alt="Figure 12-17">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestBlow.png?raw=true" width="640" alt="Figure 12-17">
   <figcaption style="color:blue"><b>Figure 12-17</b>. Ten frames from a blow molding finite element analysis. Mold halves (shown in wireframe) are closed around a parison as the parison is inflated. Coloring indicates thickness-red areas are thinner than blue. <a href="../../Cxx/Visualization/Blow" title="Blow"> See Blow.cxx</a> and <a href="../../Python/Visualization/Blow" title="Blow"> Blow.py</a>.</figcaption>
 </figure>
 
@@ -1125,41 +1125,41 @@ To generate these images, we used a Tcl script shown in **Figure 12-18** and **F
 Visualization can be used to display algorithms and data structures. Representing this information often requires creative work on the part of the application programmer. For example, Robertson et al. <em style="color:green;background-color: white">\[Robertson91\]</em> have shown 3D techniques for visualizing directory structures and navigating through them. Their approach involves building three dimensional models (the so-called "cone trees") to represent files, directories, and associations between files and directories. Similar approaches can be used to visualize stacks, queues, linked lists, trees, and other data structures.
 
 <figure id="Figure 12-18">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure12-18.png?raw=true" width="640" alt="Figure12-18">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-18.png?raw=true" width="640" alt="Figure12-18">
   <figcaption style="color:blue"><b>Figure 12-18</b>. Tcl script to generate blow molding image. Network topology and initial portion of script are shown (Part one of two)</figcaption>
 </figure>
 
 In this example we will visualize the operation of the recursive Towers of Hanoi puzzle. In this puzzle there are three pegs ( **Figure 12-20** ). In the initial position there are one or more disks (or pucks) of varying diameter on the pegs. The disks are sorted according to disk diameter, so that the largest disk is on the bottom, followed by the next largest, and so on. The goal of the puzzle is to extract mold from mesh using connectivity vtkConnectivityFilter move the disks from one peg to another, moving the disks one at a time, and never placing a larger disk on top of a smaller disk.
 
 <figure id="Figure 12-19">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure12-19.png?raw=true" width="640" alt="Figure12-19">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-19.png?raw=true" width="640" alt="Figure12-19">
   <figcaption style="color:blue"><b>Figure 12-19</b>. Tcl script to generate blow molding image (Part two of two).</figcaption>
 </figure>
 
 
 <figure id="Figure 12-20">
  <figure id="Figure 12-20a">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestHanoiInitial.png?raw=true" width="640" alt="Figure 12-20a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestHanoiInitial.png?raw=true" width="640" alt="Figure 12-20a">
   <figcaption style="color:blue">(a) Initial</figcaption>
  </figure>
 <figure id="Figure 12-20b">
- <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestHanoiIntermediate.png?raw=true" width="640" alt="Figure 12-20b">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestHanoiIntermediate.png?raw=true" width="640" alt="Figure 12-20b">
  <figcaption style="color:blue">(b) Intermediate</figcaption>
 </figure>
 <figure id="Figure 12-20c">
- <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestHanoi.png?raw=true" width="640" alt="Figure 12-20c">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestHanoi.png?raw=true" width="640" alt="Figure 12-20c">
 <figcaption style="color:blue">(c) Final</figcaption>
 </figure>
 <figcaption style="color:blue"><b>Figure 12-20</b>. Towers of Hanoi. (a) Initial configuration. (b) Intermediate configuration. (c) Final configuration. (a) <a href="../../Cxx/Visualization/HanoiInitial" title="HanoiInitial"> See HanoiInitial.cxx</a> and <a href="../../Python/Visualization/HanoiInitial" title="HanoiInitial"> HanoiInitial.py</a>.; (b).<a href="../../Cxx/Visualization/HanoiIntermediate" title="HanoiIntermediate"> See HanoiIntermediate.cxx</a> and <a href="../../Python/Visualization/HanoiIntermediate" title="HanoiIntermediate"> HanoiIntermediate.py</a>.; (c)<a href="../../Cxx/Visualization/Hanoi" title="Hanoi"> See Hanoi.cxx</a> and <a href="../../Python/Visualization/Hanoi" title="Hanoi"> Hanoi.py</a>.</figcaption>
 </figure>
 
 <figure id="Figure 12-21">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure12-21.png?raw=true" width="640" alt="Figure12-21">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-21.png?raw=true" width="640" alt="Figure12-21">
   <figcaption style="color:blue"><b>Figure 12-21</b>. C++ code for recursive solution of Towers of Hanoi.</figcaption>
 </figure>
 
 <figure id="Figure 12-22">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure12-22.png?raw=true" width="640" alt="Figure12-22">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure12-22.png?raw=true" width="640" alt="Figure12-22">
   <figcaption style="color:blue"><b>Figure 12-22</b>. Function to move disks from one peg to another in the Towers of Hanoi example. The resulting motion is in small steps with an additional flip of the disk.</figcaption>
 </figure>
 
@@ -1191,7 +1191,7 @@ The case studies presented in the chapter rely on having interesting data to vis
 
 In the stock case study we used a programming tool called AWK to convert our data into a form suitable for VTK. More information on AWK can be found in *The AWK Programming Language* <em style="color:green;background-color: white">\[Aho88\]</em>. Another popular text processing languages is Perl <em style="color:green;background-color: white">\[Perl95\]</em>.
 
-If you would like to know more about information visualization you can start with the references listed here <em style="color:green;background-color: white">\[Becker95\]</em> <em style="color:green;background-color: white">\[Ding90\]</em> <em style="color:green;background-color: white">\[Eick93\]</em> <em style="color:green;background-color: white">\[Feiner88\]</em> <em style="color:green;background-color: white">\[Johnson91\]</em> <em style="color:green;background-color: white">\[Robertson91\]</em>. This is a relatively new field but will certainly grow in the near future. 
+If you would like to know more about information visualization you can start with the references listed here <em style="color:green;background-color: white">\[Becker95\]</em> <em style="color:green;background-color: white">\[Ding90\]</em> <em style="color:green;background-color: white">\[Eick93\]</em> <em style="color:green;background-color: white">\[Feiner88\]</em> <em style="color:green;background-color: white">\[Johnson91\]</em> <em style="color:green;background-color: white">\[Robertson91\]</em>. This is a relatively new field but will certainly grow in the near future.
 
 ## 12.10 References
 
@@ -1202,7 +1202,7 @@ A. V. Aho, B. W. Kernighan, and P. J. Weinberger. *The AWK Programming Language*
 A. V. Aho, J. E. Hopcroft, and J. D. Ullman. *Data Structures and Algorithm* s. AddisonWesley, Reading, MA, 1983.
 
 <em style="color:green;background-color: white">\[Becker95\]</em>
-R. A. Becker, S. G. Eick, and A. R. Wilks. "Visualizing Network Data." *IEEE Transactions on Visualization and Graphics*. 1(1):16--28,1995. 
+R. A. Becker, S. G. Eick, and A. R. Wilks. "Visualizing Network Data." *IEEE Transactions on Visualization and Graphics*. 1(1):16--28,1995.
 
 <em style="color:green;background-color: white">\[deLorenzi93\]</em>
 H. G. deLorenzi and C. A. Taylor. "The Role of Process Parameters in Blow Molding and Correlation of 3-D Finite Element Analysis with Experiment." *International Polymer Processing.* 3(4):365--374, 1993.
@@ -1240,7 +1240,7 @@ b)  vtkTransformFilter.
 
 c)  Reader transformations.
 
-12.2 Modify the last example found in the medical application ( Medical3.cxx ) to use vtkImageDataGeometryFilter instead of vtkImageActor. Compare the performance of using geometry with using texture. How does the performance change as the resolution of the volume data changes? 
+12.2 Modify the last example found in the medical application ( Medical3.cxx ) to use vtkImageDataGeometryFilter instead of vtkImageActor. Compare the performance of using geometry with using texture. How does the performance change as the resolution of the volume data changes?
 
 12.3 Modify the last medical example ( Medical3.cxx ) to use v tkTexture and vtkPlaneSource instead of vtkImageActor.
 
@@ -1248,7 +1248,7 @@ c)  Reader transformations.
 
 12.5 Combine the two scripts frogSegmentation.tcl and marchingFrog.tcl into one script that will handle either segmented or grayscale files. What other parameters and pipeline components might be useful in general for this application?
 
-12.6 Create polygonal / line stroked models of your initials and build your own logo. Experiment with different transformations. 
+12.6 Create polygonal / line stroked models of your initials and build your own logo. Experiment with different transformations.
 
 12.7 Enhance the appearance of Towers of Hanoi visualization.
 

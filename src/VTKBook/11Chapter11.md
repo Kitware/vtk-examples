@@ -3,21 +3,21 @@
 **T**he early 1990s established the widespread use and accessibility of the World Wide Web. Once a network used primarily by researchers and universities, the Web has become something that is used by people throughout the world. The effects of this transformation have been significant, ranging from personal home pages with static images and text, to professional Web pages embedding animation and virtual reality. This chapter discusses some of those changes and describes how the World Wide Web can be used to make visualization more accessible, interactive, and powerful. Topics covered include the advantages and disadvantages of client-side versus server-side visualization, VRML, and Java3D, interwoven with demonstration examples.
 
 ## 11.1 Motivation
-Before describing in detail how to perform visualization over the Web, it is important to understand what we expect to gain. Clearly people have been visualizing data prior to the invention of the Web, but what the Web adds is the ability for people throughout the world to share information quickly and efficiently. Like all successful communication systems, the Web enables people to interact and share information more efficiently compared to other methods. In many ways the Web shares the characteristic of computer visualization in its ability to communicate large amounts of data. For that reason, computer graphics and visualization are now vital parts of the Web, and are becoming widespread in their application.               
+Before describing in detail how to perform visualization over the Web, it is important to understand what we expect to gain. Clearly people have been visualizing data prior to the invention of the Web, but what the Web adds is the ability for people throughout the world to share information quickly and efficiently. Like all successful communication systems, the Web enables people to interact and share information more efficiently compared to other methods. In many ways the Web shares the characteristic of computer visualization in its ability to communicate large amounts of data. For that reason, computer graphics and visualization are now vital parts of the Web, and are becoming widespread in their application.
 
-To demonstrate these concepts we provide a simple example that illustrates the usefulness of the Web, and leads us into our first important topic: client-side versus server-side visualization. 
+To demonstrate these concepts we provide a simple example that illustrates the usefulness of the Web, and leads us into our first important topic: client-side versus server-side visualization.
 
-One common problem for researchers has been how to share or publish results. Typically, this involved having one site perform the research, interact with the data, form conclusions, and then publish the results as a report. The report might include a few pictures and possibly even a short animation. Obtaining access to the report might be through a journal or conference. Subsequently, co-workers at other sites would read the report and respond via verbal communication or formal articles. 
+One common problem for researchers has been how to share or publish results. Typically, this involved having one site perform the research, interact with the data, form conclusions, and then publish the results as a report. The report might include a few pictures and possibly even a short animation. Obtaining access to the report might be through a journal or conference. Subsequently, co-workers at other sites would read the report and respond via verbal communication or formal articles.
 
-While certainly a viable means of sharing information, there are two important shortcomings in such a scenario. First, the report does not allow another researcher to interact with the visualizations. They are static pictures or pre-recorded animations. There is no opportunity to look from a different angle or change the parameters of the visualization. Second, access to the report may be limited or untimely. For example, some journals require as much as two years to accept, review, and publish an article. This time delay is too long for many technology-driven fields such as medicine, computers, or business. Such delays in receiving information can result in fruitless research or a failed business. 
+While certainly a viable means of sharing information, there are two important shortcomings in such a scenario. First, the report does not allow another researcher to interact with the visualizations. They are static pictures or pre-recorded animations. There is no opportunity to look from a different angle or change the parameters of the visualization. Second, access to the report may be limited or untimely. For example, some journals require as much as two years to accept, review, and publish an article. This time delay is too long for many technology-driven fields such as medicine, computers, or business. Such delays in receiving information can result in fruitless research or a failed business.
 
-Using the Web this scenario changes significantly. It is now possible to create reports so that other researchers can interact directly with the data, including visualizing the results in an alternative form. The Web also provides the opportunity to publish results immediately so that anyone with Web access can view them. Additionally, results can be modified as your work progresses so that they are always up to date. 
+Using the Web this scenario changes significantly. It is now possible to create reports so that other researchers can interact directly with the data, including visualizing the results in an alternative form. The Web also provides the opportunity to publish results immediately so that anyone with Web access can view them. Additionally, results can be modified as your work progresses so that they are always up to date.
 
-Another motivation for visualization over the Web is collaboration. If a researcher is performing a visualization of a dataset at one site, there are a number of hurdles preventing someone at another site from doing the same. For starters, the data, which could be sizable, must be copied, or sent from one site to the other. Then the software being used must be available at both sites which may not even be possible depending on the hardware available. The popularity of cross-platform systems such as AVS, IBM's Data Explorer, and VTK have helped this situation, but even then the software and data reside at both locations. This is frequently referred to as client-side visualization because all steps of the visualization are performed at the collaboration (or client) sites. In contrast, server-side visualization occurs when all of the visualization is done at one centralized location called the server. The results of the server-side visualization are then sent to collaboration sites. 
+Another motivation for visualization over the Web is collaboration. If a researcher is performing a visualization of a dataset at one site, there are a number of hurdles preventing someone at another site from doing the same. For starters, the data, which could be sizable, must be copied, or sent from one site to the other. Then the software being used must be available at both sites which may not even be possible depending on the hardware available. The popularity of cross-platform systems such as AVS, IBM's Data Explorer, and VTK have helped this situation, but even then the software and data reside at both locations. This is frequently referred to as client-side visualization because all steps of the visualization are performed at the collaboration (or client) sites. In contrast, server-side visualization occurs when all of the visualization is done at one centralized location called the server. The results of the server-side visualization are then sent to collaboration sites.
 
-The Web opens up the opportunity to perform mixed client/server visualization that has a number of benefits. First, let's consider the drawbacks to client-side only visualization. As mentioned in the preceding discussion, client-side visualization requires both the data and the software at the client. If the datasets are very large it may be impractical to transfer the data over the Web. Since the server doesn't know what the client is going to do with the data, all of the data must be sent. Additionally, the client may not have sufficient memory or performance to perform the visualization. The advantages of client-side visualization are that the user has complete control over the visualization and can interact with or modify it at will. 
+The Web opens up the opportunity to perform mixed client/server visualization that has a number of benefits. First, let's consider the drawbacks to client-side only visualization. As mentioned in the preceding discussion, client-side visualization requires both the data and the software at the client. If the datasets are very large it may be impractical to transfer the data over the Web. Since the server doesn't know what the client is going to do with the data, all of the data must be sent. Additionally, the client may not have sufficient memory or performance to perform the visualization. The advantages of client-side visualization are that the user has complete control over the visualization and can interact with or modify it at will.
 
-With server-side visualization the most significant loss is in interaction. A server-side only visualization is much like publishing a report. The clients have very little control over the images and animations it produces. The advantage is that the results are easily viewed from any client without requiring special hardware or software. As we will see in the remaining sections, the advantage of using recently developed Web technology is that we can mix server-, and client-side visualization much more readily than before, providing the benefits of both. 
+With server-side visualization the most significant loss is in interaction. A server-side only visualization is much like publishing a report. The clients have very little control over the images and animations it produces. The advantage is that the results are easily viewed from any client without requiring special hardware or software. As we will see in the remaining sections, the advantage of using recently developed Web technology is that we can mix server-, and client-side visualization much more readily than before, providing the benefits of both.
 
 ## 11.2 Early Web Visualization
 
@@ -26,7 +26,7 @@ While the World Wide Web received most of its attention in the early 1990s, its 
 This problem was quickly solved as Web browsers started to support other content types including animation formats such as MPEG, AVI, and QuickTime. Now a link in a HTML document can load an animation sequence for the user to view and interact with. The next step was to allow the client to control the generation of the animation sequence on the server. To facilitate this process, a mechanism for the client to send general information to the server was introduced. The Common Gateway Interface (CGI) along with HTML forms serves this purpose. In this two-pronged approach, an HTML form collects information from the client, passes it to the server that executes a CGI-BIN script, and then finally produces a result for the client to view.
 
 <figure id="Figure 11-1">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure11-1.png?raw=true" width="640" alt="Figure11-1">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure11-1.png?raw=true" width="640" alt="Figure11-1">
   <figcaption style="color:blue"><b>Figure 11-1</b>. MPEG visualization example.</figcaption>
 </figure>
 
@@ -46,7 +46,7 @@ Now let's use CGI and an HTML form to enable the client to change the isosurface
 
 
 <figure id="Figure 11-2">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure11-2.png?raw=true" width="640" alt="Figure11-2">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure11-2.png?raw=true" width="640" alt="Figure11-2">
   <figcaption style="color:blue"><b>Figure 11-2</b>. Example HTML form.</figcaption>
 </figure>
 
@@ -79,7 +79,7 @@ Once the client has submitted the form, the server will execute the `CGI-BIN` sc
 While these examples demonstrate a closed loop of interaction between the client and server, there are two remaining problems. First, this approach places the entire computational load on the server. While this may be viable for some applications, some servers literally receive millions of client requests a day, severely straining server resources. Second, while the process is interactive, the lag time between making a change and seeing the result can be considerable, depending on the length of the animation and the communication bandwidth. Better solutions are now available to improve interactivity.
 
 <figure id="Figure 11-3">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure11-3.png?raw=true" width="640" alt="Figure11-3">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure11-3.png?raw=true" width="640" alt="Figure11-3">
   <figcaption style="color:blue"><b>Figure 11-3</b>. A simple scene graph.</figcaption>
 </figure>
 
@@ -87,7 +87,7 @@ While these examples demonstrate a closed loop of interaction between the client
 
 HTML is a powerful tool for creating hypertext documents; however, it does not directly support 3D content. This limitation can be severe if we are interested in exploring 3D data, and do not know exactly what we wish to see, or what we wish to present to a user. As a result, an important development has been to create 3D worlds that the user can freely navigate. One application of this technology is Web content that allows customers to preview a hotel, resort, or vacation area by moving through a model representing the site. Such an application allows customers to preview a prospective business and directly experience what is available without relying on preconstructed views of the site.
 
-As a result of this need for greater interactivity, a new content type appeared referred to as the Virtual Reality Modeling Language (VRML). The idea behind VRML was to create a standard definition for transmitting 3D content over the Web. Having its origins in an early system called Labyrinth, which is in turn based on Reality Lab from Rendermorphics, it quickly evolved to the VRML 1.0 specification based on Open Inventor from Silicon Graphics. 
+As a result of this need for greater interactivity, a new content type appeared referred to as the Virtual Reality Modeling Language (VRML). The idea behind VRML was to create a standard definition for transmitting 3D content over the Web. Having its origins in an early system called Labyrinth, which is in turn based on Reality Lab from Rendermorphics, it quickly evolved to the VRML 1.0 specification based on Open Inventor from Silicon Graphics.
 
 A VRML 1.0 file (typically with a .wrl extension, abbreviated from world) contains a scene graph representation of a 3D world (e.g., a scene). Consider **Figure 11-3** which shows a simple scene. It is a directed graph that is traversed depth first from top to bottom with the content of the graph in its nodes (the circles). In this figure the top node is a group node that collects child nodes together. The light is a directional light node and the second group node represents an isosurface. The isosurface group node is represented by three children nodes: one to control the material properties, a general transformation, and finally the 3D geometry. VRML and Open Inventor support Geometry (e.g., isosurface) many different types of nodes including some support for animation. (See also ["Alternative Visual Programming Models"](/VTKBook/04Chapter4/#alternative-visual-programming-models) in [Chapter 4](/VTKBook/04Chapter4) for more information.)
 
@@ -253,7 +253,7 @@ public class App2 extends Applet
   vtkWarpVector warp = null;
   vtkGeometryFilter ds2poly = null;
   vtkCleanPolyData clean = null;
-  vtkPolyDataNormals normals = null; 
+  vtkPolyDataNormals normals = null;
   vtkVectorDot color = null;
   vtkDataSetMapper plateMapper = null;
   vtkPanel panel = null;
@@ -284,7 +284,7 @@ The resulting applet is shown in **Figure 11-4**.
 This demonstrates one of the advantages of using Java for Web visualization. VRML would require that the geometry of each vibrational mode be sent to the client for viewing. With Java and VTK the geometry can be sent once along with a set of scalar displacements for each vibrational mode. Then as the client switches between modes, the geometry can be modified quickly by the client without any additional network traffic. In fact the client could mix vibrational modes or perform an animation showing the vibration of the plate all without having to go back to the server, and without requiring much more data than a single VRML model of the plate. If the client decided to examine another geometry, say the vibrational modes of a disc, then it would likely return to the server for the new data. This is the flexibility that Java provides.
 
 <figure id="Figure 11-4">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure11-4.png?raw=true" width="640" alt="Figure11-4">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure11-4.png?raw=true" width="640" alt="Figure11-4">
   <figcaption style="color:blue"><b>Figure 11-4</b>. Two images from a Java (JNI) applet.</figcaption>
 </figure>
 
@@ -344,7 +344,7 @@ public class HelloUniverse extends Applet
     setLayout(new BorderLayout());
     Canvas3D c = new Canvas3D(graphicsConfig);
     add("Center", c);
-    // Create a simple scene and attach it to the virtual universe 
+    // Create a simple scene and attach it to the virtual universe
     BranchGroup scene = createSceneGraph();
     UniverseBuilder u = new UniverseBuilder(c);
     u.addBranchGraph(scene);
@@ -503,7 +503,7 @@ Then the same techniques are used to obtain the ROOT node of the scene graph. If
     return;
     }
   System.out.println("- Got the ROOT node: " + root_node);
-  
+
   // Get the ROOT node's add/removeChildren
   EventIns EventInMFNode addChildren;
   EventInMFNode removeChildren;
@@ -518,7 +518,7 @@ Then the same techniques are used to obtain the ROOT node of the scene graph. If
     return;
     }
 ```
-                 
+
 Using the EAI, VRML can be created from a Java string as shown in the following code. This allows us to create geometry on the fly and add it to the scene graph using the addChildren() handle obtained above. The handles support matching setValue() and getValue() methods that modify and interrogate the scene graph respectively.
 
 ``` java
@@ -538,7 +538,7 @@ String purple_sphere =
   " translation 0 3 0" +
   "}\n";
   try {
-    shape = browser.createVrmlFromString(purple_sphere); 
+    shape = browser.createVrmlFromString(purple_sphere);
     }
   catch (InvalidVrmlException e) {
     die("initScene: InvalidVrmlException: " + e);
@@ -563,7 +563,7 @@ The events for the two buttons are processed in the action() method. One increas
         float ascale[] = new float[3];
         ascale[0] = currentScale;
         ascale[1] = currentScale;
-        ascale[2] = currentScale; 
+        ascale[2] = currentScale;
         setScale.setValue(ascale);
         }
       else if (b == shrink_button) {
@@ -599,7 +599,7 @@ The last method in the applet draws a border around the two buttons when the app
 An excerpt from the VRML file has been included below. Note the use of the DEF keyword to name nodes that can then be accessed from Java. The resulting Java/VRML example can be seen in **Figure 11-5**.
 
 <figure id="Figure 11-5">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure11-5.png?raw=true" width="640" alt="Figure11-5">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure11-5.png?raw=true" width="640" alt="Figure11-5">
   <figcaption style="color:blue"><b>Figure 11-5</b>. Java and VRML combined using the EAI.</figcaption>
 </figure>
 
@@ -608,7 +608,7 @@ An excerpt from the VRML file has been included below. Note the use of the DEF k
 #VRML V2.0 utf8
 #
 Group {
-  children [ 
+  children [
     #
     # Some objects
     #
@@ -631,7 +631,7 @@ Group {
    }
   ]
 }
-```                 
+```
 
 ## 11.8 The Future of Web Visualization
 

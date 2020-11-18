@@ -37,15 +37,15 @@ In the examples that follow we will frequently use a simplified representation o
 
 <figure id="Figure 4-1">
  <figure id="Figure 4-1a">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestQuadricVisualization.png?raw=true" width="640" alt="Figure 4-1a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestQuadricVisualization.png?raw=true" width="640" alt="Figure 4-1a">
   <figcaption style="color:blue" (a)Quadric visualization <a></a> <a href="../../Cxx/Visualization/QuadricVisualization" title="QuadricVisualization"> See QuadricVisualization.cxx</a> and <a href="../../Python/Visualization/QuadricVisualization" title="QuadricVisualization"> QuadricVisualization.py</a>.</figcaption>
   </figure>
   <figure id="Figure 4-1b">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-1b.png?raw=true" width="640" alt="Figure4-1b">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-1b.png?raw=true" width="640" alt="Figure4-1b">
     <figcaption style="color:blue"> (b) Functional model</figcaption>
   </figure>
   <figure id="Figure 4-1c">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-1c.png?raw=true" width="640" alt="Figure4-1c">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-1c.png?raw=true" width="640" alt="Figure4-1c">
     <figcaption style="color:blue"> (c) Visualization network</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 4-1</b>. Visualizing a quadric function F(x,y,z) = c..</figcaption>
@@ -58,7 +58,7 @@ the object model describes which modules operate on it. But what *are*
 the objects in the system? At first glance, we have two choices (**Figure 4-2**).
 
 <figure id="Figure 4-2">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-2.png?raw=true" width="640" alt="Figure4-2">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-2.png?raw=true" width="640" alt="Figure4-2">
   <figcaption style="color:blue"><b>Figure 4-2</b>. Object model design choices. One basic choice is to combine processes and data stores into a single object. This is the usual object-oriented choice. Another choice creates separate data objects and process objects.</figcaption>
 </figure>
 
@@ -121,7 +121,7 @@ geometric representations. The input to a process object must be
 specified correctly for successful operation.
 
 <figure id="Figure 4-3">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-3.png?raw=true" width="640" alt="Figure4-3">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-3.png?raw=true" width="640" alt="Figure4-3">
   <figcaption style="color:blue"><b>Figure 4-3</b>. Maintaining compatible data type. (a) Single-type systems require no type checking. In multiple-type systems only compatible types can be connected together.</figcaption>
 </figure>
 
@@ -132,7 +132,7 @@ Another approach to maintain proper input type is to design typed systems. In ty
 The issue of multiplicity deals with the number of input data objects allowed, and the number of output data objects created during the operation of a process object (**Figure 4-4**). We know that all filter and mapper objects require at minimum one input data object, but in general these filters can operate sequentially across a list of input. Some filters may naturally require a specific number of inputs. A filter implementing boolean operations is one example. Boolean operations such as union or intersection are implemented on data values two at a time. However, even here more than two inputs may be defined as a recursive application of the operation to each input.
 
 <figure id="Figure 4-4">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-4.png?raw=true" width="640" alt="Figure4-4">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-4.png?raw=true" width="640" alt="Figure4-4">
   <figcaption style="color:blue"><b>Figure 4-4</b>. Multiplicity of input and output. (a) Definition of source, filter, and mapper objects. (b) Various types of input and output..</figcaption>
 </figure>
 
@@ -145,7 +145,7 @@ In the examples described so far, the visualization networks have been free of c
 **Figure 4-5** shows an example of a feedback loop in a visualization network. We seed a velocity field with an initial set of random points. A probe filter is used to determine the velocity (and possibly other data) at each point. Each point is then repositioned in the direction of its associated vector value, possibly using a scale factor to control the magnitude of motion. The process continues until the points exit the data set or until a maximum iteration count is exceeded.
 
 <figure id="Figure 4-5">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-5.png?raw=true" width="640" alt="Figure4-5">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-5.png?raw=true" width="640" alt="Figure4-5">
   <figcaption style="color:blue"><b>Figure 4-5</b>. Looping in a visualization network. This example implements linear integration. The sample points are created to initialize the looping process. The output of the integration filter is used in place of the sample points once the process begins.</figcaption>
 </figure>
 
@@ -164,7 +164,7 @@ For highest performance, the process objects in the visualization network must e
 We can control the execution of the network using either a demand-driven or event-driven approach. In the demand-driven approach, we execute the network only when output is requested, and only that portion of the network affecting the result. In the event-driven approach, every change to a process object or its input causes the network to re-execute. The advantage of the event driven approach is that the output is always up to date (except during short periods of computation). The advantage of the demand-driven approach is that large numbers of changes can be processed without intermediate computation (i.e., data is processed only after the request for data is received). The demand-driven approach minimizes computation and results in more interactive visualization networks.
 
 <figure id="Figure 4-6">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-6.png?raw=true" width="640" alt="Figure4-6">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-6.png?raw=true" width="640" alt="Figure4-6">
   <figcaption style="color:blue"><b>Figure 4-6</b>. Network execution. Parallel branches need not execute.</figcaption>
 </figure>
 
@@ -181,7 +181,7 @@ The disadvantage of the explicit approach is that each process object becomes de
 The explicit approach may be either demand-driven or event-driven. In the event-driven approach, the executive is notified whenever a change to an object occurs (typically in response to a user-interface event), and the network is immediately executed. In the demand-driven approach, the executive accumulates changes to object inputs and executes the network based on explicit user demand.
 
 <figure id="Figure 4-7">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-7.png?raw=true" width="640" alt="Figure4-7">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-7.png?raw=true" width="640" alt="Figure4-7">
   <figcaption style="color:blue"><b>Figure 4-7</b>. Explicit and implicit network execution.</figcaption>
 </figure>
 
@@ -194,7 +194,7 @@ Implicit control means that a process object executes only if its local input or
 Implicit network execution is naturally implemented using *demand-driven* control. Here network execution occurs only when output data is requested. Implicit network execution may also be event-driven if we simply request output each time an appropriate event is encountered (such as change to object parameter).
 
 <figure id="Figure 4-8">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-8.png?raw=true" width="640" alt="Figure4-8">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-8.png?raw=true" width="640" alt="Figure4-8">
   <figcaption style="color:blue"><b>Figure 4-8</b>. Examples of conditional execution. Depending upon range, data is mapped through different color lookup tables.</figcaption>
 </figure>
 
@@ -213,7 +213,7 @@ The conditional execution of visualization models (such as that shown **Figure 4
 Visualization is a demanding application, both in terms of computer memory and computational requirements. Data streams on the order of one megabyte to one gigabyte are not uncommon. Many visualization algorithms are computationally expensive, in part due to input size, but also due to the inherent algorithm complexity. In order to create applications that have reasonable performance, most visualization systems have various mechanisms to trade off memory and computation costs.
 
 <figure id="Figure 4-9">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-9.png?raw=true" width="640" alt="Figure4-9">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-9.png?raw=true" width="640" alt="Figure4-9">
   <figcaption style="color:blue"><b>Figure 4-9</b>. Comparison of static versus dynamic memory models for typical network. Execution begins when output is requested from objects *C* and *D*. In more complex dynamic models, we can prevent *B* from executing twice by performing a more thorough dependency analysis image.</figcaption>
 </figure>
 
@@ -226,7 +226,7 @@ An alternative approach is to save intermediate results only as long as they are
 We term these two approaches as *static* and *dynamic* memory models. In the static model intermediate data is saved to reduce overall computation. In the dynamic model intermediate data is discarded when it is no longer needed. The static model serves best when small, variable portions of the network re-execute, and when the data sizes are manageable by the computer system. The dynamic model serves best when the data flows are large, or the same part of the network executes each time. Often, it is desirable to combine both the static and dynamic models into the same network. If an entire leg of the network must execute each time, it makes no sense to store intermediate results, since they are never reused. On the other hand, we may wish to save an intermediate result at a branch point in the network, since the data will more likely be reused. A comparison of the static and dynamic memory model for a specific network is shown in **Figure 4-9**.
 
 <figure id="Figure 4-10">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-10.png?raw=true" width="640" alt="Figure4-10">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-10.png?raw=true" width="640" alt="Figure4-10">
   <figcaption style="color:blue"><b>Figure 4-10</b>. Reference counting to conserve memory resource. Each filter A, B, and C shares a common point representation. Other data is local to each object. </figcaption>
 </figure>
 
@@ -261,7 +261,7 @@ In real-world applications the pipeline design described thus far may not adequa
 **Large Data.** Previous discussions relative to the visualization pipeline have assumed that the size of a particular dataset does not exceed the total memory resource of a computer system. However, with modern dataset sizes pushing into the terabyte and even petabyte range, a typical desktop computer system is incapable of processing such datasets. Thus alternative strategies must be adopted when processing large data. One such approach is based on breaking data into pieces, and then *streaming* the pieces through the visualization pipeline <em style="color:green;background-color: white">\[Martin2001\]</em>. **Figure 4-11** illustrates how a dataset can be divided into pieces.
 
 <figure id="Figure 4-11">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-11.png?raw=true" width="640" alt="Figure4-11">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-11.png?raw=true" width="640" alt="Figure4-11">
   <figcaption style="color:blue"><b>Figure 4-11</b>. Dividing a sphere into a piece (red) with ghost level cells and points (blue and green).</figcaption>
 </figure>
 
@@ -292,7 +292,7 @@ The advanced design re-introduces the notion of an executive (see
 ["Executing the Pipeline"](/VTKBook/04Chapter4/#44-executing-the-pipeline)). However, the design differs from that of **Figure 4-7**. As that figure illustrated, a single, centralized executive introduces dependencies into the pipeline that will not scale as pipeline complexity increases, or in parallel processing applications. In the advanced design, we assume *multiple* executives, typically one per filter. In  some cases the executive may control multiple filters. This is particularly useful if the filters are interdependent or complex execution strategies are required. Different classes of executive can implement different execution strategies, for example a demand-driven, streaming pipeline is one such strategy. Other important classes include executives that coordinate the execution of filters on composite datasets.
 
 <figure id="Figure 4-12">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-12.png?raw=true" width="640" alt="Figure4-12">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-12.png?raw=true" width="640" alt="Figure4-12">
   <figcaption style="color:blue"><b>Figure 4-12</b>. As the execution model becomes more complex, execution strategies are separated from the data and process objects as separate classes.</figcaption>
 </figure>
 
@@ -322,7 +322,7 @@ Many visualization systems lie between these two extremes. These typically use a
 
 ### Alternative Visual Programming Models
 
-There are two other graphics and visualization programming models that bear mentioning. These are *scene graphs* and the *spreadsheet* model. 
+There are two other graphics and visualization programming models that bear mentioning. These are *scene graphs* and the *spreadsheet* model.
 
 Scene graphs are typically found in 3D graphics systems such as Open Inventor <em style="color:green;background-color: white">\[Wernecke94\]</em>. Scene graphs are acyclic tree-structures that represent objects, or nodes, in an order defined by the tree layout. The nodes may be geometry (called shape nodes), graphics properties, transformations, manipulators, lights, cameras, and so forth, that define a complete scene. The parent/child relationship controls how properties and transformations are applied to the nodes as they are rendered, or how the objects relate to other objects in the scene (e.g., which objects the lights shine on). Scene graphs are not used to control the execution of a visualization pipeline, rather they are used to control the rendering process. Scene graphs and visualization pipelines may be used together in the same application. In such a case the visualization pipeline is the generator of the shape nodes, and the scene graph controls the rendering of the scene including the shapes.
 
@@ -354,10 +354,10 @@ In the *Visualization Toolkit*, there are several importers and exporters. To se
 
 <figure id="Figure 4-13">
   <figure id="Figure 4-13a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-13a.png?raw=true" width="640" alt="Figure4-13a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-13a.png?raw=true" width="640" alt="Figure4-13a">
   </figure>
   <figure id="Figure 4-13b">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/IO/Test3DSImporter.png?raw=true" width="640" alt="Figure 4-13">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/IO/Test3DSImporter.png?raw=true" width="640" alt="Figure 4-13">
   </figure>
   <figcaption style="color:blue"><b>Figure 4-13</b>. Importing and exporting files in VTK. An importer creates a  &#118;tkRenderWindow that describes the scene. Exporters use an instance of  &#118;tkRenderWindow to obtain a description of the scene. <a href="../../Cxx/IO/3DSImporter" title="3DSImporter"> See 3DSImporter.cxx</a> and <a href="../../Python/IO/3DSImporter" title="3DSImporter"> 3DSImporter.py</a>.</figcaption>
 </figure>
@@ -396,13 +396,13 @@ A visual programming interface could be (and has been) implemented using the cla
 
 <figure id="Figure 4-14">
   <figure id="Figure 4-14a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-14a.png?raw=true" width="640" alt="Figure4-14a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-14a.png?raw=true" width="640" alt="Figure4-14a">
     <figcaption style="color:blue"><b>Figure 4-14a</b>. ParaView parallel visualization application.</figcaption>
-  </figure> 
+  </figure>
   <figure id="Figure 4-14b">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-14b.png?raw=true" width="640" alt="Figure4-14b">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-14b.png?raw=true" width="640" alt="Figure4-14b">
     <figcaption style="color:blue"><b>Figure 4-14b</b>. VolView volume rendering application.</figcaption>
-  </figure> 
+  </figure>
   <figcaption style="color:blue"><b>Figure 4-14</b>. The choice of an appropriate visualization application depends on the type of dataset(s) it must support, required interaction techniques, rendering capabilities, and support for large data, including parallel processing. While both applications above are built using the VTK visualization toolkit, they provide very different user experiences. ParaView (paraview.org) is a general purpose visualization system that can process large data in a distributed, parallel environment (as well as on single processor systems), with the ability to display on a Cave or tiled display. VolView (volview.com) focuses on volumetric and image data and uses multi-threading and sophisticated level-of-detail methods to achieve interactive performance.</figcaption>
 </figure>
 
@@ -415,7 +415,7 @@ Information and data produced by a filter are stored in one or more output *port
 Information and data consumed by a filter are retrieved through one or more input ports. An input port corresponds to one logical input of the filter. For example, a glyph filter would define one input port for the glyph itself and another input port defining the glyph positions. Input ports store input connections that reference the output ports of other filters; these output ports eventually provide information and data to the filter. Each input connection provides one data object and its corresponding information obtained from the output port to which the connection is made. Since connections are stored through logical ports and not in the data flowing through those ports, the data type need not be known when the connection is made. This is particularly useful when creating pipelines whose source is a reader that does not know its output data type until the file is read (see ["Pipeline Connections"](/VTKBook/04Chapter4/#pipeline-connections) and ["Processing Unknown Dataset Types"](/VTKBook/04Chapter4/#processing-unknown-dataset-types)).
 
 <figure id="Figure 4-15">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-15.png?raw=true" width="640" alt="Figure4-15">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-15.png?raw=true" width="640" alt="Figure4-15">
   <figcaption style="color:blue"><b>Figure 4-15</b>. Description of implicit execution process implemented in VTK. The Update() method is initiated via the Render() method from the actor. Data flows back to the mapper via the RequestData() method. Arrows connecting filter and data objects indicate direction of the Update() process.</figcaption>
 </figure>
 
@@ -424,7 +424,7 @@ To understand the execution of the VTK pipeline, it is useful to view the proces
 **Figure 4-15** shows a simplified description of VTK's execution process. Generally the execution of the pipeline is triggered by a mapper's Render() method invocation, typically in response to a Render() method invocation on an associated vtkActor (which in turn receives it from the render window). Next, the Update() method is called on the input to the mapper (resulting in a cascade of method invocations requesting information and data). Eventually, data must be computed and returned to the object initiating the request, in this case the mapper. The RequestData() method actually executes the filter(s) in the pipeline and produces output data. Note the direction of flow---here we define the direction of data flow as the *downstream* direction, and the direction of the Update() invocation the *upstream* direction.
 
 <figure id="Figure 4-16">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-16.png?raw=true" width="640" alt="Figure4-16">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-16.png?raw=true" width="640" alt="Figure4-16">
   <figcaption style="color:blue"><b>Figure 4-16</b>. The logical relationship of the algorithm, executive and ports constituting a filter. The executive is responsible for managing the execution of the algorithm, and coordinating with information requests traveling through the pipeline. Ports correspond to logical, distinct inputs and outputs.</figcaption>
 </figure>
 
@@ -440,10 +440,10 @@ together, the C++ statement
 ``` c++
 filter2->SetInput(filter1->GetOutput()); //Prior to VTK5.0
 ```
-was typically used with filter1 and filter2 filter objects of compatible type. In this design, compile time type checking was performed (i.e., the C++ compiler would enforce proper type.) Obviously, this meant that correcting filters together producing output of unknown type was problematic. Several other issues with this design remained as well, many of which have been alluded to earlier, but are summarized here to motivate the use of the newer pipeline architecture. 
+was typically used with filter1 and filter2 filter objects of compatible type. In this design, compile time type checking was performed (i.e., the C++ compiler would enforce proper type.) Obviously, this meant that correcting filters together producing output of unknown type was problematic. Several other issues with this design remained as well, many of which have been alluded to earlier, but are summarized here to motivate the use of the newer pipeline architecture.
 
 <figure id="Figure 4-17">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-17.png?raw=true" width="640" alt="Figure4-17">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-17.png?raw=true" width="640" alt="Figure4-17">
   <figcaption style="color:blue"><b>Figure 4-17</b>. The logical relationship of ports and connections An input port may have more than one connection associated with it. Multiple connections are possible in certain filters such as the append filter, where a single logical input port represents all the data to be "appended" together, and each input is represented by a different connection.</figcaption>
 </figure>
 
@@ -522,14 +522,14 @@ The importance of the information objects in VTK is that they are flexible (e.g.
 ** Pipeline Execution Models.** In VTK, the fundamental pipeline update mechanism is based on the request. A request is the basic pipeline operation (or "pipeline pass") that generally asks for particular piece of information to be propagated through the pipeline. An execution model is a set of requests defined by a specific executive. Refer to **Figure 4-18** in the following description of the execution process.
 
 <figure id="Figure 4-18">
-  <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-18.png?raw=true" width="640" alt="Figure4-18">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-18.png?raw=true" width="640" alt="Figure4-18">
   <figcaption style="color:blue"><b>Figure 4-18</b>. Path of a request sent through a pipeline. For example, assume the consumer (at the far right) needs only a single piece of this data (e.g., piece 1 of 4); also assume that the producer (on the far left) is a reader that can partition its data into pieces. The consumer passes this request upstream, and it continues upstream (via executives) until it reaches a producer that can fulfill the request. When the reader algorithm is asked for a piece of the data, it provides it, and passes the new data back (with the information that it is piece 1 of 4) down the pipeline. It stops when it reaches the consumer who made the request.</figcaption>
 </figure>
 
 Requests are generated by the executive object of a filter that has been explicitly asked to update by its algorithm due to some user call. For example, when the Write() method of a writer is called, the algorithm object asks its executive to update the pipeline, and execute the writer, by calling this->GetExecutive()->Update(). Several requests may be sent through the pipeline in order to bring it up to date.
 
 A request is implemented as an information object. There is one key of type vtkInformationRequestKey specifying the request itself. This key is typically defined by the executive's class. Additional information about the request may also be stored in the request information object.
-       
+
 Requests are propagated through the pipeline by the executives of each filter. The vtkExecutive::ProcessRequest() method is invoked on an executive given the request information object. This method is implemented by each executive and is responsible for fulfilling the request as it sees fit. Many requests may be fulfilled for a filter only after it has been fulfilled for the filters providing its inputs. For these requests the executive will pass the request on to the executives of these upstream filters and then handle the request itself.
 
 An executive often asks its algorithm object for help in fulfilling a request. It sends the request to the algorithm object by invoking the vtkAlgorithm::ProcessRequest() method. This method is implemented by all algorithms and is responsible for handling the request. Input and output pipeline information objects are provided as arguments to the method. The algorithm must handle the request using only its own filter parameter settings and the pipeline information objects given. An algorithm is not allowed to ask its executive for any additional information. This insures that the algorithms are independent of the executives. **Figure 4-18** shows a typical path taken by a request as it is sent through a pipeline. Typically the request originates in a consumer at the end of the pipeline. It is sent back through the pipeline by the executives. Each executive asks its algorithm to help handle the request.
@@ -558,10 +558,10 @@ We will now demonstrate some of the features of the visualization pipeline with 
 
 <figure id="Figure 4-19">
   <figure id="Figure 4-19a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-19a.png?raw=true" width="640" alt="Figure4-19a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-19a.png?raw=true" width="640" alt="Figure4-19a">
   </figure>
   <figure id="Figure 4-19">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Rendering/TestColoredSphere.png?raw=true" width="640" alt="Figure 4-19">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Rendering/TestColoredSphere.png?raw=true" width="640" alt="Figure 4-19">
   </figure>
   <figcaption style="color:blue"><b>Figure 4-19</b>. A simple sphere example. <a href="../../Cxx/Rendering/ColoredSphere" title="ColoredSphere"> See ColoredSphere.cxx</a> and <a href="../../Python/Rendering/ColoredSphere" title="ColoredSphere"> ColoredSphere.py</a>.</figcaption>
 </figure>
@@ -582,10 +582,10 @@ The transform filter only operates on objects with explicit point coordinate rep
 
 <figure id="Figure 4-20">
   <figure id="Figure 4-20a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-20a.png?raw=true" width="640" alt="Figure4-20a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-20a.png?raw=true" width="640" alt="Figure4-20a">
   </figure>
   <figure id="Figure 4-20">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Rendering/TestTransformSphere.png?raw=true" width="640" alt="Figure 4-20">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Rendering/TestTransformSphere.png?raw=true" width="640" alt="Figure 4-20">
   </figure>
   <figcaption style="color:blue"><b>Figure 4-20</b>. The addition of a transform filter to the previous example. <a href="../../Cxx/Rendering/TransformSphere" title="TransformSphere"> See TransformSphere.cxx</a> and <a href="../../Python/Rendering/TransformSphere" title="TransformSphere"> TransformSphere.py</a>.</figcaption>
 </figure>
@@ -596,24 +596,24 @@ The C++ compiler enforces the proper connections of sources, filters, and mapper
 
 <figure id="Figure 4-21">
   <figure id="Figure 4-21a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-21a.png?raw=true" width="640" alt="Figure4-21a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-21a.png?raw=true" width="640" alt="Figure4-21a">
   </figure>
   <figure id="Figure 4-21b">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Rendering/TestMace.png?raw=true" width="640" alt="Figure 4-21">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Rendering/TestMace.png?raw=true" width="640" alt="Figure 4-21">
   </figure>
   <figcaption style="color:blue"><b>Figure 4-21</b>. An example of multiple inputs and outputs.<a href="../../Cxx/Rendering/Mace" title="Mace"> See Mace.cxx</a> and <a href="../../Python/Rendering/Mace" title="Mace"> Mace.py</a>.</figcaption>
 </figure>
 
-The visualization network branches at vtkGlyph3D. If either branch is modified, then this filter will re-execute. Network updates must branch in both directions, and both branches must be up to date when vtkGlyph3D executes. These requirements are enforced by the Update() method, and pose no problem to the implicit execution method. 
+The visualization network branches at vtkGlyph3D. If either branch is modified, then this filter will re-execute. Network updates must branch in both directions, and both branches must be up to date when vtkGlyph3D executes. These requirements are enforced by the Update() method, and pose no problem to the implicit execution method.
 
 **Disappearing Sphere.**  In our last example we construct a visualization network with a feedback loop, and show how we can use procedural programming to change the topology of the network. The network consists of four objects: vtkSphereSource to create an initial polygonal geometry, vtkShrinkFilter to shrink the polygons and create a gap or space between neighbors, vtkElevationFilter to color the geometry according to height above the x-y plane, and vtkDataSetMapper to map the data through a lookup table and interface to the rendering library. The network topology, a portion of the C++ code, and output are shown in **Figure 4-22**.
 
 <figure id="Figure 4-22">
   <figure id="Figure 4-22a">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/VTKBook/Figures/Figure4-22a.png?raw=true" width="640" alt="Figure4-22a">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBook/Figures/Figure4-22a.png?raw=true" width="640" alt="Figure4-22a">
   </figure>
   <figure id="Figure 4-22b">
-    <img src="https://raw.githubusercontent.com/lorensen/VTKExamples/master/src/Testing/Baseline/Cxx/Visualization/TestLoopShrink.png?raw=true" width="640" alt="Figure 4-22">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestLoopShrink.png?raw=true" width="640" alt="Figure 4-22">
   </figure>
   <figcaption style="color:blue"><b>Figure 4-22</b>. A network with a loop (LoopShrk.cxx). VTK 5.0 does not allow you to execute a looping visualization network; this was possible in previous versions of VTK.<a href="../../Cxx/Visualization/LoopShrink" title="LoopShrink"> See LoopShrink.cxx</a> and <a href="../../Python/Visualization/LoopShrink" title="LoopShrink"> LoopShrink.py</a>.</figcaption> </figure>
 

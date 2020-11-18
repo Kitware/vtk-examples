@@ -5,4 +5,4 @@
 
 !!! info
     Similar examples setting the diffuse and specular properties are:
-    See [DiffuseSpheres.cxx](https://lorensen.github.io/VTKExamples/site/Cxx/Rendering/DiffuseSpheres/), [DiffuseSpheres.py](https://lorensen.github.io/VTKExamples/site/Python/Rendering/DiffuseSpheres/) and [SpecularSpheres.cxx](https://lorensen.github.io/VTKExamples/site/Cxx/Rendering/SpecularSpheres/), [SpecularSpheres.py](https://lorensen.github.io/VTKExamples/site/Python/Rendering/SpecularSpheres/).
+    See [DiffuseSpheres.cxx](../../../Cxx/Rendering/DiffuseSpheres/), [DiffuseSpheres.py](../../../Python/Rendering/DiffuseSpheres/) and [SpecularSpheres.cxx](../../../Cxx/Rendering/SpecularSpheres/), [SpecularSpheres.py](../../../Python/Rendering/SpecularSpheres/).
