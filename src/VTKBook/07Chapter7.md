@@ -73,7 +73,7 @@ While texture maps are generally used to add detail to rendered images, there ar
 *   Texture maps can be animated as a function of time. By choosing a texture map whose intensity varies monotonically from dark to light, and then "moving" the texture along an object, the object appears to crawl in the direction of the texture map motion. We can use this technique to add apparent motion to things like hedgehogs to show vector magnitude. **Figure 7-3** is an example of a texture map animation used to simulate vector field motion.
 
 <figure id="Figure 7-3">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Texture/TestAnimateVectors.png?raw=true" width="640" alt="Figure 7-3">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Texture/TestAnimateVectors.png?raw=true" width="640" alt="Figure 7-3">
   <figcaption style="color:blue"><b>Figure 7-3</b>. One frame from a vector field animation using texture. <a href="../../Cxx/Texture/AnimateVectors" title="AnimateVectors"> See AnimateVectors.cxx</a> and <a href="../../Python/Texture/AnimateVectors" title="AnimateVectors"> AnimateVectors.py</a>.</figcaption>
 </figure>
 
@@ -703,7 +703,7 @@ ren1 AddActor planeActor
 ```
 
 <figure id="Figure 7-33">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Texture/TestTexturePlane.png?raw=true" width="640" alt="Figure 7-33">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Texture/TestTexturePlane.png?raw=true" width="640" alt="Figure 7-33">
   <figcaption style="color:blue"><b>Figure 7-33</b>. Example of texture mapping.<a href="../../Cxx/Texture/TexturePlane" title="TexturePlane"> See TexturePlane.cxx</a> and <a href="../../Python/Texture/TexturePlane" title="TexturePlane"> TexturePlane.py</a>.</figcaption>
 </figure>
 
@@ -771,7 +771,7 @@ renWin Render
 ```
 
 <figure id="Figure 7-34">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VolumeRendering/TestSimpleRayCast.png?raw=true" width="640" alt="Figure 7-34">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VolumeRendering/TestSimpleRayCast.png?raw=true" width="640" alt="Figure 7-34">
   <figcaption style="color:blue"><b>Figure 7-34</b>. Volume rendering of a high potential iron protein. <a href="../../Cxx/VolumeRendering/SimpleRayCast" title="SimpleRayCast"> See SimpleRayCast.cxx</a> and <a href="../../Python/VolumeRendering/SimpleRayCast" title="SimpleRayCast"> SimpleRayCast.py</a>.</figcaption>
 </figure>
 
@@ -849,7 +849,7 @@ iren->Start();
 ```
 
 <figure id="Figure 7-36">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Rendering/TestMotionBlur.png?raw=true" width="640" alt="Figure 7-36">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Rendering/TestMotionBlur.png?raw=true" width="640" alt="Figure 7-36">
   <figcaption style="color:blue"><b>Figure 7-36</b>. Example of motion blur. <a href="../../Cxx/Rendering/MotionBlur" title="MotionBlur"> See MotionBlur.cxx</a> and <a href="../../Python/Rendering/MotionBlur" title="MotionBlur"> MotionBlur.py</a>.</figcaption>
 </figure>
 
@@ -858,7 +858,7 @@ iren->Start();
 Now we will change the previous example to illustrate focal depth. First, we change the position of the bottom mace, moving it farther away from us. Since it is farther away it will appear smaller, so we scale it by a factor of two to maintain reasonable image size. We then remove the code for rendering the sub frames and instead set the number of frames for focal depth rendering. We also set the camera's focal point and focal disk to appropriate values. The resulting image and the required changes to the source code are shown in **Figure 7-37**.
 
 <figure id="Figure 7-37">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Rendering/TestCameraBlur.png?raw=true" width="640" alt="Figure 7-37">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Rendering/TestCameraBlur.png?raw=true" width="640" alt="Figure 7-37">
   <figcaption style="color:blue"><b>Figure 7-37</b>. Contouring examples. <a href="../../Cxx/Rendering/CameraBlur" title="CameraBlur"> See CameraBlur.cxx</a> and <a href="../../Python/Rendering/CameraBlur" title="CameraBlur"> CameraBlur.py</a>.</figcaption>
 </figure>
 

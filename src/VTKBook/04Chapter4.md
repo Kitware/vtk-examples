@@ -37,7 +37,7 @@ In the examples that follow we will frequently use a simplified representation o
 
 <figure id="Figure 4-1">
  <figure id="Figure 4-1a">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestQuadricVisualization.png?raw=true" width="640" alt="Figure 4-1a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestQuadricVisualization.png?raw=true" width="640" alt="Figure 4-1a">
   <figcaption style="color:blue" (a)Quadric visualization <a></a> <a href="../../Cxx/Visualization/QuadricVisualization" title="QuadricVisualization"> See QuadricVisualization.cxx</a> and <a href="../../Python/Visualization/QuadricVisualization" title="QuadricVisualization"> QuadricVisualization.py</a>.</figcaption>
   </figure>
   <figure id="Figure 4-1b">
@@ -357,7 +357,7 @@ In the *Visualization Toolkit*, there are several importers and exporters. To se
     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure4-13a.png?raw=true" width="640" alt="Figure4-13a">
   </figure>
   <figure id="Figure 4-13b">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/IO/Test3DSImporter.png?raw=true" width="640" alt="Figure 4-13">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/IO/Test3DSImporter.png?raw=true" width="640" alt="Figure 4-13">
   </figure>
   <figcaption style="color:blue"><b>Figure 4-13</b>. Importing and exporting files in VTK. An importer creates a  &#118;tkRenderWindow that describes the scene. Exporters use an instance of  &#118;tkRenderWindow to obtain a description of the scene. <a href="../../Cxx/IO/3DSImporter" title="3DSImporter"> See 3DSImporter.cxx</a> and <a href="../../Python/IO/3DSImporter" title="3DSImporter"> 3DSImporter.py</a>.</figcaption>
 </figure>
@@ -561,7 +561,7 @@ We will now demonstrate some of the features of the visualization pipeline with 
     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure4-19a.png?raw=true" width="640" alt="Figure4-19a">
   </figure>
   <figure id="Figure 4-19">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Rendering/TestColoredSphere.png?raw=true" width="640" alt="Figure 4-19">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Rendering/TestColoredSphere.png?raw=true" width="640" alt="Figure 4-19">
   </figure>
   <figcaption style="color:blue"><b>Figure 4-19</b>. A simple sphere example. <a href="../../Cxx/Rendering/ColoredSphere" title="ColoredSphere"> See ColoredSphere.cxx</a> and <a href="../../Python/Rendering/ColoredSphere" title="ColoredSphere"> ColoredSphere.py</a>.</figcaption>
 </figure>
@@ -585,7 +585,7 @@ The transform filter only operates on objects with explicit point coordinate rep
     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure4-20a.png?raw=true" width="640" alt="Figure4-20a">
   </figure>
   <figure id="Figure 4-20">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Rendering/TestTransformSphere.png?raw=true" width="640" alt="Figure 4-20">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Rendering/TestTransformSphere.png?raw=true" width="640" alt="Figure 4-20">
   </figure>
   <figcaption style="color:blue"><b>Figure 4-20</b>. The addition of a transform filter to the previous example. <a href="../../Cxx/Rendering/TransformSphere" title="TransformSphere"> See TransformSphere.cxx</a> and <a href="../../Python/Rendering/TransformSphere" title="TransformSphere"> TransformSphere.py</a>.</figcaption>
 </figure>
@@ -599,7 +599,7 @@ The C++ compiler enforces the proper connections of sources, filters, and mapper
     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure4-21a.png?raw=true" width="640" alt="Figure4-21a">
   </figure>
   <figure id="Figure 4-21b">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Rendering/TestMace.png?raw=true" width="640" alt="Figure 4-21">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Rendering/TestMace.png?raw=true" width="640" alt="Figure 4-21">
   </figure>
   <figcaption style="color:blue"><b>Figure 4-21</b>. An example of multiple inputs and outputs.<a href="../../Cxx/Rendering/Mace" title="Mace"> See Mace.cxx</a> and <a href="../../Python/Rendering/Mace" title="Mace"> Mace.py</a>.</figcaption>
 </figure>
@@ -613,7 +613,7 @@ The visualization network branches at vtkGlyph3D. If either branch is modified, 
     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure4-22a.png?raw=true" width="640" alt="Figure4-22a">
   </figure>
   <figure id="Figure 4-22b">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestLoopShrink.png?raw=true" width="640" alt="Figure 4-22">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestLoopShrink.png?raw=true" width="640" alt="Figure 4-22">
   </figure>
   <figcaption style="color:blue"><b>Figure 4-22</b>. A network with a loop (LoopShrk.cxx). VTK 5.0 does not allow you to execute a looping visualization network; this was possible in previous versions of VTK.<a href="../../Cxx/Visualization/LoopShrink" title="LoopShrink"> See LoopShrink.cxx</a> and <a href="../../Python/Visualization/LoopShrink" title="LoopShrink"> LoopShrink.py</a>.</figcaption> </figure>
 

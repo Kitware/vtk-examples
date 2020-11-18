@@ -497,7 +497,7 @@ Creation of datasets is a two step process. First the geometry and topology of t
     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure5-17.png?raw=true" width="640" alt="Figure5-17">
   </figure>
   <figure id="Figure 5-17b">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/GeometricObjects/TestCube.png?raw=true" width="640" alt="Figure 5-17">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/GeometricObjects/TestCube.png?raw=true" width="640" alt="Figure 5-17">
   </figure>
   <figcaption style="color:blue"><b>Figure 5-17</b>. Creation of polygonal cube. <a href="../../Cxx/GeometricObjects/Cube" title="Cube"> See Cube.cxx</a> and <a href="../../Python/GeometricObjects/Cube" title="Cube"> Cube.py</a>.</figcaption>
 </figure>
@@ -527,7 +527,7 @@ The answer is no. Certain data objects in VTK are reference counted to conserve 
     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure5-18.png?raw=true" width="640" alt="Figure5-18">
   </figure>
   <figure id="Figure 5-18b">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/StructuredPoints/TestVol.png?raw=true" width="640" alt="Figure 5-18">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/StructuredPoints/TestVol.png?raw=true" width="640" alt="Figure 5-18">
   </figure>
   <figcaption style="color:blue"><b>Figure 5-18</b>. Creating a image data dataset. Scalar data is generated from the equation for a sphere. Volume dimensions are 26^3. <a href="../../Cxx/StructuredPoints/Vol" title="Vol"> See Vol.cxx</a> and <a href="../../Python/StructuredPoints/Vol" title="Vol"> Vol.py</a>.</figcaption>
 </figure>
@@ -571,7 +571,7 @@ $$
     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure5-19.png?raw=true" width="640" alt="Figure5-19">
   </figure>
   <figure id="Figure 5-19b">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/StructuredGrid/TestSGrid.png?raw=true" width="640" alt="Figure 5-19">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/StructuredGrid/TestSGrid.png?raw=true" width="640" alt="Figure 5-19">
   </figure>
   <figcaption style="color:blue"><b>Figure 5-19</b>. Creating a structured grid dataset of a semicylinder. Vectors are created whose magnitude is proportional to radius and oriented in tangential direction.<a href="../../Cxx/StructuredGrid/SGrid" title="SGrid"> See SGrid.cxx</a> and <a href="../../Python/StructuredGrid/SGrid" title="SGrid"> SGrid.py</a>.</figcaption>
 </figure>
@@ -595,7 +595,7 @@ The creation of a structured grid dataset is partially explicit and partially im
     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure5-20.png?raw=true" width="640" alt="Figure5-20">
   </figure>
   <figure id="Figure 5-20b">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/RectilinearGrid/TestRGrid.png?raw=true" width="640" alt="Figure 5-20">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/RectilinearGrid/TestRGrid.png?raw=true" width="640" alt="Figure 5-20">
   </figure>
   <figcaption style="color:blue"><b>Figure 5-20</b>. Creating a rectilinear grid dataset. The coordinates along each axis are defined using an instance of &#118;tkDataArray.<a href="../../Cxx/RectilinearGrid/RGrid" title="RGrid"> See RGrid.cxx</a> and <a href="../../Python/RectilinearGrid/RGrid" title="RGrid"> RGrid.py</a>.</figcaption>
 </figure>
@@ -621,7 +621,7 @@ The topological dimension of the dataset is implied by the specified dimensions.
     <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure5-21.png?raw=true" width="640" alt="Figure5-21">
   </figure>
   <figure id="Figure 5-21b">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/UnstructuredGrid/TestUGrid.png?raw=true" width="640" alt="Figure 5-21">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/UnstructuredGrid/TestUGrid.png?raw=true" width="640" alt="Figure 5-21">
   </figure>
   <figcaption style="color:blue"><b>Figure 5-21</b>. Creating a structured grid dataset of a semicylinder. Vectors are created whose magnitude is proportional to radius and oriented in tangential direction.<a href="../../Cxx/UnstructuredGrid/UGrid" title="UGrid"> See UGrid.cxx</a> and <a href="../../Python/UnstructuredGrid/UGrid" title="UGrid"> UGrid.py</a>.</figcaption>
 </figure>

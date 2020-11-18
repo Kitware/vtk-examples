@@ -117,16 +117,16 @@ if (BUILD_TESTING)
     TestRotations ${DATA}/cow.obj)
 
   add_test(${KIT}-RotationsA ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestRotationsA ${DATA}/cow.obj 1 1)
+    TestRotationsA ${DATA}/cow.obj 1)
 
   add_test(${KIT}-RotationsB ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestRotationsB ${DATA}/cow.obj 2 1)
+    TestRotationsB ${DATA}/cow.obj 2)
 
   add_test(${KIT}-RotationsC ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestRotationsC ${DATA}/cow.obj 3 1)
+    TestRotationsC ${DATA}/cow.obj 3)
 
   add_test(${KIT}-RotationsD ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestRotationsD ${DATA}/cow.obj 4 1)
+    TestRotationsD ${DATA}/cow.obj 4)
 
   add_test(${KIT}-Rainbow ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestRainbow ${DATA}/combxyz.bin ${DATA}/combq.bin)
