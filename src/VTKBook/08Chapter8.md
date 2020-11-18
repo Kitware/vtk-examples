@@ -1200,15 +1200,15 @@ The picking process is conveniently managed in vtkRenderWindowInteractor. This o
 
 <figure id="Figure 8-41">
  <figure id="Figure 8-41a">
-   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestAlphaFrequency.png?raw=true width="640" alt="Figure 8-41a">
+   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestAlphaFrequency.png?raw=true width="640" alt="Figure 8-41a">
    <figcaption style="color:blue">(a) Linearly extruded fonts to show letter frequency in text.</figcaption>
  </figure>
  <figure id="Figure 8-41b">
-   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Modelling/TestBottle.png?raw=true width="640" alt="Figure 8-41b">
+   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Modelling/TestBottle.png?raw=true width="640" alt="Figure 8-41b">
    <figcaption style="color:blue">(b) Rotationally symmetric objects.</figcaption>
  </figure>
   <figure id="Figure 8-41c">
-    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Modelling/TestSpring.png?raw=true width="640" alt="Figure 8-41c">
+    <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Modelling/TestSpring.png?raw=true width="640" alt="Figure 8-41c">
     <figcaption style="color:blue">(c) Rotation in combination with linear displacement and radius variation.</figcaption>
   </figure>
   <figcaption style="color:blue"><b>Figure 8-41</b>. Models created using linear and rotational extrusion. (a) <a href="../../Cxx/Visualization/AlphaFrequency" title="AlphaFrequency"> See AlphaFrequency.cxx</a> and <a href="../../Python/Visualization/AlphaFrequency" title="AlphaFrequency"> AlphaFrequency.py</a>.; (b).<a href="../../Cxx/Modelling/Bottle" title="Bottle"> See Bottle.cxx</a> and <a href="../../Python/Modelling/Bottle" title="Bottle"> Bottle.py</a>.; (c)<a href="../../Cxx/Modelling/Spring" title="Spring"> See Spring.cxx</a> and <a href="../../Python/Modelling/Spring" title="Spring"> Spring.py</a>.</figcaption>

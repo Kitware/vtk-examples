@@ -12,7 +12,7 @@ Object-oriented design is a software engineering methodology that deals comforta
 
 ## 2.2 Goals of Good Software Design
 
-The quality of a software design is difficult to measure, but some qualitative aspects can guide us. A good software design should be robust, understandable, extendible, modular, maintainable, and reusable.
+The quality of a software design is difficult to measure, but some qualitative aspects can guide us. A good software design should be robust, understandable, extensible, modular, maintainable, and reusable.
 
 A robust system handles exceptional conditions gracefully and behaves consistently. Robustness gives software developers confidence that the underlying components of the system will behave as expected, even when the system is used under different circumstances than the original implementor intended.
 

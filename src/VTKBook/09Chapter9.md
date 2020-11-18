@@ -60,11 +60,11 @@ Although carpet plots are typically applied to image data, they can be used to v
 
 <figure id="Figure 9-4">
  <figure id="Figure 9-4a">
-   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestExponentialCosine.png?raw=true" width="640" alt="Figure 9-4a">
+   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestExponentialCosine.png?raw=true" width="640" alt="Figure 9-4a">
    <figcaption style="color:blue">(a) Visualization of an exponential cosine function. Function values are indicated by surface displacement. Colors indicate derivative values. </figcaption>
  </figure>
  <figure id="Figure 9-4b">
-   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestWarpCombustor.png?raw=true" width="640" alt="Figure 9-4b">
+   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestWarpCombustor.png?raw=true" width="640" alt="Figure 9-4b">
    <figcaption style="color:blue">(b) Carpet plot of combustor flow energy in a structured grid. Colors and plane displacement represent energy values</figcaption>
  </figure>
 <figcaption style="color:blue"><b>Figure 9-4</b>. Contouring examples. (a) <a href="../../Cxx/VisualizationAlgorithms/ExponentialCosine" title="ExponentialCosine"> See ExponentialCosine.cxx</a> and <a href="../../Python/VisualizationAlgorithms/ExponentialCosine" title="ExponentialCosine"> ExponentialCosine.py</a>.; (b).<a href="../../Cxx/VisualizationAlgorithms/WarpCombustor" title="WarpCombustor"> See WarpCombustor.cxx</a> and <a href="../../Python/VisualizationAlgorithms/WarpCombustor" title="WarpCombustor"> WarpCombustor.py</a>.</figcaption>
@@ -119,7 +119,7 @@ Formulating clipping using scalar fields permits more sophisticated operations. 
 **Figure 9-10** shows a scanned image that is first converted to a quadrilateral mesh with vertex scalar values set to the scanned image intensity. Clipping this quadrilateral mesh with a value equal to 1/2 the maximum intensity of the scanned image produces a polygonal model show in **Figure 9-10**.
 
 <figure id="Figure 9-10">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCreateBFont.png?raw=true" width="640" alt="Figure 9-10">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCreateBFont.png?raw=true" width="640" alt="Figure 9-10">
   <figcaption style="color:blue"><b>Figure 9-10</b>. A scanned image clipped with a scalar value of 1/2 its maximum intensity produces a mixture of quadrilaterals and triangles. <a href="../../Cxx/VisualizationAlgorithms/CreateBFont" title="CreateBFont"> See CreateBFont.cxx</a> and <a href="../../Python/VisualizationAlgorithms/CreateBFont" title="CreateBFont"> CreateBFont.py</a>.</figcaption>
 </figure>
 
@@ -249,7 +249,7 @@ $$
 represents an area of constant mass flow. As a result, the tube will thicken as the flow slows and narrow as the velocity increases. Each of the n sides of the tube can be colored with a different scalar function, although for visual clarity, at most, one or two functions should be used.
 
 <figure id="Figure 9-12">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestOfficeTube.png?raw=true" width="640" alt="Figure 9-12">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestOfficeTube.png?raw=true" width="640" alt="Figure 9-12">
   <figcaption style="color:blue"><b>Figure 9-12</b>. The stream polygon. (a) Planar view. (b) Aligned with vector. (c) Aligned along streamline. (d) Sweeping polygon to form tube. <a href="../../Cxx/VisualizationAlgorithms/OfficeTube" title="OfficeTube"> See OfficeTube.cxx</a> and <a href="../../Python/VisualizationAlgorithms/OfficeTube" title="OfficeTube"> OfficeTube.py</a>.</figcaption>
 </figure>
 
@@ -342,7 +342,7 @@ Hyperstreamlines are constructed by creating a streamline through one of the thr
 **Figure 9-15** shows an example of hyperstreamlines. The data is from a point load applied to a semi-infinite domain. Compare this figure to Figure 6-22 that used tensor ellipsoids tov visualize the same data. Notice that there is less clutter and more information available from the hyperstreamline visualization.
 
 <figure id="Figure 9-15">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestHyperStreamline.png?raw=true" width="640" alt="Figure 9-15">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestHyperStreamline.png?raw=true" width="640" alt="Figure 9-15">
   <figcaption style="color:blue"><b>Figure 9-15</b>. The four hyperstreamlines shown are integrated along the minor principle stress axis. A plane (colored with a different lookup table) is also shown. <a href="../../Cxx/VisualizationAlgorithms/HyperStreamline" title="HyperStreamline"> See HyperStreamline.cxx</a> and <a href="../../Python/VisualizationAlgorithms/HyperStreamline" title="HyperStreamline"> HyperStreamline.py</a>.</figcaption>
 </figure>
 
@@ -406,7 +406,7 @@ Probing obtains dataset attributes by sampling one dataset (the input) with a se
 </figure>
 
 <figure id="Figure 9-19">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestProbeCombustor.png?raw=true" width="640" alt="Figure 9-19">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestProbeCombustor.png?raw=true" width="640" alt="Figure 9-19">
   <figcaption style="color:blue"><b>Figure 9-19</b>. Probing data in a combustor.  Probes are regular arrays of 50 by 50 points that are then passed through a contouring filter. <a href="../../Cxx/VisualizationAlgorithms/ProbeCombustor" title="ProbeCombustor"> See ProbeCombustor.cxx</a> and <a href="../../Python/VisualizationAlgorithms/ProbeCombustor" title="ProbeCombustor"> ProbeCombustor.py</a>.</figcaption>
 </figure>
 
@@ -446,7 +446,7 @@ Intercell connectivity is a topological property of datasets. Cells are topologi
 One application of connectivity extracts a meaningful portion of an isosurface. If the isosurface is generated from measured data such as an MRI or CT scan, it likely contains "noise" or unimportant anatomical structure. Using connectivity algorithms, we can separate out the part of the isosurface that we desire, either by eliminating noise or undesirable anatomical structure. **Figure 9-23** is an example where a 2D surface of interest (e.g., an isocontour) is extracted from a noisy signal.
 
 <figure id="Figure 9-21">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Rendering/TestStripFran.png?raw=true" width="640" alt="Figure 9-21">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Rendering/TestStripFran.png?raw=true" width="640" alt="Figure 9-21">
   <figcaption style="color:blue"><b>Figure 9-21</b>. Triangle strip examples. (a) Structured triangle mesh consisting of 134 strips each of 390 triangles. (b) Unstructured triangle mesh consisting of 2227 strips of average length 3.94, longest strip 101 triangles. Images are generated by displaying every other triangle strip. <a href="../../Cxx/Rendering/StripFran" title="StripFran"> See StripFran.cxx</a> and <a href="../../Python/Rendering/StripFran" title="StripFran"> StripFran.py</a>.</figcaption>
 </figure>
 
@@ -487,7 +487,7 @@ On some computers limitations on recursion depth may become a problem. Polygonal
 **Figure 9-24**(d) shows the result of the advanced normal generation technique with a feature angle of 60 degrees. Sharp edges are well defined and curved areas lack the faceting evident in the original model. The figure is shown with Gouraud shading.
 
 <figure id="Figure 9-24">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Visualization/TestNormalsDemo.png?raw=true" width="640" alt="Figure 9-24">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestNormalsDemo.png?raw=true" width="640" alt="Figure 9-24">
   <figcaption style="color:blue"><b>Figure 9-24</b>. Surface normal generation. (a) Faceted model without normals. (b) Polygons must be consistently oriented to accurately compute normals. (c) Sharp edges are poorly represented using shared normals as shown on the corners of this model. (d) Normal generation with sharp edges split (Normals.cxx).<a href="../../Cxx/Visualization/NormalsDemo" title="NormalsDemo"> See NormalsDemo.cxx</a> and <a href="../../Python/Visualization/NormalsDemo" title="NormalsDemo"> NormalsDemo.py</a>.</figcaption>
 </figure>
 
@@ -551,11 +551,11 @@ Occasionally, triangulation fails because no split plane can be found. In this c
 
 <figure id="Figure 9-27">
  <figure id="Figure 9-27a">
-   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestDecimateFran.png?raw=true" width="640" alt="Figure 9-27a">
+   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestDecimateFran.png?raw=true" width="640" alt="Figure 9-27a">
    <figcaption style="color:blue">(a)</figcaption>
  </figure>
  <figure id="Figure 9-27b">
-   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestDecimateHawaii.png?raw=true" width="640" alt="Figure 9-27b">
+   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestDecimateHawaii.png?raw=true" width="640" alt="Figure 9-27b">
    <figcaption style="color:blue">(b)</figcaption>
  </figure>
  <figcaption style="color:blue"><b>Figure 9-27</b>. Examples of decimation algorithm. Triangle meshes are shown in wireframe. <a href="../../Cxx/VisualizationAlgorithms/DecimateFran" title="DecimateFran"> See DecimateFran.cxx</a> and <a href="../../Python/VisualizationAlgorithms/DecimateFran" title="DecimateFran"> DecimateFran.py</a>.; (b).<a href="../../Cxx/VisualizationAlgorithms/DecimateHawaii" title="DecimateHawaii"> See DecimateHawaii.cxx</a> and <a href="../../Python/VisualizationAlgorithms/DecimateHawaii" title="DecimateHawaii"> DecimateHawaii.py</a>.</figcaption>
@@ -806,11 +806,11 @@ The parameter $z$ is the distance along the vector $\vec{v}$, and the parameter 
 
 <figure id="Figure 9-38">
  <figure id="Figure 9-38a">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestSingleSplat.png?raw=true" width="640" alt="Figure 9-38a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestSingleSplat.png?raw=true" width="640" alt="Figure 9-38a">
   <figcaption style="color:blue">(a) Single elliptical splat</figcaption>
  </figure>
  <figure id="Figure 9-38b">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestSplatFace.png?raw=true" width="640" alt="Figure 9-38b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestSplatFace.png?raw=true" width="640" alt="Figure 9-38b">
   <figcaption style="color:blue">(b) Surface Reconstruction</figcaption>
  </figure>
 <figcaption style="color:blue"><b>Figure 9-38</b>. Elliptical splatting. (a) Single elliptical splat with eccentricity E=10. Cone shows orientation of vector. (b) Surface reconstructed using elliptical splats into 100^3 volume followed by isosurface extraction. Points regularly subsampled and overlayed on original mesh.<a href="../../Cxx/VisualizationAlgorithms/SingleSplat" title="SingleSplat"> See SingleSplat.cxx</a> and <a href="../../Python/VisualizationAlgorithms/SingleSplat" title="SingleSplat"> SingleSplat.py</a>.; (b).<a href="../../Cxx/VisualizationAlgorithms/SplatFace" title="SplatFace"> See SplatFace.cxx</a> and <a href="../../Python/VisualizationAlgorithms/SplatFace" title="SplatFace"> SplatFace.py</a>.</figcaption>
@@ -917,11 +917,11 @@ Boolean textures extend texture thresholding for geometric clipping from 1D to 2
 
 <figure id="Figure 9-43">
  <figure id="Figure 9-43a">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Texture/TestTextureThreshold.png?raw=true" width="640" alt="Figure 9-43a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Texture/TestTextureThreshold.png?raw=true" width="640" alt="Figure 9-43a">
   <figcaption style="color:blue">(a) Thresholding data with texture</figcaption>
  </figure>
  <figure id="Figure 9-43b">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Texture/TestTextureCutSphere.png?raw=true" width="640" alt="Figure 9-43b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Texture/TestTextureCutSphere.png?raw=true" width="640" alt="Figure 9-43b">
   <figcaption style="color:blue">(b) Sphere cut with transparent texture</figcaption>
  </figure>
  <figcaption style="color:blue"><b>Figure 9-43</b>. Examples of texture thresholding. (a) Using scalar threshold to show values of flow density on plane above value of 1.5. (b) Boolean combination of two planes to cut nested spheres. <a href="../../Cxx/Texture/TextureThreshold" title="TextureThreshold"> See TextureThreshold.cxx</a> and <a href="../../Python/Texture/TextureThreshold" title="TextureThreshold"> TextureThreshold.py</a>.; (b).<a href="../../Cxx/Texture/TextureCutSphere" title="TextureCutSphere"> See TextureCutSphere.cxx</a> and <a href="../../Python/Texture/TextureCutSphere" title="TextureCutSphere"> TextureCutSphere.py</a>.</figcaption>
@@ -942,7 +942,7 @@ The boolean texture map can be created with combinations of intensity and transp
   <figcaption style="color:blue">(a) Combination of 2D in/out textures</figcaption>
  </figure>
  <figure id="Figure 9-45b">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Texture/TestTextureCutQuadric.png?raw=true" width="640" alt="Figure 9-45b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Texture/TestTextureCutQuadric.png?raw=true" width="640" alt="Figure 9-45b">
   <figcaption style="color:blue">(b) Sixteen boolean textures (from above) applied to sphere</figcaption>
  </figure>
  <figcaption style="color:blue"><b>Figure 9-45</b>. Sixteen boolean textures. (a) Sixteen combinations of in/out. (b) Textures applied to sphere using two elliptical cylinder implicit functions.<a href="../../Cxx/Texture/TextureCutQuadric" title="TextureCutQuadric"> See TextureCutQuadric.cxx</a> and <a href="../../Python/Texture/TextureCutQuadric" title="TextureCutQuadric"> TextureCutQuadric.py</a>.</figcaption>
@@ -979,10 +979,10 @@ The _Visualization Toolkit_ provides other point generation techniques. The sour
 
 <figure id="Figure 9-47">
  <figure id="Figure 9-47a">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestOfficeA.png?raw=true" width="640" alt="Figure 9-47a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestOfficeA.png?raw=true" width="640" alt="Figure 9-47a">
  </figure>
  <figure id="Figure 9-47b">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestOffice.png?raw=true" width="640" alt="Figure 9-47b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestOffice.png?raw=true" width="640" alt="Figure 9-47b">
  </figure>
  <figcaption style="color:blue"><b>Figure 9-47</b>.  Using random point seeds to create streamlines.<a href="../../Cxx/VisualizationAlgorithms/OfficeA" title="OfficeA"> See OfficeA.cxx</a> and <a href="../../Python/VisualizationAlgorithms/OfficeA" title="OfficeA"> OfficeA.py</a>.; (b).<a href="../../Cxx/VisualizationAlgorithms/Office" title="Office"> See Office.cxx</a> and <a href="../../Python/VisualizationAlgorithms/Office" title="Office"> Office.py</a>.</figcaption>
 </figure>
@@ -998,7 +998,7 @@ Clipping is implemented in vtkClipPolyData. Each polygonal data primitive implem
   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure9-48.png?raw=true" width="640" alt="Figure9-48">
  </figure>
  <figure id="Figure 9-48b">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestClipSphereCylinder.png?raw=true" width="640" alt="Figure 9-48b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestClipSphereCylinder.png?raw=true" width="640" alt="Figure 9-48b">
   <figcaption style="color:blue">(b)</figcaption>
  </figure>
  <figcaption style="color:blue"><b>Figure 9-48</b>. A plane clipped with a sphere and an ellipse. The two transforms place each implicit function into the appropriate position. Two outputs are generated by the clipper.<a href="../../Cxx/VisualizationAlgorithms/ClipSphereCylinder" title="ClipSphereCylinder"> See ClipSphereCylinder.cxx</a> and <a href="../../Python/VisualizationAlgorithms/ClipSphereCylinder" title="ClipSphereCylinder"> ClipSphereCylinder.py</a>.</figcaption>
@@ -1040,7 +1040,7 @@ We will use Gaussian splatting to visualize this data (see ["Splatting Technique
   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure9-50a.png?raw=true" width="640" alt="Figure9-50a">
  </figure>
  <figure id="Figure 9-50b">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Modelling/TestFinance.png?raw=true" width="640" alt="Figure 9-50b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Modelling/TestFinance.png?raw=true" width="640" alt="Figure 9-50b">
   <figcaption style="color:blue">(a) Visualization network</figcaption>
 </figure>
 <figcaption style="color:blue"><b>Figure 9-50</b>. Visualization of multidimensional financial data. Visualization network, output image, and sample C++ code are shown (finance.cxx). The gray/wireframe surface represents the total data population. The dark surface represents data points delinquent on loan payment.<a href="../../Cxx/Modelling/Finance" title="Finance"> See Finance.cxx</a> and <a href="../../Python/Modelling/Finance" title="Finance"> Finance.py</a>.</figcaption>
@@ -1062,11 +1062,11 @@ To illustrate the application of connectivity analysis, we will use an MRI datas
 
 <figure id="Figure 9-51">
  <figure id="Figure 9-51a">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestPineRootConnectivityA.png?raw=true" width="640" alt="Figure 9-51a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestPineRootConnectivityA.png?raw=true" width="640" alt="Figure 9-51a">
   <figcaption style="color:blue">(a) isosurface</figcaption>
  </figure>
  <figure id="Figure 9-51b">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestPineRootConnectivity.png?raw=true" width="640" alt="Figure 9-51b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestPineRootConnectivity.png?raw=true" width="640" alt="Figure 9-51b">
   <figcaption style="color:blue">(b) largest connected surface</figcaption>
  </figure>
  <figure id="Figure 9-51c">
@@ -1086,11 +1086,11 @@ Decimation is a 3D data compression technique for surfaces represented as triang
 
 <figure id="Figure 9-52">
  <figure id="Figure 9-52a">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestPineRootConnectivity.png?raw=true" width="640" alt="Figure 9-52a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestPineRootConnectivity.png?raw=true" width="640" alt="Figure 9-52a">
   <figcaption style="color:blue">(a) Connected isosurface</figcaption>
  </figure>
  <figure id="Figure 9-52b">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestPineRootDecimation.png?raw=true" width="640" alt="Figure 9-52b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestPineRootDecimation.png?raw=true" width="640" alt="Figure 9-52b">
   <figcaption style="color:blue">(b)Decimated connected isosurface</figcaption>
  </figure>
  <figcaption style="color:blue"><b>Figure 9-52</b>. Applying connectivity and decimation filters to remove noisy isosurfaces and reduce data size). Data is from 2563 volume data of the root system of a pine tree.<a href="../../Cxx/VisualizationAlgorithms/PineRootConnectivity" title="PineRootConnectivity"> See PineRootConnectivity.cxx</a> and <a href="../../Python/VisualizationAlgorithms/PineRootConnectivity" title="PineRootConnectivity"> PineRootConnectivity.py</a>.; (b).<a href="../../Cxx/VisualizationAlgorithms/PineRootDecimation" title="PineRootDecimation"> See PineRootDecimation.cxx</a> and <a href="../../Python/VisualizationAlgorithms/PineRootDecimation" title="PineRootDecimation"> PineRootDecimation.py</a>.</figcaption>
@@ -1109,7 +1109,7 @@ Texture mapping is a powerful visualization technique. Besides adding detail to 
 The texture map consists of three regions (as described previously in the chapter). The concealed region is transparent. The transition region is opaque but with a black (zero intensity) color. The highlighted region is full intensity and opaque. As can be seen from **Figure 9-53**, the boundaries appear as black borders giving a nice visual effect.
 
 <figure id="Figure 9-53">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestMotor.png?raw=true" width="640" alt="Figure 9-53a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestMotor.png?raw=true" width="640" alt="Figure 9-53a">
   <figcaption style="color:blue"><b>Figure 9-53</b>. Texture cut used to reveal internal structure of a motor. Two cut planes are used in combination with transparent texture.<a href="../../Cxx/VisualizationAlgorithms/Motor" title="Motor"> See Motor.cxx</a> and <a href="../../Python/VisualizationAlgorithms/Motor" title="Motor"> Motor.py</a>.</figcaption>
 </figure>
 
@@ -1126,7 +1126,7 @@ In the example of **Figure 9-54** we show how to create a 2D Delaunay triangulat
   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure9-54a.png?raw=true" width="640" alt="Figure9-54a">
  </figure>
  <figure id="Figure 9-54"b>
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/Testing/Baseline/Cxx/Modelling/TestDelaunayMesh.png?raw=true" width="640" alt="Figure 9-54b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Modelling/TestDelaunayMesh.png?raw=true" width="640" alt="Figure 9-54b">
  </figure>
  <figcaption style="color:blue"><b>Figure 9-54</b>.Two-dimensional Delaunay triangulation of a random set of points. Points and edges are shown highlighted with sphere glyphs and tubes. Only the pipeline to generate triangulation is shown.<a href="../../Cxx/Modelling/DelaunayMesh" title="DelaunayMesh"> See DelaunayMesh.cxx</a> and <a href="../../Python/Modelling/DelaunayMesh" title="DelaunayMesh"> DelaunayMesh.py</a>.</figcaption>
 </figure>
