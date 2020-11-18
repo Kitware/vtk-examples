@@ -30,14 +30,10 @@
 
 namespace {
 vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName);
-void RotateX(vtkRenderWindow* renWin,
-             vtkActor* actor);
-void RotateY(vtkRenderWindow* renWin,
-             vtkActor* actor);
-void RotateZ(vtkRenderWindow* renWin,
-             vtkActor* actor);
-void RotateXY(vtkRenderWindow* renWin,
-              vtkActor* actor);
+void RotateX(vtkRenderWindow* renWin, vtkActor* actor);
+void RotateY(vtkRenderWindow* renWin, vtkActor* actor);
+void RotateZ(vtkRenderWindow* renWin, vtkActor* actor);
+void RotateXY(vtkRenderWindow* renWin, vtkActor* actor);
 } // namespace
 
 int main(int argc, char* argv[])
@@ -52,16 +48,15 @@ int main(int argc, char* argv[])
   */
 
   auto figure = 0;
-  auto book_color = false;
+  std::string actorColor = "Wheat";
+
   if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0] << " filename [figure] [book_color]"
+    std::cout << "Usage: " << argv[0] << " filename [figure] [actorColor]"
               << std::endl;
     std::cout << "where: filename is the file cow.obj" << std::endl;
     std::cout << "       figure is 0, 1, 2, or 3, default 0" << std::endl;
-    std::cout << "       book_color: If 1 then the vtk textbook colors are "
-                 "used, default 0."
-              << std::endl;
+    std::cout << "       actorColor: A color name, default Wheat." << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -74,7 +69,7 @@ int main(int argc, char* argv[])
   else if (argc > 3)
   {
     figure = atoi(argv[2]);
-    book_color = atoi(argv[3]) != 0;
+    actorColor = argv[3];
   }
 
   // Create renderer stuff
@@ -97,23 +92,19 @@ int main(int argc, char* argv[])
 
   // Create the pipeline.
   //
- auto polyData = ReadPolyData(fileName.c_str());
+  auto polyData = ReadPolyData(fileName.c_str());
 
   vtkNew<vtkPolyDataMapper> modelMapper;
   modelMapper->SetInputData(polyData);
 
   vtkNew<vtkActor> modelActor;
   modelActor->SetMapper(modelMapper);
-  if (book_color)
+  modelActor->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d(actorColor).GetData());
+
+  if (actorColor != "Wheat")
   {
-    modelActor->GetProperty()->SetDiffuseColor(
-        colors->GetColor3d("Wheat").GetData());
-  }
-  else
-  {
-    modelActor->GetProperty()->SetDiffuseColor(
-        colors->GetColor3d("Crimson").GetData());
-    modelActor->GetProperty()->SetSpecular(.6);
+    modelActor->GetProperty()->SetSpecular(0.6);
     modelActor->GetProperty()->SetSpecularPower(30);
   }
 
@@ -133,7 +124,7 @@ int main(int argc, char* argv[])
   // Add the actors to the renderer, set the background and size.
   //
   ren1->AddActor(modelActor);
-  if (book_color)
+  if (actorColor == "Wheat")
   {
     ren1->SetBackground(colors->GetColor3d("BkgColor").GetData());
   }
@@ -144,7 +135,7 @@ int main(int argc, char* argv[])
   renWin->SetSize(640, 480);
   ren1->ResetCamera();
   ren1->GetActiveCamera()->Azimuth(0);
-  ren1->GetActiveCamera()->SetClippingRange(.1, 1000.0);
+  ren1->GetActiveCamera()->SetClippingRange(0.1, 1000.0);
 
   modelAxes->VisibilityOn();
 
@@ -175,8 +166,7 @@ int main(int argc, char* argv[])
 
 namespace {
 
-void RotateX(vtkRenderWindow* renWin,
-             vtkActor* actor)
+void RotateX(vtkRenderWindow* renWin, vtkActor* actor)
 {
   actor->SetOrientation(0, 0, 0);
   renWin->Render();
@@ -192,8 +182,7 @@ void RotateX(vtkRenderWindow* renWin,
   renWin->EraseOn();
 }
 
-void RotateY(vtkRenderWindow* renWin,
-             vtkActor* actor)
+void RotateY(vtkRenderWindow* renWin, vtkActor* actor)
 {
   actor->SetOrientation(0, 0, 0);
   renWin->Render();
@@ -208,8 +197,7 @@ void RotateY(vtkRenderWindow* renWin,
   renWin->EraseOn();
 }
 
-void RotateZ(vtkRenderWindow* renWin,
-             vtkActor* actor)
+void RotateZ(vtkRenderWindow* renWin, vtkActor* actor)
 {
   actor->SetOrientation(0, 0, 0);
   renWin->Render();
@@ -224,8 +212,7 @@ void RotateZ(vtkRenderWindow* renWin,
   renWin->EraseOn();
 }
 
-void RotateXY(vtkRenderWindow* renWin,
-              vtkActor* actor)
+void RotateXY(vtkRenderWindow* renWin, vtkActor* actor)
 {
   actor->SetOrientation(0, 0, 0);
   actor->RotateX(60);

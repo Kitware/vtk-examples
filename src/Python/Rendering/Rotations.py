@@ -13,11 +13,11 @@ def main():
         and use cow.g as the input data.
 
     '''
-    file_name, figure, book_color = get_program_parameters()
-    rotate(file_name, figure, book_color)
+    file_name, figure, actor_color = get_program_parameters()
+    rotate(file_name, figure, actor_color)
 
 
-def rotate(file_name, figure, book_color):
+def rotate(file_name, figure, actor_color):
     ''''
     This is where we do the rotations.
 
@@ -45,11 +45,9 @@ def rotate(file_name, figure, book_color):
 
     modelActor = vtk.vtkActor()
     modelActor.SetMapper(modelMapper)
-    if book_color:
-        modelActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Wheat'))
-    else:
-        modelActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Crimson'))
-        modelActor.GetProperty().SetSpecular(.6)
+    modelActor.GetProperty().SetDiffuseColor(colors.GetColor3d(actor_color))
+    if actor_color != 'Wheat':
+        modelActor.GetProperty().SetSpecular(0.6)
         modelActor.GetProperty().SetSpecularPower(30)
 
     modelAxesSource = vtk.vtkAxes()
@@ -68,7 +66,7 @@ def rotate(file_name, figure, book_color):
     # Add the actors to the renderer, set the background and size.
     #
     ren1.AddActor(modelActor)
-    if book_color:
+    if actor_color == 'Wheat':
         ren1.SetBackground(colors.GetColor3d('BkgColor'))
     else:
         ren1.SetBackground(colors.GetColor3d('Silver'))
@@ -107,10 +105,10 @@ def get_program_parameters():
     parser.add_argument('filename', help='The file cow.obj.')
     parser.add_argument('figure', default=0, type=int, nargs='?',
                         help='The particular rotation that you want to view.')
-    parser.add_argument('book_color', default=False, type=bool, nargs='?',
-                        help='If True then the vtk textbook colors are used.')
+    parser.add_argument('actor_color', default='Wheat', type=str, nargs='?',
+                        help='If the color is Wheat then the vtk textbook colors are used.')
     args = parser.parse_args()
-    return args.filename, args.figure, args.book_color
+    return args.filename, args.figure, args.actor_color
 
 
 def RotateX(renWin, actor):
