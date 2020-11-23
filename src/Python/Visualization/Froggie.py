@@ -18,6 +18,7 @@ def main(data_folder, tissues, view):
     tm = create_tissue_map()
     path = Path(data_folder)
     color_lut = create_frog_lut()
+    res = ['Using the following tissues:']
     for tissue in tissues:
         if path.is_dir():
             source = path.joinpath(tissue).with_suffix('.vtk')
@@ -31,8 +32,9 @@ def main(data_folder, tissues, view):
         actor.GetProperty().SetSpecular(0.2)
         actor.GetProperty().SetSpecularPower(10)
         renderer.AddActor(actor)
-        print('Tissue: {:>9s}, Label: {:2d}'.format(tissue, tm[tissue][0]))
+        res.append('{:>11s}, label: {:2d}'.format(tissue, tm[tissue][0]))
 
+    print('\n'.join(res))
     render_window.SetSize(640, 640)
     render_window.SetWindowName('Froggie')
 
@@ -84,28 +86,7 @@ def main(data_folder, tissues, view):
     widget.SetEnabled(1)
     widget.InteractiveOn()
 
-    render_window.Render()
-    renderer.GetActiveCamera().AddObserver('ModifiedEvent', CameraModifiedCallback)
-
     render_window_interactor.Start()
-
-
-def CameraModifiedCallback(caller, event):
-    """
-     Used to estimate positions similar to the book illustrations.
-    :param caller:
-    :param event:
-    :return:
-    """
-    print(caller.GetClassName(), "modified")
-    # Print the interesting stuff.
-    res = f'\tcamera = renderer.GetActiveCamera()\n'
-    res += f'\tcamera.SetPosition({", ".join(map("{0:0.6f}".format, caller.GetPosition()))})\n'
-    res += f'\tcamera.SetFocalPoint({", ".join(map("{0:0.6f}".format, caller.GetFocalPoint()))})\n'
-    res += f'\tcamera.SetViewUp({", ".join(map("{0:0.6f}".format, caller.GetViewUp()))})\n'
-    res += f'\tcamera.SetDistance({"{0:0.6f}".format(caller.GetDistance())})\n'
-    res += f'\tcamera.SetClippingRange({", ".join(map("{0:0.6f}".format, caller.GetClippingRange()))})\n'
-    print(res)
 
 
 def get_program_parameters(argv):
@@ -140,7 +121,6 @@ def get_program_parameters(argv):
     parser.add_argument('data_folder', help='frog')
     parser.add_argument('tissues', nargs='+', help='List of one or more tissues.')
     args = parser.parse_args()
-    print(args)
     return args.data_folder, args.tissues, args.view
 
 
@@ -237,7 +217,6 @@ class SliceOrder:
         return t
 
     def h_f(self):
-        print(self.hf_mat)
         t = vtk.vtkTransform()
         t.SetMatrix(self.hf_mat)
         return t
@@ -346,27 +325,27 @@ def create_frog_lut():
 
 
 def create_tissue_map():
-    tissues = dict()
+    tiss = dict()
     # key: name of the tissue
     # value: [lut_index, transform, opacity]
-    tissues['blood'] = [1, 'is', 1.0]
-    tissues['brain'] = [2, 'is', 1.0]
-    tissues['brainbin'] = [2, 'is', 1.0]
-    tissues['duodenum'] = [3, 'is', 1.0]
-    tissues['eye_retna'] = [4, 'is', 1.0]
-    tissues['eye_white'] = [5, 'is', 1.0]
-    tissues['heart'] = [6, 'is', 1.0]
-    tissues['ileum'] = [7, 'is', 1.0]
-    tissues['kidney'] = [8, 'is', 1.0]
-    tissues['l_intestine'] = [9, 'is', 1.0]
-    tissues['liver'] = [10, 'is', 1.0]
-    tissues['lung'] = [11, 'is', 1.0]
-    tissues['nerve'] = [12, 'is', 1.0]
-    tissues['skeleton'] = [13, 'is', 1.0]
-    tissues['spleen'] = [14, 'is', 1.0]
-    tissues['stomach'] = [15, 'is', 1.0]
-    tissues['skin'] = [16, 'hfsi', 0.4]
-    return tissues
+    tiss['blood'] = [1, 'is', 1.0]
+    tiss['brain'] = [2, 'is', 1.0]
+    tiss['brainbin'] = [2, 'is', 1.0]
+    tiss['duodenum'] = [3, 'is', 1.0]
+    tiss['eye_retna'] = [4, 'is', 1.0]
+    tiss['eye_white'] = [5, 'is', 1.0]
+    tiss['heart'] = [6, 'is', 1.0]
+    tiss['ileum'] = [7, 'is', 1.0]
+    tiss['kidney'] = [8, 'is', 1.0]
+    tiss['l_intestine'] = [9, 'is', 1.0]
+    tiss['liver'] = [10, 'is', 1.0]
+    tiss['lung'] = [11, 'is', 1.0]
+    tiss['nerve'] = [12, 'is', 1.0]
+    tiss['skeleton'] = [13, 'is', 1.0]
+    tiss['spleen'] = [14, 'is', 1.0]
+    tiss['stomach'] = [15, 'is', 1.0]
+    tiss['skin'] = [16, 'hfsi', 0.4]
+    return tiss
 
 
 def create_frog_actor(file_name, tissue, transform):

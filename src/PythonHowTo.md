@@ -73,3 +73,9 @@ How to visualise the information in a structured dataset. All these examples use
 [StreamlinesWithLineWidget](/Python/VisualizationAlgorithms/StreamlinesWithLineWidget) | Interact with the streamlines in the combustor dataset.
 [VelocityProfile](/Python/VisualizationAlgorithms/VelocityProfile) | Warping the geometry of three planes to show flow momentum.
 [WarpCombustor](/Python/VisualizationAlgorithms/WarpCombustor) | Carpet plots of combustor flow energy in a structured grid. Colors and plane displacement represent energy values.
+
+## Transforms
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[Froggie](/Python/Visualization/Froggie) | This code uses a general way of specifying transformations that can permute image and other geometric data in order to maintain proper orientation regardless of the acquisition order. See the class SliceOrder.
