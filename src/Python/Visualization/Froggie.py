@@ -33,8 +33,10 @@ def main(data_folder, tissues, view):
         actor.GetProperty().SetSpecularPower(10)
         renderer.AddActor(actor)
         res.append('{:>11s}, label: {:2d}'.format(tissue, tm[tissue][0]))
+        
+    if len(res) > 1:
+        print('\n'.join(res))
 
-    print('\n'.join(res))
     render_window.SetSize(640, 640)
     render_window.SetWindowName('Froggie')
 
@@ -118,7 +120,7 @@ def get_program_parameters(argv):
                        help='The view corresponds to Figs 12-9d in the VTK Textbook')
     parser.set_defaults(type=None)
 
-    parser.add_argument('data_folder', help='frog')
+    parser.add_argument('data_folder', help='Frog')
     parser.add_argument('tissues', nargs='+', help='List of one or more tissues.')
     args = parser.parse_args()
     return args.data_folder, args.tissues, args.view
