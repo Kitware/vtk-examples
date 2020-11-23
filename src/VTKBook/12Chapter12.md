@@ -573,21 +573,23 @@ wm withdraw .
 
 <figure id="Figure 12-9">
  <figure id="Figure 12-9a">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestViewFrogSkinAndTissue.png?raw=true" width="640" alt="Figure 12-9a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFroggie-12-9a.png?raw=true" width="640" alt="Figure 12-9a">
   <figcaption style="color:blue">(a) All frog parts and translucent skin.</figcaption>
  </figure>
  <figure id="Figure 12-9b">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestViewFrog.png?raw=true" width="640" alt="Figure 12-9b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFroggie-12-9b.png?raw=true" width="640" alt="Figure 12-9b">
   <figcaption style="color:blue">(b) The comnplete frog without skin.</figcaption>
  </figure>
 <figure id="Figure 12-9c">
- <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestViewFrogA.png?raw=true" width="640" alt="Figure 12-9c">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFroggie-12-9c.png?raw=true" width="640" alt="Figure 12-9c">
  <figcaption style="color:blue">(c) No skin or skeleton.</figcaption>
 </figure>
-<figcaption style="color:blue"><b>Figure 12-9</b>. Various frog images. (a) <a href="../../Cxx/Visualization/ViewFrogSkinAndTissue" title="ViewFrogSkinAndTissue"> See ViewFrogSkinAndTissue.cxx</a> and <a href="../../Python/Visualization/ViewFrogSkinAndTissue" title="ViewFrogSkinAndTissue"> ViewFrogSkinAndTissue.py</a>.; (b).<a href="../../Cxx/Visualization/ViewFrog" title="ViewFrog"> See ViewFrog.cxx</a> and <a href="../../Python/Visualization/ViewFrog" title="ViewFrog"> ViewFrog.py</a>.; (c)<a href="../../Cxx/Visualization/ViewFrogA" title="ViewFrogA"> See ViewFrogA.cxx</a> and <a href="../../Python/Visualization/ViewFrogA" title="ViewFrogA"> ViewFrogA.py</a>.</figcaption>
+<figure id="Figure 12-9d">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFroggie-12-9d.png?raw=true" width="640" alt="Figure 12-9c">
+ <figcaption style="color:blue">(d) A view from the top. How good is your biology?</figcaption>
 </figure>
-
-**Figure 12-9** shows three views of the frog.
+<figcaption style="color:blue"><b>Figure 12-9</b>. Various frog images. <a href="../../Python/Visualization/Froggie" title="Froggie"> See Froggie.py</a>.</figcaption>
+</figure>
 
 This lengthy example shows the power of a comprehensive visualization system like VTK.
 
