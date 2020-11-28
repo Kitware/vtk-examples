@@ -270,7 +270,7 @@ In the last example, we used C++ and created a program that was tailored to extr
     p['SPACING'] = 1.5
 ```
 
-plus possibly many more parameters to control decimation, smoothing, and so forth. Working in C++, we would have to design the format of the file and write code to interpret the statements. We make the job easier here by using Python interpreter. Another decision is to separate the modelling from the rendering. Our script can be modified to generate models in a "batch" mode. We will run one Python script for each tissue. That script will create a vtk output file containing the polygonal representation of each tissue. Later, we can render the models with a separate script. However to somplify matters we haver incorporated everything into a single Python script: <a href="../../Python/Visualization/FrogReconstruction" title="FrogReconstruction"> FrogReconstruction.py</a>.
+plus possibly many more parameters to control decimation, smoothing, and so forth. Working in C++, we would have to design the format of the file and write code to interpret the statements. We make the job easier here by using Python interpreter. Another decision is to separate the modelling from the rendering. Our script can be modified to generate models in a "batch" mode. We will run one Python script for each tissue. That script will create a vtk output file containing the polygonal representation of each tissue. Later, we can render the models with a separate script. However to simplify matters we have incorporated everything into a single Python script: <a href="../../Python/Visualization/FrogReconstruction" title="FrogReconstruction"> FrogReconstruction.py</a>.
 
 **Overview of the Pipeline**
 
@@ -423,7 +423,6 @@ Triangle strips are a compact representation of large numbers of triangles. This
     stripper.SetInputConnection(normals.GetOutputPort())
 ```
 
-
 **Execute the Pipeline**
 
 If you have gotten this far in the book, you know that the *Visualization Toolkit* uses a demand-driven pipeline architecture and so far we have not demanded anything. We have just specified the pipeline topology and the parameters for each pipeline element.
@@ -509,19 +508,19 @@ The rest of the script defines a standard view.
 
 <figure id="Figure 12-9">
  <figure id="Figure 12-9a">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/Frog-12-9a.png?raw=true" width="640" alt="Figure 12-9a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFrog-12-9a.png?raw=true" width="640" alt="Figure 12-9a">
   <figcaption style="color:blue">(a) All frog parts and translucent skin.</figcaption>
  </figure>
  <figure id="Figure 12-9b">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/Frog-12-9b.png?raw=true" width="640" alt="Figure 12-9b">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFrog-12-9b.png?raw=true" width="640" alt="Figure 12-9b">
   <figcaption style="color:blue">(b) The complete frog without skin.</figcaption>
  </figure>
 <figure id="Figure 12-9c">
- <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/Frog-12-9c.png?raw=true" width="640" alt="Figure 12-9c">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFrog-12-9c.png?raw=true" width="640" alt="Figure 12-9c">
  <figcaption style="color:blue">(c) No skin or skeleton.</figcaption>
 </figure>
 <figure id="Figure 12-9d">
- <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/Frog-12-9d.png?raw=true" width="640" alt="Figure 12-9c">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFrog-12-9d.png?raw=true" width="640" alt="Figure 12-9c">
  <figcaption style="color:blue">(d) A view from the top. How good is your biology?</figcaption>
 </figure>
 <figcaption style="color:blue"><b>Figure 12-9</b>. Various frog images. <a href="../../Python/Visualization/Frog" title="Frog"> See Frog.py</a>.</figcaption>
