@@ -11,7 +11,4 @@ To accommodate the volume readers we have in VTK, we processed the mask files an
 The code uses a general way of specifying transformations that can permute image and other geometric data in order to maintain proper orientation regardless of the acquisition order. See the class **SliceOrder**.
 
 !!! info
-    The frog data used here seems to differ from the vtkPolyData files used by [Frog](../Frog)
-
-!!! info
     By specifying the tissues and other parameters, as outlined in the code, you can generate approximations to the following figures: [Figure 12-9a](../../../VTKBook/12Chapter12/#Figure%2012-9a), [Figure 12-9b](../../../VTKBook/12Chapter12/#Figure%2012-9b), [Figure 12-9c](../../../VTKBook/12Chapter12/#Figure%2012-9c), and [Figure 12-9d](../../../VTKBook/12Chapter12/#Figure%2012-9d) in [Chapter 12](../../../VTKBook/12Chapter12) of the [VTK Textbook](../../../VTKBook/01Chapter1).

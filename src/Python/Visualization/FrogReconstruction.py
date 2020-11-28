@@ -127,12 +127,11 @@ To specify all the tissues at once:
 
 You can leave out brainbin, it is the brain with no gaussian smoothing.
 
-This seems to be a different frog to that in the vtkPolyData files used by Frog.py,
- however you can still approximate the same views in the VTK Textbook:
+Here are the parameters used to get the views in the VTK Textbook:
 Fig12-9a:
- brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a
+ blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a
 Fig12-9b:
- brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a
+ blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a
 Fig12-9c:
  brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -c
 Fig12-9c:
@@ -190,23 +189,26 @@ def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, lut):
     reader.Update()
 
     last_connection = reader
-    if tissue['ISLAND_REPLACE'] >= 0:
-        island_remover = vtk.vtkImageIslandRemoval2D()
-        island_remover.SetAreaThreshold(tissue['ISLAND_AREA'])
-        island_remover.SetIslandValue(tissue['ISLAND_REPLACE'])
-        island_remover.SetReplaceValue(tissue['TISSUE'])
-        island_remover.SetInput(last_connection.GetOutput())
-        island_remover.Update()
-        last_connection = island_remover
 
-    select_tissue = vtk.vtkImageThreshold()
-    select_tissue.ThresholdBetween(tissue['TISSUE'], tissue['TISSUE'])
-    select_tissue.SetInValue(255)
-    select_tissue.SetOutValue(0)
-    select_tissue.SetInputConnection(last_connection.GetOutputPort())
+    if not tissue['NAME'] == 'skin':
+        if tissue['ISLAND_REPLACE'] >= 0:
+            island_remover = vtk.vtkImageIslandRemoval2D()
+            island_remover.SetAreaThreshold(tissue['ISLAND_AREA'])
+            island_remover.SetIslandValue(tissue['ISLAND_REPLACE'])
+            island_remover.SetReplaceValue(tissue['TISSUE'])
+            island_remover.SetInput(last_connection.GetOutput())
+            island_remover.Update()
+            last_connection = island_remover
+
+        select_tissue = vtk.vtkImageThreshold()
+        select_tissue.ThresholdBetween(tissue['TISSUE'], tissue['TISSUE'])
+        select_tissue.SetInValue(255)
+        select_tissue.SetOutValue(0)
+        select_tissue.SetInputConnection(last_connection.GetOutputPort())
+        last_connection = select_tissue
 
     shrinker = vtk.vtkImageShrink3D()
-    shrinker.SetInputConnection(select_tissue.GetOutputPort())
+    shrinker.SetInputConnection(last_connection.GetOutputPort())
     shrinker.SetShrinkFactors(tissue['SAMPLE_RATE'])
     shrinker.AveragingOn()
     last_connection = shrinker
@@ -669,7 +671,6 @@ def skin():
     p['END_SLICE'] = 138
     p['VOI'] = [0, 499, 0, 469, p['START_SLICE'], p['END_SLICE']]
     p['VALUE'] = 10.5
-    # p['VALUE'] = 20.5
     p['SAMPLE_RATE'] = [2, 2, 1]
     p['DECIMATE_REDUCTION'] = 0.95
     p['DECIMATE_ITERATIONS'] = 10
