@@ -4,7 +4,7 @@ Frog organs along with a translucent skin can be viewed.
 
 The dataset is derived from a frog. This data was prepared at Lawrence Berkeley National Laboratories and is included with their permission. The data was acquired by physically slicing the frog and photographing the slices. The original segmented data is in the form of tissue masks with one file per tissue. There are 136 slices per tissue and 15 different tissues. Each slice is 470 by 500 pixels.
 
-This example uses the vtkPolyData file for the skin and files that are generated from the tissue masks. You add tissues by specifying a list of tissue names. Note that the skin is rendered as being translucent, by default, so that you can see the internal organs.
+This example uses the vtkPolyData file for the skin and files that are generated from the tissue masks. You add tissues by specifying a list of tissue names. Note that the skin is rendered as being translucent so that you can see the internal organs.
 
 The code uses a general way of specifying transformations that can permute image and other geometric data in order to maintain proper orientation regardless of the acquisition order. See the class **SliceOrder**.
 
