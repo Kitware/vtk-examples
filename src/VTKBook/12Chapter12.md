@@ -260,26 +260,27 @@ Before we describe the process to go from binary labeled tissues to gray-scale d
 
 In the last example, we used C++ and created a program that was tailored to extract two surfaces: one of the skin and one of the bone. All the parameters for the surface extraction were hard-coded in the source. Since our frog has 15 different tissues; we seek a more general solution to this problem. We may have to experiment with a number of different parameters for a number of visualization and imaging filters. Our goal is to develop a general pipeline that will work not only our 15 tissues but on other medical datasets as well. We'll design the program to work with a set of user-specified parameters to control the elements of the pipeline. A reasonable description might look like:
 
-``` tcl
-SLICE_ORDER hfsi
-ROWS 470
-COLUMNS 500
-STUDY ../frogMasks/frogTissue
-PIXEL_SIZE 1
-SPACING 1.5
+``` python
+    p['STUDY'] = 'frogTissue'
+    p['SLICE_ORDER'] = 'si'
+    p['VALUE'] = 127.5
+    p['ROWS'] = 470
+    p['COLUMNS'] = 500
+    p['PIXEL_SIZE'] = 1
+    p['SPACING'] = 1.5
 ```
 
-plus possibly many more parameters to control decimation, smoothing, and so forth. Working in C++, we would have to design the format of the file and write code to interpret the statements. We make the job easier here by using Tcl interpreter. Another decision is to separate the modelling from the rendering. Our script will generate models in a "batch" mode. We will run one VTK Tcl script for each tissue. That script will create a vtk output file containing the polygonal representation of each tissue. Later, we can render the models with a separate script.
+plus possibly many more parameters to control decimation, smoothing, and so forth. Working in C++, we would have to design the format of the file and write code to interpret the statements. We make the job easier here by using Python interpreter. Another decision is to separate the modelling from the rendering. Our script can be modified to generate models in a "batch" mode. We will run one Python script for each tissue. That script will create a vtk output file containing the polygonal representation of each tissue. Later, we can render the models with a separate script. However to somplify matters we haver incorporated everything into a single Python script: <a href="../../Python/Visualization/FrogReconstruction" title="FrogReconstruction"> FrogReconstruction.py</a>.
 
 **Overview of the Pipeline**
 
 **Figure 12-8** shows the design of the pipeline. This generic pipeline has been developed over the years in our laboratory and in the Brigham and Women's Hospital Surgical Planning Lab. We find that it produces reasonable models from segmented datasets. Do not be intimidated by the number of filters (twelve in all). Before we developed VTK, we did similar processing with a hodgepodge of programs all written with different interfaces. We used intermediate files to pass data from one filter to the next. The new pipeline, implemented in VTK, is more efficient in time and computing resources.
 
-We start by developing Tcl scripts to process the volume data. In these scripts, we use the convention that user-specified variables are in capital letters. First we show the elements of the pipeline and subsequently show sample files that extract 3D models of the frog's tissues.
+We use the convention that user-specified variables are in capital letters. First we show the elements of the pipeline and subsequently show sample functions that extract 3D models of the frog's tissues.
 
 <figure id="Figure 12-7">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestViewFrogBoth.png?raw=true" width="640" alt="Figure 12-7">
-  <figcaption style="color:blue"><b>Figure 12-7</b>. The frog's brain. Model extracted without smoothing (left) and with smoothing (right). <a href="../../Cxx/Visualization/ViewFrogBoth" title="ViewFrogBoth"> See ViewFrogBoth.cxx</a> and <a href="../../Python/Visualization/ViewFrogBoth" title="ViewFrogBoth"> ViewFrogBoth.py</a>.</figcaption>
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFrogBrain.png?raw=true" width="640" alt="Figure 12-7">
+  <figcaption style="color:blue"><b>Figure 12-7</b>. The frog's brain. Model extracted without smoothing (left) and with smoothing (right). See <a href="../../Python/Visualization/FrogBrain" title="FrogBrain"> FrogBrain.py</a>.</figcaption>
 </figure>
 
 **Read the Segmented Volume Data**
@@ -295,99 +296,95 @@ All the other parameters are self-explanatory except for the last. In this scrip
   <figcaption style="color:blue"><b>Figure 12-8</b>. The segmented volume to triangle pipeline. Volume passes through image pipeline before isosurface extraction..</figcaption>
 </figure>
 
-``` tcl
-set originx expr ( $COLUMNS / 2.0 ) * $PIXEL_SIZE * -1.0]
-set originy [expr ( $ROWS / 2.0 ) * $PIXEL_SIZE * -1.0]
-vtkPNMReader reader
-reader SetFilePrefix $STUDY
-reader SetDataSpacing $PIXEL_SIZE $PIXEL_SIZE $SPACING
-reader SetDataOrigin $originx $originy [expr $START_SLICE * $SPACING]
-reader SetDataVOI $VOI
-reader SetTransform $SLICE_ORDER
-[reader GetOutput] ReleaseDataFlagOn
+``` python
+    reader = vtk.vtkMetaImageReader()
+    reader.SetFileName(str(fn))
+    reader.SetDataSpacing(data_spacing)
+    reader.SetDataOrigin(data_origin)
+    reader.SetDataExtent(voi)
+    reader.Update()
 ```
 
 **Remove Islands**
 
 Some segmentation techniques, especially those that are automatic, may generate islands of misclassified voxels. This filter looks for connected pixels with the ISLAND_REPLACE label, and if the number of connected pixels is less than ISLAND_AREA, it replaces them with the label TISSUE. Note that this filter is only executed if ISLAND_REPLACE is positive.
 
-``` tcl
-set lastConnection reader
-if {$ISLAND_REPLACE = 0} {
-  vtkImageIslandRemoval2D islandRemover
-    islandRemover SetAreaThreshold $ISLAND_AREA
-    islandRemover SetIslandValue $ISLAND_REPLACE
-    islandRemover SetReplaceValue $TISSUE
-    islandRemover SetInputConnection [$lastConnection GetOutputPort]
-    set lastConnection islandRemover
-}
+``` python
+    last_connection = reader
+    if tissue['ISLAND_REPLACE'] >= 0:
+        island_remover = vtk.vtkImageIslandRemoval2D()
+        island_remover.SetAreaThreshold(tissue['ISLAND_AREA'])
+        island_remover.SetIslandValue(tissue['ISLAND_REPLACE'])
+        island_remover.SetReplaceValue(tissue['TISSUE'])
+        island_remover.SetInput(last_connection.GetOutput())
+        island_remover.Update()
+        last_connection = island_remover
 ```
 
 **Select a Tissue**
 
 The rest of the pipeline requires gray-scale data. To convert the volume that now contains integer tissue labels to a gray-scale volume containing only one tissue, we use the threshold filter to set all pixels with the value TISSUE (the tissue of choice for this pipeline) to 255 and all other pixels to 0. The choice of 255 is somewhat arbitrary.
 
-``` tcl
-vtkImageThreshold selectTissue
-  selectTissue ThresholdBetween $TISSUE $TISSUE
-  selectTissue SetInValue 255
-  selectTissue SetOutValue 0
-  selectTissue SetInputConnection [$lastConnection GetOutputPort]
+``` python
+    select_tissue = vtk.vtkImageThreshold()
+    select_tissue.ThresholdBetween(tissue['TISSUE'], tissue['TISSUE'])
+    select_tissue.SetInValue(255)
+    select_tissue.SetOutValue(0)
+    select_tissue.SetInputConnection(last_connection.GetOutputPort())
 ```
 
 **Resample the Volume**
 
 Lower resolution volumes produce fewer polygons. For experimentation we often reduce the resolution of the data with this filter. However, details can be lost during this process. Averaging creates new pixels in the resampled volume by averaging neighboring pixels. If averaging is turned off, every SAMPLE_RATE pixel will be passed through to the output.
 
-``` tcl
-vtkImageShrink3D shrinker
-shrinker SetInputConnection [selectTissue GetOutputPort]
-eval shrinker SetShrinkFactors $SAMPLE_RATE
-shrinker AveragingOn
+``` python
+    shrinker = vtk.vtkImageShrink3D()
+    shrinker.SetInputConnection(select_tissue.GetOutputPort())
+    shrinker.SetShrinkFactors(tissue['SAMPLE_RATE'])
+    shrinker.AveragingOn()
+    last_connection = shrinker
 ```
 
 **Smooth the Volume Data**
 
 To this point, unless we have resampled the data, the volume is labeled with a value of 255 in pixels of the selected tissue and 0 elsewhere. This "binary" volume would produce stepped surfaces if we did not blur it. The Gaussian kernel specified in this filter accomplishes the smoothing we require to extract surfaces. The amount of smoothing is controlled by  GAUSSIAN_STANDARD_DEVIATION that can be independently specified for each axis of the volume data. We only run this filter if some smoothing is requested,
 
-``` tcl
-set lastConnection shrinker
-if {$GAUSSIAN_STANDARD_DEVIATION != "0 0 0"} {
-  vtkImageGaussianSmooth gaussian
-    gaussian SetDimensionality 3
-    gaussian SetStandardDeviation $GAUSSIAN_STANDARD_DEVIATION
-    gaussian SetRadiusFactor 1
-    gaussian SetInputConnection [shrinker GetOutputPort]
-    set lastConnection gaussian
-}
+``` python
+    if not all(v == 0 for v in tissue['GAUSSIAN_STANDARD_DEVIATION']):
+        gaussian = vtk.vtkImageGaussianSmooth()
+        gaussian.SetStandardDeviation(*tissue['GAUSSIAN_STANDARD_DEVIATION'])
+        gaussian.SetRadiusFactors(*tissue['GAUSSIAN_RADIUS_FACTORS'])
+        gaussian.SetInputConnection(shrinker.GetOutputPort())
+        last_connection = gaussian
 ```
 
 **Generate Triangles**
 
-Now we can process the volume with marching cubes just as though we had obtained gray-scale data from a scanner. We added a few more bells and whistles to the pipeline. The filter runs faster if we turn off gradient and normal calculations. Marching cubes normally calculates vertex normals from the gradient of the volume data. In our pipeline, we have concocted a gray-scale representation and will subsequently decimate the triangle mesh and smooth the resulting vertices. This processing invalidates the normals that are calculated by marching cubes.
+Now we can process the volume with an iso-surface generator just as though we had obtained gray-scale data from a scanner. We added a few more bells and whistles to the pipeline. The filter runs faster if we turn off gradient and normal calculations. The generator normally calculates vertex normals from the gradient of the volume data. In our pipeline, we have concocted a gray-scale representation and will subsequently decimate the triangle mesh and smooth the resulting vertices. This processing invalidates the normals that are calculated by the generator.
 
-``` tcl
-vtkMarchingCubes mcubes
-  mcubes SetInputConnection [toStructuredPoints GetOutputPort]
-  mcubes ComputeScalarsOff
-  mcubes ComputeGradientsOff
-  mcubes ComputeNormalsOff
-
-eval mcubes SetValue 0 $VALUE
-[mcubes GetOutput] ReleaseDataFlagOn
+``` python
+    if flying_edges:
+        iso_surface = vtk.vtkFlyingEdges3D()
+        iso_surface.SetInputConnection(last_connection.GetOutputPort())
+        iso_surface.ComputeScalarsOff()
+        iso_surface.ComputeGradientsOff()
+        iso_surface.ComputeNormalsOff()
+        iso_surface.SetValue(0, iso_value)
 ```
 
 **Reduce the Number of Triangles**
 
 There are often many more triangles generated by the isosurfacing algorithm than we need for rendering. Here we reduce the triangle count by eliminating triangle vertices that lie within a user-specified distance to the plane formed by neighboring vertices. We preserve any edges of triangles that are considered "features."
 
-``` tcl
-vtkDecimatePro decimator
-  decimator SetInputConnection [mcubes GetOutputPort]
-  eval decimator SetFeatureAngle $DECIMATE_ANGLE
-  decimator PreserveTopologyOn
-  decimator SetTargetReduction $DECIMATE_REDUCTION
-  [decimator GetOutput] ReleaseDataFlagOn
+``` python
+    decimator = vtk.vtkDecimatePro()
+    decimator.SetInputConnection(tf.GetOutputPort())
+    decimator.SetFeatureAngle(tissue['DECIMATE_ANGLE'])
+    decimator.MaximumIterations = tissue['DECIMATE_ITERATIONS']
+    decimator.PreserveTopologyOn()
+    decimator.SetErrorIsAbsolute(1)
+    decimator.SetAbsoluteError(tissue['DECIMATE_ERROR'])
+    decimator.SetTargetReduction(tissue['DECIMATE_REDUCTION'])
 ```
 
 **Smooth the Triangle Vertices**
@@ -396,212 +393,151 @@ This filter uses Laplacian smoothing described in ["Mesh Smoothing"](/VTKBook/09
 
 Of course we have already smoothed the image data with a Gaussian kernel so this step may not give much improvement; however, models that are heavily decimated can sometimes be improved with additional polygonal smoothing.
 
-``` tcl
-vtkSmoothPolyDataFilter smoother
-smoother SetInputConnection [decimator GetOutputPort]
-eval smoother SetNumberOfIterations $SMOOTH_ITERATIONS
-eval smoother SetRelaxationFactor $SMOOTH_FACTOR
-eval smoother SetFeatureAngle $SMOOTH_ANGLE
-smoother FeatureEdgeSmoothingOff
-smoother BoundarySmoothingOff;
-smoother SetConvergence 0
-[smoother GetOutput] ReleaseDataFlagOn
+``` python
+    smoother = vtk.vtkSmoothPolyDataFilter()
+    smoother.SetInputConnection(decimator.GetOutputPort())
+    smoother.SetNumberOfIterations(tissue['SMOOTH_ITERATIONS'])
+    smoother.SetRelaxationFactor(tissue['SMOOTH_FACTOR'])
+    smoother.SetFeatureAngle(tissue['SMOOTH_ANGLE'])
+    smoother.FeatureEdgeSmoothingOff()
+    smoother.BoundarySmoothingOff()
+    smoother.SetConvergence(0)
 ```
 
 **Generate Normals**
 
 To generate smooth shaded models during rendering, we need normals at each vertex. As in decimation, sharp edges can be retained by setting the feature angle.
 
-``` tcl
-vtkPolyDataNormals normals
-normals SetInputConnection [smoother GetOutputPort]
-eval normals SetFeatureAngle $FEATURE_ANGLE
-[normals GetOutput] ReleaseDataFlagOn
+``` python
+    normals = vtk.vtkPolyDataNormals()
+    normals.SetInputConnection(smoother.GetOutputPort())
+    normals.SetFeatureAngle(tissue['FEATURE_ANGLE'])
 ```
 
 **Generate Triangle Strips**
 
 Triangle strips are a compact representation of large numbers of triangles. This filter processes our independent triangles before we write them to a file.
 
-``` tcl
-vtkStripper stripper
-  stripper SetInputConnection [normals GetOutputPort]
-  [stripper GetOutput] ReleaseDataFlagOn
+``` python
+    stripper = vtk.vtkStripper()
+    stripper.SetInputConnection(normals.GetOutputPort())
 ```
 
-**Write the Triangles to a File**
-
-Finally, the last component of the pipeline writes the triangles strips to a file.
-
-``` tcl
-vtkPolyDataWriter writer
-  writer SetInputConnection [stripper GetOutputPort]
-  eval writer SetFileName $NAME.vtk
-```
 
 **Execute the Pipeline**
 
 If you have gotten this far in the book, you know that the *Visualization Toolkit* uses a demand-driven pipeline architecture and so far we have not demanded anything. We have just specified the pipeline topology and the parameters for each pipeline element.
 
-``` tcl
-writer Update
+``` python
+    render_window.Render()
 ```
 
-causes the pipeline to execute. In practice we do a bit more than just Update the last element of the pipeline. We explicitly Update each element so that we can time the individual steps. The script frogSegmentation.tcl contains the more sophisticated approach.
+causes the pipeline to execute. In practice we do a bit more than just Update the last element of the pipeline. We explicitly Update each element so that we can time the individual steps.
 
 **Specifying Parameters for the Pipeline**
 
-All of the variables mentioned above must be defined for each tissue to be processed. The parameters fall into two general categories. Some are specific to the particular study while some are specific to each tissue. For the frog, we collected the study specific parameters in a file frog.tcl that contains:
+All of the variables mentioned above must be defined for each tissue to be processed. The parameters fall into two general categories. Some are specific to the particular study while some are specific to each tissue. For the frog, we collected the study specific parameters in a function that contains:
 
-``` tcl
-set SLICE_ORDER hfsi
-set ROWS 470
-set COLUMNS 500
-set STUDY ../frogMasks/frogTissue
-set PIXEL_SIZE 1
-set SPACING 1.5
-set VALUE 511.5
-set SAMPLE_RATE "1 1 1"
-set DECIMATE_REDUCTION .95
-set DECIMATE_ITERATIONS 5
-set DECIMATE_ERROR .0002
-set DECIMATE_ERROR_INCREMENT .0002
-set SMOOTH_ITERATIONS 0
-set SMOOTH_FACTOR .01
-set FEATURE_ANGLE 60
+``` python
+def frog():
+    p = default_parameters()
+    p['ROWS'] = 470
+    p['COLUMNS'] = 500
+    p['STUDY'] = 'frogTissue'
+    p['SLICE_ORDER'] = 'si'
+    p['PIXEL_SIZE'] = 1
+    p['SPACING'] = 1.5
+    p['VALUE'] = 127.5
+    p['SAMPLE_RATE'] = [1, 1, 1]
+    p['GAUSSIAN_STANDARD_DEVIATION'] = [2, 2, 2]
+    p['DECIMATE_REDUCTION'] = 0.95
+    p['DECIMATE_ITERATIONS'] = 5
+    p['DECIMATE_ERROR'] = 0.0002
+    p['DECIMATE_ERROR_INCREMENT'] = 0.0002
+    p['SMOOTH_ITERATIONS'] = 0
+    p['SMOOTH_FACTOR'] = 0.1
+    return p
 ```
 
-There is a specific file for each tissue type. This tissue-specific file reads in the frog-specific parameters, sets tissue-specific parameters, and then reads the pipeline script (we call it frogSegmentation.tcl ). For example, liver.tcl contains:
+There is a specific function for each tissue type. This tissue-specific function reads in the frog-specific parameters, sets the tissue-specific parameters. For example, liver()) contains:
 
-``` tcl
-source frog.tcl
-set NAME liver
-set TISSUE 10
-set START_SLICE 25
-set END_SLICE 126
-set VOI "167 297 154 304 $START_SLICE $END_SLICE"
-source frogSegmentation.tcl
+``` python
+def liver():
+    p = frog()
+    p['NAME'] = 'liver'
+    p['TISSUE'] = 10
+    p['START_SLICE'] = 25
+    p['END_SLICE'] = 126
+    p['VOI'] = [167, 297, 154, 304, p['START_SLICE'], p['END_SLICE']]
+    return p
 ```
 
-Parameters in frog.tcl can also be overridden. For example, skeleton.tcl overrides the standard deviation for the Gaussian filter.
+Parameters in the function frog() can also be overridden. For example, skeleton() overrides the standard deviation for the Gaussian filter.
 
-``` tcl
-source frog.tcl
-set NAME skeleton
-set TISSUE 13
-set VALUE 368.5
-set START_SLICE 1
-set END_SLICE 136
-set ZMAX [expr $END_SLICE - $START_SLICE]
-set VOI "23 479 8 473 0 $ZMAX"
-set GAUSSIAN_STANDARD_DEVIATION "1.5 1.5 1"
-source frogSegmentation.tcl
+``` python
+def skeleton():
+    p = frog()
+    p['STUDY'] = 'frogTissue'
+    p['NAME'] = 'skeleton'
+    p['TISSUE'] = 13
+    p['VALUE'] = 64.5
+    p['START_SLICE'] = 1
+    p['END_SLICE'] = 136
+    p['VOI'] = [23, 479, 8, 469, p['START_SLICE'], p['END_SLICE']]
+    p['GAUSSIAN_STANDARD_DEVIATION'] = [1.5, 1.5, 1]
+    return p
 ```
 
 Note that both of these examples specify a volume of interest. This improves performance of the imaging and visualization algorithms by eliminating empty space.
 
-Another script, marchingFrog.tcl, uses similar parameters but processes the original gray-scale volume rather than the segmented volume. This script is used in skin.tcl to extract the skin. The file marchingFrog.tcl does not have the island removal or threshold pipeline elements since the data is already has gray-scale information.
+After the usual code to create required rendering objects, a single statement for each part creates an actor that we can add to the renderer:
 
-Once the models are generated with the process just outlined, they can be rendered using the following tcl script called ViewFrog.tcl. First we create a Tcl procedure to automate the creation of actors from the model files. All the pipeline elements are named consistently with the name of the part followed by the name of the pipeline element. This makes it easy for the user to identify each object in more sophisticated user interfaces.
+``` python
+        t, actor = create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, lut)
+        ict[name] = t
+        renderer.AddActor(actor)
 
-``` tcl
-proc mkname {a b} {return $a$b}
-
-# proc to make actors and create pipeline
-proc MakeActor { name r g b} {
-  set filename [eval mkname $name .vtk]
-  set reader [eval mkname $name PolyDataReader]
-  vtkPolyDataReader $reader
-    $reader SetFileName $filename
-  set mapper [eval mkname $name PolyDataMapper]
-  vtkPolyDataMapper $mapper
-    $mapper SetInputConnection [$reader GetOutputPort]
-    $mapper ScalarVisibilityOff
-  set actor [ eval mkname $name Actor]
-  vtkLODActor $actor
-    $actor SetMapper $mapper
-    eval [$actor GetProperty] SetDiffuseColor $r $g $b
-    eval [$actor GetProperty] SetSpecularPower 50
-    eval [$actor GetProperty] SetSpecular .5
-    eval [$actor GetProperty] SetDiffuse .8
-  return $actor
-}
-```
-
-After the usual code to create required rendering objects, a single statement for each part creates an actor we can add to the renderer:
-
-``` tcl
-#   Now create the RenderWindow, Renderer and Interactor
-vtkRenderer ren1
-vtkRenderWindow renWin
-  renWin AddRenderer ren1
-vtkRenderWindowInteractor iren
-  iren SetRenderWindow renWin
-
-#   Add the actors to the renderer using the MakeActor proc#
-ren1 AddActor [eval MakeActor lung $powder_blue]
-ren1 AddActor [eval MakeActor heart $tomato]
-ren1 AddActor [eval MakeActor liver $pink]
-ren1 AddActor [eval MakeActor duodenum $orange]
-ren1 AddActor [eval MakeActor blood $salmon]
-ren1 AddActor [eval MakeActor brain $beige]
-ren1 AddActor [eval MakeActor eye_retna $misty_rose]
-ren1 AddActor [eval MakeActor eye_white $white]
-ren1 AddActor [eval MakeActor ileum $raspberry]
-ren1 AddActor [eval MakeActor kidney $banana]
-ren1 AddActor [eval MakeActor l_intestine $peru]
-ren1 AddActor [eval MakeActor nerve $carrot]
-ren1 AddActor [eval MakeActor spleen $violet]
-ren1 AddActor [eval MakeActor stomach $plum]
-ren1 AddActor [eval MakeActor skeleton $wheat]
 ```
 
 The rest of the script defines a standard view.
 
-``` tcl
-ren1 SetBackground 0.2 0.3 0.4
-renWin SetSize 450 450
-[ren1 GetActiveCamera] SetViewUp 0 -1 0
-[ren1 GetActiveCamera] Azimuth 30
-[ren1 GetActiveCamera] Elevation 30
-[ren1 GetActiveCamera] Dolly 1.75
-iren Initialize
-iren SetUserMethod {wm deiconify .vtkInteract}
-#   prevent the tk window from showing up
-wm withdraw .
+``` python
+    # Initial view (looking down on the dorsal surface).
+    renderer.GetActiveCamera().Roll(-90)
+    renderer.ResetCamera()
 ```
 
 <figure id="Figure 12-9">
  <figure id="Figure 12-9a">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFroggie-12-9a.png?raw=true" width="640" alt="Figure 12-9a">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/Frog-12-9a.png?raw=true" width="640" alt="Figure 12-9a">
   <figcaption style="color:blue">(a) All frog parts and translucent skin.</figcaption>
  </figure>
  <figure id="Figure 12-9b">
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFroggie-12-9b.png?raw=true" width="640" alt="Figure 12-9b">
-  <figcaption style="color:blue">(b) The comnplete frog without skin.</figcaption>
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/Frog-12-9b.png?raw=true" width="640" alt="Figure 12-9b">
+  <figcaption style="color:blue">(b) The complete frog without skin.</figcaption>
  </figure>
 <figure id="Figure 12-9c">
- <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFroggie-12-9c.png?raw=true" width="640" alt="Figure 12-9c">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/Frog-12-9c.png?raw=true" width="640" alt="Figure 12-9c">
  <figcaption style="color:blue">(c) No skin or skeleton.</figcaption>
 </figure>
 <figure id="Figure 12-9d">
- <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/TestFroggie-12-9d.png?raw=true" width="640" alt="Figure 12-9c">
+ <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Python/Visualization/Frog-12-9d.png?raw=true" width="640" alt="Figure 12-9c">
  <figcaption style="color:blue">(d) A view from the top. How good is your biology?</figcaption>
 </figure>
-<figcaption style="color:blue"><b>Figure 12-9</b>. Various frog images. <a href="../../Python/Visualization/Froggie" title="Froggie"> See Froggie.py</a>.</figcaption>
+<figcaption style="color:blue"><b>Figure 12-9</b>. Various frog images. <a href="../../Python/Visualization/Frog" title="Frog"> See Frog.py</a>.</figcaption>
 </figure>
 
 This lengthy example shows the power of a comprehensive visualization system like VTK.
 
 * We mixed image processing and computer graphics algorithms to process data created by an external segmentation process.
 
-*  We developed a generic approach that allows users to control the elements of the pipeline with a familiar scripting language, tcl.
+*  We developed a generic approach that allows users to control the elements of the pipeline with a familiar scripting language, Python.
 
-*  We separated the task into a "batch" portion and an "interactive" portion.
+*  We can easily separate this script into a "batch" portion and an "interactive" portion.
 
 **Other Frog-Related Information**
 
-The folks at Lawrence Berkeley National Laboratory have an impressive Web site that features the frog used in this example. The site describes how the frog data was obtained and also permits users to create mpeg movies of the frog. There are also other datasets available. Further details on "The Whole Frog Project" can be found at http://www-itg.lbl.gov/Frog. Also, the Stanford University Medical Media and Information Technologies (SUMMIT) group has on-going work using the Berkeley frog. They are early VTK users. Enjoy their *Virtual Creatures* project at: http://summit.stanford.edu/creatures.
+The folks at Lawrence Berkeley National Laboratory have an impressive Web site that features the frog used in this example. The site describes how the frog data was obtained and also permits users to create mpeg movies of the frog. There are also other datasets available. Further details on "The Whole Frog Project" can be found at http://www-itg.lbl.gov/Frog. Also, the Stanford University Medical Media and Information Technologies (SUMMIT) group has on-going work using the Berkeley frog. They are early VTK users.
 
 ## 12.3 Financial Visualization
 

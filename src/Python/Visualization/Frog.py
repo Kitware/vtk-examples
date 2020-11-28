@@ -122,7 +122,7 @@ Fig12-9c:
                        help='The view corresponds to Figs 12-9d in the VTK Textbook')
     parser.set_defaults(type=None)
 
-    parser.add_argument('data_folder', help='Frog')
+    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogTissue.mhd.')
     parser.add_argument('tissues', nargs='+', help='List of one or more tissues.')
     args = parser.parse_args()
     return args.data_folder, args.tissues, args.view

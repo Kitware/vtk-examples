@@ -1,12 +1,30 @@
 #!/usr/bin/env python
 
 import collections
+from pathlib import Path
 
 import vtk
 
 
-def main(frog_fn, frog_tissue_fn, tissues, view, flying_edges):
+def main(data_folder, tissues, view, flying_edges):
     colors = vtk.vtkNamedColors()
+
+    path = Path(data_folder)
+    if path.is_dir():
+        s = ''
+        frog_fn = path.joinpath('frog').with_suffix('.mhd')
+        if not frog_fn.is_file():
+            s += 'The file: {:s} does not exist.\n'.format(str(frog_fn))
+            print(s)
+        frog_tissue_fn = path.joinpath('frogTissue').with_suffix('.mhd')
+        if not frog_tissue_fn.is_file():
+            s += 'The file: {:s} does not exist.'.format(str(frog_tissue_fn))
+        if s:
+            print(s)
+            return
+    else:
+        print('Expected a path to frog.mhs and frogTissue.mhd')
+        return
 
     # Tissue parameters
     available_tissues = tissue_parameters()
@@ -134,11 +152,10 @@ Fig12-9c:
 
     parser.add_argument('-m', action='store_false', dest='flying_edges',
                         help='Use flying edges by default, marching cubes if set')
-    parser.add_argument('filename1', help='frog.mhd.')
-    parser.add_argument('filename2', help='frogtissue.mhd.')
+    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogTissue.mhd.')
     parser.add_argument('tissues', nargs='+', help='List of one or more tissues.')
     args = parser.parse_args()
-    return args.filename1, args.filename2, args.tissues, args.view, args.flying_edges
+    return args.data_folder, args.tissues, args.view, args.flying_edges
 
 
 def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, lut):
@@ -166,11 +183,10 @@ def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, lut):
         fn = frog_tissue_fn
 
     reader = vtk.vtkMetaImageReader()
-    reader.SetFileName(fn)
+    reader.SetFileName(str(fn))
     reader.SetDataSpacing(data_spacing)
     reader.SetDataOrigin(data_origin)
     reader.SetDataExtent(voi)
-    # reader.SetTransform(transform)
     reader.Update()
 
     last_connection = reader
@@ -787,5 +803,5 @@ def format_timings(ict):
 if __name__ == '__main__':
     import sys
 
-    filename1, filename2, tissue, view, flying_edges = get_program_parameters(sys.argv)
-    main(filename1, filename2, tissue, view, flying_edges)
+    data_folder, tissue, view, flying_edges = get_program_parameters(sys.argv)
+    main(data_folder, tissue, view, flying_edges)

@@ -8,4 +8,4 @@
 
 This is a PDF version of the VTK Textbook. It has updated equations and figures and is fully cross-referenced and indexed. As further development occurs this text book will be updated on a rolling basis.
 
-You can download it from here: [VTKTextBook](https://raw.githubusercontent.com/Kitware/vtk-examples/master/src/VTKBookLaTeX/VTKTextBook.pdf)
+You can view/download it from here: [VTKTextBook](https://gitlab.kitware.com/vtk/textbook/raw/master/VTKBook/VTKTextBook.pdf)
