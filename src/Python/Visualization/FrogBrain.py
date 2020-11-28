@@ -47,7 +47,7 @@ def main():
     rendererRight.SetActiveCamera(rendererLeft.GetActiveCamera())
 
     renderWindow.SetSize(640, 480)
-    renderWindow.SetWindowName('ViewFrogBoth')
+    renderWindow.SetWindowName('FrogBrain')
     renderWindow.Render()
 
     renderWindowInteractor.Start()
@@ -55,7 +55,7 @@ def main():
 
 def get_program_parameters():
     import argparse
-    description = 'The frog\"s brain.'
+    description = 'The frog\'s brain.'
     epilogue = '''
     Model extracted without smoothing (left) and with smoothing (right).
     '''

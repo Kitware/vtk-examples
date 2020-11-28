@@ -507,9 +507,10 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [DisplayQuadricSurfaces](/Python/Visualization/DisplayQuadricSurfaces) | Create and display a quadratic surface.
 [ElevationBandsWithGlyphs](/Python/Visualization/ElevationBandsWithGlyphs) | Demonstrates the coloring of a surface by partitioning the elevation into bands and using arrows to display the normals on the surface.
 [ExponentialCosine](/Python/VisualizationAlgorithms/ExponentialCosine) | Carpet plots. Visualization of an exponential cosine function. Function values are indicated by surface displacement. Colors indicate derivative values.
-[FlyingFrogSkinAndTissue](/Python/Visualization/FlyingFrogSkinAndTissue) | All frog parts and translucent skin.
 [FlyingHeadSlice](/Python/VisualizationAlgorithms/FlyingHeadSlice) | Flying edges used to generate contour lines.
-[Froggie](/Python/Visualization/Froggie) | View frog organs through a translucent skin.
+[Frog](/Python/Visualization/Frog) | View frog organs through a translucent skin. Used to generate the illustrations in the VTK TextBook.
+[FrogBrain](/Python/Visualization/FrogBrain) | The frog’s brain. Model extracted without smoothing (left) and with smoothing (right).
+[FrogReconstruction](/Python/Visualization/FrogReconstruction) | Frog organs along with a translucent skin are reconstructed from the original segmented data.
 [FrogSlice](/Python/Visualization/FrogSlice) | Photographic slice of frog (upper left), segmented frog (upper right) and composite of photo and segmentation (bottom). The purple color represents the stomach and the kidneys are yellow.
 [GlyphTable](/Python/Visualization/GlyphTable) | Vary the shapes of glyphed points using a glyph table
 [Hanoi](/Python/Visualization/Hanoi) | Towers of Hanoi.
@@ -557,10 +558,6 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [TextSource](/Python/Visualization/TextSource) |
 [VectorText](/Python/Visualization/VectorText) | Display high resolution text.
 [VelocityProfile](/Python/VisualizationAlgorithms/VelocityProfile) | Warping the geometry of three planes to show flow momentum.
-[ViewFrog](/Python/Visualization/ViewFrog) | The complete frog without skin.
-[ViewFrogA](/Python/Visualization/ViewFrogA) | The complete frog without skin or skeleton.
-[ViewFrogBoth](/Python/Visualization/ViewFrogBoth) | The frog’s brain. Model extracted without smoothing (left) and with smoothing (right).
-[ViewFrogSkinAndTissue](/Python/Visualization/ViewFrogSkinAndTissue) | All frog parts and translucent skin.
 [WarpCombustor](/Python/VisualizationAlgorithms/WarpCombustor) | Carpet plots of combustor flow energy in a structured grid. Colors and plane displacement represent energy values.
 [WindowTitle](/Python/Visualization/WindowTitle) |
 
