@@ -9,48 +9,48 @@ import vtk
 def main():
     colors = vtk.vtkNamedColors()
 
-    fileName, tissue = get_program_parameters()
+    file_name, tissue = get_program_parameters()
 
-    tissueMap = CreateTissueMap()
-    colorLut = CreateFrogLut()
+    tissue_map = create_tissue_map()
+    lut = create_frog_lut()
 
     # Setup render window, renderer, and interactor.
-    rendererLeft = vtk.vtkRenderer()
-    rendererLeft.SetViewport(0, 0, .5, 1)
-    rendererRight = vtk.vtkRenderer()
-    rendererRight.SetViewport(.5, 0, 1, 1)
-    renderWindow = vtk.vtkRenderWindow()
-    renderWindow.AddRenderer(rendererLeft)
-    renderWindow.AddRenderer(rendererRight)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
-    renderWindowInteractor.SetRenderWindow(renderWindow)
+    renderer_left = vtk.vtkRenderer()
+    renderer_left.SetViewport(0, 0, .5, 1)
+    renderer_right = vtk.vtkRenderer()
+    renderer_right.SetViewport(.5, 0, 1, 1)
+    render_window = vtk.vtkRenderWindow()
+    render_window.AddRenderer(renderer_left)
+    render_window.AddRenderer(renderer_right)
+    render_window_interactor = vtk.vtkRenderWindowInteractor()
+    render_window_interactor.SetRenderWindow(render_window)
 
-    actor = CreateFrogActor(fileName, tissueMap[tissue])
-    actor.GetProperty().SetDiffuseColor(colorLut.GetTableValue(tissueMap[tissue])[:3])
-    rendererLeft.AddActor(actor)
+    actor = create_frog_actor(file_name, tissue_map[tissue])
+    actor.GetProperty().SetDiffuseColor(lut.GetTableValue(tissue_map[tissue])[:3])
+    renderer_left.AddActor(actor)
 
-    actorSmooth = CreateSmoothFrogActor(fileName, tissueMap[tissue])
-    actorSmooth.GetProperty().SetDiffuseColor(colorLut.GetTableValue(tissueMap[tissue])[:3])
+    actorSmooth = create_smooth_frog_actor(file_name, tissue_map[tissue])
+    actorSmooth.GetProperty().SetDiffuseColor(lut.GetTableValue(tissue_map[tissue])[:3])
     actorSmooth.GetProperty().SetDiffuse(1.0)
     actorSmooth.GetProperty().SetSpecular(.5)
     actorSmooth.GetProperty().SetSpecularPower(100)
 
-    rendererRight.AddActor(actorSmooth)
+    renderer_right.AddActor(actorSmooth)
 
-    rendererLeft.ResetCamera()
-    rendererLeft.GetActiveCamera().SetViewUp(-1, 0, 0)
-    rendererLeft.GetActiveCamera().Azimuth(180)
-    rendererLeft.ResetCameraClippingRange()
+    renderer_left.ResetCamera()
+    renderer_left.GetActiveCamera().SetViewUp(-1, 0, 0)
+    renderer_left.GetActiveCamera().Azimuth(180)
+    renderer_left.ResetCameraClippingRange()
 
-    rendererLeft.SetBackground(colors.GetColor3d("SlateGray"))
-    rendererRight.SetBackground(colors.GetColor3d("SlateGray"))
-    rendererRight.SetActiveCamera(rendererLeft.GetActiveCamera())
+    renderer_left.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer_right.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer_right.SetActiveCamera(renderer_left.GetActiveCamera())
 
-    renderWindow.SetSize(640, 480)
-    renderWindow.SetWindowName('FrogBrain')
-    renderWindow.Render()
+    render_window.SetSize(640, 480)
+    render_window.SetWindowName('FrogBrain')
+    render_window.Render()
 
-    renderWindowInteractor.Start()
+    render_window_interactor.Start()
 
 
 def get_program_parameters():
@@ -61,64 +61,64 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename', help='frog.mhd.')
+    parser.add_argument('file_name', help='frog.mhd.')
     parser.add_argument('tissue', default='brain', nargs='?', help='The tissue to use.')
     args = parser.parse_args()
-    return args.filename, args.tissue
+    return args.file_name, args.tissue
 
 
-def CreateFrogLut():
+def create_frog_lut():
     colors = vtk.vtkNamedColors()
 
-    colorLut = vtk.vtkLookupTable()
-    colorLut.SetNumberOfColors(17)
-    colorLut.SetTableRange(0, 16)
-    colorLut.Build()
+    lut = vtk.vtkLookupTable()
+    lut.SetNumberOfColors(17)
+    lut.SetTableRange(0, 16)
+    lut.Build()
 
-    colorLut.SetTableValue(0, 0, 0, 0, 0)
-    colorLut.SetTableValue(1, colors.GetColor4d('salmon'))  # blood
-    colorLut.SetTableValue(2, colors.GetColor4d('beige'))  # brain
-    colorLut.SetTableValue(3, colors.GetColor4d('orange'))  # duodenum
-    colorLut.SetTableValue(4, colors.GetColor4d('misty_rose'))  # eye_retina
-    colorLut.SetTableValue(5, colors.GetColor4d('white'))  # eye_white
-    colorLut.SetTableValue(6, colors.GetColor4d('tomato'))  # heart
-    colorLut.SetTableValue(7, colors.GetColor4d('raspberry'))  # ileum
-    colorLut.SetTableValue(8, colors.GetColor4d('banana'))  # kidney
-    colorLut.SetTableValue(9, colors.GetColor4d('peru'))  # l_intestine
-    colorLut.SetTableValue(10, colors.GetColor4d('pink'))  # liver
-    colorLut.SetTableValue(11, colors.GetColor4d('powder_blue'))  # lung
-    colorLut.SetTableValue(12, colors.GetColor4d('carrot'))  # nerve
-    colorLut.SetTableValue(13, colors.GetColor4d('wheat'))  # skeleton
-    colorLut.SetTableValue(14, colors.GetColor4d('violet'))  # spleen
-    colorLut.SetTableValue(15, colors.GetColor4d('plum'))  # stomach
+    lut.SetTableValue(0, 0, 0, 0, 0)
+    lut.SetTableValue(1, colors.GetColor4d('salmon'))  # blood
+    lut.SetTableValue(2, colors.GetColor4d('beige'))  # brain
+    lut.SetTableValue(3, colors.GetColor4d('orange'))  # duodenum
+    lut.SetTableValue(4, colors.GetColor4d('misty_rose'))  # eye_retina
+    lut.SetTableValue(5, colors.GetColor4d('white'))  # eye_white
+    lut.SetTableValue(6, colors.GetColor4d('tomato'))  # heart
+    lut.SetTableValue(7, colors.GetColor4d('raspberry'))  # ileum
+    lut.SetTableValue(8, colors.GetColor4d('banana'))  # kidney
+    lut.SetTableValue(9, colors.GetColor4d('peru'))  # l_intestine
+    lut.SetTableValue(10, colors.GetColor4d('pink'))  # liver
+    lut.SetTableValue(11, colors.GetColor4d('powder_blue'))  # lung
+    lut.SetTableValue(12, colors.GetColor4d('carrot'))  # nerve
+    lut.SetTableValue(13, colors.GetColor4d('wheat'))  # skeleton
+    lut.SetTableValue(14, colors.GetColor4d('violet'))  # spleen
+    lut.SetTableValue(15, colors.GetColor4d('plum'))  # stomach
 
-    return colorLut
-
-
-def CreateTissueMap():
-    tissueMap = dict()
-    tissueMap['blood'] = 1
-    tissueMap['brain'] = 2
-    tissueMap['duodenum'] = 3
-    tissueMap['eyeRetina'] = 4
-    tissueMap['eyeWhite'] = 5
-    tissueMap['heart'] = 6
-    tissueMap['ileum'] = 7
-    tissueMap['kidney'] = 8
-    tissueMap['intestine'] = 9
-    tissueMap['liver'] = 10
-    tissueMap['lung'] = 11
-    tissueMap['nerve'] = 12
-    tissueMap['skeleton'] = 13
-    tissueMap['spleen'] = 14
-    tissueMap['stomach'] = 15
-
-    return tissueMap
+    return lut
 
 
-def CreateSmoothFrogActor(fileName, tissue):
+def create_tissue_map():
+    tissue_map = dict()
+    tissue_map['blood'] = 1
+    tissue_map['brain'] = 2
+    tissue_map['duodenum'] = 3
+    tissue_map['eyeRetina'] = 4
+    tissue_map['eyeWhite'] = 5
+    tissue_map['heart'] = 6
+    tissue_map['ileum'] = 7
+    tissue_map['kidney'] = 8
+    tissue_map['intestine'] = 9
+    tissue_map['liver'] = 10
+    tissue_map['lung'] = 11
+    tissue_map['nerve'] = 12
+    tissue_map['skeleton'] = 13
+    tissue_map['spleen'] = 14
+    tissue_map['stomach'] = 15
+
+    return tissue_map
+
+
+def create_smooth_frog_actor(file_name, tissue):
     reader = vtk.vtkMetaImageReader()
-    reader.SetFileName(fileName)
+    reader.SetFileName(file_name)
     reader.Update()
 
     selectTissue = vtk.vtkImageThreshold()
@@ -135,30 +135,43 @@ def CreateSmoothFrogActor(fileName, tissue):
     gaussian.SetInputConnection(selectTissue.GetOutputPort())
 
     isoValue = 127.5
-    mcubes = vtk.vtkMarchingCubes()
-    mcubes.SetInputConnection(gaussian.GetOutputPort())
-    mcubes.ComputeScalarsOff()
-    mcubes.ComputeGradientsOff()
-    mcubes.ComputeNormalsOff()
-    mcubes.SetValue(0, isoValue)
+    iso_surface = vtk.vtkFlyingEdges3D()
+    iso_surface.SetInputConnection(gaussian.GetOutputPort())
+    iso_surface.ComputeScalarsOff()
+    iso_surface.ComputeGradientsOff()
+    iso_surface.ComputeNormalsOff()
+    iso_surface.SetValue(0, isoValue)
 
-    smoothingIterations = 0
-    passBand = 0.001
-    featureAngle = 60.0
-    smoother = vtk.vtkWindowedSincPolyDataFilter()
-    smoother.SetInputConnection(mcubes.GetOutputPort())
-    smoother.SetNumberOfIterations(smoothingIterations)
-    smoother.BoundarySmoothingOff()
+    smoothing_iterations = 0
+    feature_angle = 60.0
+    relaxation_factor = 0.1
+
+    smoother = vtk.vtkSmoothPolyDataFilter()
+    smoother.SetInputConnection(iso_surface.GetOutputPort())
+    smoother.SetNumberOfIterations(smoothing_iterations)
+    smoother.SetRelaxationFactor(relaxation_factor)
+    smoother.SetFeatureAngle(feature_angle)
     smoother.FeatureEdgeSmoothingOff()
-    smoother.SetFeatureAngle(featureAngle)
-    smoother.SetPassBand(passBand)
-    smoother.NonManifoldSmoothingOn()
-    smoother.NormalizeCoordinatesOn()
-    smoother.Update()
+    smoother.BoundarySmoothingOff()
+    smoother.SetConvergence(0)
+
+    # smoothing_iterations = 0
+    # pass_band = 0.001
+    # feature_angle = 60.0
+    # smoother = vtk.vtkWindowedSincPolyDataFilter()
+    # smoother.SetInputConnection(iso_surface.GetOutputPort())
+    # smoother.SetNumberOfIterations(smoothing_iterations)
+    # smoother.BoundarySmoothingOff()
+    # smoother.FeatureEdgeSmoothingOff()
+    # smoother.SetFeatureAngle(feature_angle)
+    # smoother.SetPassBand(pass_band)
+    # smoother.NonManifoldSmoothingOn()
+    # smoother.NormalizeCoordinatesOn()
+    # smoother.Update()
 
     normals = vtk.vtkPolyDataNormals()
     normals.SetInputConnection(smoother.GetOutputPort())
-    normals.SetFeatureAngle(featureAngle)
+    normals.SetFeatureAngle(feature_angle)
 
     stripper = vtk.vtkStripper()
     stripper.SetInputConnection(normals.GetOutputPort())
@@ -172,27 +185,27 @@ def CreateSmoothFrogActor(fileName, tissue):
     return actor
 
 
-def CreateFrogActor(fileName, tissue):
+def create_frog_actor(file_name, tissue):
     reader = vtk.vtkMetaImageReader()
-    reader.SetFileName(fileName)
+    reader.SetFileName(file_name)
     reader.Update()
 
-    selectTissue = vtk.vtkImageThreshold()
-    selectTissue.ThresholdBetween(tissue, tissue)
-    selectTissue.SetInValue(255)
-    selectTissue.SetOutValue(0)
-    selectTissue.SetInputConnection(reader.GetOutputPort())
+    select_tissue = vtk.vtkImageThreshold()
+    select_tissue.ThresholdBetween(tissue, tissue)
+    select_tissue.SetInValue(255)
+    select_tissue.SetOutValue(0)
+    select_tissue.SetInputConnection(reader.GetOutputPort())
 
-    isoValue = 63.5
-    mcubes = vtk.vtkMarchingCubes()
-    mcubes.SetInputConnection(selectTissue.GetOutputPort())
-    mcubes.ComputeScalarsOff()
-    mcubes.ComputeGradientsOff()
-    mcubes.ComputeNormalsOn()
-    mcubes.SetValue(0, isoValue)
+    iso_value = 63.5
+    iso_surface = vtk.vtkFlyingEdges3D()
+    iso_surface.SetInputConnection(select_tissue.GetOutputPort())
+    iso_surface.ComputeScalarsOff()
+    iso_surface.ComputeGradientsOff()
+    iso_surface.ComputeNormalsOn()
+    iso_surface.SetValue(0, iso_value)
 
     stripper = vtk.vtkStripper()
-    stripper.SetInputConnection(mcubes.GetOutputPort())
+    stripper.SetInputConnection(iso_surface.GetOutputPort())
 
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(stripper.GetOutputPort())

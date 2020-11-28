@@ -20,6 +20,7 @@ def main(data_folder, tissues, view):
     color_lut = create_frog_lut()
     res = ['Using the following tissues:']
     for tissue in tissues:
+        source = None
         if path.is_dir():
             source = path.joinpath(tissue).with_suffix('.vtk')
             if not source.is_file():
@@ -33,18 +34,17 @@ def main(data_folder, tissues, view):
         actor.GetProperty().SetSpecularPower(10)
         renderer.AddActor(actor)
         res.append('{:>11s}, label: {:2d}'.format(tissue, tm[tissue][0]))
-        
+
     if len(res) > 1:
         print('\n'.join(res))
 
     render_window.SetSize(640, 640)
-    render_window.SetWindowName('Froggie')
+    render_window.SetWindowName('Frog')
 
     renderer.SetBackground(colors.GetColor3d('LightSteelBlue'))
 
-    #  Initial view (looking down on the dorsal surface).
-    renderer.GetActiveCamera().SetViewUp(0, -1, 0)
-    renderer.GetActiveCamera().Roll(90)
+    # Initial view (looking down on the dorsal surface).
+    renderer.GetActiveCamera().Roll(-90)
     renderer.ResetCamera()
 
     #  Final view
@@ -93,20 +93,22 @@ def main(data_folder, tissues, view):
 
 def get_program_parameters(argv):
     import argparse
-    description = 'Some description.'
+    description = 'Display the frog organs along with a translucent skin.'
     epilogue = '''
-    To specify all the tissue at once:
-        blood brain brainbin duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin
-    You can leave out brainbin.
-    
-    Fig12-9a:
-       blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a
-    Fig12-9b:
-       blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a
-    Fig12-9c:
-       brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -c
-    Fig12-9c:
-       brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -d
+To specify all the tissues at once:
+ blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin
+
+You can leave out brainbin, it is the brain with no gaussian smoothing.
+
+Here are the parameters used to get the views in the VTK Textbook:
+Fig12-9a:
+ blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a
+Fig12-9b:
+ blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a
+Fig12-9c:
+ brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -c
+Fig12-9c:
+ brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -d
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
