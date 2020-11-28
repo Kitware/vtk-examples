@@ -1,14 +1,33 @@
 #!/usr/bin/env python
 
+from pathlib import Path
+
 import vtk
 
 
 def main():
     # colors = vtk.vtkNamedColors()
 
-    fileName1, fileName2, sliceNumber = get_program_parameters()
+    data_folder, slice_number = get_program_parameters()
 
-    sliceOrder = SliceOrder()
+    path = Path(data_folder)
+    if path.is_dir():
+        s = ''
+        fn_1 = path.joinpath('frog').with_suffix('.mhd')
+        if not fn_1.is_file():
+            s += 'The file: {:s} does not exist.\n'.format(str(fn_1))
+            print(s)
+        fn_2 = path.joinpath('frogTissue').with_suffix('.mhd')
+        if not fn_2.is_file():
+            s += 'The file: {:s} does not exist.'.format(str(fn_2))
+        if s:
+            print(s)
+            return
+    else:
+        print('Expected a path to frog.mhs and frogTissue.mhd')
+        return
+
+    so = SliceOrder()
 
     colors = vtk.vtkNamedColors()
 
@@ -17,33 +36,33 @@ def main():
     ren1 = vtk.vtkRenderer()
     ren2 = vtk.vtkRenderer()
     ren3 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
-    renWin.AddRenderer(ren1)
-    renWin.AddRenderer(ren2)
-    renWin.AddRenderer(ren3)
-    renWin.SetWindowName('FrogSlice')
+    ren_win = vtk.vtkRenderWindow()
+    ren_win.AddRenderer(ren1)
+    ren_win.AddRenderer(ren2)
+    ren_win.AddRenderer(ren3)
+    ren_win.SetWindowName('FrogSlice')
 
     iren = vtk.vtkRenderWindowInteractor()
-    iren.SetRenderWindow(renWin)
+    iren.SetRenderWindow(ren_win)
 
-    greyReader = vtk.vtkMetaImageReader()
-    greyReader.SetFileName(fileName1)
-    greyReader.Update()
+    grey_reader = vtk.vtkMetaImageReader()
+    grey_reader.SetFileName(str(fn_1))
+    grey_reader.Update()
 
-    greyPadder = vtk.vtkImageConstantPad()
-    greyPadder.SetInputConnection(greyReader.GetOutputPort())
-    greyPadder.SetOutputWholeExtent(0, 511, 0, 511, sliceNumber, sliceNumber)
-    greyPadder.SetConstant(0)
+    grey_padder = vtk.vtkImageConstantPad()
+    grey_padder.SetInputConnection(grey_reader.GetOutputPort())
+    grey_padder.SetOutputWholeExtent(0, 511, 0, 511, slice_number, slice_number)
+    grey_padder.SetConstant(0)
 
-    greyPlane = vtk.vtkPlaneSource()
+    grey_plane = vtk.vtkPlaneSource()
 
-    greyTransform = vtk.vtkTransformPolyDataFilter()
-    greyTransform.SetTransform(sliceOrder['hfsi'])
-    greyTransform.SetInputConnection(greyPlane.GetOutputPort())
+    grey_transform = vtk.vtkTransformPolyDataFilter()
+    grey_transform.SetTransform(so.get('hfsi'))
+    grey_transform.SetInputConnection(grey_plane.GetOutputPort())
 
-    greyNormals = vtk.vtkPolyDataNormals()
-    greyNormals.SetInputConnection(greyTransform.GetOutputPort())
-    greyNormals.FlipNormalsOff()
+    grey_normals = vtk.vtkPolyDataNormals()
+    grey_normals.SetInputConnection(grey_transform.GetOutputPort())
+    grey_normals.FlipNormalsOff()
 
     wllut = vtk.vtkWindowLevelLookupTable()
     wllut.SetWindow(255)
@@ -51,66 +70,66 @@ def main():
     wllut.SetTableRange(0, 255)
     wllut.Build()
 
-    greyMapper = vtk.vtkPolyDataMapper()
-    greyMapper.SetInputConnection(greyPlane.GetOutputPort())
+    grey_mapper = vtk.vtkPolyDataMapper()
+    grey_mapper.SetInputConnection(grey_plane.GetOutputPort())
 
-    greyTexture = vtk.vtkTexture()
-    greyTexture.SetInputConnection(greyPadder.GetOutputPort())
-    greyTexture.SetLookupTable(wllut)
-    greyTexture.SetColorModeToMapScalars()
-    greyTexture.InterpolateOn()
+    grey_texture = vtk.vtkTexture()
+    grey_texture.SetInputConnection(grey_padder.GetOutputPort())
+    grey_texture.SetLookupTable(wllut)
+    grey_texture.SetColorModeToMapScalars()
+    grey_texture.InterpolateOn()
 
-    greyActor = vtk.vtkActor()
-    greyActor.SetMapper(greyMapper)
-    greyActor.SetTexture(greyTexture)
+    grey_actor = vtk.vtkActor()
+    grey_actor.SetMapper(grey_mapper)
+    grey_actor.SetTexture(grey_texture)
 
-    segmentReader = vtk.vtkMetaImageReader()
-    segmentReader.SetFileName(fileName2)
-    segmentReader.Update()
+    segment_reader = vtk.vtkMetaImageReader()
+    segment_reader.SetFileName(str(fn_2))
+    segment_reader.Update()
 
-    segmentPadder = vtk.vtkImageConstantPad()
-    segmentPadder.SetInputConnection(segmentReader.GetOutputPort())
-    segmentPadder.SetOutputWholeExtent(0, 511, 0, 511, sliceNumber, sliceNumber)
-    segmentPadder.SetConstant(0)
+    segment_padder = vtk.vtkImageConstantPad()
+    segment_padder.SetInputConnection(segment_reader.GetOutputPort())
+    segment_padder.SetOutputWholeExtent(0, 511, 0, 511, slice_number, slice_number)
+    segment_padder.SetConstant(0)
 
-    segmentPlane = vtk.vtkPlaneSource()
+    segment_plane = vtk.vtkPlaneSource()
 
-    segmentTransform = vtk.vtkTransformPolyDataFilter()
-    segmentTransform.SetTransform(sliceOrder['hfsi'])
-    segmentTransform.SetInputConnection(segmentPlane.GetOutputPort())
+    segment_transform = vtk.vtkTransformPolyDataFilter()
+    segment_transform.SetTransform(so.get('hfsi'))
+    segment_transform.SetInputConnection(segment_plane.GetOutputPort())
 
-    segmentNormals = vtk.vtkPolyDataNormals()
-    segmentNormals.SetInputConnection(segmentTransform.GetOutputPort())
-    segmentNormals.FlipNormalsOn()
+    segment_normals = vtk.vtkPolyDataNormals()
+    segment_normals.SetInputConnection(segment_transform.GetOutputPort())
+    segment_normals.FlipNormalsOn()
 
-    colorLut = CreateFrogLut()
+    color_lut = create_frog_lut()
 
-    segmentMapper = vtk.vtkPolyDataMapper()
-    segmentMapper.SetInputConnection(segmentPlane.GetOutputPort())
+    segment_mapper = vtk.vtkPolyDataMapper()
+    segment_mapper.SetInputConnection(segment_plane.GetOutputPort())
 
-    segmentTexture = vtk.vtkTexture()
-    segmentTexture.SetInputConnection(segmentPadder.GetOutputPort())
-    segmentTexture.SetLookupTable(colorLut)
-    segmentTexture.SetColorModeToMapScalars()
-    segmentTexture.InterpolateOff()
+    segment_texture = vtk.vtkTexture()
+    segment_texture.SetInputConnection(segment_padder.GetOutputPort())
+    segment_texture.SetLookupTable(color_lut)
+    segment_texture.SetColorModeToMapScalars()
+    segment_texture.InterpolateOff()
 
-    segmentActor = vtk.vtkActor()
-    segmentActor.SetMapper(segmentMapper)
-    segmentActor.SetTexture(segmentTexture)
+    segment_actor = vtk.vtkActor()
+    segment_actor.SetMapper(segment_mapper)
+    segment_actor.SetTexture(segment_texture)
 
-    segmentOverlayActor = vtk.vtkActor()
-    segmentOverlayActor.SetMapper(segmentMapper)
-    segmentOverlayActor.SetTexture(segmentTexture)
+    segment_overlay_actor = vtk.vtkActor()
+    segment_overlay_actor.SetMapper(segment_mapper)
+    segment_overlay_actor.SetTexture(segment_texture)
 
-    segmentOverlayActor.GetProperty().SetOpacity(.5)
+    segment_overlay_actor.GetProperty().SetOpacity(.5)
     ren1.SetBackground(0, 0, 0)
-    ren1.SetViewport(0, .5, .5, 1)
-    renWin.SetSize(640, 480)
-    ren1.AddActor(greyActor)
+    ren1.SetViewport(0, 0.5, 0.5, 1)
+    ren_win.SetSize(640, 480)
+    ren1.AddActor(grey_actor)
 
     ren2.SetBackground(0, 0, 0)
-    ren2.SetViewport(.5, .5, 1, 1)
-    ren2.AddActor(segmentActor)
+    ren2.SetViewport(0.5, 0.5, 1, 1)
+    ren2.AddActor(segment_actor)
 
     cam1 = vtk.vtkCamera()
     cam1.SetViewUp(0, -1, 0)
@@ -122,20 +141,20 @@ def main():
     cam1.SetFocalPoint(0.0554068, -0.0596001, 0)
     ren1.ResetCameraClippingRange()
 
-    ren3.AddActor(greyActor)
-    ren3.AddActor(segmentOverlayActor)
-    segmentOverlayActor.SetPosition(0, 0, -0.01)
+    ren3.AddActor(grey_actor)
+    ren3.AddActor(segment_overlay_actor)
+    segment_overlay_actor.SetPosition(0, 0, -0.01)
 
     ren1.SetBackground(colors.GetColor3d('SlateGray'))
     ren2.SetBackground(colors.GetColor3d('SlateGray'))
     ren3.SetBackground(colors.GetColor3d('SlateGray'))
 
-    ren3.SetViewport(0, 0, 1, .5)
+    ren3.SetViewport(0, 0, 1, 0.5)
 
     ren2.SetActiveCamera(ren1.GetActiveCamera())
     ren3.SetActiveCamera(ren1.GetActiveCamera())
 
-    renWin.Render()
+    ren_win.Render()
     iren.Start()
 
 
@@ -143,138 +162,307 @@ def get_program_parameters():
     import argparse
     description = 'Visualization of a frog.'
     epilogue = '''
-    Photographic slice of frog (upper left), segmented frog (upper right) and
-     composite of photo and segmentation (bottom).
-    The purple color represents the stomach and the kidneys are yellow.
-    If slice = 39 it matches Figure 12-6 in the VTK Book.
+Photographic slice of frog (upper left), segmented frog (upper right) and
+ composite of photo and segmentation (bottom).
+The purple color represents the stomach and the kidneys are yellow.
+If slice = 39 it matches Figure 12-6 in the VTK Book.
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename1', help='frog.mhd.')
-    parser.add_argument('filename2', help='frogtissue.mhd.')
+    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogTissue.mhd.')
     parser.add_argument('slice_number', default=39, type=int, nargs='?', help='Slice number.')
     args = parser.parse_args()
-    return args.filename1, args.filename2, args.slice_number
+    return args.data_folder, args.slice_number
 
 
-def CreateFrogLut():
+def create_frog_lut():
     colors = vtk.vtkNamedColors()
 
-    colorLut = vtk.vtkLookupTable()
-    colorLut.SetNumberOfColors(17)
-    colorLut.SetTableRange(0, 16)
-    colorLut.Build()
+    lut = vtk.vtkLookupTable()
+    lut.SetNumberOfColors(17)
+    lut.SetTableRange(0, 16)
+    lut.Build()
 
-    colorLut.SetTableValue(0, 0, 0, 0, 0)
-    colorLut.SetTableValue(1, colors.GetColor4d('salmon'))  # blood
-    colorLut.SetTableValue(2, colors.GetColor4d('beige'))  # brain
-    colorLut.SetTableValue(3, colors.GetColor4d('orange'))  # duodenum
-    colorLut.SetTableValue(4, colors.GetColor4d('misty_rose'))  # eye_retina
-    colorLut.SetTableValue(5, colors.GetColor4d('white'))  # eye_white
-    colorLut.SetTableValue(6, colors.GetColor4d('tomato'))  # heart
-    colorLut.SetTableValue(7, colors.GetColor4d('raspberry'))  # ileum
-    colorLut.SetTableValue(8, colors.GetColor4d('banana'))  # kidney
-    colorLut.SetTableValue(9, colors.GetColor4d('peru'))  # l_intestine
-    colorLut.SetTableValue(10, colors.GetColor4d('pink'))  # liver
-    colorLut.SetTableValue(11, colors.GetColor4d('powder_blue'))  # lung
-    colorLut.SetTableValue(12, colors.GetColor4d('carrot'))  # nerve
-    colorLut.SetTableValue(13, colors.GetColor4d('wheat'))  # skeleton
-    colorLut.SetTableValue(14, colors.GetColor4d('violet'))  # spleen
-    colorLut.SetTableValue(15, colors.GetColor4d('plum'))  # stomach
+    lut.SetTableValue(0, 0, 0, 0, 0)
+    lut.SetTableValue(1, colors.GetColor4d('salmon'))  # blood
+    lut.SetTableValue(2, colors.GetColor4d('beige'))  # brain
+    lut.SetTableValue(3, colors.GetColor4d('orange'))  # duodenum
+    lut.SetTableValue(4, colors.GetColor4d('misty_rose'))  # eye_retina
+    lut.SetTableValue(5, colors.GetColor4d('white'))  # eye_white
+    lut.SetTableValue(6, colors.GetColor4d('tomato'))  # heart
+    lut.SetTableValue(7, colors.GetColor4d('raspberry'))  # ileum
+    lut.SetTableValue(8, colors.GetColor4d('banana'))  # kidney
+    lut.SetTableValue(9, colors.GetColor4d('peru'))  # l_intestine
+    lut.SetTableValue(10, colors.GetColor4d('pink'))  # liver
+    lut.SetTableValue(11, colors.GetColor4d('powder_blue'))  # lung
+    lut.SetTableValue(12, colors.GetColor4d('carrot'))  # nerve
+    lut.SetTableValue(13, colors.GetColor4d('wheat'))  # skeleton
+    lut.SetTableValue(14, colors.GetColor4d('violet'))  # spleen
+    lut.SetTableValue(15, colors.GetColor4d('plum'))  # stomach
 
-    return colorLut
+    return lut
 
 
-def SliceOrder():
-    #
-    # These transformations permute medical image data to maintain proper orientation
-    # regardless of the acquisition order. After applying these transforms with
-    # vtkTransformFilter, a view up of 0,-1,0 will result in the body part
-    # facing the viewer.
-    # NOTE: some transformations have a -1 scale factor for one of the components.
-    #       To ensure proper polygon orientation and normal direction, you must
-    #       apply the vtkPolyDataNormals filter.
-    #
-    # Naming:
-    # si - superior to inferior (top to bottom)
-    # is - inferior to superior (bottom to top)
-    # ap - anterior to posterior (front to back)
-    # pa - posterior to anterior (back to front)
-    # lr - left to right
-    # rl - right to left
-    #
+# def SliceOrder():
+#     #
+#     # These transformations permute medical image data to maintain proper orientation
+#     # regardless of the acquisition order. After applying these transforms with
+#     # vtkTransformFilter, a view up of 0,-1,0 will result in the body part
+#     # facing the viewer.
+#     # NOTE: some transformations have a -1 scale factor for one of the components.
+#     #       To ensure proper polygon orientation and normal direction, you must
+#     #       apply the vtkPolyDataNormals filter.
+#     #
+#     # Naming:
+#     # si - superior to inferior (top to bottom)
+#     # is - inferior to superior (bottom to top)
+#     # ap - anterior to posterior (front to back)
+#     # pa - posterior to anterior (back to front)
+#     # lr - left to right
+#     # rl - right to left
+#     #
+#
+#     sliceOrder = dict()
+#
+#     siMatrix = [1, 0, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1]
+#     si = vtk.vtkTransform()
+#     si.SetMatrix(siMatrix)
+#     sliceOrder['si'] = si
+#
+#     isMatrix = [1, 0, 0, 0, 0, 0, -1, 0, 0, -1, 0, 0, 0, 0, 0, 1]
+#     i_s = vtk.vtkTransform()  # 'is' is a keyword in Python, changed to 'i_s'
+#     i_s.SetMatrix(isMatrix)
+#     sliceOrder['is'] = i_s
+#
+#     ap = vtk.vtkTransform()
+#     ap.Scale(1, -1, 1)
+#     sliceOrder['ap'] = ap
+#
+#     pa = vtk.vtkTransform()
+#     pa.Scale(1, -1, -1)
+#     sliceOrder['pa'] = pa
+#
+#     lrMatrix = [0, 0, -1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
+#     lr = vtk.vtkTransform()
+#     lr.SetMatrix(lrMatrix)
+#     sliceOrder['lr'] = lr
+#
+#     rlMatrix = [0, 0, 1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
+#     rl = vtk.vtkTransform()
+#     rl.SetMatrix(rlMatrix)
+#     sliceOrder['rl'] = rl
+#
+#     #
+#     # The previous transforms assume radiological views of the slices (viewed from the feet). other
+#     # modalities such as physical sectioning may view from the head. these transforms modify the original
+#     # with a 180 rotation about y
+#     #
+#     hfMatrix = [-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1]
+#     hf = vtk.vtkTransform()
+#     hf.SetMatrix(hfMatrix)
+#     sliceOrder['hf'] = hf
+#
+#     hfsi = vtk.vtkTransform()
+#     hfsi.Concatenate(hf.GetMatrix())
+#     hfsi.Concatenate(si.GetMatrix())
+#     sliceOrder['hfsi'] = hfsi
+#
+#     hfis = vtk.vtkTransform()
+#     hfis.Concatenate(hf.GetMatrix())
+#     hfis.Concatenate(i_s.GetMatrix())
+#     sliceOrder['hfis'] = hfis
+#
+#     hfap = vtk.vtkTransform()
+#     hfap.Concatenate(hf.GetMatrix())
+#     hfap.Concatenate(ap.GetMatrix())
+#     sliceOrder['hfap'] = hfap
+#
+#     hfpa = vtk.vtkTransform()
+#     hfpa.Concatenate(hf.GetMatrix())
+#     hfpa.Concatenate(pa.GetMatrix())
+#     sliceOrder['hfpa'] = hfpa
+#
+#     hflr = vtk.vtkTransform()
+#     hflr.Concatenate(hf.GetMatrix())
+#     hflr.Concatenate(lr.GetMatrix())
+#     sliceOrder[''] = hflr
+#
+#     hfrl = vtk.vtkTransform()
+#     hfrl.Concatenate(hf.GetMatrix())
+#     hfrl.Concatenate(rl.GetMatrix())
+#     sliceOrder['hfrl'] = hfrl
+#
+#     return sliceOrder
 
-    sliceOrder = dict()
+class SliceOrder:
+    """
+    These transformations permute image and other geometric data to maintain proper
+     orientation regardless of the acquisition order. After applying these transforms with
+    vtkTransformFilter, a view up of 0,-1,0 will result in the body part
+    facing the viewer.
+    NOTE: some transformations have a -1 scale factor for one of the components.
+          To ensure proper polygon orientation and normal direction, you must
+          apply the vtkPolyDataNormals filter.
 
-    siMatrix = [1, 0, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1]
-    si = vtk.vtkTransform()
-    si.SetMatrix(siMatrix)
-    sliceOrder['si'] = si
+    Naming (the nomenclature is medical):
+    si - superior to inferior (top to bottom)
+    is - inferior to superior (bottom to top)
+    ap - anterior to posterior (front to back)
+    pa - posterior to anterior (back to front)
+    lr - left to right
+    rl - right to left
+    """
 
-    isMatrix = [1, 0, 0, 0, 0, 0, -1, 0, 0, -1, 0, 0, 0, 0, 0, 1]
-    i_s = vtk.vtkTransform()  # 'is' is a keyword in Python, changed to 'i_s'
-    i_s.SetMatrix(isMatrix)
-    sliceOrder['is'] = i_s
+    def __init__(self):
+        self.si_mat = vtk.vtkMatrix4x4()
+        self.si_mat.Zero()
+        self.si_mat.SetElement(0, 0, 1)
+        self.si_mat.SetElement(1, 2, 1)
+        self.si_mat.SetElement(2, 1, -1)
+        self.si_mat.SetElement(3, 3, 1)
 
-    ap = vtk.vtkTransform()
-    ap.Scale(1, -1, 1)
-    sliceOrder['ap'] = ap
+        self.is_mat = vtk.vtkMatrix4x4()
+        self.is_mat.Zero()
+        self.is_mat.SetElement(0, 0, 1)
+        self.is_mat.SetElement(1, 2, -1)
+        self.is_mat.SetElement(2, 1, -1)
+        self.is_mat.SetElement(3, 3, 1)
 
-    pa = vtk.vtkTransform()
-    pa.Scale(1, -1, -1)
-    sliceOrder['pa'] = pa
+        self.lr_mat = vtk.vtkMatrix4x4()
+        self.lr_mat.Zero()
+        self.lr_mat.SetElement(0, 2, -1)
+        self.lr_mat.SetElement(1, 1, -1)
+        self.lr_mat.SetElement(2, 0, 1)
+        self.lr_mat.SetElement(3, 3, 1)
 
-    lrMatrix = [0, 0, -1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
-    lr = vtk.vtkTransform()
-    lr.SetMatrix(lrMatrix)
-    sliceOrder['lr'] = lr
+        self.rl_mat = vtk.vtkMatrix4x4()
+        self.rl_mat.Zero()
+        self.rl_mat.SetElement(0, 2, 1)
+        self.rl_mat.SetElement(1, 1, -1)
+        self.rl_mat.SetElement(2, 0, 1)
+        self.rl_mat.SetElement(3, 3, 1)
 
-    rlMatrix = [0, 0, 1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
-    rl = vtk.vtkTransform()
-    rl.SetMatrix(rlMatrix)
-    sliceOrder['rl'] = rl
+        """
+        The previous transforms assume radiological views of the slices (viewed from the feet). other
+        modalities such as physical sectioning may view from the head. These transforms modify the original
+        with a 180° rotation about y
+        """
 
-    #
-    # The previous transforms assume radiological views of the slices (viewed from the feet). other
-    # modalities such as physical sectioning may view from the head. these transforms modify the original
-    # with a 180 rotation about y
-    #
-    hfMatrix = [-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1]
-    hf = vtk.vtkTransform()
-    hf.SetMatrix(hfMatrix)
-    sliceOrder['hf'] = hf
+        self.hf_mat = vtk.vtkMatrix4x4()
+        self.hf_mat.Zero()
+        self.hf_mat.SetElement(0, 0, -1)
+        self.hf_mat.SetElement(1, 1, 1)
+        self.hf_mat.SetElement(2, 2, -1)
+        self.hf_mat.SetElement(3, 3, 1)
 
-    hfsi = vtk.vtkTransform()
-    hfsi.Concatenate(hf.GetMatrix())
-    hfsi.Concatenate(si.GetMatrix())
-    sliceOrder['hfsi'] = hfsi
+    def s_i(self):
+        t = vtk.vtkTransform()
+        t.SetMatrix(self.si_mat)
+        return t
 
-    hfis = vtk.vtkTransform()
-    hfis.Concatenate(hf.GetMatrix())
-    hfis.Concatenate(i_s.GetMatrix())
-    sliceOrder['hfis'] = hfis
+    def i_s(self):
+        t = vtk.vtkTransform()
+        t.SetMatrix(self.is_mat)
+        return t
 
-    hfap = vtk.vtkTransform()
-    hfap.Concatenate(hf.GetMatrix())
-    hfap.Concatenate(ap.GetMatrix())
-    sliceOrder['hfap'] = hfap
+    @staticmethod
+    def a_p():
+        t = vtk.vtkTransform()
+        return t.Scale(1, -1, 1)
 
-    hfpa = vtk.vtkTransform()
-    hfpa.Concatenate(hf.GetMatrix())
-    hfpa.Concatenate(pa.GetMatrix())
-    sliceOrder['hfpa'] = hfpa
+    @staticmethod
+    def p_a():
+        t = vtk.vtkTransform()
+        return t.Scale(1, -1, -1)
 
-    hflr = vtk.vtkTransform()
-    hflr.Concatenate(hf.GetMatrix())
-    hflr.Concatenate(lr.GetMatrix())
-    sliceOrder[''] = hflr
+    def l_r(self):
+        t = vtk.vtkTransform()
+        t.SetMatrix(self.lr_mat)
+        t.Update()
+        return t
 
-    hfrl = vtk.vtkTransform()
-    hfrl.Concatenate(hf.GetMatrix())
-    hfrl.Concatenate(rl.GetMatrix())
-    sliceOrder['hfrl'] = hfrl
+    def r_l(self):
+        t = vtk.vtkTransform()
+        t.SetMatrix(self.lr_mat)
+        return t
 
-    return sliceOrder
+    def h_f(self):
+        t = vtk.vtkTransform()
+        t.SetMatrix(self.hf_mat)
+        return t
+
+    def hf_si(self):
+        t = vtk.vtkTransform()
+        t.Concatenate(self.hf_mat)
+        t.Concatenate(self.si_mat)
+        return t
+
+    def hf_is(self):
+        t = vtk.vtkTransform()
+        t.Concatenate(self.hf_mat)
+        t.Concatenate(self.is_mat)
+        return t
+
+    def hf_ap(self):
+        t = vtk.vtkTransform()
+        t.Concatenate(self.hf_mat)
+        t.Scale(1, -1, 1)
+        return t
+
+    def hf_pa(self):
+        t = vtk.vtkTransform()
+        t.Concatenate(self.hf_mat)
+        t.Scale(1, -1, -1)
+        return t
+
+    def hf_lr(self):
+        t = vtk.vtkTransform()
+        t.Concatenate(self.hf_mat)
+        t.Concatenate(self.lr_mat)
+        return t
+
+    def hf_rl(self):
+        t = vtk.vtkTransform()
+        t.Concatenate(self.hf_mat)
+        t.Concatenate(self.rl_mat)
+        return t
+
+    def get(self, order):
+        """
+        Returns the vtkTransform corresponding to the slice order.
+
+        :param order: The slice order
+        :return: The vtkTransform to use
+        """
+        if order == 'si':
+            return self.s_i()
+        elif order == 'is':
+            return self.i_s()
+        elif order == 'ap':
+            return self.a_p()
+        elif order == 'pa':
+            return self.p_a()
+        elif order == 'lr':
+            return self.l_r()
+        elif order == 'rl':
+            return self.r_l()
+        elif order == 'hf':
+            return self.h_f()
+        elif order == 'hfsi':
+            return self.hf_si()
+        elif order == 'hfis':
+            return self.hf_is()
+        elif order == 'hfap':
+            return self.hf_ap()
+        elif order == 'hfpa':
+            return self.hf_pa()
+        elif order == 'hflr':
+            return self.hf_lr()
+        elif order == 'hfrl':
+            return self.hf_rl()
+        else:
+            s = 'No such transform "{:s}" exists.'.format(order)
+            raise Exception(s)
 
 
 if __name__ == '__main__':
