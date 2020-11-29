@@ -251,7 +251,6 @@ def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, lut):
     transform = so.get('hfap')
     transform.Scale(1, -1, 1)
     tf = vtk.vtkTransformPolyDataFilter()
-    tf.SetInputConnection(reader.GetOutputPort())
     tf.SetTransform(transform)
     tf.SetInputConnection(iso_surface.GetOutputPort())
 
