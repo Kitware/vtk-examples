@@ -52,8 +52,8 @@ def main(data_folder, tissue):
     renderer_left.GetActiveCamera().Azimuth(180)
     renderer_left.ResetCameraClippingRange()
 
-    renderer_left.SetBackground(colors.GetColor3d("LightSteelBlue"))
-    renderer_right.SetBackground(colors.GetColor3d("LightSteelBlue"))
+    renderer_left.SetBackground(colors.GetColor3d('LightSteelBlue'))
+    renderer_right.SetBackground(colors.GetColor3d('LightSteelBlue'))
     renderer_right.SetActiveCamera(renderer_left.GetActiveCamera())
 
     render_window.SetSize(640, 480)

@@ -1009,12 +1009,10 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [FireFlow](/Cxx/VisualizationAlgorithms/FireFlow) | Combine geometry from a VRML file and a solution from a vtkUnstructuredGrid file.
 [FireFlowDemo](/Cxx/VisualizationAlgorithms/FireFlowDemo) | Combine geometry from a VRML file and a solution from a vtkUnstructuredGrid file (interactive).
 [FlatShading](/Cxx/Visualization/FlatShading) |
-[FlyingFrogSkinAndTissue](/Cxx/Visualization/FlyingFrogSkinAndTissue) | All frog parts and translucent skin.
-[FlyingFrogSkinAndTissueB](/Cxx/Visualization/FlyingFrogSkinAndTissueB) | All frog parts and translucent skin.
-[FlyingFrogSkinAndTissueC](/Cxx/Visualization/FlyingFrogSkinAndTissueC) | All frog parts and translucent skin.
 [FlyingHeadSlice](/Cxx/VisualizationAlgorithms/FlyingHeadSlice) | Flying edges used to generate contour lines.
 [Follower](/Cxx/Visualization/Follower) | Draw text that stays right side up.
 [FontFile](/Cxx/Visualization/FontFile) | Use an external font.
+[FrogBrain](/Cxx/Visualization/FrogBrain) | The frog’s brain. Model extracted without smoothing (left) and with smoothing (right).
 [FrogSlice](/Cxx/Visualization/FrogSlice) | Photographic slice of frog (upper left), segmented frog (upper right) and composite of photo and segmentation (bottom). The purple color represents the stomach and the kidneys are yellow.
 [Glyph2D](/Cxx/Filtering/Glyph2D) |
 [Glyph3D](/Cxx/Filtering/Glyph3D) |
@@ -1105,10 +1103,6 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [VectorText](/Cxx/Visualization/VectorText) | Display high resolution text.
 [VelocityProfile](/Cxx/VisualizationAlgorithms/VelocityProfile) | Warping the geometry of three planes to show flow momentum.
 [VertexGlyphFilter](/Cxx/Filtering/VertexGlyphFilter) | Add a vertex to each point.
-[ViewFrog](/Cxx/Visualization/ViewFrog) | The complete frog without skin.
-[ViewFrogA](/Cxx/Visualization/ViewFrogA) | The complete frog without skin or skeleton.
-[ViewFrogBoth](/Cxx/Visualization/ViewFrogBoth) | The frog’s brain. Model extracted without smoothing (left) and with smoothing (right).
-[ViewFrogSkinAndTissue](/Cxx/Visualization/ViewFrogSkinAndTissue) | All frog parts and translucent skin.
 [Visualize2DPoints](/Cxx/Visualization/Visualize2DPoints) | Visualize a 2D Set of Points.
 [VisualizeImageData](/Cxx/Visualization/VisualizeImageData) | Visualize the points of an ImageData.
 [VisualizeVTP](/Cxx/Visualization/VisualizeVTP) | Visualize a VTP File.
