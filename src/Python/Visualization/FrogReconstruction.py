@@ -16,14 +16,14 @@ def main(data_folder, tissues, view, flying_edges):
         if not frog_fn.is_file():
             s += 'The file: {:s} does not exist.\n'.format(str(frog_fn))
             print(s)
-        frog_tissue_fn = path.joinpath('frogTissue').with_suffix('.mhd')
+        frog_tissue_fn = path.joinpath('frogtissue').with_suffix('.mhd')
         if not frog_tissue_fn.is_file():
             s += 'The file: {:s} does not exist.'.format(str(frog_tissue_fn))
         if s:
             print(s)
             return
     else:
-        print('Expected a path to frog.mhs and frogTissue.mhd')
+        print('Expected a path to frog.mhs and frogtissue.mhd')
         return
 
     # Tissue parameters
@@ -50,7 +50,7 @@ def main(data_folder, tissues, view, flying_edges):
     render_window_interactor = vtk.vtkRenderWindowInteractor()
     render_window_interactor.SetRenderWindow(render_window)
 
-    lut = create_frog_lut()
+    lut = create_frog_lut(colors)
 
     #  Time some filters
     ict = collections.defaultdict(dict)
@@ -151,7 +151,7 @@ Fig12-9c:
 
     parser.add_argument('-m', action='store_false', dest='flying_edges',
                         help='Use flying edges by default, marching cubes if set')
-    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogTissue.mhd.')
+    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogtissue.mhd.')
     parser.add_argument('tissues', nargs='+', help='List of one or more tissues.')
     args = parser.parse_args()
     return args.data_folder, args.tissues, args.view, args.flying_edges
@@ -474,7 +474,7 @@ def default_parameters():
     p['TISSUE'] = '1'
     p['START_SLICE'] = '0'
     p['END_SLICE'] = '255'
-    p['STUDY'] = 'frogTissue'
+    p['STUDY'] = 'frogtissue'
     p['VALUE'] = 127.5
     p['ROWS'] = 470
     p['COLUMNS'] = 500
@@ -570,7 +570,7 @@ def frog():
     p = default_parameters()
     p['ROWS'] = 470
     p['COLUMNS'] = 500
-    p['STUDY'] = 'frogTissue'
+    p['STUDY'] = 'frogtissue'
     p['SLICE_ORDER'] = 'si'
     p['PIXEL_SIZE'] = 1
     p['SPACING'] = 1.5
@@ -683,7 +683,7 @@ def skin():
 
 def skeleton():
     p = frog()
-    p['STUDY'] = 'frogTissue'
+    p['STUDY'] = 'frogtissue'
     p['NAME'] = 'skeleton'
     p['TISSUE'] = 13
     p['VALUE'] = 64.5
@@ -738,15 +738,13 @@ def tissue_parameters():
     return t
 
 
-def create_frog_lut():
-    colors = vtk.vtkNamedColors()
-
+def create_frog_lut(colors):
     lut = vtk.vtkLookupTable()
-    lut.SetNumberOfColors(17)
-    lut.SetTableRange(0, 16)
+    lut.SetNumberOfColors(16)
+    lut.SetTableRange(0, 15)
     lut.Build()
 
-    lut.SetTableValue(0, colors.GetColor4d('LimeGreen'))  # Skin
+    lut.SetTableValue(0, colors.GetColor4d('LimeGreen'))  # skin
     lut.SetTableValue(1, colors.GetColor4d('salmon'))  # blood
     lut.SetTableValue(2, colors.GetColor4d('beige'))  # brain
     lut.SetTableValue(3, colors.GetColor4d('orange'))  # duodenum
@@ -762,7 +760,6 @@ def create_frog_lut():
     lut.SetTableValue(13, colors.GetColor4d('wheat'))  # skeleton
     lut.SetTableValue(14, colors.GetColor4d('violet'))  # spleen
     lut.SetTableValue(15, colors.GetColor4d('plum'))  # stomach
-    lut.SetTableValue(16, colors.GetColor4d('white'))
 
     return lut
 

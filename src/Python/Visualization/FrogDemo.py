@@ -8,16 +8,25 @@ import vtk
 def main(data_folder, tissues, view):
     colors = vtk.vtkNamedColors()
 
-    # Setup render window, renderer, and interactor.
-    renderer = vtk.vtkRenderer()
+    # Setup render window, renderers, and interactor.
+    # ren_1 is for the frog rendering, ren_2 is for the slider rendering.
+    ren_1 = vtk.vtkRenderer()
+    ren_2 = vtk.vtkRenderer()
     render_window = vtk.vtkRenderWindow()
-    render_window.AddRenderer(renderer)
+    render_window.AddRenderer(ren_1)
+    render_window.AddRenderer(ren_2)
+    ren_1.SetViewport(0.0, 0.0, 0.7, 1.0)
+    ren_2.SetViewport(0.7, 0.0, 1, 1)
     render_window_interactor = vtk.vtkRenderWindowInteractor()
     render_window_interactor.SetRenderWindow(render_window)
 
     tm = create_tissue_map()
     path = Path(data_folder)
-    color_lut = create_frog_lut(colors)
+    lut = create_frog_lut(colors)
+    sliders = dict()
+    step_size = 1.0 / 17
+    pos_y = 0.05
+
     res = ['Using the following tissues:']
     for tissue in tissues:
         source = None
@@ -29,29 +38,47 @@ def main(data_folder, tissues, view):
                 continue
         actor = create_frog_actor(str(source), tissue, tm[tissue][1])
         actor.GetProperty().SetOpacity(tm[tissue][2])
-        actor.GetProperty().SetDiffuseColor(color_lut.GetTableValue(tm[tissue][0])[:3])
+        actor.GetProperty().SetDiffuseColor(lut.GetTableValue(tm[tissue][0])[:3])
         actor.GetProperty().SetSpecular(0.2)
         actor.GetProperty().SetSpecularPower(10)
-        renderer.AddActor(actor)
+        ren_1.AddActor(actor)
         res.append('{:>11s}, label: {:2d}'.format(tissue, tm[tissue][0]))
+
+        slider_properties = SliderProperties()
+        slider_properties.value_initial = tm[tissue][2]
+        slider_properties.title = tissue
+        # Screen coordinates
+        slider_properties.p1 = [0.05, pos_y]
+        slider_properties.p2 = [0.25, pos_y]
+        pos_y += step_size
+        cb = SliderCB(actor.GetProperty())
+
+        slider_widget = make_slider_widget(slider_properties, colors, lut, tm[tissue][0])
+        slider_widget.SetInteractor(render_window_interactor)
+        slider_widget.SetAnimationModeToAnimate()
+        slider_widget.EnabledOn()
+        slider_widget.SetCurrentRenderer(ren_2)
+        slider_widget.AddObserver(vtk.vtkCommand.InteractionEvent, cb)
+        sliders[tissue] = slider_widget
 
     if len(res) > 1:
         print('\n'.join(res))
 
-    render_window.SetSize(640, 640)
-    render_window.SetWindowName('Frog')
+    render_window.SetSize(800, 600)
+    render_window.SetWindowName('FrogDemo')
 
-    renderer.SetBackground(colors.GetColor3d('LightSteelBlue'))
+    ren_1.SetBackground(colors.GetColor3d('LightSteelBlue'))
+    ren_2.SetBackground(colors.GetColor3d('MidnightBlue'))
 
     # Initial view (looking down on the dorsal surface).
-    renderer.GetActiveCamera().Roll(-90)
-    renderer.ResetCamera()
+    ren_1.GetActiveCamera().Roll(-90)
+    ren_1.ResetCamera()
 
     #  Final view
     if view:
         if view == 'a':
             # Figs 12-9a and 12-9b in the VTK Textbook
-            camera = renderer.GetActiveCamera()
+            camera = ren_1.GetActiveCamera()
             camera.SetPosition(-599.880035, 548.906952, 313.670289)
             camera.SetFocalPoint(-8.376500, 40.691664, -156.007163)
             camera.SetViewUp(0.294699, -0.440638, 0.847933)
@@ -59,7 +86,7 @@ def main(data_folder, tissues, view):
             camera.SetClippingRange(231.699387, 1758.550290)
         elif view == 'c':
             # Figs 12-9c in the VTK Textbook
-            camera = renderer.GetActiveCamera()
+            camera = ren_1.GetActiveCamera()
             camera.SetPosition(-206.616664, 182.524078, 87.589931)
             camera.SetFocalPoint(-5.721571, -0.074326, -97.940837)
             camera.SetViewUp(0.300335, -0.496855, 0.814208)
@@ -67,7 +94,7 @@ def main(data_folder, tissues, view):
             camera.SetClippingRange(0.810268, 810.268454)
         elif view == 'd':
             # Fig 12-9d in the VTK Textbook
-            camera = renderer.GetActiveCamera()
+            camera = ren_1.GetActiveCamera()
             camera.SetPosition(-40.912047, -65.274764, 588.508700)
             camera.SetFocalPoint(-10.418979, 17.700133, -158.643842)
             camera.SetViewUp(0.741687, -0.669297, -0.044059)
@@ -376,6 +403,81 @@ def create_frog_actor(file_name, tissue, transform):
     actor.SetMapper(mapper)
 
     return actor
+
+
+class SliderProperties:
+    tube_width = 0.008
+    slider_length = 0.008
+    title_height = 0.01
+    label_height = 0.01
+
+    value_minimum = 0.0
+    value_maximum = 1.0
+    value_initial = 1.0
+
+    p1 = [0.1, 0.1]
+    p2 = [0.3, 0.1]
+
+    title = None
+
+    title_color = 'MistyRose'
+    value_color = 'Cyan'
+    slider_color = 'Coral'
+    selected_color = 'Lime'
+    bar_color = 'Yellow'
+    bar_ends_color = 'Gold'
+
+
+def make_slider_widget(properties, colors, lut, idx):
+    slider = vtk.vtkSliderRepresentation2D()
+
+    slider.SetMinimumValue(properties.value_minimum)
+    slider.SetMaximumValue(properties.value_maximum)
+    slider.SetValue(properties.value_initial)
+    slider.SetTitleText(properties.title)
+
+    slider.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
+    slider.GetPoint1Coordinate().SetValue(properties.p1[0], properties.p1[1])
+    slider.GetPoint2Coordinate().SetCoordinateSystemToNormalizedDisplay()
+    slider.GetPoint2Coordinate().SetValue(properties.p2[0], properties.p2[1])
+
+    slider.SetTubeWidth(properties.tube_width)
+    slider.SetSliderLength(properties.slider_length)
+    slider.SetTitleHeight(properties.title_height)
+    slider.SetLabelHeight(properties.label_height)
+
+    # Set the color properties
+    # Change the color of the bar.
+    slider.GetTubeProperty().SetColor(colors.GetColor3d(properties.bar_color))
+    # Change the color of the ends of the bar.
+    slider.GetCapProperty().SetColor(colors.GetColor3d(properties.bar_ends_color))
+    # Change the color of the knob that slides.
+    slider.GetSliderProperty().SetColor(colors.GetColor3d(properties.slider_color))
+    # Change the color of the knob when the mouse is held on it.
+    slider.GetSelectedProperty().SetColor(colors.GetColor3d(properties.selected_color))
+    # Change the color of the text displaying the value.
+    slider.GetLabelProperty().SetColor(colors.GetColor3d(properties.value_color))
+    # Change the color of the text indicating what the slider controls
+    if idx in range(0, 16):
+        slider.GetTitleProperty().SetColor(lut.GetTableValue(idx)[:3])
+        slider.GetTitleProperty().ShadowOff()
+    else:
+        slider.GetTitleProperty().SetColor(colors.GetColor3d(properties.title_color))
+
+    slider_widget = vtk.vtkSliderWidget()
+    slider_widget.SetRepresentation(slider)
+
+    return slider_widget
+
+
+class SliderCB:
+    def __init__(self, actor_property):
+        self.actorProperty = actor_property
+
+    def __call__(self, caller, ev):
+        slider_widget = caller
+        value = slider_widget.GetRepresentation().GetValue()
+        self.actorProperty.SetOpacity(value)
 
 
 if __name__ == '__main__':

@@ -78,4 +78,4 @@ How to visualise the information in a structured dataset. All these examples use
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
-[Froggie](/Python/Visualization/Froggie) | This code uses a general way of specifying transformations that can permute image and other geometric data in order to maintain proper orientation regardless of the acquisition order. See the class SliceOrder.
+[Frog](/Python/Visualization/Frog) | This code uses a general way of specifying transformations that can permute image and other geometric data in order to maintain proper orientation regardless of the acquisition order. See the class `SliceOrder`.

@@ -5,10 +5,8 @@ from pathlib import Path
 import vtk
 
 
-def main():
-    # colors = vtk.vtkNamedColors()
-
-    data_folder, slice_number = get_program_parameters()
+def main(data_folder, slice_number):
+    colors = vtk.vtkNamedColors()
 
     path = Path(data_folder)
     if path.is_dir():
@@ -17,19 +15,17 @@ def main():
         if not fn_1.is_file():
             s += 'The file: {:s} does not exist.\n'.format(str(fn_1))
             print(s)
-        fn_2 = path.joinpath('frogTissue').with_suffix('.mhd')
+        fn_2 = path.joinpath('frogtissue').with_suffix('.mhd')
         if not fn_2.is_file():
             s += 'The file: {:s} does not exist.'.format(str(fn_2))
         if s:
             print(s)
             return
     else:
-        print('Expected a path to frog.mhs and frogTissue.mhd')
+        print('Expected a path to frog.mhs and frogtissue.mhd')
         return
 
     so = SliceOrder()
-
-    colors = vtk.vtkNamedColors()
 
     # Now create the RenderWindow, Renderer and Interactor
     #
@@ -102,14 +98,14 @@ def main():
     segment_normals.SetInputConnection(segment_transform.GetOutputPort())
     segment_normals.FlipNormalsOn()
 
-    color_lut = create_frog_lut()
+    lut = create_frog_lut(colors)
 
     segment_mapper = vtk.vtkPolyDataMapper()
     segment_mapper.SetInputConnection(segment_plane.GetOutputPort())
 
     segment_texture = vtk.vtkTexture()
     segment_texture.SetInputConnection(segment_padder.GetOutputPort())
-    segment_texture.SetLookupTable(color_lut)
+    segment_texture.SetLookupTable(lut)
     segment_texture.SetColorModeToMapScalars()
     segment_texture.InterpolateOff()
 
@@ -158,7 +154,7 @@ def main():
     iren.Start()
 
 
-def get_program_parameters():
+def get_program_parameters(argv):
     import argparse
     description = 'Visualization of a frog.'
     epilogue = '''
@@ -169,21 +165,19 @@ If slice = 39 it matches Figure 12-6 in the VTK Book.
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogTissue.mhd.')
+    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogtissue.mhd.')
     parser.add_argument('slice_number', default=39, type=int, nargs='?', help='Slice number.')
     args = parser.parse_args()
     return args.data_folder, args.slice_number
 
 
-def create_frog_lut():
-    colors = vtk.vtkNamedColors()
-
+def create_frog_lut(colors):
     lut = vtk.vtkLookupTable()
-    lut.SetNumberOfColors(17)
-    lut.SetTableRange(0, 16)
+    lut.SetNumberOfColors(16)
+    lut.SetTableRange(0, 15)
     lut.Build()
 
-    lut.SetTableValue(0, 0, 0, 0, 0)
+    lut.SetTableValue(0, colors.GetColor4d('Black'))
     lut.SetTableValue(1, colors.GetColor4d('salmon'))  # blood
     lut.SetTableValue(2, colors.GetColor4d('beige'))  # brain
     lut.SetTableValue(3, colors.GetColor4d('orange'))  # duodenum
@@ -202,97 +196,6 @@ def create_frog_lut():
 
     return lut
 
-
-# def SliceOrder():
-#     #
-#     # These transformations permute medical image data to maintain proper orientation
-#     # regardless of the acquisition order. After applying these transforms with
-#     # vtkTransformFilter, a view up of 0,-1,0 will result in the body part
-#     # facing the viewer.
-#     # NOTE: some transformations have a -1 scale factor for one of the components.
-#     #       To ensure proper polygon orientation and normal direction, you must
-#     #       apply the vtkPolyDataNormals filter.
-#     #
-#     # Naming:
-#     # si - superior to inferior (top to bottom)
-#     # is - inferior to superior (bottom to top)
-#     # ap - anterior to posterior (front to back)
-#     # pa - posterior to anterior (back to front)
-#     # lr - left to right
-#     # rl - right to left
-#     #
-#
-#     sliceOrder = dict()
-#
-#     siMatrix = [1, 0, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1]
-#     si = vtk.vtkTransform()
-#     si.SetMatrix(siMatrix)
-#     sliceOrder['si'] = si
-#
-#     isMatrix = [1, 0, 0, 0, 0, 0, -1, 0, 0, -1, 0, 0, 0, 0, 0, 1]
-#     i_s = vtk.vtkTransform()  # 'is' is a keyword in Python, changed to 'i_s'
-#     i_s.SetMatrix(isMatrix)
-#     sliceOrder['is'] = i_s
-#
-#     ap = vtk.vtkTransform()
-#     ap.Scale(1, -1, 1)
-#     sliceOrder['ap'] = ap
-#
-#     pa = vtk.vtkTransform()
-#     pa.Scale(1, -1, -1)
-#     sliceOrder['pa'] = pa
-#
-#     lrMatrix = [0, 0, -1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
-#     lr = vtk.vtkTransform()
-#     lr.SetMatrix(lrMatrix)
-#     sliceOrder['lr'] = lr
-#
-#     rlMatrix = [0, 0, 1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
-#     rl = vtk.vtkTransform()
-#     rl.SetMatrix(rlMatrix)
-#     sliceOrder['rl'] = rl
-#
-#     #
-#     # The previous transforms assume radiological views of the slices (viewed from the feet). other
-#     # modalities such as physical sectioning may view from the head. these transforms modify the original
-#     # with a 180 rotation about y
-#     #
-#     hfMatrix = [-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1]
-#     hf = vtk.vtkTransform()
-#     hf.SetMatrix(hfMatrix)
-#     sliceOrder['hf'] = hf
-#
-#     hfsi = vtk.vtkTransform()
-#     hfsi.Concatenate(hf.GetMatrix())
-#     hfsi.Concatenate(si.GetMatrix())
-#     sliceOrder['hfsi'] = hfsi
-#
-#     hfis = vtk.vtkTransform()
-#     hfis.Concatenate(hf.GetMatrix())
-#     hfis.Concatenate(i_s.GetMatrix())
-#     sliceOrder['hfis'] = hfis
-#
-#     hfap = vtk.vtkTransform()
-#     hfap.Concatenate(hf.GetMatrix())
-#     hfap.Concatenate(ap.GetMatrix())
-#     sliceOrder['hfap'] = hfap
-#
-#     hfpa = vtk.vtkTransform()
-#     hfpa.Concatenate(hf.GetMatrix())
-#     hfpa.Concatenate(pa.GetMatrix())
-#     sliceOrder['hfpa'] = hfpa
-#
-#     hflr = vtk.vtkTransform()
-#     hflr.Concatenate(hf.GetMatrix())
-#     hflr.Concatenate(lr.GetMatrix())
-#     sliceOrder[''] = hflr
-#
-#     hfrl = vtk.vtkTransform()
-#     hfrl.Concatenate(hf.GetMatrix())
-#     hfrl.Concatenate(rl.GetMatrix())
-#     sliceOrder['hfrl'] = hfrl
-#
-#     return sliceOrder
 
 class SliceOrder:
     """
@@ -466,4 +369,7 @@ class SliceOrder:
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+
+    data_folder, slice_number = get_program_parameters(sys.argv)
+    main(data_folder, slice_number)

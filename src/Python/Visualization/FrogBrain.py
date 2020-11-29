@@ -1,24 +1,34 @@
 #!/usr/bin/env python
 
-"""
-"""
+from pathlib import Path
 
 import vtk
 
 
-def main():
+def main(data_folder, tissue):
     colors = vtk.vtkNamedColors()
 
-    file_name, tissue = get_program_parameters()
+    path = Path(data_folder)
+    if path.is_dir():
+        s = ''
+        file_name = path.joinpath('frogtissue').with_suffix('.mhd')
+        if not file_name.is_file():
+            s += 'The file: {:s} does not exist.'.format(str(file_name))
+        if s:
+            print(s)
+            return
+    else:
+        print('Expected a path to frogtissue.mhd')
+        return
 
     tissue_map = create_tissue_map()
-    lut = create_frog_lut()
+    lut = create_frog_lut(colors)
 
     # Setup render window, renderer, and interactor.
     renderer_left = vtk.vtkRenderer()
-    renderer_left.SetViewport(0, 0, .5, 1)
+    renderer_left.SetViewport(0, 0, 0.5, 1)
     renderer_right = vtk.vtkRenderer()
-    renderer_right.SetViewport(.5, 0, 1, 1)
+    renderer_right.SetViewport(0.5, 0, 1, 1)
     render_window = vtk.vtkRenderWindow()
     render_window.AddRenderer(renderer_left)
     render_window.AddRenderer(renderer_right)
@@ -53,7 +63,7 @@ def main():
     render_window_interactor.Start()
 
 
-def get_program_parameters():
+def get_program_parameters(argv):
     import argparse
     description = 'The frog\'s brain.'
     epilogue = '''
@@ -61,21 +71,19 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('file_name', help='frog.mhd.')
+    parser.add_argument('data_folder', help='The path to the file: frogtissue.mhd.')
     parser.add_argument('tissue', default='brain', nargs='?', help='The tissue to use.')
     args = parser.parse_args()
-    return args.file_name, args.tissue
+    return args.data_folder, args.tissue
 
 
-def create_frog_lut():
-    colors = vtk.vtkNamedColors()
-
+def create_frog_lut(colors):
     lut = vtk.vtkLookupTable()
-    lut.SetNumberOfColors(17)
-    lut.SetTableRange(0, 16)
+    lut.SetNumberOfColors(16)
+    lut.SetTableRange(0, 15)
     lut.Build()
 
-    lut.SetTableValue(0, 0, 0, 0, 0)
+    lut.SetTableValue(0, colors.GetColor4d('Black'))
     lut.SetTableValue(1, colors.GetColor4d('salmon'))  # blood
     lut.SetTableValue(2, colors.GetColor4d('beige'))  # brain
     lut.SetTableValue(3, colors.GetColor4d('orange'))  # duodenum
@@ -118,7 +126,7 @@ def create_tissue_map():
 
 def create_smooth_frog_actor(file_name, tissue):
     reader = vtk.vtkMetaImageReader()
-    reader.SetFileName(file_name)
+    reader.SetFileName(str(file_name))
     reader.Update()
 
     selectTissue = vtk.vtkImageThreshold()
@@ -187,7 +195,7 @@ def create_smooth_frog_actor(file_name, tissue):
 
 def create_frog_actor(file_name, tissue):
     reader = vtk.vtkMetaImageReader()
-    reader.SetFileName(file_name)
+    reader.SetFileName(str(file_name))
     reader.Update()
 
     select_tissue = vtk.vtkImageThreshold()
@@ -217,4 +225,8 @@ def create_frog_actor(file_name, tissue):
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+
+    data_folder, tissue = get_program_parameters(sys.argv)
+
+    main(data_folder, tissue)
