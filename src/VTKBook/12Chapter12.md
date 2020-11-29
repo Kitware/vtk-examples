@@ -33,7 +33,7 @@ This case study describes in detail how to read input data and extract anatomica
 
 Medical images come in many flavors of file formats. This study is stored as flat files without header information. Each 16-bit pixel is stored with little-endian byte order. Also, as is often the case, each slice is stored in a separate file with the file suffix being the slice number of the form prefix.1, prefix.2 *,* and so on. Medical imaging files often have a header of a certain size before the image data starts. The size of the header varies from file format to file format. Finally, another complication is that sometimes one or more bits in each 16-bit pixel is used to mark connectivity between voxels. It is important to be able to mask out bits as they are read.
 
-VTK provides several image readers including one that can read raw formats of the type described above--- vtkVolume16Reader. To read this data we instantiate the class and set the appropriate instance variables as follows.
+VTK provides several image readers including one that can read raw formats of the type described above  `vtkVolume16Reader`. To read this data we instantiate the class and set the appropriate instance variables as follows.
 
 ``` c++
 vtkVolume16Reader *v16 = vtkVolume16Reader::New();
@@ -43,7 +43,7 @@ vtkVolume16Reader *v16 = vtkVolume16Reader::New();
   v16->SetDataSpacing (3.2, 3.2, 1.5);
 ```
 
-The FilePrefix and FilePattern instance variable work together to produce the name of files in a series of slices. The FilePattern---which by default is %s.%d---generates the filename to read by performing a C-language sprintf() of the FilePrefix and the current file number into the FilePattern format specifier.
+The `FilePrefix` and `FilePattern` instance variable work together to produce the name of files in a series of slices. The `FilePattern` which by default is `%s.%d` generates the filename to read by performing a C-language sprintf() of the FilePrefix and the current file number into the FilePattern format specifier.
 
 **Create an Isosurface**
 
@@ -247,11 +247,11 @@ Notice the difference in the information presented by each representation. The o
 
 **The Virtual Frog**
 
-To demonstrate the processing of segmented data we will use a dataset derived from a frog. This data was prepared at Lawrence Berkeley National Laboratories and is included with their permission on the CD-ROM accompanying this book. The data was acquired by physically slicing the frog and photographing the slices. The original segmented data is in the form of tissue masks with one file per tissue. There are 136 slices per tissue and 15 different tissues. Each slice is 470 by 500 pixels. (To accommodate the volume readers we have in VTK, we processed the mask files and combined them all in one file for each slice.) We used integer numbers 1--15 to represent the 15 tissues. **Figure 12-6** shows an original slice, a labeled slice, and a composite of the two representations.
+To demonstrate the processing of segmented data we will use a dataset derived from a frog. This data was prepared at Lawrence Berkeley National Laboratories and is included with their permission on the CD-ROM accompanying this book. The data was acquired by physically slicing the frog and photographing the slices. The original segmented data is in the form of tissue masks with one file per tissue. There are 136 slices per tissue and 15 different tissues. Each slice is 470 by 500 pixels. (To accommodate the volume readers we have in VTK, we processed the mask files and combined them all in one file for each slice.) We used integer numbers 1-15 to represent the 15 tissues. **Figure 12-6** shows an original slice, a labeled slice, and a composite of the two representations.
 
 <figure id="Figure 12-6">
   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestFrogSlice.png?raw=true" width="640" alt="Figure 12-6">
-  <figcaption style="color:blue"><b>Figure 12-6</b>. Photographic slice of frog (upper left), segmented frog (upper right) and composite of photo and segmentation (bottom). The purple color represents the stomach and the kidneys are yellow. <a href="../../Cxx/Visualization/FrogSlice" title="FrogSlice"> See FrogSlice.cxx</a> and <a href="../../Python/Visualization/FrogSlice" title="FrogSlice"> FrogSlice.py</a>.</figcaption>
+  <figcaption style="color:blue"><b>Figure 12-6</b>. Photographic slice of frog (upper left), segmented frog (upper right) and composite of photo and segmentation (bottom). The purple color represents the stomach and the kidneys are yellow. See <a href="../../Python/Visualization/FrogSlice" title="FrogSlice"> FrogSlice.py</a>.</figcaption>
 </figure>
 
 Before we describe the process to go from binary labeled tissues to gray-scale data suitable for isosurface extraction, compare the two images of the frog's brain shown in **Figure 12-7**. On the left is a surface extracted using a binary labeling of the brain. The right image was created using the visualization pipeline that we will develop in this example.
@@ -261,16 +261,19 @@ Before we describe the process to go from binary labeled tissues to gray-scale d
 In the last example, we used C++ and created a program that was tailored to extract two surfaces: one of the skin and one of the bone. All the parameters for the surface extraction were hard-coded in the source. Since our frog has 15 different tissues; we seek a more general solution to this problem. We may have to experiment with a number of different parameters for a number of visualization and imaging filters. Our goal is to develop a general pipeline that will work not only our 15 tissues but on other medical datasets as well. We'll design the program to work with a set of user-specified parameters to control the elements of the pipeline. A reasonable description might look like:
 
 ``` python
-    p['STUDY'] = 'frogTissue'
-    p['SLICE_ORDER'] = 'si'
-    p['VALUE'] = 127.5
-    p['ROWS'] = 470
-    p['COLUMNS'] = 500
-    p['PIXEL_SIZE'] = 1
-    p['SPACING'] = 1.5
+STUDY = 'frogTissue'
+SLICE_ORDER = 'hfsi'
+ROWS = 470
+COLUMNS = 500
+PIXEL_SIZE = 1
+SPACING = 1.5
 ```
 
-plus possibly many more parameters to control decimation, smoothing, and so forth. Working in C++, we would have to design the format of the file and write code to interpret the statements. We make the job easier here by using Python interpreter. Another decision is to separate the modelling from the rendering. Our script can be modified to generate models in a "batch" mode. We will run one Python script for each tissue. That script will create a vtk output file containing the polygonal representation of each tissue. Later, we can render the models with a separate script. However to simplify matters we have incorporated everything into a single Python script: <a href="../../Python/Visualization/FrogReconstruction" title="FrogReconstruction"> FrogReconstruction.py</a>.
+plus possibly many more parameters to control decimation, smoothing, and so forth. Working in C++, we would have to design the format of the file and write code to interpret the statements.
+
+We make the job easier here by using Python. Another decision is to separate the modelling from the rendering.  However, in order to simplify things we will be using one Python script,<a href="../../Python/Visualization/FrogReconstruction" title="FrogReconstruction"> FrogReconstruction.py</a>.
+
+In the real world, our script would be modified to generate models in a "batch" mode. If this is done, we would run run one VTK Python script for each tissue. That script will create a `.vtk`  output file containing the polygonal representation of each tissue. Later, we would render the models with a separate script.
 
 **Overview of the Pipeline**
 
@@ -287,9 +290,13 @@ We use the convention that user-specified variables are in capital letters. Firs
 
 We assume here that all the data to be processed was acquired with a constant center landmark. In VTK, the origin of the data applies to the lower left of an image volume. In this pipeline, we calculate the origin such that the *x,y* center of the volume will be (0,0). The DataSpacing describes the size of each pixel and the distance between slices. DataVOI selects a volume of interest (VOI). A VOI lets us select areas of interest, sometimes eliminating extraneous structures like the CT table bed. For the frog, we have written a small C program that reads the tissue label file and finds the volume of interest for each tissue.
 
-The SetTransform() method defines how to arrange the data in memory. Medical images can be acquired in a variety of orders. For example, in CT, the data can be gathered from top to bottom (superior to inferior), or bottom to top (inferior to superior). In addition, MRI data can be acquired from left to right, right to left, front-to-back (anterior to posterior) or back-to-front. This filter transforms triangle vertices such that the resulting models will all "face" the viewer with a view up of (0,-1,0), looking down the positive *z* axis. Also, proper left-right correspondence will be maintained. That means the patient's left will always be left on the generated models. Look in SliceOrder.tcl to see the permutations and rotations for each order.
+The `SetTransform()` method defines how to arrange the data in memory. Medical images can be acquired in a variety of orders. For example, in CT, the data can be gathered from top to bottom (superior to inferior), or bottom to top (inferior to superior). In addition, MRI data can be acquired from left to right, right to left, front-to-back (anterior to posterior) or back-to-front. This filter transforms triangle vertices such that the resulting models will all "face" the viewer with a view up of (0,-1,0), looking down the positive *z* axis. Also, proper left-right correspondence will be maintained. That means the patient's left will always be left on the generated models. Look in SliceOrder.tcl to see the permutations and rotations for each order.
 
-All the other parameters are self-explanatory except for the last. In this script, we know that the pipeline will only be executed once. To conserve memory, we invoke the ReleaseDataFlagOn() method. This allows the VTK pipeline to release data once it has been processed by a filter. For large medical datasets, this can mean the difference between being able to process a dataset or not.
+ In the example, we have created a class called \texttt{SliceOrder} which handles the permutations and rotations for each order.
+
+We will be using a `vtkMetaImageReader()` instead of the `vtkPNMReader()`  since the data has been collected into metaa-image files. This means that we will apply the transform later in the pipeline.
+
+All the other parameters are self-explanatory.
 
 <figure id="Figure 12-8">
   <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKBook/Figures/Figure12-8.png?raw=true" width="640" alt="Figure12-8">
@@ -372,6 +379,18 @@ Now we can process the volume with an iso-surface generator just as though we ha
         iso_surface.SetValue(0, iso_value)
 ```
 
+**Transform the Data**
+We need to transform the data so the appropriate orientation is displayed.
+
+``` python
+    so = SliceOrder()
+    transform = so.get('hfap')
+    transform.Scale(1, -1, 1)
+    tf = vtk.vtkTransformPolyDataFilter()
+    tf.SetTransform(transform)
+    tf.SetInputConnection(iso_surface.GetOutputPort())
+```
+
 **Reduce the Number of Triangles**
 
 There are often many more triangles generated by the isosurfacing algorithm than we need for rendering. Here we reduce the triangle count by eliminating triangle vertices that lie within a user-specified distance to the plane formed by neighboring vertices. We preserve any edges of triangles that are considered "features."
@@ -423,19 +442,37 @@ Triangle strips are a compact representation of large numbers of triangles. This
     stripper.SetInputConnection(normals.GetOutputPort())
 ```
 
+**Write the Triangles to a File**
+
+Finally, if we were writing the triangle strips to a file, the last component of the pipeline would be:
+
+``` python
+    writer = vtk.vtkPolyDataWriter()
+    writer.SetInputConnection(stripper.GetOutputPort())
+    writer.SetFileName(NAME + '.vtk')
+```
+
 **Execute the Pipeline**
 
-If you have gotten this far in the book, you know that the *Visualization Toolkit* uses a demand-driven pipeline architecture and so far we have not demanded anything. We have just specified the pipeline topology and the parameters for each pipeline element.
+If you have gotten this far in the book, you know that the *Visualization Toolkit* uses a demand-driven pipeline architecture and so far we have not demanded anything. We have just specified the pipeline topology and the parameters for each pipeline element. So we need to trigger the updating of the pipeline.
+
+If you are displaying the image then:
 
 ``` python
     render_window.Render()
+```
+
+If you are just writing to a file:
+
+``` python
+    writer.Update()
 ```
 
 causes the pipeline to execute. In practice we do a bit more than just Update the last element of the pipeline. We explicitly Update each element so that we can time the individual steps.
 
 **Specifying Parameters for the Pipeline**
 
-All of the variables mentioned above must be defined for each tissue to be processed. The parameters fall into two general categories. Some are specific to the particular study while some are specific to each tissue. For the frog, we collected the study specific parameters in a function that contains:
+All of the variables mentioned above must be defined for each tissue to be processed. The parameters fall into two general categories. Some are specific to the particular study while some are specific to each tissue. For the frog, we collected the study-specific parameters in a function that contains:
 
 ``` python
 def frog():
@@ -471,7 +508,7 @@ def liver():
     return p
 ```
 
-Parameters in the function frog() can also be overridden. For example, skeleton() overrides the standard deviation for the Gaussian filter.
+Parameters in the function `frog()` can also be overridden. For example, `skeleton()` overrides the standard deviation for the Gaussian filter.
 
 ``` python
 def skeleton():
@@ -489,13 +526,14 @@ def skeleton():
 
 Note that both of these examples specify a volume of interest. This improves performance of the imaging and visualization algorithms by eliminating empty space.
 
+Another function, `skin()`, uses similar parameters, it is used to extract the skin. Island removal or threshold pipeline elements are not needed since the data is already has gray-scale information.
+
 After the usual code to create required rendering objects, a single statement for each part creates an actor that we can add to the renderer:
 
 ``` python
         t, actor = create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, lut)
         ict[name] = t
         renderer.AddActor(actor)
-
 ```
 
 The rest of the script defines a standard view.
@@ -505,6 +543,25 @@ The rest of the script defines a standard view.
     renderer.GetActiveCamera().Roll(-90)
     renderer.ResetCamera()
 ```
+
+**Conclusion**
+
+This lengthy example shows the power of a comprehensive visualization system like VTK.
+
+* We mixed image processing and computer graphics algorithms to process data created by an external segmentation process.
+* We developed a generic approach that allows users to control the elements of the pipeline with a familiar scripting language, Python.
+* We can easily separate this script into a "batch" portion and an "interactive" portion.
+
+If `.vtk` files have been created we can use an alternative Python script called <a href="../../Python/Visualization/Frog" title="Frog"> Frog.py</a>. This takes the vtk models corresponding to the `.vtk` file and renders them.
+
+These programs:
+
+* <a href="../../Python/Visualization/FrogReconstruction" title="FrogReconstruction"> FrogReconstruction.py</a>
+* <a href="../../Python/Visualization/Frog" title="Frog"> Frog.py</a>
+
+ allow the user specify what tissues to display and also provide some pre-defined views.
+
+ **Figure12-9** shows four views of the frog.
 
 <figure id="Figure 12-9">
  <figure id="Figure 12-9a">
@@ -525,14 +582,6 @@ The rest of the script defines a standard view.
 </figure>
 <figcaption style="color:blue"><b>Figure 12-9</b>. Various frog images. <a href="../../Python/Visualization/Frog" title="Frog"> See Frog.py</a>.</figcaption>
 </figure>
-
-This lengthy example shows the power of a comprehensive visualization system like VTK.
-
-* We mixed image processing and computer graphics algorithms to process data created by an external segmentation process.
-
-*  We developed a generic approach that allows users to control the elements of the pipeline with a familiar scripting language, Python.
-
-*  We can easily separate this script into a "batch" portion and an "interactive" portion.
 
 **Other Frog-Related Information**
 
@@ -591,11 +640,11 @@ The above Awk script performs the conversion. Its first line outputs the require
 
 The next line of the Awk script creates a variable named count that keeps track of how many days worth of information is in the file. This is equivalent to the number of lines in the original data file.
 
-The next fourteen lines convert the six digit date into a more useful format, since the original format has a number of problems. If we were to blindly use the original format and plot the data using the date as the independent variable, there would be large gaps in our plot. For example,  931231 is the last day of 1993 and 940101 is the first day of 1994. Chronologically, these two dates are sequential, but mathematically there are (940101--931231=) 8870 values between them. A simple solution would be to use the line number as our independent variable. This would work as long as we knew that every trading day was recorded in the data file. It would not properly handle the situation where the market was open, but for some reason data was not recorded. A better solution is to convert the dates into numerically ordered days. The preceding Awk script sets January 1, 1993, as day number one, and then numbers all the following days from there. At the end of these 14 lines the variable, d, will contain the resulting value.
+The next fourteen lines convert the six digit date into a more useful format, since the original format has a number of problems. If we were to blindly use the original format and plot the data using the date as the independent variable, there would be large gaps in our plot. For example,  931231 is the last day of 1993 and 940101 is the first day of 1994. Chronologically, these two dates are sequential, but mathematically there are (940101-931231=8870 values between them. A simple solution would be to use the line number as our independent variable. This would work as long as we knew that every trading day was recorded in the data file. It would not properly handle the situation where the market was open, but for some reason data was not recorded. A better solution is to convert the dates into numerically ordered days. The preceding Awk script sets January 1, 1993, as day number one, and then numbers all the following days from there. At the end of these 14 lines the variable, d, will contain the resulting value.
 
 The next line in our Awk script stores the converted date, closing price, and dollar volume  into arrays indexed by the line number stored in the variable count. Once all the lines have been read and stored into the arrays, we write out the rest of the VTK data file. We have selected the date as our independent variable and *x* coordinate. The closing price we store as the *y* coordinate, and the *z* coordinate we set to zero. After indicating the number and type of points to be stored, the Awk script loops through all the points and writes them out to the VTK data file. It then writes out the line connectivity list. In this case we just connect one point to the next to form a polyline for each stock. Finally, we write out the volume information as scalar data associated with the points. Portions of the resulting VTK data file are shown below.
 
-```
+``` text
 # vtk DataFile Version 2.0
 Data values for stock
 ASCII
@@ -627,94 +676,114 @@ LOOKUP_TABLE default
 
 Now that we have generated the VTK data file, we can start the process of creating a visualization for the stock data. To do this, we wrote a Tcl script to be used with the Tcl-based VTK executable. At a high level the script reads in the stock data, sends it through a tube filter, creates a label for it, and then creates an outline around the resulting dataset. Ideally, we would like to display multiple stocks in the same window. To facilitate this, we designed the Tcl script to use a procedure to perform operations on a per stock basis. The resulting script is listed below.
 
-``` tcl
-package require vtk
-#   this is a tcl script for the stock case study
-#   Create the RenderWindow, Renderer and both Actors
-vtkRenderer ren1
-vtkRenderWindow renWin
-  renWin AddRenderer ren1
-vtkRenderWindowInteractor iren
-  iren SetRenderWindow renWin
+``` python
+#!/usr/bin/env python
+import os
+import vtk
 
-#create the outline
-vtkAppendPolyData apf
-vtkOutlineFilter olf
-  olf SetInputConnection [apf GetOutputPort]
-vtkPolyDataMapper outlineMapper
-  outlineMapper SetInputConnection [olf GetOutputPort]
-vtkActor outlineActor
-  outlineActor SetMapper outlineMapper
-set zpos 0
+def main():
+    colors = vtk.vtkNamedColors()
+    fileNames = ['GE.vtk', 'GM.vtk', 'IBM.vtk', 'DEC.vtk']
+    # Set up the stocks
+    renderers = list()
+    topRenderer = vtk.vtkRenderer()
+    bottomRenderer = vtk.vtkRenderer()
+    renderers.append(topRenderer)
+    renderers.append(bottomRenderer)
 
-# create the stocks
-proc AddStock {prefix name x y z} {
-  global zpos
+    # create the outline
+    apf = vtk.vtkAppendPolyData()$\index{vtkAppendPolyData!application}$
+    olf = vtk.vtkOutlineFilter()$\index{vtkOutlineFilter!application}$
+    olf.SetInputConnection(apf.GetOutputPort())
+    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper.SetInputConnection(olf.GetOutputPort())
+    outlineActor = vtk.vtkActor()
+    outlineActor.SetMapper(outlineMapper)
 
-  # create labels
-  vtkTextSource $prefix.TextSrc
-    $prefix.TextSrc SetText "$name"
-    $prefix.TextSrc SetBacking 0
-  vtkPolyDataMapper $prefix.LabelMapper
-    $prefix.LabelMapper SetInput [$prefix.TextSrc GetOutput]
-  vtkFollower $prefix.LabelActor
-    $prefix.LabelActor SetMapper $prefix.LabelMapper
-    $prefix.LabelActor SetPosition $x $y $z
-    $prefix.LabelActor SetScale 0.25 0.25 0.25
-    eval $prefix.LabelActor SetOrigin [$prefix.LabelMapper GetCenter]
-  #   create a sphere source and actor
-  vtkPolyDataReader $prefix.PolyDataRead
-    $prefix.PolyDataRead SetFileName "../../../vtkdata/$prefix.vtk"
-  vtkTubeFilter $prefix.TubeFilter
-    $prefix.TubeFilter SetInputConnection [$prefix.PolyDataRead GetOutputPort]
-    $prefix.TubeFilter SetNumberOfSides 8
-    $prefix.TubeFilter SetRadius 0.5
-    $prefix.TubeFilter SetRadiusFactor 10000
-  vtkTransform $prefix.Transform
-    $prefix.Transform Translate 0 0 $zpos
-    $prefix.Transform Scale 0.15 1 1
-  vtkTransformPolyDataFilter $prefix.TransformFilter
-    $prefix.TransformFilter SetInputConnection [$prefix.TubeFilter GetOutputPort]
-    $prefix.TransformFilter SetTransform $prefix.Transform
-   # increment zpos
-  set zpos [expr $zpos + 10]
-  vtkPolyDataMapper $prefix.StockMapper
-    $prefix.StockMapper SetInputConnection [$prefix.TransformFilter GetOutputPort]
+    zPosition = 0.0
+    for fn in fileNames:
+        zPosition = AddStock(renderers, apf, fn,
+            os.path.basename((os.path.splitext(fn)[0])), zPosition)
 
-  vtkActor $prefix.StockActor
-    $prefix.StockActor SetMapper $prefix.StockMapper
-    $prefix.StockMapper SetScalarRange 0 8000
-    [$prefix.StockActor GetProperty] SetAmbient 0.5
-    [$prefix.StockActor GetProperty] SetDiffuse 0.5
+    # Setup the render window and interactor.
+    renderWindow = vtk.vtkRenderWindow()
+    renderWindow.AddRenderer(renderers[0])
+    renderWindow.AddRenderer(renderers[1])
+    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor.SetRenderWindow(renderWindow)
 
-  apf AddInput [$prefix.TransformFilter GetOutput]
+    renderers[0].SetViewport(0.0, 0.4, 1.0, 1.0)
+    renderers[1].SetViewport(0.0, 0.0, 1.0, 0.4)
+    renderers[0].GetActiveCamera().SetViewAngle(5.0)
+    renderers[0].ResetCamera()
+    renderers[0].GetActiveCamera().Zoom(1.4)
+    renderers[0].ResetCameraClippingRange()
+    renderers[0].SetBackground(colors.GetColor3d("SteelBlue"))
+    renderers[1].GetActiveCamera().SetViewUp(0, 0, -1)
+    renderers[1].GetActiveCamera().SetPosition(0, 1, 0)
+    renderers[1].GetActiveCamera().SetViewAngle(5.0)
+    renderers[1].ResetCamera()
+    renderers[1].GetActiveCamera().Zoom(2.2)
+    renderers[1].ResetCameraClippingRange()
+    renderers[1].SetBackground(colors.GetColor3d("LightSteelBlue"))
+    renderers[0].AddActor(outlineActor)
+    renderers[1].AddActor(outlineActor)
 
-  ren1 AddActor $prefix.StockActor
-  ren1 AddActor $prefix.LabelActor
-  $prefix.LabelActor SetCamera [ren1 GetActiveCamera]
-}
+    renderWindow.SetSize(500, 800)
+    renderWindow.Render()
 
-#   set up the stocks
-  AddStock GE "GE" 94 46 4
-  AddStock GM "GM" 107 39 14
-  AddStock IBM "IBM" 92 70 16
-  AddStock DEC "DEC" 70 19 26
+    renderWindowInteractor.Start()
 
-#  Add the actors to the renderer, set the background and size
-ren1 AddActor outlineActor
-ren1 SetBackground 0.1 0.2 0.4
-renWin SetSize 1200 600
 
-#   render the image
-[ren1 GetActiveCamera] SetViewAngle 10
-ren1 ResetCamera
-[ren1 GetActiveCamera] Zoom 2.8
-[ren1 GetActiveCamera] Elevation 90
-[ren1 GetActiveCamera] SetViewUp 0 0 -1
-iren Initialize
+def AddStock(renderers, apf, filename, name, zPosition):
+    # Read the data
+    PolyDataRead = vtk.vtkPolyDataReader()
+    PolyDataRead.SetFileName(filename)
+    PolyDataRead.Update()
+    TubeFilter = vtk.vtkTubeFilter()$\index{vtkTubeFilter!application}$
+    TubeFilter.SetInputConnection(PolyDataRead.GetOutputPort())
+    TubeFilter.SetNumberOfSides(8)
+    TubeFilter.SetRadius(0.5)
+    TubeFilter.SetRadiusFactor(10000)
+    Transform = vtk.vtkTransform()$\index{vtkTransform!application}$
+    Transform.Translate(0, 0, zPosition)
+    Transform.Scale(0.15, 1, 1)
+    TransformFilter = vtk.vtkTransformPolyDataFilter()
+    TransformFilter.SetInputConnection(TubeFilter.GetOutputPort())
+    TransformFilter.SetTransform(Transform)
+    # Create the labels.
+    TextSrc = vtk.vtkVectorText()$\index{vtkVectorText!application}$
+    TextSrc.SetText(name)
+    numberOfPoints = PolyDataRead.GetOutput().GetNumberOfPoints()
+    nameIndex = int((numberOfPoints - 1) * 0.8)
+    nameLocation = PolyDataRead.GetOutput().GetPoint(nameIndex)
+    x = nameLocation[0] * 0.15
+    y = nameLocation[1] + 5.0
+    z = zPosition
+    apf.AddInputData(TransformFilter.GetOutput())
+    for r in range(0, len(renderers)):
+        LabelMapper = vtk.vtkPolyDataMapper()
+        LabelMapper.SetInputConnection(TextSrc.GetOutputPort())
+        LabelActor = vtk.vtkFollower()$\index{vtkFollower!example}$
+        LabelActor.SetMapper(LabelMapper)
+        LabelActor.SetPosition(x, y, z)
+        LabelActor.SetScale(2, 2, 2)
+        LabelActor.SetOrigin(TextSrc.GetOutput().GetCenter())
+        # Increment zPosition.
+        zPosition += 8.0
+        StockMapper = vtk.vtkPolyDataMapper()
+        StockMapper.SetInputConnection(TransformFilter.GetOutputPort())
+        StockMapper.SetScalarRange(0, 8000)
+        StockActor = vtk.vtkActor()
+        StockActor.SetMapper(StockMapper)
+        renderers[r].AddActor(StockActor)
+        renderers[r].AddActor(LabelActor)
+        LabelActor.SetCamera(renderers[r].GetActiveCamera())
+    return zPosition
 
-#   prevent the tk window from showing up then start the event loop
-wm withdraw .
+if __name__ == '__main__':
+    main()
+
 ```
 
 The first part of this script consists of the standard procedure for renderer and interactor creation that can be found in almost all of the VTK Tcl scripts. The next section creates the objects necessary for drawing an outline around all of the stock data. A vtkAppendPolyData filter is used to append all of the stock data together. This is then sent through a vtkOutlineFilter to create a bounding box around the data. A mapper and actor are created to display the rIn the next part of this script, we define the procedure to add stock data to this visualization. The procedure takes five arguments: the name of the stock, the label we want displayed, and the x, y, z coordinates defining where to position the label. The first line of the procedure indicates that the variable ren1 should be visible to this procedure. By default the procedure can only access its own local variables. Next, we create the label using a vtkTextSource, vtkPolyDataMapper, and vtkFollower. The names of these objects are all prepended with the variable " $prefix. " so that the instance names will be unique. An instance of vtkFollower is used instead of the usual vtkActor, because we always want the text to be right-side up and facing the camera. The vtkFollower class provides this functionality. The remaining lines position and scale the label appropriately. We set the origin of the label to the center of its data. This insures that the follower will rotate about its center point.
@@ -1139,16 +1208,16 @@ A. V. Aho, B. W. Kernighan, and P. J. Weinberger. *The AWK Programming Language*
 A. V. Aho, J. E. Hopcroft, and J. D. Ullman. *Data Structures and Algorithm* s. AddisonWesley, Reading, MA, 1983.
 
 <em style="color:green;background-color: white">\[Becker95\]</em>
-R. A. Becker, S. G. Eick, and A. R. Wilks. "Visualizing Network Data." *IEEE Transactions on Visualization and Graphics*. 1(1):16--28,1995.
+R. A. Becker, S. G. Eick, and A. R. Wilks. "Visualizing Network Data." *IEEE Transactions on Visualization and Graphics*. 1(1):16-28,1995.
 
 <em style="color:green;background-color: white">\[deLorenzi93\]</em>
-H. G. deLorenzi and C. A. Taylor. "The Role of Process Parameters in Blow Molding and Correlation of 3-D Finite Element Analysis with Experiment." *International Polymer Processing.* 3(4):365--374, 1993.
+H. G. deLorenzi and C. A. Taylor. "The Role of Process Parameters in Blow Molding and Correlation of 3-D Finite Element Analysis with Experiment." *International Polymer Processing.* 3(4):365-374, 1993.
 
 <em style="color:green;background-color: white">\[Ding90\]</em>
-C. Ding and P. Mateti. "A Framework for the Automated Drawing of Data Structure Diagrams." *IEEE Transactions on Software Engineering*. 16(5):543--557, May 1990.
+C. Ding and P. Mateti. "A Framework for the Automated Drawing of Data Structure Diagrams." *IEEE Transactions on Software Engineering*. 16(5):543-557, May 1990.
 
 <em style="color:green;background-color: white">\[Eick93\]</em>
-S. G. Eick and G. J. Wills. "Navigating Large Networks with Hierarchies." In *Proceedings of Visualization '93*. pp. 204--210, IEEE Computer Society Press, Los Alamitos, CA, October 1993.
+S. G. Eick and G. J. Wills. "Navigating Large Networks with Hierarchies." In *Proceedings of Visualization '93*. pp. 204-210, IEEE Computer Society Press, Los Alamitos, CA, October 1993.
 
 <em style="color:green;background-color: white">\[Feiner88\]</em>
 S. Feiner. "Seeing the Forest for the Trees: Hierarchical Displays of Hypertext Structures." In *Conference on Office Information Systems*. Palo Alto, CA, 1988.
@@ -1157,13 +1226,13 @@ S. Feiner. "Seeing the Forest for the Trees: Hierarchical Displays of Hypertext 
 P. Gilster. *Finding It on the Internet: The Essential Guide to Archie, Veronica, Gopher, WAIS,* *WWW (including Mosaic), and Other Search and Browsing Tools.* John Wiley & Sons, Inc., 1994.
 
 <em style="color:green;background-color: white">\[Johnson91\]</em>
-B. Johnson and B. Shneiderman. "Tree-Maps: A Space-Filling Approach to the Visualization of Hierarchical Information Structure *s*." In *Proceedings of Visualization '91*. pp. 284--291, IEEE Computer Society Press, Los Alamitos, CA, October 1991.
+B. Johnson and B. Shneiderman. "Tree-Maps: A Space-Filling Approach to the Visualization of Hierarchical Information Structure *s*." In *Proceedings of Visualization '91*. pp. 284-291, IEEE Computer Society Press, Los Alamitos, CA, October 1991.
 
 <em style="color:green;background-color: white">\[Perl95\]</em>
 D. Till. *Teach Yourself Perl in 21 Days*. Sams Publishing, Indianapolis, Indiana, 1995.
 
 <em style="color:green;background-color: white">\[Robertson91\]</em>
-G. G. Robertson, J. D. Mackinlay, and S. K. Card. "Cone Trees: Animated 3D Visualizations of Hierarchical Information." In *Proceedings of ACM CHI '91 Conference on Human Factors in* *Computing Systems*. pp. 189--194, 1991.
+G. G. Robertson, J. D. Mackinlay, and S. K. Card. "Cone Trees: Animated 3D Visualizations of Hierarchical Information." In *Proceedings of ACM CHI '91 Conference on Human Factors in* *Computing Systems*. pp. 189-194, 1991.
 
 <em style="color:green;background-color: white">\[Rogers86\]</em> S. E. Rogers, D. Kwak, and U. K. Kaul, "A Numerical Study of Three-Dimensional Incompressible Flow Around Multiple Post." in *Proceedings of AIAA Aerospace Sciences Conference*. vol. AIAA Paper 86-0353. Reno, Nevada, 1986.
 
