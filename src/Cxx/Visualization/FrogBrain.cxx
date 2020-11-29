@@ -68,12 +68,12 @@ int main(int argc, char* argv[])
   rendererLeft->GetActiveCamera()->Azimuth(180);
   rendererLeft->ResetCameraClippingRange();
 
-  rendererLeft->SetBackground(colors->GetColor3d("SlateGray").GetData());
-  rendererRight->SetBackground(colors->GetColor3d("SlateGray").GetData());
+  rendererLeft->SetBackground(colors->GetColor3d("LightSteelBlue").GetData());
+  rendererRight->SetBackground(colors->GetColor3d("LightSteelBlue").GetData());
   rendererRight->SetActiveCamera(rendererLeft->GetActiveCamera());
 
   renderWindow->SetSize(640, 480);
-  renderWindow->SetWindowName("Both");
+  renderWindow->SetWindowName("FrogBrain");
 
   renderWindow->Render();
 

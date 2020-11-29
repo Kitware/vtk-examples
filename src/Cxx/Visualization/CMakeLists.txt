@@ -77,14 +77,8 @@ Requires_Version(BillboardTextActor3D "7.1.0" ALL_FILES)
 #Requires_Module(ShadowsOpenGL vtkRenderingOpenGL)
 #Requires_Setting_Off(StreamLines VTK_LEGACY_REMOVE)
 Requires_GitLfs(Hawaii ALL_FILES)
-Requires_GitLfs(FlyingFrogSkinAndTissue ALL_FILES)
-Requires_GitLfs(FlyingFrogSkinAndTissueB ALL_FILES)
-Requires_GitLfs(FlyingFrogSkinAndTissueC ALL_FILES)
+Requires_GitLfs(FrogBrain ALL_FILES)
 Requires_GitLfs(FrogSlice ALL_FILES)
-Requires_GitLfs(ViewFrog ALL_FILES)
-Requires_GitLfs(ViewFrogA ALL_FILES)
-Requires_GitLfs(ViewFrogBoth ALL_FILES)
-Requires_GitLfs(ViewFrogSkinAndTissue ALL_FILES)
 
 foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ".cxx" "" TMP ${SOURCE_FILE})
@@ -120,10 +114,8 @@ if (BUILD_TESTING)
     DepthSortPolyData
     EdgePoints
     ExtrudePolyDataAlongLine
-    FlyingFrogSkinAndTissue
-    FlyingFrogSkinAndTissueB
-    FlyingFrogSkinAndTissueC
     FontFile
+    FrogBrain
     FrogSlice
     Glyph3DImage
     Glyph3DMapper
@@ -141,10 +133,6 @@ if (BUILD_TESTING)
     StreamLines
     TextureMapPlane
     TextureMapQuad
-    ViewFrog
-    ViewFrogA
-    ViewFrogBoth
-    ViewFrogSkinAndTissue
     VisualizeVTP
     Visualize2DPoints
     )
@@ -221,24 +209,12 @@ if (BUILD_TESTING)
     TestHanoiIntermediate -c 2)
 
   if(GIT_LFS)
-    add_test(${KIT}-FlyingFrogSkinAndTissue ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestFlyingFrogSkinAndTissue ${DATA}/Frog/frog.mhd ${DATA}/Frog/frogtissue.mhd)
-    add_test(${KIT}-FlyingFrogSkinAndTissueB ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestFlyingFrogSkinAndTissueB ${DATA}/Frog/frog.mhd ${DATA}/Frog/frogtissue.mhd 1)
-    add_test(${KIT}-FlyingFrogSkinAndTissueC ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestFlyingFrogSkinAndTissueC ${DATA}/Frog/frog.mhd ${DATA}/Frog/frogtissue.mhd 1 1)
+    add_test(${KIT}-FrogBrain ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+      TestFrogBrain ${DATA}/Frog/frogtissue.mhd brain)
     add_test(${KIT}-FrogSlice ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
       TestFrogSlice ${DATA}/Frog/frog.mhd ${DATA}/Frog/frogtissue.mhd)
     add_test(${KIT}-Hawaii ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
       TestHawaii ${DATA}/honolulu.vtk)
-    add_test(${KIT}-ViewFrog ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestViewFrog ${DATA}/Frog/frogtissue.mhd blood brain duodenum eyeRetina eyeWhite heart ileum kidney intestine liver lung nerve skeleton spleen stomach)
-    add_test(${KIT}-ViewFrogA ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestViewFrogA ${DATA}/Frog/frogtissue.mhd blood brain duodenum eyeRetina eyeWhite heart ileum kidney intestine liver lung nerve spleen stomach)
-    add_test(${KIT}-ViewFrogBoth ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestViewFrogBoth ${DATA}/Frog/frogtissue.mhd brain)
-    add_test(${KIT}-ViewFrogSkinAndTissue ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestViewFrogSkinAndTissue ${DATA}/Frog/frog.mhd ${DATA}/Frog/frogtissue.mhd)
   endif()
 
   add_test(${KIT}-HedgeHog ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
