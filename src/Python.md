@@ -510,6 +510,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [FlyingHeadSlice](/Python/VisualizationAlgorithms/FlyingHeadSlice) | Flying edges used to generate contour lines.
 [Frog](/Python/Visualization/Frog) | View frog organs through a translucent skin. Used to generate the illustrations in the VTK TextBook.
 [FrogBrain](/Python/Visualization/FrogBrain) | The frog’s brain. Model extracted without smoothing (left) and with smoothing (right).
+[FrogDemo](/Python/Visualization/FrogDemo) | View all or some frog tissues and adjust the translucency of the tissues.
 [FrogReconstruction](/Python/Visualization/FrogReconstruction) | Frog organs along with a translucent skin are reconstructed from the original segmented data.
 [FrogSlice](/Python/Visualization/FrogSlice) | Photographic slice of frog (upper left), segmented frog (upper right) and composite of photo and segmentation (bottom). The purple color represents the stomach and the kidneys are yellow.
 [GlyphTable](/Python/Visualization/GlyphTable) | Vary the shapes of glyphed points using a glyph table
