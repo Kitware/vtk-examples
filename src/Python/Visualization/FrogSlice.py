@@ -5,6 +5,23 @@ from pathlib import Path
 import vtk
 
 
+def get_program_parameters(argv):
+    import argparse
+    description = 'Visualization of a frog.'
+    epilogue = '''
+Photographic slice of frog (upper left), segmented frog (upper right) and
+ composite of photo and segmentation (bottom).
+The purple color represents the stomach and the kidneys are yellow.
+If slice = 39 it matches Figure 12-6 in the VTK Book.
+    '''
+    parser = argparse.ArgumentParser(description=description, epilog=epilogue,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogtissue.mhd.')
+    parser.add_argument('slice_number', default=39, type=int, nargs='?', help='Slice number.')
+    args = parser.parse_args()
+    return args.data_folder, args.slice_number
+
+
 def main(data_folder, slice_number):
     colors = vtk.vtkNamedColors()
 
@@ -152,23 +169,6 @@ def main(data_folder, slice_number):
 
     ren_win.Render()
     iren.Start()
-
-
-def get_program_parameters(argv):
-    import argparse
-    description = 'Visualization of a frog.'
-    epilogue = '''
-Photographic slice of frog (upper left), segmented frog (upper right) and
- composite of photo and segmentation (bottom).
-The purple color represents the stomach and the kidneys are yellow.
-If slice = 39 it matches Figure 12-6 in the VTK Book.
-    '''
-    parser = argparse.ArgumentParser(description=description, epilog=epilogue,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogtissue.mhd.')
-    parser.add_argument('slice_number', default=39, type=int, nargs='?', help='Slice number.')
-    args = parser.parse_args()
-    return args.data_folder, args.slice_number
 
 
 def create_frog_lut(colors):

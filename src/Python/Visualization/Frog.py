@@ -5,6 +5,43 @@ from pathlib import Path
 import vtk
 
 
+def get_program_parameters(argv):
+    import argparse
+    description = 'Display the frog organs along with a translucent skin.'
+    epilogue = '''
+To specify all the tissues at once:
+ blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin
+
+You can leave out brainbin, it is the brain with no gaussian smoothing.
+
+Here are the parameters used to get the views in the VTK Textbook:
+Fig12-9a:
+ blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a
+Fig12-9b:
+ blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a
+Fig12-9c:
+ brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -c
+Fig12-9c:
+ brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -d
+    '''
+    parser = argparse.ArgumentParser(description=description, epilog=epilogue,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-a', action='store_const', dest='view', const='a',
+                       help='The view corresponds to Figs 12-9a and 12-9b in the VTK Textbook')
+    group.add_argument('-c', action='store_const', dest='view', const='c',
+                       help='The view corresponds to Figs 12-9c in the VTK Textbook')
+    group.add_argument('-d', action='store_const', dest='view', const='d',
+                       help='The view corresponds to Figs 12-9d in the VTK Textbook')
+    parser.set_defaults(type=None)
+
+    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogtissue.mhd.')
+    parser.add_argument('tissues', nargs='+', help='List of one or more tissues.')
+    args = parser.parse_args()
+    return args.data_folder, args.tissues, args.view
+
+
 def main(data_folder, tissues, view):
     colors = vtk.vtkNamedColors()
 
@@ -91,41 +128,33 @@ def main(data_folder, tissues, view):
     render_window_interactor.Start()
 
 
-def get_program_parameters(argv):
-    import argparse
-    description = 'Display the frog organs along with a translucent skin.'
-    epilogue = '''
-To specify all the tissues at once:
- blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin
+def create_frog_actor(file_name, tissue, transform):
+    so = SliceOrder()
 
-You can leave out brainbin, it is the brain with no gaussian smoothing.
+    reader = vtk.vtkPolyDataReader()
+    reader.SetFileName(file_name)
+    reader.Update()
 
-Here are the parameters used to get the views in the VTK Textbook:
-Fig12-9a:
- blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a
-Fig12-9b:
- blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a
-Fig12-9c:
- brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -c
-Fig12-9c:
- brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -d
-    '''
-    parser = argparse.ArgumentParser(description=description, epilog=epilogue,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    trans = so.get(transform)
+    if tissue == 'brainbin':
+        trans.Scale(1, -1, 1)
+        trans.RotateZ(180)
+    tf = vtk.vtkTransformPolyDataFilter()
+    tf.SetInputConnection(reader.GetOutputPort())
+    tf.SetTransform(trans)
+    tf.SetInputConnection(reader.GetOutputPort())
 
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-a', action='store_const', dest='view', const='a',
-                       help='The view corresponds to Figs 12-9a and 12-9b in the VTK Textbook')
-    group.add_argument('-c', action='store_const', dest='view', const='c',
-                       help='The view corresponds to Figs 12-9c in the VTK Textbook')
-    group.add_argument('-d', action='store_const', dest='view', const='d',
-                       help='The view corresponds to Figs 12-9d in the VTK Textbook')
-    parser.set_defaults(type=None)
+    normals = vtk.vtkPolyDataNormals()
+    normals.SetInputConnection(tf.GetOutputPort())
+    normals.SetFeatureAngle(60.0)
 
-    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogtissue.mhd.')
-    parser.add_argument('tissues', nargs='+', help='List of one or more tissues.')
-    args = parser.parse_args()
-    return args.data_folder, args.tissues, args.view
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInputConnection(normals.GetOutputPort())
+
+    actor = vtk.vtkActor()
+    actor.SetMapper(mapper)
+
+    return actor
 
 
 class SliceOrder:
@@ -347,35 +376,6 @@ def create_tissue_map():
     tiss['spleen'] = [14, 'is', 1.0]
     tiss['stomach'] = [15, 'is', 1.0]
     return tiss
-
-
-def create_frog_actor(file_name, tissue, transform):
-    so = SliceOrder()
-
-    reader = vtk.vtkPolyDataReader()
-    reader.SetFileName(file_name)
-    reader.Update()
-
-    trans = so.get(transform)
-    if tissue == 'brainbin':
-        trans.Scale(1, -1, 1)
-        trans.RotateZ(180)
-    tf = vtk.vtkTransformPolyDataFilter()
-    tf.SetInputConnection(reader.GetOutputPort())
-    tf.SetTransform(trans)
-    tf.SetInputConnection(reader.GetOutputPort())
-
-    normals = vtk.vtkPolyDataNormals()
-    normals.SetInputConnection(tf.GetOutputPort())
-    normals.SetFeatureAngle(60.0)
-
-    mapper = vtk.vtkPolyDataMapper()
-    mapper.SetInputConnection(normals.GetOutputPort())
-
-    actor = vtk.vtkActor()
-    actor.SetMapper(mapper)
-
-    return actor
 
 
 if __name__ == '__main__':

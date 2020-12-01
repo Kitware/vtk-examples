@@ -6,7 +6,48 @@ from pathlib import Path
 import vtk
 
 
-def main(data_folder, tissues, view, flying_edges):
+def get_program_parameters(argv):
+    import argparse
+    description = 'Display all frog parts and translucent skin.'
+    epilogue = '''
+To specify all the tissues at once:
+ blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin
+
+You can leave out brainbin, it is the brain with no gaussian smoothing.
+
+Here are the parameters used to get the views in the VTK Textbook:
+Fig12-9a:
+ blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a
+Fig12-9b:
+ blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a
+Fig12-9c:
+ brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -c
+Fig12-9c:
+ brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -d
+    '''
+    parser = argparse.ArgumentParser(description=description, epilog=epilogue,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-a', action='store_const', dest='view', const='a',
+                       help='The view corresponds to Figs 12-9a and 12-9b in the VTK Textbook')
+    group.add_argument('-c', action='store_const', dest='view', const='c',
+                       help='The view corresponds to Figs 12-9c in the VTK Textbook')
+    group.add_argument('-d', action='store_const', dest='view', const='d',
+                       help='The view corresponds to Figs 12-9d in the VTK Textbook')
+    parser.set_defaults(type=None)
+
+    parser.add_argument('-m', action='store_false', dest='flying_edges',
+                        help='Use flying edges by default, marching cubes if set.')
+    parser.add_argument('-t', action='store_true', dest='decimation',
+                        help='Decimate if set.')
+    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogtissue.mhd.')
+    parser.add_argument('tissues', nargs='+', help='List of one or more tissues.')
+    args = parser.parse_args()
+    return args.data_folder, args.tissues, args.view, args.flying_edges, args.decimation
+
+
+def main(data_folder, tissues, view, flying_edges, decimate):
     colors = vtk.vtkNamedColors()
 
     path = Path(data_folder)
@@ -57,7 +98,7 @@ def main(data_folder, tissues, view, flying_edges):
 
     for name, tissue in selected_tissues.items():
         print('Tissue: {:>9s}, label: {:2d}'.format(name, tissue['TISSUE']))
-        t, actor = create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, lut)
+        t, actor = create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, decimate, lut)
         ict[name] = t
         renderer.AddActor(actor)
 
@@ -118,46 +159,7 @@ def main(data_folder, tissues, view, flying_edges):
     render_window_interactor.Start()
 
 
-def get_program_parameters(argv):
-    import argparse
-    description = 'Display all frog parts and translucent skin.'
-    epilogue = '''
-To specify all the tissues at once:
- blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin
-
-You can leave out brainbin, it is the brain with no gaussian smoothing.
-
-Here are the parameters used to get the views in the VTK Textbook:
-Fig12-9a:
- blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a
-Fig12-9b:
- blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a
-Fig12-9c:
- brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -c
-Fig12-9c:
- brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -d
-    '''
-    parser = argparse.ArgumentParser(description=description, epilog=epilogue,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
-
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-a', action='store_const', dest='view', const='a',
-                       help='The view corresponds to Figs 12-9a and 12-9b in the VTK Textbook')
-    group.add_argument('-c', action='store_const', dest='view', const='c',
-                       help='The view corresponds to Figs 12-9c in the VTK Textbook')
-    group.add_argument('-d', action='store_const', dest='view', const='d',
-                       help='The view corresponds to Figs 12-9d in the VTK Textbook')
-    parser.set_defaults(type=None)
-
-    parser.add_argument('-m', action='store_false', dest='flying_edges',
-                        help='Use flying edges by default, marching cubes if set')
-    parser.add_argument('data_folder', help='The path to the files: frog.mhd and frogtissue.mhd.')
-    parser.add_argument('tissues', nargs='+', help='List of one or more tissues.')
-    args = parser.parse_args()
-    return args.data_folder, args.tissues, args.view, args.flying_edges
-
-
-def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, lut):
+def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, decimate, lut):
     # Get the tissue parameters
     pixel_size = tissue['PIXEL_SIZE']
     columns = tissue['COLUMNS']
@@ -253,24 +255,29 @@ def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, lut):
     tf = vtk.vtkTransformPolyDataFilter()
     tf.SetTransform(transform)
     tf.SetInputConnection(iso_surface.GetOutputPort())
+    last_connection = tf
 
-    decimator = vtk.vtkDecimatePro()
-    decimator.SetInputConnection(tf.GetOutputPort())
-    decimator.SetFeatureAngle(tissue['DECIMATE_ANGLE'])
-    decimator.MaximumIterations = tissue['DECIMATE_ITERATIONS']
-    decimator.PreserveTopologyOn()
-    decimator.SetErrorIsAbsolute(1)
-    decimator.SetAbsoluteError(tissue['DECIMATE_ERROR'])
-    decimator.SetTargetReduction(tissue['DECIMATE_REDUCTION'])
+    if decimate:
+        decimator = vtk.vtkDecimatePro()
+        decimator.SetInputConnection(last_connection.GetOutputPort())
+        decimator.SetFeatureAngle(tissue['DECIMATE_ANGLE'])
+        decimator.MaximumIterations = tissue['DECIMATE_ITERATIONS']
+        decimator.PreserveTopologyOn()
+        decimator.SetErrorIsAbsolute(1)
+        decimator.SetAbsoluteError(tissue['DECIMATE_ERROR'])
+        decimator.SetTargetReduction(tissue['DECIMATE_REDUCTION'])
+        last_connection = decimator
 
-    smoother = vtk.vtkSmoothPolyDataFilter()
-    smoother.SetInputConnection(decimator.GetOutputPort())
+    smoother = vtk.vtkWindowedSincPolyDataFilter()
+    smoother.SetInputConnection(last_connection.GetOutputPort())
     smoother.SetNumberOfIterations(tissue['SMOOTH_ITERATIONS'])
-    smoother.SetRelaxationFactor(tissue['SMOOTH_FACTOR'])
-    smoother.SetFeatureAngle(tissue['SMOOTH_ANGLE'])
-    smoother.FeatureEdgeSmoothingOff()
     smoother.BoundarySmoothingOff()
-    smoother.SetConvergence(0)
+    smoother.FeatureEdgeSmoothingOff()
+    smoother.SetFeatureAngle(tissue['SMOOTH_ANGLE'])
+    smoother.SetPassBand(tissue['SMOOTH_FACTOR'])
+    smoother.NonManifoldSmoothingOn()
+    smoother.NormalizeCoordinatesOff()
+    smoother.Update()
 
     normals = vtk.vtkPolyDataNormals()
     normals.SetInputConnection(smoother.GetOutputPort())
@@ -487,14 +494,14 @@ def default_parameters():
     p['FEATURE_ANGLE'] = 60
     p['DECIMATE_ANGLE'] = 60
     p['SMOOTH_ANGLE'] = 60
-    p['DECIMATE_ITERATIONS'] = 1
     p['SMOOTH_ITERATIONS'] = 10
+    p['SMOOTH_FACTOR'] = 0.1
+    p['DECIMATE_ITERATIONS'] = 1
     p['DECIMATE_REDUCTION'] = 1
     p['DECIMATE_ERROR'] = 0.0002
     p['DECIMATE_ERROR_INCREMENT'] = 0.0002
     p['ISLAND_AREA'] = 4
     p['ISLAND_REPLACE'] = -1
-    p['SMOOTH_FACTOR'] = 0.1
     p['GAUSSIAN_STANDARD_DEVIATION'] = [2, 2, 2]
     p['GAUSSIAN_RADIUS_FACTORS'] = [2, 2, 2]
     p['VOI'] = [0, p['COLUMNS'] - 1, 0, p['ROWS'] - 1, 0, p['END_SLICE']]
@@ -581,7 +588,6 @@ def frog():
     p['DECIMATE_ITERATIONS'] = 5
     p['DECIMATE_ERROR'] = 0.0002
     p['DECIMATE_ERROR_INCREMENT'] = 0.0002
-    p['SMOOTH_ITERATIONS'] = 0
     p['SMOOTH_FACTOR'] = 0.1
     return p
 
@@ -675,7 +681,6 @@ def skin():
     p['DECIMATE_ITERATIONS'] = 10
     p['DECIMATE_ERROR'] = 0.0002
     p['DECIMATE_ERROR_INCREMENT'] = 0.0002
-    p['SMOOTH_ITERATIONS'] = 0
     p['FEATURE_ANGLE'] = 60
     p['OPACITY'] = 0.4
     return p
@@ -800,5 +805,5 @@ def format_timings(ict):
 if __name__ == '__main__':
     import sys
 
-    data_folder, tissue, view, flying_edges = get_program_parameters(sys.argv)
-    main(data_folder, tissue, view, flying_edges)
+    data_folder, tissue, view, flying_edges, decimate = get_program_parameters(sys.argv)
+    main(data_folder, tissue, view, flying_edges, decimate)
