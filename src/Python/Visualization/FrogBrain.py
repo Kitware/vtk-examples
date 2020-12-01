@@ -5,6 +5,20 @@ from pathlib import Path
 import vtk
 
 
+def get_program_parameters(argv):
+    import argparse
+    description = 'The frog\'s brain.'
+    epilogue = '''
+    Model extracted without smoothing (left) and with smoothing (right).
+    '''
+    parser = argparse.ArgumentParser(description=description, epilog=epilogue,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('data_folder', help='The path to the file: frogtissue.mhd.')
+    parser.add_argument('tissue', default='brain', nargs='?', help='The tissue to use.')
+    args = parser.parse_args()
+    return args.data_folder, args.tissue
+
+
 def main(data_folder, tissue):
     colors = vtk.vtkNamedColors()
 
@@ -63,18 +77,91 @@ def main(data_folder, tissue):
     render_window_interactor.Start()
 
 
-def get_program_parameters(argv):
-    import argparse
-    description = 'The frog\'s brain.'
-    epilogue = '''
-    Model extracted without smoothing (left) and with smoothing (right).
-    '''
-    parser = argparse.ArgumentParser(description=description, epilog=epilogue,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('data_folder', help='The path to the file: frogtissue.mhd.')
-    parser.add_argument('tissue', default='brain', nargs='?', help='The tissue to use.')
-    args = parser.parse_args()
-    return args.data_folder, args.tissue
+def create_smooth_frog_actor(file_name, tissue):
+    reader = vtk.vtkMetaImageReader()
+    reader.SetFileName(str(file_name))
+    reader.Update()
+
+    select_tissue = vtk.vtkImageThreshold()
+    select_tissue.ThresholdBetween(tissue, tissue)
+    select_tissue.SetInValue(255)
+    select_tissue.SetOutValue(0)
+    select_tissue.SetInputConnection(reader.GetOutputPort())
+
+    gaussianRadius = 1
+    gaussianStandardDeviation = 2.0
+    gaussian = vtk.vtkImageGaussianSmooth()
+    gaussian.SetStandardDeviations(gaussianStandardDeviation, gaussianStandardDeviation, gaussianStandardDeviation)
+    gaussian.SetRadiusFactors(gaussianRadius, gaussianRadius, gaussianRadius)
+    gaussian.SetInputConnection(select_tissue.GetOutputPort())
+
+    isoValue = 63.5
+    iso_surface = vtk.vtkFlyingEdges3D()
+    iso_surface.SetInputConnection(gaussian.GetOutputPort())
+    iso_surface.ComputeScalarsOff()
+    iso_surface.ComputeGradientsOff()
+    iso_surface.ComputeNormalsOff()
+    iso_surface.SetValue(0, isoValue)
+
+    smoothing_iterations = 20
+    pass_band = 0.001
+    feature_angle = 60.0
+    smoother = vtk.vtkWindowedSincPolyDataFilter()
+    smoother.SetInputConnection(iso_surface.GetOutputPort())
+    smoother.SetNumberOfIterations(smoothing_iterations)
+    smoother.BoundarySmoothingOff()
+    smoother.FeatureEdgeSmoothingOff()
+    smoother.SetFeatureAngle(feature_angle)
+    smoother.SetPassBand(pass_band)
+    smoother.NonManifoldSmoothingOn()
+    smoother.NormalizeCoordinatesOff()
+    smoother.Update()
+
+    normals = vtk.vtkPolyDataNormals()
+    normals.SetInputConnection(smoother.GetOutputPort())
+    normals.SetFeatureAngle(feature_angle)
+
+    stripper = vtk.vtkStripper()
+    stripper.SetInputConnection(normals.GetOutputPort())
+
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInputConnection(stripper.GetOutputPort())
+
+    actor = vtk.vtkActor()
+    actor.SetMapper(mapper)
+
+    return actor
+
+
+def create_frog_actor(file_name, tissue):
+    reader = vtk.vtkMetaImageReader()
+    reader.SetFileName(str(file_name))
+    reader.Update()
+
+    select_tissue = vtk.vtkImageThreshold()
+    select_tissue.ThresholdBetween(tissue, tissue)
+    select_tissue.SetInValue(255)
+    select_tissue.SetOutValue(0)
+    select_tissue.SetInputConnection(reader.GetOutputPort())
+
+    iso_value = 63.5
+    iso_surface = vtk.vtkFlyingEdges3D()
+    iso_surface.SetInputConnection(select_tissue.GetOutputPort())
+    iso_surface.ComputeScalarsOff()
+    iso_surface.ComputeGradientsOff()
+    iso_surface.ComputeNormalsOn()
+    iso_surface.SetValue(0, iso_value)
+
+    stripper = vtk.vtkStripper()
+    stripper.SetInputConnection(iso_surface.GetOutputPort())
+
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInputConnection(stripper.GetOutputPort())
+
+    actor = vtk.vtkActor()
+    actor.SetMapper(mapper)
+
+    return actor
 
 
 def create_frog_lut(colors):
@@ -122,106 +209,6 @@ def create_tissue_map():
     tissue_map['stomach'] = 15
 
     return tissue_map
-
-
-def create_smooth_frog_actor(file_name, tissue):
-    reader = vtk.vtkMetaImageReader()
-    reader.SetFileName(str(file_name))
-    reader.Update()
-
-    selectTissue = vtk.vtkImageThreshold()
-    selectTissue.ThresholdBetween(tissue, tissue)
-    selectTissue.SetInValue(255)
-    selectTissue.SetOutValue(0)
-    selectTissue.SetInputConnection(reader.GetOutputPort())
-
-    gaussianRadius = 1
-    gaussianStandardDeviation = 2.0
-    gaussian = vtk.vtkImageGaussianSmooth()
-    gaussian.SetStandardDeviations(gaussianStandardDeviation, gaussianStandardDeviation, gaussianStandardDeviation)
-    gaussian.SetRadiusFactors(gaussianRadius, gaussianRadius, gaussianRadius)
-    gaussian.SetInputConnection(selectTissue.GetOutputPort())
-
-    isoValue = 127.5
-    iso_surface = vtk.vtkFlyingEdges3D()
-    iso_surface.SetInputConnection(gaussian.GetOutputPort())
-    iso_surface.ComputeScalarsOff()
-    iso_surface.ComputeGradientsOff()
-    iso_surface.ComputeNormalsOff()
-    iso_surface.SetValue(0, isoValue)
-
-    smoothing_iterations = 0
-    feature_angle = 60.0
-    relaxation_factor = 0.1
-
-    smoother = vtk.vtkSmoothPolyDataFilter()
-    smoother.SetInputConnection(iso_surface.GetOutputPort())
-    smoother.SetNumberOfIterations(smoothing_iterations)
-    smoother.SetRelaxationFactor(relaxation_factor)
-    smoother.SetFeatureAngle(feature_angle)
-    smoother.FeatureEdgeSmoothingOff()
-    smoother.BoundarySmoothingOff()
-    smoother.SetConvergence(0)
-
-    # smoothing_iterations = 0
-    # pass_band = 0.001
-    # feature_angle = 60.0
-    # smoother = vtk.vtkWindowedSincPolyDataFilter()
-    # smoother.SetInputConnection(iso_surface.GetOutputPort())
-    # smoother.SetNumberOfIterations(smoothing_iterations)
-    # smoother.BoundarySmoothingOff()
-    # smoother.FeatureEdgeSmoothingOff()
-    # smoother.SetFeatureAngle(feature_angle)
-    # smoother.SetPassBand(pass_band)
-    # smoother.NonManifoldSmoothingOn()
-    # smoother.NormalizeCoordinatesOn()
-    # smoother.Update()
-
-    normals = vtk.vtkPolyDataNormals()
-    normals.SetInputConnection(smoother.GetOutputPort())
-    normals.SetFeatureAngle(feature_angle)
-
-    stripper = vtk.vtkStripper()
-    stripper.SetInputConnection(normals.GetOutputPort())
-
-    mapper = vtk.vtkPolyDataMapper()
-    mapper.SetInputConnection(stripper.GetOutputPort())
-
-    actor = vtk.vtkActor()
-    actor.SetMapper(mapper)
-
-    return actor
-
-
-def create_frog_actor(file_name, tissue):
-    reader = vtk.vtkMetaImageReader()
-    reader.SetFileName(str(file_name))
-    reader.Update()
-
-    select_tissue = vtk.vtkImageThreshold()
-    select_tissue.ThresholdBetween(tissue, tissue)
-    select_tissue.SetInValue(255)
-    select_tissue.SetOutValue(0)
-    select_tissue.SetInputConnection(reader.GetOutputPort())
-
-    iso_value = 63.5
-    iso_surface = vtk.vtkFlyingEdges3D()
-    iso_surface.SetInputConnection(select_tissue.GetOutputPort())
-    iso_surface.ComputeScalarsOff()
-    iso_surface.ComputeGradientsOff()
-    iso_surface.ComputeNormalsOn()
-    iso_surface.SetValue(0, iso_value)
-
-    stripper = vtk.vtkStripper()
-    stripper.SetInputConnection(iso_surface.GetOutputPort())
-
-    mapper = vtk.vtkPolyDataMapper()
-    mapper.SetInputConnection(stripper.GetOutputPort())
-
-    actor = vtk.vtkActor()
-    actor.SetMapper(mapper)
-
-    return actor
 
 
 if __name__ == '__main__':
