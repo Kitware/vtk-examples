@@ -83,6 +83,43 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>import</span> <span class=nn>vtk</span>
 </span>
 
+<span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
+    <span class=kn>import</span> <span class=nn>argparse</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Display the frog organs along with a translucent skin.&#39;</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+<span class=s1>To specify all the tissues at once:</span>
+<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin</span>
+
+<span class=s1>You can leave out brainbin, it is the brain with no gaussian smoothing.</span>
+
+<span class=s1>Here are the parameters used to get the views in the VTK Textbook:</span>
+<span class=s1>Fig12-9a:</span>
+<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a</span>
+<span class=s1>Fig12-9b:</span>
+<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a</span>
+<span class=s1>Fig12-9c:</span>
+<span class=s1> brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -c</span>
+<span class=s1>Fig12-9c:</span>
+<span class=s1> brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -d</span>
+<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
+                                     <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
+
+    <span class=n>group</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>add_mutually_exclusive_group</span><span class=p>()</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-a&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;a&#39;</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9a and 12-9b in the VTK Textbook&#39;</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-c&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;c&#39;</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9c in the VTK Textbook&#39;</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-d&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;d&#39;</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9d in the VTK Textbook&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>set_defaults</span><span class=p>(</span><span class=nb>type</span><span class=o>=</span><span class=kc>None</span><span class=p>)</span>
+
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;data_folder&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the files: frog.mhd and frogtissue.mhd.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;tissues&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;+&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;List of one or more tissues.&#39;</span><span class=p>)</span>
+    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
+    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>tissues</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>view</span>
+
+
 <span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>tissues</span><span class=p>,</span> <span class=n>view</span><span class=p>):</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
@@ -196,41 +233,33 @@ function registerListener(event, func) {
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
-    <span class=kn>import</span> <span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Display the frog organs along with a translucent skin.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>To specify all the tissues at once:</span>
-<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin</span>
+<span class=k>def</span> <span class=nf>create_frog_actor</span><span class=p>(</span><span class=n>file_name</span><span class=p>,</span> <span class=n>tissue</span><span class=p>,</span> <span class=n>transform</span><span class=p>):</span>
+    <span class=n>so</span> <span class=o>=</span> <span class=n>SliceOrder</span><span class=p>()</span>
 
-<span class=s1>You can leave out brainbin, it is the brain with no gaussian smoothing.</span>
+<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataReader</span><span class=p>()</span>
+</span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
+    <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-<span class=s1>Here are the parameters used to get the views in the VTK Textbook:</span>
-<span class=s1>Fig12-9a:</span>
-<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a</span>
-<span class=s1>Fig12-9b:</span>
-<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a</span>
-<span class=s1>Fig12-9c:</span>
-<span class=s1> brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -c</span>
-<span class=s1>Fig12-9c:</span>
-<span class=s1> brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -d</span>
-<span class=s1>    &#39;&#39;&#39;</span>
-    <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
-                                     <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
+    <span class=n>trans</span> <span class=o>=</span> <span class=n>so</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>transform</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>tissue</span> <span class=o>==</span> <span class=s1>&#39;brainbin&#39;</span><span class=p>:</span>
+        <span class=n>trans</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+        <span class=n>trans</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>180</span><span class=p>)</span>
+<span class=hll>    <span class=n>tf</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+</span>    <span class=n>tf</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>tf</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>trans</span><span class=p>)</span>
+    <span class=n>tf</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-    <span class=n>group</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>add_mutually_exclusive_group</span><span class=p>()</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-a&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;a&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9a and 12-9b in the VTK Textbook&#39;</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-c&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;c&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9c in the VTK Textbook&#39;</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-d&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;d&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9d in the VTK Textbook&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>set_defaults</span><span class=p>(</span><span class=nb>type</span><span class=o>=</span><span class=kc>None</span><span class=p>)</span>
+<span class=hll>    <span class=n>normals</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataNormals</span><span class=p>()</span>
+</span>    <span class=n>normals</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>normals</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=mf>60.0</span><span class=p>)</span>
 
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;data_folder&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the files: frog.mhd and frogtissue.mhd.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;tissues&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;+&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;List of one or more tissues.&#39;</span><span class=p>)</span>
-    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
-    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>tissues</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>view</span>
+<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+</span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+</span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
+
+    <span class=k>return</span> <span class=n>actor</span>
 
 
 <span class=k>class</span> <span class=nc>SliceOrder</span><span class=p>:</span>
@@ -452,35 +481,6 @@ function registerListener(event, func) {
     <span class=n>tiss</span><span class=p>[</span><span class=s1>&#39;spleen&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>[</span><span class=mi>14</span><span class=p>,</span> <span class=s1>&#39;is&#39;</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
     <span class=n>tiss</span><span class=p>[</span><span class=s1>&#39;stomach&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>[</span><span class=mi>15</span><span class=p>,</span> <span class=s1>&#39;is&#39;</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
     <span class=k>return</span> <span class=n>tiss</span>
-
-
-<span class=k>def</span> <span class=nf>create_frog_actor</span><span class=p>(</span><span class=n>file_name</span><span class=p>,</span> <span class=n>tissue</span><span class=p>,</span> <span class=n>transform</span><span class=p>):</span>
-    <span class=n>so</span> <span class=o>=</span> <span class=n>SliceOrder</span><span class=p>()</span>
-
-<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataReader</span><span class=p>()</span>
-</span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
-    <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-
-    <span class=n>trans</span> <span class=o>=</span> <span class=n>so</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>transform</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>tissue</span> <span class=o>==</span> <span class=s1>&#39;brainbin&#39;</span><span class=p>:</span>
-        <span class=n>trans</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
-        <span class=n>trans</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>180</span><span class=p>)</span>
-<span class=hll>    <span class=n>tf</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
-</span>    <span class=n>tf</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>tf</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>trans</span><span class=p>)</span>
-    <span class=n>tf</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-
-<span class=hll>    <span class=n>normals</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataNormals</span><span class=p>()</span>
-</span>    <span class=n>normals</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>normals</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=mf>60.0</span><span class=p>)</span>
-
-<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
-</span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
-</span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-
-    <span class=k>return</span> <span class=n>actor</span>
 
 
 <span class=k>class</span> <span class=nc>SliderProperties</span><span class=p>:</span>

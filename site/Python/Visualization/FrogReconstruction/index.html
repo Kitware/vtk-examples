@@ -84,7 +84,48 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>import</span> <span class=nn>vtk</span>
 </span>
 
-<span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>tissues</span><span class=p>,</span> <span class=n>view</span><span class=p>,</span> <span class=n>flying_edges</span><span class=p>):</span>
+<span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
+    <span class=kn>import</span> <span class=nn>argparse</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Display all frog parts and translucent skin.&#39;</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+<span class=s1>To specify all the tissues at once:</span>
+<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin</span>
+
+<span class=s1>You can leave out brainbin, it is the brain with no gaussian smoothing.</span>
+
+<span class=s1>Here are the parameters used to get the views in the VTK Textbook:</span>
+<span class=s1>Fig12-9a:</span>
+<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a</span>
+<span class=s1>Fig12-9b:</span>
+<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a</span>
+<span class=s1>Fig12-9c:</span>
+<span class=s1> brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -c</span>
+<span class=s1>Fig12-9c:</span>
+<span class=s1> brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -d</span>
+<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
+                                     <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
+
+    <span class=n>group</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>add_mutually_exclusive_group</span><span class=p>()</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-a&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;a&#39;</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9a and 12-9b in the VTK Textbook&#39;</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-c&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;c&#39;</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9c in the VTK Textbook&#39;</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-d&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;d&#39;</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9d in the VTK Textbook&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>set_defaults</span><span class=p>(</span><span class=nb>type</span><span class=o>=</span><span class=kc>None</span><span class=p>)</span>
+
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-m&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_false&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;flying_edges&#39;</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use flying edges by default, marching cubes if set.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-t&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;decimation&#39;</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Decimate if set.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;data_folder&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the files: frog.mhd and frogtissue.mhd.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;tissues&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;+&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;List of one or more tissues.&#39;</span><span class=p>)</span>
+    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
+    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>tissues</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>view</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>flying_edges</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>decimation</span>
+
+
+<span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>tissues</span><span class=p>,</span> <span class=n>view</span><span class=p>,</span> <span class=n>flying_edges</span><span class=p>,</span> <span class=n>decimate</span><span class=p>):</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>data_folder</span><span class=p>)</span>
@@ -135,7 +176,7 @@ function registerListener(event, func) {
 
     <span class=k>for</span> <span class=n>name</span><span class=p>,</span> <span class=n>tissue</span> <span class=ow>in</span> <span class=n>selected_tissues</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
         <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Tissue: </span><span class=si>{:&gt;9s}</span><span class=s1>, label: </span><span class=si>{:2d}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;TISSUE&#39;</span><span class=p>]))</span>
-        <span class=n>t</span><span class=p>,</span> <span class=n>actor</span> <span class=o>=</span> <span class=n>create_frog_actor</span><span class=p>(</span><span class=n>frog_fn</span><span class=p>,</span> <span class=n>frog_tissue_fn</span><span class=p>,</span> <span class=n>tissue</span><span class=p>,</span> <span class=n>flying_edges</span><span class=p>,</span> <span class=n>lut</span><span class=p>)</span>
+        <span class=n>t</span><span class=p>,</span> <span class=n>actor</span> <span class=o>=</span> <span class=n>create_frog_actor</span><span class=p>(</span><span class=n>frog_fn</span><span class=p>,</span> <span class=n>frog_tissue_fn</span><span class=p>,</span> <span class=n>tissue</span><span class=p>,</span> <span class=n>flying_edges</span><span class=p>,</span> <span class=n>decimate</span><span class=p>,</span> <span class=n>lut</span><span class=p>)</span>
         <span class=n>ict</span><span class=p>[</span><span class=n>name</span><span class=p>]</span> <span class=o>=</span> <span class=n>t</span>
         <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
 
@@ -196,46 +237,7 @@ function registerListener(event, func) {
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
-    <span class=kn>import</span> <span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Display all frog parts and translucent skin.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>To specify all the tissues at once:</span>
-<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin</span>
-
-<span class=s1>You can leave out brainbin, it is the brain with no gaussian smoothing.</span>
-
-<span class=s1>Here are the parameters used to get the views in the VTK Textbook:</span>
-<span class=s1>Fig12-9a:</span>
-<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach skin -a</span>
-<span class=s1>Fig12-9b:</span>
-<span class=s1> blood brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve skeleton spleen stomach -a</span>
-<span class=s1>Fig12-9c:</span>
-<span class=s1> brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -c</span>
-<span class=s1>Fig12-9c:</span>
-<span class=s1> brain duodenum eye_retna eye_white heart ileum kidney l_intestine liver lung nerve spleen stomach -d</span>
-<span class=s1>    &#39;&#39;&#39;</span>
-    <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
-                                     <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-
-    <span class=n>group</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>add_mutually_exclusive_group</span><span class=p>()</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-a&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;a&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9a and 12-9b in the VTK Textbook&#39;</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-c&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;c&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9c in the VTK Textbook&#39;</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-d&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;d&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Figs 12-9d in the VTK Textbook&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>set_defaults</span><span class=p>(</span><span class=nb>type</span><span class=o>=</span><span class=kc>None</span><span class=p>)</span>
-
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-m&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_false&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;flying_edges&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use flying edges by default, marching cubes if set&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;data_folder&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the files: frog.mhd and frogtissue.mhd.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;tissues&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;+&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;List of one or more tissues.&#39;</span><span class=p>)</span>
-    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
-    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>tissues</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>view</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>flying_edges</span>
-
-
-<span class=k>def</span> <span class=nf>create_frog_actor</span><span class=p>(</span><span class=n>frog_fn</span><span class=p>,</span> <span class=n>frog_tissue_fn</span><span class=p>,</span> <span class=n>tissue</span><span class=p>,</span> <span class=n>flying_edges</span><span class=p>,</span> <span class=n>lut</span><span class=p>):</span>
+<span class=k>def</span> <span class=nf>create_frog_actor</span><span class=p>(</span><span class=n>frog_fn</span><span class=p>,</span> <span class=n>frog_tissue_fn</span><span class=p>,</span> <span class=n>tissue</span><span class=p>,</span> <span class=n>flying_edges</span><span class=p>,</span> <span class=n>decimate</span><span class=p>,</span> <span class=n>lut</span><span class=p>):</span>
     <span class=c1># Get the tissue parameters</span>
     <span class=n>pixel_size</span> <span class=o>=</span> <span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;PIXEL_SIZE&#39;</span><span class=p>]</span>
     <span class=n>columns</span> <span class=o>=</span> <span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;COLUMNS&#39;</span><span class=p>]</span>
@@ -331,24 +333,29 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>tf</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>tf</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>)</span>
     <span class=n>tf</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>iso_surface</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>last_connection</span> <span class=o>=</span> <span class=n>tf</span>
 
-<span class=hll>    <span class=n>decimator</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDecimatePro</span><span class=p>()</span>
-</span>    <span class=n>decimator</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>decimator</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ANGLE&#39;</span><span class=p>])</span>
-    <span class=n>decimator</span><span class=o>.</span><span class=n>MaximumIterations</span> <span class=o>=</span> <span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ITERATIONS&#39;</span><span class=p>]</span>
-    <span class=n>decimator</span><span class=o>.</span><span class=n>PreserveTopologyOn</span><span class=p>()</span>
-    <span class=n>decimator</span><span class=o>.</span><span class=n>SetErrorIsAbsolute</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-    <span class=n>decimator</span><span class=o>.</span><span class=n>SetAbsoluteError</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ERROR&#39;</span><span class=p>])</span>
-    <span class=n>decimator</span><span class=o>.</span><span class=n>SetTargetReduction</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;DECIMATE_REDUCTION&#39;</span><span class=p>])</span>
+    <span class=k>if</span> <span class=n>decimate</span><span class=p>:</span>
+<span class=hll>        <span class=n>decimator</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDecimatePro</span><span class=p>()</span>
+</span>        <span class=n>decimator</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>last_connection</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+        <span class=n>decimator</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ANGLE&#39;</span><span class=p>])</span>
+        <span class=n>decimator</span><span class=o>.</span><span class=n>MaximumIterations</span> <span class=o>=</span> <span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ITERATIONS&#39;</span><span class=p>]</span>
+        <span class=n>decimator</span><span class=o>.</span><span class=n>PreserveTopologyOn</span><span class=p>()</span>
+        <span class=n>decimator</span><span class=o>.</span><span class=n>SetErrorIsAbsolute</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+        <span class=n>decimator</span><span class=o>.</span><span class=n>SetAbsoluteError</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ERROR&#39;</span><span class=p>])</span>
+        <span class=n>decimator</span><span class=o>.</span><span class=n>SetTargetReduction</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;DECIMATE_REDUCTION&#39;</span><span class=p>])</span>
+        <span class=n>last_connection</span> <span class=o>=</span> <span class=n>decimator</span>
 
-<span class=hll>    <span class=n>smoother</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSmoothPolyDataFilter</span><span class=p>()</span>
-</span>    <span class=n>smoother</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>decimator</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+<span class=hll>    <span class=n>smoother</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkWindowedSincPolyDataFilter</span><span class=p>()</span>
+</span>    <span class=n>smoother</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>last_connection</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>smoother</span><span class=o>.</span><span class=n>SetNumberOfIterations</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;SMOOTH_ITERATIONS&#39;</span><span class=p>])</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>SetRelaxationFactor</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;SMOOTH_FACTOR&#39;</span><span class=p>])</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;SMOOTH_ANGLE&#39;</span><span class=p>])</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>FeatureEdgeSmoothingOff</span><span class=p>()</span>
     <span class=n>smoother</span><span class=o>.</span><span class=n>BoundarySmoothingOff</span><span class=p>()</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>SetConvergence</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>FeatureEdgeSmoothingOff</span><span class=p>()</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;SMOOTH_ANGLE&#39;</span><span class=p>])</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>SetPassBand</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;SMOOTH_FACTOR&#39;</span><span class=p>])</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>NonManifoldSmoothingOn</span><span class=p>()</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>NormalizeCoordinatesOff</span><span class=p>()</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>normals</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataNormals</span><span class=p>()</span>
 </span>    <span class=n>normals</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>smoother</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -565,14 +572,14 @@ function registerListener(event, func) {
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;FEATURE_ANGLE&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>60</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ANGLE&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>60</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;SMOOTH_ANGLE&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>60</span>
-    <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ITERATIONS&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;SMOOTH_ITERATIONS&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>10</span>
+    <span class=n>p</span><span class=p>[</span><span class=s1>&#39;SMOOTH_FACTOR&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.1</span>
+    <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ITERATIONS&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_REDUCTION&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ERROR&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.0002</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ERROR_INCREMENT&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.0002</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;ISLAND_AREA&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>4</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;ISLAND_REPLACE&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=o>-</span><span class=mi>1</span>
-    <span class=n>p</span><span class=p>[</span><span class=s1>&#39;SMOOTH_FACTOR&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.1</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;GAUSSIAN_STANDARD_DEVIATION&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>]</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;GAUSSIAN_RADIUS_FACTORS&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>]</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;VOI&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=n>p</span><span class=p>[</span><span class=s1>&#39;COLUMNS&#39;</span><span class=p>]</span> <span class=o>-</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>p</span><span class=p>[</span><span class=s1>&#39;ROWS&#39;</span><span class=p>]</span> <span class=o>-</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>p</span><span class=p>[</span><span class=s1>&#39;END_SLICE&#39;</span><span class=p>]]</span>
@@ -659,7 +666,6 @@ function registerListener(event, func) {
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ITERATIONS&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>5</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ERROR&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.0002</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ERROR_INCREMENT&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.0002</span>
-    <span class=n>p</span><span class=p>[</span><span class=s1>&#39;SMOOTH_ITERATIONS&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;SMOOTH_FACTOR&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.1</span>
     <span class=k>return</span> <span class=n>p</span>
 
@@ -753,7 +759,6 @@ function registerListener(event, func) {
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ITERATIONS&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>10</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ERROR&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.0002</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;DECIMATE_ERROR_INCREMENT&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.0002</span>
-    <span class=n>p</span><span class=p>[</span><span class=s1>&#39;SMOOTH_ITERATIONS&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;FEATURE_ANGLE&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>60</span>
     <span class=n>p</span><span class=p>[</span><span class=s1>&#39;OPACITY&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.4</span>
     <span class=k>return</span> <span class=n>p</span>
@@ -878,6 +883,6 @@ function registerListener(event, func) {
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
     <span class=kn>import</span> <span class=nn>sys</span>
 
-    <span class=n>data_folder</span><span class=p>,</span> <span class=n>tissue</span><span class=p>,</span> <span class=n>view</span><span class=p>,</span> <span class=n>flying_edges</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>
-    <span class=n>main</span><span class=p>(</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>tissue</span><span class=p>,</span> <span class=n>view</span><span class=p>,</span> <span class=n>flying_edges</span><span class=p>)</span>
+    <span class=n>data_folder</span><span class=p>,</span> <span class=n>tissue</span><span class=p>,</span> <span class=n>view</span><span class=p>,</span> <span class=n>flying_edges</span><span class=p>,</span> <span class=n>decimate</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>
+    <span class=n>main</span><span class=p>(</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>tissue</span><span class=p>,</span> <span class=n>view</span><span class=p>,</span> <span class=n>flying_edges</span><span class=p>,</span> <span class=n>decimate</span><span class=p>)</span>
 </code></pre></div> </article> </div> </div> </main> <footer class=md-footer> <div class=md-footer-nav> <nav class="md-footer-nav__inner md-grid"> <a href=../FrogDemo/ title=FrogDemo class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel=prev> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i> </div> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Previous </span> FrogDemo </span> </div> </a> <a href=../FrogSlice/ title=FrogSlice class="md-flex md-footer-nav__link md-footer-nav__link--next" rel=next> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Next </span> FrogSlice </span> </div> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i> </div> </a> </nav> </div> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-footer-copyright> <div class=md-footer-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> powered by <a href=https://www.mkdocs.org target=_blank rel=noopener>MkDocs</a> and <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs</a> </div> </div> </div> </footer> </div> <script src=../../../assets/javascripts/application.c33a9706.js></script> <script>app.initialize({version:"1.1",url:{base:"../../.."}})</script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

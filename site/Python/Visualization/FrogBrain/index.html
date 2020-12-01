@@ -83,6 +83,20 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>import</span> <span class=nn>vtk</span>
 </span>
 
+<span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
+    <span class=kn>import</span> <span class=nn>argparse</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;The frog</span><span class=se>\&#39;</span><span class=s1>s brain.&#39;</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+<span class=s1>    Model extracted without smoothing (left) and with smoothing (right).</span>
+<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
+                                     <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;data_folder&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the file: frogtissue.mhd.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;tissue&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>&#39;brain&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The tissue to use.&#39;</span><span class=p>)</span>
+    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
+    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>tissue</span>
+
+
 <span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>tissue</span><span class=p>):</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
@@ -141,18 +155,91 @@ function registerListener(event, func) {
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
-    <span class=kn>import</span> <span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;The frog</span><span class=se>\&#39;</span><span class=s1>s brain.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    Model extracted without smoothing (left) and with smoothing (right).</span>
-<span class=s1>    &#39;&#39;&#39;</span>
-    <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
-                                     <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;data_folder&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the file: frogtissue.mhd.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;tissue&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>&#39;brain&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The tissue to use.&#39;</span><span class=p>)</span>
-    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
-    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>tissue</span>
+<span class=k>def</span> <span class=nf>create_smooth_frog_actor</span><span class=p>(</span><span class=n>file_name</span><span class=p>,</span> <span class=n>tissue</span><span class=p>):</span>
+<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMetaImageReader</span><span class=p>()</span>
+</span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>file_name</span><span class=p>))</span>
+    <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>select_tissue</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageThreshold</span><span class=p>()</span>
+</span>    <span class=n>select_tissue</span><span class=o>.</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>tissue</span><span class=p>,</span> <span class=n>tissue</span><span class=p>)</span>
+    <span class=n>select_tissue</span><span class=o>.</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>255</span><span class=p>)</span>
+    <span class=n>select_tissue</span><span class=o>.</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+    <span class=n>select_tissue</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+
+    <span class=n>gaussianRadius</span> <span class=o>=</span> <span class=mi>1</span>
+    <span class=n>gaussianStandardDeviation</span> <span class=o>=</span> <span class=mf>2.0</span>
+<span class=hll>    <span class=n>gaussian</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageGaussianSmooth</span><span class=p>()</span>
+</span>    <span class=n>gaussian</span><span class=o>.</span><span class=n>SetStandardDeviations</span><span class=p>(</span><span class=n>gaussianStandardDeviation</span><span class=p>,</span> <span class=n>gaussianStandardDeviation</span><span class=p>,</span> <span class=n>gaussianStandardDeviation</span><span class=p>)</span>
+    <span class=n>gaussian</span><span class=o>.</span><span class=n>SetRadiusFactors</span><span class=p>(</span><span class=n>gaussianRadius</span><span class=p>,</span> <span class=n>gaussianRadius</span><span class=p>,</span> <span class=n>gaussianRadius</span><span class=p>)</span>
+    <span class=n>gaussian</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>select_tissue</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+
+    <span class=n>isoValue</span> <span class=o>=</span> <span class=mf>63.5</span>
+<span class=hll>    <span class=n>iso_surface</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFlyingEdges3D</span><span class=p>()</span>
+</span>    <span class=n>iso_surface</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>gaussian</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeScalarsOff</span><span class=p>()</span>
+    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeGradientsOff</span><span class=p>()</span>
+    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeNormalsOff</span><span class=p>()</span>
+    <span class=n>iso_surface</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>isoValue</span><span class=p>)</span>
+
+    <span class=n>smoothing_iterations</span> <span class=o>=</span> <span class=mi>20</span>
+    <span class=n>pass_band</span> <span class=o>=</span> <span class=mf>0.001</span>
+    <span class=n>feature_angle</span> <span class=o>=</span> <span class=mf>60.0</span>
+<span class=hll>    <span class=n>smoother</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkWindowedSincPolyDataFilter</span><span class=p>()</span>
+</span>    <span class=n>smoother</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>iso_surface</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>SetNumberOfIterations</span><span class=p>(</span><span class=n>smoothing_iterations</span><span class=p>)</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>BoundarySmoothingOff</span><span class=p>()</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>FeatureEdgeSmoothingOff</span><span class=p>()</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>feature_angle</span><span class=p>)</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>SetPassBand</span><span class=p>(</span><span class=n>pass_band</span><span class=p>)</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>NonManifoldSmoothingOn</span><span class=p>()</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>NormalizeCoordinatesOff</span><span class=p>()</span>
+    <span class=n>smoother</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>normals</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataNormals</span><span class=p>()</span>
+</span>    <span class=n>normals</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>smoother</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>normals</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>feature_angle</span><span class=p>)</span>
+
+<span class=hll>    <span class=n>stripper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStripper</span><span class=p>()</span>
+</span>    <span class=n>stripper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+
+<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+</span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>stripper</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+</span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
+
+    <span class=k>return</span> <span class=n>actor</span>
+
+
+<span class=k>def</span> <span class=nf>create_frog_actor</span><span class=p>(</span><span class=n>file_name</span><span class=p>,</span> <span class=n>tissue</span><span class=p>):</span>
+<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMetaImageReader</span><span class=p>()</span>
+</span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>file_name</span><span class=p>))</span>
+    <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>select_tissue</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageThreshold</span><span class=p>()</span>
+</span>    <span class=n>select_tissue</span><span class=o>.</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>tissue</span><span class=p>,</span> <span class=n>tissue</span><span class=p>)</span>
+    <span class=n>select_tissue</span><span class=o>.</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>255</span><span class=p>)</span>
+    <span class=n>select_tissue</span><span class=o>.</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+    <span class=n>select_tissue</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+
+    <span class=n>iso_value</span> <span class=o>=</span> <span class=mf>63.5</span>
+<span class=hll>    <span class=n>iso_surface</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFlyingEdges3D</span><span class=p>()</span>
+</span>    <span class=n>iso_surface</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>select_tissue</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeScalarsOff</span><span class=p>()</span>
+    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeGradientsOff</span><span class=p>()</span>
+    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeNormalsOn</span><span class=p>()</span>
+    <span class=n>iso_surface</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>iso_value</span><span class=p>)</span>
+
+<span class=hll>    <span class=n>stripper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStripper</span><span class=p>()</span>
+</span>    <span class=n>stripper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>iso_surface</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+
+<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+</span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>stripper</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+</span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
+
+    <span class=k>return</span> <span class=n>actor</span>
 
 
 <span class=k>def</span> <span class=nf>create_frog_lut</span><span class=p>(</span><span class=n>colors</span><span class=p>):</span>
@@ -200,106 +287,6 @@ function registerListener(event, func) {
     <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;stomach&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>15</span>
 
     <span class=k>return</span> <span class=n>tissue_map</span>
-
-
-<span class=k>def</span> <span class=nf>create_smooth_frog_actor</span><span class=p>(</span><span class=n>file_name</span><span class=p>,</span> <span class=n>tissue</span><span class=p>):</span>
-<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMetaImageReader</span><span class=p>()</span>
-</span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>file_name</span><span class=p>))</span>
-    <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-
-<span class=hll>    <span class=n>selectTissue</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageThreshold</span><span class=p>()</span>
-</span>    <span class=n>selectTissue</span><span class=o>.</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>tissue</span><span class=p>,</span> <span class=n>tissue</span><span class=p>)</span>
-    <span class=n>selectTissue</span><span class=o>.</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>255</span><span class=p>)</span>
-    <span class=n>selectTissue</span><span class=o>.</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-    <span class=n>selectTissue</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-
-    <span class=n>gaussianRadius</span> <span class=o>=</span> <span class=mi>1</span>
-    <span class=n>gaussianStandardDeviation</span> <span class=o>=</span> <span class=mf>2.0</span>
-<span class=hll>    <span class=n>gaussian</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageGaussianSmooth</span><span class=p>()</span>
-</span>    <span class=n>gaussian</span><span class=o>.</span><span class=n>SetStandardDeviations</span><span class=p>(</span><span class=n>gaussianStandardDeviation</span><span class=p>,</span> <span class=n>gaussianStandardDeviation</span><span class=p>,</span> <span class=n>gaussianStandardDeviation</span><span class=p>)</span>
-    <span class=n>gaussian</span><span class=o>.</span><span class=n>SetRadiusFactors</span><span class=p>(</span><span class=n>gaussianRadius</span><span class=p>,</span> <span class=n>gaussianRadius</span><span class=p>,</span> <span class=n>gaussianRadius</span><span class=p>)</span>
-    <span class=n>gaussian</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>selectTissue</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-
-    <span class=n>isoValue</span> <span class=o>=</span> <span class=mf>127.5</span>
-<span class=hll>    <span class=n>iso_surface</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFlyingEdges3D</span><span class=p>()</span>
-</span>    <span class=n>iso_surface</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>gaussian</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeScalarsOff</span><span class=p>()</span>
-    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeGradientsOff</span><span class=p>()</span>
-    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeNormalsOff</span><span class=p>()</span>
-    <span class=n>iso_surface</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>isoValue</span><span class=p>)</span>
-
-    <span class=n>smoothing_iterations</span> <span class=o>=</span> <span class=mi>0</span>
-    <span class=n>feature_angle</span> <span class=o>=</span> <span class=mf>60.0</span>
-    <span class=n>relaxation_factor</span> <span class=o>=</span> <span class=mf>0.1</span>
-
-<span class=hll>    <span class=n>smoother</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSmoothPolyDataFilter</span><span class=p>()</span>
-</span>    <span class=n>smoother</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>iso_surface</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>SetNumberOfIterations</span><span class=p>(</span><span class=n>smoothing_iterations</span><span class=p>)</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>SetRelaxationFactor</span><span class=p>(</span><span class=n>relaxation_factor</span><span class=p>)</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>feature_angle</span><span class=p>)</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>FeatureEdgeSmoothingOff</span><span class=p>()</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>BoundarySmoothingOff</span><span class=p>()</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>SetConvergence</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-
-    <span class=c1># smoothing_iterations = 0</span>
-    <span class=c1># pass_band = 0.001</span>
-    <span class=c1># feature_angle = 60.0</span>
-<span class=hll>    <span class=c1># smoother = vtk.vtkWindowedSincPolyDataFilter()</span>
-</span>    <span class=c1># smoother.SetInputConnection(iso_surface.GetOutputPort())</span>
-    <span class=c1># smoother.SetNumberOfIterations(smoothing_iterations)</span>
-    <span class=c1># smoother.BoundarySmoothingOff()</span>
-    <span class=c1># smoother.FeatureEdgeSmoothingOff()</span>
-    <span class=c1># smoother.SetFeatureAngle(feature_angle)</span>
-    <span class=c1># smoother.SetPassBand(pass_band)</span>
-    <span class=c1># smoother.NonManifoldSmoothingOn()</span>
-    <span class=c1># smoother.NormalizeCoordinatesOn()</span>
-    <span class=c1># smoother.Update()</span>
-
-<span class=hll>    <span class=n>normals</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataNormals</span><span class=p>()</span>
-</span>    <span class=n>normals</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>smoother</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>normals</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>feature_angle</span><span class=p>)</span>
-
-<span class=hll>    <span class=n>stripper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStripper</span><span class=p>()</span>
-</span>    <span class=n>stripper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-
-<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
-</span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>stripper</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
-</span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-
-    <span class=k>return</span> <span class=n>actor</span>
-
-
-<span class=k>def</span> <span class=nf>create_frog_actor</span><span class=p>(</span><span class=n>file_name</span><span class=p>,</span> <span class=n>tissue</span><span class=p>):</span>
-<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMetaImageReader</span><span class=p>()</span>
-</span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>file_name</span><span class=p>))</span>
-    <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-
-<span class=hll>    <span class=n>select_tissue</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageThreshold</span><span class=p>()</span>
-</span>    <span class=n>select_tissue</span><span class=o>.</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>tissue</span><span class=p>,</span> <span class=n>tissue</span><span class=p>)</span>
-    <span class=n>select_tissue</span><span class=o>.</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>255</span><span class=p>)</span>
-    <span class=n>select_tissue</span><span class=o>.</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-    <span class=n>select_tissue</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-
-    <span class=n>iso_value</span> <span class=o>=</span> <span class=mf>63.5</span>
-<span class=hll>    <span class=n>iso_surface</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFlyingEdges3D</span><span class=p>()</span>
-</span>    <span class=n>iso_surface</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>select_tissue</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeScalarsOff</span><span class=p>()</span>
-    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeGradientsOff</span><span class=p>()</span>
-    <span class=n>iso_surface</span><span class=o>.</span><span class=n>ComputeNormalsOn</span><span class=p>()</span>
-    <span class=n>iso_surface</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>iso_value</span><span class=p>)</span>
-
-<span class=hll>    <span class=n>stripper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStripper</span><span class=p>()</span>
-</span>    <span class=n>stripper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>iso_surface</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-
-<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
-</span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>stripper</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
-</span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-
-    <span class=k>return</span> <span class=n>actor</span>
 
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>

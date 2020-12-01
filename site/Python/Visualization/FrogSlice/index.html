@@ -83,6 +83,23 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>import</span> <span class=nn>vtk</span>
 </span>
 
+<span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
+    <span class=kn>import</span> <span class=nn>argparse</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Visualization of a frog.&#39;</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+<span class=s1>Photographic slice of frog (upper left), segmented frog (upper right) and</span>
+<span class=s1> composite of photo and segmentation (bottom).</span>
+<span class=s1>The purple color represents the stomach and the kidneys are yellow.</span>
+<span class=s1>If slice = 39 it matches Figure 12-6 in the VTK Book.</span>
+<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
+                                     <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;data_folder&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the files: frog.mhd and frogtissue.mhd.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;slice_number&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>39</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Slice number.&#39;</span><span class=p>)</span>
+    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
+    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>slice_number</span>
+
+
 <span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>slice_number</span><span class=p>):</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
@@ -230,23 +247,6 @@ function registerListener(event, func) {
 
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
-
-
-<span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
-    <span class=kn>import</span> <span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Visualization of a frog.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>Photographic slice of frog (upper left), segmented frog (upper right) and</span>
-<span class=s1> composite of photo and segmentation (bottom).</span>
-<span class=s1>The purple color represents the stomach and the kidneys are yellow.</span>
-<span class=s1>If slice = 39 it matches Figure 12-6 in the VTK Book.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
-    <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
-                                     <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;data_folder&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the files: frog.mhd and frogtissue.mhd.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;slice_number&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>39</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Slice number.&#39;</span><span class=p>)</span>
-    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
-    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>slice_number</span>
 
 
 <span class=k>def</span> <span class=nf>create_frog_lut</span><span class=p>(</span><span class=n>colors</span><span class=p>):</span>
