@@ -1,3 +1,3 @@
 # vtk-examples
 
-This is the source code for [vtk-examples](https://kitware.github.io/vtk-examples/site/).
+This is the source code for the [vtk-examples web site](https://kitware.github.io/vtk-examples/site/).
