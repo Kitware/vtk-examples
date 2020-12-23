@@ -178,7 +178,7 @@ Google Analytics tracks the site usage, providing lots of useful statistics. To 
 
 ### Configuring Google Analytics
 
-The *google_analytics* keyword in the *mkdocs.yml* file specifies the google analytics unique code for this web site. Currently commented out as this only applies to the old site.
+The *google_analytics* keyword in the *mkdocs.yml* file specifies the google analytics unique code for this web site. *Currently commented out as this only applies to the old site.*
 
 The *custom_theme/main.html* file defines the metadata for the google site verification:
 
