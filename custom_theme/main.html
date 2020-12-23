@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
 {% block htmltitle %}
-<meta name="google-site-verification" content="8hi6AHNlzKOmFDV4W8tLmySODRzQvtqMEIfZdc3WTLA" />
+<meta name="google-site-verification" content="nJqh3TVb_44fMl2gS61agt_bRNFEaI496UaXYL-wLZI" />
 {% endblock %}
 
 {% block extrahead %}
 <script>
   (function() {
-    var cx = '015419652359195128492:0lkxso1wcym';
+    var cx = '47656ffcafe2e7ab2';
     var gcse = document.createElement('script');
     gcse.type = 'text/javascript';
     gcse.async = true;
@@ -27,7 +27,7 @@ var lazy = [];
 function setLazy(){
     lazy = document.getElementsByClassName('lazy');
     console.log('Found ' + lazy.length + ' lazy images');
-} 
+}
 
 function lazyLoad(){
     for(var i=0; i<lazy.length; i++){
@@ -38,7 +38,7 @@ function lazyLoad(){
             }
         }
     }
-    
+
     cleanLazy();
 }
 
@@ -48,11 +48,11 @@ function cleanLazy(){
 
 function isInViewport(el){
     var rect = el.getBoundingClientRect();
-    
+
     return (
-        rect.bottom >= 0 && 
-        rect.right >= 0 && 
-        rect.top <= (window.innerHeight || document.documentElement.clientHeight) && 
+        rect.bottom >= 0 &&
+        rect.right >= 0 &&
+        rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
         rect.left <= (window.innerWidth || document.documentElement.clientWidth)
      );
 }

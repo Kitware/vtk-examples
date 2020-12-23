@@ -178,11 +178,14 @@ Google Analytics tracks the site usage, providing lots of useful statistics. To 
 
 ### Configuring Google Analytics
 
-The *google_analytics* keyword in the *mkdocs.yml* file specifies the google analytics unique code for this web site. The *custom_theme/main.html* file defines the metadata for the google site verification:
+The *google_analytics* keyword in the *mkdocs.yml* file specifies the google analytics unique code for this web site. Currently commented out as this only applies to the old site.
+
+The *custom_theme/main.html* file defines the metadata for the google site verification:
 
 ``` html
-<meta name="google-site-verification" content="8hi6AHNlzKOmFDV4W8tLmySODRzQvtqMEIfZdc3WTLA" />
+<meta name="google-site-verification" content="nJqh3TVb_44fMl2gS61agt_bRNFEaI496UaXYL-wLZI" />
 ```
+
 ## [Google Custom Search Engine](https://cse.google.com/cse/)
 
 The overall look and feel are established at [https://cse.google.com/cse/](https://cse.google.com/cse/). After setting up the search engine, you can get the code to add to the web pages.
@@ -190,7 +193,7 @@ The overall look and feel are established at [https://cse.google.com/cse/](https
 ``` javascript
 <script>
   (function() {
-    var cx = '015419652359195128492:0lkxso1wcym';
+    var cx = '47656ffcafe2e7ab2';
     var gcse = document.createElement('script');
     gcse.type = 'text/javascript';
     gcse.async = true;
