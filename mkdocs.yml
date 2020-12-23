@@ -20,9 +20,9 @@ markdown_extensions:
     - footnotes
     - toc:
         permalink: true
-google_analytics:
-    -  'UA-3660134-4'
-    -  'auto'
+#google_analytics:
+#    -  'UA-3660134-4'
+#    -  'auto'
 extra_css:
     -  'stylesheets/extra.css'
 copyright: '<font color=#666>Content is available under </font><a href="https://creativecommons.org/licenses/by/2.5/" title="Attribution2.5">Attribution2.5</a> <font color=#666>unless otherwise noted.</font>'
