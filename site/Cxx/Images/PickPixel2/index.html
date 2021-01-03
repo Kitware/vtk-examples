@@ -252,12 +252,12 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageNoiseSource</span><span class=o>&gt;</span> <span class=n>noiseSource</span><span class=p>;</span>
 </span>    <span class=n>noiseSource</span><span class=o>-&gt;</span><span class=n>SetWholeExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>512</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>512</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
     <span class=n>noiseSource</span><span class=o>-&gt;</span><span class=n>SetMinimum</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
-    <span class=n>noiseSource</span><span class=o>-&gt;</span><span class=n>SetMaximum</span><span class=p>(</span><span class=mf>65535.0</span><span class=p>);</span>
+    <span class=n>noiseSource</span><span class=o>-&gt;</span><span class=n>SetMaximum</span><span class=p>(</span><span class=mf>255.0</span><span class=p>);</span>
 
-    <span class=c1>// cast noise image to unsigned short</span>
+    <span class=c1>// cast noise image to unsigned char</span>
 <span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>imageCast</span><span class=p>;</span>
 </span>    <span class=n>imageCast</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>noiseSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-    <span class=n>imageCast</span><span class=o>-&gt;</span><span class=n>SetOutputScalarTypeToUnsignedShort</span><span class=p>();</span>
+    <span class=n>imageCast</span><span class=o>-&gt;</span><span class=n>SetOutputScalarTypeToUnsignedChar</span><span class=p>();</span>
     <span class=n>imageCast</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
     <span class=c1>// connect to image viewer pipeline</span>
