@@ -195,12 +195,12 @@ int main(int argc, char* argv[])
     vtkNew<vtkImageNoiseSource> noiseSource;
     noiseSource->SetWholeExtent(0, 512, 0, 512, 0, 0);
     noiseSource->SetMinimum(0.0);
-    noiseSource->SetMaximum(65535.0);
+    noiseSource->SetMaximum(255.0);
 
-    // cast noise image to unsigned short
+    // cast noise image to unsigned char
     vtkNew<vtkImageCast> imageCast;
     imageCast->SetInputConnection(noiseSource->GetOutputPort());
-    imageCast->SetOutputScalarTypeToUnsignedShort();
+    imageCast->SetOutputScalarTypeToUnsignedChar();
     imageCast->Update();
 
     // connect to image viewer pipeline
