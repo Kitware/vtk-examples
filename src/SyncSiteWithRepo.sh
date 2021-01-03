@@ -86,17 +86,12 @@ pushd ${WEB_REPO_DIR}
 mkdocs build
 popd
 
-echo "6 Modify highlight color to semitransparent Lavender"
-pushd ${WEB_REPO_DIR}/site/assets/stylesheets
-sed -i -e 's/background-color:rgba(255,235,59,\.5)/background-color:rgba(230,230,250,0.6)/g' application.*.css
-popd
-
 ######################
 #echo "Premature exit for testing"
 #exit
 
 #####################
-echo "7) Minify Html"
+echo "6) Minify Html"
 pushd ${WEB_REPO_DIR}/site
 find . -name index.html -exec htmlmin {} {} \;
 popd
