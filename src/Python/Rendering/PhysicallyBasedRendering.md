@@ -28,8 +28,7 @@ For more information, see [Introducing Physically Based Rendering with VTK](http
 
 !!! note
     - Support was added for [HDR images in VTK 9.0](https://blog.kitware.com/pbrj1/), Thus for better performance, the skybox texture should set `MipmapOn` as well as `InterpolateOn` to exploit hardware capabilities when using HDR images.
-    - We are using a cubemap texture (and not a traditional texture), so one should set `UseSphericalHarmonicsOff` on the texture as well. This means that we need to use `vtkOpenGLRenderer` instead of `vtkRenderer` as the renderer.
-    - Occlusion is subtle, you will see it in the shadowing around the letters VTK on the surface.
+    - We are using a cubemap texture (and not a traditional texture), so one should set `UseSphericalHarmonicsOff` on the texture as well. This means that we need to use vtkOpenGLRenderer instead of vtkRenderer as the renderer.
+    - Occlusion is subtle, you will see it in the shadowing around objects on the surface.
     - Physically Based Rendering (PBR) is only available in VTK 9.0+
     - The cubemap/skybox files are found in `VTKExamples/Testing/Data/skyboxes/`.
-
