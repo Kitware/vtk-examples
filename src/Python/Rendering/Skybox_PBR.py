@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import os
 import sys
+from pathlib import Path
 
 import vtk
 
@@ -26,8 +26,9 @@ def main():
     if not vtk_version_ok(8, 90, 0):
         print('You need VTK version 8.90 or greater to run this program.')
         return
-    cube_path, surface = get_program_parameters()
-    if not os.path.isdir(cube_path):
+    path, surface = get_program_parameters()
+    cube_path = Path(path)
+    if not cube_path.is_dir():
         print('This path does not exist:', cube_path)
         return
     surface = surface.lower()
@@ -50,7 +51,7 @@ def main():
     # Load the cube map
     # cubemap = ReadCubeMap(cube_path, '/', '.jpg', 0)
     cubemap = ReadCubeMap(cube_path, '/', '.jpg', 1)
-    # cubemap = ReadCubeMap(cube_path, '/skybox', '.jpg', 2)
+    # cubemap = ReadCubeMap(cube_path/'skybox','', '.jpg', 2)
 
     # Load the skybox
     # Read it again as there is no deep copy for vtkTexture
@@ -67,7 +68,7 @@ def main():
     # Set the background color.
     colors.SetColor('BkgColor', [26, 51, 102, 255])
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtk.vtkOpenGLRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     interactor = vtk.vtkRenderWindowInteractor()
@@ -125,6 +126,8 @@ def main():
     skyboxActor = vtk.vtkSkybox()
     skyboxActor.SetTexture(skybox)
     renderer.AddActor(skyboxActor)
+
+    renderer.UseSphericalHarmonicsOff()
 
     renderWindow.SetSize(640, 480)
     renderWindow.Render()
@@ -195,22 +198,24 @@ def ReadCubeMap(folderRoot, fileRoot, ext, key):
     texture.CubeMapOn()
     # Build the file names.
     for i in range(0, len(fns)):
-        fns[i] = folderRoot + fileRoot + fns[i] + ext
-        if not os.path.isfile(fns[i]):
+        fns[i] = Path(str(folderRoot) + fileRoot + fns[i]).with_suffix(ext)
+        if not fns[i].is_file():
             print('Nonexistent texture file:', fns[i])
             return texture
     i = 0
     for fn in fns:
         # Read the images
         readerFactory = vtk.vtkImageReader2Factory()
-        imgReader = readerFactory.CreateImageReader2(fn)
-        imgReader.SetFileName(fn)
+        imgReader = readerFactory.CreateImageReader2(str(fn))
+        imgReader.SetFileName(str(fn))
 
         flip = vtk.vtkImageFlip()
         flip.SetInputConnection(imgReader.GetOutputPort())
         flip.SetFilteredAxis(1)  # flip y axis
         texture.SetInputConnection(i, flip.GetOutputPort(0))
         i += 1
+    texture.MipmapOn()
+    texture.InterpolateOn()
     return texture
 
 

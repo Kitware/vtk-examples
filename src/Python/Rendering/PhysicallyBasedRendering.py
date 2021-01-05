@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import os
 import sys
+from pathlib import Path
 
 import vtk
 
@@ -31,8 +31,9 @@ def main():
     if not vtk_version_ok(8, 90, 0):
         print('You need VTK version 8.90 or greater to run this program.')
         return
-    cube_path, material_fn, albedo_fn, normal_fn, emissive_fn, surface = get_program_parameters()
-    if not os.path.isdir(cube_path):
+    path, material_fn, albedo_fn, normal_fn, emissive_fn, surface = get_program_parameters()
+    cube_path = Path(path)
+    if not cube_path.is_dir():
         print('This path does not exist:', cube_path)
         return
 
@@ -84,7 +85,7 @@ def main():
     # Let's make a complementary colour to VTKBlue
     colors.SetColor('VTKBlueComp', [249, 176, 114, 255])
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtk.vtkOpenGLRenderer()
     renderWindow = vtk.vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     interactor = vtk.vtkRenderWindowInteractor()
@@ -178,6 +179,8 @@ def main():
     skyboxActor.SetTexture(skybox)
     renderer.AddActor(skyboxActor)
 
+    renderer.UseSphericalHarmonicsOff()
+
     # Create the slider callbacks to manipulate metallicity, roughness
     # occlusion strength and normal scaling
     sliderWidgetMetallic.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMetallic(actor.GetProperty()))
@@ -255,48 +258,48 @@ def ReadCubeMap(folderRoot, fileRoot, ext, key):
     texture.CubeMapOn()
     # Build the file names.
     for i in range(0, len(fns)):
-        fns[i] = folderRoot + fileRoot + fns[i] + ext
-        if not os.path.isfile(fns[i]):
+        fns[i] = Path(str(folderRoot) + fileRoot + fns[i]).with_suffix(ext)
+        if not fns[i].is_file():
             print('Nonexistent texture file:', fns[i])
             return texture
     i = 0
     for fn in fns:
         # Read the images
         readerFactory = vtk.vtkImageReader2Factory()
-        imgReader = readerFactory.CreateImageReader2(fn)
-        imgReader.SetFileName(fn)
+        imgReader = readerFactory.CreateImageReader2(str(fn))
+        imgReader.SetFileName(str(fn))
 
         flip = vtk.vtkImageFlip()
         flip.SetInputConnection(imgReader.GetOutputPort())
         flip.SetFilteredAxis(1)  # flip y axis
         texture.SetInputConnection(i, flip.GetOutputPort(0))
         i += 1
+    texture.MipmapOn()
+    texture.InterpolateOn()
     return texture
 
 
-def GetTexture(file_name):
+def GetTexture(image_path):
     """
     Read an image and convert it to a texture
-    :param file_name: The image path.
+    :param image_path: The image path.
     :return: The texture.
     """
     # Read the image which will be the texture
-    path, extension = os.path.splitext(file_name)
-    extension = extension.lower()
-    # Make the extension lowercase
-    extension = extension.lower()
+    path = Path(image_path)
+    if not path.is_file():
+        print('Nonexistent texture file:', path)
+        return None
+    extension = path.suffix.lower()
     validExtensions = ['.jpg', '.png', '.bmp', '.tiff', '.pnm', '.pgm', '.ppm']
-    texture = vtk.vtkTexture()
-    if not os.path.isfile(file_name):
-        print('Nonexistent texture file:', file_name)
-        return texture
     if extension not in validExtensions:
-        print('Unable to read the texture file:', file_name)
-        return texture
+        print('Unable to read the texture file (wrong extension):', path)
+        return None
+    texture = vtk.vtkTexture()
     # Read the images
     readerFactory = vtk.vtkImageReader2Factory()
-    imgReader = readerFactory.CreateImageReader2(file_name)
-    imgReader.SetFileName(file_name)
+    imgReader = readerFactory.CreateImageReader2(str(path))
+    imgReader.SetFileName(str(path))
 
     texture.SetInputConnection(imgReader.GetOutputPort())
     texture.Update()

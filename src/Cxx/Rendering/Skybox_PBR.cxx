@@ -9,6 +9,7 @@
 #include <vtkLinearSubdivisionFilter.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
+#include <vtkOpenGLRenderer.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkParametricBoy.h>
 #include <vtkParametricFunctionSource.h>
@@ -22,7 +23,6 @@
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkRenderer.h>
 #include <vtkSkybox.h>
 #include <vtkSliderRepresentation2D.h>
 #include <vtkSliderWidget.h>
@@ -226,13 +226,13 @@ int main(int argc, char* argv[])
   // Load the cube map
   // auto cubemap = ReadCubeMap(argv[1], "/", ".jpg", 0);
   auto cubemap = ReadCubeMap(argv[1], "/", ".jpg", 1);
-   //auto cubemap = ReadCubeMap(argv[1], "/skybox", ".jpg", 2);
+  // auto cubemap = ReadCubeMap(argv[1], "/skybox", ".jpg", 2);
 
   // Load the skybox
   // Read it again as there is no deep copy for vtkTexture
-   //auto skybox = ReadCubeMap(argv[1], "/", ".jpg", 0);
+  // auto skybox = ReadCubeMap(argv[1], "/", ".jpg", 0);
   auto skybox = ReadCubeMap(argv[1], "/", ".jpg", 1);
-   //auto skybox = ReadCubeMap(argv[1], "/skybox", ".jpg", 2);
+  // auto skybox = ReadCubeMap(argv[1], "/skybox", ".jpg", 2);
   skybox->InterpolateOn();
   skybox->MipmapOn();
   skybox->RepeatOff();
@@ -244,7 +244,7 @@ int main(int argc, char* argv[])
   std::array<unsigned char, 4> bkg{{26, 51, 102, 255}};
   colors->SetColor("BkgColor", bkg.data());
 
-  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkOpenGLRenderer> renderer;
   vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   vtkNew<vtkRenderWindowInteractor> interactor;
@@ -312,6 +312,8 @@ int main(int argc, char* argv[])
   vtkNew<vtkSkybox> skyboxActor;
   skyboxActor->SetTexture(skybox);
   renderer->AddActor(skyboxActor);
+
+  renderer->UseSphericalHarmonicsOff();
 
   renderWindow->SetSize(640, 480);
   renderWindow->Render();
@@ -438,6 +440,9 @@ vtkSmartPointer<vtkTexture> ReadCubeMap(std::string const& folderRoot,
     texture->SetInputConnection(i, flip->GetOutputPort(0));
     ++i;
   }
+  texture->MipmapOn();
+  texture->InterpolateOn();
+
   return texture;
 }
 
@@ -593,8 +598,8 @@ vtkSmartPointer<vtkPolyData> UVTcoords(const float& uResolution,
 {
   float u0 = 1.0;
   float v0 = 0.0;
-  float du = 1.0 / (uResolution - 1);
-  float dv = 1.0 / (vResolution - 1);
+  float du = 1.0 / (uResolution - 1.0);
+  float dv = 1.0 / (vResolution - 1.0);
   vtkIdType numPts = pd->GetNumberOfPoints();
   vtkNew<vtkFloatArray> tCoords;
   tCoords->SetNumberOfComponents(2);
