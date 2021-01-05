@@ -18,7 +18,7 @@ You can select different cubemaps and different surfaces to visualise.
 For more information, see [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/).
 
 !!! note
-Physically Based Rendering (PBR) will be available in VTK 9.0 and is already available on the current master branch of VTK.
-
-!!! note
-The cubemap/skybox files are found in `VTKExamples/Testing/Data/skyboxes/`.
+    - Support was added for [HDR images in VTK 9.0](https://blog.kitware.com/pbrj1/), Thus for better performance, the skybox texture should set `MipmapOn` as well as `InterpolateOn` to exploit hardware capabilities when using HDR images.
+    - We are using a cubemap texture (and not a traditional texture), so one should set `UseSphericalHarmonicsOff` on the texture as well. This means that we need to use vtkOpenGLRenderer instead of vtkRenderer as the renderer.
+    - Physically Based Rendering (PBR) is only available in VTK 9.0+
+    - The cubemap/skybox files are found in `VTKExamples/Testing/Data/skyboxes/`.

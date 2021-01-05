@@ -9,6 +9,8 @@
 #include <vtkJPEGReader.h>
 #include <vtkLinearSubdivisionFilter.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkOpenGLRenderer.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkPNGReader.h>
 #include <vtkPNMReader.h>
@@ -24,7 +26,6 @@
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkRenderer.h>
 #include <vtkSkybox.h>
 #include <vtkSliderRepresentation2D.h>
 #include <vtkSliderWidget.h>
@@ -277,7 +278,7 @@ int main(int argc, char* argv[])
   {
     desiredSurface = "boy";
   }
-  auto source = vtkSmartPointer<vtkPolyData>::New();
+  vtkSmartPointer<vtkPolyData> source;
   switch (availableSurfaces[desiredSurface])
   {
   case 1:
@@ -302,7 +303,7 @@ int main(int argc, char* argv[])
   // source->Print(std::cout);
   // source->PrintSelf(std::cout, vtkIndent(2));
 
-  auto colors = vtkSmartPointer<vtkNamedColors>::New();
+  vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
   std::array<unsigned char, 4> col{{26, 51, 102, 255}};
@@ -315,10 +316,10 @@ int main(int argc, char* argv[])
                  [](unsigned char c) { return 255 - c; });
   colors->SetColor("VTKBlueComp", col1.data());
 
-  auto renderer = vtkSmartPointer<vtkRenderer>::New();
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkOpenGLRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
-  auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
   // Lets use a rough metallic surface
@@ -381,10 +382,10 @@ int main(int argc, char* argv[])
   sliderWidgetNormal->EnabledOn();
 
   // Build the pipeline
-  auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(source);
 
-  auto actor = vtkSmartPointer<vtkActor>::New();
+  vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
   actor->GetProperty()->SetInterpolationToPBR();
@@ -416,20 +417,22 @@ int main(int argc, char* argv[])
   renderer->AddActor(actor);
 
   // Comment out if you don't want a skybox
-  auto skyboxActor = vtkSmartPointer<vtkSkybox>::New();
+  vtkNew<vtkSkybox> skyboxActor;
   skyboxActor->SetTexture(skybox);
   renderer->AddActor(skyboxActor);
 
+  renderer->UseSphericalHarmonicsOff();
+
   // Create the slider callbacks to manipulate metallicity, roughness,
   // occlusion strength and normal scaling
-  auto callbackMetallic = vtkSmartPointer<SliderCallbackMetallic>::New();
+  vtkNew<SliderCallbackMetallic> callbackMetallic;
   callbackMetallic->property = actor->GetProperty();
-  auto callbackRoughness = vtkSmartPointer<SliderCallbackRoughness>::New();
+  vtkNew<SliderCallbackRoughness> callbackRoughness;
   callbackRoughness->property = actor->GetProperty();
   auto callbackOcclusionStrength =
       vtkSmartPointer<SliderCallbackOcclusionStrength>::New();
   callbackOcclusionStrength->property = actor->GetProperty();
-  auto callbackNormalScale = vtkSmartPointer<SliderCallbackNormalScale>::New();
+  vtkNew<SliderCallbackNormalScale> callbackNormalScale;
   callbackNormalScale->property = actor->GetProperty();
 
   sliderWidgetMetallic->AddObserver(vtkCommand::InteractionEvent,
@@ -445,9 +448,9 @@ int main(int argc, char* argv[])
   renderWindow->Render();
   renderWindow->SetWindowName("PhysicallyBasedRendering");
 
-  auto axes = vtkSmartPointer<vtkAxesActor>::New();
+  vtkNew<vtkAxesActor> axes;
 
-  auto widget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
+  vtkNew<vtkOrientationMarkerWidget> widget;
   double rgba[4]{0.0, 0.0, 0.0, 0.0};
   colors->GetColor("Carrot", rgba);
   widget->SetOutlineColor(rgba[0], rgba[1], rgba[2]);
@@ -514,7 +517,8 @@ bool VTKVersionOk(unsigned long long const& major,
   unsigned long long neededVersion =
       10000000000ULL * major + 100000000ULL * minor + build;
 #ifndef VTK_VERSION_NUMBER
-  auto ver = vtkSmartPointer<vtkVersion>();
+  vtkNew<vtkVersion>();
+  ver;
   unsigned long long vtk_version_number =
       10000000000ULL * ver->GetVTKMajorVersion() +
       100000000ULL * ver->GetVTKMinorVersion() + ver->GetVTKBuildVersion();
@@ -536,9 +540,9 @@ vtkSmartPointer<vtkPolyData> GetBoy()
 {
   auto uResolution = 51;
   auto vResolution = 51;
-  auto surface = vtkSmartPointer<vtkParametricBoy>::New();
+  vtkNew<vtkParametricBoy> surface;
 
-  auto source = vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricFunctionSource> source;
   source->SetUResolution(uResolution);
   source->SetVResolution(vResolution);
   source->SetParametricFunction(surface);
@@ -546,7 +550,7 @@ vtkSmartPointer<vtkPolyData> GetBoy()
   // Build the tcoords
   auto pd = UVTcoords(uResolution, vResolution, source->GetOutput());
   // Now the tangents
-  auto tangents = vtkSmartPointer<vtkPolyDataTangents>::New();
+  vtkNew<vtkPolyDataTangents> tangents;
   tangents->SetInputData(pd);
   tangents->Update();
   return tangents->GetOutput();
@@ -556,11 +560,11 @@ vtkSmartPointer<vtkPolyData> GetMobius()
 {
   auto uResolution = 51;
   auto vResolution = 51;
-  auto surface = vtkSmartPointer<vtkParametricMobius>::New();
+  vtkNew<vtkParametricMobius> surface;
   surface->SetMinimumV(-0.25);
   surface->SetMaximumV(0.25);
 
-  auto source = vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricFunctionSource> source;
   source->SetUResolution(uResolution);
   source->SetVResolution(vResolution);
   source->SetParametricFunction(surface);
@@ -568,13 +572,13 @@ vtkSmartPointer<vtkPolyData> GetMobius()
   // Build the tcoords
   auto pd = UVTcoords(uResolution, vResolution, source->GetOutput());
   // Now the tangents
-  auto tangents = vtkSmartPointer<vtkPolyDataTangents>::New();
+  vtkNew<vtkPolyDataTangents> tangents;
   tangents->SetInputData(pd);
   tangents->Update();
 
-  auto transform = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform;
   transform->RotateX(90.0);
-  auto transformFilter = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> transformFilter;
   transformFilter->SetInputConnection(tangents->GetOutputPort());
   transformFilter->SetTransform(transform);
   transformFilter->Update();
@@ -586,13 +590,13 @@ vtkSmartPointer<vtkPolyData> GetRandomHills()
 {
   auto uResolution = 51;
   auto vResolution = 51;
-  auto surface = vtkSmartPointer<vtkParametricRandomHills>::New();
+  vtkNew<vtkParametricRandomHills> surface;
   surface->SetRandomSeed(1);
   surface->SetNumberOfHills(30);
   // If you want a plane
   // surface->SetHillAmplitude(0);
 
-  auto source = vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricFunctionSource> source;
   source->SetUResolution(uResolution);
   source->SetVResolution(vResolution);
   source->SetParametricFunction(surface);
@@ -601,14 +605,14 @@ vtkSmartPointer<vtkPolyData> GetRandomHills()
   // Build the tcoords
   auto pd = UVTcoords(uResolution, vResolution, source->GetOutput());
   // Now the tangents
-  auto tangents = vtkSmartPointer<vtkPolyDataTangents>::New();
+  vtkNew<vtkPolyDataTangents> tangents;
   tangents->SetInputData(pd);
   tangents->Update();
 
-  auto transform = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform;
   transform->RotateZ(180.0);
   transform->RotateX(90.0);
-  auto transformFilter = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> transformFilter;
   transformFilter->SetInputConnection(tangents->GetOutputPort());
   transformFilter->SetTransform(transform);
   transformFilter->Update();
@@ -620,9 +624,9 @@ vtkSmartPointer<vtkPolyData> GetTorus()
 {
   auto uResolution = 51;
   auto vResolution = 51;
-  auto surface = vtkSmartPointer<vtkParametricTorus>::New();
+  vtkNew<vtkParametricTorus> surface;
 
-  auto source = vtkSmartPointer<vtkParametricFunctionSource>::New();
+  vtkNew<vtkParametricFunctionSource> source;
   source->SetUResolution(uResolution);
   source->SetVResolution(vResolution);
   source->SetParametricFunction(surface);
@@ -631,13 +635,13 @@ vtkSmartPointer<vtkPolyData> GetTorus()
   // Build the tcoords
   auto pd = UVTcoords(uResolution, vResolution, source->GetOutput());
   // Now the tangents
-  auto tangents = vtkSmartPointer<vtkPolyDataTangents>::New();
+  vtkNew<vtkPolyDataTangents> tangents;
   tangents->SetInputData(pd);
   tangents->Update();
 
-  auto transform = vtkSmartPointer<vtkTransform>::New();
+  vtkNew<vtkTransform> transform;
   transform->RotateX(90.0);
-  auto transformFilter = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkNew<vtkTransformPolyDataFilter> transformFilter;
   transformFilter->SetInputConnection(tangents->GetOutputPort());
   transformFilter->SetTransform(transform);
   transformFilter->Update();
@@ -649,12 +653,12 @@ vtkSmartPointer<vtkPolyData> GetSphere()
 {
   auto thetaResolution = 32;
   auto phiResolution = 32;
-  auto surface = vtkSmartPointer<vtkTexturedSphereSource>::New();
+  vtkNew<vtkTexturedSphereSource> surface;
   surface->SetThetaResolution(thetaResolution);
   surface->SetPhiResolution(phiResolution);
 
   // Now the tangents
-  auto tangents = vtkSmartPointer<vtkPolyDataTangents>::New();
+  vtkNew<vtkPolyDataTangents> tangents;
   tangents->SetInputConnection(surface->GetOutputPort());
   tangents->Update();
   return tangents->GetOutput();
@@ -662,17 +666,17 @@ vtkSmartPointer<vtkPolyData> GetSphere()
 
 vtkSmartPointer<vtkPolyData> GetCube()
 {
-  auto surface = vtkSmartPointer<vtkCubeSource>::New();
+  vtkNew<vtkCubeSource> surface;
 
   // Triangulate
-  auto triangulation = vtkSmartPointer<vtkTriangleFilter>::New();
+  vtkNew<vtkTriangleFilter> triangulation;
   triangulation->SetInputConnection(surface->GetOutputPort());
   // Subdivide the triangles
-  auto subdivide = vtkSmartPointer<vtkLinearSubdivisionFilter>::New();
+  vtkNew<vtkLinearSubdivisionFilter> subdivide;
   subdivide->SetInputConnection(triangulation->GetOutputPort());
   subdivide->SetNumberOfSubdivisions(3);
   // Now the tangents
-  auto tangents = vtkSmartPointer<vtkPolyDataTangents>::New();
+  vtkNew<vtkPolyDataTangents> tangents;
   tangents->SetInputConnection(subdivide->GetOutputPort());
   tangents->Update();
   return tangents->GetOutput();
@@ -684,10 +688,10 @@ vtkSmartPointer<vtkPolyData> UVTcoords(const float& uResolution,
 {
   float u0 = 1.0;
   float v0 = 0.0;
-  float du = 1.0 / (uResolution - 1);
-  float dv = 1.0 / (vResolution - 1);
+  float du = 1.0 / (uResolution - 1.0);
+  float dv = 1.0 / (vResolution - 1.0);
   vtkIdType numPts = pd->GetNumberOfPoints();
-  auto tCoords = vtkSmartPointer<vtkFloatArray>::New();
+  vtkNew<vtkFloatArray> tCoords;
   tCoords->SetNumberOfComponents(2);
   tCoords->SetNumberOfTuples(numPts);
   tCoords->SetName("Texture Coordinates");
@@ -722,7 +726,7 @@ vtkSmartPointer<vtkTexture> GetTexture(std::string path)
                  ::tolower);
   std::vector<std::string> validExtensions{".jpg", ".png", ".bmp", ".tiff",
                                            ".pnm", ".pgm", ".ppm"};
-  auto texture = vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkTexture> texture;
   if (std::find(validExtensions.begin(), validExtensions.end(), extension) ==
       validExtensions.end())
   {
@@ -730,7 +734,7 @@ vtkSmartPointer<vtkTexture> GetTexture(std::string path)
     return texture;
   }
   // Read the images
-  auto readerFactory = vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkNew<vtkImageReader2Factory> readerFactory;
   vtkSmartPointer<vtkImageReader2> imgReader;
   imgReader.TakeReference(readerFactory->CreateImageReader2(path.c_str()));
   imgReader->SetFileName(path.c_str());
@@ -762,7 +766,7 @@ vtkSmartPointer<vtkTexture> ReadCubeMap(std::string const& folderRoot,
     std::cerr << "ReadCubeMap(): invalid key, unable to continue." << std::endl;
     std::exit(EXIT_FAILURE);
   }
-  auto texture = vtkSmartPointer<vtkTexture>::New();
+  vtkNew<vtkTexture> texture;
   texture->CubeMapOn();
   // Build the file names.
   std::for_each(fns.begin(), fns.end(),
@@ -773,24 +777,27 @@ vtkSmartPointer<vtkTexture> ReadCubeMap(std::string const& folderRoot,
   for (auto const& fn : fns)
   {
     // Read the images
-    auto readerFactory = vtkSmartPointer<vtkImageReader2Factory>::New();
+    vtkNew<vtkImageReader2Factory> readerFactory;
     vtkSmartPointer<vtkImageReader2> imgReader;
     imgReader.TakeReference(readerFactory->CreateImageReader2(fn.c_str()));
     imgReader->SetFileName(fn.c_str());
 
-    auto flip = vtkSmartPointer<vtkImageFlip>::New();
+    vtkNew<vtkImageFlip> flip;
     flip->SetInputConnection(imgReader->GetOutputPort());
     flip->SetFilteredAxis(1); // flip y axis
     texture->SetInputConnection(i, flip->GetOutputPort(0));
     ++i;
   }
+  texture->MipmapOn();
+  texture->InterpolateOn();
+
   return texture;
 }
 
 vtkSmartPointer<vtkSliderWidget>
 MakeSliderWidget(SliderProperties const& properties)
 {
-  auto slider = vtkSmartPointer<vtkSliderRepresentation2D>::New();
+  vtkNew<vtkSliderRepresentation2D> slider;
 
   slider->SetMinimumValue(properties.minimumValue);
   slider->SetMaximumValue(properties.maximumValue);
@@ -807,7 +814,7 @@ MakeSliderWidget(SliderProperties const& properties)
   slider->SetTitleHeight(properties.titleHeight);
   slider->SetLabelHeight(properties.labelHeight);
 
-  auto sliderWidget = vtkSmartPointer<vtkSliderWidget>::New();
+  vtkNew<vtkSliderWidget> sliderWidget;
   sliderWidget->SetRepresentation(slider);
 
   return sliderWidget;
