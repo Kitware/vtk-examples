@@ -21,14 +21,8 @@ endif()
 message (STATUS "VTK_VERSION: ${VTK_VERSION}")
 
 if(vtkGUISupportQt_LOADED OR TARGET VTK::GUISupportQt)
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    # Instruct CMake to run moc automatically when needed.
-    set(CMAKE_AUTOMOC ON)
-  else()
-     # Instruct CMake to run moc automatically when needed.
-    set(CMAKE_AUTOMOC ON)
-    set(CMAKE_AUTOUIC ON)
-  endif()
+  # Instruct CMake to run moc automatically when needed.
+  set(CMAKE_AUTOMOC ON)
   # We have ui files, this will bring in the macro: qt5_wrap_ui
   find_package(Qt5Widgets REQUIRED QUIET)
 else()
@@ -50,13 +44,21 @@ if (VTK_VERSION VERSION_LESS "8.90.0")
   # CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.
   add_executable(XXX MACOSX_BUNDLE
     ${CXX_FILES} ${UISrcs} ${QT_WRAP})
-  qt5_use_modules(XXX Core Gui)
+  if (Qt5Widgets_VERSION VERSION_LESS "5.11.0")
+    qt5_use_modules(XXX Core Gui Widgets)
+  else()
+    target_link_libraries(XXX Qt5::Core Qt5::Gui Qt5::Widgets)
+  endif()
   target_link_libraries(XXX ${VTK_LIBRARIES})
 else()
   # CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.
   add_executable(XXX MACOSX_BUNDLE
     ${CXX_FILES} ${UISrcs} ${QT_WRAP})
-  qt5_use_modules(XXX Core Gui)
+  if (Qt5Widgets_VERSION VERSION_LESS "5.11.0")
+    qt5_use_modules(XXX Core Gui Widgets)
+  else()
+    target_link_libraries(XXX Qt5::Core Qt5::Gui Qt5::Widgets)
+  endif()
   target_link_libraries(XXX ${VTK_LIBRARIES})
   # vtk_module_autoinit is needed
   vtk_module_autoinit(
