@@ -309,14 +309,8 @@ function registerListener(event, func) {
 <span class=nb>message</span> <span class=p>(</span><span class=s>STATUS</span> <span class=s2>&quot;VTK_VERSION: ${VTK_VERSION}&quot;</span><span class=p>)</span>
 
 <span class=nb>if</span><span class=p>(</span><span class=s>vtkGUISupportQt_LOADED</span> <span class=s>OR</span> <span class=s>TARGET</span> <span class=s>VTK::GUISupportQt</span><span class=p>)</span>
-  <span class=nb>if</span> <span class=p>(</span><span class=s>VTK_VERSION</span> <span class=s>VERSION_LESS</span> <span class=s2>&quot;8.90.0&quot;</span><span class=p>)</span>
-    <span class=c># Instruct CMake to run moc automatically when needed.</span>
-    <span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_AUTOMOC</span> <span class=s>ON</span><span class=p>)</span>
-  <span class=nb>else</span><span class=p>()</span>
-     <span class=c># Instruct CMake to run moc automatically when needed.</span>
-    <span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_AUTOMOC</span> <span class=s>ON</span><span class=p>)</span>
-    <span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_AUTOUIC</span> <span class=s>ON</span><span class=p>)</span>
-  <span class=nb>endif</span><span class=p>()</span>
+  <span class=c># Instruct CMake to run moc automatically when needed.</span>
+  <span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_AUTOMOC</span> <span class=s>ON</span><span class=p>)</span>
   <span class=c># We have ui files, this will bring in the macro: qt5_wrap_ui</span>
   <span class=nb>find_package</span><span class=p>(</span><span class=s>Qt5Widgets</span> <span class=s>REQUIRED</span> <span class=s>QUIET</span><span class=p>)</span>
 <span class=nb>else</span><span class=p>()</span>
@@ -338,13 +332,21 @@ function registerListener(event, func) {
   <span class=c># CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.</span>
   <span class=nb>add_executable</span><span class=p>(</span><span class=s>BorderWidgetQt</span> <span class=s>MACOSX_BUNDLE</span>
     <span class=o>${</span><span class=nv>CXX_FILES</span><span class=o>}</span> <span class=o>${</span><span class=nv>UISrcs</span><span class=o>}</span> <span class=o>${</span><span class=nv>QT_WRAP</span><span class=o>}</span><span class=p>)</span>
-  <span class=nb>qt5_use_modules</span><span class=p>(</span><span class=s>BorderWidgetQt</span> <span class=s>Core</span> <span class=s>Gui</span><span class=p>)</span>
+  <span class=nb>if</span> <span class=p>(</span><span class=s>Qt5Widgets_VERSION</span> <span class=s>VERSION_LESS</span> <span class=s2>&quot;5.11.0&quot;</span><span class=p>)</span>
+    <span class=nb>qt5_use_modules</span><span class=p>(</span><span class=s>BorderWidgetQt</span> <span class=s>Core</span> <span class=s>Gui</span> <span class=s>Widgets</span><span class=p>)</span>
+  <span class=nb>else</span><span class=p>()</span>
+    <span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>BorderWidgetQt</span> <span class=s>Qt5::Core</span> <span class=s>Qt5::Gui</span> <span class=s>Qt5::Widgets</span><span class=p>)</span>
+  <span class=nb>endif</span><span class=p>()</span>
   <span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>BorderWidgetQt</span> <span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span><span class=p>)</span>
 <span class=nb>else</span><span class=p>()</span>
   <span class=c># CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.</span>
   <span class=nb>add_executable</span><span class=p>(</span><span class=s>BorderWidgetQt</span> <span class=s>MACOSX_BUNDLE</span>
     <span class=o>${</span><span class=nv>CXX_FILES</span><span class=o>}</span> <span class=o>${</span><span class=nv>UISrcs</span><span class=o>}</span> <span class=o>${</span><span class=nv>QT_WRAP</span><span class=o>}</span><span class=p>)</span>
-  <span class=nb>qt5_use_modules</span><span class=p>(</span><span class=s>BorderWidgetQt</span> <span class=s>Core</span> <span class=s>Gui</span><span class=p>)</span>
+  <span class=nb>if</span> <span class=p>(</span><span class=s>Qt5Widgets_VERSION</span> <span class=s>VERSION_LESS</span> <span class=s2>&quot;5.11.0&quot;</span><span class=p>)</span>
+    <span class=nb>qt5_use_modules</span><span class=p>(</span><span class=s>BorderWidgetQt</span> <span class=s>Core</span> <span class=s>Gui</span> <span class=s>Widgets</span><span class=p>)</span>
+  <span class=nb>else</span><span class=p>()</span>
+    <span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>BorderWidgetQt</span> <span class=s>Qt5::Core</span> <span class=s>Qt5::Gui</span> <span class=s>Qt5::Widgets</span><span class=p>)</span>
+  <span class=nb>endif</span><span class=p>()</span>
   <span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>BorderWidgetQt</span> <span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span><span class=p>)</span>
   <span class=c># vtk_module_autoinit is needed</span>
   <span class=nb>vtk_module_autoinit</span><span class=p>(</span>
