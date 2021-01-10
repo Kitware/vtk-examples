@@ -4,7 +4,10 @@ cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
 
 project(XXX)
 
-find_package(VTK COMPONENTS ZZZ QUIET)
+find_package(VTK COMPONENTS ZZZ
+  QUIET
+)
+
 if (NOT VTK_FOUND)
   message("Skipping XXX: ${VTK_NOT_FOUND_MESSAGE}")
   return ()
