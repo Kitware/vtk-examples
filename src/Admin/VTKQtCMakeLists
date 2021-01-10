@@ -9,8 +9,9 @@ endif()
 
 PROJECT(XXX)
 
-find_package(VTK COMPONENTS
-  ZZZ
+find_package(VTK COMPONENTS ZZZ
+  vtkGUISupportQt
+  vtkRenderingQt
   QUIET
 )
 
