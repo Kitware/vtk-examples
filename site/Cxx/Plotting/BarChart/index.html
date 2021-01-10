@@ -64,6 +64,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkIntArray.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPen.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPlot.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
@@ -84,19 +85,19 @@ function registerListener(event, func) {
 <span class=p>{</span>
   <span class=c1>// Colors</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkColorSeries</span><span class=o>&gt;</span> <span class=n>colorSeries</span><span class=p>;</span>
-</span>  <span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColorScheme</span><span class=p>(</span>
-<span class=hll>      <span class=n>vtkColorSeries</span><span class=o>::</span><span class=n>BREWER_SEQUENTIAL_YELLOW_ORANGE_BROWN_3</span><span class=p>);</span>
+</span>  <span class=c1>// colorSeries-&gt;SetColorScheme(</span>
+<span class=hll>  <span class=c1>//    vtkColorSeries::BREWER_SEQUENTIAL_YELLOW_ORANGE_BROWN_3);</span>
 </span><span class=hll>  <span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColorScheme</span><span class=p>(</span><span class=n>vtkColorSeries</span><span class=o>::</span><span class=n>BREWER_DIVERGING_SPECTRAL_3</span><span class=p>);</span>
-</span>  <span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColorScheme</span><span class=p>(</span>
-<span class=hll>      <span class=n>vtkColorSeries</span><span class=o>::</span><span class=n>BREWER_DIVERGING_BROWN_BLUE_GREEN_3</span><span class=p>);</span>
-</span><span class=hll>  <span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColorScheme</span><span class=p>(</span><span class=n>vtkColorSeries</span><span class=o>::</span><span class=n>BREWER_SEQUENTIAL_BLUE_GREEN_3</span><span class=p>);</span>
-</span><span class=hll>  <span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColorScheme</span><span class=p>(</span><span class=n>vtkColorSeries</span><span class=o>::</span><span class=n>BREWER_SEQUENTIAL_BLUE_PURPLE_3</span><span class=p>);</span>
-</span><span class=hll>  <span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColorScheme</span><span class=p>(</span><span class=n>vtkColorSeries</span><span class=o>::</span><span class=n>BREWER_DIVERGING_PURPLE_ORANGE_3</span><span class=p>);</span>
+</span><span class=hll>  <span class=c1>// colorSeries-&gt;SetColorScheme(vtkColorSeries::BREWER_DIVERGING_PURPLE_ORANGE_3);</span>
+</span>  <span class=c1>// colorSeries-&gt;SetColorScheme(</span>
+<span class=hll>  <span class=c1>//    vtkColorSeries::BREWER_DIVERGING_BROWN_BLUE_GREEN_3);</span>
+</span><span class=hll>  <span class=c1>// colorSeries-&gt;SetColorScheme(vtkColorSeries::BREWER_SEQUENTIAL_BLUE_GREEN_3);</span>
+</span><span class=hll>  <span class=c1>// colorSeries-&gt;SetColorScheme(vtkColorSeries::BREWER_SEQUENTIAL_BLUE_PURPLE_3);</span>
 </span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
-</span><span class=hll>  <span class=n>vtkColor3d</span> <span class=n>backgroundColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Sienna&quot;</span><span class=p>);</span>
-</span><span class=hll>  <span class=n>vtkColor3d</span> <span class=n>axisColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Wheat&quot;</span><span class=p>);</span>
-</span><span class=hll>  <span class=n>vtkColor3d</span> <span class=n>titleColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Wheat&quot;</span><span class=p>);</span>
+</span><span class=hll>  <span class=n>vtkColor3d</span> <span class=n>backgroundColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Seashell&quot;</span><span class=p>);</span>
+</span><span class=hll>  <span class=n>vtkColor3d</span> <span class=n>axisColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>);</span>
+</span><span class=hll>  <span class=n>vtkColor3d</span> <span class=n>titleColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MidnightBlue&quot;</span><span class=p>);</span>
 </span>
   <span class=c1>// Set up a 2D scene, add an XY chart to it</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkContextView</span><span class=o>&gt;</span> <span class=n>view</span><span class=p>;</span>
@@ -114,6 +115,7 @@ function registerListener(event, func) {
   <span class=n>xAxis</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>16</span><span class=p>);</span>
   <span class=n>xAxis</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>ItalicOn</span><span class=p>();</span>
   <span class=n>xAxis</span><span class=o>-&gt;</span><span class=n>GetLabelProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>axisColor</span><span class=p>.</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>xAxis</span><span class=o>-&gt;</span><span class=n>GetGridPen</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>));</span>
 
 <span class=hll>  <span class=n>vtkAxis</span><span class=o>*</span> <span class=n>yAxis</span> <span class=o>=</span> <span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=n>vtkAxis</span><span class=o>::</span><span class=n>LEFT</span><span class=p>);</span>
 </span>  <span class=n>yAxis</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Circulation&quot;</span><span class=p>);</span>
@@ -121,6 +123,7 @@ function registerListener(event, func) {
   <span class=n>yAxis</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>16</span><span class=p>);</span>
   <span class=n>yAxis</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>ItalicOn</span><span class=p>();</span>
   <span class=n>yAxis</span><span class=o>-&gt;</span><span class=n>GetLabelProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>axisColor</span><span class=p>.</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>yAxis</span><span class=o>-&gt;</span><span class=n>GetGridPen</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>));</span>
 
   <span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Circulation 2008, 2009, 2010&quot;</span><span class=p>);</span>
   <span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>24</span><span class=p>);</span>
@@ -199,7 +202,10 @@ function registerListener(event, func) {
   <span class=s>vtkRenderingFreeType</span>
   <span class=s>vtkRenderingGL2PSOpenGL2</span>
   <span class=s>vtkRenderingOpenGL2</span>
-  <span class=s>vtkViewsContext2D</span> <span class=s>QUIET</span><span class=p>)</span>
+  <span class=s>vtkViewsContext2D</span>
+  <span class=s>QUIET</span>
+<span class=p>)</span>
+
 <span class=nb>if</span> <span class=p>(</span><span class=s>NOT</span> <span class=s>VTK_FOUND</span><span class=p>)</span>
   <span class=nb>message</span><span class=p>(</span><span class=s2>&quot;Skipping BarChart: ${VTK_NOT_FOUND_MESSAGE}&quot;</span><span class=p>)</span>
   <span class=nb>return</span> <span class=p>()</span>

@@ -209,7 +209,10 @@ function registerListener(event, func) {
   <span class=n>vtkRenderingCore</span>
   <span class=n>vtkRenderingFreeType</span>
   <span class=n>vtkRenderingGL2PSOpenGL2</span>
-  <span class=n>vtkRenderingOpenGL2</span> <span class=n>QUIET</span><span class=p>)</span>
+  <span class=n>vtkRenderingOpenGL2</span>
+  <span class=n>QUIET</span>
+<span class=p>)</span>
+
 <span class=k>if</span> <span class=p>(</span><span class=n>NOT</span> <span class=n>VTK_FOUND</span><span class=p>)</span>
   <span class=n>message</span><span class=p>(</span><span class=s>&quot;Skipping DataAnimationSubclass: ${VTK_NOT_FOUND_MESSAGE}&quot;</span><span class=p>)</span>
   <span class=k>return</span> <span class=p>()</span>

@@ -193,7 +193,10 @@ function registerListener(event, func) {
   <span class=s>vtkRenderingCore</span>
   <span class=s>vtkRenderingFreeType</span>
   <span class=s>vtkRenderingGL2PSOpenGL2</span>
-  <span class=s>vtkRenderingOpenGL2</span> <span class=s>QUIET</span><span class=p>)</span>
+  <span class=s>vtkRenderingOpenGL2</span>
+  <span class=s>QUIET</span>
+<span class=p>)</span>
+
 <span class=nb>if</span> <span class=p>(</span><span class=s>NOT</span> <span class=s>VTK_FOUND</span><span class=p>)</span>
   <span class=nb>message</span><span class=p>(</span><span class=s2>&quot;Skipping ExtractPointsDemo: ${VTK_NOT_FOUND_MESSAGE}&quot;</span><span class=p>)</span>
   <span class=nb>return</span> <span class=p>()</span>
