@@ -7,6 +7,7 @@
 #include <vtkIntArray.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
+#include <vtkPen.h>
 #include <vtkPlot.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
@@ -27,19 +28,19 @@ int main(int, char*[])
 {
   // Colors
   vtkNew<vtkColorSeries> colorSeries;
-  colorSeries->SetColorScheme(
-      vtkColorSeries::BREWER_SEQUENTIAL_YELLOW_ORANGE_BROWN_3);
+  // colorSeries->SetColorScheme(
+  //    vtkColorSeries::BREWER_SEQUENTIAL_YELLOW_ORANGE_BROWN_3);
   colorSeries->SetColorScheme(vtkColorSeries::BREWER_DIVERGING_SPECTRAL_3);
-  colorSeries->SetColorScheme(
-      vtkColorSeries::BREWER_DIVERGING_BROWN_BLUE_GREEN_3);
-  colorSeries->SetColorScheme(vtkColorSeries::BREWER_SEQUENTIAL_BLUE_GREEN_3);
-  colorSeries->SetColorScheme(vtkColorSeries::BREWER_SEQUENTIAL_BLUE_PURPLE_3);
-  colorSeries->SetColorScheme(vtkColorSeries::BREWER_DIVERGING_PURPLE_ORANGE_3);
+  // colorSeries->SetColorScheme(vtkColorSeries::BREWER_DIVERGING_PURPLE_ORANGE_3);
+  // colorSeries->SetColorScheme(
+  //    vtkColorSeries::BREWER_DIVERGING_BROWN_BLUE_GREEN_3);
+  // colorSeries->SetColorScheme(vtkColorSeries::BREWER_SEQUENTIAL_BLUE_GREEN_3);
+  // colorSeries->SetColorScheme(vtkColorSeries::BREWER_SEQUENTIAL_BLUE_PURPLE_3);
 
   vtkNew<vtkNamedColors> colors;
-  vtkColor3d backgroundColor = colors->GetColor3d("Sienna");
-  vtkColor3d axisColor = colors->GetColor3d("Wheat");
-  vtkColor3d titleColor = colors->GetColor3d("Wheat");
+  vtkColor3d backgroundColor = colors->GetColor3d("Seashell");
+  vtkColor3d axisColor = colors->GetColor3d("Black");
+  vtkColor3d titleColor = colors->GetColor3d("MidnightBlue");
 
   // Set up a 2D scene, add an XY chart to it
   vtkNew<vtkContextView> view;
@@ -57,6 +58,7 @@ int main(int, char*[])
   xAxis->GetTitleProperties()->SetFontSize(16);
   xAxis->GetTitleProperties()->ItalicOn();
   xAxis->GetLabelProperties()->SetColor(axisColor.GetData());
+  xAxis->GetGridPen()->SetColor(colors->GetColor4ub("Black"));
 
   vtkAxis* yAxis = chart->GetAxis(vtkAxis::LEFT);
   yAxis->SetTitle("Circulation");
@@ -64,6 +66,7 @@ int main(int, char*[])
   yAxis->GetTitleProperties()->SetFontSize(16);
   yAxis->GetTitleProperties()->ItalicOn();
   yAxis->GetLabelProperties()->SetColor(axisColor.GetData());
+  yAxis->GetGridPen()->SetColor(colors->GetColor4ub("Black"));
 
   chart->SetTitle("Circulation 2008, 2009, 2010");
   chart->GetTitleProperties()->SetFontSize(24);
