@@ -22,8 +22,14 @@ endif()
 message (STATUS "VTK_VERSION: ${VTK_VERSION}")
 
 if(vtkGUISupportQt_LOADED OR TARGET VTK::GUISupportQt)
-  # Instruct CMake to run moc automatically when needed.
-  set(CMAKE_AUTOMOC ON)
+  if (VTK_VERSION VERSION_LESS "8.90.0")
+    # Instruct CMake to run moc automatically when needed.
+    set(CMAKE_AUTOMOC ON)
+  else()
+     # Instruct CMake to run moc and uic automatically when needed.
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTOUIC ON)
+  endif()
   # We have ui files, this will bring in the macro: qt5_wrap_ui
   find_package(Qt5Widgets REQUIRED QUIET)
 else()
