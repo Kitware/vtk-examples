@@ -131,7 +131,7 @@ if(vtkGUISupportQt_LOADED OR TARGET VTK::GUISupportQt)
     # Instruct CMake to run moc automatically when needed.
     set(CMAKE_AUTOMOC ON)
   else()
-    # Instruct CMake to run moc automatically when needed.
+    # Instruct CMake to run moc and uic automatically when needed.
     set(CMAKE_AUTOMOC ON)
     set(CMAKE_AUTOUIC ON)
   endif()
