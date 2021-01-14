@@ -3,7 +3,7 @@
 
 #include <QVTKOpenGLNativeWidget.h>
 
-#include "QtBarChart.h"
+#include "BarChartQt.h"
 
 int main(int argc, char** argv)
 {
@@ -13,8 +13,8 @@ int main(int argc, char** argv)
   // QT Stuff
   QApplication app(argc, argv);
 
-  QtBarChart qtBarChart;
-  qtBarChart.show();
+  BarChartQt BarChartQt;
+  BarChartQt.show();
 
   return app.exec();
 }
