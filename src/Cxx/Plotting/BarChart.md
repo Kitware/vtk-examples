@@ -2,5 +2,4 @@
 
 This example shows how to create a Bar Chart.
 
-!!! seealso
-    the [BarChartQt](../../../Qt/BarChartQt) example.
+Also see the [BarChartQt](../../../Cxx/Qt/BarChartQt) example.
