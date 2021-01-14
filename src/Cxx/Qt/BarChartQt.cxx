@@ -1,8 +1,8 @@
-#include "QtBarChart.h"
+#include "BarChartQt.h"
 
 // This is included here because it is forward declared in
-// QtBarChart.h
-#include "ui_QtBarChart.h"
+// BarChartQt.h
+#include "ui_BarChartQt.h"
 
 #include <vtkAxis.h>
 #include <vtkChartXY.h>
@@ -41,9 +41,9 @@ int data_2010[] = {9058,  10941, 9979,  10270, 8900, 11228,
 } // namespace
 
 // Constructor
-QtBarChart::QtBarChart()
+BarChartQt::BarChartQt()
 {
-  this->ui = new Ui_QtBarChart;
+  this->ui = new Ui_BarChartQt;
   this->ui->setupUi(this);
 
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindow;
@@ -153,7 +153,7 @@ QtBarChart::QtBarChart()
   connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
 }
 
-void QtBarChart::slotExit()
+void BarChartQt::slotExit()
 {
   std::cout << "Exiting" << std::endl;
   qApp->exit();

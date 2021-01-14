@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>QtBarChart</class>
- <widget class="QMainWindow" name="QtBarChart">
+ <class>BarChartQt</class>
+ <widget class="QMainWindow" name="BarChartQt">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>QtBarChart</string>
+   <string>BarChartQt</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QVTKOpenGLNativeWidget" name="qvtkWidget">
