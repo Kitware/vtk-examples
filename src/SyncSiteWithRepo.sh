@@ -37,7 +37,20 @@ echo " Web Repository URL:    "$WEB_REPO_URL
 echo " Web Repository DIR:    "$WEB_REPO_DIR
 echo " VTK Source DIR:        "$VTK_SOURCE_DIR
 
-echo "1) Copy the baseline images and other essential files"
+
+echo "1) Make the directories (if needed)"
+mkdir -p ${WEB_REPO_DIR}/docs
+mkdir -p ${WEB_REPO_DIR}/src
+mkdir -p ${WEB_REPO_DIR}/site
+mkdir -p ${WEB_REPO_DIR}/_layouts
+mkdir -p ${WEB_REPO_DIR}/custom_theme
+mkdir -p ${WEB_REPO_DIR}/src/Artifacts
+mkdir -p ${WEB_REPO_DIR}/src/Images
+mkdir -p ${WEB_REPO_DIR}/src/stylesheets
+mkdir -p ${WEB_REPO_DIR}/src/Testing/Baseline/
+mkdir -p ${WEB_REPO_DIR}/src/VTKBook/Figures/
+
+echo "2) Copy the baseline images and other essential files"
 rsync -zavh index.html ${WEB_REPO_DIR}
 rsync -zavh LICENSE ${WEB_REPO_DIR}
 rsync -zavh mkdocs.yml ${WEB_REPO_DIR}
@@ -52,22 +65,22 @@ rsync -zavh src/Testing/Baseline/ ${WEB_REPO_DIR}/src/Testing/Baseline/
 rsync -zavh src/VTKBook/Figures/ ${WEB_REPO_DIR}/src/VTKBook/Figures/
 cp web_gitignore ${WEB_REPO_DIR}/.gitignore
 
-echo "2) Create coverage files"
+echo "3) Create coverage files"
 (cd src/Admin; python ./VTKClassesUsedInExamples.py -a .. ${WEB_REPO_DIR}/src/Coverage)
 (cd src/Admin; python ./VTKClassesUsedInExamples.py -a -u  .. ${WEB_REPO_DIR}/src/Coverage)
 
-echo "3) Scrape the repo"
+echo "4.1) Scrape the repo"
 rm -rf ${WEB_REPO_DIR}/docs/*
 rm -rf ${WEB_REPO_DIR}/site/*
 
 src/Admin/ScrapeRepo.py src ${SITE_URL} ${WEB_SITE_URL} ${WEB_REPO_URL} ${WEB_REPO_DIR} ${VTK_SOURCE_DIR}
 
-echo "3.1) Scrape the repo again (fixes a bug where the CMakeLists file is bad on the first run)"
+echo "4.2) Scrape the repo again (fixes a bug where the CMakeLists file is bad on the first run)"
 #rm -rf ${WEB_REPO_DIR}/docs/*
 #rm -rf ${WEB_REPO_DIR}/site/*
 src/Admin/ScrapeRepo.py src ${SITE_URL} ${WEB_SITE_URL} ${WEB_REPO_URL} ${WEB_REPO_DIR} ${VTK_SOURCE_DIR}
 
-echo "4) Check for a successful scrape"
+echo "5) Check for a successful scrape"
 pushd ${WEB_REPO_DIR}/docs
 count=$((`find . -name \*.md | wc -l`))
 popd
@@ -79,7 +92,7 @@ if test $count -lt $expected; then
    exit 1
 fi
 
-echo "5) Update the html pages"
+echo "6) Update the html pages"
 mkdir -p ${WEB_REPO_DIR}/docs/stylesheets
 cp ${WEB_REPO_DIR}/src/stylesheets/extra.css ${WEB_REPO_DIR}/docs/stylesheets/extra.css
 pushd ${WEB_REPO_DIR}
@@ -91,7 +104,7 @@ popd
 #exit
 
 #####################
-echo "6) Minify Html"
+echo "7) Minify Html"
 pushd ${WEB_REPO_DIR}/site
 find . -name index.html -exec htmlmin {} {} \;
 popd
