@@ -149,7 +149,6 @@ class VTKClassesInExamples(object):
         vtk_class_pattern = re.compile(r'<span class=\"icon\">C.*?href=\"(.*?)\" target=\"_self\">(.*?)</a>')
         try:
             f = urlopen(self.vtk_class_url)
-            count = [0, 0]
             for line in f:
                 s = re.findall(vtk_class_pattern, line.decode('utf-8'))
                 if s:
