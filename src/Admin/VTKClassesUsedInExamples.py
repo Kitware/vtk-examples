@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import json
 import os
 import re
+import time
 from collections import defaultdict
+from pathlib import Path, PurePath
 from urllib.request import urlopen
 
 
@@ -11,17 +14,18 @@ def get_program_parameters():
     import argparse
     description = 'Produce tables of VTK classes used in the examples.'
     epilogue = '''
+A JSON file consisting of vtk classes cross-referenced to the examples is produced.
+   It is called vtk_vtk-examples_xref.json.
+The markdown tables and the JSON file are written to some_path/src/Coverage
+
 Typical usage:
    To produce tables of classes used in some_path/VTKExamples/src:
       VTKClassesUsedInExamples.py some_path/VTKExamples/src
-   To produce tables of classes used and those not used in some_path/VTKExamples/src:
+   To produce tables of classes not used in some_path/VTKExamples/src:
       VTKClassesUsedInExamples.py some_path/VTKExamples/src -u
-
-   The markdown tables are written to some_path/src/Coverage
-
-   Note:
-      To add links to the VTK class documentation on the web, just add -a as a parameter.
-      To vary the number of columns for unused classes to say 8, just add -c8 as a parameter.
+Note:
+   To add links to the VTK class documentation on the web, just add -a as a parameter.
+   To vary the number of columns for unused classes to say 8, just add -c8 as a parameter.
 '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawTextHelpFormatter)
@@ -35,13 +39,29 @@ Typical usage:
                         help='Specify the number of columns for excluded VTK classes output, default is 5.', nargs='?',
                         const=3, type=int, default=3)
     parser.add_argument('-u', '--unused_vtk',
-                        help='Select unused VTK classes output in addition to the used VTK classes output.',
+                        help='Select unused VTK classes output.',
                         action='store_true')
     parser.add_argument('-a', '--add_vtk_html', help='Add html paths to the VTK classes.', action='store_true')
 
     args = parser.parse_args()
-    return args.vtk_examples, args.coverage_dest, args.columns, args.excluded_columns,\
+    return args.vtk_examples, args.coverage_dest, args.columns, args.excluded_columns, \
            args.unused_vtk, args.add_vtk_html
+
+
+class ElapsedTime:
+    """
+    Return the value (in fractional seconds) of a performance counter,
+     i.e. a clock with the highest available resolution to measure a short duration.
+    This includes sleep time and is system-wide.
+    """
+
+    def __enter__(self):
+        self.start = time.perf_counter()
+        return self
+
+    def __exit__(self, *args):
+        self.end = time.perf_counter()
+        self.interval = self.end - self.start
 
 
 def print_table(table, filename):
@@ -52,40 +72,14 @@ def print_table(table, filename):
     :return:
     """
     if filename:
-        path, ext = os.path.splitext(filename)
-        if not ext.lower() in ['.md']:
-            ext = '.md'
-        fn = path + ext
-        with open(fn, 'w') as f:
+        # Assume the suffix is .md make sure it is lowercase.
+        path = filename.with_suffix('').with_suffix('.md')
+        with open(path, 'w') as f:
             f.writelines(table)
             f.close()
     else:
         for row in table:
             print(row)
-
-
-def path_splitter(path):
-    """
-    Split a path into its constituent parts.
-    Might be better written as a recursive function.
-    :param path: The path to split.
-    :return: A list of the path's constituent parts.
-    """
-    res = []
-    while True:
-        p = os.path.split(path)
-        if p[0] == path:
-            # Were done, this is an absolute path.
-            res.insert(0, p[0])
-            break
-        elif p[1] == path:
-            # Were done, this is a relative path.
-            res.insert(0, p[0])
-            break
-        else:
-            path = p[0]
-            res.insert(0, p[1])
-    return res
 
 
 class VTKClassesInExamples(object):
@@ -95,7 +89,7 @@ class VTKClassesInExamples(object):
 
     def __init__(self, base_directory, output_directory, columns, excluded_columns, unused_vtk, add_vtk_html):
         """
-        :param base_directory: The path to the VTK Examples sources, usually some_path/VTKExamples/src
+        :param base_directory: The path to the VTK Examples sources, usually some_path/vtk-examples/src
         :param output_directory: Where the coverage file will be written.
         :param columns: When generating the classes not used table, the number of columns to use.
         :param excluded_columns: When generating the excluded classes table, the number of columns to use.
@@ -128,6 +122,18 @@ class VTKClassesInExamples(object):
         # Markdown tables of classes not used keyed on [example type]
         self.classes_not_used_table = dict()
 
+        # This cross references the VTK Class with the relevant example indexed by
+        #  VTK Class and Language.
+        # The first index is the VTK class.
+        # The second index corresponds to the languages: CSharp, Cxx, Java, Python;
+        #  for these indexes, each value contains the comma separated
+        #  list of relevant examples or None.
+        #  There is an extra second index, VTKLink, whose value contains the relevant
+        #  link to the VTK class description.
+        self.vtk_examples_xref = defaultdict(lambda: defaultdict(str))
+        # We need this to build the cross-reference table.
+        self.vtk_examples_link = 'https://kitware.github.io/vtk-examples/site/'
+
         # Used to signal if the tables have been built, see build_tables()
         self.used_tables_built = False
         self.not_used_tables_built = False
@@ -136,6 +142,7 @@ class VTKClassesInExamples(object):
         """
         Parse the html file, getting a list of the classes.
         """
+        vtk_only_pattern = re.compile(r'^(vtk[A-Za-z0-9]+)$')
         # We want the first match, hence the use of ?.
         # Adding a ? on a quantifier (?, * or +) makes it non-greedy.
         # Selecting only objects marked as classes.
@@ -146,10 +153,12 @@ class VTKClassesInExamples(object):
                 s = re.findall(vtk_class_pattern, line.decode('utf-8'))
                 if s:
                     for item in s:
-                        # Remove structs.
-                        if item[0].startswith('struct'):
+                        # We only want vtk classes
+                        if item[0].startswith('classvtk'):
+                            m = vtk_only_pattern.match(item[1])
+                            if m:
+                                self.vtk_classes[item[1]] = item[0]
                             continue
-                        self.vtk_classes[item[1]] = item[0]
             f.close()
         except IOError:
             print('Unable to open the URL: {:s}'.format(self.vtk_class_url))
@@ -161,17 +170,17 @@ class VTKClassesInExamples(object):
         for eg in self.example_types:
             # Get the paths to the examples in a particular sub directory e.g Cxx.
             file_paths = defaultdict(list)
-            directory = os.path.join(self.base_directory, eg)
+            directory = Path(self.base_directory, eg)
             # Does the directory exist?
-            if not os.path.isdir(directory):
-                raise RuntimeError('Non-existent folder: {:s}'.format(directory))
-            exclude_dirs = None
+            if not directory.is_dir():
+                raise RuntimeError(f'Non-existent folder: {str(directory)}')
+            exclude_dirs = ['Deprecated']
             if eg == 'CSharp':
                 fn_pattern = re.compile(r'^[0-9a-zA-Z_\-]+\.cs$')
             elif eg == 'Cxx':
                 fn_pattern = re.compile(
                     r'^[0-9a-zA-Z_\-]+\.(hxx|HXX|hpp|HPP|[hH]\+\+|[hH]|cpp|CPP|cxx|CXX|[cC]\+\+|txx|TXX)$')
-                exclude_dirs = ['CMakeTechniques', 'Untested']
+                exclude_dirs = exclude_dirs + ['CMakeTechniques', 'Untested']
             elif eg == 'Java':
                 fn_pattern = re.compile(r'^[0-9a-zA-Z_\-]+\.java$')
             elif eg == 'Python':
@@ -180,8 +189,8 @@ class VTKClassesInExamples(object):
                 raise RuntimeError('Unknown example type.')
 
             # Walk the tree.
-            for root, directories, files in os.walk(directory):
-                sp = path_splitter(root)
+            for root, directories, files in os.walk(str(directory)):
+                sp = PurePath(root).parts
                 idx = sp.index(eg)
                 key = '/'.join(sp[idx:])
                 if exclude_dirs:
@@ -190,7 +199,7 @@ class VTKClassesInExamples(object):
                 for filename in files:
                     m = fn_pattern.match(filename)
                     if m:
-                        file_paths[key].append(os.path.join(root, filename))
+                        file_paths[key].append(str(Path(root, filename)))
             self.example_file_paths[eg] = file_paths
 
     def vtk_classes_in_examples(self):
@@ -223,10 +232,42 @@ class VTKClassesInExamples(object):
                             if m:
                                 c = m.group(m.lastindex)
                                 if c in self.vtk_classes:
-                                    # Just get the file name
-                                    sp = path_splitter(fn)
-                                    res[c][k].add(sp[-1])
+                                    res[c][k].add(Path(fn).stem)
             self.classes_used[eg] = res
+
+    def make_crossreferences(self):
+        """
+        Cross-reference the VTK classes to to the corresponding
+         VTK Example(s) by language(s).
+        :return:
+        """
+
+        for eg in self.example_types:
+            if eg == 'Cxx':
+                excl_classes = self.excluded_classes + ['vtkSmartPointer', 'vtkNew']
+            else:
+                excl_classes = self.excluded_classes
+            vtk_keys = list(sorted(list(self.classes_used[eg].keys()), key=lambda x: (x.lower(), x.swapcase())))
+            for vtk_class in vtk_keys:
+                if vtk_class not in excl_classes:
+                    paths = self.classes_used[eg][vtk_class]
+                    # Here we are assuming no two files have the same name.
+                    # tmp will be used to generate a sorted list of files.
+                    tmp = dict()
+                    for path, fn in paths.items():
+                        for f in fn:
+                            tmp[f] = f'[{f}]({self.vtk_examples_link}{path}/{f})'
+                    tmp_keys = list(sorted(list(tmp.keys()), key=lambda x: (x.lower(), x.swapcase())))
+                    f_list = list()
+                    for k in tmp_keys:
+                        f_list.append(tmp[k])
+                    tmp.clear()
+                    self.vtk_examples_xref[vtk_class][eg] = ', '.join(map(str, f_list))
+
+            for vtk_class in vtk_keys:
+                if vtk_class not in excl_classes:
+                    html_class = self.vtk_html_fmt.format(vtk_class, self.vtk_classes[vtk_class])
+                    self.vtk_examples_xref[vtk_class]['VTKLink'] = html_class
 
     def make_classes_used_table(self):
         """
@@ -301,15 +342,13 @@ class VTKClassesInExamples(object):
                     tmp = dict()
                     for path, fn in paths.items():
                         for f in fn:
-                            # Remove the extension.
-                            f1 = f[:f.rfind('.')]
                             # NOTE: Need leading '/'
-                            tmp[f] = eg_fmt.format(f1, '/' + path + '/' + f1) + ' '
+                            tmp[f] = eg_fmt.format(f, '/' + path + '/' + f)
                     tmp_keys = list(sorted(list(tmp.keys()), key=lambda x: (x.lower(), x.swapcase())))
                     for k in tmp_keys:
-                        f_list += tmp[k]
+                        f_list += tmp[k] + ' '
                     tmp.clear()
-                    res.append(tr.format(html_class, f_list))
+                    res.append(tr.format(html_class, f_list.strip()))
             self.classes_used_table[eg] = res
 
     def make_classes_not_used_table(self):
@@ -363,7 +402,6 @@ class VTKClassesInExamples(object):
                     idx = 0
                     res.append(tr.format(*tmp))
                     tmp = [''] * self.columns
-            res.append(tr.format(*tmp))
             self.classes_not_used_table[eg] = res
 
     def build_tables(self):
@@ -371,6 +409,7 @@ class VTKClassesInExamples(object):
         self.get_example_file_paths()
         self.vtk_classes_in_examples()
         self.make_classes_used_table()
+        self.make_crossreferences()
         self.used_tables_built = True
         if self.unused_vtk:
             self.make_classes_not_used_table()
@@ -381,19 +420,28 @@ class VTKClassesInExamples(object):
             raise RuntimeError('The classes used tables have not been built.')
         if self.unused_vtk and not self.not_used_tables_built:
             raise RuntimeError('The classes not used tables have not been built. Enable -u.')
-        if not os.path.exists(self.output_directory):
-            os.makedirs(self.output_directory)
+        p = Path(self.output_directory)
+        if not p.is_dir():
+            p.mkdir(parents=True, exist_ok=True)
+        if self.vtk_examples_xref:
+            fn = Path(self.output_directory, 'vtk_vtk-examples_xref.json')
+            with open(fn, 'w') as outfile:
+                json.dump(self.vtk_examples_xref, outfile)
         for eg in self.example_types:
             if self.unused_vtk:
-                fn = os.path.join(self.output_directory, eg + 'VTKClassesNotUsed')
+                fn = Path(self.output_directory, eg + 'VTKClassesNotUsed')
                 print_table(self.classes_not_used_table[eg], fn)
             else:
-                fn = os.path.join(self.output_directory, eg + 'VTKClassesUsed')
+                fn = Path(self.output_directory, eg + 'VTKClassesUsed')
                 print_table(self.classes_used_table[eg], fn)
 
 
 def main():
     example_source, coverage_dest, columns, excluded_columns, unused_vtk, add_vtk_html = get_program_parameters()
+    if not Path(example_source).is_dir():
+        print(f'The path: {example_source} does not exist.')
+    if not Path(coverage_dest).is_dir():
+        print(f'The path: {coverage_dest} does not exist.')
     vtk_classes = VTKClassesInExamples(example_source, coverage_dest, columns, excluded_columns, unused_vtk,
                                        add_vtk_html)
     vtk_classes.build_tables()
@@ -401,4 +449,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    with ElapsedTime() as et:
+        main()
+    print('Time taken: {:0.3f}s'.format(et.interval))
