@@ -6,23 +6,19 @@ import os
 import re
 import time
 from collections import defaultdict
+from dataclasses import dataclass
 from pathlib import Path, PurePath
 from urllib.request import urlopen
 
 
 def get_program_parameters():
     import argparse
-    description = 'Produce tables of VTK classes used in the examples.'
+    description = 'Produce tables of VTK classes that are used and unused in the examples.'
     epilogue = '''
 A JSON file consisting of vtk classes cross-referenced to the examples is produced.
    It is called vtk_vtk-examples_xref.json.
 The markdown tables and the JSON file are written to some_path/src/Coverage
 
-Typical usage:
-   To produce tables of classes used in some_path/VTKExamples/src:
-      VTKClassesUsedInExamples.py some_path/VTKExamples/src
-   To produce tables of classes not used in some_path/VTKExamples/src:
-      VTKClassesUsedInExamples.py some_path/VTKExamples/src -u
 Note:
    To add links to the VTK class documentation on the web, just add -a as a parameter.
    To vary the number of columns for unused classes to say 8, just add -c8 as a parameter.
@@ -38,14 +34,19 @@ Note:
     parser.add_argument('-e', '--excluded_columns',
                         help='Specify the number of columns for excluded VTK classes output, default is 5.', nargs='?',
                         const=3, type=int, default=3)
-    parser.add_argument('-u', '--unused_vtk',
-                        help='Select unused VTK classes output.',
-                        action='store_true')
     parser.add_argument('-a', '--add_vtk_html', help='Add html paths to the VTK classes.', action='store_true')
 
     args = parser.parse_args()
-    return args.vtk_examples, args.coverage_dest, args.columns, args.excluded_columns, \
-           args.unused_vtk, args.add_vtk_html
+    return args.vtk_examples, args.coverage_dest, args.columns, args.excluded_columns, args.add_vtk_html
+
+
+@dataclass(frozen=True)
+class Links:
+    """
+    The URL's to the VTK documentation and to the vtk-examples site.
+    """
+    vtk_docs: str = 'https://www.vtk.org/doc/nightly/html/'
+    vtk_examples: str = 'https://kitware.github.io/vtk-examples/site/'
 
 
 class ElapsedTime:
@@ -64,59 +65,37 @@ class ElapsedTime:
         self.interval = self.end - self.start
 
 
-def print_table(table, filename):
-    """
-    The table is printed either to the console or to a file.
-    :param table: The formatted data to print or save to a file.
-    :param filename: File name to use (optional)
-    :return:
-    """
-    if filename:
-        # Assume the suffix is .md make sure it is lowercase.
-        path = filename.with_suffix('').with_suffix('.md')
-        with open(path, 'w') as f:
-            f.writelines(table)
-            f.close()
-    else:
-        for row in table:
-            print(row)
-
-
 class VTKClassesInExamples(object):
     """
     Determine what classes are being used or not used in the examples.
     """
 
-    def __init__(self, base_directory, output_directory, columns, excluded_columns, unused_vtk, add_vtk_html):
+    def __init__(self, base_directory, output_directory, columns, excluded_columns, add_vtk_html):
         """
         :param base_directory: The path to the VTK Examples sources, usually some_path/vtk-examples/src
         :param output_directory: Where the coverage file will be written.
         :param columns: When generating the classes not used table, the number of columns to use.
         :param excluded_columns: When generating the excluded classes table, the number of columns to use.
-        :param unused_vtk: True if the unused VTK class tables are to be generated.
         :param add_vtk_html: True if the Doxygen documentation paths are to be added to the vtk classes in the tables.
         """
         self.example_types = ['CSharp', 'Cxx', 'Java', 'Python']
         # Classes common to most examples.
         self.excluded_classes = ['vtkActor', 'vtkCamera', 'vtkNamedColors', 'vtkPolyDataMapper', 'vtkProperty',
                                  'vtkRenderer', 'vtkRenderWindow', 'vtkRenderWindowInteractor', ]
-        # Where to get the list of VTK classes from.
-        self.vtk_class_url = 'https://www.vtk.org/doc/nightly/html/annotated.html'
-        # This is the path to the details bookmark in the VTK class.
-        self.vtk_html_fmt = '[{:s}](http://www.vtk.org/doc/nightly/html/{:s}#details)'
 
         self.base_directory = base_directory
         self.output_directory = output_directory
         self.columns = columns
         self.excluded_columns = excluded_columns
-        self.unused_vtk = unused_vtk
         self.add_vtk_html = add_vtk_html
+
         # A dictionary consisting of the class name as the key and the link class name as the value.
         self.vtk_classes = dict()
         # A dictionary consisting of [example type][directory name][full file paths of each example ...]
         self.example_file_paths = dict()
         # A dictionary consisting of [example type][vtk class][relative example path]{examples, ...}
         self.classes_used = dict()
+
         # Markdown tables of classes used keyed on [example type]
         self.classes_used_table = dict()
         # Markdown tables of classes not used keyed on [example type]
@@ -131,12 +110,6 @@ class VTKClassesInExamples(object):
         #  There is an extra second index, VTKLink, whose value contains the relevant
         #  link to the VTK class description.
         self.vtk_examples_xref = defaultdict(lambda: defaultdict(str))
-        # We need this to build the cross-reference table.
-        self.vtk_examples_link = 'https://kitware.github.io/vtk-examples/site/'
-
-        # Used to signal if the tables have been built, see build_tables()
-        self.used_tables_built = False
-        self.not_used_tables_built = False
 
     def get_vtk_classes_from_html(self):
         """
@@ -147,8 +120,11 @@ class VTKClassesInExamples(object):
         # Adding a ? on a quantifier (?, * or +) makes it non-greedy.
         # Selecting only objects marked as classes.
         vtk_class_pattern = re.compile(r'<span class=\"icon\">C.*?href=\"(.*?)\" target=\"_self\">(.*?)</a>')
+        links = Links()
+        vtk_docs_link = f'{links.vtk_docs}annotated.html'
+
         try:
-            f = urlopen(self.vtk_class_url)
+            f = urlopen(vtk_docs_link)
             for line in f:
                 s = re.findall(vtk_class_pattern, line.decode('utf-8'))
                 if s:
@@ -161,7 +137,7 @@ class VTKClassesInExamples(object):
                             continue
             f.close()
         except IOError:
-            print('Unable to open the URL: {:s}'.format(self.vtk_class_url))
+            print(f'Unable to open the URL: {vtk_docs_link}')
 
     def get_example_file_paths(self):
         """
@@ -239,9 +215,10 @@ class VTKClassesInExamples(object):
         """
         Cross-reference the VTK classes to to the corresponding
          VTK Example(s) by language(s).
-        :return:
         """
-
+        links = Links()
+        vtk_examples_link = links.vtk_examples
+        vtk_docs_link = links.vtk_docs
         for eg in self.example_types:
             if eg == 'Cxx':
                 excl_classes = self.excluded_classes + ['vtkSmartPointer', 'vtkNew']
@@ -256,7 +233,7 @@ class VTKClassesInExamples(object):
                     tmp = dict()
                     for path, fn in paths.items():
                         for f in fn:
-                            tmp[f] = f'[{f}]({self.vtk_examples_link}{path}/{f})'
+                            tmp[f] = f'[{f}]({vtk_examples_link}{path}/{f})'
                     tmp_keys = list(sorted(list(tmp.keys()), key=lambda x: (x.lower(), x.swapcase())))
                     f_list = list()
                     for k in tmp_keys:
@@ -266,17 +243,15 @@ class VTKClassesInExamples(object):
 
             for vtk_class in vtk_keys:
                 if vtk_class not in excl_classes:
-                    html_class = self.vtk_html_fmt.format(vtk_class, self.vtk_classes[vtk_class])
+                    html_class = f'[{vtk_class}]({vtk_docs_link}{self.vtk_classes[vtk_class]}#details)'
                     self.vtk_examples_xref[vtk_class]['VTKLink'] = html_class
 
     def make_classes_used_table(self):
         """
         Make a table of classes used for each set of examples.
         """
-        if self.add_vtk_html:
-            vtk_html_fmt = self.vtk_html_fmt
-        else:
-            vtk_html_fmt = '{:s}'
+        links = Links()
+        vtk_docs_link = links.vtk_docs
 
         eg_fmt = '[{:s}]({:s})'
         h1 = '# VTK Classes used in the Examples\n\n'
@@ -310,8 +285,9 @@ class VTKClassesInExamples(object):
             res = list()
             res.append(h1)
             res.append(h2.format(eg))
-            res.append('Out of {:d} available VTK classes, {:d} are demonstrated here.\n\n'.format(
-                len(self.vtk_classes), len(self.classes_used[eg])))
+            res.append(
+                f'Out of {len(self.vtk_classes)} available VTK classes,'
+                f' {len(self.classes_used[eg])} are demonstrated here.\n\n')
             # Excluded classes
             res.append(h3.format('Excluded classes'))
             res.append('These classes are excluded since they occur in the majority of the examples:\n\n')
@@ -319,7 +295,10 @@ class VTKClassesInExamples(object):
             res.append(th2ec)
             tmp = []
             for c in list(sorted(excl_classes, key=lambda x: (x.lower(), x.swapcase()))):
-                tmp.append(vtk_html_fmt.format(c, self.vtk_classes[c]))
+                if self.add_vtk_html:
+                    tmp.append(f'[{c}]({vtk_docs_link}{self.vtk_classes[c]}#details)')
+                else:
+                    tmp.append(f'{c}')
                 if len(tmp) == self.excluded_columns:
                     res.append(trec.format(*tmp))
                     del tmp[:]
@@ -332,10 +311,9 @@ class VTKClassesInExamples(object):
             res.append(th1)
             res.append(th2)
             vtk_keys = list(sorted(list(self.classes_used[eg].keys()), key=lambda x: (x.lower(), x.swapcase())))
-            for vtk_class in vtk_keys:
-                if vtk_class not in excl_classes:
-                    html_class = vtk_html_fmt.format(vtk_class, self.vtk_classes[vtk_class])
-                    paths = self.classes_used[eg][vtk_class]
+            for c in vtk_keys:
+                if c not in excl_classes:
+                    paths = self.classes_used[eg][c]
                     f_list = ''
                     # Here we are assuming no two files have the same name.
                     # tmp will be used to generate a sorted list of files.
@@ -348,17 +326,18 @@ class VTKClassesInExamples(object):
                     for k in tmp_keys:
                         f_list += tmp[k] + ' '
                     tmp.clear()
-                    res.append(tr.format(html_class, f_list.strip()))
+                    if self.add_vtk_html:
+                        res.append(tr.format(f'[{c}]({vtk_docs_link}{self.vtk_classes[c]}#details)', f_list.strip()))
+                    else:
+                        res.append(tr.format(f'{c}', f_list.strip()))
             self.classes_used_table[eg] = res
 
     def make_classes_not_used_table(self):
         """
         Make a table of classes that are not used for each set of examples.
         """
-        if self.add_vtk_html:
-            vtk_html_fmt = self.vtk_html_fmt
-        else:
-            vtk_html_fmt = '{:s}'
+        links = Links()
+        vtk_docs_link = links.vtk_docs
 
         h1 = '# VTK Classes not used in the Examples\n\n'
         h2 = '## {:s}\n\n'
@@ -382,44 +361,45 @@ class VTKClassesInExamples(object):
             unused_classes = list()
             for vtk_class in sorted(self.vtk_classes):
                 if vtk_class not in self.classes_used[eg]:
-                    unused_classes.append(vtk_html_fmt.format(vtk_class, self.vtk_classes[vtk_class]))
+                    unused_classes.append(f'{vtk_class}')
             res.append(h1)
             res.append(h2.format(eg))
-            res.append('Out of {:d} available VTK classes, {:d} have not been used.  \n'.format(
-                len(self.vtk_classes), len(unused_classes)))
+            res.append(
+                f'Out of {len(self.vtk_classes)} available VTK classes, {len(unused_classes)} have not been used.\n')
             res.append('\n')
             res.append(th1)
             res.append(th2)
 
-            for i in range(len(unused_classes) % self.columns):
-                unused_classes.append('')
             idx = 0
-            tmp = [''] * self.columns
-            for i in range(0, len(unused_classes)):
-                tmp[idx] = unused_classes[i]
+            tmp = list()
+            for c in unused_classes:
+                if self.add_vtk_html:
+                    tmp.append(f'[{c}]({vtk_docs_link}{self.vtk_classes[c]}#details)')
+                else:
+                    tmp.append(c)
                 idx += 1
                 if idx % self.columns == 0:
-                    idx = 0
+                    while len(tmp) < self.columns:
+                        tmp.append('')
                     res.append(tr.format(*tmp))
-                    tmp = [''] * self.columns
+                    idx = 0
+                    tmp = list()
+            if tmp:
+                while len(tmp) < self.columns:
+                    tmp.append('')
+                res.append(tr.format(*tmp))
+
             self.classes_not_used_table[eg] = res
 
     def build_tables(self):
         self.get_vtk_classes_from_html()
         self.get_example_file_paths()
         self.vtk_classes_in_examples()
-        self.make_classes_used_table()
         self.make_crossreferences()
-        self.used_tables_built = True
-        if self.unused_vtk:
-            self.make_classes_not_used_table()
-            self.not_used_tables_built = True
+        self.make_classes_used_table()
+        self.make_classes_not_used_table()
 
     def print_tables(self):
-        if not self.used_tables_built:
-            raise RuntimeError('The classes used tables have not been built.')
-        if self.unused_vtk and not self.not_used_tables_built:
-            raise RuntimeError('The classes not used tables have not been built. Enable -u.')
         p = Path(self.output_directory)
         if not p.is_dir():
             p.mkdir(parents=True, exist_ok=True)
@@ -428,22 +408,21 @@ class VTKClassesInExamples(object):
             with open(fn, 'w') as outfile:
                 json.dump(self.vtk_examples_xref, outfile)
         for eg in self.example_types:
-            if self.unused_vtk:
-                fn = Path(self.output_directory, eg + 'VTKClassesNotUsed')
-                print_table(self.classes_not_used_table[eg], fn)
-            else:
-                fn = Path(self.output_directory, eg + 'VTKClassesUsed')
-                print_table(self.classes_used_table[eg], fn)
+            fn = Path(self.output_directory, eg + 'VTKClassesUsed.md')
+            with open(fn, 'w') as f:
+                f.writelines(self.classes_used_table[eg])
+            fn = Path(self.output_directory, eg + 'VTKClassesNotUsed.md')
+            with open(fn, 'w') as f:
+                f.writelines(self.classes_not_used_table[eg])
 
 
 def main():
-    example_source, coverage_dest, columns, excluded_columns, unused_vtk, add_vtk_html = get_program_parameters()
+    example_source, coverage_dest, columns, excluded_columns, add_vtk_html = get_program_parameters()
     if not Path(example_source).is_dir():
         print(f'The path: {example_source} does not exist.')
     if not Path(coverage_dest).is_dir():
         print(f'The path: {coverage_dest} does not exist.')
-    vtk_classes = VTKClassesInExamples(example_source, coverage_dest, columns, excluded_columns, unused_vtk,
-                                       add_vtk_html)
+    vtk_classes = VTKClassesInExamples(example_source, coverage_dest, columns, excluded_columns, add_vtk_html)
     vtk_classes.build_tables()
     vtk_classes.print_tables()
 
