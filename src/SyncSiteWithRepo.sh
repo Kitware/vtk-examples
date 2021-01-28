@@ -67,7 +67,6 @@ cp web_gitignore ${WEB_REPO_DIR}/.gitignore
 
 echo "3) Create coverage files"
 (cd src/Admin; python ./VTKClassesUsedInExamples.py -a .. ${WEB_REPO_DIR}/src/Coverage)
-(cd src/Admin; python ./VTKClassesUsedInExamples.py -a -u  .. ${WEB_REPO_DIR}/src/Coverage)
 
 echo "4.1) Scrape the repo"
 rm -rf ${WEB_REPO_DIR}/docs/*
