@@ -13,9 +13,9 @@ from urllib.request import urlopen
 
 def get_program_parameters():
     import argparse
-    description = 'Produce tables of VTK classes that are used and unused in the examples.'
+    description = 'Produce markdown tables of VTK classes that are used/unused in the examples.'
     epilogue = '''
-A JSON file consisting of vtk classes cross-referenced to the examples is produced.
+A JSON file consisting of vtk classes cross-referenced to the examples is also produced.
    It is called vtk_vtk-examples_xref.json.
 The markdown tables and the JSON file are written to some_path/src/Coverage
 
@@ -102,13 +102,15 @@ class VTKClassesInExamples(object):
         self.classes_not_used_table = dict()
 
         # This cross references the VTK Class with the relevant example indexed by
-        #  VTK Class and Language.
+        #    VTK Class and Language.
         # The first index is the VTK class.
-        # The second index corresponds to the languages: CSharp, Cxx, Java, Python;
-        #  for these indexes, each value contains the comma separated
-        #  list of relevant examples or None.
-        #  There is an extra second index, VTKLink, whose value contains the relevant
-        #  link to the VTK class description.
+        # The second index corresponds to the languages: CSharp, Cxx, Java, Python
+        #    and, additionally, VTKLink.
+        # For the indexed languages, each value contains a dictionary consisting of
+        #    the example name as the key and the link as the value or None.
+        # For the index VTKLink, the value contains a dictionary consisting of the name of
+        #    the VTK class as the index and the relevant link to the VTK class description
+        #    as the value.
         self.vtk_examples_xref = defaultdict(lambda: defaultdict(str))
 
     def get_vtk_classes_from_html(self):
@@ -220,31 +222,20 @@ class VTKClassesInExamples(object):
         vtk_examples_link = links.vtk_examples
         vtk_docs_link = links.vtk_docs
         for eg in self.example_types:
-            if eg == 'Cxx':
-                excl_classes = self.excluded_classes + ['vtkSmartPointer', 'vtkNew']
-            else:
-                excl_classes = self.excluded_classes
             vtk_keys = list(sorted(list(self.classes_used[eg].keys()), key=lambda x: (x.lower(), x.swapcase())))
             for vtk_class in vtk_keys:
-                if vtk_class not in excl_classes:
-                    paths = self.classes_used[eg][vtk_class]
-                    # Here we are assuming no two files have the same name.
-                    # tmp will be used to generate a sorted list of files.
-                    tmp = dict()
-                    for path, fn in paths.items():
-                        for f in fn:
-                            tmp[f] = f'[{f}]({vtk_examples_link}{path}/{f})'
-                    tmp_keys = list(sorted(list(tmp.keys()), key=lambda x: (x.lower(), x.swapcase())))
-                    f_list = list()
-                    for k in tmp_keys:
-                        f_list.append(tmp[k])
-                    tmp.clear()
-                    self.vtk_examples_xref[vtk_class][eg] = ', '.join(map(str, f_list))
+                paths = self.classes_used[eg][vtk_class]
+                # Here we are assuming no two files have the same name.
+                # tmp will be used to generate a sorted list of files.
+                tmp = dict()
+                for path, fn in paths.items():
+                    for f in fn:
+                        tmp[f] = f'{vtk_examples_link}{path}/{f}'
+                self.vtk_examples_xref[vtk_class][eg] = tmp
 
             for vtk_class in vtk_keys:
-                if vtk_class not in excl_classes:
-                    html_class = f'[{vtk_class}]({vtk_docs_link}{self.vtk_classes[vtk_class]}#details)'
-                    self.vtk_examples_xref[vtk_class]['VTKLink'] = html_class
+                self.vtk_examples_xref[vtk_class]['VTKLink'] = {
+                    vtk_class: f'{vtk_docs_link}{self.vtk_classes[vtk_class]}#details'}
 
     def make_classes_used_table(self):
         """
