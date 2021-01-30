@@ -6,3 +6,8 @@ src/Coverage
 _layouts/
 custom_theme/
 mkdocs.yml
+# We only need vtk_vtk-examples_xref.json in src/Coverage.
+# Ignore everything inside src/Coverage
+src/Coverage/*
+# ... except vtk_vtk-examples_xref.json in src/Coverage.
+!src/Coverage/vtk_vtk-examples_xref.json
