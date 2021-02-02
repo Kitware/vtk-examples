@@ -6,6 +6,8 @@ It would be appreciated if there are any Python VTK experts who could convert an
 
 ## VTK Classes Summary
 
+This Python script, [SelectExamples](../Python/Utilities/SelectExamples), will let you select examples based on a VTK Class and language. It requires Python 3.7 or later. The following tables will produce similar information.
+
 - [VTK Classes with Examples](/Coverage/PythonVTKClassesUsed.md), this table is really useful when searching for example(s) using a particular class.
 
 - [VTK Classes with No Examples](/Coverage/PythonVTKClassesNotUsed.md), please add examples in your area of expertise!
@@ -345,6 +347,7 @@ This section includes vtkUnstructuredGrid.
 [MultipleViewports](/Python/Visualization/MultipleViewports) |
 [SaveSceneToFieldData](/Python/Utilities/SaveSceneToFieldData) | Save a vtkCamera's state in a vtkDataSet's vtkFieldData and restore it.
 [SaveSceneToFile](/Python/Utilities/SaveSceneToFile) | Save a vtkCamera's state in a file and restore it.
+[SelectExamples](/Python/Utilities/SelectExamples) | Given a VTK Class and a language, select the matching examples.
 [Screenshot](/Python/Utilities/Screenshot) |
 [ShareCamera](/Python/Utilities/ShareCamera) | Share a camera between multiple renderers.
 [VTKVersion](/Python/Utilities/VTKVersion) |
