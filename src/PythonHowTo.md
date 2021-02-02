@@ -58,6 +58,12 @@ If you want to ensure that the same random points/colors are used in C++ and oth
 | -------------- | ---------------------- | ------- |
 [Model](/Python/Rendering/Model) | Multiple render windows.
 
+## Searching for relevant examples?
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[SelectExamples](/Python/Utilities/SelectExamples) | Given a VTK Class and a language, select the matching examples.
+
 ## StructuredDataset
 
 How to visualise the information in a structured dataset. All these examples use the combustor dataset.

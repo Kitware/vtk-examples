@@ -2,6 +2,8 @@
 
 ## VTK Classes Summary
 
+This Python script, [SelectExamples](../Python/Utilities/SelectExamples), will let you select examples based on a VTK Class and language. It requires Python 3.7 or later. The following tables will produce similar information.
+
 - [VTK Classes with Examples](/Coverage/CSharpVTKClassesUsed.md), this table is really useful when searching for example(s) using a particular class.
 
 - [VTK Classes with No Examples](/Coverage/CSharpVTKClassesNotUsed.md), please add examples in your area of expertise!

@@ -6,6 +6,8 @@ It would be appreciated if there are any Java VTK experts who could convert any 
 
 ## VTK Classes Summary
 
+This Python script, [SelectExamples](../Python/Utilities/SelectExamples), will let you select examples based on a VTK Class and language. It requires Python 3.7 or later. The following tables will produce similar information.
+
 - [VTK Classes with Examples](/Coverage/JavaVTKClassesUsed.md), this table is really useful when searching for example(s) using a particular class.
 
 - [VTK Classes with No Examples](/Coverage/JavaVTKClassesNotUsed.md), please add examples in your area of expertise!
