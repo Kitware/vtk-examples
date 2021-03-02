@@ -17,6 +17,7 @@ if(NOT VTK_BINARY_DIR)
     vtkFiltersGeometry
     vtkFiltersModeling
     vtkFiltersSources
+    vtkIOChemistry
     vtkIOExodus
     vtkIOExport
     vtkIOGeometry

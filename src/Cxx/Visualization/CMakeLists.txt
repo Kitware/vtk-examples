@@ -24,6 +24,7 @@ if(NOT VTK_BINARY_DIR)
   vtkFiltersProgrammable
   vtkFiltersSources
   vtkFiltersTexture
+  vtkIOChemistry
   vtkIOGeometry
   vtkIOImage
   vtkIOLegacy
