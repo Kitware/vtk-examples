@@ -1382,8 +1382,7 @@ Click [here](http://www.vtk.org/Wiki/VTK/Tutorials/QtSetup) for a tutorial on ho
 [EventQtSlotConnect](/Cxx/Qt/EventQtSlotConnect) | Connect a VTK event to a Qt slot.
 [ImageDataToQImage](/Cxx/Qt/ImageDataToQImage) | Convert a vtkImageData to a QImage.
 [QImageToImageSource](/Cxx/Qt/QImageToImageSource) | Convert a QImage to a vtkImageData.
-[RenderWindowNoUiFile](/Cxx/Qt/RenderWindowNoUiFile) | This is a very basic example that shows how to create a Qt window. Typically, one would want to design a form in the QtDesigner (this is shown in [RenderWindowUIMultipleInheritance](/Cxx/Qt/RenderWindowUIMultipleInheritance)).
-[RenderWindowUIMultipleInheritance](/Cxx/Qt/RenderWindowUIMultipleInheritance) | Using a QVTKOpenGLWidget with the Qt Multiple Inheritance model.
+[RenderWindowNoUiFile](/Cxx/Qt/RenderWindowNoUiFile) | This is a very basic example that shows how to create a Qt window. Typically, one would want to design a form in the QtDesigner (this is shown in [RenderWindowUISingleInheritance](/Cxx/Qt/RenderWindowUISingleInheritance)).
 [RenderWindowUISingleInheritance](/Cxx/Qt/RenderWindowUISingleInheritance) | Using a QVTKOpenGLWidget with the Qt Single Inheritance model.
 [ShareCameraQt](/Cxx/Qt/ShareCameraQt) | Share the camera between QVTKOpenGLWidgets.
 [ShowEvent](/Cxx/Qt/ShowEvent) | Use QMainWindow::showEvent event to do things that you might want to do in the constructor

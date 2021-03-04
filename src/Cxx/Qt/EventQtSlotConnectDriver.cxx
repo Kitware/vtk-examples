@@ -1,5 +1,8 @@
 #include <QApplication>
 #include <QSurfaceFormat>
+
+#include <QVTKOpenGLNativeWidget.h>
+
 #include "EventQtSlotConnect.h"
 
 int main(int argc, char** argv)

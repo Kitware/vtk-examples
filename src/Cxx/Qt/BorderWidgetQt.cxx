@@ -1,4 +1,7 @@
 #include "BorderWidgetQt.h"
+// This is included here because it is forward declared in
+// BorderWidgetQt.h
+#include "ui_BorderWidgetQt.h"
 
 #include <vtkBorderWidget.h>
 #include <vtkCommand.h>
@@ -38,15 +41,16 @@ public:
 // Constructor
 BorderWidgetQt::BorderWidgetQt()
 {
-  this->setupUi(this);
+  this->ui = new Ui_BorderWidgetQt;
+  this->ui->setupUi(this);
 
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindow;
 #if VTK890
-  this->qvtkWidget->setRenderWindow(renderWindow);
+  this->ui->qvtkWidget->setRenderWindow(renderWindow);
 #else
-  this->qvtkWidget->SetRenderWindow(renderWindow);
+  this->ui->qvtkWidget->SetRenderWindow(renderWindow);
 #endif
 
   // Sphere
@@ -65,18 +69,18 @@ BorderWidgetQt::BorderWidgetQt()
 
   // Connect VTK with Qt
 #if VTK890
-  this->qvtkWidget->renderWindow()->AddRenderer(renderer);
+  this->ui->qvtkWidget->renderWindow()->AddRenderer(renderer);
 #else
-  this->qvtkWidget->GetRenderWindow()->AddRenderer(renderer);
+  this->ui->qvtkWidget->GetRenderWindow()->AddRenderer(renderer);
 #endif
 
-  // Add a border widget to the right renderer
+  // Add a border widget to the renderer
   vtkNew<vtkBorderWidget> bw;
   this->BorderWidget = bw;
 #if VTK890
-  this->BorderWidget->SetInteractor(this->qvtkWidget->interactor());
+  this->BorderWidget->SetInteractor(this->ui->qvtkWidget->interactor());
 #else
-  this->BorderWidget->SetInteractor(this->qvtkWidget->GetInteractor());
+  this->BorderWidget->SetInteractor(this->ui->qvtkWidget->GetInteractor());
 #endif
   this->BorderWidget->On();
 }

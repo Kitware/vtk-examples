@@ -1,4 +1,7 @@
 #include "EventQtSlotConnect.h"
+// This is included here because it is forward declared in
+// EventQtSlotConnect.h
+#include "ui_EventQtSlotConnect.h"
 
 #include <vtkEventQtSlotConnect.h>
 #include <vtkGenericOpenGLRenderWindow.h>
@@ -20,15 +23,16 @@
 // Constructor
 EventQtSlotConnect::EventQtSlotConnect()
 {
-  this->setupUi(this);
+  this->ui = new Ui_EventQtSlotConnect;
+  this->ui->setupUi(this);
 
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindow;
 #if VTK890
-  this->qvtkWidget->setRenderWindow(renderWindow);
+  this->ui->qvtkWidget->setRenderWindow(renderWindow);
 #else
-  this->qvtkWidget->SetRenderWindow(renderWindow);
+  this->ui->qvtkWidget->SetRenderWindow(renderWindow);
 #endif
 
   vtkNew<vtkEventQtSlotConnect> slotConnector;
@@ -50,14 +54,14 @@ EventQtSlotConnect::EventQtSlotConnect()
   renderer->SetBackground(colors->GetColor3d("SteelBlue").GetData());
 
 #if VTK890
-  this->qvtkWidget->renderWindow()->AddRenderer(renderer);
+  this->ui->qvtkWidget->renderWindow()->AddRenderer(renderer);
 #else
-  this->qvtkWidget->GetRenderWindow()->AddRenderer(renderer);
+  this->ui->qvtkWidget->GetRenderWindow()->AddRenderer(renderer);
 #endif
 
 #if VTK890
   this->Connections->Connect(
-      this->qvtkWidget->renderWindow()->GetInteractor(),
+      this->ui->qvtkWidget->renderWindow()->GetInteractor(),
       vtkCommand::LeftButtonPressEvent, this,
       SLOT(slot_clicked(vtkObject*, unsigned long, void*, void*)));
 #else

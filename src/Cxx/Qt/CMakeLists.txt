@@ -68,8 +68,8 @@ foreach(EXAMPLE_FILE ${ALL_UI_FILES})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   set(UISrcs)
   set(MOCSrcs)
-  qt5_wrap_ui(UISrcs ${EXAMPLE}.ui)
-  # CMAKE_AUTOMOC in ON so the MocHdrs will be automatically wrapped.
+  # CMAKE_AUTOUIC is ON so we handle uic automatically for Qt targets.
+  # CMAKE_AUTOMOC is ON so we handle moc automatically for Qt targets.
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}Driver.cxx ${EXAMPLE}.cxx ${UISrcs} ${EXAMPLE}.h)
   if (Qt5Widgets_VERSION VERSION_LESS "5.11.0")
     qt5_use_modules(${WIKI}${EXAMPLE} Core Gui Widgets)
