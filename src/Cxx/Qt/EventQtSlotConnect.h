@@ -1,19 +1,19 @@
 #ifndef EventQtSlotConnect_H
 #define EventQtSlotConnect_H
 
-#include "ui_EventQtSlotConnect.h"
-
 #include <QMainWindow>
 
-#include <vtkSmartPointer.h>
 #include <vtkObject.h>
-class vtkEventQtSlotConnect;
+#include <vtkSmartPointer.h>
 
-class EventQtSlotConnect : public QMainWindow, private Ui::EventQtSlotConnect
+// Forward class declarations
+class vtkEventQtSlotConnect;
+class Ui_EventQtSlotConnect;
+
+class EventQtSlotConnect : public QMainWindow
 {
   Q_OBJECT
 public:
-
   EventQtSlotConnect();
 
 public slots:
@@ -21,8 +21,9 @@ public slots:
   void slot_clicked(vtkObject*, unsigned long, void*, void*);
 
 private:
-
   vtkSmartPointer<vtkEventQtSlotConnect> Connections;
+  // Designer form
+  Ui_EventQtSlotConnect* ui;
 };
 
 #endif
