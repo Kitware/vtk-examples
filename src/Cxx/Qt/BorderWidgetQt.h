@@ -6,21 +6,27 @@
 
 class vtkBorderWidget;
 
-// Forward Qt class declarations
-class Ui_BorderWidgetQt;
+/*
+ * See "The Single Inheritance Approach" in this link:
+ * [Using a Designer UI File in Your C++
+ * Application](https://doc.qt.io/qt-5/designer-using-a-ui-file.html)
+ */
+namespace Ui {
+class BorderWidgetQt;
+}
 
 class BorderWidgetQt : public QMainWindow
 {
   Q_OBJECT
 public:
   // Constructor/Destructor
-  BorderWidgetQt();
-  ~BorderWidgetQt() = default;
+  explicit BorderWidgetQt(QWidget* parent = nullptr);
+  virtual ~BorderWidgetQt();
 
 private:
   vtkSmartPointer<vtkBorderWidget> BorderWidget;
   // Designer form
-  Ui_BorderWidgetQt* ui;
+  Ui::BorderWidgetQt* ui;
 };
 
 #endif

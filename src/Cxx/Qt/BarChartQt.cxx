@@ -1,7 +1,4 @@
 #include "BarChartQt.h"
-
-// This is included here because it is forward declared in
-// BarChartQt.h
 #include "ui_BarChartQt.h"
 
 #include <vtkAxis.h>
@@ -41,9 +38,9 @@ int data_2010[] = {9058,  10941, 9979,  10270, 8900, 11228,
 } // namespace
 
 // Constructor
-BarChartQt::BarChartQt()
+BarChartQt::BarChartQt(QWidget* parent)
+  : QMainWindow(parent), ui(new Ui::BarChartQt)
 {
-  this->ui = new Ui_BarChartQt;
   this->ui->setupUi(this);
 
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindow;
@@ -151,6 +148,11 @@ BarChartQt::BarChartQt()
 
   // Set up action signals and slots
   connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
+}
+
+BarChartQt::~BarChartQt()
+{
+  delete this->ui;
 }
 
 void BarChartQt::slotExit()

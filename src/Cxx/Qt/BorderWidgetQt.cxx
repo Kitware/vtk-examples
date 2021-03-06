@@ -1,6 +1,4 @@
 #include "BorderWidgetQt.h"
-// This is included here because it is forward declared in
-// BorderWidgetQt.h
 #include "ui_BorderWidgetQt.h"
 
 #include <vtkBorderWidget.h>
@@ -39,9 +37,9 @@ public:
 };
 
 // Constructor
-BorderWidgetQt::BorderWidgetQt()
+BorderWidgetQt::BorderWidgetQt(QWidget* parent)
+  : QMainWindow(parent), ui(new Ui::BorderWidgetQt)
 {
-  this->ui = new Ui_BorderWidgetQt;
   this->ui->setupUi(this);
 
   vtkNew<vtkNamedColors> colors;
@@ -83,4 +81,9 @@ BorderWidgetQt::BorderWidgetQt()
   this->BorderWidget->SetInteractor(this->ui->qvtkWidget->GetInteractor());
 #endif
   this->BorderWidget->On();
+}
+
+BorderWidgetQt::~BorderWidgetQt()
+{
+  delete this->ui;
 }

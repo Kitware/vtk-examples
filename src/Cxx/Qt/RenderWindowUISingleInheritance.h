@@ -5,24 +5,29 @@
 
 #include <QMainWindow>
 
-// Forward Qt class declarations
-class Ui_RenderWindowUISingleInheritance;
+/*
+ * See "The Single Inheritance Approach" in this link:
+ * [Using a Designer UI File in Your C++
+ * Application](https://doc.qt.io/qt-5/designer-using-a-ui-file.html)
+ */
+namespace Ui {
+class RenderWindowUISingleInheritance;
+}
 
 class RenderWindowUISingleInheritance : public QMainWindow
 {
   Q_OBJECT
 public:
   // Constructor/Destructor
-  RenderWindowUISingleInheritance();
-  ~RenderWindowUISingleInheritance() = default;
-
-public slots:
-
-  void slotExit();
+  explicit RenderWindowUISingleInheritance(QWidget* parent = nullptr);
+  virtual ~RenderWindowUISingleInheritance();
 
 private:
   // Designer form
-  Ui_RenderWindowUISingleInheritance* ui;
+  Ui::RenderWindowUISingleInheritance* ui;
+
+public slots:
+  void slotExit();
 };
 
 #endif

@@ -1,7 +1,4 @@
 #include "RenderWindowUISingleInheritance.h"
-
-// This is included here because it is forward declared in
-// RenderWindowUISingleInheritance.h
 #include "ui_RenderWindowUISingleInheritance.h"
 
 #include <vtkGenericOpenGLRenderWindow.h>
@@ -19,9 +16,10 @@
 #endif
 
 // Constructor
-RenderWindowUISingleInheritance::RenderWindowUISingleInheritance()
+RenderWindowUISingleInheritance::RenderWindowUISingleInheritance(
+    QWidget* parent)
+  : QMainWindow(parent), ui(new Ui::RenderWindowUISingleInheritance)
 {
-  this->ui = new Ui_RenderWindowUISingleInheritance;
   this->ui->setupUi(this);
 
   vtkNew<vtkNamedColors> colors;
@@ -59,6 +57,11 @@ RenderWindowUISingleInheritance::RenderWindowUISingleInheritance()
 #endif
   // Set up action signals and slots
   connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
+}
+
+RenderWindowUISingleInheritance::~RenderWindowUISingleInheritance()
+{
+  delete this->ui;
 }
 
 void RenderWindowUISingleInheritance::slotExit()

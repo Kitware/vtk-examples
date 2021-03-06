@@ -1,4 +1,5 @@
 #include "ShareCameraQt.h"
+#include "ui_ShareCameraQt.h"
 
 #include <vtkCamera.h>
 #include <vtkCommand.h>
@@ -21,20 +22,21 @@
 #endif
 
 // Constructor
-ShareCameraQt::ShareCameraQt()
+ShareCameraQt::ShareCameraQt(QWidget* parent)
+  : QMainWindow(parent), ui(new Ui::ShareCameraQt)
 {
-  this->setupUi(this);
+  this->ui->setupUi(this);
 
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindowLeft;
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindowRight;
 #if VTK890
-  this->qvtkWidgetLeft->setRenderWindow(renderWindowLeft);
-  this->qvtkWidgetRight->setRenderWindow(renderWindowRight);
+  this->ui->qvtkWidgetLeft->setRenderWindow(renderWindowLeft);
+  this->ui->qvtkWidgetRight->setRenderWindow(renderWindowRight);
 #else
-  this->qvtkWidgetLeft->SetRenderWindow(renderWindowLeft);
-  this->qvtkWidgetRight->SetRenderWindow(renderWindowRight);
+  this->ui->qvtkWidgetLeft->SetRenderWindow(renderWindowLeft);
+  this->ui->qvtkWidgetRight->SetRenderWindow(renderWindowRight);
 #endif
 
   // Sphere
@@ -69,11 +71,11 @@ ShareCameraQt::ShareCameraQt()
 
   // VTK/Qt wedded
 #if VTK890
-  this->qvtkWidgetLeft->renderWindow()->AddRenderer(leftRenderer);
-  this->qvtkWidgetRight->renderWindow()->AddRenderer(rightRenderer);
+  this->ui->qvtkWidgetLeft->renderWindow()->AddRenderer(leftRenderer);
+  this->ui->qvtkWidgetRight->renderWindow()->AddRenderer(rightRenderer);
 #else
-  this->qvtkWidgetLeft->GetRenderWindow()->AddRenderer(leftRenderer);
-  this->qvtkWidgetRight->GetRenderWindow()->AddRenderer(rightRenderer);
+  this->ui->qvtkWidgetLeft->GetRenderWindow()->AddRenderer(leftRenderer);
+  this->ui->qvtkWidgetRight->GetRenderWindow()->AddRenderer(rightRenderer);
 #endif
 
   rightRenderer->ResetCamera();
@@ -89,13 +91,13 @@ ShareCameraQt::ShareCameraQt()
   leftRenderer->GetActiveCamera()->Zoom(0.8);
 
   // Set up action signals and slots
-  connect(this->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
+  connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
 
 #if VTK890
-  this->qvtkWidgetLeft->renderWindow()->AddObserver(
+  this->ui->qvtkWidgetLeft->renderWindow()->AddObserver(
       vtkCommand::ModifiedEvent, this, &ShareCameraQt::ModifiedHandler);
 #else
-  this->qvtkWidgetLeft->GetRenderWindow()->AddObserver(
+  this->ui->qvtkWidgetLeft->GetRenderWindow()->AddObserver(
       vtkCommand::ModifiedEvent, this, &ShareCameraQt::ModifiedHandler);
 #endif
 }
@@ -103,9 +105,9 @@ ShareCameraQt::ShareCameraQt()
 void ShareCameraQt::ModifiedHandler()
 {
 #if VTK890
-  this->qvtkWidgetRight->renderWindow()->Render();
+  this->ui->qvtkWidgetRight->renderWindow()->Render();
 #else
-  this->qvtkWidgetRight->GetRenderWindow()->Render();
+  this->ui->qvtkWidgetRight->GetRenderWindow()->Render();
 #endif
 }
 
