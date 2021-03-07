@@ -61,9 +61,6 @@ function registerListener(event, func) {
 </code></pre></div> <ul> <li>In the source file <code>RenderWindowUISingleInheritance.cxx</code>, assign and initialise in the constructor:</li> </ul> <div class=codehilite><pre><span></span><code>  this-&gt;ui = new Ui_RenderWindowUISingleInheritance;
   this-&gt;ui-&gt;setupUi(this);
 </code></pre></div> <p>This approach also ensures that when <code>CMAKE_AUTOUIC</code> is set to <code>ON</code> and subfolders are used we get a build with no errors.</p> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>RenderWindowUISingleInheritance.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span> <span class=cpf>&quot;RenderWindowUISingleInheritance.h&quot;</span><span class=cp></span>
-
-<span class=c1>// This is included here because it is forward declared in</span>
-<span class=c1>// RenderWindowUISingleInheritance.h</span>
 <span class=cp>#include</span> <span class=cpf>&quot;ui_RenderWindowUISingleInheritance.h&quot;</span><span class=cp></span>
 
 <span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkGenericOpenGLRenderWindow.h&gt;</span><span class=cp></span>
@@ -81,9 +78,10 @@ function registerListener(event, func) {
 <span class=cp>#endif</span>
 
 <span class=c1>// Constructor</span>
-<span class=n>RenderWindowUISingleInheritance</span><span class=o>::</span><span class=n>RenderWindowUISingleInheritance</span><span class=p>()</span>
+<span class=n>RenderWindowUISingleInheritance</span><span class=o>::</span><span class=n>RenderWindowUISingleInheritance</span><span class=p>(</span>
+    <span class=n>QWidget</span><span class=o>*</span> <span class=n>parent</span><span class=p>)</span>
+  <span class=o>:</span> <span class=n>QMainWindow</span><span class=p>(</span><span class=n>parent</span><span class=p>),</span> <span class=n>ui</span><span class=p>(</span><span class=k>new</span> <span class=n>Ui</span><span class=o>::</span><span class=n>RenderWindowUISingleInheritance</span><span class=p>)</span>
 <span class=p>{</span>
-  <span class=k>this</span><span class=o>-&gt;</span><span class=n>ui</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Ui_RenderWindowUISingleInheritance</span><span class=p>;</span>
   <span class=k>this</span><span class=o>-&gt;</span><span class=n>ui</span><span class=o>-&gt;</span><span class=n>setupUi</span><span class=p>(</span><span class=k>this</span><span class=p>);</span>
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
@@ -123,6 +121,11 @@ function registerListener(event, func) {
   <span class=n>connect</span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>ui</span><span class=o>-&gt;</span><span class=n>actionExit</span><span class=p>,</span> <span class=n>SIGNAL</span><span class=p>(</span><span class=n>triggered</span><span class=p>()),</span> <span class=k>this</span><span class=p>,</span> <span class=n>SLOT</span><span class=p>(</span><span class=n>slotExit</span><span class=p>()));</span>
 <span class=p>}</span>
 
+<span class=n>RenderWindowUISingleInheritance</span><span class=o>::~</span><span class=n>RenderWindowUISingleInheritance</span><span class=p>()</span>
+<span class=p>{</span>
+  <span class=k>delete</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>ui</span><span class=p>;</span>
+<span class=p>}</span>
+
 <span class=kt>void</span> <span class=n>RenderWindowUISingleInheritance</span><span class=o>::</span><span class=n>slotExit</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=n>qApp</span><span class=o>-&gt;</span><span class=n>exit</span><span class=p>();</span>
@@ -153,24 +156,29 @@ function registerListener(event, func) {
 
 <span class=cp>#include</span> <span class=cpf>&lt;QMainWindow&gt;</span><span class=cp></span>
 
-<span class=c1>// Forward Qt class declarations</span>
-<span class=k>class</span> <span class=nc>Ui_RenderWindowUISingleInheritance</span><span class=p>;</span>
+<span class=cm>/*</span>
+<span class=cm> * See &quot;The Single Inheritance Approach&quot; in this link:</span>
+<span class=cm> * [Using a Designer UI File in Your C++</span>
+<span class=cm> * Application](https://doc.qt.io/qt-5/designer-using-a-ui-file.html)</span>
+<span class=cm> */</span>
+<span class=k>namespace</span> <span class=n>Ui</span> <span class=p>{</span>
+<span class=k>class</span> <span class=nc>RenderWindowUISingleInheritance</span><span class=p>;</span>
+<span class=p>}</span>
 
 <span class=k>class</span> <span class=nc>RenderWindowUISingleInheritance</span> <span class=o>:</span> <span class=k>public</span> <span class=n>QMainWindow</span>
 <span class=p>{</span>
   <span class=n>Q_OBJECT</span>
 <span class=k>public</span><span class=o>:</span>
   <span class=c1>// Constructor/Destructor</span>
-  <span class=n>RenderWindowUISingleInheritance</span><span class=p>();</span>
-  <span class=o>~</span><span class=n>RenderWindowUISingleInheritance</span><span class=p>()</span> <span class=o>=</span> <span class=k>default</span><span class=p>;</span>
-
-<span class=k>public</span> <span class=nl>slots</span><span class=p>:</span>
-
-  <span class=kt>void</span> <span class=n>slotExit</span><span class=p>();</span>
+  <span class=k>explicit</span> <span class=n>RenderWindowUISingleInheritance</span><span class=p>(</span><span class=n>QWidget</span><span class=o>*</span> <span class=n>parent</span> <span class=o>=</span> <span class=k>nullptr</span><span class=p>);</span>
+  <span class=k>virtual</span> <span class=o>~</span><span class=n>RenderWindowUISingleInheritance</span><span class=p>();</span>
 
 <span class=k>private</span><span class=o>:</span>
   <span class=c1>// Designer form</span>
-  <span class=n>Ui_RenderWindowUISingleInheritance</span><span class=o>*</span> <span class=n>ui</span><span class=p>;</span>
+  <span class=n>Ui</span><span class=o>::</span><span class=n>RenderWindowUISingleInheritance</span><span class=o>*</span> <span class=n>ui</span><span class=p>;</span>
+
+<span class=k>public</span> <span class=nl>slots</span><span class=p>:</span>
+  <span class=kt>void</span> <span class=n>slotExit</span><span class=p>();</span>
 <span class=p>};</span>
 
 <span class=cp>#endif</span>
