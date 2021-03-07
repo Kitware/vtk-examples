@@ -1,7 +1,6 @@
 #include "SideBySideRenderWindowsQt.h"
+#include "ui_SideBySideRenderWindowsQt.h"
 
-#include <vtkNamedColors.h>
-#include <vtkNew.h>
 #include <vtkCamera.h>
 #include <vtkCubeSource.h>
 #include <vtkDataObjectToTable.h>
@@ -13,7 +12,6 @@
 #include <vtkQtTableView.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
-#include <vtkNew.h>
 #include <vtkSphereSource.h>
 #include <vtkVersion.h>
 
@@ -22,20 +20,21 @@
 #endif
 
 // Constructor
-SideBySideRenderWindowsQt::SideBySideRenderWindowsQt()
+SideBySideRenderWindowsQt::SideBySideRenderWindowsQt(QWidget* parent)
+  : QMainWindow(parent), ui(new Ui::SideBySideRenderWindowsQt)
 {
-  this->setupUi(this);
+  this->ui->setupUi(this);
 
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindowLeft;
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindowRight;
 #if VTK890
-  this->qvtkWidgetLeft->setRenderWindow(renderWindowLeft);
-  this->qvtkWidgetRight->setRenderWindow(renderWindowRight);
+  this->ui->qvtkWidgetLeft->setRenderWindow(renderWindowLeft);
+  this->ui->qvtkWidgetRight->setRenderWindow(renderWindowRight);
 #else
-  this->qvtkWidgetLeft->SetRenderWindow(renderWindowLeft);
-  this->qvtkWidgetRight->SetRenderWindow(renderWindowRight);
+  this->ui->qvtkWidgetLeft->SetRenderWindow(renderWindowLeft);
+  this->ui->qvtkWidgetRight->SetRenderWindow(renderWindowRight);
 #endif
 
   // Sphere
@@ -81,15 +80,15 @@ SideBySideRenderWindowsQt::SideBySideRenderWindowsQt()
 
   // VTK/Qt wedded
 #if VTK890
-  this->qvtkWidgetLeft->renderWindow()->AddRenderer(leftRenderer);
-  this->qvtkWidgetRight->renderWindow()->AddRenderer(rightRenderer);
+  this->ui->qvtkWidgetLeft->renderWindow()->AddRenderer(leftRenderer);
+  this->ui->qvtkWidgetRight->renderWindow()->AddRenderer(rightRenderer);
 #else
-  this->qvtkWidgetLeft->GetRenderWindow()->AddRenderer(leftRenderer);
-  this->qvtkWidgetRight->GetRenderWindow()->AddRenderer(rightRenderer);
+  this->ui->qvtkWidgetLeft->GetRenderWindow()->AddRenderer(leftRenderer);
+  this->ui->qvtkWidgetRight->GetRenderWindow()->AddRenderer(rightRenderer);
 #endif
 
   // Set up action signals and slots
-  connect(this->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
+  connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
 }
 
 void SideBySideRenderWindowsQt::slotExit()

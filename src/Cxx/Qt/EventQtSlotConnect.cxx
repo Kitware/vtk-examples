@@ -1,6 +1,4 @@
 #include "EventQtSlotConnect.h"
-// This is included here because it is forward declared in
-// EventQtSlotConnect.h
 #include "ui_EventQtSlotConnect.h"
 
 #include <vtkEventQtSlotConnect.h>
@@ -21,9 +19,9 @@
 #endif
 
 // Constructor
-EventQtSlotConnect::EventQtSlotConnect()
+EventQtSlotConnect::EventQtSlotConnect(QWidget* parent)
+  : QMainWindow(parent), ui(new Ui::EventQtSlotConnect)
 {
-  this->ui = new Ui_EventQtSlotConnect;
   this->ui->setupUi(this);
 
   vtkNew<vtkNamedColors> colors;
@@ -71,6 +69,11 @@ EventQtSlotConnect::EventQtSlotConnect()
       SLOT(slot_clicked(vtkObject*, unsigned long, void*, void*)));
 #endif
 };
+
+EventQtSlotConnect::~EventQtSlotConnect()
+{
+  delete this->ui;
+}
 
 void EventQtSlotConnect::slot_clicked(vtkObject*, unsigned long, void*, void*)
 {

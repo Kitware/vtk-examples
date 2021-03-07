@@ -8,13 +8,22 @@
 
 // Forward class declarations
 class vtkEventQtSlotConnect;
-class Ui_EventQtSlotConnect;
+
+/*
+ * See "The Single Inheritance Approach" in this link:
+ * [Using a Designer UI File in Your C++
+ * Application](https://doc.qt.io/qt-5/designer-using-a-ui-file.html)
+ */
+namespace Ui {
+class EventQtSlotConnect;
+}
 
 class EventQtSlotConnect : public QMainWindow
 {
   Q_OBJECT
 public:
-  EventQtSlotConnect();
+  explicit EventQtSlotConnect(QWidget* parent = nullptr);
+  virtual ~EventQtSlotConnect();
 
 public slots:
 
@@ -23,7 +32,7 @@ public slots:
 private:
   vtkSmartPointer<vtkEventQtSlotConnect> Connections;
   // Designer form
-  Ui_EventQtSlotConnect* ui;
+  Ui::EventQtSlotConnect* ui;
 };
 
 #endif
