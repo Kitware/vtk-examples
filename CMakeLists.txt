@@ -127,16 +127,6 @@ add_subdirectory(src/Cxx/Widgets)
 
 if(vtkGUISupportQt_LOADED OR TARGET VTK::GUISupportQt)
   message(STATUS "VTKWikiExamples: Building Qt examples")
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    # Instruct CMake to run moc automatically when needed.
-    set(CMAKE_AUTOMOC ON)
-  else()
-    # Instruct CMake to run moc and uic automatically when needed.
-    set(CMAKE_AUTOMOC ON)
-    set(CMAKE_AUTOUIC ON)
-  endif()
-  # We have ui files, this will bring in the macro: qt5_wrap_ui
-  find_package(Qt5Widgets REQUIRED QUIET)
   add_subdirectory(src/Cxx/Qt)
 else()
   message(STATUS "VTKWikiExamples: Not building Qt examples")
