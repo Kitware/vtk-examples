@@ -65,6 +65,9 @@ Requires_Module(SideBySideRenderWindowsQtDriver vtkViewsQt)
 Requires_Module(QImageToImageSource vtkRenderingQt)
 
 set(qt_components Core Gui Widgets)
+if (NOT DEFINED VTK_QT_VERSION)
+  set (VTK_QT_VERSION 5)
+endif ()
 if(${VTK_QT_VERSION} VERSION_GREATER_EQUAL 6)
   list(APPEND qt_components OpenGLWidgets)
 endif()
@@ -76,8 +79,9 @@ find_package(Qt${VTK_QT_VERSION} QUIET
 )
 
 foreach(_qt_comp IN LISTS qt_components)
-  list(APPEND qt_modules "Qt${qt_version}::${_qt_comp}")
+  list(APPEND qt_modules "Qt${VTK_QT_VERSION}::${_qt_comp}")
 endforeach()
+message("qt_modules: ${qt_modules}")
 
 
 if (VTK_VERSION VERSION_LESS "8.90.0")
