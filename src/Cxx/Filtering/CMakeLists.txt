@@ -24,8 +24,8 @@ if(NOT VTK_BINARY_DIR)
     vtkRenderingCore
     vtkRenderingFreeType
     vtkRenderingOpenGL2
-    vtkTestingGenericBridge
     OPTIONAL_COMPONENTS
+    vtkTestingGenericBridge
     vtkTestingRendering
     QUIET
     )
@@ -40,9 +40,13 @@ set(KIT_LIBS ${VTK_LIBRARIES})
 # Build all .cxx files in the directory
 file(GLOB ALL_FILES *.cxx)
 
+if(TestingGenericBridge_LOADED OR TARGET VTK::TestingGenericBridge)
+  set(TESTING_GENERIC_BRIDGE TRUE)
+endif()
+
 set(VERSION_MIN "6.0")
 Requires_Version(GenericClip ${VERSION_MIN} ALL_FILES)
-Requires_Setting_On (GenericClip BUILD_TESTING)
+Requires_Setting_On (GenericClip TESTING_GENERIC_BRIDGE)
 
 foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ".cxx" "" TMP ${SOURCE_FILE})
