@@ -126,7 +126,6 @@ add_subdirectory(src/Cxx/Widgets)
 # add_subdirectory(Python/GeometricObjects)
 
 if(vtkGUISupportQt_LOADED OR TARGET VTK::GUISupportQt)
-  message(STATUS "VTKWikiExamples: Building Qt examples")
   add_subdirectory(src/Cxx/Qt)
 else()
   message(STATUS "VTKWikiExamples: Not building Qt examples")
