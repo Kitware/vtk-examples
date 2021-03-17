@@ -6,7 +6,8 @@ foreach(p
     CMP0025 # CMake 3.0
     CMP0043 # CMake 3.0
     CMP0053 # CMake 3.1
-    CMP0071
+    CMP0071 # Cmake 3.10
+    CMP0084 # Cmake 3.14
     )
   if(POLICY ${p})
     cmake_policy(SET ${p} NEW)
@@ -63,18 +64,69 @@ Requires_Module(SideBySideRenderWindowsQt vtkViewsQt)
 Requires_Module(SideBySideRenderWindowsQtDriver vtkViewsQt)
 Requires_Module(QImageToImageSource vtkRenderingQt)
 
+find_package(Qt6Widgets QUIET)
+set(qt_version 6)
+if(NOT Qt6Widgets_FOUND)
+  find_package(Qt5Widgets QUIET)
+  if(NOT Qt5Widgets_FOUND)
+    message(STATUS "VTKWikiExamples: Not building Qt examples, could not find a valid Qt installation.")
+    return()
+  endif()
+  set(qt_version 5)
+endif()
+
+if (NOT DEFINED VTK_QT_VERSION)
+  set(VTK_QT_VERSION 5)
+endif()
+
+if(NOT qt_version STREQUAL VTK_QT_VERSION)
+    message(STATUS "VTKWikiExamples: Not building Qt examples, VTK not built with the same Qt version.")
+    return()
+endif()
+message(STATUS "VTKWikiExamples: Building Qt examples")
+
+set(qt_components Core Gui Widgets)
+if(${qt_version} VERSION_GREATER_EQUAL 6)
+  list(APPEND qt_components OpenGLWidgets)
+endif()
+list(SORT qt_components)
+# We have ui files, so this will also bring in the macro:
+#   qt5_wrap_ui or qt_wrap_ui from Widgets.
+find_package(Qt${qt_version} QUIET
+  REQUIRED COMPONENTS ${qt_components}
+)
+
+foreach(_qt_comp IN LISTS qt_components)
+  list(APPEND qt_modules "Qt${qt_version}::${_qt_comp}")
+endforeach()
+
+if (VTK_VERSION VERSION_LESS "8.90.0")
+# Instruct CMake to run moc automatically when needed.
+  set(CMAKE_AUTOMOC ON)
+else()
+# Instruct CMake to run moc and uic automatically when needed.
+  set(CMAKE_AUTOMOC ON)
+  set(CMAKE_AUTOUIC ON)
+endif()
+
 foreach(EXAMPLE_FILE ${ALL_UI_FILES})
   string(REPLACE ".ui" "" TMP ${EXAMPLE_FILE})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   set(UISrcs)
   set(MOCSrcs)
-  # CMAKE_AUTOUIC is ON so we handle uic automatically for Qt targets.
-  # CMAKE_AUTOMOC is ON so we handle moc automatically for Qt targets.
+  # For VTK versions greater than or equal to 8.90.0:
+  #  CMAKE_AUTOUIC is ON so we handle uic automatically for Qt targets.
+  #  CMAKE_AUTOMOC is ON so we handle moc automatically for Qt targets.
+  # However we have to do the following for VTK versions less than 8.90.0,
+  #  and we also assume, in this case, that Qt5 is being used.
+  if (VTK_VERSION VERSION_LESS "8.90.0")
+    qt5_wrap_ui(UISrcs ${EXAMPLE}.ui)
+  endif()
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}Driver.cxx ${EXAMPLE}.cxx ${UISrcs} ${EXAMPLE}.h)
-  if (Qt5Widgets_VERSION VERSION_LESS "5.11.0")
-    qt5_use_modules(${WIKI}${EXAMPLE} Core Gui Widgets)
+  if (Qt${qt_version}Widgets_VERSION VERSION_LESS "5.11.0")
+    qt5_use_modules(${WIKI}${EXAMPLE} ${qt_components})
   else()
-    target_link_libraries(${WIKI}${EXAMPLE} Qt5::Core Qt5::Gui Qt5::Widgets)
+    target_link_libraries(${WIKI}${EXAMPLE} ${qt_modules})
   endif()
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
   if (VTK_VERSION VERSION_GREATER "8.8")
@@ -91,10 +143,10 @@ foreach(EXAMPLE_FILE ${ALL_FILES})
   string(REPLACE ".cxx" "" TMP ${EXAMPLE_FILE})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx)
-  if (Qt5Widgets_VERSION VERSION_LESS "5.11.0")
-    qt5_use_modules(${WIKI}${EXAMPLE} Core Gui Widgets)
+  if (Qt${qt_version}Widgets_VERSION VERSION_LESS "5.11.0")
+    qt5_use_modules(${WIKI}${EXAMPLE} ${qt_components})
   else()
-    target_link_libraries(${WIKI}${EXAMPLE} Qt5::Core Qt5::Gui Qt5::Widgets)
+    target_link_libraries(${WIKI}${EXAMPLE} ${qt_modules})
   endif()
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
   if (VTK_VERSION VERSION_GREATER "8.8")
