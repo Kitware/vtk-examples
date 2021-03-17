@@ -27,36 +27,22 @@ if(NOT DEFINED VTK_QT_VERSION)
   set(VTK_QT_VERSION 5)
 endif()
 
-find_package(Qt6Widgets QUIET)
-set(qt_version 6)
-if(NOT Qt6Widgets_FOUND)
-  find_package(Qt5Widgets QUIET)
-  if(NOT Qt5Widgets_FOUND)
-    message(FATAL_ERROR "XXX: Could not find a valid Qt installation.")
-  endif()
-  set(qt_version 5)
-endif()
-
-if(NOT qt_version STREQUAL VTK_QT_VERSION)
-    message(FATAL_ERROR "XXX: VTK not built with the same Qt version.")
-endif()
-
 set(qt_components Core Gui Widgets)
-if(${qt_version} VERSION_GREATER_EQUAL 6)
+if(${VTK_QT_VERSION} VERSION_GREATER_EQUAL 6)
   list(APPEND qt_components OpenGLWidgets)
 endif()
 list(SORT qt_components)
 # We have ui files, so this will also bring in the macro:
 #   qt5_wrap_ui or qt_wrap_ui from Widgets.
-find_package(Qt${qt_version} QUIET
+find_package(Qt${VTK_QT_VERSION} QUIET
   REQUIRED COMPONENTS ${qt_components}
 )
 
 foreach(_qt_comp IN LISTS qt_components)
-  list(APPEND qt_modules "Qt${qt_version}::${_qt_comp}")
+  list(APPEND qt_modules "Qt${VTK_QT_VERSION}::${_qt_comp}")
 endforeach()
 
-message (STATUS "VTK_VERSION: ${VTK_VERSION}, Qt Version: ${Qt${qt_version}Widgets_VERSION}")
+message (STATUS "VTK_VERSION: ${VTK_VERSION}, Qt Version: ${Qt${VTK_QT_VERSION}Widgets_VERSION}")
 
 if (VTK_VERSION VERSION_LESS "8.90.0")
 # Instruct CMake to run moc automatically when needed.
@@ -88,7 +74,7 @@ if (VTK_VERSION VERSION_LESS "8.90.0")
   # CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.
   add_executable(XXX MACOSX_BUNDLE
     ${CXX_FILES} ${UISrcs} ${QT_WRAP})
-  if (Qt${qt_version}Widgets_VERSION VERSION_LESS "5.11.0")
+  if (Qt${VTK_QT_VERSION}Widgets_VERSION VERSION_LESS "5.11.0")
     qt5_use_modules(XXX ${qt_components})
   else()
     target_link_libraries(XXX ${qt_modules})
@@ -98,7 +84,7 @@ else()
   # CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.
   add_executable(XXX MACOSX_BUNDLE
     ${CXX_FILES} ${UISrcs} ${QT_WRAP})
-  if (Qt${qt_version}Widgets_VERSION VERSION_LESS "5.11.0")
+  if (Qt${VTK_QT_VERSION}Widgets_VERSION VERSION_LESS "5.11.0")
     qt5_use_modules(XXX ${qt_components})
   else()
     target_link_libraries(XXX ${qt_modules})
