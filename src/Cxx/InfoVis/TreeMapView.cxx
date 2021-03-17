@@ -1,28 +1,25 @@
 #include <vtkDataRepresentation.h>
 #include <vtkNew.h>
-#include <vtkRenderWindow.h>
 #include <vtkRegressionTestImage.h>
-#include <vtkRenderer.h>
+#include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkTestUtilities.h>
+#include <vtkRenderer.h>
 #include <vtkTreeMapView.h>
 #include <vtkViewTheme.h>
 #include <vtkXMLTreeReader.h>
-#include <vtkTesting.h>
 
 int main(int argc, char* argv[])
 {
-  vtkNew<vtkTesting> testHelper;
-  testHelper->AddArguments(argc,const_cast<const char **>(argv));
-  std::string dataRoot = testHelper->GetDataRoot();
-  std::string treeFileName = dataRoot + "/Data/Infovis/XML/vtkclasses.xml";
-  std::string graphFileName = dataRoot + "/Data/Infovis/XML/vtklibrary.xml";
-
-  if (argc > 2)
+  if (argc < 3)
   {
-    treeFileName = argv[1];  // vtkclasses.xml
-    graphFileName = argv[2]; // vtklibrary.xml
+    cout << "Usage: " << argv[0]
+         << " treeFileName graphFileName  e.g. vtkclasses.xml vtklibrary.xml"
+         << endl;
+    return EXIT_FAILURE;
   }
+
+  std::string treeFileName(argv[1]);  // vtkclasses.xml
+  std::string graphFileName(argv[2]); // vtklibrary.xml
 
   // We need to put the graph and tree edges in different domains.
   vtkNew<vtkXMLTreeReader> reader1;
@@ -42,8 +39,8 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkTreeMapView> view;
   view->DisplayHoverTextOff();
-  view->SetTreeFromInputConnection(reader2->GetOutputPort());
   view->SetGraphFromInputConnection(reader1->GetOutputPort());
+  view->SetTreeFromInputConnection(reader2->GetOutputPort());
 
   view->SetAreaColorArrayName("level");
   view->SetEdgeColorToSplineFraction();
