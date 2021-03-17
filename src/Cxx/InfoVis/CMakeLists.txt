@@ -25,11 +25,11 @@ if(NOT VTK_BINARY_DIR)
     vtkRenderingGL2PSOpenGL2
     vtkRenderingOpenGL2
     vtkRenderingContextOpenGL2
-    vtkTestingCore
-    vtkTestingRendering
     vtkViewsCore
     vtkViewsInfovis
     vtksys
+    OPTIONAL_COMPONENTS
+    vtkTestingRendering
     QUIET
     )
   if (VTK_VERSION VERSION_LESS "8.90.0")
@@ -59,7 +59,7 @@ endif()
 
 set(VERSION_MIN "6.0")
 Requires_Version(TreeMapView ${VERSION_MIN})
-Requires_Setting_On (TreeMapView BUILD_TESTING)
+#Requires_Setting_On (TreeMapView BUILD_TESTING)
 Requires_Class(WordCloudDemo vtkWordCloud)
 
 if(NOT VTK_USE_PARALLEL)
