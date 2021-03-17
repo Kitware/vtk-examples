@@ -15,34 +15,30 @@ find_package(VTK COMPONENTS ZZZ
   QUIET
 )
 
-if (NOT VTK_FOUND)
-  message("Skipping XXX: ${VTK_NOT_FOUND_MESSAGE}")
-  return ()
+if(NOT VTK_FOUND)
+  message(FATAL_ERROR "XXX: ${VTK_NOT_FOUND_MESSAGE}")
 endif()
-message (STATUS "VTK_VERSION: ${VTK_VERSION}")
 
-if(NOT (vtkGUISupportQt_LOADED OR TARGET VTK::GUISupportQt))
-  message("Skipping XXX: VTK not built with Qt support.")
-  return ()
+if(NOT(vtkGUISupportQt_LOADED OR TARGET VTK::GUISupportQt))
+  message(FATAL_ERROR "XXX: VTK not built with Qt support.")
 endif()
-if (NOT DEFINED VTK_QT_VERSION)
-  set (VTK_QT_VERSION 5)
-endif ()
+
+if(NOT DEFINED VTK_QT_VERSION)
+  set(VTK_QT_VERSION 5)
+endif()
 
 find_package(Qt6Widgets QUIET)
 set(qt_version 6)
 if(NOT Qt6Widgets_FOUND)
   find_package(Qt5Widgets QUIET)
   if(NOT Qt5Widgets_FOUND)
-    message(STATUS "Skipping XXX: Could not find a valid Qt installation.")
-    return()
+    message(FATAL_ERROR "XXX: Could not find a valid Qt installation.")
   endif()
   set(qt_version 5)
 endif()
 
 if(NOT qt_version STREQUAL VTK_QT_VERSION)
-    message(STATUS "Skipping XXX: VTK not built with the same Qt version.")
-    return()
+    message(FATAL_ERROR "XXX: VTK not built with the same Qt version.")
 endif()
 
 set(qt_components Core Gui Widgets)
@@ -60,6 +56,8 @@ foreach(_qt_comp IN LISTS qt_components)
   list(APPEND qt_modules "Qt${qt_version}::${_qt_comp}")
 endforeach()
 
+message (STATUS "VTK_VERSION: ${VTK_VERSION}, Qt Version: ${Qt${qt_version}Widgets_VERSION}")
+
 if (VTK_VERSION VERSION_LESS "8.90.0")
 # Instruct CMake to run moc automatically when needed.
   set(CMAKE_AUTOMOC ON)
@@ -76,10 +74,10 @@ file(GLOB QT_WRAP *.h)
 file(GLOB CXX_FILES *.cxx)
 
 # For VTK versions greater than or equal to 8.90.0:
-#   CMAKE_AUTOUIC is ON so we handle uic automatically for Qt targets.
-#   CMAKE_AUTOMOC is ON so we handle moc automatically for Qt targets.
-# However we have to do the following for VTK versions less than 8.90.0.
-# We also assume that, in this case, Qt5 is being used.
+#  CMAKE_AUTOUIC is ON so we handle uic automatically for Qt targets.
+#  CMAKE_AUTOMOC is ON so we handle moc automatically for Qt targets.
+# However we have to do the following for VTK versions less than 8.90.0,
+#  and we also assume, in this case, that Qt5 is being used.
 if (VTK_VERSION VERSION_LESS "8.90.0")
   qt5_wrap_ui(UISrcs ${EXAMPLE}.ui)
 endif()
@@ -91,7 +89,7 @@ if (VTK_VERSION VERSION_LESS "8.90.0")
   add_executable(XXX MACOSX_BUNDLE
     ${CXX_FILES} ${UISrcs} ${QT_WRAP})
   if (Qt${qt_version}Widgets_VERSION VERSION_LESS "5.11.0")
-    qt5_use_modules(XXX  ${qt_components})
+    qt5_use_modules(XXX ${qt_components})
   else()
     target_link_libraries(XXX ${qt_modules})
   endif()

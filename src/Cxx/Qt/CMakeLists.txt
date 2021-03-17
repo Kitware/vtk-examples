@@ -115,10 +115,10 @@ foreach(EXAMPLE_FILE ${ALL_UI_FILES})
   set(UISrcs)
   set(MOCSrcs)
   # For VTK versions greater than or equal to 8.90.0:
-  #   CMAKE_AUTOUIC is ON so we handle uic automatically for Qt targets.
-  #   CMAKE_AUTOMOC is ON so we handle moc automatically for Qt targets.
-  # However we have to do the following for VTK versions less than 8.90.0.
-  # We also assume that, in this case, Qt5 is being used.
+  #  CMAKE_AUTOUIC is ON so we handle uic automatically for Qt targets.
+  #  CMAKE_AUTOMOC is ON so we handle moc automatically for Qt targets.
+  # However we have to do the following for VTK versions less than 8.90.0,
+  #  and we also assume, in this case, that Qt5 is being used.
   if (VTK_VERSION VERSION_LESS "8.90.0")
     qt5_wrap_ui(UISrcs ${EXAMPLE}.ui)
   endif()
