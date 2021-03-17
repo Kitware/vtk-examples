@@ -123,8 +123,6 @@ add_subdirectory(src/Cxx/VisualizationAlgorithms)
 add_subdirectory(src/Cxx/VolumeRendering)
 add_subdirectory(src/Cxx/Widgets)
 
-# add_subdirectory(Python/GeometricObjects)
-
 if(vtkGUISupportQt_LOADED OR TARGET VTK::GUISupportQt)
   add_subdirectory(src/Cxx/Qt)
 else()

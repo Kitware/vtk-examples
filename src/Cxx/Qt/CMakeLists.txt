@@ -100,17 +100,13 @@ foreach(_qt_comp IN LISTS qt_components)
   list(APPEND qt_modules "Qt${qt_version}::${_qt_comp}")
 endforeach()
 
-
 if (VTK_VERSION VERSION_LESS "8.90.0")
 # Instruct CMake to run moc automatically when needed.
-set(CMAKE_AUTOMOC ON)
+  set(CMAKE_AUTOMOC ON)
 else()
 # Instruct CMake to run moc and uic automatically when needed.
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-endif()
-if (NOT DEFINED VTK_QT_VERSION)
-set (VTK_QT_VERSION 5)
+  set(CMAKE_AUTOMOC ON)
+  set(CMAKE_AUTOUIC ON)
 endif()
 
 foreach(EXAMPLE_FILE ${ALL_UI_FILES})
@@ -121,7 +117,7 @@ foreach(EXAMPLE_FILE ${ALL_UI_FILES})
   # For VTK versions greater than or equal to 8.90.0:
   #   CMAKE_AUTOUIC is ON so we handle uic automatically for Qt targets.
   #   CMAKE_AUTOMOC is ON so we handle moc automatically for Qt targets.
-  # However we have to do this for VTK versions less than 8.90.0.
+  # However we have to do the following for VTK versions less than 8.90.0.
   # We also assume that, in this case, Qt5 is being used.
   if (VTK_VERSION VERSION_LESS "8.90.0")
     qt5_wrap_ui(UISrcs ${EXAMPLE}.ui)
