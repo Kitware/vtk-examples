@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
   direction[2] = 1.0;
   double distance = 164;
   spline->Update();
-  vtkSmartPointer<vtkPolyData> surface =
+  auto surface =
       SweepLine(spline->GetOutput(), direction, distance, atoi(argv[3]));
 
   // Probe the volume with the extruded surface

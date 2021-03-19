@@ -5,7 +5,7 @@
 #include <vtkInformationVector.h>
 #include <vtkInformation.h>
 #include <vtkDataObject.h>
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkMutableUndirectedGraph.h>
 #include <vtkUndirectedGraph.h>
 #include <vtkGraph.h>
@@ -34,8 +34,7 @@ int vtkTestGraphAlgorithmSource::RequestData(
   vtkGraph *output = dynamic_cast<vtkGraph*>(
     outInfo->Get(vtkDataObject::DATA_OBJECT()));
   
-  vtkSmartPointer<vtkMutableUndirectedGraph> NewGraph =
-    vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkMutableUndirectedGraph> NewGraph;
     
   //add 3 vertices
   NewGraph->AddVertex();
@@ -53,8 +52,7 @@ int vtkTestGraphAlgorithmSource::RequestDataObject(
   vtkInformationVector* )
 {
 
-  vtkSmartPointer<vtkUndirectedGraph> output =
-    vtkSmartPointer<vtkUndirectedGraph>::New();
+  vtkNew<vtkUndirectedGraph> output;
   this->GetExecutive()->SetOutputData(0, output);
 
   return 1;

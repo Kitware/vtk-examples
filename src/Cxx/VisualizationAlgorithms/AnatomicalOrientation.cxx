@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  std::string fileName = argv[1];
+  std::string fileName(argv[1]);
 
   vtkNew<vtkNamedColors> colors;
 

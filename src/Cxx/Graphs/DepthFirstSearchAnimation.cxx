@@ -1,14 +1,14 @@
-#include <vtkSmartPointer.h>
-
 #include <vtkCommand.h>
 #include <vtkDataSetAttributes.h>
 #include <vtkGraphLayoutView.h>
 #include <vtkIntArray.h>
 #include <vtkLookupTable.h>
 #include <vtkMutableDirectedGraph.h>
+#include <vtkNew.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRendererCollection.h>
+#include <vtkSmartPointer.h>
 #include <vtkTree.h>
 #include <vtkTreeDFSIterator.h>
 #include <vtkUnsignedCharArray.h>
@@ -17,45 +17,53 @@
 class vtkTimerCallback : public vtkCommand
 {
 public:
-  static vtkTimerCallback *New()
+  static vtkTimerCallback* New()
   {
-    vtkTimerCallback *cb = new vtkTimerCallback;
+    vtkTimerCallback* cb = new vtkTimerCallback;
     return cb;
   }
-  virtual void Execute(vtkObject *vtkNotUsed(caller), unsigned long eventId,
-                         void *vtkNotUsed(callData))
+  virtual void Execute(vtkObject* vtkNotUsed(caller), unsigned long eventId,
+                       void* vtkNotUsed(callData))
   {
     if (eventId != vtkCommand::TimerEvent)
     {
       return;
     }
 
-    if(this->DFS->HasNext())
+    if (this->dfs->HasNext())
     {
-      vtkIdType nextVertex = this->DFS->Next();
+      vtkIdType nextVertex = this->dfs->Next();
       std::cout << "Next vertex: " << nextVertex << std::endl;
-      dynamic_cast<vtkIntArray*>(
-        this->Tree->GetVertexData()->GetArray("color"))->SetValue(nextVertex, 10);
+      dynamic_cast<vtkIntArray*>(this->Tree->GetVertexData()->GetArray("color"))
+          ->SetValue(nextVertex, 10);
       this->Tree->Modified();
       this->GraphLayoutView->AddRepresentationFromInput(this->Tree);
       this->GraphLayoutView->Render();
     }
   }
 
-  void SetDFS(vtkTreeDFSIterator *dfs) {this->DFS = dfs;}
-  void SetTree(vtkTree *tree) {this->Tree = tree;}
-  void SetGraphLayoutView(vtkGraphLayoutView *view) {this->GraphLayoutView = view;}
+  void SetDFS(vtkTreeDFSIterator* dfs)
+  {
+    this->dfs = dfs;
+  }
+  void SetTree(vtkTree* tree)
+  {
+    this->Tree = tree;
+  }
+  void SetGraphLayoutView(vtkGraphLayoutView* view)
+  {
+    this->GraphLayoutView = view;
+  }
 
 private:
-  vtkTreeDFSIterator *DFS;
-  vtkTree            *Tree;
-  vtkGraphLayoutView *GraphLayoutView;
+  vtkTreeDFSIterator* dfs = nullptr;
+  vtkTree* Tree = nullptr;
+  vtkGraphLayoutView* GraphLayoutView = nullptr;
 };
 
-int main(int, char *[])
+int main(int, char*[])
 {
-  vtkSmartPointer<vtkMutableDirectedGraph> graph =
-    vtkSmartPointer<vtkMutableDirectedGraph>::New();
+  vtkNew<vtkMutableDirectedGraph> graph;
 
   // Create a tree
   vtkIdType v1 = graph->AddVertex();
@@ -63,23 +71,20 @@ int main(int, char *[])
   graph->AddChild(v1);
   graph->AddChild(v2);
 
-  vtkSmartPointer<vtkTree> tree =
-    vtkSmartPointer<vtkTree>::New();
+  vtkNew<vtkTree> tree;
   tree->CheckedShallowCopy(graph);
 
   // Create the color array
-  vtkSmartPointer<vtkIntArray> vertexColors =
-    vtkSmartPointer<vtkIntArray>::New();
+  vtkNew<vtkIntArray> vertexColors;
   vertexColors->SetNumberOfComponents(1);
   vertexColors->SetName("color");
 
-  vtkSmartPointer<vtkLookupTable> lookupTable =
-    vtkSmartPointer<vtkLookupTable>::New();
+  vtkNew<vtkLookupTable> lookupTable;
 
   lookupTable->SetTableRange(0.0, 10.0);
   lookupTable->Build();
 
-  for(vtkIdType i = 0; i < tree->GetNumberOfVertices(); i++)
+  for (vtkIdType i = 0; i < tree->GetNumberOfVertices(); i++)
   {
     vertexColors->InsertNextValue(0);
   }
@@ -88,22 +93,19 @@ int main(int, char *[])
   tree->GetVertexData()->AddArray(vertexColors);
 
   // Create a depth first search iterator
-  vtkSmartPointer<vtkTreeDFSIterator> DFS =
-    vtkSmartPointer<vtkTreeDFSIterator>::New();
+  vtkNew<vtkTreeDFSIterator> dfs;
   vtkIdType root = tree->GetRoot();
-  DFS->SetStartVertex(root);
-  DFS->SetTree(tree);
+  dfs->SetStartVertex(root);
+  dfs->SetTree(tree);
 
-  vtkSmartPointer<vtkGraphLayoutView> graphLayoutView =
-    vtkSmartPointer<vtkGraphLayoutView>::New();
+  vtkNew<vtkGraphLayoutView> graphLayoutView;
   graphLayoutView->AddRepresentationFromInput(tree);
   graphLayoutView->SetLayoutStrategyToTree();
 
   graphLayoutView->SetVertexColorArrayName("color");
   graphLayoutView->ColorVerticesOn();
 
-  vtkSmartPointer<vtkViewTheme> theme =
-    vtkSmartPointer<vtkViewTheme>::New();
+  vtkNew<vtkViewTheme> theme;
   theme->SetPointLookupTable(lookupTable);
   theme->ScalePointLookupTableOff();
 
@@ -112,9 +114,8 @@ int main(int, char *[])
   graphLayoutView->Render();
 
   // Sign up to receive TimerEvent
-  vtkSmartPointer<vtkTimerCallback> cb =
-    vtkSmartPointer<vtkTimerCallback>::New();
-  cb->SetDFS(DFS);
+  vtkNew<vtkTimerCallback> cb;
+  cb->SetDFS(dfs);
   cb->SetTree(tree);
   cb->SetGraphLayoutView(graphLayoutView);
 
