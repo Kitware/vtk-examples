@@ -1,4 +1,4 @@
-#include <vtkSmartPointer.h>
+#include <vtkNew.h>
 #include <vtkGraph.h>
 #include <vtkMutableUndirectedGraph.h>
 #include <vtkMutableDirectedGraph.h>
@@ -19,16 +19,14 @@ int main(int, char *[])
 void TestDirected()
 {
   
-  vtkSmartPointer<vtkMutableDirectedGraph> g =
-    vtkSmartPointer<vtkMutableDirectedGraph>::New();
+  vtkNew<vtkMutableDirectedGraph> g;
   vtkIdType v1 = g->AddVertex();
   vtkIdType v2 = g->AddVertex();
 
   g->AddEdge(v1, v2);
   std::cout << "Input type: " << g->GetClassName() << std::endl;
 
-  vtkSmartPointer<vtkTestGraphAlgorithmFilter> filter =
-    vtkSmartPointer<vtkTestGraphAlgorithmFilter>::New();
+  vtkNew<vtkTestGraphAlgorithmFilter> filter;
   filter->SetInputData(g);
   filter->Update();
 
@@ -40,16 +38,14 @@ void TestDirected()
 void TestUndirected()
 {
   std::cout << "TestUndirected" << std::endl;
-  vtkSmartPointer<vtkMutableUndirectedGraph> g =
-    vtkSmartPointer<vtkMutableUndirectedGraph>::New();
+  vtkNew<vtkMutableUndirectedGraph> g;
   vtkIdType v1 = g->AddVertex();
   vtkIdType v2 = g->AddVertex();
 
   g->AddEdge(v1, v2);
   std::cout << "Input type: " << g->GetClassName() << std::endl;
 
-  vtkSmartPointer<vtkTestGraphAlgorithmFilter> filter =
-    vtkSmartPointer<vtkTestGraphAlgorithmFilter>::New();
+  vtkNew<vtkTestGraphAlgorithmFilter> filter;
   filter->SetInputData(g);
   filter->Update();
 

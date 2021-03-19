@@ -99,8 +99,7 @@ int main(int argc, char* argv[])
   bool withoutAnyDepthThings = atoi(argv[6]) == 1;
 
   // Generate a translucent sphere poly data set that partially overlaps:
-  vtkSmartPointer<vtkAppendPolyData> translucentGeometry =
-      GenerateOverlappingBunchOfSpheres(theta, phi);
+  auto translucentGeometry = GenerateOverlappingBunchOfSpheres(theta, phi);
 
   // generate a basic Mapper and Actor
   vtkNew<vtkPolyDataMapper> mapper;
@@ -178,7 +177,7 @@ int main(int argc, char* argv[])
   vtkNew<vtkTransform> transform;
   transform->Identity();
   transform->RotateY(2.0); // rotate 2 degrees around Y-axis at each iteration
-  vtkSmartPointer<vtkCamera> camera = renderer->GetActiveCamera();
+  auto camera = renderer->GetActiveCamera();
   double camPos[3]; // camera position
   // Start test
   clock->StartTimer();

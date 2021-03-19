@@ -374,6 +374,7 @@ This section includes vtkUnstructuredGrid.
 [ColorVerticesLookupTable](/Python/Graphs/ColorVerticesLookupTable) | Color vertices.
 [ConstructGraph](/Python/Graphs/ConstructGraph) | Construct a graph.
 [ConstructTree](/Python/Graphs/ConstructTree) | Construct a tree.
+[CreateTree](/Python/Graphs/CreateTree) | Create a tree and label the vertices and edges.
 [EdgeWeights](/Python/Graphs/EdgeWeights) |
 [GraphToPolyData](/Python/Graphs/GraphToPolyData) | Convert a graph to a PolyData.
 [LabelVerticesAndEdges](/Python/Graphs/LabelVerticesAndEdges) | Label vertices and edges.

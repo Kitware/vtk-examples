@@ -12,14 +12,15 @@ int main(int argc, char* argv[])
 {
   if (argc < 3)
   {
-    cout << "Usage: " << argv[0]
-         << " treeFileName graphFileName  e.g. vtkclasses.xml vtklibrary.xml"
+    cout << "Usage: " << argv[0] << " treeFileName graphFileName" << std::endl;
+    cout << "where: treeFileName is Infovis-XML-vtkclasses.xml and "
+            "graphFileName is Infovis-XML-vtklibrary.xml"
          << endl;
     return EXIT_FAILURE;
   }
 
-  std::string treeFileName(argv[1]);  // vtkclasses.xml
-  std::string graphFileName(argv[2]); // vtklibrary.xml
+  std::string treeFileName(argv[1]);
+  std::string graphFileName(argv[2]);
 
   // We need to put the graph and tree edges in different domains.
   vtkNew<vtkXMLTreeReader> reader1;
@@ -51,15 +52,18 @@ int main(int argc, char* argv[])
   view->SetAreaSizeArrayName("VertexDegree");
 
   // Apply a theme to the views
-  vtkViewTheme* const theme = vtkViewTheme::CreateMellowTheme();
-  view->ApplyViewTheme(theme);
-  theme->Delete();
+  // vtkViewTheme* const theme = vtkViewTheme::CreateMellowTheme();
+  // view->ApplyViewTheme(theme);
+  // theme->Delete();
+  vtkNew<vtkViewTheme> theme;
+  view->ApplyViewTheme(theme->CreateMellowTheme());
 
   view->GetRenderWindow()->SetMultiSamples(0);
   view->GetRenderWindow()->SetAlphaBitPlanes(1);
   view->Update();
   view->ResetCamera();
 
+  view->GetRenderWindow()->SetSize(600, 600);
   view->GetRenderWindow()->SetWindowName("TreeMapView");
   view->GetRenderWindow()->Render();
   view->GetInteractor()->Initialize();

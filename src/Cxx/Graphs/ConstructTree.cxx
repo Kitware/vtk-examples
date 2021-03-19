@@ -21,14 +21,14 @@ int main(int, char*[])
   /*
   //equivalent to:
 
-  vtkIdType V1 = g->AddVertex();
-  vtkIdType V2 = g->AddVertex();
-  vtkIdType V3 = g->AddVertex();
-  vtkIdType V4 = g->AddVertex();
+  vtkIdType v1 = g->AddVertex();
+  vtkIdType v2 = g->AddVertex();
+  vtkIdType v3 = g->AddVertex();
+  vtkIdType v4 = g->AddVertex();
 
-  g->AddEdge ( V1, V2 );
-  g->AddEdge ( V1, V3 );
-  g->AddEdge ( V2, V4 );
+  g->AddEdge ( v1, v2 );
+  g->AddEdge ( v1, v3 );
+  g->AddEdge ( v2, v4 );
   */
 
   vtkNew<vtkTree> tree;

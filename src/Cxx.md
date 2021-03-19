@@ -738,6 +738,7 @@ This section includes vtkUnstructuredGrid.
 [ConnectedComponents](/Cxx/Graphs/ConnectedComponents) | Find connected components of a graph.
 [ConstructGraph](/Cxx/Graphs/ConstructGraph) | Construct a graph.
 [ConstructTree](/Cxx/Graphs/ConstructTree) | Construct a tree.
+[CreateTree](/Cxx/Graphs/CreateTree) | Create a tree and label the vertices and edges.
 [DepthFirstSearchAnimation](/Cxx/Graphs/DepthFirstSearchAnimation) | Depth First Search Animation.
 [DepthFirstSearchIterator](/Cxx/Graphs/DepthFirstSearchIterator) | Depth First Search iterator.
 [EdgeListIterator](/Cxx/Graphs/EdgeListIterator) | Iterate over edges of a graph.
