@@ -138,6 +138,7 @@ If you are new to VTK then these [tutorials](#tutorial) will help to get you sta
 
 | Example Name | Description | Image |
 | -------------- | ------------- | ------- |
+[HDRReader](/Cxx/IO/HDRReader) | Read a high-dynamic-range imaging file.
 [ImageReader2Factory](/Cxx/IO/ImageReader2Factory) | This class tries to find an appropriate reader. It is very convenient to use this when you don't know what kind of file to expect.
 [JPEGReader](/Cxx/IO/JPEGReader) | Read a JPEG image.
 [MetaImageReader](/Cxx/IO/MetaImageReader) | Read .mha files.
