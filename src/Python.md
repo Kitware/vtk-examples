@@ -82,6 +82,10 @@ If you are new to VTK then these [tutorials](#tutorial) will help to get you sta
 
 #### Input
 
+| Example Name | Description | Image |
+| -------------- | ------------- | ------- |
+[HDRReader](/Python/IO/HDRReader) | Read a high-dynamic-range imaging file.
+
 #### Output
 
 | Example Name | Description | Image |

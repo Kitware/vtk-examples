@@ -85,6 +85,7 @@ if (BUILD_TESTING)
     ExportPolyDataScene
     GenericDataObjectReader
     GLTFImporter
+    HDRReader
     ImageReader2Factory
     ImportPolyDataScene
     ImportToExport
@@ -163,6 +164,9 @@ if (BUILD_TESTING)
     add_test(${KIT}-GLTFImporter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
       TestGLTFImporter ${DATA}/glTF/FlightHelmet/glTF/FlightHelmet.gltf)
     endif()
+
+  add_test(${KIT}-HDRReader ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestHDRReader ${DATA}/spiaggia_di_mondello_1k.hdr)
 
   add_test(${KIT}-ImportPolyDataScene ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestImportPolyDataScene ${DATA}/ExportBunny.vtp)
