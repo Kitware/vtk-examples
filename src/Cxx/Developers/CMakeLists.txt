@@ -17,7 +17,7 @@ endif()
 
 set(KIT_LIBS ${VTK_LIBRARIES})
 
-add_executable(AlgorithmFilter AlgorithmFilter vtkTestAlgorithmFilter vtkTest)
+add_executable(AlgorithmFilter AlgorithmFilter.cxx vtkTestAlgorithmFilter.cxx vtkTest.cxx)
 target_link_libraries(AlgorithmFilter ${VTK_LIBRARIES})
 if (NOT VTK_VERSION VERSION_LESS "8.90.0")
   vtk_module_autoinit(
@@ -26,7 +26,7 @@ if (NOT VTK_VERSION VERSION_LESS "8.90.0")
     )
 endif()
 
-add_executable(AlgorithmSource AlgorithmSource vtkTestAlgorithmSource vtkTest1)
+add_executable(AlgorithmSource AlgorithmSource.cxx vtkTestAlgorithmSource.cxx vtkTest1.cxx)
 target_link_libraries(AlgorithmSource ${VTK_LIBRARIES})
 if (NOT VTK_VERSION VERSION_LESS "8.90.0")
   vtk_module_autoinit(
@@ -53,7 +53,7 @@ if (NOT VTK_VERSION VERSION_LESS "8.90.0")
     )
 endif()
 
-add_executable(GraphAlgorithmFilter GraphAlgorithmFilter vtkTestGraphAlgorithmFilter.cxx)
+add_executable(GraphAlgorithmFilter GraphAlgorithmFilter.cxx vtkTestGraphAlgorithmFilter.cxx)
 target_link_libraries(GraphAlgorithmFilter ${VTK_LIBRARIES})
 if (NOT VTK_VERSION VERSION_LESS "8.90.0")
   vtk_module_autoinit(
@@ -62,7 +62,7 @@ if (NOT VTK_VERSION VERSION_LESS "8.90.0")
     )
 endif()
 
-add_executable(GraphAlgorithmSource GraphAlgorithmSource vtkTestGraphAlgorithmSource.cxx)
+add_executable(GraphAlgorithmSource GraphAlgorithmSource.cxx vtkTestGraphAlgorithmSource.cxx)
 target_link_libraries(GraphAlgorithmSource ${VTK_LIBRARIES})
 if (NOT VTK_VERSION VERSION_LESS "8.90.0")
   vtk_module_autoinit(
@@ -71,7 +71,7 @@ if (NOT VTK_VERSION VERSION_LESS "8.90.0")
     )
 endif()
 
-add_executable(ImageAlgorithmFilter ImageAlgorithmFilter vtkImageAlgorithmFilter.cxx)
+add_executable(ImageAlgorithmFilter ImageAlgorithmFilter.cxx vtkImageAlgorithmFilter.cxx)
 target_link_libraries(ImageAlgorithmFilter ${VTK_LIBRARIES})
 if (NOT VTK_VERSION VERSION_LESS "8.90.0")
   vtk_module_autoinit(
@@ -80,7 +80,7 @@ if (NOT VTK_VERSION VERSION_LESS "8.90.0")
     )
 endif()
 
-add_executable(MultipleInputPorts MultipleInputPorts vtkTestMultipleInputPortsFilter)
+add_executable(MultipleInputPorts MultipleInputPorts.cxx vtkTestMultipleInputPortsFilter.cxx)
 target_link_libraries(MultipleInputPorts ${VTK_LIBRARIES})
 if (NOT VTK_VERSION VERSION_LESS "8.90.0")
   vtk_module_autoinit(
