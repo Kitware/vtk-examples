@@ -187,7 +187,7 @@ class VTKClassesInExamples(object):
         for eg in self.example_types:
             res = defaultdict(lambda: defaultdict(set))
             if eg == 'CSharp':
-                class_pattern = re.compile(r'^[A-Za-z0-9=. <>()\t]+(vtk[A-Za-z0-9]+)')
+                class_pattern = re.compile(r'^[A-Za-z0-9=. <>()_\t]+(vtk[A-Za-z0-9]+)')
             elif eg == 'Cxx':
                 class_pattern = re.compile(
                     r'^[ \t]*#include[ ]+<(vtk[A-Za-z0-9]+)+.h>$|'  # match: #include <vtkClass.h>
@@ -195,9 +195,9 @@ class VTKClassesInExamples(object):
                     r'.*[= ]+(vtk[A-Za-z0-9]+)[ ]*::New'  # match: vtkClass::New()
                 )
             elif eg == 'Java':
-                class_pattern = re.compile(r'^[A-Za-z0-9=. \t]+new[ ]+(vtk[A-Za-z0-9]+)[ ]*\(')
+                class_pattern = re.compile(r'^[A-Za-z0-9=. _\t]+new[ ]+(vtk[A-Za-z0-9]+)[ ]*\(')
             elif eg == 'Python':
-                class_pattern = re.compile(r'^[A-Za-z0-9=. ()\t]+(vtk[A-Za-z0-9]+)[ ]*\(')
+                class_pattern = re.compile(r'^[A-Za-z0-9=. ()_\t]+(vtk[A-Za-z0-9]+)[ ]*\(')
             else:
                 raise RuntimeError('Unknown example type.')
 
