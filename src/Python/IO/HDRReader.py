@@ -44,20 +44,17 @@ def main():
     image_viewer.SetColorLevel(1)
     image_viewer.SetPosition(0, 100)
 
-    # vtkNew<ColorCallback> getColorWindow
-    # getColorWindow.image_viewer = image_viewer
-
     iren = vtk.vtkRenderWindowInteractor()
     image_viewer.SetupInteractor(iren)
-    image_viewer.GetRenderWindow().SetWindowName('HDRReader');
+    image_viewer.GetRenderWindow().SetWindowName('HDRReader')
     image_viewer.Render()
 
-    iren.AddObserver('EndInteractionEvent', OrientationObserver(image_viewer))
+    iren.AddObserver('EndInteractionEvent', ColorCallback(image_viewer))
 
     iren.Start()
 
 
-class OrientationObserver(object):
+class ColorCallback(object):
     def __init__(self, image_viewer):
         self.image_viewer = image_viewer
 
