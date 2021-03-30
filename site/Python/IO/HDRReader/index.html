@@ -101,20 +101,17 @@ function registerListener(event, func) {
     <span class=n>image_viewer</span><span class=o>.</span><span class=n>SetColorLevel</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
     <span class=n>image_viewer</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>100</span><span class=p>)</span>
 
-<span class=hll>    <span class=c1># vtkNew&lt;ColorCallback&gt; getColorWindow</span>
-</span>    <span class=c1># getColorWindow.image_viewer = image_viewer</span>
-
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>image_viewer</span><span class=o>.</span><span class=n>SetupInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>)</span>
-    <span class=n>image_viewer</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;HDRReader&#39;</span><span class=p>);</span>
+    <span class=n>image_viewer</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;HDRReader&#39;</span><span class=p>)</span>
     <span class=n>image_viewer</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
-    <span class=n>iren</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;EndInteractionEvent&#39;</span><span class=p>,</span> <span class=n>OrientationObserver</span><span class=p>(</span><span class=n>image_viewer</span><span class=p>))</span>
+    <span class=n>iren</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;EndInteractionEvent&#39;</span><span class=p>,</span> <span class=n>ColorCallback</span><span class=p>(</span><span class=n>image_viewer</span><span class=p>))</span>
 
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>class</span> <span class=nc>OrientationObserver</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
+<span class=k>class</span> <span class=nc>ColorCallback</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
     <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>image_viewer</span><span class=p>):</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>image_viewer</span> <span class=o>=</span> <span class=n>image_viewer</span>
 
@@ -123,7 +120,7 @@ function registerListener(event, func) {
         <span class=c1># print(caller.GetClassName(), &#39;Event Id:&#39;, ev)</span>
 
         <span class=n>res</span> <span class=o>=</span> <span class=s1>&#39;Color window: </span><span class=si>{}</span><span class=s1> level: </span><span class=si>{}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>image_viewer</span><span class=o>.</span><span class=n>GetColorWindow</span><span class=p>(),</span>
-                                                  <span class=bp>self</span><span class=o>.</span><span class=n>image_viewer</span><span class=o>.</span><span class=n>GetColorWindow</span><span class=p>())</span>
+                                                  <span class=bp>self</span><span class=o>.</span><span class=n>image_viewer</span><span class=o>.</span><span class=n>GetColorLevel</span><span class=p>())</span>
         <span class=nb>print</span><span class=p>(</span><span class=n>res</span><span class=p>)</span>
 
 
