@@ -63,7 +63,7 @@ class ColorCallback(object):
         # print(caller.GetClassName(), 'Event Id:', ev)
 
         res = 'Color window: {} level: {}'.format(self.image_viewer.GetColorWindow(),
-                                                  self.image_viewer.GetColorWindow())
+                                                  self.image_viewer.GetColorLevel())
         print(res)
 
 
