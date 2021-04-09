@@ -10,15 +10,29 @@
 //          not exist in the volume, it will be skipped.
 //
 //
-#include <vtkDiscreteMarchingCubes.h>
 #include <vtkGeometryFilter.h>
 #include <vtkImageAccumulate.h>
 #include <vtkMaskFields.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNew.h>
 #include <vtkThreshold.h>
+#include <vtkVersion.h>
 #include <vtkWindowedSincPolyDataFilter.h>
 #include <vtkXMLPolyDataWriter.h>
+
+// vtkFlyingEdges3D was introduced in VTK >= 8.2
+#if VTK_MAJOR_VERSION >= 9 || (VTK_MAJOR_VERSION >= 8 && VTK_MINOR_VERSION >= 2)
+#define USE_FLYING_EDGES
+#else
+#undef USE_FLYING_EDGES
+#endif
+//#undef USE_FLYING_EDGES
+
+#ifdef USE_FLYING_EDGES
+#include <vtkDiscreteFlyingEdges3D.h>
+#else
+#include <vtkDiscreteMarchingCubes.h>
+#endif
 
 #include <sstream>
 #include <vtkImageData.h>
@@ -31,7 +45,7 @@ int main(int argc, char* argv[])
   {
     std::cout
         << "Usage: " << argv[0]
-        << " InputVolume StartLabel EndLabel  e.g. Frog/frogtissue.mhd 1 2"
+        << " InputVolume StartLabel EndLabel  e.g. Frog/frogtissue.mhd 1 29"
         << std::endl;
     return EXIT_FAILURE;
   }
@@ -39,7 +53,11 @@ int main(int argc, char* argv[])
   // Create all of the classes we will need
   vtkNew<vtkMetaImageReader> reader;
   vtkNew<vtkImageAccumulate> histogram;
+#ifdef USE_FLYING_EDGES
+  vtkNew<vtkDiscreteFlyingEdges3D> discreteCubes;
+#else
   vtkNew<vtkDiscreteMarchingCubes> discreteCubes;
+#endif
   vtkNew<vtkWindowedSincPolyDataFilter> smoother;
   vtkNew<vtkThreshold> selector;
   vtkNew<vtkMaskFields> scalarsOff;
@@ -83,10 +101,17 @@ int main(int argc, char* argv[])
   smoother->NormalizeCoordinatesOn();
   smoother->Update();
 
+#ifdef USE_FLYING_EDGES
+  selector->SetInputConnection(smoother->GetOutputPort());
+  selector->SetInputArrayToProcess(0, 0, 0,
+                                   vtkDataObject::FIELD_ASSOCIATION_POINTS,
+                                   vtkDataSetAttributes::SCALARS);
+#else
   selector->SetInputConnection(smoother->GetOutputPort());
   selector->SetInputArrayToProcess(0, 0, 0,
                                    vtkDataObject::FIELD_ASSOCIATION_CELLS,
                                    vtkDataSetAttributes::SCALARS);
+#endif
 
   // Strip the scalars from the output
   scalarsOff->SetInputConnection(selector->GetOutputPort());

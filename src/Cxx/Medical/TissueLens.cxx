@@ -1,23 +1,36 @@
-#include <vtkClipDataSet.h>
-#include <vtkImplicitVolume.h>
-#include <vtkLookupTable.h>
-#include <vtkMarchingCubes.h>
-#include <vtkMetaImageReader.h>
-#include <vtkProbeFilter.h>
-#include <vtkSphere.h>
-#include <vtkSphereSource.h>
-#include <vtkUnstructuredGrid.h>
-
 #include <vtkActor.h>
 #include <vtkCamera.h>
+#include <vtkClipDataSet.h>
 #include <vtkDataSetMapper.h>
+#include <vtkFlyingEdges3D.h>
+#include <vtkImplicitVolume.h>
+#include <vtkLookupTable.h>
+#include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProbeFilter.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSphere.h>
+#include <vtkSphereSource.h>
+#include <vtkUnstructuredGrid.h>
+#include <vtkVersion.h>
+
+// vtkFlyingEdges3D was introduced in VTK >= 8.2
+#if VTK_MAJOR_VERSION >= 9 || (VTK_MAJOR_VERSION >= 8 && VTK_MINOR_VERSION >= 2)
+#define USE_FLYING_EDGES
+#else
+#undef USE_FLYING_EDGES
+#endif
+
+#ifdef USE_FLYING_EDGES
+#include <vtkFlyingEdges3D.h>
+#else
+#include <vtkMarchingCubes.h>
+#endif
 
 #include <array>
 
@@ -25,6 +38,10 @@ int main(int argc, char* argv[])
 {
   vtkNew<vtkNamedColors> colors;
 
+  std::array<unsigned char, 4> skinColor{{240, 184, 160, 255}};
+  colors->SetColor("SkinColor", skinColor.data());
+  std::array<unsigned char, 4> backColor{{255, 229, 200, 255}};
+  colors->SetColor("BackfaceColor", backColor.data());
   std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
   colors->SetColor("BkgColor", bkg.data());
 
@@ -41,7 +58,11 @@ int main(int argc, char* argv[])
 
   // An isosurface, or contour value of 500 is known to correspond to the
   // skin of the patient.
+#ifdef USE_FLYING_EDGES
+  vtkNew<vtkFlyingEdges3D> skinExtractor;
+#else
   vtkNew<vtkMarchingCubes> skinExtractor;
+#endif
   skinExtractor->SetInputConnection(reader->GetOutputPort());
   skinExtractor->SetValue(0, 500);
 
@@ -64,10 +85,11 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkActor> skin;
   skin->SetMapper(skinMapper);
-  skin->GetProperty()->SetDiffuseColor(1, .49, .25);
+  skin->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("SkinColor").GetData());
 
   vtkNew<vtkProperty> backProp;
-  backProp->SetDiffuseColor(0.8900, 0.8100, 0.3400);
+  backProp->SetDiffuseColor(colors->GetColor3d("BackfaceColor").GetData());
   skin->SetBackfaceProperty(backProp);
 
   // Define a model for the "lens". Its geometry matches the implicit
@@ -95,7 +117,7 @@ int main(int argc, char* argv[])
   bwLut->SetTableRange(0, 2048);
   bwLut->SetSaturationRange(0, 0);
   bwLut->SetHueRange(0, 0);
-  bwLut->SetValueRange(.2, 1);
+  bwLut->SetValueRange(0.2, 1);
   bwLut->Build();
 
   vtkNew<vtkDataSetMapper> lensMapper;

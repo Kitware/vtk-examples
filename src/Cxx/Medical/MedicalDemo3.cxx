@@ -11,7 +11,6 @@
 #include <vtkImageMapToColors.h>
 #include <vtkImageMapper3D.h>
 #include <vtkLookupTable.h>
-#include <vtkMarchingCubes.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
@@ -22,6 +21,20 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkStripper.h>
+#include <vtkVersion.h>
+
+// vtkFlyingEdges3D was introduced in VTK >= 8.2
+#if VTK_MAJOR_VERSION >= 9 || (VTK_MAJOR_VERSION >= 8 && VTK_MINOR_VERSION >= 2)
+#define USE_FLYING_EDGES
+#else
+#undef USE_FLYING_EDGES
+#endif
+
+#ifdef USE_FLYING_EDGES
+#include <vtkFlyingEdges3D.h>
+#else
+#include <vtkMarchingCubes.h>
+#endif
 
 #include <array>
 
@@ -35,7 +48,7 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkNamedColors> colors;
 
-  std::array<unsigned char, 4> skinColor{{255, 125, 64}};
+  std::array<unsigned char, 4> skinColor{{240, 184, 160, 255}};
   colors->SetColor("SkinColor", skinColor.data());
   std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
   colors->SetColor("BkgColor", bkg.data());
@@ -73,7 +86,11 @@ int main(int argc, char* argv[])
   // The triangle stripper is used to create triangle
   // strips from the isosurface; these render much faster on may
   // systems.
+#ifdef USE_FLYING_EDGES
+  vtkNew<vtkFlyingEdges3D> skinExtractor;
+#else
   vtkNew<vtkMarchingCubes> skinExtractor;
+#endif
   skinExtractor->SetInputConnection(reader->GetOutputPort());
   skinExtractor->SetValue(0, 500);
   skinExtractor->Update();
@@ -90,7 +107,7 @@ int main(int argc, char* argv[])
   skin->SetMapper(skinMapper);
   skin->GetProperty()->SetDiffuseColor(
       colors->GetColor3d("SkinColor").GetData());
-  skin->GetProperty()->SetSpecular(.3);
+  skin->GetProperty()->SetSpecular(0.3);
   skin->GetProperty()->SetSpecularPower(20);
 
   // An isosurface, or contour value of 1150 is known to correspond to
@@ -98,7 +115,11 @@ int main(int argc, char* argv[])
   // The triangle stripper is used to create triangle
   // strips from the isosurface; these render much faster on may
   // systems.
+#ifdef USE_FLYING_EDGES
+  vtkNew<vtkFlyingEdges3D> boneExtractor;
+#else
   vtkNew<vtkMarchingCubes> boneExtractor;
+#endif
   boneExtractor->SetInputConnection(reader->GetOutputPort());
   boneExtractor->SetValue(0, 1150);
 
@@ -151,13 +172,13 @@ int main(int argc, char* argv[])
   // in the saturation of the hue.
   vtkNew<vtkLookupTable> satLut;
   satLut->SetTableRange(0, 2000);
-  satLut->SetHueRange(.6, .6);
+  satLut->SetHueRange(0.6, 0.6);
   satLut->SetSaturationRange(0, 1);
   satLut->SetValueRange(1, 1);
   satLut->Build(); // effective built
 
   // Create the first of the three planes. The filter vtkImageMapToColors
-  // maps the data through the corresponding lookup table created above.  The
+  // maps the data through the corresponding lookup table created above. The
   // vtkImageActor is a type of vtkProp and conveniently displays an image on
   // a single quadrilateral plane. It does this using texture mapping and as
   // a result is quite fast. (Note: the input image has to be unsigned char
@@ -224,7 +245,7 @@ int main(int argc, char* argv[])
   // Set skin to semi-transparent.
   skin->GetProperty()->SetOpacity(0.5);
 
-  // An initial camera view is created.  The Dolly() method moves
+  // An initial camera view is created. The Dolly() method moves
   // the camera towards the FocalPoint, thereby enlarging the image.
   aRenderer->SetActiveCamera(aCamera);
 

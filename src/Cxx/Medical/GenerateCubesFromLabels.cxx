@@ -10,6 +10,7 @@
 //          not exist in the volume, it will be skipped.
 //
 //
+#include <vtkCamera.h>
 #include <vtkCellData.h>
 #include <vtkGeometryFilter.h>
 #include <vtkImageAccumulate.h>
@@ -28,10 +29,6 @@
 #include <vtkTransform.h>
 #include <vtkTransformFilter.h>
 #include <vtkUnstructuredGrid.h>
-
-#include <vtkCallbackCommand.h>
-#include <vtkCamera.h>
-#include <vtkRenderer.h>
 
 #include <iostream>
 
@@ -84,7 +81,7 @@ int main(int argc, char* argv[])
 
   // Shift the geometry by 1/2
   vtkNew<vtkTransform> transform;
-  transform->Translate(-.5, -.5, -.5);
+  transform->Translate(-0.5, -0.5, -0.5);
 
   vtkNew<vtkTransformFilter> transformModel;
   transformModel->SetTransform(transform);
@@ -105,6 +102,7 @@ int main(int argc, char* argv[])
   vtkNew<vtkRenderer> renderer;
   vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetSize(640, 480);
   renderWindow->SetWindowName("GenerateCubesFromLabels");
 
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
