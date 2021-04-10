@@ -20,7 +20,7 @@
 #include <vtkWindowedSincPolyDataFilter.h>
 #include <vtkXMLPolyDataWriter.h>
 
-// vtkFlyingEdges3D was introduced in VTK >= 8.2
+// vtkDiscreteFlyingEdges3D was introduced in VTK >= 8.2
 #if VTK_MAJOR_VERSION >= 9 || (VTK_MAJOR_VERSION >= 8 && VTK_MINOR_VERSION >= 2)
 #define USE_FLYING_EDGES
 #else
@@ -101,13 +101,12 @@ int main(int argc, char* argv[])
   smoother->NormalizeCoordinatesOn();
   smoother->Update();
 
-#ifdef USE_FLYING_EDGES
   selector->SetInputConnection(smoother->GetOutputPort());
+#ifdef USE_FLYING_EDGES
   selector->SetInputArrayToProcess(0, 0, 0,
                                    vtkDataObject::FIELD_ASSOCIATION_POINTS,
                                    vtkDataSetAttributes::SCALARS);
 #else
-  selector->SetInputConnection(smoother->GetOutputPort());
   selector->SetInputArrayToProcess(0, 0, 0,
                                    vtkDataObject::FIELD_ASSOCIATION_CELLS,
                                    vtkDataSetAttributes::SCALARS);

@@ -596,12 +596,12 @@ This section includes vtkUnstructuredGrid.
 | Example Name | Description | Image |
 | -------------- | ------------- | ------- |
 [GenerateCubesFromLabels](/Cxx/Medical/GenerateCubesFromLabels) | Create cubes from labeled volume data.
-[GenerateModelsFromLabels](/Cxx/Medical/GenerateModelsFromLabels) | Create models from labeled volume data (vtkDiscreteMarchingCubes).
-[MedicalDemo1](/Cxx/Medical/MedicalDemo1) | Create a skin surface from volume data
-[MedicalDemo2](/Cxx/Medical/MedicalDemo2) | Create a skin and bone surface from volume data
-[MedicalDemo3](/Cxx/Medical/MedicalDemo3) | Create skin, bone and slices from volume data
-[MedicalDemo4](/Cxx/Medical/MedicalDemo4) | Create a volume rendering
-[TissueLens](/Cxx/Medical/TissueLens) | Cut a volume with a sphere
+[GenerateModelsFromLabels](/Cxx/Medical/GenerateModelsFromLabels) | Create models from labeled volume data.
+[MedicalDemo1](/Cxx/Medical/MedicalDemo1) | Create a skin surface from volume data.
+[MedicalDemo2](/Cxx/Medical/MedicalDemo2) | Create a skin and bone surface from volume data.
+[MedicalDemo3](/Cxx/Medical/MedicalDemo3) | Create skin, bone and slices from volume data.
+[MedicalDemo4](/Cxx/Medical/MedicalDemo4) | Create a volume rendering.
+[TissueLens](/Cxx/Medical/TissueLens) | Cut a volume with a sphere.
 
 ### Surface reconstruction
 

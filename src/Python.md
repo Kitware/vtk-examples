@@ -330,10 +330,14 @@ This section includes vtkUnstructuredGrid.
 
 | Example Name | Description | Image |
 | -------------- | ------------- | ------- |
-[MedicalDemo1](/Python/Medical/MedicalDemo1) | Create a skin surface from volume data
-[MedicalDemo2](/Python/Medical/MedicalDemo2) | Create a skin and bone surface from volume data
-[MedicalDemo3](/Python/Medical/MedicalDemo3) | Create skin, bone and slices from volume data
-[MedicalDemo4](/Python/Medical/MedicalDemo4) | Create a volume rendering
+[GenerateCubesFromLabels](/Python/Medical/GenerateCubesFromLabels) | Create cubes from labeled volume data.
+[GenerateModelsFromLabels](/Python/Medical/GenerateModelsFromLabels) | Create models from labeled volume data.
+[MedicalDemo1](/Python/Medical/MedicalDemo1) | Create a skin surface from volume data.
+[MedicalDemo2](/Python/Medical/MedicalDemo2) | Create a skin and bone surface from volume data.
+[MedicalDemo3](/Python/Medical/MedicalDemo3) | Create skin, bone and slices from volume data.
+[MedicalDemo4](/Python/Medical/MedicalDemo4) | Create a volume rendering.
+[TissueLens](/Python/Medical/TissueLens) | Cut a volume with a sphere.
+
 
 ### Surface reconstruction
 
