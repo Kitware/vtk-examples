@@ -1,5 +1,4 @@
 #include <vtkActor.h>
-#include <vtkDiscreteMarchingCubes.h>
 #include <vtkImageData.h>
 #include <vtkImageMathematics.h>
 #include <vtkImageThreshold.h>
@@ -14,6 +13,20 @@
 #include <vtkSampleFunction.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphere.h>
+#include <vtkVersion.h>
+
+// vtkDiscreteFlyingEdges3D was introduced in VTK >= 8.2
+#if VTK_MAJOR_VERSION >= 9 || (VTK_MAJOR_VERSION >= 8 && VTK_MINOR_VERSION >= 2)
+#define USE_FLYING_EDGES
+#else
+
+#endif
+#undef USE_FLYING_EDGES
+#ifdef USE_FLYING_EDGES
+#include <vtkDiscreteFlyingEdges3D.h>
+#else
+#include <vtkDiscreteMarchingCubes.h>
+#endif
 
 namespace {
 vtkSmartPointer<vtkLookupTable> MakeColors(unsigned int n);
@@ -28,7 +41,11 @@ int main(int /*argc*/, char* /* argv */[])
 
   vtkSmartPointer<vtkImageData> blob = MakeBlob(n, radius);
 
+#ifdef USE_FLYING_EDGES
+  vtkNew<vtkDiscreteFlyingEdges3D> discrete;
+#else
   vtkNew<vtkDiscreteMarchingCubes> discrete;
+#endif
   discrete->SetInputData(blob);
   discrete->GenerateValues(n, 1, n);
 
@@ -67,18 +84,23 @@ int main(int /*argc*/, char* /* argv */[])
 namespace {
 vtkSmartPointer<vtkImageData> MakeBlob(int n, double radius)
 {
-  vtkNew<vtkMath> math;
-
   vtkNew<vtkImageData> blobImage;
 
+  double maxR = 50 - 2.0 * radius;
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(5071);
   for (int i = 0; i < n; ++i)
   {
     vtkNew<vtkSphere> sphere;
     sphere->SetRadius(radius);
-    double maxR = 50 - 2.0 * radius;
-    sphere->SetCenter(int(math->Random(-maxR, maxR)),
-                      int(math->Random(-maxR, maxR)),
-                      int(math->Random(-maxR, maxR)));
+    auto x = randomSequence->GetRangeValue(-maxR, maxR);
+    randomSequence->Next();
+    auto y = randomSequence->GetRangeValue(-maxR, maxR);
+    randomSequence->Next();
+    auto z = randomSequence->GetRangeValue(-maxR, maxR);
+    randomSequence->Next();
+
+    sphere->SetCenter(int(x), int(y), int(z));
 
     vtkNew<vtkSampleFunction> sampler;
     sampler->SetImplicitFunction(sphere);
@@ -125,14 +147,11 @@ vtkSmartPointer<vtkLookupTable> MakeColors(unsigned int n)
   randomSequence->SetSeed(5071);
   for (int i = 1; i < static_cast<int>(n); ++i)
   {
-    double r;
-    double g;
-    double b;
-    r = randomSequence->GetRangeValue(0.4, 1);
+    auto r = randomSequence->GetRangeValue(0.4, 1);
     randomSequence->Next();
-    g = randomSequence->GetRangeValue(0.4, 1);
+    auto g = randomSequence->GetRangeValue(0.4, 1);
     randomSequence->Next();
-    b = randomSequence->GetRangeValue(0.4, 1);
+    auto b = randomSequence->GetRangeValue(0.4, 1);
     randomSequence->Next();
     lut->SetTableValue(i, r, g, b, 1.0);
   }

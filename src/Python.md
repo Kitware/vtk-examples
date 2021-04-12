@@ -178,7 +178,9 @@ If you are new to VTK then these [tutorials](#tutorial) will help to get you sta
 | -------------- | ------------- | ------- |
 [BooleanOperationImplicitFunctions](/Python/ImplicitFunctions/BooleanOperationImplicitFunctions) | Demonstrate booleans of two different implicit functions
 [CutWithScalars](/Python/VisualizationAlgorithms/CutWithScalars) | Cut a surface with scalars.
+[DiscreteMarchingCubes](/Cxx/Python/DiscreteMarchingCubes) | Generate surfaces from labeled data.
 [ExtractData](/Python/VisualizationAlgorithms/ExtractData) | Implicit functions used to select data: Two ellipsoids are combined using the union operation used to select voxels from a volume. Voxels are shrunk 50 percent.
+[ExtractLargestIsosurface](/Python/Modelling/ExtractLargestIsosurface) | Extract largest isosurface.
 [Hello](/Python/VisualizationAlgorithms/Hello) | Implicit modelling used to thicken a stroked font.
 [IceCream](/Python/VisualizationAlgorithms/IceCream) | How to use boolean combinations of implicit functions to create a model of an ice cream cone.
 [ImplicitQuadric](/Python/ImplicitFunctions/ImplicitQuadric) | Create an ellipsoid using an implicit quadric
@@ -191,6 +193,7 @@ If you are new to VTK then these [tutorials](#tutorial) will help to get you sta
 [MarchingCasesC](/Python/VisualizationAlgorithms/MarchingCasesC) | Marching cubes, case 3 is rotated 90 degrees about the y-axis with no label.
 [MarchingCasesD](/Python/VisualizationAlgorithms/MarchingCasesD) | Marching cubes, case 7 is rotated 180 degrees about the y-axis with no label.
 [SampleFunction](/Python/ImplicitFunctions/SampleFunction) | Sample and visualize an implicit function.
+[SmoothDiscreteMarchingCubes](/Python/Modelling/SmoothDiscreteMarchingCubes) | Generate smooth surfaces from labeled data.
 
 ## Working with 3D Data
 

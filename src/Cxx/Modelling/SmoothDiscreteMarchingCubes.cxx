@@ -85,18 +85,23 @@ int main(int /* argc */, char* /* argv */[])
 namespace {
 vtkSmartPointer<vtkImageData> MakeBlob(int n, double radius)
 {
-  vtkNew<vtkMath> math;
-
   vtkNew<vtkImageData> blobImage;
 
+  double maxR = 50 - 2.0 * radius;
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(5071);
   for (int i = 0; i < n; ++i)
   {
     vtkNew<vtkSphere> sphere;
     sphere->SetRadius(radius);
-    double maxR = 50 - 2.0 * radius;
-    sphere->SetCenter(int(math->Random(-maxR, maxR)),
-                      int(math->Random(-maxR, maxR)),
-                      int(math->Random(-maxR, maxR)));
+    auto x = randomSequence->GetRangeValue(-maxR, maxR);
+    randomSequence->Next();
+    auto y = randomSequence->GetRangeValue(-maxR, maxR);
+    randomSequence->Next();
+    auto z = randomSequence->GetRangeValue(-maxR, maxR);
+    randomSequence->Next();
+
+    sphere->SetCenter(int(x), int(y), int(z));
 
     vtkNew<vtkSampleFunction> sampler;
     sampler->SetImplicitFunction(sphere);
@@ -143,14 +148,11 @@ vtkSmartPointer<vtkLookupTable> MakeColors(unsigned int n)
   randomSequence->SetSeed(5071);
   for (int i = 1; i < static_cast<int>(n); ++i)
   {
-    double r;
-    double g;
-    double b;
-    r = randomSequence->GetRangeValue(0.4, 1);
+    auto r = randomSequence->GetRangeValue(0.4, 1);
     randomSequence->Next();
-    g = randomSequence->GetRangeValue(0.4, 1);
+    auto g = randomSequence->GetRangeValue(0.4, 1);
     randomSequence->Next();
-    b = randomSequence->GetRangeValue(0.4, 1);
+    auto b = randomSequence->GetRangeValue(0.4, 1);
     randomSequence->Next();
     lut->SetTableValue(i, r, g, b, 1.0);
   }
