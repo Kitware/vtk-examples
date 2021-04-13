@@ -1,7 +1,6 @@
 #include <vtkActor.h>
 #include <vtkCylinder.h>
 #include <vtkImageData.h>
-#include <vtkMarchingCubes.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPointData.h>
@@ -14,6 +13,20 @@
 #include <vtkSampleFunction.h>
 #include <vtkSphere.h>
 #include <vtkUnsignedCharArray.h>
+#include <vtkVersion.h>
+
+// vtkFlyingEdges3D was introduced in VTK >= 8.2
+#if VTK_MAJOR_VERSION >= 9 || (VTK_MAJOR_VERSION >= 8 && VTK_MINOR_VERSION >= 2)
+#define USE_FLYING_EDGES
+#else
+#undef USE_FLYING_EDGES
+#endif
+
+#ifdef USE_FLYING_EDGES
+#include <vtkFlyingEdges3D.h>
+#else
+#include <vtkMarchingCubes.h>
+#endif
 
 int main(int argc, char* argv[])
 {
@@ -37,7 +50,11 @@ int main(int argc, char* argv[])
   sampledSphere->SetModelBounds(xMin, xMax, xMin, xMax, xMin, xMax);
   sampledSphere->SetImplicitFunction(implicitSphere);
 
+#ifdef USE_FLYING_EDGES
+  vtkNew<vtkFlyingEdges3D> isoSphere;
+#else
   vtkNew<vtkMarchingCubes> isoSphere;
+#endif
   isoSphere->SetValue(0, 1.0);
   isoSphere->SetInputConnection(sampledSphere->GetOutputPort());
 

@@ -3,7 +3,6 @@
 #include <vtkImageGaussianSmooth.h>
 #include <vtkImageThreshold.h>
 #include <vtkLookupTable.h>
-#include <vtkMarchingCubes.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
@@ -14,7 +13,21 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkStripper.h>
+#include <vtkVersion.h>
 #include <vtkWindowedSincPolyDataFilter.h>
+
+// vtkFlyingEdges3D was introduced in VTK >= 8.2
+#if VTK_MAJOR_VERSION >= 9 || (VTK_MAJOR_VERSION >= 8 && VTK_MINOR_VERSION >= 2)
+#define USE_FLYING_EDGES
+#else
+#undef USE_FLYING_EDGES
+#endif
+
+#ifdef USE_FLYING_EDGES
+#include <vtkFlyingEdges3D.h>
+#else
+#include <vtkMarchingCubes.h>
+#endif
 
 #include <map>
 
@@ -27,6 +40,13 @@ void CreateTissueMap(std::map<std::string, int>& tissueMap);
 
 int main(int argc, char* argv[])
 {
+  if (argc < 3)
+  {
+    std::cerr << "Usage: " << argv[0]
+              << "InputFile(.mhd) Tissue e.g.frogtissue.mhd brain" << std::endl;
+    return EXIT_FAILURE;
+  }
+
   std::map<std::string, int> tissueMap;
   CreateTissueMap(tissueMap);
 
@@ -40,9 +60,9 @@ int main(int argc, char* argv[])
   vtkNew<vtkNamedColors> colors;
   // Setup render window, renderer, and interactor.
   vtkNew<vtkRenderer> rendererLeft;
-  rendererLeft->SetViewport(0, 0, .5, 1);
+  rendererLeft->SetViewport(0, 0, 0.5, 1);
   vtkNew<vtkRenderer> rendererRight;
-  rendererRight->SetViewport(.5, 0, 1, 1);
+  rendererRight->SetViewport(0.5, 0, 1, 1);
   vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(rendererLeft);
   renderWindow->AddRenderer(rendererRight);
@@ -102,6 +122,7 @@ void CreateTissueMap(std::map<std::string, int>& tissueMap)
   tissueMap["stomach"] = 15;
   return;
 }
+
 void CreateSmoothFrogActor(std::string fileName, int tissue, vtkActor* actor)
 {
   vtkNew<vtkMetaImageReader> reader;
@@ -124,18 +145,22 @@ void CreateSmoothFrogActor(std::string fileName, int tissue, vtkActor* actor)
   gaussian->SetInputConnection(selectTissue->GetOutputPort());
 
   double isoValue = 127.5;
-  vtkNew<vtkMarchingCubes> mcubes;
-  mcubes->SetInputConnection(gaussian->GetOutputPort());
-  mcubes->ComputeScalarsOff();
-  mcubes->ComputeGradientsOff();
-  mcubes->ComputeNormalsOff();
-  mcubes->SetValue(0, isoValue);
+#ifdef USE_FLYING_EDGES
+  vtkNew<vtkFlyingEdges3D> iso_surface;
+#else
+  vtkNew<vtkMarchingCubes> iso_surface;
+#endif
+  iso_surface->SetInputConnection(gaussian->GetOutputPort());
+  iso_surface->ComputeScalarsOff();
+  iso_surface->ComputeGradientsOff();
+  iso_surface->ComputeNormalsOff();
+  iso_surface->SetValue(0, isoValue);
 
-  int smoothingIterations = 0;
+  int smoothingIterations = 20;
   double passBand = 0.001;
   double featureAngle = 60.0;
   vtkNew<vtkWindowedSincPolyDataFilter> smoother;
-  smoother->SetInputConnection(mcubes->GetOutputPort());
+  smoother->SetInputConnection(iso_surface->GetOutputPort());
   smoother->SetNumberOfIterations(smoothingIterations);
   smoother->BoundarySmoothingOff();
   smoother->FeatureEdgeSmoothingOff();
@@ -172,15 +197,19 @@ void CreateFrogActor(std::string fileName, int tissue, vtkActor* actor)
   selectTissue->SetInputConnection(reader->GetOutputPort());
 
   double isoValue = 63.5;
-  vtkNew<vtkMarchingCubes> mcubes;
-  mcubes->SetInputConnection(selectTissue->GetOutputPort());
-  mcubes->ComputeScalarsOff();
-  mcubes->ComputeGradientsOff();
-  mcubes->ComputeNormalsOn();
-  mcubes->SetValue(0, isoValue);
+#ifdef USE_FLYING_EDGES
+  vtkNew<vtkFlyingEdges3D> iso_surface;
+#else
+  vtkNew<vtkMarchingCubes> iso_surface;
+#endif
+  iso_surface->SetInputConnection(selectTissue->GetOutputPort());
+  iso_surface->ComputeScalarsOff();
+  iso_surface->ComputeGradientsOff();
+  iso_surface->ComputeNormalsOn();
+  iso_surface->SetValue(0, isoValue);
 
   vtkNew<vtkStripper> stripper;
-  stripper->SetInputConnection(mcubes->GetOutputPort());
+  stripper->SetInputConnection(iso_surface->GetOutputPort());
 
   vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(stripper->GetOutputPort());

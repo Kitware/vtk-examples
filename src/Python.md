@@ -538,6 +538,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [HeadSlice](/Python/VisualizationAlgorithms/HeadSlice) | Marching squares used to generate contour lines.
 [HyperStreamline](/Python/VisualizationAlgorithms/HyperStreamline) | Example of hyperstreamlines, the four hyperstreamlines shown are integrated along the minor principle stress axis. A plane (colored with a different lookup table) is also shown.
 [IronIsoSurface](/Python/VisualizationAlgorithms/IronIsoSurface) | Marching cubes surface of iron-protein.
+[IsosurfaceSampling](/Python/Visualization/IsosurfaceSampling) | Demonstrates how to create point data on an isosurface.
 [Kitchen](/Python/Visualization/Kitchen) | Demonstrates stream tracing in a kitchen.
 [KochSnowflake](/Python/Visualization/KochSnowflake) | This example draws a Koch snowflake fractal using recursive functions and some of the convenient tools in the toolkit.
 [LOx](/Python/VisualizationAlgorithms/LOx) | Streamtubes created by using the computational grid just in front of the post as a source for seeds.
