@@ -36,16 +36,19 @@ def main():
 
     if use_flying_edges:
         try:
-            iso = vtk.vtkFlyingEdges3D()
+            using_marching_cubes = False
+            iso = vtk.vtkDiscreteFlyingEdges3D()
         except AttributeError:
-            iso = vtk.vtkMarchingCubes()
+            using_marching_cubes = True
+            iso = vtk.vtkDiscreteMarchingCubes()
     else:
-        iso = vtk.vtkMarchingCubes()
+        using_marching_cubes = True
+        iso = vtk.vtkDiscreteMarchingCubes()
     iso.SetInputConnection(reader.GetOutputPort())
     iso.ComputeGradientsOn()
     iso.ComputeScalarsOff()
     iso.SetValue(0, 1150)
-    if not use_flying_edges:
+    if using_marching_cubes:
         iso.SetLocator(locator)
 
     iso_mapper = vtk.vtkPolyDataMapper()
