@@ -15,19 +15,10 @@ def main():
     colors.SetColor('BackfaceColor', [255, 229, 200, 255])
     colors.SetColor('BkgColor', [51, 77, 102, 255])
 
-    # Create the renderer, the render window, and the interactor. The renderer
-    # draws into the render window, the interactor enables mouse- and
-    # keyboard-based interaction with the data within the render window.
-    #
-    a_renderer = vtk.vtkRenderer()
-    ren_win = vtk.vtkRenderWindow()
-    ren_win.AddRenderer(a_renderer)
-
-    iren = vtk.vtkRenderWindowInteractor()
-    iren.SetRenderWindow(ren_win)
-
+    # Read the volume data
     reader = vtk.vtkMetaImageReader()
     reader.SetFileName(file_name)
+    reader.Update()
 
     # An isosurface, or contour value of 500 is known to correspond to the
     # skin of the patient.
@@ -41,8 +32,21 @@ def main():
     skin_extractor.SetInputConnection(reader.GetOutputPort())
     skin_extractor.SetValue(0, 500)
 
-    skin_mapper = vtk.vtkPolyDataMapper()
-    skin_mapper.SetInputConnection(skin_extractor.GetOutputPort())
+    # Define a spherical clip function to clip the isosurface
+    clip_function = vtk.vtkSphere()
+    clip_function.SetRadius(50)
+    clip_function.SetCenter(73, 52, 15)
+
+    # Clip the isosurface with a sphere
+    skin_clip = vtk.vtkClipDataSet()
+    skin_clip.SetInputConnection(skin_extractor.GetOutputPort())
+    skin_clip.SetClipFunction(clip_function)
+    skin_clip.SetValue(0)
+    skin_clip.GenerateClipScalarsOn()
+    skin_clip.Update()
+
+    skin_mapper = vtk.vtkDataSetMapper()
+    skin_mapper.SetInputConnection(skin_clip.GetOutputPort())
     skin_mapper.ScalarVisibilityOff()
 
     skin = vtk.vtkActor()
@@ -53,17 +57,41 @@ def main():
     back_prop.SetDiffuseColor(colors.GetColor3d('BackfaceColor'))
     skin.SetBackfaceProperty(back_prop)
 
-    # An outline provides context around the data.
-    #
-    outline_data = vtk.vtkOutlineFilter()
-    outline_data.SetInputConnection(reader.GetOutputPort())
+    # Define a model for the "lens". Its geometry matches the implicit
+    # sphere used to clip the isosurface
+    lens_model = vtk.vtkSphereSource()
+    lens_model.SetRadius(50)
+    lens_model.SetCenter(73, 52, 15)
+    lens_model.SetPhiResolution(201)
+    lens_model.SetThetaResolution(101)
 
-    map_outline = vtk.vtkPolyDataMapper()
-    map_outline.SetInputConnection(outline_data.GetOutputPort())
+    # Sample the input volume with the lens model geometry
+    lens_probe = vtk.vtkProbeFilter()
+    lens_probe.SetInputConnection(lens_model.GetOutputPort())
+    lens_probe.SetSourceConnection(reader.GetOutputPort())
 
-    outline = vtk.vtkActor()
-    outline.SetMapper(map_outline)
-    outline.GetProperty().SetColor(colors.GetColor3d('Black'))
+    # Clip the lens data with the isosurface value
+    lens_clip = vtk.vtkClipDataSet()
+    lens_clip.SetInputConnection(lens_probe.GetOutputPort())
+    lens_clip.SetValue(500)
+    lens_clip.GenerateClipScalarsOff()
+    lens_clip.Update()
+
+    # Define a suitable grayscale lut
+    bw_lut = vtk.vtkLookupTable()
+    bw_lut.SetTableRange(0, 2048)
+    bw_lut.SetSaturationRange(0, 0)
+    bw_lut.SetHueRange(0, 0)
+    bw_lut.SetValueRange(0.2, 1)
+    bw_lut.Build()
+
+    lens_mapper = vtk.vtkDataSetMapper()
+    lens_mapper.SetInputConnection(lens_clip.GetOutputPort())
+    lens_mapper.SetScalarRange(lens_clip.GetOutput().GetScalarRange())
+    lens_mapper.SetLookupTable(bw_lut)
+
+    lens = vtk.vtkActor()
+    lens.SetMapper(lens_mapper)
 
     # It is convenient to create an initial view of the data. The FocalPoint
     # and Position form a vector direction. Later on (ResetCamera() method)
@@ -77,10 +105,21 @@ def main():
     a_camera.Azimuth(30.0)
     a_camera.Elevation(30.0)
 
+    # Create the renderer, the render window, and the interactor. The renderer
+    # draws into the render window, the interactor enables mouse- and
+    # keyboard-based interaction with the data within the render window.
+    #
+    a_renderer = vtk.vtkRenderer()
+    ren_win = vtk.vtkRenderWindow()
+    ren_win.AddRenderer(a_renderer)
+
+    iren = vtk.vtkRenderWindowInteractor()
+    iren.SetRenderWindow(ren_win)
+
     # Actors are added to the renderer. An initial camera view is created.
     # The Dolly() method moves the camera towards the FocalPoint,
     # thereby enlarging the image.
-    a_renderer.AddActor(outline)
+    a_renderer.AddActor(lens)
     a_renderer.AddActor(skin)
     a_renderer.SetActiveCamera(a_camera)
     a_renderer.ResetCamera()
@@ -90,7 +129,7 @@ def main():
     # render window (expressed in pixels).
     a_renderer.SetBackground(colors.GetColor3d('BkgColor'))
     ren_win.SetSize(640, 480)
-    ren_win.SetWindowName('MedicalDemo1')
+    ren_win.SetWindowName('TissueLens')
 
     # Note that when camera movement occurs (as it does in the Dolly()
     # method), the clipping planes often need adjusting. Clipping planes
@@ -101,17 +140,15 @@ def main():
     a_renderer.ResetCameraClippingRange()
 
     # Initialize the event loop and then start it.
+    ren_win.Render()
     iren.Initialize()
     iren.Start()
 
 
 def get_program_parameters():
     import argparse
-    description = 'The skin extracted from a CT dataset of the head.'
+    description = 'The skin and bone is extracted from a CT dataset of the head and a "tissue lens" effect is applied.'
     epilogue = '''
-    Derived from VTK/Examples/Cxx/Medical1.cxx
-    This example reads a volume dataset, extracts an isosurface that
-     represents the skin and displays it.
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)

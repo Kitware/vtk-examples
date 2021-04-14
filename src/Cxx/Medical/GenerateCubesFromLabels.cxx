@@ -10,6 +10,7 @@
 //          not exist in the volume, it will be skipped.
 //
 //
+#include <vtkCamera.h>
 #include <vtkCellData.h>
 #include <vtkGeometryFilter.h>
 #include <vtkImageAccumulate.h>
@@ -28,10 +29,6 @@
 #include <vtkTransform.h>
 #include <vtkTransformFilter.h>
 #include <vtkUnstructuredGrid.h>
-
-#include <vtkCallbackCommand.h>
-#include <vtkCamera.h>
-#include <vtkRenderer.h>
 
 #include <iostream>
 
@@ -84,7 +81,7 @@ int main(int argc, char* argv[])
 
   // Shift the geometry by 1/2
   vtkNew<vtkTransform> transform;
-  transform->Translate(-.5, -.5, -.5);
+  transform->Translate(-0.5, -0.5, -0.5);
 
   vtkNew<vtkTransformFilter> transformModel;
   transformModel->SetTransform(transform);
@@ -105,6 +102,7 @@ int main(int argc, char* argv[])
   vtkNew<vtkRenderer> renderer;
   vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
+  renderWindow->SetSize(640, 480);
   renderWindow->SetWindowName("GenerateCubesFromLabels");
 
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
@@ -115,11 +113,11 @@ int main(int argc, char* argv[])
   renderWindow->Render();
 
   auto camera = renderer->GetActiveCamera();
-  camera->SetPosition(361.967, 1116.43, 37.0903);
-  camera->SetFocalPoint(251, 240.5, 99.25);
-  camera->SetViewUp(0.338894, -0.109247, -0.93446);
-  camera->SetDistance(885.112);
-  camera->SetClippingRange(355.54, 1553.87);
+  camera->SetPosition(42.301174, 939.893457, -124.005030);
+  camera->SetFocalPoint(224.697134, 221.301653, 146.823706);
+  camera->SetViewUp(0.262286, -0.281321, -0.923073);
+  camera->SetDistance(789.297581);
+  camera->SetClippingRange(168.744328, 1509.660206);
 
   renderWindowInteractor->Start();
   return EXIT_SUCCESS;

@@ -20,6 +20,9 @@ def get_program_parameters(argv):
 
 
 def main(data_folder, tissue):
+    # vtkFlyingEdges3D was introduced in VTK >= 8.2
+    use_flying_edges = vtk_version_ok(8, 2, 0)
+
     colors = vtk.vtkNamedColors()
 
     path = Path(data_folder)
@@ -49,17 +52,17 @@ def main(data_folder, tissue):
     render_window_interactor = vtk.vtkRenderWindowInteractor()
     render_window_interactor.SetRenderWindow(render_window)
 
-    actor = create_frog_actor(file_name, tissue_map[tissue])
+    actor = create_frog_actor(file_name, tissue_map[tissue], use_flying_edges)
     actor.GetProperty().SetDiffuseColor(lut.GetTableValue(tissue_map[tissue])[:3])
     renderer_left.AddActor(actor)
 
-    actorSmooth = create_smooth_frog_actor(file_name, tissue_map[tissue])
-    actorSmooth.GetProperty().SetDiffuseColor(lut.GetTableValue(tissue_map[tissue])[:3])
-    actorSmooth.GetProperty().SetDiffuse(1.0)
-    actorSmooth.GetProperty().SetSpecular(.5)
-    actorSmooth.GetProperty().SetSpecularPower(100)
+    actor_smooth = create_smooth_frog_actor(file_name, tissue_map[tissue], use_flying_edges)
+    actor_smooth.GetProperty().SetDiffuseColor(lut.GetTableValue(tissue_map[tissue])[:3])
+    actor_smooth.GetProperty().SetDiffuse(1.0)
+    actor_smooth.GetProperty().SetSpecular(.5)
+    actor_smooth.GetProperty().SetSpecularPower(100)
 
-    renderer_right.AddActor(actorSmooth)
+    renderer_right.AddActor(actor_smooth)
 
     renderer_left.ResetCamera()
     renderer_left.GetActiveCamera().SetViewUp(-1, 0, 0)
@@ -77,7 +80,7 @@ def main(data_folder, tissue):
     render_window_interactor.Start()
 
 
-def create_smooth_frog_actor(file_name, tissue):
+def create_smooth_frog_actor(file_name, tissue, use_flying_edges):
     reader = vtk.vtkMetaImageReader()
     reader.SetFileName(str(file_name))
     reader.Update()
@@ -88,20 +91,28 @@ def create_smooth_frog_actor(file_name, tissue):
     select_tissue.SetOutValue(0)
     select_tissue.SetInputConnection(reader.GetOutputPort())
 
-    gaussianRadius = 1
-    gaussianStandardDeviation = 2.0
+    gaussian_radius = 1
+    gaussian_standard_deviation = 2.0
     gaussian = vtk.vtkImageGaussianSmooth()
-    gaussian.SetStandardDeviations(gaussianStandardDeviation, gaussianStandardDeviation, gaussianStandardDeviation)
-    gaussian.SetRadiusFactors(gaussianRadius, gaussianRadius, gaussianRadius)
+    gaussian.SetStandardDeviations(gaussian_standard_deviation, gaussian_standard_deviation,
+                                   gaussian_standard_deviation)
+    gaussian.SetRadiusFactors(gaussian_radius, gaussian_radius, gaussian_radius)
     gaussian.SetInputConnection(select_tissue.GetOutputPort())
 
-    isoValue = 63.5
-    iso_surface = vtk.vtkFlyingEdges3D()
+    # iso_value = 63.5
+    iso_value = 127.5
+    if use_flying_edges:
+        try:
+            iso_surface = vtk.vtkFlyingEdges3D()
+        except AttributeError:
+            iso_surface = vtk.vtkMarchingCubes()
+    else:
+        iso_surface = vtk.vtkMarchingCubes()
     iso_surface.SetInputConnection(gaussian.GetOutputPort())
     iso_surface.ComputeScalarsOff()
     iso_surface.ComputeGradientsOff()
     iso_surface.ComputeNormalsOff()
-    iso_surface.SetValue(0, isoValue)
+    iso_surface.SetValue(0, iso_value)
 
     smoothing_iterations = 20
     pass_band = 0.001
@@ -133,7 +144,7 @@ def create_smooth_frog_actor(file_name, tissue):
     return actor
 
 
-def create_frog_actor(file_name, tissue):
+def create_frog_actor(file_name, tissue, use_flying_edges):
     reader = vtk.vtkMetaImageReader()
     reader.SetFileName(str(file_name))
     reader.Update()
@@ -145,7 +156,13 @@ def create_frog_actor(file_name, tissue):
     select_tissue.SetInputConnection(reader.GetOutputPort())
 
     iso_value = 63.5
-    iso_surface = vtk.vtkFlyingEdges3D()
+    if use_flying_edges:
+        try:
+            iso_surface = vtk.vtkFlyingEdges3D()
+        except AttributeError:
+            iso_surface = vtk.vtkMarchingCubes()
+    else:
+        iso_surface = vtk.vtkMarchingCubes()
     iso_surface.SetInputConnection(select_tissue.GetOutputPort())
     iso_surface.ComputeScalarsOff()
     iso_surface.ComputeGradientsOff()
@@ -209,6 +226,28 @@ def create_tissue_map():
     tissue_map['stomach'] = 15
 
     return tissue_map
+
+
+def vtk_version_ok(major, minor, build):
+    """
+    Check the VTK version.
+
+    :param major: Major version.
+    :param minor: Minor version.
+    :param build: Build version.
+    :return: True if the requested VTK version is greater or equal to the actual VTK version.
+    """
+    needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
+    try:
+        vtk_version_number = vtk.VTK_VERSION_NUMBER
+    except AttributeError:  # as error:
+        ver = vtk.vtkVersion()
+        vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
+                             + ver.GetVTKBuildVersion()
+    if vtk_version_number >= needed_version:
+        return True
+    else:
+        return False
 
 
 if __name__ == '__main__':

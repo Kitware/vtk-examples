@@ -4,26 +4,29 @@ import vtk
 
 
 def main():
-    fileName = get_program_parameters()
+    # vtkFlyingEdges3D was introduced in VTK >= 8.2
+    use_flying_edges = vtk_version_ok(8, 2, 0)
+
+    file_name = get_program_parameters()
 
     colors = vtk.vtkNamedColors()
 
     # Create the RenderWindow, Renderer and Interactor.
     #
 
-    ren1 = vtk.vtkRenderer()
+    ren = vtk.vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
-    renWin.AddRenderer(ren1)
+    ren_win = vtk.vtkRenderWindow()
+    ren_win.AddRenderer(ren)
 
     iren = vtk.vtkRenderWindowInteractor()
-    iren.SetRenderWindow(renWin)
+    iren.SetRenderWindow(ren_win)
 
     # Create the pipeline.
     #
 
     reader = vtk.vtkMetaImageReader()
-    reader.SetFileName(fileName)
+    reader.SetFileName(file_name)
     reader.Update()
 
     locator = vtk.vtkMergePoints()
@@ -31,46 +34,56 @@ def main():
     locator.SetNumberOfPointsPerBucket(2)
     locator.AutomaticOff()
 
-    iso = vtk.vtkMarchingCubes()
+    if use_flying_edges:
+        try:
+            using_marching_cubes = False
+            iso = vtk.vtkDiscreteFlyingEdges3D()
+        except AttributeError:
+            using_marching_cubes = True
+            iso = vtk.vtkDiscreteMarchingCubes()
+    else:
+        using_marching_cubes = True
+        iso = vtk.vtkDiscreteMarchingCubes()
     iso.SetInputConnection(reader.GetOutputPort())
     iso.ComputeGradientsOn()
     iso.ComputeScalarsOff()
     iso.SetValue(0, 1150)
-    iso.SetLocator(locator)
+    if using_marching_cubes:
+        iso.SetLocator(locator)
 
-    isoMapper = vtk.vtkPolyDataMapper()
-    isoMapper.SetInputConnection(iso.GetOutputPort())
-    isoMapper.ScalarVisibilityOff()
+    iso_mapper = vtk.vtkPolyDataMapper()
+    iso_mapper.SetInputConnection(iso.GetOutputPort())
+    iso_mapper.ScalarVisibilityOff()
 
-    isoActor = vtk.vtkActor()
-    isoActor.SetMapper(isoMapper)
-    isoActor.GetProperty().SetColor(colors.GetColor3d('Wheat'))
+    iso_actor = vtk.vtkActor()
+    iso_actor.SetMapper(iso_mapper)
+    iso_actor.GetProperty().SetColor(colors.GetColor3d('Ivory'))
 
     outline = vtk.vtkOutlineFilter()
     outline.SetInputConnection(reader.GetOutputPort())
 
-    outlineMapper = vtk.vtkPolyDataMapper()
-    outlineMapper.SetInputConnection(outline.GetOutputPort())
+    outline_mapper = vtk.vtkPolyDataMapper()
+    outline_mapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
-    outlineActor.SetMapper(outlineMapper)
+    outline_actor = vtk.vtkActor()
+    outline_actor.SetMapper(outline_mapper)
 
     # Add the actors to the renderer, set the background and size.
     #
-    ren1.AddActor(outlineActor)
-    ren1.AddActor(isoActor)
-    ren1.SetBackground(colors.GetColor3d('SlateGray'))
-    ren1.GetActiveCamera().SetFocalPoint(0, 0, 0)
-    ren1.GetActiveCamera().SetPosition(0, -1, 0)
-    ren1.GetActiveCamera().SetViewUp(0, 0, -1)
-    ren1.ResetCamera()
-    ren1.GetActiveCamera().Dolly(1.5)
-    ren1.ResetCameraClippingRange()
+    ren.AddActor(outline_actor)
+    ren.AddActor(iso_actor)
+    ren.SetBackground(colors.GetColor3d('SlateGray'))
+    ren.GetActiveCamera().SetFocalPoint(0, 0, 0)
+    ren.GetActiveCamera().SetPosition(0, -1, 0)
+    ren.GetActiveCamera().SetViewUp(0, 0, -1)
+    ren.ResetCamera()
+    ren.GetActiveCamera().Dolly(1.5)
+    ren.ResetCameraClippingRange()
 
-    renWin.SetSize(640, 480)
-    renWin.SetWindowName('HeadBone')
+    ren_win.SetSize(640, 480)
+    ren_win.SetWindowName('HeadBone')
 
-    renWin.Render()
+    ren_win.Render()
     iren.Start()
 
 
@@ -84,6 +97,28 @@ def get_program_parameters():
     parser.add_argument('filename', help='FullHead.mhd.')
     args = parser.parse_args()
     return args.filename
+
+
+def vtk_version_ok(major, minor, build):
+    """
+    Check the VTK version.
+
+    :param major: Major version.
+    :param minor: Minor version.
+    :param build: Build version.
+    :return: True if the requested VTK version is greater or equal to the actual VTK version.
+    """
+    needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
+    try:
+        vtk_version_number = vtk.VTK_VERSION_NUMBER
+    except AttributeError:  # as error:
+        ver = vtk.vtkVersion()
+        vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
+                             + ver.GetVTKBuildVersion()
+    if vtk_version_number >= needed_version:
+        return True
+    else:
+        return False
 
 
 if __name__ == '__main__':

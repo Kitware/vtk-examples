@@ -1,6 +1,5 @@
 #include <vtkActor.h>
 #include <vtkCamera.h>
-#include <vtkMarchingCubes.h>
 #include <vtkMergePoints.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
@@ -11,6 +10,20 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkVersion.h>
+
+// vtkFlyingEdges3D was introduced in VTK >= 8.2
+#if VTK_MAJOR_VERSION >= 9 || (VTK_MAJOR_VERSION >= 8 && VTK_MINOR_VERSION >= 2)
+#define USE_FLYING_EDGES
+#else
+#undef USE_FLYING_EDGES
+#endif
+
+#ifdef USE_FLYING_EDGES
+#include <vtkFlyingEdges3D.h>
+#else
+#include <vtkMarchingCubes.h>
+#endif
 
 int main(int argc, char* argv[])
 {
@@ -44,12 +57,18 @@ int main(int argc, char* argv[])
   locator->SetNumberOfPointsPerBucket(2);
   locator->AutomaticOff();
 
+#ifdef USE_FLYING_EDGES
+  vtkNew<vtkFlyingEdges3D> iso;
+#else
   vtkNew<vtkMarchingCubes> iso;
+#endif
   iso->SetInputConnection(reader->GetOutputPort());
   iso->ComputeGradientsOn();
   iso->ComputeScalarsOff();
   iso->SetValue(0, 1150);
+#ifndef USE_FLYING_EDGES
   iso->SetLocator(locator);
+#endif
 
   vtkNew<vtkPolyDataMapper> isoMapper;
   isoMapper->SetInputConnection(iso->GetOutputPort());
@@ -57,7 +76,7 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkActor> isoActor;
   isoActor->SetMapper(isoMapper);
-  isoActor->GetProperty()->SetColor(colors->GetColor3d("Wheat").GetData());
+  isoActor->GetProperty()->SetColor(colors->GetColor3d("Ivory").GetData());
 
   vtkNew<vtkOutlineFilter> outline;
   outline->SetInputConnection(reader->GetOutputPort());

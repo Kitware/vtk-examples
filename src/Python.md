@@ -178,7 +178,9 @@ If you are new to VTK then these [tutorials](#tutorial) will help to get you sta
 | -------------- | ------------- | ------- |
 [BooleanOperationImplicitFunctions](/Python/ImplicitFunctions/BooleanOperationImplicitFunctions) | Demonstrate booleans of two different implicit functions
 [CutWithScalars](/Python/VisualizationAlgorithms/CutWithScalars) | Cut a surface with scalars.
+[DiscreteMarchingCubes](/Cxx/Python/DiscreteMarchingCubes) | Generate surfaces from labeled data.
 [ExtractData](/Python/VisualizationAlgorithms/ExtractData) | Implicit functions used to select data: Two ellipsoids are combined using the union operation used to select voxels from a volume. Voxels are shrunk 50 percent.
+[ExtractLargestIsosurface](/Python/Modelling/ExtractLargestIsosurface) | Extract largest isosurface.
 [Hello](/Python/VisualizationAlgorithms/Hello) | Implicit modelling used to thicken a stroked font.
 [IceCream](/Python/VisualizationAlgorithms/IceCream) | How to use boolean combinations of implicit functions to create a model of an ice cream cone.
 [ImplicitQuadric](/Python/ImplicitFunctions/ImplicitQuadric) | Create an ellipsoid using an implicit quadric
@@ -190,7 +192,9 @@ If you are new to VTK then these [tutorials](#tutorial) will help to get you sta
 [MarchingCasesB](/Python/VisualizationAlgorithms/MarchingCasesB) | Marching cubes complementary cases. Cases 3c, 6c, 7c, 10c, 12c and 13c are displayed.
 [MarchingCasesC](/Python/VisualizationAlgorithms/MarchingCasesC) | Marching cubes, case 3 is rotated 90 degrees about the y-axis with no label.
 [MarchingCasesD](/Python/VisualizationAlgorithms/MarchingCasesD) | Marching cubes, case 7 is rotated 180 degrees about the y-axis with no label.
+[MarchingCubes](/Python/Modelling/MarchingCubes) | Create a voxelized sphere.
 [SampleFunction](/Python/ImplicitFunctions/SampleFunction) | Sample and visualize an implicit function.
+[SmoothDiscreteMarchingCubes](/Python/Modelling/SmoothDiscreteMarchingCubes) | Generate smooth surfaces from labeled data.
 
 ## Working with 3D Data
 
@@ -330,10 +334,14 @@ This section includes vtkUnstructuredGrid.
 
 | Example Name | Description | Image |
 | -------------- | ------------- | ------- |
-[MedicalDemo1](/Python/Medical/MedicalDemo1) | Create a skin surface from volume data
-[MedicalDemo2](/Python/Medical/MedicalDemo2) | Create a skin and bone surface from volume data
-[MedicalDemo3](/Python/Medical/MedicalDemo3) | Create skin, bone and slices from volume data
-[MedicalDemo4](/Python/Medical/MedicalDemo4) | Create a volume rendering
+[GenerateCubesFromLabels](/Python/Medical/GenerateCubesFromLabels) | Create cubes from labeled volume data.
+[GenerateModelsFromLabels](/Python/Medical/GenerateModelsFromLabels) | Create models from labeled volume data.
+[MedicalDemo1](/Python/Medical/MedicalDemo1) | Create a skin surface from volume data.
+[MedicalDemo2](/Python/Medical/MedicalDemo2) | Create a skin and bone surface from volume data.
+[MedicalDemo3](/Python/Medical/MedicalDemo3) | Create skin, bone and slices from volume data.
+[MedicalDemo4](/Python/Medical/MedicalDemo4) | Create a volume rendering.
+[TissueLens](/Python/Medical/TissueLens) | Cut a volume with a sphere.
+
 
 ### Surface reconstruction
 
@@ -531,6 +539,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [HeadSlice](/Python/VisualizationAlgorithms/HeadSlice) | Marching squares used to generate contour lines.
 [HyperStreamline](/Python/VisualizationAlgorithms/HyperStreamline) | Example of hyperstreamlines, the four hyperstreamlines shown are integrated along the minor principle stress axis. A plane (colored with a different lookup table) is also shown.
 [IronIsoSurface](/Python/VisualizationAlgorithms/IronIsoSurface) | Marching cubes surface of iron-protein.
+[IsosurfaceSampling](/Python/Visualization/IsosurfaceSampling) | Demonstrates how to create point data on an isosurface.
 [Kitchen](/Python/Visualization/Kitchen) | Demonstrates stream tracing in a kitchen.
 [KochSnowflake](/Python/Visualization/KochSnowflake) | This example draws a Koch snowflake fractal using recursive functions and some of the convenient tools in the toolkit.
 [LOx](/Python/VisualizationAlgorithms/LOx) | Streamtubes created by using the computational grid just in front of the post as a source for seeds.

@@ -1,21 +1,17 @@
 #!/usr/bin/env python
 
-"""
-"""
-
 import vtk
 
 
 def main():
     colors = vtk.vtkNamedColors()
-    # colors.SetColor("ActorColor", [235, 235, 235, 255])
 
-    fileName = get_program_parameters()
+    file_name = get_program_parameters()
 
     # Read the image.
-    readerFactory = vtk.vtkImageReader2Factory()
-    reader = readerFactory.CreateImageReader2(fileName)
-    reader.SetFileName(fileName)
+    reader_factory = vtk.vtkImageReader2Factory()
+    reader = reader_factory.CreateImageReader2(file_name)
+    reader.SetFileName(file_name)
     reader.Update()
 
     # Smoothed pipeline.
@@ -25,21 +21,21 @@ def main():
     smooth.SetStandardDeviations(1.75, 1.75, 0.0)
     smooth.SetRadiusFactor(2)
 
-    subsampleSmoothed = vtk.vtkImageShrink3D()
-    subsampleSmoothed.SetInputConnection(smooth.GetOutputPort())
-    subsampleSmoothed.SetShrinkFactors(4, 4, 1)
+    subsample_smoothed = vtk.vtkImageShrink3D()
+    subsample_smoothed.SetInputConnection(smooth.GetOutputPort())
+    subsample_smoothed.SetShrinkFactors(4, 4, 1)
 
-    isoSmoothed = vtk.vtkImageMarchingCubes()
-    isoSmoothed.SetInputConnection(smooth.GetOutputPort())
-    isoSmoothed.SetValue(0, 1150)
+    iso_smoothed = vtk.vtkImageMarchingCubes()
+    iso_smoothed.SetInputConnection(smooth.GetOutputPort())
+    iso_smoothed.SetValue(0, 1150)
 
-    isoSmoothedMapper = vtk.vtkPolyDataMapper()
-    isoSmoothedMapper.SetInputConnection(isoSmoothed.GetOutputPort())
-    isoSmoothedMapper.ScalarVisibilityOff()
+    iso_smoothed_mapper = vtk.vtkPolyDataMapper()
+    iso_smoothed_mapper.SetInputConnection(iso_smoothed.GetOutputPort())
+    iso_smoothed_mapper.ScalarVisibilityOff()
 
-    isoSmoothedActor = vtk.vtkActor()
-    isoSmoothedActor.SetMapper(isoSmoothedMapper)
-    isoSmoothedActor.GetProperty().SetColor(colors.GetColor3d("Ivory"))
+    iso_smoothed_actor = vtk.vtkActor()
+    iso_smoothed_actor.SetMapper(iso_smoothed_mapper)
+    iso_smoothed_actor.GetProperty().SetColor(colors.GetColor3d("Ivory"))
 
     # Unsmoothed pipeline.
     # Sub sample the data.
@@ -51,53 +47,53 @@ def main():
     iso.SetInputConnection(subsample.GetOutputPort())
     iso.SetValue(0, 1150)
 
-    isoMapper = vtk.vtkPolyDataMapper()
-    isoMapper.SetInputConnection(iso.GetOutputPort())
-    isoMapper.ScalarVisibilityOff()
+    iso_mapper = vtk.vtkPolyDataMapper()
+    iso_mapper.SetInputConnection(iso.GetOutputPort())
+    iso_mapper.ScalarVisibilityOff()
 
-    isoActor = vtk.vtkActor()
-    isoActor.SetMapper(isoMapper)
-    isoActor.GetProperty().SetColor(colors.GetColor3d("Ivory"))
+    iso_actor = vtk.vtkActor()
+    iso_actor.SetMapper(iso_mapper)
+    iso_actor.GetProperty().SetColor(colors.GetColor3d("Ivory"))
 
     # The rendering Pipeline.
 
     # Setup the render window, renderer, and interactor.
-    leftViewport = [0.0, 0.0, 0.5, 1.0]
-    rightViewport = [0.5, 0.0, 1.0, 1.0]
+    left_viewport = [0.0, 0.0, 0.5, 1.0]
+    right_viewport = [0.5, 0.0, 1.0, 1.0]
 
-    rendererLeft = vtk.vtkRenderer()
-    rendererLeft.SetViewport(leftViewport)
+    renderer_left = vtk.vtkRenderer()
+    renderer_left.SetViewport(left_viewport)
 
-    rendererRight = vtk.vtkRenderer()
-    rendererRight.SetViewport(rightViewport)
+    renderer_right = vtk.vtkRenderer()
+    renderer_right.SetViewport(right_viewport)
 
-    renderWindow = vtk.vtkRenderWindow()
-    renderWindow.AddRenderer(rendererLeft)
-    renderWindow.AddRenderer(rendererRight)
+    render_window = vtk.vtkRenderWindow()
+    render_window.AddRenderer(renderer_left)
+    render_window.AddRenderer(renderer_right)
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
-    renderWindowInteractor.SetRenderWindow(renderWindow)
+    render_window_interactor = vtk.vtkRenderWindowInteractor()
+    render_window_interactor.SetRenderWindow(render_window)
 
-    rendererLeft.AddActor(isoActor)
-    rendererRight.AddActor(isoSmoothedActor)
+    renderer_left.AddActor(iso_actor)
+    renderer_right.AddActor(iso_smoothed_actor)
 
-    rendererLeft.GetActiveCamera().SetFocalPoint(0.0, 0.0, 0.0)
-    rendererLeft.GetActiveCamera().SetPosition(0.0, -1.0, 0.0)
-    rendererLeft.GetActiveCamera().SetViewUp(0.0, 0.0, -1.0)
-    rendererLeft.ResetCamera()
-    rendererLeft.GetActiveCamera().Azimuth(-20.0)
-    rendererLeft.GetActiveCamera().Elevation(20.0)
-    rendererLeft.ResetCameraClippingRange()
+    renderer_left.GetActiveCamera().SetFocalPoint(0.0, 0.0, 0.0)
+    renderer_left.GetActiveCamera().SetPosition(0.0, -1.0, 0.0)
+    renderer_left.GetActiveCamera().SetViewUp(0.0, 0.0, -1.0)
+    renderer_left.ResetCamera()
+    renderer_left.GetActiveCamera().Azimuth(-20.0)
+    renderer_left.GetActiveCamera().Elevation(20.0)
+    renderer_left.ResetCameraClippingRange()
 
-    rendererLeft.SetBackground(colors.GetColor3d("SlateGray"))
-    rendererRight.SetBackground(colors.GetColor3d("LightSlateGray"))
-    rendererRight.SetActiveCamera(rendererLeft.GetActiveCamera())
+    renderer_left.SetBackground(colors.GetColor3d("SlateGray"))
+    renderer_right.SetBackground(colors.GetColor3d("LightSlateGray"))
+    renderer_right.SetActiveCamera(renderer_left.GetActiveCamera())
 
-    renderWindow.SetSize(640, 480)
-    renderWindow.SetWindowName('IsoSubsample')
-    renderWindow.Render()
+    render_window.SetSize(640, 480)
+    render_window.SetWindowName('IsoSubsample')
+    render_window.Render()
 
-    renderWindowInteractor.Start()
+    render_window_interactor.Start()
 
 
 def get_program_parameters():

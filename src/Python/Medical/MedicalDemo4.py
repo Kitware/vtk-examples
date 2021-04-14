@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 
-'''
-'''
-
 import vtk
 
 
 def main():
     colors = vtk.vtkNamedColors()
 
-    fileName = get_program_parameters()
+    file_name = get_program_parameters()
 
     colors.SetColor('BkgColor', [51, 77, 102, 255])
 
@@ -17,10 +14,10 @@ def main():
     # draws into the render window, the interactor enables mouse- and
     # keyboard-based interaction with the scene.
     ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
-    renWin.AddRenderer(ren)
+    ren_win = vtk.vtkRenderWindow()
+    ren_win.AddRenderer(ren)
     iren = vtk.vtkRenderWindowInteractor()
-    iren.SetRenderWindow(renWin)
+    iren.SetRenderWindow(ren_win)
 
     # The following reader is used to read a series of 2D slices (images)
     # that compose the volume. The slice dimensions are set, and the
@@ -29,40 +26,40 @@ def main():
     # filenames using the format FilePrefix.%d. (In this case the FilePrefix
     # is the root name of the file: quarter.)
     reader = vtk.vtkMetaImageReader()
-    reader.SetFileName(fileName)
+    reader.SetFileName(file_name)
 
     # The volume will be displayed by ray-cast alpha compositing.
     # A ray-cast mapper is needed to do the ray-casting.
-    volumeMapper = vtk.vtkFixedPointVolumeRayCastMapper()
-    volumeMapper.SetInputConnection(reader.GetOutputPort())
+    volume_mapper = vtk.vtkFixedPointVolumeRayCastMapper()
+    volume_mapper.SetInputConnection(reader.GetOutputPort())
 
     # The color transfer function maps voxel intensities to colors.
     # It is modality-specific, and often anatomy-specific as well.
     # The goal is to one color for flesh (between 500 and 1000)
     # and another color for bone (1150 and over).
-    volumeColor = vtk.vtkColorTransferFunction()
-    volumeColor.AddRGBPoint(0, 0.0, 0.0, 0.0)
-    volumeColor.AddRGBPoint(500, 1.0, 0.5, 0.3)
-    volumeColor.AddRGBPoint(1000, 1.0, 0.5, 0.3)
-    volumeColor.AddRGBPoint(1150, 1.0, 1.0, 0.9)
+    volume_color = vtk.vtkColorTransferFunction()
+    volume_color.AddRGBPoint(0, 0.0, 0.0, 0.0)
+    volume_color.AddRGBPoint(500, 240.0 / 255.0, 184.0 / 255.0, 160.0 / 255.0)
+    volume_color.AddRGBPoint(1000, 240.0 / 255.0, 184.0 / 255.0, 160.0 / 255.0)
+    volume_color.AddRGBPoint(1150, 1.0, 1.0, 240.0 / 255.0)  # Ivory
 
     # The opacity transfer function is used to control the opacity
     # of different tissue types.
-    volumeScalarOpacity = vtk.vtkPiecewiseFunction()
-    volumeScalarOpacity.AddPoint(0, 0.00)
-    volumeScalarOpacity.AddPoint(500, 0.15)
-    volumeScalarOpacity.AddPoint(1000, 0.15)
-    volumeScalarOpacity.AddPoint(1150, 0.85)
+    volume_scalar_opacity = vtk.vtkPiecewiseFunction()
+    volume_scalar_opacity.AddPoint(0, 0.00)
+    volume_scalar_opacity.AddPoint(500, 0.15)
+    volume_scalar_opacity.AddPoint(1000, 0.15)
+    volume_scalar_opacity.AddPoint(1150, 0.85)
 
     # The gradient opacity function is used to decrease the opacity
     # in the 'flat' regions of the volume while maintaining the opacity
     # at the boundaries between tissue types.  The gradient is measured
     # as the amount by which the intensity changes over unit distance.
     # For most medical data, the unit distance is 1mm.
-    volumeGradientOpacity = vtk.vtkPiecewiseFunction()
-    volumeGradientOpacity.AddPoint(0, 0.0)
-    volumeGradientOpacity.AddPoint(90, 0.5)
-    volumeGradientOpacity.AddPoint(100, 1.0)
+    volume_gradient_opacity = vtk.vtkPiecewiseFunction()
+    volume_gradient_opacity.AddPoint(0, 0.0)
+    volume_gradient_opacity.AddPoint(90, 0.5)
+    volume_gradient_opacity.AddPoint(100, 1.0)
 
     # The VolumeProperty attaches the color and opacity functions to the
     # volume, and sets other volume properties.  The interpolation should
@@ -75,21 +72,21 @@ def main():
     # decreased by increasing the Ambient coefficient while decreasing
     # the Diffuse and Specular coefficient.  To increase the impact
     # of shading, decrease the Ambient and increase the Diffuse and Specular.
-    volumeProperty = vtk.vtkVolumeProperty()
-    volumeProperty.SetColor(volumeColor)
-    volumeProperty.SetScalarOpacity(volumeScalarOpacity)
-    volumeProperty.SetGradientOpacity(volumeGradientOpacity)
-    volumeProperty.SetInterpolationTypeToLinear()
-    volumeProperty.ShadeOn()
-    volumeProperty.SetAmbient(0.4)
-    volumeProperty.SetDiffuse(0.6)
-    volumeProperty.SetSpecular(0.2)
+    volume_property = vtk.vtkVolumeProperty()
+    volume_property.SetColor(volume_color)
+    volume_property.SetScalarOpacity(volume_scalar_opacity)
+    volume_property.SetGradientOpacity(volume_gradient_opacity)
+    volume_property.SetInterpolationTypeToLinear()
+    volume_property.ShadeOn()
+    volume_property.SetAmbient(0.4)
+    volume_property.SetDiffuse(0.6)
+    volume_property.SetSpecular(0.2)
 
     # The vtkVolume is a vtkProp3D (like a vtkActor) and controls the position
     # and orientation of the volume in world coordinates.
     volume = vtk.vtkVolume()
-    volume.SetMapper(volumeMapper)
-    volume.SetProperty(volumeProperty)
+    volume.SetMapper(volume_mapper)
+    volume.SetProperty(volume_property)
 
     # Finally, add the volume to the renderer
     ren.AddViewProp(volume)
@@ -109,8 +106,8 @@ def main():
     ren.SetBackground(colors.GetColor3d('BkgColor'))
 
     # Increase the size of the render window
-    renWin.SetSize(640, 480)
-    renWin.SetWindowName('MedicalDemo4')
+    ren_win.SetSize(640, 480)
+    ren_win.SetWindowName('MedicalDemo4')
 
     # Interact with the data.
     iren.Start()

@@ -5,7 +5,6 @@
 
 #include <vtkActor.h>
 #include <vtkCamera.h>
-#include <vtkMarchingCubes.h>
 #include <vtkMetaImageReader.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
@@ -15,6 +14,20 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkVersion.h>
+
+// vtkFlyingEdges3D was introduced in VTK >= 8.2
+#if VTK_MAJOR_VERSION >= 9 || (VTK_MAJOR_VERSION >= 8 && VTK_MINOR_VERSION >= 2)
+#define USE_FLYING_EDGES
+#else
+#undef USE_FLYING_EDGES
+#endif
+
+#ifdef USE_FLYING_EDGES
+#include <vtkFlyingEdges3D.h>
+#else
+#include <vtkMarchingCubes.h>
+#endif
 
 #include <array>
 
@@ -28,8 +41,10 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkNamedColors> colors;
 
-  std::array<unsigned char, 4> skinColor{{255, 125, 64}};
+  std::array<unsigned char, 4> skinColor{{240, 184, 160, 255}};
   colors->SetColor("SkinColor", skinColor.data());
+  std::array<unsigned char, 4> backColor{{255, 229, 200, 255}};
+  colors->SetColor("BackfaceColor", backColor.data());
   std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
   colors->SetColor("BkgColor", bkg.data());
 
@@ -49,7 +64,12 @@ int main(int argc, char* argv[])
 
   // An isosurface, or contour value of 500 is known to correspond to the
   // skin of the patient.
+#ifdef USE_FLYING_EDGES
+  vtkNew<vtkFlyingEdges3D> skinExtractor;
+#else
   vtkNew<vtkMarchingCubes> skinExtractor;
+#endif
+
   skinExtractor->SetInputConnection(reader->GetOutputPort());
   skinExtractor->SetValue(0, 500);
 
@@ -61,6 +81,10 @@ int main(int argc, char* argv[])
   skin->SetMapper(skinMapper);
   skin->GetProperty()->SetDiffuseColor(
       colors->GetColor3d("SkinColor").GetData());
+
+  vtkNew<vtkProperty> backProp;
+  backProp->SetDiffuseColor(colors->GetColor3d("BackfaceColor").GetData());
+  skin->SetBackfaceProperty(backProp);
 
   // An outline provides context around the data.
   //

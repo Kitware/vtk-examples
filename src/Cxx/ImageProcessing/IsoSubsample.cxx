@@ -14,8 +14,6 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 
-//#include <array>
-
 int main(int argc, char* argv[])
 {
   // Verify input arguments
@@ -27,9 +25,6 @@ int main(int argc, char* argv[])
   }
 
   vtkNew<vtkNamedColors> colors;
-
-  // std::array<unsigned char , 4> actorColor{{235, 235, 235, 255}};
-  //  colors->SetColor("ActorColor", actorColor.data());
 
   // Read the image
   vtkNew<vtkImageReader2Factory> readerFactory;
