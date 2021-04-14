@@ -92,6 +92,27 @@ def get_examples(d, vtk_class, lang, all_values=False, number=5, ):
     return total, [f'{s[1]}' for s in samples]
 
 
+def get_crossref_dict(ref_dir):
+    """
+    Download and return the json cross-reference file.
+
+    This function ensures that the dictionary is recent.
+
+    :param ref_dir: The directory where the file will be downloaded
+    :return: The dictionary cross-referencing vtk classes to examples
+    """
+    path = download_file(ref_dir, Links.xref_url, overwrite=False)
+    if not path.is_file():
+        print(f'The path: {str(path)} does not exist.')
+        return None
+    dt = datetime.today().timestamp() - os.path.getmtime(path)
+    # Force a new download if the time difference is > 10 minutes.
+    if dt > 600:
+        path = download_file(ref_dir, Links.xref_url, overwrite=True)
+    with open(path) as json_file:
+        return json.load(json_file)
+
+
 def main():
     vtk_class, language, all_values, number = get_program_parameters()
     language = language.lower()
@@ -103,17 +124,9 @@ def main():
         return
     else:
         language = available_languages[language]
-    tmp_dir = tempfile.gettempdir()
-    path = download_file(tmp_dir, Links.xref_url, overwrite=False)
-    if not path.is_file():
-        print(f'The path: {str(path)} does not exist.')
+    xref_dict = get_crossref_dict(tempfile.gettempdir())
+    if xref_dict is None:
         return
-    dt = datetime.today().timestamp() - os.path.getmtime(path)
-    # Force a new download if the time difference is > 10 minutes.
-    if dt > 600:
-        path = download_file(tmp_dir, Links.xref_url, overwrite=True)
-    with open(path) as json_file:
-        xref_dict = json.load(json_file)
 
     total_number, examples = get_examples(xref_dict, vtk_class, language, all_values=all_values, number=number)
     if examples:
