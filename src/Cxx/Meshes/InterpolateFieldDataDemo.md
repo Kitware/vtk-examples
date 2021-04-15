@@ -10,3 +10,6 @@ This example uses vtkPointInterpolator probe a high resolution dataset with a lo
 
 !!! info "Thanks"
     This example was inspired by Andrew E. Slaughter, Idaho National Laboratory.
+
+!!! Note
+    In Windows, testing using coarseGrid.e will fail. It seems that this file has UTF-8 characters in it.

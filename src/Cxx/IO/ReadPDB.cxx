@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 {
   if (argc < 2)
   {
-    std::cerr << "Usage: " << argv[0] << " Filename(.pdb) e.g. lys.pdb"
+    std::cerr << "Usage: " << argv[0] << " Filename(.pdb) e.g. caffeine.pdb"
               << std::endl;
     return EXIT_FAILURE;
   }
