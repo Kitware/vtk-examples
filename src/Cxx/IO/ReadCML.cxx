@@ -1,17 +1,23 @@
-#include <vtkNew.h>
-#include <vtkCMLMoleculeReader.h>
 #include <vtkActor.h>
-#include <vtkProperty.h>
+#include <vtkCMLMoleculeReader.h>
 #include <vtkCamera.h>
 #include <vtkMolecule.h>
 #include <vtkMoleculeMapper.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
 #include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+  if (argc < 2)
+  {
+    std::cerr << "Usage: " << argv[0] << " Filename(.cml) e.g. porphyrin.cml"
+              << std::endl;
+    return EXIT_FAILURE;
+  }
   std::string fname(argv[1]);
   vtkNew<vtkCMLMoleculeReader> cmlSource;
 

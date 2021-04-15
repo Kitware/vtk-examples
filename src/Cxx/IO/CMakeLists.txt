@@ -235,7 +235,7 @@ if (BUILD_TESTING)
     TestReadOBJ ${DATA}/trumpet.obj)
 
   add_test(${KIT}-ReadPDB ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestReadPDB ${DATA}/lys.pdb)
+    TestReadPDB ${DATA}/caffeine.pdb)
 
   add_test(${KIT}-ReadPLOT3D ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestReadPLOT3D ${DATA}/combxyz.bin ${DATA}/combq.bin)

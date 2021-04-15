@@ -145,7 +145,6 @@ int main(int argc, char* argv[])
   renderWindow->Render();
   renderer->GetActiveCamera()->Azimuth(30);
   renderer->GetActiveCamera()->Elevation(30);
-  renderer->GetActiveCamera()->Roll(30);
   renderer->ResetCameraClippingRange();
 
   renderWindowInteractor->Start();
