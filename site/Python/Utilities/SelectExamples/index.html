@@ -149,6 +149,27 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>total</span><span class=p>,</span> <span class=p>[</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>s</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span> <span class=k>for</span> <span class=n>s</span> <span class=ow>in</span> <span class=n>samples</span><span class=p>]</span>
 
 
+<span class=k>def</span> <span class=nf>get_crossref_dict</span><span class=p>(</span><span class=n>ref_dir</span><span class=p>):</span>
+    <span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>    Download and return the json cross-reference file.</span>
+
+<span class=sd>    This function ensures that the dictionary is recent.</span>
+
+<span class=sd>    :param ref_dir: The directory where the file will be downloaded</span>
+<span class=hll><span class=sd>    :return: The dictionary cross-referencing vtk classes to examples</span>
+</span><span class=sd>    &quot;&quot;&quot;</span>
+    <span class=n>path</span> <span class=o>=</span> <span class=n>download_file</span><span class=p>(</span><span class=n>ref_dir</span><span class=p>,</span> <span class=n>Links</span><span class=o>.</span><span class=n>xref_url</span><span class=p>,</span> <span class=n>overwrite</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
+    <span class=k>if</span> <span class=ow>not</span> <span class=n>path</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The path: </span><span class=si>{</span><span class=nb>str</span><span class=p>(</span><span class=n>path</span><span class=p>)</span><span class=si>}</span><span class=s1> does not exist.&#39;</span><span class=p>)</span>
+        <span class=k>return</span> <span class=kc>None</span>
+    <span class=n>dt</span> <span class=o>=</span> <span class=n>datetime</span><span class=o>.</span><span class=n>today</span><span class=p>()</span><span class=o>.</span><span class=n>timestamp</span><span class=p>()</span> <span class=o>-</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>getmtime</span><span class=p>(</span><span class=n>path</span><span class=p>)</span>
+    <span class=c1># Force a new download if the time difference is &gt; 10 minutes.</span>
+    <span class=k>if</span> <span class=n>dt</span> <span class=o>&gt;</span> <span class=mi>600</span><span class=p>:</span>
+        <span class=n>path</span> <span class=o>=</span> <span class=n>download_file</span><span class=p>(</span><span class=n>ref_dir</span><span class=p>,</span> <span class=n>Links</span><span class=o>.</span><span class=n>xref_url</span><span class=p>,</span> <span class=n>overwrite</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+    <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>path</span><span class=p>)</span> <span class=k>as</span> <span class=n>json_file</span><span class=p>:</span>
+        <span class=k>return</span> <span class=n>json</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>json_file</span><span class=p>)</span>
+
+
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>vtk_class</span><span class=p>,</span> <span class=n>language</span><span class=p>,</span> <span class=n>all_values</span><span class=p>,</span> <span class=n>number</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 </span>    <span class=n>language</span> <span class=o>=</span> <span class=n>language</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
@@ -160,17 +181,9 @@ function registerListener(event, func) {
         <span class=k>return</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>language</span> <span class=o>=</span> <span class=n>available_languages</span><span class=p>[</span><span class=n>language</span><span class=p>]</span>
-    <span class=n>tmp_dir</span> <span class=o>=</span> <span class=n>tempfile</span><span class=o>.</span><span class=n>gettempdir</span><span class=p>()</span>
-    <span class=n>path</span> <span class=o>=</span> <span class=n>download_file</span><span class=p>(</span><span class=n>tmp_dir</span><span class=p>,</span> <span class=n>Links</span><span class=o>.</span><span class=n>xref_url</span><span class=p>,</span> <span class=n>overwrite</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
-    <span class=k>if</span> <span class=ow>not</span> <span class=n>path</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The path: </span><span class=si>{</span><span class=nb>str</span><span class=p>(</span><span class=n>path</span><span class=p>)</span><span class=si>}</span><span class=s1> does not exist.&#39;</span><span class=p>)</span>
+    <span class=n>xref_dict</span> <span class=o>=</span> <span class=n>get_crossref_dict</span><span class=p>(</span><span class=n>tempfile</span><span class=o>.</span><span class=n>gettempdir</span><span class=p>())</span>
+    <span class=k>if</span> <span class=n>xref_dict</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
         <span class=k>return</span>
-    <span class=n>dt</span> <span class=o>=</span> <span class=n>datetime</span><span class=o>.</span><span class=n>today</span><span class=p>()</span><span class=o>.</span><span class=n>timestamp</span><span class=p>()</span> <span class=o>-</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>getmtime</span><span class=p>(</span><span class=n>path</span><span class=p>)</span>
-    <span class=c1># Force a new download if the time difference is &gt; 10 minutes.</span>
-    <span class=k>if</span> <span class=n>dt</span> <span class=o>&gt;</span> <span class=mi>600</span><span class=p>:</span>
-        <span class=n>path</span> <span class=o>=</span> <span class=n>download_file</span><span class=p>(</span><span class=n>tmp_dir</span><span class=p>,</span> <span class=n>Links</span><span class=o>.</span><span class=n>xref_url</span><span class=p>,</span> <span class=n>overwrite</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-    <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>path</span><span class=p>)</span> <span class=k>as</span> <span class=n>json_file</span><span class=p>:</span>
-        <span class=n>xref_dict</span> <span class=o>=</span> <span class=n>json</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>json_file</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>total_number</span><span class=p>,</span> <span class=n>examples</span> <span class=o>=</span> <span class=n>get_examples</span><span class=p>(</span><span class=n>xref_dict</span><span class=p>,</span> <span class=n>vtk_class</span><span class=p>,</span> <span class=n>language</span><span class=p>,</span> <span class=n>all_values</span><span class=o>=</span><span class=n>all_values</span><span class=p>,</span> <span class=n>number</span><span class=o>=</span><span class=n>number</span><span class=p>)</span>
 </span>    <span class=k>if</span> <span class=n>examples</span><span class=p>:</span>
