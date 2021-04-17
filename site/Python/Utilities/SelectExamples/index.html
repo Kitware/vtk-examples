@@ -63,6 +63,7 @@ function registerListener(event, func) {
 <span class=kn>import</span> <span class=nn>tempfile</span>
 <span class=kn>from</span> <span class=nn>dataclasses</span> <span class=kn>import</span> <span class=n>dataclass</span>
 <span class=kn>from</span> <span class=nn>datetime</span> <span class=kn>import</span> <span class=n>datetime</span>
+<span class=kn>from</span> <span class=nn>operator</span> <span class=kn>import</span> <span class=n>itemgetter</span>
 <span class=kn>from</span> <span class=nn>pathlib</span> <span class=kn>import</span> <span class=n>Path</span>
 <span class=kn>from</span> <span class=nn>urllib.error</span> <span class=kn>import</span> <span class=n>HTTPError</span>
 <span class=kn>from</span> <span class=nn>urllib.request</span> <span class=kn>import</span> <span class=n>urlretrieve</span>
@@ -134,19 +135,21 @@ function registerListener(event, func) {
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=k>try</span><span class=p>:</span>
 <span class=hll>        <span class=n>kv</span> <span class=o>=</span> <span class=n>d</span><span class=p>[</span><span class=n>vtk_class</span><span class=p>][</span><span class=n>lang</span><span class=p>]</span><span class=o>.</span><span class=n>items</span><span class=p>()</span>
-</span>    <span class=k>except</span> <span class=ne>KeyError</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
-<span class=hll>        <span class=c1># print(f&#39;For the combination {vtk_class} and {lang}, this key does not exist: {e}&#39;)</span>
-</span>        <span class=k>return</span> <span class=kc>None</span><span class=p>,</span> <span class=kc>None</span>
-    <span class=n>total</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>kv</span><span class=p>)</span>
+</span>    <span class=k>except</span> <span class=ne>KeyError</span><span class=p>:</span>
+        <span class=k>return</span> <span class=kc>None</span><span class=p>,</span> <span class=kc>None</span>
     <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>kv</span><span class=p>)</span> <span class=o>&gt;</span> <span class=n>number</span><span class=p>:</span>
         <span class=k>if</span> <span class=n>all_values</span><span class=p>:</span>
             <span class=n>samples</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>kv</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
             <span class=n>samples</span> <span class=o>=</span> <span class=n>random</span><span class=o>.</span><span class=n>sample</span><span class=p>(</span><span class=nb>list</span><span class=p>(</span><span class=n>kv</span><span class=p>),</span> <span class=n>number</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>samples</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>kv</span><span class=p>)</span>
+        <span class=n>samples</span> <span class=o>=</span> <span class=n>kv</span>
+    <span class=c1># Eliminate links containing these exclusions.</span>
+    <span class=n>exclude</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;CMakeTechniques&#39;</span><span class=p>,</span> <span class=s1>&#39;Databases/SQL&#39;</span><span class=p>,</span> <span class=s1>&#39;Deprecated&#39;</span><span class=p>,</span> <span class=s1>&#39;Untested&#39;</span><span class=p>]</span>
+    <span class=n>exclude</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;/</span><span class=si>{</span><span class=n>lang</span><span class=si>:</span><span class=s1>s</span><span class=si>}</span><span class=s1>/</span><span class=si>{</span><span class=n>exc</span><span class=si>:</span><span class=s1>s</span><span class=si>}</span><span class=s1>/&#39;</span> <span class=k>for</span> <span class=n>exc</span> <span class=ow>in</span> <span class=n>exclude</span><span class=p>)</span>
+    <span class=n>valid_links</span> <span class=o>=</span> <span class=p>[</span><span class=n>s</span> <span class=k>for</span> <span class=n>s</span> <span class=ow>in</span> <span class=nb>map</span><span class=p>(</span><span class=n>itemgetter</span><span class=p>(</span><span class=mi>1</span><span class=p>),</span> <span class=n>samples</span><span class=p>)</span> <span class=k>if</span> <span class=ow>not</span> <span class=nb>any</span><span class=p>(</span><span class=n>e</span> <span class=ow>in</span> <span class=n>s</span> <span class=k>for</span> <span class=n>e</span> <span class=ow>in</span> <span class=n>exclude</span><span class=p>)]</span>
 
-    <span class=k>return</span> <span class=n>total</span><span class=p>,</span> <span class=nb>sorted</span><span class=p>([</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>s</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span> <span class=k>for</span> <span class=n>s</span> <span class=ow>in</span> <span class=n>samples</span><span class=p>])</span>
+    <span class=k>return</span> <span class=nb>len</span><span class=p>(</span><span class=n>valid_links</span><span class=p>),</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>valid_links</span><span class=p>)</span>
 
 
 <span class=k>def</span> <span class=nf>get_crossref_dict</span><span class=p>(</span><span class=n>ref_dir</span><span class=p>):</span>
