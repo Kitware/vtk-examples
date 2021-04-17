@@ -16,13 +16,14 @@ def get_program_parameters():
     import argparse
     description = 'Get examples that use a particular VTK class for a given language.'
     epilogue = '''
-The JSON file is obtained from the gh-pages branch of the vtk-examples GitHub site.
+The JSON file needed by this script is obtained from the gh-pages branch
+ of the vtk-examples GitHub site.
 It is stored in your tempfile directory.
 '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('vtk_class', help='The desired VTK class.')
-    parser.add_argument('language', help='The desired language.')
+    parser.add_argument('language', help='The desired language, one of: CSharp, Cxx, Java, Python.')
     parser.add_argument('-a', '--all_values', action="store_true",
                         help='All examples (Warning: Can be a very long list).')
     parser.add_argument('-n', '--number', type=int, default=5, help='The maximum number of examples.')
@@ -120,6 +121,7 @@ def main():
     vtk_class, language, all_values, number = get_program_parameters()
     language = language.lower()
     available_languages = {k.lower(): k for k in ['CSharp', 'Cxx', 'Java', 'Python']}
+    available_languages.update({'cpp': 'Cxx', 'c++': 'Cxx'})
     if language not in available_languages:
         print(f'The language: {language} is not available.')
         tmp = ', '.join([lang for lang in available_languages.values()])
