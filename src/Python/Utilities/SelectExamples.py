@@ -89,7 +89,7 @@ def get_examples(d, vtk_class, lang, all_values=False, number=5, ):
     else:
         samples = list(kv)
 
-    return total, [f'{s[1]}' for s in samples]
+    return total, sorted([f'{s[1]}' for s in samples])
 
 
 def get_crossref_dict(ref_dir):
