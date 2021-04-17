@@ -6,6 +6,7 @@ import random
 import tempfile
 from dataclasses import dataclass
 from datetime import datetime
+from operator import itemgetter
 from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import urlretrieve
@@ -77,19 +78,21 @@ def get_examples(d, vtk_class, lang, all_values=False, number=5, ):
     """
     try:
         kv = d[vtk_class][lang].items()
-    except KeyError as e:
-        # print(f'For the combination {vtk_class} and {lang}, this key does not exist: {e}')
+    except KeyError:
         return None, None
-    total = len(kv)
     if len(kv) > number:
         if all_values:
             samples = list(kv)
         else:
             samples = random.sample(list(kv), number)
     else:
-        samples = list(kv)
+        samples = kv
+    # Eliminate links containing these exclusions.
+    exclude = ['CMakeTechniques', 'Databases', 'Deprecated', 'Untested']
+    exclude = list(f'/{lang:s}/{exc:s}/' for exc in exclude)
+    valid_links = [s for s in map(itemgetter(1), samples) if not any(e in s for e in exclude)]
 
-    return total, sorted([f'{s[1]}' for s in samples])
+    return len(valid_links), sorted(valid_links)
 
 
 def get_crossref_dict(ref_dir):
