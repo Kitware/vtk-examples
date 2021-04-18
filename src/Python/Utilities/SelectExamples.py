@@ -88,12 +88,8 @@ def get_examples(d, vtk_class, lang, all_values=False, number=5, ):
             samples = random.sample(list(kv), number)
     else:
         samples = kv
-    # Eliminate links containing these exclusions.
-    exclude = ['CMakeTechniques', 'Databases/SQL', 'Deprecated', 'Untested']
-    exclude = list(f'/{lang:s}/{exc:s}/' for exc in exclude)
-    valid_links = [s for s in map(itemgetter(1), samples) if not any(e in s for e in exclude)]
-
-    return len(valid_links), sorted(valid_links)
+    links = sorted(map(itemgetter(1), samples))
+    return len(links), links
 
 
 def get_crossref_dict(ref_dir):

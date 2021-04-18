@@ -155,24 +155,31 @@ class VTKClassesInExamples(object):
             exclude_dirs = ['Deprecated']
             if eg == 'CSharp':
                 fn_pattern = re.compile(r'^[0-9a-zA-Z_\-]+\.cs$')
+                exclude_dirs = exclude_dirs + ['WishList']
             elif eg == 'Cxx':
                 fn_pattern = re.compile(
                     r'^[0-9a-zA-Z_\-]+\.(hxx|HXX|hpp|HPP|[hH]\+\+|[hH]|cpp|CPP|cxx|CXX|[cC]\+\+|txx|TXX)$')
                 exclude_dirs = exclude_dirs + ['CMakeTechniques', 'Untested']
             elif eg == 'Java':
                 fn_pattern = re.compile(r'^[0-9a-zA-Z_\-]+\.java$')
+                exclude_dirs = exclude_dirs + ['Untested']
             elif eg == 'Python':
                 fn_pattern = re.compile(r'^[0-9a-zA-Z_\-]+\.py$')
+                exclude_dirs = exclude_dirs + ['Problems']
             else:
                 raise RuntimeError('Unknown example type.')
 
             # Walk the tree.
             for root, directories, files in os.walk(str(directory)):
+                # The only visible folders on the web pages are those directly under the language
+                # e.g. Cxx/xx is visible but Cxx/xx/yy is not.
+                if root[len(str(directory)):].count(os.sep) > 1:
+                    continue
                 sp = PurePath(root).parts
                 idx = sp.index(eg)
                 key = '/'.join(sp[idx:])
-                if exclude_dirs:
-                    if sp[idx] in exclude_dirs:
+                if exclude_dirs and len(sp[idx:]) > 1:
+                    if sp[idx:][1] in exclude_dirs:
                         continue
                 for filename in files:
                     m = fn_pattern.match(filename)
