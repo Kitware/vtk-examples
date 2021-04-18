@@ -124,7 +124,7 @@ def main():
     available_languages.update({'cpp': 'Cxx', 'c++': 'Cxx'})
     if language not in available_languages:
         print(f'The language: {language} is not available.')
-        tmp = ', '.join([lang for lang in available_languages.values()])
+        tmp = ', '.join(sorted([lang for lang in set(available_languages.values())]))
         print(f'Choose one of these: {tmp}.')
         return
     else:
