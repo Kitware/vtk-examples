@@ -155,7 +155,6 @@ class VTKClassesInExamples(object):
             exclude_dirs = ['Deprecated']
             if eg == 'CSharp':
                 fn_pattern = re.compile(r'^[0-9a-zA-Z_\-]+\.cs$')
-                exclude_dirs = exclude_dirs + ['WishList']
             elif eg == 'Cxx':
                 fn_pattern = re.compile(
                     r'^[0-9a-zA-Z_\-]+\.(hxx|HXX|hpp|HPP|[hH]\+\+|[hH]|cpp|CPP|cxx|CXX|[cC]\+\+|txx|TXX)$')
@@ -171,8 +170,8 @@ class VTKClassesInExamples(object):
 
             # Walk the tree.
             for root, directories, files in os.walk(str(directory)):
-                # The only visible folders on the web pages are those directly under the language
-                # e.g. Cxx/xx is visible but Cxx/xx/yy is not.
+                # The only visible folders on the web pages are those directly under the language.
+                # So we keep folders like Cxx/xx but exclude folders like Cxx/xx/yy.
                 if root[len(str(directory)):].count(os.sep) > 1:
                     continue
                 sp = PurePath(root).parts
