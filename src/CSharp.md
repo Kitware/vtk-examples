@@ -149,7 +149,7 @@ These examples demonstrate how to create an display one of the many vtkParametri
 [ImplicitSphere](/CSharp/ImplicitFunctions/ImplicitSphere) | An implicit representation of a sphere
 [IsoContours](/CSharp/ImplicitFunctions/IsoContours) | Visualize different isocontours using a slider
 [MarchingCubes](/CSharp/Modelling/MarchingCubes) | Create a voxelized spher Marching cubes
-[MarchingSquares](/CSharp/WishList/Modelling/MarchingSquares) | Create a contour from a structured point set (image Marching squares
+[MarchingSquares](/CSharp/Modelling/MarchingSquares) | Create a contour from a structured point set (image Marching squares)
 [SampleFunction](/CSharp/ImplicitFunctions/SampleFunction) | Sample and visualize an implicit function
 
 ## Working with 3D Data
