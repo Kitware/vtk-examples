@@ -117,7 +117,7 @@ def main():
     vtk_class, language, all_values, number = get_program_parameters()
     language = language.lower()
     available_languages = {k.lower(): k for k in ['CSharp', 'Cxx', 'Java', 'Python']}
-    available_languages.update({'cpp': 'Cxx', 'c++': 'Cxx'})
+    available_languages.update({'cpp': 'Cxx', 'c++': 'Cxx', 'c#': 'CSharp'})
     if language not in available_languages:
         print(f'The language: {language} is not available.')
         tmp = ', '.join(sorted([lang for lang in set(available_languages.values())]))
