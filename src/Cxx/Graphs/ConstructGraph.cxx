@@ -1,8 +1,5 @@
-//#include <vtkDataSetAttributes.h>
-//#include <vtkDoubleArray.h>
 #include <vtkForceDirectedLayoutStrategy.h>
 #include <vtkGraphLayoutView.h>
-//#include <vtkIntArray.h>
 #include <vtkMutableUndirectedGraph.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
@@ -35,7 +32,9 @@ int main(int, char*[])
   graphLayoutView->AddRepresentationFromInput(g);
   // We have created a layout object directly and just set the pointer through
   // this method.
-  graphLayoutView->SetLayoutStrategy(force);
+  //graphLayoutView->SetLayoutStrategy(force);
+  //graphLayoutView->SetLayoutStrategyToForceDirected();
+  graphLayoutView->SetLayoutStrategyToFast2D();
   graphLayoutView->ResetCamera();
   graphLayoutView->GetRenderer()->SetBackground(
       colors->GetColor3d("Navy").GetData());
