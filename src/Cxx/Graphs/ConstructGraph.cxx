@@ -1,8 +1,8 @@
-#include <vtkCircularLayoutStrategy.h>
-#include <vtkDataSetAttributes.h>
-#include <vtkDoubleArray.h>
+//#include <vtkDataSetAttributes.h>
+//#include <vtkDoubleArray.h>
+#include <vtkForceDirectedLayoutStrategy.h>
 #include <vtkGraphLayoutView.h>
-#include <vtkIntArray.h>
+//#include <vtkIntArray.h>
 #include <vtkMutableUndirectedGraph.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
@@ -29,8 +29,13 @@ int main(int, char*[])
   std::cout << "Number of vertices: " << g->GetNumberOfVertices() << std::endl;
   std::cout << "Number of edges: " << g->GetNumberOfEdges() << std::endl;
 
+  vtkNew<vtkForceDirectedLayoutStrategy> force;
+
   vtkNew<vtkGraphLayoutView> graphLayoutView;
   graphLayoutView->AddRepresentationFromInput(g);
+  // We have created a layout object directly and just set the pointer through
+  // this method.
+  graphLayoutView->SetLayoutStrategy(force);
   graphLayoutView->ResetCamera();
   graphLayoutView->GetRenderer()->SetBackground(
       colors->GetColor3d("Navy").GetData());
