@@ -356,7 +356,8 @@ This section includes vtkUnstructuredGrid.
 [ConstrainedDelaunay2D](/Python/Filtering/ConstrainedDelaunay2D) | Perform a 2D Delaunay triangulation on a point set respecting a specified boundary.
 [Delaunay2D](/Python/Filtering/Delaunay2D) |
 [LUTUtilities](/Python/Utilities/LUTUtilities) | A utility class for vtkLookupTable allowing you to output the table contents or to compare tables.
-[MultipleViewports](/Python/Visualization/MultipleViewports) |
+[MultipleRenderWindows](/Python/Visualization/MultipleRenderWindows) | Multiple Render Windows.
+[MultipleViewports](/Python/Visualization/MultipleViewports) | Multiple Viewports.
 [SaveSceneToFieldData](/Python/Utilities/SaveSceneToFieldData) | Save a vtkCamera's state in a vtkDataSet's vtkFieldData and restore it.
 [SaveSceneToFile](/Python/Utilities/SaveSceneToFile) | Save a vtkCamera's state in a file and restore it.
 [SelectExamples](/Python/Utilities/SelectExamples) | Given a VTK Class and a language, select the matching examples.
