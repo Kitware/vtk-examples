@@ -42,6 +42,13 @@ Here are some snippets and examples that highlight interesting features that may
 | -------------- | ---------------------- | ------- |
 [WriteImage](/Cxx/Snippets/WriteImage) | Write out an image of various types.
 
+## Multiple view ports and render windows
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[MultipleRenderWindows](/Cxx/Visualization/MultipleRenderWindows) | Multiple Render Windows.
+[MultipleViewports](/Cxx/Visualization/MultipleViewports) | Multiple Viewports.
+
 ## Polydata
 
 | Example Name | Comments | Image |

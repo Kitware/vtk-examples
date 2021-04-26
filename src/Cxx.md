@@ -647,7 +647,7 @@ This section includes vtkUnstructuredGrid.
 [GetDataRoot](/Cxx/Utilities/GetDataRoot) | Find the path of VTK_DATA_ROOT.
 [LUTUtilities](/Cxx/Utilities/LUTUtilities) | A utility class for vtkLookupTable allowing you to output the table contents or to compare tables.
 [MassProperties](/Cxx/Utilities/MassProperties) | Compute volume and surface area of a closed, triangulated mesh.
-[MultipleRenderWindows](/Cxx/Visualization/MultipleRenderWindows) | Multiple Render Windows
+[MultipleRenderWindows](/Cxx/Visualization/MultipleRenderWindows) | Multiple Render Windows.
 [MultipleViewports](/Cxx/Visualization/MultipleViewports) | Multiple Viewports.
 [OffScreenRendering](/Cxx/Utilities/OffScreenRendering) | Off Screen Rendering.
 [PCADemo](/Cxx/Utilities/PCADemo) | Project 2D points onto the best 1D subspace (PCA Demo).

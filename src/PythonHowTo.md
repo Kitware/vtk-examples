@@ -38,6 +38,13 @@ Here are some snippets and examples that highlight interesting features that may
 | -------------- | ---------------------- | ------- |
 [WriteImage](/Python/Snippets/WriteImage) | Write out an image of various types.
 
+## Multiple view ports and render windows
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[MultipleRenderWindows](/Python/Visualization/MultipleRenderWindows) | Multiple Render Windows.
+[MultipleViewports](/Python/Visualization/MultipleViewports) | Multiple Viewports.
+
 ## Polydata
 
 | Example Name | Comments | Image |
