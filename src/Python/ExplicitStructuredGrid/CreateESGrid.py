@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import vtk
 import numpy as np
+import vtk
 
 
 def create_explicit_structured_grid(dimensions, spacing=(1, 1, 1)):
@@ -24,18 +24,18 @@ def create_explicit_structured_grid(dimensions, spacing=(1, 1, 1)):
     si, sj, sk = spacing
 
     points = vtk.vtkPoints()
-    for z in range(0, nk*sk, sk):
-        for y in range(0, nj*sj, sj):
-            for x in range(0, ni*si, si):
+    for z in range(0, nk * sk, sk):
+        for y in range(0, nj * sj, sj):
+            for x in range(0, ni * si, si):
                 points.InsertNextPoint((x, y, z))
 
     cells = vtk.vtkCellArray()
-    for k in range(0, nk-1):
-        for j in range(0, nj-1):
-            for i in range(0, ni-1):
-                multi_index = ([i, i+1, i+1, i, i, i+1, i+1, i],
-                               [j, j, j+1, j+1, j, j, j+1, j+1],
-                               [k, k, k, k, k+1, k+1, k+1, k+1])
+    for k in range(0, nk - 1):
+        for j in range(0, nj - 1):
+            for i in range(0, ni - 1):
+                multi_index = ([i, i + 1, i + 1, i, i, i + 1, i + 1, i],
+                               [j, j, j + 1, j + 1, j, j, j + 1, j + 1],
+                               [k, k, k, k, k + 1, k + 1, k + 1, k + 1])
                 pts = np.ravel_multi_index(multi_index, dimensions, order='F')
                 cells.InsertNextCell(8, pts)
 
@@ -114,10 +114,19 @@ def main():
     window.AddRenderer(renderer)
     window.SetWindowName('CreateESGrid')
     window.SetSize(1024, 768)
+    window.Render()
+
+    camera = renderer.GetActiveCamera()
+    camera.SetPosition(8.383354, -72.468670, 94.262605)
+    camera.SetFocalPoint(42.295234, 21.111537, -0.863606)
+    camera.SetViewUp(0.152863, 0.676710, 0.720206)
+    camera.SetDistance(137.681759)
+    camera.SetClippingRange(78.173985, 211.583658)
 
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(window)
     interactor.SetInteractorStyle(vtk.vtkInteractorStyleRubberBandPick())
+    window.Render()
     interactor.Start()
 
 
