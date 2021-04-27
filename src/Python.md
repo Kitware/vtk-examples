@@ -284,9 +284,9 @@ This section includes examples of manipulating meshes.
 
 ### Working with Structured 3D Data
 
-This section includes vtkImageData vtkStructuredGrid and vtkRectilinearGrid.
+This section includes vtkImageData, vtkExplicitStructuredGrid, vtkStructuredGrid, vtkStructuredPoints and vtkRectilinearGrid.
 
-"ImageData" is not the traditional "flat, 2D image" you are used to. It is a special VTK data structure in the collection of 3D data structures provided by VTK.
+"ImageData" is not the traditional "flat, 2D image" you are used to. It is a special VTK data structure in the collection of 3D data structures provided by VTK. Image data can represent at typical 2D image, but also, a 3D volume.
 
 #### vtkImageData
 
@@ -294,7 +294,12 @@ This section includes vtkImageData vtkStructuredGrid and vtkRectilinearGrid.
 | -------------- | ------------- | ------- |
 [ImageWeightedSum](/Python/ImageData/ImageWeightedSum) | Add two or more images.
 
-#### Conversions
+#### vtkExplicitStructuredGrid
+
+| Example Name | Description | Image |
+| ------------ | ----------- | ----- |
+[CreateESGrid](/Python/ExplicitStructuredGrid/CreateESGrid) | Create an explicit structured grid and convert this to an unstructured grid or vice versa.
+[LoadESGrid](/Python/ExplicitStructuredGrid/LoadESGrid) | Load a VTU file and convert the dataset to an explicit structured grid.
 
 #### vtkStructuredGrid
 
