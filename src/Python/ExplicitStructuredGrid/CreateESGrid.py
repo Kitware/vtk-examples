@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# author: @rodrigomologni
 
 import vtk
 import numpy as np
@@ -99,17 +98,21 @@ def main():
     mapper = vtk.vtkDataSetMapper()
     mapper.SetInputData(grid)
 
+    colors = vtk.vtkNamedColors()
+
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
     actor.GetProperty().LightingOff()
+    actor.GetProperty().SetColor(colors.GetColor3d('Seashell'))
 
     renderer = vtk.vtkRenderer()
     renderer.AddActor(actor)
-    renderer.SetBackground(.3, .3, .3)
+    renderer.SetBackground(colors.GetColor3d('DarkSlateGray'))
 
     window = vtk.vtkRenderWindow()
     window.AddRenderer(renderer)
+    window.SetWindowName('CreateESGrid')
     window.SetSize(1024, 768)
 
     interactor = vtk.vtkRenderWindowInteractor()
