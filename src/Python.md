@@ -284,7 +284,7 @@ This section includes examples of manipulating meshes.
 
 ### Working with Structured 3D Data
 
-This section includes [vtkImageData](https://vtk.org/doc/nightly/html/classvtkImageData.html), [vtkExplicitStructuredGrid](https://vtk.org/doc/nightly/html/classvtkExplicitStructuredGrid.html), [vtkStructuredGrid](https://vtk.org/doc/nightly/html/classvtkStructuredGrid.html), [vtkStructuredPoints](https://vtk.org/doc/nightly/html/classvtkStructuredPoints.html) and [vtkRectilinearGrid](https://vtk.org/doc/nightly/html/classvtkRectilinearGrid.html).
+This section includes vtkImageData, vtkExplicitStructuredGrid, vtkStructuredGrid, vtkStructuredPoints and vtkRectilinearGrid.
 
 "ImageData" is not the traditional "flat, 2D image" you are used to. It is a special VTK data structure in the collection of 3D data structures provided by VTK. Image data can represent at typical 2D image, but also, a 3D volume.
 
@@ -298,7 +298,8 @@ This section includes [vtkImageData](https://vtk.org/doc/nightly/html/classvtkIm
 
 | Example Name | Description | Image |
 | ------------ | ----------- | ----- |
-[ESGrid](/Python/ExplicitStructuredGrid/ESGrid) | Creating an explicit structured grid. Converting an explicit structured grid to unstructured grid. Converting an unstructured grid to explicit structured grid. |
+[CreateESGrid](/Python/ExplicitStructuredGrid/CreateESGrid) | Create an explicit structured grid and convert this to an unstructured grid or vice versa.
+[LoadESGrid](/Python/ExplicitStructuredGrid/LoadESGrid) | Load a VTU file and convert the dataset to an explicit structured grid.
 
 #### vtkStructuredGrid
 
