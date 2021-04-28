@@ -26,15 +26,14 @@ int main(int, char*[])
   std::cout << "Number of vertices: " << g->GetNumberOfVertices() << std::endl;
   std::cout << "Number of edges: " << g->GetNumberOfEdges() << std::endl;
 
-  vtkNew<vtkForceDirectedLayoutStrategy> force;
+  vtkNew<vtkForceDirectedLayoutStrategy> forceDirected;
 
   vtkNew<vtkGraphLayoutView> graphLayoutView;
   graphLayoutView->AddRepresentationFromInput(g);
-  // We have created a layout object directly and just set the pointer through
-  // this method.
-  //graphLayoutView->SetLayoutStrategy(force);
-  //graphLayoutView->SetLayoutStrategyToForceDirected();
-  graphLayoutView->SetLayoutStrategyToFast2D();
+  // If we create a layout object directly, just set the pointer through this
+  // method.
+  // graphLayoutView->SetLayoutStrategy(forceDirected);
+  graphLayoutView->SetLayoutStrategyToForceDirected();
   graphLayoutView->ResetCamera();
   graphLayoutView->GetRenderer()->SetBackground(
       colors->GetColor3d("Navy").GetData());
