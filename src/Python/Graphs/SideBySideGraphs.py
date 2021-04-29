@@ -3,6 +3,8 @@ import vtk
 
 
 def main():
+    colors = vtk.vtkNamedColors()
+
     # Create the first graph
     g0 = vtk.vtkMutableUndirectedGraph()
 
@@ -40,34 +42,46 @@ def main():
     g1.SetPoints(points)
 
     # There will be one render window
-    renderWindow = vtk.vtkRenderWindow()
-    renderWindow.SetSize(600, 300)
+    ren_win = vtk.vtkRenderWindow()
+    ren_win.SetSize(600, 300)
+    ren_win.SetWindowName('SideBySideGraphs')
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    iren = vtk.vtkRenderWindowInteractor()
 
     # Define viewport ranges
     # (xmin, ymin, xmax, ymax)
-    leftViewport = [0.0, 0.0, 0.5, 1.0]
-    rightViewport = [0.5, 0.0, 1.0, 1.0]
+    left_viewport = [0.0, 0.0, 0.5, 1.0]
+    right_viewport = [0.5, 0.0, 1.0, 1.0]
 
-    graphLayoutView0 = vtk.vtkGraphLayoutView()
-    graphLayoutView0.SetRenderWindow(renderWindow)
-    graphLayoutView0.SetInteractor(renderWindowInteractor)
-    graphLayoutView0.GetRenderer().SetViewport(leftViewport)
-    graphLayoutView0.AddRepresentationFromInput(g0)
-    graphLayoutView0.ResetCamera()
-    graphLayoutView0.Render()
+    graph_layout_view0 = vtk.vtkGraphLayoutView()
+    graph_layout_view0.SetRenderWindow(ren_win)
+    graph_layout_view0.SetInteractor(iren)
+    graph_layout_view0.GetRenderer().SetViewport(left_viewport)
+    graph_layout_view0.AddRepresentationFromInput(g0)
+    # If we create a layout object directly, just set the pointer through this method.
+    # graph_layout_view0.SetLayoutStrategy(force_directed)
+    graph_layout_view0.SetLayoutStrategyToForceDirected()
+    graph_layout_view0.GetRenderer().SetBackground(colors.GetColor3d('Navy'))
+    graph_layout_view0.GetRenderer().SetBackground2(colors.GetColor3d('MidnightBlue'))
+    graph_layout_view0.Render()
+    graph_layout_view0.ResetCamera()
 
-    graphLayoutView1 = vtk.vtkGraphLayoutView()
-    graphLayoutView1.SetRenderWindow(renderWindow)
-    graphLayoutView1.SetInteractor(renderWindowInteractor)
-    graphLayoutView1.GetRenderer().SetViewport(rightViewport)
-    graphLayoutView1.AddRepresentationFromInput(g1)
-    graphLayoutView1.ResetCamera()
-    graphLayoutView1.Render()
+    graph_layout_view1 = vtk.vtkGraphLayoutView()
+    graph_layout_view1.SetRenderWindow(ren_win)
+    graph_layout_view1.SetInteractor(iren)
+    graph_layout_view1.GetRenderer().SetViewport(right_viewport)
+    graph_layout_view1.AddRepresentationFromInput(g0)
+    # If we create a layout object directly, just set the pointer through this method.
+    # graph_layout_view1.SetLayoutStrategy(force_directed)
+    graph_layout_view1.SetLayoutStrategyToForceDirected()
+    graph_layout_view1.AddRepresentationFromInput(g1)
+    graph_layout_view1.GetRenderer().SetBackground(colors.GetColor3d('DarkGreen'))
+    graph_layout_view1.GetRenderer().SetBackground2(colors.GetColor3d('ForestGreen'))
+    graph_layout_view1.Render()
+    graph_layout_view1.ResetCamera()
 
-    # graphLayoutView0.GetInteractor().Start()
-    renderWindowInteractor.Start()
+    # graph_layout_view0.GetInteractor().Start()
+    iren.Start()
 
 
 if __name__ == '__main__':

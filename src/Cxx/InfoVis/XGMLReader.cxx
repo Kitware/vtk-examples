@@ -47,13 +47,16 @@ int main(int argc, char* argv[])
   theme->SetCellHueRange(0.1, 0.1);
   theme->SetCellSaturationRange(0.2, 1.0);
   theme->SetCellValueRange(0.5, 1.0);
-  // theme->SetPointAlphaRange(0.2, 0.8);
+  // theme->SetCellAlphaRange(0.2, 0.8);
+
+  vtkNew<vtkSimple2DLayoutStrategy> simple2D;
 
   vtkNew<vtkGraphLayoutView> graphLayoutView;
-
   graphLayoutView->AddRepresentationFromInput(g);
   graphLayoutView->ApplyViewTheme(theme);
-  graphLayoutView->SetLayoutStrategy("Simple 2D");
+  // If we create a layout object directly, just set the pointer to this method.
+  // graphLayoutView->SetLayoutStrategy(simple2D);
+  graphLayoutView->SetLayoutStrategyToSimple2D();
 
   graphLayoutView->ResetCamera();
 

@@ -1,8 +1,7 @@
-#include <vtkCircularLayoutStrategy.h>
 #include <vtkDataSetAttributes.h>
 #include <vtkDoubleArray.h>
+#include <vtkForceDirectedLayoutStrategy.h>
 #include <vtkGraphLayoutView.h>
-#include <vtkIntArray.h>
 #include <vtkMutableUndirectedGraph.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
@@ -51,7 +50,13 @@ int main(int, char*[])
     std::cout << "Weight " << i << " : " << w << std::endl;
   }
 
+  vtkNew<vtkForceDirectedLayoutStrategy> forceDirected;
+
   vtkNew<vtkGraphLayoutView> graphLayoutView;
+  graphLayoutView->AddRepresentationFromInput(g);
+  // If we create a layout object directly, just set the pointer to this method.
+  // graphLayoutView->SetLayoutStrategy(forceDirected);
+  graphLayoutView->SetLayoutStrategyToForceDirected();
   graphLayoutView->AddRepresentationFromInput(g);
   graphLayoutView->SetEdgeLabelVisibility(true);
   graphLayoutView->SetEdgeLabelArrayName("Weights");
