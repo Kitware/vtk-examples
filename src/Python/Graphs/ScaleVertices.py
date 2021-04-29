@@ -42,19 +42,27 @@ def main():
     theme = vtk.vtkViewTheme()
     theme.SetPointLookupTable(lookupTable)
 
-    layoutView = vtk.vtkGraphLayoutView()
-    layoutView.AddRepresentationFromInput(g)
-    layoutView.ApplyViewTheme(theme)
-    layoutView.ScaledGlyphsOn()
-    layoutView.SetScalingArrayName('Scales')
-    layoutView.SetVertexColorArrayName('Color')
-    layoutView.ColorVerticesOn()
+    force_directed = vtk.vtkForceDirectedLayoutStrategy()
+
+    layout_view = vtk.vtkGraphLayoutView()
+    # If we create a layout object directly, just set the pointer through this method.
+    # graph_layout_view.SetLayoutStrategy(force_directed)
+    layout_view.SetLayoutStrategyToForceDirected()
+    layout_view.AddRepresentationFromInput(g)
+    layout_view.ApplyViewTheme(theme)
+    layout_view.ScaledGlyphsOn()
+    layout_view.SetScalingArrayName('Scales')
+    layout_view.SetVertexColorArrayName('Color')
+    layout_view.ColorVerticesOn()
     rGraph = vtk.vtkRenderedGraphRepresentation()
     gGlyph = vtk.vtkGraphToGlyphs()
-    rGraph.SafeDownCast(layoutView.GetRepresentation()).SetGlyphType(gGlyph.CIRCLE)
-    layoutView.ResetCamera()
-    layoutView.Render()
-    layoutView.GetInteractor().Start()
+    rGraph.SafeDownCast(layout_view.GetRepresentation()).SetGlyphType(gGlyph.CIRCLE)
+    layout_view.GetRenderer().SetBackground(colors.GetColor3d('Navy'))
+    layout_view.GetRenderer().SetBackground2(colors.GetColor3d('MidnightBlue'))
+    layout_view.GetRenderWindow().SetWindowName('ScaleVertices')
+    layout_view.Render()
+    layout_view.ResetCamera()
+    layout_view.GetInteractor().Start()
 
 
 if __name__ == '__main__':

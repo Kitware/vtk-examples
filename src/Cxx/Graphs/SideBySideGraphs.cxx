@@ -1,4 +1,5 @@
 #include <vtkDataSetAttributes.h>
+#include <vtkForceDirectedLayoutStrategy.h>
 #include <vtkGraphLayoutView.h>
 #include <vtkGraphToPolyData.h>
 #include <vtkMutableUndirectedGraph.h>
@@ -53,7 +54,7 @@ int main(int, char*[])
   // There will be one render window
   vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(600, 300);
-  renderWindow->SetWindowName("SelectedVerticesAndEdges");
+  renderWindow->SetWindowName("SideBySideGraphs");
 
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
 
@@ -62,7 +63,12 @@ int main(int, char*[])
   double leftViewport[4] = {0.0, 0.0, 0.5, 1.0};
   double rightViewport[4] = {0.5, 0.0, 1.0, 1.0};
 
+  vtkNew<vtkForceDirectedLayoutStrategy> forceDirected;
+
   vtkNew<vtkGraphLayoutView> graphLayoutView0;
+  // If we create a layout object directly, just set the pointer to this method.
+  // graphLayoutView0->SetLayoutStrategy(forceDirected);
+  graphLayoutView0->SetLayoutStrategyToForceDirected();
   graphLayoutView0->SetRenderWindow(renderWindow);
   graphLayoutView0->SetInteractor(renderWindowInteractor);
   graphLayoutView0->GetRenderer()->SetViewport(leftViewport);
@@ -71,10 +77,13 @@ int main(int, char*[])
       colors->GetColor3d("Navy").GetData());
   graphLayoutView0->GetRenderer()->SetBackground2(
       colors->GetColor3d("MidnightBlue").GetData());
-  graphLayoutView0->ResetCamera();
   graphLayoutView0->Render();
+  graphLayoutView0->ResetCamera();
 
   vtkNew<vtkGraphLayoutView> graphLayoutView1;
+  // If we create a layout object directly, just set the pointer to this method.
+  // graphLayoutView1->SetLayoutStrategy(forceDirected);
+  graphLayoutView1->SetLayoutStrategyToForceDirected();
   graphLayoutView1->SetRenderWindow(renderWindow);
   graphLayoutView1->SetInteractor(renderWindowInteractor);
   graphLayoutView1->GetRenderer()->SetViewport(rightViewport);
@@ -83,8 +92,8 @@ int main(int, char*[])
       colors->GetColor3d("DarkGreen").GetData());
   graphLayoutView1->GetRenderer()->SetBackground2(
       colors->GetColor3d("ForestGreen").GetData());
-  graphLayoutView1->ResetCamera();
   graphLayoutView1->Render();
+  graphLayoutView1->ResetCamera();
 
   // graphLayoutView0->GetInteractor()->Start();
   renderWindowInteractor->Start();

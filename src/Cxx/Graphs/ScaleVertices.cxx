@@ -1,5 +1,6 @@
 #include <vtkDataSetAttributes.h>
 #include <vtkFloatArray.h>
+#include <vtkForceDirectedLayoutStrategy.h>
 #include <vtkGraphLayoutView.h>
 #include <vtkGraphToGlyphs.h>
 #include <vtkGraphWriter.h>
@@ -7,7 +8,6 @@
 #include <vtkMutableUndirectedGraph.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
-#include <vtkRandomGraphSource.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderedGraphRepresentation.h>
@@ -57,8 +57,13 @@ int main(int, char*[])
   vtkNew<vtkViewTheme> theme;
   theme->SetPointLookupTable(lookupTable);
 
+  vtkNew<vtkForceDirectedLayoutStrategy> forceDirected;
+
   vtkNew<vtkGraphLayoutView> layoutView;
   layoutView->AddRepresentationFromInput(g);
+  // If we create a layout object directly, just set the pointer to this method.
+  // graphLayoutView->SetLayoutStrategy(forceDirected);
+  layoutView->SetLayoutStrategyToForceDirected();
   layoutView->ApplyViewTheme(theme);
   layoutView->ScaledGlyphsOn();
   layoutView->SetScalingArrayName("Scales");
@@ -71,8 +76,8 @@ int main(int, char*[])
   layoutView->GetRenderer()->SetBackground2(
       colors->GetColor3d("MidnightBlue").GetData());
   layoutView->GetRenderWindow()->SetWindowName("ScaleVertices");
-  layoutView->ResetCamera();
   layoutView->Render();
+  layoutView->ResetCamera();
   layoutView->GetInteractor()->Start();
 
   return EXIT_SUCCESS;
