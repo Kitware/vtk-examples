@@ -60,18 +60,28 @@ function registerListener(event, func) {
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>randomGraphSource</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRandomGraphSource</span><span class=p>()</span>
-</span>    <span class=n>randomGraphSource</span><span class=o>.</span><span class=n>SetNumberOfVertices</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
-    <span class=n>randomGraphSource</span><span class=o>.</span><span class=n>SetNumberOfEdges</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
+<span class=hll>    <span class=n>random_graph_source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRandomGraphSource</span><span class=p>()</span>
+</span>    <span class=n>random_graph_source</span><span class=o>.</span><span class=n>SetNumberOfVertices</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+    <span class=n>random_graph_source</span><span class=o>.</span><span class=n>SetNumberOfEdges</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span>
     <span class=c1># This ensures repeatable results for testing. Turn this off for real use.</span>
-    <span class=n>randomGraphSource</span><span class=o>.</span><span class=n>SetSeed</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-    <span class=n>randomGraphSource</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+    <span class=n>random_graph_source</span><span class=o>.</span><span class=n>SetSeed</span><span class=p>(</span><span class=mi>123</span><span class=p>)</span>
+    <span class=n>random_graph_source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>graphLayoutView</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
-</span>    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>randomGraphSource</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
+<span class=hll>    <span class=n>force_directed</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkForceDirectedLayoutStrategy</span><span class=p>()</span>
+</span>
+<span class=hll>    <span class=n>graph_layout_view</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
+</span>    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>random_graph_source</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
+    <span class=c1># If we create a layout object directly, just set the pointer through this method.</span>
+    <span class=c1># graph_layout_view.SetLayoutStrategy(force_directed)</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>SetLayoutStrategyToForceDirected</span><span class=p>()</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Navy&#39;</span><span class=p>))</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;RandomGraphSource&#39;</span><span class=p>)</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>

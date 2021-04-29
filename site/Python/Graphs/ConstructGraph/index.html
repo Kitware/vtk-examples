@@ -61,6 +61,8 @@ function registerListener(event, func) {
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
 <span class=hll>    <span class=n>g</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMutableUndirectedGraph</span><span class=p>()</span>
 </span>
     <span class=n>v1</span> <span class=o>=</span> <span class=n>g</span><span class=o>.</span><span class=n>AddVertex</span><span class=p>()</span>
@@ -73,11 +75,20 @@ function registerListener(event, func) {
     <span class=n>g</span><span class=o>.</span><span class=n>AddEdge</span><span class=p>(</span><span class=n>v1</span><span class=p>,</span> <span class=n>v2</span><span class=p>)</span>
     <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Number of vertices:&#39;</span><span class=p>,</span> <span class=n>g</span><span class=o>.</span><span class=n>GetNumberOfVertices</span><span class=p>())</span>
     <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Number of edges:&#39;</span><span class=p>,</span> <span class=n>g</span><span class=o>.</span><span class=n>GetNumberOfEdges</span><span class=p>())</span>
-<span class=hll>    <span class=n>graphLayoutView</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
-</span>    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>force_directed</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkForceDirectedLayoutStrategy</span><span class=p>()</span>
+</span>
+<span class=hll>    <span class=n>graph_layout_view</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
+</span>    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
+    <span class=c1># If we create a layout object directly, just set the pointer through this method.</span>
+    <span class=c1># graph_layout_view.SetLayoutStrategy(force_directed)</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>SetLayoutStrategyToForceDirected</span><span class=p>()</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Navy&#39;</span><span class=p>))</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ConstructGraph&#39;</span><span class=p>)</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>

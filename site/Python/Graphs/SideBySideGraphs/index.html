@@ -60,6 +60,8 @@ function registerListener(event, func) {
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
     <span class=c1># Create the first graph</span>
 <span class=hll>    <span class=n>g0</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMutableUndirectedGraph</span><span class=p>()</span>
 </span>
@@ -97,34 +99,46 @@ function registerListener(event, func) {
     <span class=n>g1</span><span class=o>.</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>)</span>
 
     <span class=c1># There will be one render window</span>
-<span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
-</span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>300</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+</span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>300</span><span class=p>)</span>
+    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;SideBySideGraphs&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>renderWindowInteractor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>
     <span class=c1># Define viewport ranges</span>
     <span class=c1># (xmin, ymin, xmax, ymax)</span>
-    <span class=n>leftViewport</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
-    <span class=n>rightViewport</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
+    <span class=n>left_viewport</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
+    <span class=n>right_viewport</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
 
-<span class=hll>    <span class=n>graphLayoutView0</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
-</span>    <span class=n>graphLayoutView0</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>)</span>
-    <span class=n>graphLayoutView0</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>renderWindowInteractor</span><span class=p>)</span>
-    <span class=n>graphLayoutView0</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>leftViewport</span><span class=p>)</span>
-    <span class=n>graphLayoutView0</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g0</span><span class=p>)</span>
-    <span class=n>graphLayoutView0</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
-    <span class=n>graphLayoutView0</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+<span class=hll>    <span class=n>graph_layout_view0</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
+</span>    <span class=n>graph_layout_view0</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
+    <span class=n>graph_layout_view0</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>)</span>
+    <span class=n>graph_layout_view0</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>left_viewport</span><span class=p>)</span>
+    <span class=n>graph_layout_view0</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g0</span><span class=p>)</span>
+    <span class=c1># If we create a layout object directly, just set the pointer through this method.</span>
+    <span class=c1># graph_layout_view0.SetLayoutStrategy(force_directed)</span>
+    <span class=n>graph_layout_view0</span><span class=o>.</span><span class=n>SetLayoutStrategyToForceDirected</span><span class=p>()</span>
+    <span class=n>graph_layout_view0</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Navy&#39;</span><span class=p>))</span>
+    <span class=n>graph_layout_view0</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
+    <span class=n>graph_layout_view0</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+    <span class=n>graph_layout_view0</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>graphLayoutView1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
-</span>    <span class=n>graphLayoutView1</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>)</span>
-    <span class=n>graphLayoutView1</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>renderWindowInteractor</span><span class=p>)</span>
-    <span class=n>graphLayoutView1</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>rightViewport</span><span class=p>)</span>
-    <span class=n>graphLayoutView1</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g1</span><span class=p>)</span>
-    <span class=n>graphLayoutView1</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
-    <span class=n>graphLayoutView1</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+<span class=hll>    <span class=n>graph_layout_view1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
+</span>    <span class=n>graph_layout_view1</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
+    <span class=n>graph_layout_view1</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>)</span>
+    <span class=n>graph_layout_view1</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>right_viewport</span><span class=p>)</span>
+    <span class=n>graph_layout_view1</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g0</span><span class=p>)</span>
+    <span class=c1># If we create a layout object directly, just set the pointer through this method.</span>
+    <span class=c1># graph_layout_view1.SetLayoutStrategy(force_directed)</span>
+    <span class=n>graph_layout_view1</span><span class=o>.</span><span class=n>SetLayoutStrategyToForceDirected</span><span class=p>()</span>
+    <span class=n>graph_layout_view1</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g1</span><span class=p>)</span>
+    <span class=n>graph_layout_view1</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkGreen&#39;</span><span class=p>))</span>
+    <span class=n>graph_layout_view1</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;ForestGreen&#39;</span><span class=p>))</span>
+    <span class=n>graph_layout_view1</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+    <span class=n>graph_layout_view1</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
 
-    <span class=c1># graphLayoutView0.GetInteractor().Start()</span>
-    <span class=n>renderWindowInteractor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
+    <span class=c1># graph_layout_view0.GetInteractor().Start()</span>
+    <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>

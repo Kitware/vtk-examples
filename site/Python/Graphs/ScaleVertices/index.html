@@ -99,19 +99,27 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>theme</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkViewTheme</span><span class=p>()</span>
 </span>    <span class=n>theme</span><span class=o>.</span><span class=n>SetPointLookupTable</span><span class=p>(</span><span class=n>lookupTable</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>layoutView</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
-</span>    <span class=n>layoutView</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
-    <span class=n>layoutView</span><span class=o>.</span><span class=n>ApplyViewTheme</span><span class=p>(</span><span class=n>theme</span><span class=p>)</span>
-    <span class=n>layoutView</span><span class=o>.</span><span class=n>ScaledGlyphsOn</span><span class=p>()</span>
-    <span class=n>layoutView</span><span class=o>.</span><span class=n>SetScalingArrayName</span><span class=p>(</span><span class=s1>&#39;Scales&#39;</span><span class=p>)</span>
-    <span class=n>layoutView</span><span class=o>.</span><span class=n>SetVertexColorArrayName</span><span class=p>(</span><span class=s1>&#39;Color&#39;</span><span class=p>)</span>
-    <span class=n>layoutView</span><span class=o>.</span><span class=n>ColorVerticesOn</span><span class=p>()</span>
+<span class=hll>    <span class=n>force_directed</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkForceDirectedLayoutStrategy</span><span class=p>()</span>
+</span>
+<span class=hll>    <span class=n>layout_view</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
+</span>    <span class=c1># If we create a layout object directly, just set the pointer through this method.</span>
+    <span class=c1># graph_layout_view.SetLayoutStrategy(force_directed)</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>SetLayoutStrategyToForceDirected</span><span class=p>()</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>ApplyViewTheme</span><span class=p>(</span><span class=n>theme</span><span class=p>)</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>ScaledGlyphsOn</span><span class=p>()</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>SetScalingArrayName</span><span class=p>(</span><span class=s1>&#39;Scales&#39;</span><span class=p>)</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>SetVertexColorArrayName</span><span class=p>(</span><span class=s1>&#39;Color&#39;</span><span class=p>)</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>ColorVerticesOn</span><span class=p>()</span>
 <span class=hll>    <span class=n>rGraph</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderedGraphRepresentation</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>gGlyph</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphToGlyphs</span><span class=p>()</span>
-</span>    <span class=n>rGraph</span><span class=o>.</span><span class=n>SafeDownCast</span><span class=p>(</span><span class=n>layoutView</span><span class=o>.</span><span class=n>GetRepresentation</span><span class=p>())</span><span class=o>.</span><span class=n>SetGlyphType</span><span class=p>(</span><span class=n>gGlyph</span><span class=o>.</span><span class=n>CIRCLE</span><span class=p>)</span>
-    <span class=n>layoutView</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
-    <span class=n>layoutView</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>layoutView</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
+</span>    <span class=n>rGraph</span><span class=o>.</span><span class=n>SafeDownCast</span><span class=p>(</span><span class=n>layout_view</span><span class=o>.</span><span class=n>GetRepresentation</span><span class=p>())</span><span class=o>.</span><span class=n>SetGlyphType</span><span class=p>(</span><span class=n>gGlyph</span><span class=o>.</span><span class=n>CIRCLE</span><span class=p>)</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Navy&#39;</span><span class=p>))</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ScaleVertices&#39;</span><span class=p>)</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>

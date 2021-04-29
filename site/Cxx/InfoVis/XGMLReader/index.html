@@ -104,13 +104,16 @@ function registerListener(event, func) {
   <span class=n>theme</span><span class=o>-&gt;</span><span class=n>SetCellHueRange</span><span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>);</span>
   <span class=n>theme</span><span class=o>-&gt;</span><span class=n>SetCellSaturationRange</span><span class=p>(</span><span class=mf>0.2</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
   <span class=n>theme</span><span class=o>-&gt;</span><span class=n>SetCellValueRange</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
-  <span class=c1>// theme-&gt;SetPointAlphaRange(0.2, 0.8);</span>
+  <span class=c1>// theme-&gt;SetCellAlphaRange(0.2, 0.8);</span>
 
-<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGraphLayoutView</span><span class=o>&gt;</span> <span class=n>graphLayoutView</span><span class=p>;</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSimple2DLayoutStrategy</span><span class=o>&gt;</span> <span class=n>simple2D</span><span class=p>;</span>
 </span>
-  <span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g</span><span class=p>);</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGraphLayoutView</span><span class=o>&gt;</span> <span class=n>graphLayoutView</span><span class=p>;</span>
+</span>  <span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g</span><span class=p>);</span>
   <span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>ApplyViewTheme</span><span class=p>(</span><span class=n>theme</span><span class=p>);</span>
-  <span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetLayoutStrategy</span><span class=p>(</span><span class=s>&quot;Simple 2D&quot;</span><span class=p>);</span>
+  <span class=c1>// If we create a layout object directly, just set the pointer to this method.</span>
+  <span class=c1>// graphLayoutView-&gt;SetLayoutStrategy(simple2D);</span>
+  <span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetLayoutStrategyToSimple2D</span><span class=p>();</span>
 
   <span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 

@@ -61,7 +61,7 @@ function registerListener(event, func) {
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=c1># colors = vtk.vtkNamedColors()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
 <span class=hll>    <span class=n>g</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMutableDirectedGraph</span><span class=p>()</span>
 </span>
@@ -88,19 +88,26 @@ function registerListener(event, func) {
     <span class=c1># Add the edge weight array to the graph</span>
     <span class=n>g</span><span class=o>.</span><span class=n>GetEdgeData</span><span class=p>()</span><span class=o>.</span><span class=n>AddArray</span><span class=p>(</span><span class=n>weights</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>graphLayoutView</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
-</span>    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>SetLayoutStrategy</span><span class=p>(</span><span class=s1>&#39;Simple 2D&#39;</span><span class=p>)</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetLayoutStrategy</span><span class=p>()</span><span class=o>.</span><span class=n>SetEdgeWeightField</span><span class=p>(</span><span class=s1>&#39;Weights&#39;</span><span class=p>)</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetLayoutStrategy</span><span class=p>()</span><span class=o>.</span><span class=n>SetWeightEdges</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>SetEdgeLabelArrayName</span><span class=p>(</span><span class=s1>&#39;Weights&#39;</span><span class=p>)</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>SetEdgeLabelVisibility</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Number of edges:&#39;</span><span class=p>,</span> <span class=n>g</span><span class=o>.</span><span class=n>GetNumberOfEdges</span><span class=p>())</span>
 
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetLayoutStrategy</span><span class=p>()</span><span class=o>.</span><span class=n>SetRandomSeed</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
+<span class=hll>    <span class=n>force_directed</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkForceDirectedLayoutStrategy</span><span class=p>()</span>
+</span>
+<span class=hll>    <span class=n>graph_layout_view</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
+</span>    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
+    <span class=c1># If we create a layout object directly, just set the pointer through this method.</span>
+    <span class=c1># graph_layout_view.SetLayoutStrategy(force_directed)</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>SetLayoutStrategyToForceDirected</span><span class=p>()</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetLayoutStrategy</span><span class=p>()</span><span class=o>.</span><span class=n>SetEdgeWeightField</span><span class=p>(</span><span class=s1>&#39;Weights&#39;</span><span class=p>)</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetLayoutStrategy</span><span class=p>()</span><span class=o>.</span><span class=n>SetWeightEdges</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>SetEdgeLabelArrayName</span><span class=p>(</span><span class=s1>&#39;Weights&#39;</span><span class=p>)</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>EdgeLabelVisibilityOn</span><span class=p>()</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Navy&#39;</span><span class=p>))</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;EdgeWeights&#39;</span><span class=p>)</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
