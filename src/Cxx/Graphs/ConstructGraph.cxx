@@ -30,8 +30,7 @@ int main(int, char*[])
 
   vtkNew<vtkGraphLayoutView> graphLayoutView;
   graphLayoutView->AddRepresentationFromInput(g);
-  // If we create a layout object directly, just set the pointer through this
-  // method.
+  // If we create a layout object directly, just set the pointer to this method.
   // graphLayoutView->SetLayoutStrategy(forceDirected);
   graphLayoutView->SetLayoutStrategyToForceDirected();
   graphLayoutView->ResetCamera();

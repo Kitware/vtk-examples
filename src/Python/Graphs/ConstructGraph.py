@@ -26,7 +26,6 @@ def main():
     # If we create a layout object directly, just set the pointer through this method.
     # graph_layout_view.SetLayoutStrategy(force_directed)
     graph_layout_view.SetLayoutStrategyToForceDirected()
-    # graph_layout_view.SetLayoutStrategyToFast2D()
     graph_layout_view.ResetCamera()
     graph_layout_view.GetRenderer().SetBackground(colors.GetColor3d('Navy'))
     graph_layout_view.GetRenderer().SetBackground2(colors.GetColor3d('MidnightBlue'))

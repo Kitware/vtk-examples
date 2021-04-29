@@ -4,7 +4,7 @@ import vtk
 
 
 def main():
-    # colors = vtk.vtkNamedColors()
+    colors = vtk.vtkNamedColors()
 
     g = vtk.vtkMutableDirectedGraph()
 
@@ -31,19 +31,26 @@ def main():
     # Add the edge weight array to the graph
     g.GetEdgeData().AddArray(weights)
 
-    graphLayoutView = vtk.vtkGraphLayoutView()
-    graphLayoutView.AddRepresentationFromInput(g)
-    graphLayoutView.SetLayoutStrategy('Simple 2D')
-    graphLayoutView.GetLayoutStrategy().SetEdgeWeightField('Weights')
-    graphLayoutView.GetLayoutStrategy().SetWeightEdges(1)
-    graphLayoutView.SetEdgeLabelArrayName('Weights')
-    graphLayoutView.SetEdgeLabelVisibility(1)
-    graphLayoutView.ResetCamera()
-    graphLayoutView.Render()
+    print('Number of edges:', g.GetNumberOfEdges())
 
-    graphLayoutView.GetLayoutStrategy().SetRandomSeed(0)
+    force_directed = vtk.vtkForceDirectedLayoutStrategy()
 
-    graphLayoutView.GetInteractor().Start()
+    graph_layout_view = vtk.vtkGraphLayoutView()
+    graph_layout_view.AddRepresentationFromInput(g)
+    # If we create a layout object directly, just set the pointer through this method.
+    # graph_layout_view.SetLayoutStrategy(force_directed)
+    graph_layout_view.SetLayoutStrategyToForceDirected()
+    graph_layout_view.AddRepresentationFromInput(g)
+    graph_layout_view.GetLayoutStrategy().SetEdgeWeightField('Weights')
+    graph_layout_view.GetLayoutStrategy().SetWeightEdges(1)
+    graph_layout_view.SetEdgeLabelArrayName('Weights')
+    graph_layout_view.EdgeLabelVisibilityOn()
+    graph_layout_view.GetRenderer().SetBackground(colors.GetColor3d('Navy'))
+    graph_layout_view.GetRenderer().SetBackground2(colors.GetColor3d('MidnightBlue'))
+    graph_layout_view.GetRenderWindow().SetWindowName('EdgeWeights')
+    graph_layout_view.ResetCamera()
+    graph_layout_view.Render()
+    graph_layout_view.GetInteractor().Start()
 
 
 if __name__ == '__main__':
