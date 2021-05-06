@@ -544,6 +544,13 @@ This section includes vtkImageData vtkStructuredGrid and vtkRectilinearGrid.
 [ImageDataGeometryFilter](/Cxx/ImageData/ImageDataGeometryFilter) | Convert a vtkImageData to a vtkPolyData
 [ImageDataToPointSet](/Cxx/ImageData/ImageDataToPointSet) | Convert a vtkImageData to a vtkStructuredGrid.
 
+#### vtkExplicitStructuredGrid
+
+| Example Name | Description | Image |
+| ------------ | ----------- | ----- |
+[CreateESGrid](/Cxx/ExplicitStructuredGrid/CreateESGrid) | Create an explicit structured grid and convert this to an unstructured grid or vice versa.
+[LoadESGrid](/Cxx/ExplicitStructuredGrid/LoadESGrid) | Load a VTU file and convert the dataset to an explicit structured grid.
+
 #### vtkStructuredGrid
 
 | Example Name | Description | Image |
