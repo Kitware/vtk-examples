@@ -764,6 +764,14 @@
      <lastmod>2021-05-12</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/ExplicitStructuredGrid/CreateESGrid/</loc>
+     <lastmod>2021-05-12</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/ExplicitStructuredGrid/LoadESGrid/</loc>
+     <lastmod>2021-05-12</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://kitware.github.io/vtk-examples/site/Cxx/Filtering/AppendFilter/</loc>
      <lastmod>2021-05-12</lastmod>
      <changefreq>daily</changefreq>
