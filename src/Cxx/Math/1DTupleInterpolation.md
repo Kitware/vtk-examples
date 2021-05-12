@@ -14,7 +14,7 @@ interpolation behavior at the edge regions, we use the `open` and
 `closed` interval spline options as well. For example, a
 Kochanek-interpolation of the Runge function:
 
-<img style="float:middle" src="http://www.vtk.org/Wiki/images/a/aa/Tuple1D_Kochanek_interpolation.png">
+<img style="float:middle" src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/SupplementaryData/Cxx/Math/Tuple1D_Kochanek_interpolation.png">
 
 ### Program Usage
 
