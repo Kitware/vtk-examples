@@ -47,8 +47,9 @@ mkdir -p ${WEB_REPO_DIR}/custom_theme
 mkdir -p ${WEB_REPO_DIR}/src/Artifacts
 mkdir -p ${WEB_REPO_DIR}/src/Images
 mkdir -p ${WEB_REPO_DIR}/src/stylesheets
-mkdir -p ${WEB_REPO_DIR}/src/Testing/Baseline/
-mkdir -p ${WEB_REPO_DIR}/src/VTKBook/Figures/
+mkdir -p ${WEB_REPO_DIR}/src/SupplementaryData
+mkdir -p ${WEB_REPO_DIR}/src/Testing/Baseline
+mkdir -p ${WEB_REPO_DIR}/src/VTKBook/Figures
 
 echo "2) Copy the baseline images and other essential files"
 rsync -zavh index.html ${WEB_REPO_DIR}
@@ -61,8 +62,9 @@ rsync -zavh custom_theme/ ${WEB_REPO_DIR}/custom_theme
 rsync -zavh src/Artifacts/ ${WEB_REPO_DIR}/src/Artifacts
 rsync -zavh src/Images/ ${WEB_REPO_DIR}/src/Images
 rsync -zavh src/stylesheets/ ${WEB_REPO_DIR}/src/stylesheets
-rsync -zavh src/Testing/Baseline/ ${WEB_REPO_DIR}/src/Testing/Baseline/
-rsync -zavh src/VTKBook/Figures/ ${WEB_REPO_DIR}/src/VTKBook/Figures/
+rsync -zavh src/SupplementaryData/ ${WEB_REPO_DIR}/src/SupplementaryData
+rsync -zavh src/Testing/Baseline/ ${WEB_REPO_DIR}/src/Testing/Baseline
+rsync -zavh src/VTKBook/Figures/ ${WEB_REPO_DIR}/src/VTKBook/Figures
 cp web_gitignore ${WEB_REPO_DIR}/.gitignore
 
 echo "3) Create coverage files"
@@ -75,8 +77,6 @@ rm -rf ${WEB_REPO_DIR}/site/*
 src/Admin/ScrapeRepo.py src ${SITE_URL} ${WEB_SITE_URL} ${WEB_REPO_URL} ${WEB_REPO_DIR} ${VTK_SOURCE_DIR}
 
 echo "4.2) Scrape the repo again (fixes a bug where the CMakeLists file is bad on the first run)"
-#rm -rf ${WEB_REPO_DIR}/docs/*
-#rm -rf ${WEB_REPO_DIR}/site/*
 src/Admin/ScrapeRepo.py src ${SITE_URL} ${WEB_SITE_URL} ${WEB_REPO_URL} ${WEB_REPO_DIR} ${VTK_SOURCE_DIR}
 
 echo "5) Check for a successful scrape"
