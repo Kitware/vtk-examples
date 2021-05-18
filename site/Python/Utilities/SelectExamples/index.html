@@ -84,9 +84,11 @@ function registerListener(event, func) {
     <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-a&#39;</span><span class=p>,</span> <span class=s1>&#39;--all_values&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s2>&quot;store_true&quot;</span><span class=p>,</span>
                         <span class=n>help</span><span class=o>=</span><span class=s1>&#39;All examples (Warning: Can be a very long list).&#39;</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-n&#39;</span><span class=p>,</span> <span class=s1>&#39;--number&#39;</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The maximum number of examples.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-m&#39;</span><span class=p>,</span> <span class=s1>&#39;--md&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s2>&quot;store_true&quot;</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Display links in markdown inline format e.g. [label](URL).&#39;</span><span class=p>)</span>
 
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
-<span class=hll>    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>vtk_class</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>language</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>all_values</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>number</span>
+<span class=hll>    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>vtk_class</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>language</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>all_values</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>md</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>number</span>
 </span>
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
@@ -122,7 +124,7 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>path</span>
 
 
-<span class=hll><span class=k>def</span> <span class=nf>get_examples</span><span class=p>(</span><span class=n>d</span><span class=p>,</span> <span class=n>vtk_class</span><span class=p>,</span> <span class=n>lang</span><span class=p>,</span> <span class=n>all_values</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>number</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=p>):</span>
+<span class=hll><span class=k>def</span> <span class=nf>get_examples</span><span class=p>(</span><span class=n>d</span><span class=p>,</span> <span class=n>vtk_class</span><span class=p>,</span> <span class=n>lang</span><span class=p>,</span> <span class=n>all_values</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>number</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=n>md_fmt</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
 </span>    <span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>    For the VTK Class and language return the</span>
 <span class=sd>     total number of examples and a list of examples.</span>
@@ -132,6 +134,7 @@ function registerListener(event, func) {
 </span><span class=sd>    :param lang: The language, e.g. Cxx.</span>
 <span class=sd>    :param all_values: True if all examples are needed.</span>
 <span class=sd>    :param number: The number of values.</span>
+<span class=sd>    :param md_fmt: Use Markdown format with label and URL defined together.</span>
 <span class=sd>    :return: Total number of examples and a list of examples.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=k>try</span><span class=p>:</span>
@@ -145,7 +148,10 @@ function registerListener(event, func) {
             <span class=n>samples</span> <span class=o>=</span> <span class=n>random</span><span class=o>.</span><span class=n>sample</span><span class=p>(</span><span class=nb>list</span><span class=p>(</span><span class=n>kv</span><span class=p>),</span> <span class=n>number</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>samples</span> <span class=o>=</span> <span class=n>kv</span>
-    <span class=n>links</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>itemgetter</span><span class=p>(</span><span class=mi>1</span><span class=p>),</span> <span class=n>samples</span><span class=p>))</span>
+    <span class=k>if</span> <span class=n>md_fmt</span><span class=p>:</span>
+        <span class=n>links</span> <span class=o>=</span> <span class=p>[</span><span class=sa>f</span><span class=s1>&#39;[</span><span class=si>{</span><span class=n>s</span><span class=o>.</span><span class=n>rsplit</span><span class=p>(</span><span class=s2>&quot;/&quot;</span><span class=p>,</span> <span class=mi>1</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span><span class=si>}</span><span class=s1>](</span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>)&#39;</span> <span class=k>for</span> <span class=n>s</span> <span class=ow>in</span> <span class=nb>sorted</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>itemgetter</span><span class=p>(</span><span class=mi>1</span><span class=p>),</span> <span class=n>samples</span><span class=p>))]</span>
+    <span class=k>else</span><span class=p>:</span>
+        <span class=n>links</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>itemgetter</span><span class=p>(</span><span class=mi>1</span><span class=p>),</span> <span class=n>samples</span><span class=p>))</span>
     <span class=k>return</span> <span class=nb>len</span><span class=p>(</span><span class=n>links</span><span class=p>),</span> <span class=n>links</span>
 
 
@@ -171,7 +177,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>vtk_class</span><span class=p>,</span> <span class=n>language</span><span class=p>,</span> <span class=n>all_values</span><span class=p>,</span> <span class=n>number</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
+<span class=hll>    <span class=n>vtk_class</span><span class=p>,</span> <span class=n>language</span><span class=p>,</span> <span class=n>all_values</span><span class=p>,</span> <span class=n>md</span><span class=p>,</span> <span class=n>number</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 </span>    <span class=n>language</span> <span class=o>=</span> <span class=n>language</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
     <span class=n>available_languages</span> <span class=o>=</span> <span class=p>{</span><span class=n>k</span><span class=o>.</span><span class=n>lower</span><span class=p>():</span> <span class=n>k</span> <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;CSharp&#39;</span><span class=p>,</span> <span class=s1>&#39;Cxx&#39;</span><span class=p>,</span> <span class=s1>&#39;Java&#39;</span><span class=p>,</span> <span class=s1>&#39;Python&#39;</span><span class=p>]}</span>
     <span class=n>available_languages</span><span class=o>.</span><span class=n>update</span><span class=p>({</span><span class=s1>&#39;cpp&#39;</span><span class=p>:</span> <span class=s1>&#39;Cxx&#39;</span><span class=p>,</span> <span class=s1>&#39;c++&#39;</span><span class=p>:</span> <span class=s1>&#39;Cxx&#39;</span><span class=p>,</span> <span class=s1>&#39;c#&#39;</span><span class=p>:</span> <span class=s1>&#39;CSharp&#39;</span><span class=p>})</span>
@@ -186,8 +192,9 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=n>xref_dict</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
         <span class=k>return</span>
 
-<span class=hll>    <span class=n>total_number</span><span class=p>,</span> <span class=n>examples</span> <span class=o>=</span> <span class=n>get_examples</span><span class=p>(</span><span class=n>xref_dict</span><span class=p>,</span> <span class=n>vtk_class</span><span class=p>,</span> <span class=n>language</span><span class=p>,</span> <span class=n>all_values</span><span class=o>=</span><span class=n>all_values</span><span class=p>,</span> <span class=n>number</span><span class=o>=</span><span class=n>number</span><span class=p>)</span>
-</span>    <span class=k>if</span> <span class=n>examples</span><span class=p>:</span>
+<span class=hll>    <span class=n>total_number</span><span class=p>,</span> <span class=n>examples</span> <span class=o>=</span> <span class=n>get_examples</span><span class=p>(</span><span class=n>xref_dict</span><span class=p>,</span> <span class=n>vtk_class</span><span class=p>,</span> <span class=n>language</span><span class=p>,</span> <span class=n>all_values</span><span class=o>=</span><span class=n>all_values</span><span class=p>,</span> <span class=n>number</span><span class=o>=</span><span class=n>number</span><span class=p>,</span>
+</span>                                          <span class=n>md_fmt</span><span class=o>=</span><span class=n>md</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>examples</span><span class=p>:</span>
         <span class=k>if</span> <span class=n>total_number</span> <span class=o>&lt;=</span> <span class=n>number</span> <span class=ow>or</span> <span class=n>all_values</span><span class=p>:</span>
 <span class=hll>            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;VTK Class: </span><span class=si>{</span><span class=n>vtk_class</span><span class=si>}</span><span class=s1>, language: </span><span class=si>{</span><span class=n>language</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
 </span>                  <span class=sa>f</span><span class=s1>&#39;Number of example(s): </span><span class=si>{</span><span class=n>total_number</span><span class=si>}</span><span class=s1>.&#39;</span><span class=p>)</span>
