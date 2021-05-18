@@ -27,9 +27,11 @@ It is stored in your tempfile directory.
     parser.add_argument('-a', '--all_values', action="store_true",
                         help='All examples (Warning: Can be a very long list).')
     parser.add_argument('-n', '--number', type=int, default=5, help='The maximum number of examples.')
+    parser.add_argument('-m', '--md', action="store_true",
+                        help='Display links in markdown inline format e.g. [label](URL).')
 
     args = parser.parse_args()
-    return args.vtk_class, args.language, args.all_values, args.number
+    return args.vtk_class, args.language, args.all_values, args.md, args.number
 
 
 @dataclass(frozen=True)
@@ -65,7 +67,7 @@ def download_file(dl_path, dl_url, overwrite=False):
     return path
 
 
-def get_examples(d, vtk_class, lang, all_values=False, number=5, ):
+def get_examples(d, vtk_class, lang, all_values=False, number=5, md_fmt=False):
     """
     For the VTK Class and language return the
      total number of examples and a list of examples.
@@ -75,6 +77,7 @@ def get_examples(d, vtk_class, lang, all_values=False, number=5, ):
     :param lang: The language, e.g. Cxx.
     :param all_values: True if all examples are needed.
     :param number: The number of values.
+    :param md_fmt: Use Markdown format with label and URL defined together.
     :return: Total number of examples and a list of examples.
     """
     try:
@@ -88,7 +91,10 @@ def get_examples(d, vtk_class, lang, all_values=False, number=5, ):
             samples = random.sample(list(kv), number)
     else:
         samples = kv
-    links = sorted(map(itemgetter(1), samples))
+    if md_fmt:
+        links = [f'[{s.rsplit("/", 1)[1]}]({s})' for s in sorted(map(itemgetter(1), samples))]
+    else:
+        links = sorted(map(itemgetter(1), samples))
     return len(links), links
 
 
@@ -114,7 +120,7 @@ def get_crossref_dict(ref_dir):
 
 
 def main():
-    vtk_class, language, all_values, number = get_program_parameters()
+    vtk_class, language, all_values, md, number = get_program_parameters()
     language = language.lower()
     available_languages = {k.lower(): k for k in ['CSharp', 'Cxx', 'Java', 'Python']}
     available_languages.update({'cpp': 'Cxx', 'c++': 'Cxx', 'c#': 'CSharp'})
@@ -129,7 +135,8 @@ def main():
     if xref_dict is None:
         return
 
-    total_number, examples = get_examples(xref_dict, vtk_class, language, all_values=all_values, number=number)
+    total_number, examples = get_examples(xref_dict, vtk_class, language, all_values=all_values, number=number,
+                                          md_fmt=md)
     if examples:
         if total_number <= number or all_values:
             print(f'VTK Class: {vtk_class}, language: {language}\n'
