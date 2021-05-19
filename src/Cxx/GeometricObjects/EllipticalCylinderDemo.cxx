@@ -3,6 +3,7 @@
 #include <vtkCamera.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkLinearExtrusionFilter.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPoints.h>
@@ -73,9 +74,10 @@ int main(int argc, char* argv[])
   startPoint[0] = centerX;
   startPoint[1] = centerY;
   startPoint[2] = 0.0;
-  endPoint[0] = startPoint[0] + extrude->GetVector()[0];
-  endPoint[1] = startPoint[1] + extrude->GetVector()[1];
-  endPoint[2] = startPoint[2] + extrude->GetVector()[2];
+  for (auto i = 0; i < 3; ++i)
+  {
+    endPoint[i] = startPoint[i] + extrude->GetVector()[i];
+  }
 
   // Compute a basis
   double normalizedX[3];
@@ -87,11 +89,17 @@ int main(int argc, char* argv[])
   double length = vtkMath::Norm(normalizedX);
   vtkMath::Normalize(normalizedX);
 
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
+  rng->SetSeed(8775070);
+  auto max_r = 10.0;
+
   // The Z axis is an arbitrary vector cross X
   double arbitrary[3];
-  arbitrary[0] = vtkMath::Random(-10, 10);
-  arbitrary[1] = vtkMath::Random(-10, 10);
-  arbitrary[2] = vtkMath::Random(-10, 10);
+  for (auto i = 0; i < 3; ++i)
+  {
+    arbitrary[i] = rng->GetRangeValue(-max_r, max_r);
+    rng->Next();
+  }
   vtkMath::Cross(normalizedX, arbitrary, normalizedZ);
   vtkMath::Normalize(normalizedZ);
 

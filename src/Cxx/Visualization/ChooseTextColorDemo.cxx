@@ -2,6 +2,7 @@
 #include <vtkCamera.h>
 #include <vtkCoordinate.h>
 #include <vtkMath.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPolyDataMapper.h>
@@ -33,11 +34,19 @@ void ChooseContrastingColor(double* rgbIn, double* rgbOut,
                             const std::string& darkColor = "black");
 
 void ViewportBorder(vtkRenderer* renderer, double* color, bool last = false);
+
+void RandomHSV(double hsv[3], double const& min_r, double const& max_r,
+               vtkMinimalStandardRandomSequence* rng);
+
 } // namespace
 
 int main(int argc, char* argv[])
 {
-  vtkMath::RandomSeed(4355412); // for test result consistency
+  // For testing
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
+  rng->SetSeed(8775070);
+  // rng->SetSeed(0);
+  // rng->SetSeed(4355412);
 
   double threshold = .5;
   std::string lightColor = "white";
@@ -62,6 +71,8 @@ int main(int argc, char* argv[])
   std::vector<vtkSmartPointer<vtkRenderer>> renderers;
   unsigned int xGridDimensions = 10;
   unsigned int yGridDimensions = 10;
+  auto min_r = 0.0;
+  auto max_r = 1.0;
   for (auto i = 0; i < static_cast<int>(xGridDimensions * yGridDimensions); ++i)
   {
     // Create textActors
@@ -76,11 +87,8 @@ int main(int argc, char* argv[])
     // Setup renderer
     vtkNew<vtkRenderer> renderer;
     renderer->AddActor(textActor);
-    ;
     double hsv[3];
-    hsv[0] = vtkMath::Random(0.0, 1.0);
-    hsv[1] = vtkMath::Random(0.0, 1.0);
-    hsv[2] = vtkMath::Random(0.0, 1.0);
+    RandomHSV(hsv, min_r, max_r, rng);
     double rgb[3];
     vtkMath::HSVToRGB(hsv, rgb);
     renderer->SetBackground(rgb);
@@ -210,4 +218,15 @@ void ChooseContrastingColor(double* rgbIn, double* rgbOut, double threshold,
     colors->GetColor(darkColor.c_str(), rgbOut[0], rgbOut[1], rgbOut[2]);
   }
 }
+
+void RandomHSV(double hsv[3], double const& min_r, double const& max_r,
+               vtkMinimalStandardRandomSequence* rng)
+{
+  for (auto i = 0; i < 3; ++i)
+  {
+    hsv[i] = rng->GetRangeValue(min_r, max_r);
+    rng->Next();
+  }
+}
+
 } // namespace

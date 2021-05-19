@@ -1,9 +1,9 @@
 #include <vtkActor.h>
+#include <vtkBoxMuellerRandomSequence.h>
 #include <vtkDoubleArray.h>
 #include <vtkGlyph3DMapper.h>
 #include <vtkLine.h>
 #include <vtkLineSource.h>
-#include <vtkMath.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPCAStatistics.h>
@@ -38,13 +38,15 @@ vtkSmartPointer<vtkActor> PointToGlyph(vtkPoints* points, double const& scale);
 
 int main(int, char*[])
 {
-  vtkMath::RandomSeed(0);
+  vtkNew<vtkBoxMuellerRandomSequence> randomSequence;
 
   vtkNew<vtkPoints> points;
   for (unsigned int i = 0; i < 200; i++)
   {
-    double x = vtkMath::Gaussian(0, 2);
-    double y = vtkMath::Gaussian(0, 5);
+    auto x = randomSequence->GetScaledValue(0, 2);
+    randomSequence->Next();
+    auto y = randomSequence->GetScaledValue(0, 5);
+    randomSequence->Next();
     points->InsertNextPoint(x, y, 0);
   }
   vtkNew<vtkPolyData> polydata;

@@ -4,8 +4,10 @@
 #include <vtkContextView.h>
 #include <vtkFloatArray.h>
 #include <vtkIdList.h>
+#include <vtkKdTree.h>
 #include <vtkKdTreePointLocator.h>
 #include <vtkMath.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPlot.h>
@@ -23,9 +25,11 @@
 #include <vector>
 
 namespace {
-void RandomPointInBounds(vtkPolyData* polydata, double p[3]);
+void RandomPointInBounds(vtkPolyData* polydata, double p[3],
+                         vtkMinimalStandardRandomSequence* rng);
 
-double TimeKDTree(vtkPolyData* polydata, int maxPoints, int numberOfTrials);
+double TimeKDTree(vtkPolyData* polydata, int maxPoints, int numberOfTrials,
+                  vtkMinimalStandardRandomSequence* rng);
 } // namespace
 
 int main(int, char*[])
@@ -37,12 +41,16 @@ int main(int, char*[])
   reader->SetPhiResolution(30);
   reader->Update();
 
-  std::cout << "Timing octree..." << std::endl;
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
+  rng->SetSeed(8775070);
+  // rng->SetSeed(0);
+
+  std::cout << "Timing KD tree..." << std::endl;
   std::vector<std::pair<int, double>> results;
   int numberOfTrials = 1000;
   for (int i = 1; i < 20; i++)
   {
-    double t = TimeKDTree(reader->GetOutput(), i, numberOfTrials);
+    double t = TimeKDTree(reader->GetOutput(), i, numberOfTrials, rng);
     std::pair<int, double> result(i, t);
     results.push_back(result);
   }
@@ -96,27 +104,25 @@ int main(int, char*[])
 }
 
 namespace {
-void RandomPointInBounds(vtkPolyData* polydata, double p[3])
+void RandomPointInBounds(vtkPolyData* polydata, double p[3],
+                         vtkMinimalStandardRandomSequence* rng)
 {
   double bounds[6];
   polydata->GetBounds(bounds);
 
-  double x = bounds[0] + (bounds[1] - bounds[0]) * vtkMath::Random(0.0, 1.0);
-  double y = bounds[2] + (bounds[3] - bounds[2]) * vtkMath::Random(0.0, 1.0);
-  double z = bounds[4] + (bounds[5] - bounds[4]) * vtkMath::Random(0.0, 1.0);
-
-  p[0] = x;
-  p[1] = y;
-  p[2] = z;
+  for (auto i = 0; i < 3; ++i)
+  {
+    p[i] = bounds[i * 2] +
+        (bounds[i * 2 + 1] - bounds[i * 2]) * rng->GetRangeValue(0.0, 1.0);
+    rng->Next();
+  }
 }
 
-double TimeKDTree(vtkPolyData* polydata, int maxLevel, int numberOfTrials)
+double TimeKDTree(vtkPolyData* polydata, int maxLevel, int numberOfTrials,
+                  vtkMinimalStandardRandomSequence* rng)
 {
   vtkNew<vtkTimerLog> timer;
   timer->StartTimer();
-
-  vtkMath::RandomSeed(
-      0); // this should be changed to time(NULL) to get random behavior
 
   // Create the tree
   vtkNew<vtkKdTreePointLocator> kdtree;
@@ -125,13 +131,10 @@ double TimeKDTree(vtkPolyData* polydata, int maxLevel, int numberOfTrials)
   kdtree->SetMaxLevel(maxLevel);
   kdtree->BuildLocator();
 
-  //  std::cout << "With maxLevel = " << maxLevel << " there are " <<
-  //  kdtree->GetNumberOfLeafNodes() << " leaf nodes." << std::endl;
-
   for (int i = 0; i < numberOfTrials; i++)
   {
     double p[3];
-    RandomPointInBounds(polydata, p);
+    RandomPointInBounds(polydata, p, rng);
     kdtree->FindClosestPoint(p);
   }
 

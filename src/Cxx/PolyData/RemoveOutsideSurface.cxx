@@ -34,7 +34,6 @@ int main(int argc, char* argv[])
   }
   else
   {
-    vtkMath::RandomSeed(5070); // for testing
     vtkNew<vtkAppendPolyData> appendFilter;
 
     vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
@@ -151,7 +150,7 @@ int main(int argc, char* argv[])
   extractedActor->GetProperty()->SetColor(
       colors->GetColor3d("Peacock").GetData());
   extractedActor->SetMapper(extractedMapper);
-  extractedActor->GetProperty()->SetOpacity(.5);
+  extractedActor->GetProperty()->SetOpacity(0.5);
   extractedActor->GetProperty()->BackfaceCullingOn();
 
   // Create a renderer

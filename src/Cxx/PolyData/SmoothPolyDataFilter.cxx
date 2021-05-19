@@ -1,7 +1,7 @@
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkDelaunay2D.h>
-#include <vtkMath.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPoints.h>
@@ -21,13 +21,17 @@ int main(int, char*[])
   // Create parabola over a grid of points
   vtkNew<vtkPoints> points;
 
+  vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
+  randomSequence->SetSeed(8775070);
+
   int GridSize = 20;
   double z;
   for (int x = -GridSize; x < GridSize; x++)
   {
     for (int y = -GridSize; y < GridSize; y++)
     {
-      z = vtkMath::Random(-1, 1) + 0.05 * x * x + 0.05 * y * y;
+      z = randomSequence->GetRangeValue(-1, 1) + 0.05 * x * x + 0.05 * y * y;
+      randomSequence->Next();
       points->InsertNextPoint(x, y, z);
     }
   }
