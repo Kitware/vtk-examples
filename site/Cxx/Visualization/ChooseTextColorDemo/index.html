@@ -59,6 +59,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCamera.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCoordinate.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkMath.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkMinimalStandardRandomSequence.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
@@ -90,12 +91,20 @@ function registerListener(event, func) {
                             <span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span> <span class=n>darkColor</span> <span class=o>=</span> <span class=s>&quot;black&quot;</span><span class=p>);</span>
 
 <span class=hll><span class=kt>void</span> <span class=nf>ViewportBorder</span><span class=p>(</span><span class=n>vtkRenderer</span><span class=o>*</span> <span class=n>renderer</span><span class=p>,</span> <span class=kt>double</span><span class=o>*</span> <span class=n>color</span><span class=p>,</span> <span class=kt>bool</span> <span class=n>last</span> <span class=o>=</span> <span class=nb>false</span><span class=p>);</span>
-</span><span class=p>}</span> <span class=c1>// namespace</span>
+</span>
+<span class=kt>void</span> <span class=nf>RandomHSV</span><span class=p>(</span><span class=kt>double</span> <span class=n>hsv</span><span class=p>[</span><span class=mi>3</span><span class=p>],</span> <span class=kt>double</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>min_r</span><span class=p>,</span> <span class=kt>double</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>max_r</span><span class=p>,</span>
+<span class=hll>               <span class=n>vtkMinimalStandardRandomSequence</span><span class=o>*</span> <span class=n>rng</span><span class=p>);</span>
+</span>
+<span class=p>}</span> <span class=c1>// namespace</span>
 
 <span class=kt>int</span> <span class=n>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span> <span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
-<span class=hll>  <span class=n>vtkMath</span><span class=o>::</span><span class=n>RandomSeed</span><span class=p>(</span><span class=mi>4355412</span><span class=p>);</span> <span class=c1>// for test result consistency</span>
-</span>
+  <span class=c1>// For testing</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMinimalStandardRandomSequence</span><span class=o>&gt;</span> <span class=n>rng</span><span class=p>;</span>
+</span>  <span class=n>rng</span><span class=o>-&gt;</span><span class=n>SetSeed</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
+  <span class=c1>// rng-&gt;SetSeed(0);</span>
+  <span class=c1>// rng-&gt;SetSeed(4355412);</span>
+
   <span class=kt>double</span> <span class=n>threshold</span> <span class=o>=</span> <span class=mf>.5</span><span class=p>;</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>lightColor</span> <span class=o>=</span> <span class=s>&quot;white&quot;</span><span class=p>;</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>darkColor</span> <span class=o>=</span> <span class=s>&quot;black&quot;</span><span class=p>;</span>
@@ -119,6 +128,8 @@ function registerListener(event, func) {
 </span><span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;&gt;</span> <span class=n>renderers</span><span class=p>;</span>
 </span>  <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>xGridDimensions</span> <span class=o>=</span> <span class=mi>10</span><span class=p>;</span>
   <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>yGridDimensions</span> <span class=o>=</span> <span class=mi>10</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>min_r</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>max_r</span> <span class=o>=</span> <span class=mf>1.0</span><span class=p>;</span>
   <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>xGridDimensions</span> <span class=o>*</span> <span class=n>yGridDimensions</span><span class=p>);</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
   <span class=p>{</span>
     <span class=c1>// Create textActors</span>
@@ -133,12 +144,9 @@ function registerListener(event, func) {
     <span class=c1>// Setup renderer</span>
 <span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span><span class=p>;</span>
 </span>    <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>textActor</span><span class=p>);</span>
-    <span class=p>;</span>
     <span class=kt>double</span> <span class=n>hsv</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
-<span class=hll>    <span class=n>hsv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>vtkMath</span><span class=o>::</span><span class=n>Random</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
-</span><span class=hll>    <span class=n>hsv</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>vtkMath</span><span class=o>::</span><span class=n>Random</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
-</span><span class=hll>    <span class=n>hsv</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>=</span> <span class=n>vtkMath</span><span class=o>::</span><span class=n>Random</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
-</span>    <span class=kt>double</span> <span class=n>rgb</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
+    <span class=n>RandomHSV</span><span class=p>(</span><span class=n>hsv</span><span class=p>,</span> <span class=n>min_r</span><span class=p>,</span> <span class=n>max_r</span><span class=p>,</span> <span class=n>rng</span><span class=p>);</span>
+    <span class=kt>double</span> <span class=n>rgb</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
 <span class=hll>    <span class=n>vtkMath</span><span class=o>::</span><span class=n>HSVToRGB</span><span class=p>(</span><span class=n>hsv</span><span class=p>,</span> <span class=n>rgb</span><span class=p>);</span>
 </span>    <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>rgb</span><span class=p>);</span>
     <span class=c1>// Compute a good color for text on the renderer background</span>
@@ -267,6 +275,17 @@ function registerListener(event, func) {
     <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=n>darkColor</span><span class=p>.</span><span class=n>c_str</span><span class=p>(),</span> <span class=n>rgbOut</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>rgbOut</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>rgbOut</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
   <span class=p>}</span>
 <span class=p>}</span>
+
+<span class=kt>void</span> <span class=nf>RandomHSV</span><span class=p>(</span><span class=kt>double</span> <span class=n>hsv</span><span class=p>[</span><span class=mi>3</span><span class=p>],</span> <span class=kt>double</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>min_r</span><span class=p>,</span> <span class=kt>double</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>max_r</span><span class=p>,</span>
+<span class=hll>               <span class=n>vtkMinimalStandardRandomSequence</span><span class=o>*</span> <span class=n>rng</span><span class=p>)</span>
+</span><span class=p>{</span>
+  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>3</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>hsv</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>rng</span><span class=o>-&gt;</span><span class=n>GetRangeValue</span><span class=p>(</span><span class=n>min_r</span><span class=p>,</span> <span class=n>max_r</span><span class=p>);</span>
+    <span class=n>rng</span><span class=o>-&gt;</span><span class=n>Next</span><span class=p>();</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+
 <span class=p>}</span> <span class=c1>// namespace</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.3</span> <span class=s>FATAL_ERROR</span><span class=p>)</span>
 

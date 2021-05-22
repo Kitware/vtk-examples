@@ -91,8 +91,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
   <span class=k>else</span>
   <span class=p>{</span>
-<span class=hll>    <span class=n>vtkMath</span><span class=o>::</span><span class=n>RandomSeed</span><span class=p>(</span><span class=mi>5070</span><span class=p>);</span> <span class=c1>// for testing</span>
-</span><span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkAppendPolyData</span><span class=o>&gt;</span> <span class=n>appendFilter</span><span class=p>;</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkAppendPolyData</span><span class=o>&gt;</span> <span class=n>appendFilter</span><span class=p>;</span>
 </span>
 <span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMinimalStandardRandomSequence</span><span class=o>&gt;</span> <span class=n>randomSequence</span><span class=p>;</span>
 </span>    <span class=n>randomSequence</span><span class=o>-&gt;</span><span class=n>SetSeed</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
@@ -208,7 +207,7 @@ function registerListener(event, func) {
 </span>  <span class=n>extractedActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
       <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Peacock&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
   <span class=n>extractedActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>extractedMapper</span><span class=p>);</span>
-  <span class=n>extractedActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.5</span><span class=p>);</span>
+  <span class=n>extractedActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.5</span><span class=p>);</span>
   <span class=n>extractedActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>BackfaceCullingOn</span><span class=p>();</span>
 
   <span class=c1>// Create a renderer</span>
