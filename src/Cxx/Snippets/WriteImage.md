@@ -136,3 +136,12 @@ void WriteImage(std::string const& fileName, vtkRenderWindow* renWin, bool rgba)
   WriteImage(f, renWin, false);
   
 ```
+
+### Note
+
+You may need to your edit your `CMakeLists.txt` adding this to the `find_package(VTK COMPONENTS` statement:
+
+```text
+  IOImage
+  RenderingCore
+```

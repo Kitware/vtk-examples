@@ -1,19 +1,21 @@
-#include <time.h>
-#include <vtkMath.h>
+#include <vtkBoxMuellerRandomSequence.h>
+#include <vtkNew.h>
 
 int main(int, char*[])
 {
   // The number of random numbers we wish to produce
   unsigned int numRand = 3;
 
-  // without this line, the random numbers will be the same every iteration
-  vtkMath::RandomSeed(time(NULL));
+  vtkNew<vtkBoxMuellerRandomSequence> randomSequence;
 
   // Generate numRand random numbers from a Gaussian distribution with mean 0.0
   // and standard deviation 2.0
+  auto mean = 0.0;
+  auto standardDeviation = 2.0;
   for (unsigned int i = 0; i < numRand; i++)
   {
-    double a = vtkMath::Gaussian(0.0, 2.0);
+    auto a = randomSequence->GetScaledValue(mean, standardDeviation);
+    randomSequence->Next();
     std::cout << a << std::endl;
   }
 

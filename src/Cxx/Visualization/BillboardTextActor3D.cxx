@@ -1,7 +1,8 @@
 #include <vtkActor.h>
 #include <vtkBillboardTextActor3D.h>
 #include <vtkCallbackCommand.h>
-#include <vtkMath.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -9,12 +10,8 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkNew.h>
 #include <vtkSphereSource.h>
 #include <vtkTextProperty.h>
-#include <vtkNamedColors.h>
-#include <vtkNew.h>
-#include <vtkProperty.h>
 
 #include <sstream>
 
@@ -22,8 +19,7 @@ namespace {
 void ActorCallback(vtkObject* caller, long unsigned int vtkNotUsed(eventId),
                    void* clientData, void* vtkNotUsed(callData))
 {
-  auto textActor =
-      static_cast<vtkBillboardTextActor3D*>(clientData);
+  auto textActor = static_cast<vtkBillboardTextActor3D*>(clientData);
   auto actor = static_cast<vtkActor*>(caller);
   std::ostringstream label;
   label << std::setprecision(3) << actor->GetPosition()[0] << ", "
@@ -32,14 +28,20 @@ void ActorCallback(vtkObject* caller, long unsigned int vtkNotUsed(eventId),
   textActor->SetPosition(actor->GetPosition());
   textActor->SetInput(label.str().c_str());
 }
-}
+
+void RandomPosition(double p[3], double const& min_r, double const& max_r,
+                    vtkMinimalStandardRandomSequence* rng);
+
+} // namespace
 
 int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
   // For testing
-  vtkMath::RandomSeed(8775070);
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
+  // rng->SetSeed(8775070);
+  rng->SetSeed(5127);
 
   // Create a sphere
   vtkNew<vtkSphereSource> sphereSource;
@@ -67,6 +69,9 @@ int main(int, char*[])
   // Create an interactor
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
+
+  auto min_r = -10.0;
+  auto max_r = 10.0;
 
   for (int i = 0; i < 10; ++i)
   {
@@ -96,12 +101,26 @@ int main(int, char*[])
     actorCallback->SetCallback(ActorCallback);
     actorCallback->SetClientData(textActor);
     actor->AddObserver(vtkCommand::ModifiedEvent, actorCallback);
-    actor->SetPosition(vtkMath::Random(-10.0, 10.0),
-                       vtkMath::Random(-10.0, 10.0),
-                       vtkMath::Random(-10.0, 10.0));
+    double position[3];
+    RandomPosition(position, min_r, max_r, rng);
+    actor->SetPosition(position);
   }
   renderWindow->Render();
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
 }
+
+namespace {
+
+void RandomPosition(double p[3], double const& min_r, double const& max_r,
+                    vtkMinimalStandardRandomSequence* rng)
+{
+  for (auto i = 0; i < 3; ++i)
+  {
+    p[i] = rng->GetRangeValue(min_r, max_r);
+    rng->Next();
+  }
+}
+
+} // namespace

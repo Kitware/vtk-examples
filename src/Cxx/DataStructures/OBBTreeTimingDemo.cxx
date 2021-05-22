@@ -6,6 +6,7 @@
 #include <vtkFloatArray.h>
 #include <vtkIdList.h>
 #include <vtkMath.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkOBBTree.h>
@@ -24,11 +25,14 @@
 #include <vector>
 
 namespace {
-void RandomPointInBounds(vtkPolyData* polydata, double p[3]);
-void RandomDirection(double v[3]);
-void RandomLineThroughVolume(vtkPolyData* polydata, double p1[3], double p2[3]);
+void RandomPointInBounds(vtkPolyData* polydata, double p[3],
+                         vtkMinimalStandardRandomSequence* rng);
+void RandomDirection(double v[3], vtkMinimalStandardRandomSequence* rng);
+void RandomLineThroughVolume(vtkPolyData* polydata, double p1[3], double p2[3],
+                             vtkMinimalStandardRandomSequence* rng);
 
-double TimeOBBTree(vtkPolyData* polydata, int maxPoints, int numberOfTrials);
+double TimeOBBTree(vtkPolyData* polydata, int maxPoints, int numberOfTrials,
+                   vtkMinimalStandardRandomSequence* rng);
 
 } // namespace
 
@@ -41,12 +45,16 @@ int main(int, char*[])
   reader->SetPhiResolution(30);
   reader->Update();
 
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
+  rng->SetSeed(8775070);
+  // rng->SetSeed(0);
+
   std::cout << "Timing OBBTree..." << std::endl;
   std::vector<std::pair<int, double>> results;
   int numberOfTrials = 100;
   for (int i = 1; i < 20; i++)
   {
-    double t = TimeOBBTree(reader->GetOutput(), i, numberOfTrials);
+    double t = TimeOBBTree(reader->GetOutput(), i, numberOfTrials, rng);
     std::pair<int, double> result(i, t);
     results.push_back(result);
   }
@@ -102,27 +110,25 @@ int main(int, char*[])
 
 namespace {
 
-void RandomPointInBounds(vtkPolyData* polydata, double p[3])
+void RandomPointInBounds(vtkPolyData* polydata, double p[3],
+                         vtkMinimalStandardRandomSequence* rng)
 {
   double bounds[6];
   polydata->GetBounds(bounds);
 
-  double x = bounds[0] + (bounds[1] - bounds[0]) * vtkMath::Random(0.0, 1.0);
-  double y = bounds[2] + (bounds[3] - bounds[2]) * vtkMath::Random(0.0, 1.0);
-  double z = bounds[4] + (bounds[5] - bounds[4]) * vtkMath::Random(0.0, 1.0);
-
-  p[0] = x;
-  p[1] = y;
-  p[2] = z;
+  for (auto i = 0; i < 3; ++i)
+  {
+    p[i] = bounds[i * 2] +
+        (bounds[i * 2 + 1] - bounds[i * 2]) * rng->GetRangeValue(0.0, 1.0);
+    rng->Next();
+  }
 }
 
-double TimeOBBTree(vtkPolyData* polydata, int maxLevel, int numberOfTrials)
+double TimeOBBTree(vtkPolyData* polydata, int maxLevel, int numberOfTrials,
+                   vtkMinimalStandardRandomSequence* rng)
 {
   vtkNew<vtkTimerLog> timer;
   timer->StartTimer();
-
-  // this should be changed to time(NULL) to get random behavior
-  vtkMath::RandomSeed(0);
 
   // Create the tree
   vtkNew<vtkOBBTree> obbTree;
@@ -135,7 +141,7 @@ double TimeOBBTree(vtkPolyData* polydata, int maxLevel, int numberOfTrials)
   {
     double p1[3];
     double p2[3];
-    RandomLineThroughVolume(polydata, p1, p2);
+    RandomLineThroughVolume(polydata, p1, p2, rng);
 
     double t;
     double x[3];
@@ -151,16 +157,17 @@ double TimeOBBTree(vtkPolyData* polydata, int maxLevel, int numberOfTrials)
   return timer->GetElapsedTime();
 }
 
-void RandomLineThroughVolume(vtkPolyData* polydata, double p1[3], double p2[3])
+void RandomLineThroughVolume(vtkPolyData* polydata, double p1[3], double p2[3],
+                             vtkMinimalStandardRandomSequence* rng)
 {
   double bounds[6];
   polydata->GetBounds(bounds);
 
   double p[3];
-  RandomPointInBounds(polydata, p);
+  RandomPointInBounds(polydata, p, rng);
 
   double v[3];
-  RandomDirection(v);
+  RandomDirection(v, rng);
 
   double lineP1[3];
   double lineP2[3];
@@ -177,11 +184,13 @@ void RandomLineThroughVolume(vtkPolyData* polydata, double p1[3], double p2[3])
                             plane2);
 }
 
-void RandomDirection(double v[3])
+void RandomDirection(double v[3], vtkMinimalStandardRandomSequence* rng)
 {
-  v[0] = vtkMath::Random(0.0, 1.0);
-  v[1] = vtkMath::Random(0.0, 1.0);
-  v[2] = vtkMath::Random(0.0, 1.0);
+  for (auto i = 0; i < 3; ++i)
+  {
+    v[i] = rng->GetRangeValue(0.0, 1.0);
+    rng->Next();
+  }
   vtkMath::Normalize(v);
 }
 

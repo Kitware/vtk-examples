@@ -2,7 +2,7 @@
 #include <vtkCellData.h>
 #include <vtkDoubleArray.h>
 #include <vtkFloatArray.h>
-#include <vtkMath.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
@@ -39,9 +39,14 @@ int main(int argc, char* argv[])
   distances->SetNumberOfComponents(1);
   distances->SetName("Distances");
 
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
+  rng->SetSeed(8775070);
+  // rng->SetSeed(0);
+
   for (vtkIdType i = 0; i < idNumPointsInFile; i++)
   {
-    distances->InsertNextValue(vtkMath::Random(0.0, 1.0));
+    distances->InsertNextValue(rng->GetRangeValue(0.0, 1.0));
+    rng->Next();
   }
 
   polydata->GetPointData()->AddArray(distances);

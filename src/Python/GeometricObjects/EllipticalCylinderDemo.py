@@ -49,9 +49,8 @@ def main():
     startPoint[0] = centerX
     startPoint[1] = centerY
     startPoint[2] = 0.0
-    endPoint[0] = startPoint[0] + extrude.GetVector()[0]
-    endPoint[1] = startPoint[1] + extrude.GetVector()[1]
-    endPoint[2] = startPoint[2] + extrude.GetVector()[2]
+    for i in range(0, 3):
+        endPoint[i] = startPoint[i] + extrude.GetVector()[i]
 
     # Compute a basis
     normalizedX = [0.0] * 3
@@ -63,11 +62,15 @@ def main():
     length = vtk.vtkMath.Norm(normalizedX)
     vtk.vtkMath.Normalize(normalizedX)
 
+    rng = vtk.vtkMinimalStandardRandomSequence()
+    rng.SetSeed(8775070)
+    max_r = 10.0
+
     # The Z axis is an arbitrary vector cross X
     arbitrary = [0.0] * 3
-    arbitrary[0] = vtk.vtkMath.Random(-10, 10)
-    arbitrary[1] = vtk.vtkMath.Random(-10, 10)
-    arbitrary[2] = vtk.vtkMath.Random(-10, 10)
+    for i in range(0, 3):
+        arbitrary[i] = rng.GetRangeValue(-max_r, max_r)
+        rng.Next()
     vtk.vtkMath.Cross(normalizedX, arbitrary, normalizedZ)
     vtk.vtkMath.Normalize(normalizedZ)
 

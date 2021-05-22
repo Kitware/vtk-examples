@@ -1,18 +1,15 @@
 #include <vtkActor.h>
+#include <vtkCellData.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
+#include <vtkPlaneSource.h>
+#include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkNew.h>
-#include <vtkCellData.h>
-#include <vtkMinimalStandardRandomSequence.h>
-#include <vtkPlaneSource.h>
-#include <vtkPolyData.h>
 #include <vtkUnsignedCharArray.h>
-
-#include <vtkNamedColors.h>
 
 int main(int, char*[])
 {
@@ -26,21 +23,22 @@ int main(int, char*[])
   aPlane->Update();
 
   // Create cell data
-  vtkMath::RandomSeed(8775070); // for reproducibility
   vtkNew<vtkUnsignedCharArray> cellData;
   cellData->SetNumberOfComponents(3);
   cellData->SetNumberOfTuples(aPlane->GetOutput()->GetNumberOfCells());
+
   vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
   randomSequence->SetSeed(8775070);
+  auto min_r = 64.0;
+  auto max_r = 255.0;
   for (int i = 0; i < aPlane->GetOutput()->GetNumberOfCells(); i++)
   {
-    float rgb[3];
-    rgb[0] = randomSequence->GetRangeValue(64, 255);
-    randomSequence->Next();
-    rgb[1] = randomSequence->GetRangeValue(64, 255);
-    randomSequence->Next();
-    rgb[2] = randomSequence->GetRangeValue(64, 255);
-    randomSequence->Next();
+    double rgb[3];
+    for (auto j = 0; j < 3; ++j)
+    {
+      rgb[j] = randomSequence->GetRangeValue(min_r, max_r);
+      randomSequence->Next();
+    }
     cellData->InsertTuple(i, rgb);
   }
 

@@ -1,5 +1,5 @@
-#include <vtkMath.h>
 #include <vtkMergePoints.h>
+#include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNew.h>
 #include <vtkPointSource.h>
 #include <vtkPoints.h>
@@ -48,17 +48,21 @@ int main(int, char*[])
     std::cout << "Id:: " << id << std::endl;
   }
 
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
+  rng->SetSeed(8775070);
+  // rng->SetSeed(0);
+
   // These points are probably outside the original set of points
   std::cout << "Insert some new points" << std::endl;
   double outsideSet[3];
+  auto radius = pointsSource->GetRadius();
   for (unsigned int i = 0; i < 10; i++)
   {
-    outsideSet[0] =
-        vtkMath::Random(-pointsSource->GetRadius(), pointsSource->GetRadius());
-    outsideSet[1] =
-        vtkMath::Random(-pointsSource->GetRadius(), pointsSource->GetRadius());
-    outsideSet[2] =
-        vtkMath::Random(-pointsSource->GetRadius(), pointsSource->GetRadius());
+    for (auto j = 0; j < 3; ++j)
+    {
+      outsideSet[j] = rng->GetRangeValue(-radius, radius);
+      rng->Next();
+    }
 
     inserted = mergePoints->InsertUniquePoint(outsideSet, id);
     std::cout << "\tPoint: " << outsideSet[0] << ", " << outsideSet[1] << ", "

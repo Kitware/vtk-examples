@@ -1,0 +1,6 @@
+list(APPEND CTEST_CUSTOM_TESTS_IGNORE
+  "DataStructures-KDTreeTimingDemo"
+  "DataStructures-ModifiedBSPTreeTimingDemo"
+  "DataStructures-OBBTreeTimingDemo"
+  "DataStructures-OctreeTimingDemo"
+  )
