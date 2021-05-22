@@ -1,5 +1,3 @@
 ### Description
 
-The timing graph will show a plot similar to this:
-
-<img style="float:middle" src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/SupplementaryData/Cxx/DataStructures/KDTreeTimingDemo.png">
+Your timing graph will be different when compared to the above illustration.
