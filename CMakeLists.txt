@@ -137,3 +137,12 @@ if (NOT data STREQUAL "GitLfsInstalled")
 else ()
      message(STATUS "VTKWikiExamples: git lfs is installed.")
 endif()
+
+message(STATUS "")
+message(STATUS "Some tests will be excluded, see:")
+message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}/CMake/CTestCustom.cmake.in")
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/CMake/CTestCustom.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake"
+  @ONLY)
+message(STATUS "")

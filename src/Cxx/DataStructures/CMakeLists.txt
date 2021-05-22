@@ -54,15 +54,18 @@ endforeach()
 
 if (BUILD_TESTING)
   # Testing
+  # Note, the following examples are excluded:
+  # KDTreeTimingDemo
+  # ModifiedBSPTreeTimingDemo
+  # OBBTreeTimingDemo
+  # OctreeTimingDemo
+  # See: ../../CMake/CTestCustom.cmake.in
+
   set(KIT DataStructures)
   set(NEEDS_ARGS
     DataStructureComparison
     KDTreeFindPointsWithinRadiusDemo
-    KDTreeTimingDemo
-    ModifiedBSPTreeTimingDemo
-    OBBTreeTimingDemo
     OctreeFindPointsWithinRadiusDemo
-    OctreeTimingDemo
     OctreeVisualize
     PointLocatorFindPointsWithinRadiusDemo
     StaticLocatorFindPointsWithinRadiusDemo
@@ -93,17 +96,6 @@ if (BUILD_TESTING)
 
   add_test(${KIT}-StaticLocatorFindPointsWithinRadiusDemo ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestStaticLocatorFindPointsWithinRadiusDemo ${DATA}/dragon.ply 10)
-
-  # These tests will generate different output each time they run.
-  # To avoid regression failures, set the error tolerance to a large number.
-  add_test(${KIT}-KDTreeTimingDemo ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestKDTreeTimingDemo -E 999999)
-  add_test(${KIT}-ModifiedBSPTreeTimingDemo ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestModifiedBSPTreeTimingDemo -E 999999)
-  add_test(${KIT}-OBBTreeTimingDemo ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestOBBTreeTimingDemo -E 999999)
-  add_test(${KIT}-OctreeTimingDemo ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestOctreeTimingDemo -E 999999)
 
   add_test(${KIT}-OctreeVisualize ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestOctreeVisualize -E 40)
