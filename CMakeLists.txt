@@ -139,10 +139,13 @@ else ()
 endif()
 
 message(STATUS "")
-message(STATUS "Some tests will be excluded, see:")
-message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}/CMake/CTestCustom.cmake.in")
+message(STATUS "Some tests will be excluded.")
+include (${PROJECT_SOURCE_DIR}/src/ExcludedTests/ExcludedTests.cmake)
+if(WIN32)
+  include (${PROJECT_SOURCE_DIR}/src/ExcludedTests/ExcludedTestsWindows.cmake)
+endif()
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/CMake/CTestCustom.cmake.in"
+  "${PROJECT_SOURCE_DIR}/CMake/CTestCustom.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake"
   @ONLY)
 message(STATUS "")
