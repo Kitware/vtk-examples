@@ -6,3 +6,10 @@ list(APPEND TESTS_TO_IGNORE
   "DataStructures-OBBTreeTimingDemo"
   "DataStructures-OctreeTimingDemo"
   )
+
+# This is dependent upon the screen resolution.
+# If you want to test it, set:
+# renderWindow->SetFullScreen(false);
+list(APPEND TESTS_TO_IGNORE
+  "Utilities-FullScreen"
+  )

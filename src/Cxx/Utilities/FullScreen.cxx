@@ -36,7 +36,7 @@ int main(int, char*[])
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Set to true to get full screen mode
-  renderWindow->SetFullScreen(false);
+  renderWindow->SetFullScreen(true);
   renderWindow->Render();
 
   renderWindowInteractor->Start();
