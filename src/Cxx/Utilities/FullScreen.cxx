@@ -9,6 +9,9 @@
 #include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 
+#define USE_SCREEN_SIZE
+// #undef USE_SCREEN_SIZE
+
 int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
@@ -25,7 +28,6 @@ int main(int, char*[])
 
   vtkNew<vtkRenderer> renderer;
   vtkNew<vtkRenderWindow> renderWindow;
-  // You won't see the window name when full screen is on!
   renderWindow->SetWindowName("FullScreen");
 
   renderWindow->AddRenderer(renderer);
@@ -35,10 +37,18 @@ int main(int, char*[])
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  // Set to true to get full screen mode
-  renderWindow->SetFullScreen(false);
+  // We have two different approaches.
+#ifdef USE_SCREEN_SIZE
+  // This allows you to resize the window and shows the window name.
   renderWindow->Render();
+  renderWindow->SetSize(renderWindow->GetScreenSize());
+#else
+  // Set to true to get full screen mode.
+  // This uses the whole screen for the image.
+  renderWindow->SetFullScreen(true);
+#endif
 
+  renderWindowInteractor->Initialize();
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
