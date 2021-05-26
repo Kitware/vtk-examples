@@ -66,6 +66,9 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSphereSource.h&gt;</span><span class=cp></span>
 </span>
+<span class=cp>#define USE_SCREEN_SIZE</span>
+<span class=c1>// #undef USE_SCREEN_SIZE</span>
+
 <span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
@@ -82,8 +85,7 @@ function registerListener(event, func) {
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
-</span>  <span class=c1>// You won&#39;t see the window name when full screen is on!</span>
-  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;FullScreen&quot;</span><span class=p>);</span>
+</span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;FullScreen&quot;</span><span class=p>);</span>
 
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
@@ -92,10 +94,18 @@ function registerListener(event, func) {
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=c1>// Set to true to get full screen mode</span>
-  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetFullScreen</span><span class=p>(</span><span class=nb>false</span><span class=p>);</span>
+  <span class=c1>// We have two different approaches.</span>
+<span class=cp>#ifdef USE_SCREEN_SIZE</span>
+  <span class=c1>// This allows you to resize the window and shows the window name.</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>GetScreenSize</span><span class=p>());</span>
+<span class=cp>#else</span>
+  <span class=c1>// Set to true to get full screen mode.</span>
+  <span class=c1>// This uses the whole screen for the image.</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetFullScreen</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span>
+<span class=cp>#endif</span>
 
+  <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
 
   <span class=k>return</span> <span class=n>EXIT_SUCCESS</span><span class=p>;</span>
