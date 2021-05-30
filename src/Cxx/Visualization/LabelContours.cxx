@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
     pointThreshold = 0;
   }
 
-  // Connect the segments of the conours into polylines
+  // Connect the segments of the contours into polylines
   vtkNew<vtkStripper> contourStripper;
   contourStripper->SetInputConnection(contours->GetOutputPort());
   contourStripper->Update();
