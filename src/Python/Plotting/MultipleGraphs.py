@@ -7,7 +7,6 @@ def main():
     colors = vtk.vtkNamedColors()
 
     renwin = vtk.vtkRenderWindow()
-    renwin.SetSize(640, 480)
     renwin.SetWindowName('MultipleGraphs')
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renwin)
@@ -15,9 +14,9 @@ def main():
     # Setup the viewports
     grid_dimensions_x = 2
     grid_dimensions_y = 1
-    rendere_sz_x = 320
+    renderer_sz_x = 320
     renderer_sz_y = 240
-    renwin.SetSize(rendere_sz_x * grid_dimensions_x, renderer_sz_y * grid_dimensions_y)
+    renwin.SetSize(renderer_sz_x * grid_dimensions_x, renderer_sz_y * grid_dimensions_y)
 
     viewports = list()
     for row in range(0, grid_dimensions_y):
@@ -41,6 +40,7 @@ def main():
     right_renderer.SetViewport(viewports[1])
     renwin.AddRenderer(right_renderer)
 
+    # Create the charts.
     left_chart_scene = vtk.vtkContextScene()
     left_chart_actor = vtk.vtkContextActor()
     left_chart_actor.SetScene(left_chart_scene)
@@ -48,12 +48,12 @@ def main():
     left_chart_scene.SetRenderer(left_renderer)
 
     left_chart = vtk.vtkChartXY()
-    xAxis = left_chart.GetAxis(vtk.vtkAxis.BOTTOM)
-    xAxis.GetGridPen().SetColor(colors.GetColor4ub("LightGrey"))
-    xAxis.SetTitle('x')
-    yAxis = left_chart.GetAxis(vtk.vtkAxis.LEFT)
-    yAxis.GetGridPen().SetColor(colors.GetColor4ub("LightGrey"))
-    yAxis.SetTitle('cos(x)')
+    x_axis = left_chart.GetAxis(vtk.vtkAxis.BOTTOM)
+    x_axis.GetGridPen().SetColor(colors.GetColor4ub("LightGrey"))
+    x_axis.SetTitle('x')
+    y_axis = left_chart.GetAxis(vtk.vtkAxis.LEFT)
+    y_axis.GetGridPen().SetColor(colors.GetColor4ub("LightGrey"))
+    y_axis.SetTitle('cos(x)')
     left_chart.GetBackgroundBrush().SetColorF(*colors.GetColor4d('MistyRose'))
     left_chart.GetBackgroundBrush().SetOpacityF(0.4)
     left_chart.SetTitle('Cosine')
@@ -64,38 +64,36 @@ def main():
     right_chart_actor.SetScene(right_chart_scene)
     right_renderer.AddActor(right_chart_actor)
     right_chart = vtk.vtkChartXY()
-    xAxis = right_chart.GetAxis(vtk.vtkAxis.BOTTOM)
-    xAxis.GetGridPen().SetColor(colors.GetColor4ub("LightCyan"))
-    xAxis.SetTitle('x')
-    yAxis = right_chart.GetAxis(vtk.vtkAxis.LEFT)
-    yAxis.GetGridPen().SetColor(colors.GetColor4ub("LightCyan"))
-    yAxis.SetTitle('sin(x)')
+    x_axis = right_chart.GetAxis(vtk.vtkAxis.BOTTOM)
+    x_axis.GetGridPen().SetColor(colors.GetColor4ub("LightCyan"))
+    x_axis.SetTitle('x')
+    y_axis = right_chart.GetAxis(vtk.vtkAxis.LEFT)
+    y_axis.GetGridPen().SetColor(colors.GetColor4ub("LightCyan"))
+    y_axis.SetTitle('sin(x)')
     right_chart.GetBackgroundBrush().SetColorF(*colors.GetColor4d('Thistle'))
     right_chart.GetBackgroundBrush().SetOpacityF(0.4)
     right_chart.SetTitle('Sine')
     right_chart_scene.AddItem(right_chart)
 
-    # Create the data
+    # Create the data.
     table = vtk.vtkTable()
+    array_x = vtk.vtkFloatArray()
+    array_x.SetName('X Axis')
+    table.AddColumn(array_x)
 
-    arrX = vtk.vtkFloatArray()
-    arrX.SetName('X Axis')
+    array_cos = vtk.vtkFloatArray()
+    array_cos.SetName('Cosine')
+    table.AddColumn(array_cos)
 
-    arrC = vtk.vtkFloatArray()
-    arrC.SetName('Cosine')
+    array_sin = vtk.vtkFloatArray()
+    array_sin.SetName('Sine')
+    table.AddColumn(array_sin)
 
-    arrS = vtk.vtkFloatArray()
-    arrS.SetName('Sine')
-
-    table.AddColumn(arrC)
-    table.AddColumn(arrS)
-    table.AddColumn(arrX)
-
-    numPoints = 40
-
-    inc = 7.5 / (numPoints - 1)
-    table.SetNumberOfRows(numPoints)
-    for i in range(numPoints):
+    # Fill in the table with some example values.
+    num_points = 40
+    inc = 7.5 / (num_points - 1)
+    table.SetNumberOfRows(num_points)
+    for i in range(num_points):
         table.SetValue(i, 0, i * inc)
         table.SetValue(i, 1, math.cos(i * inc))
         table.SetValue(i, 2, math.sin(i * inc))
@@ -112,15 +110,7 @@ def main():
     points.SetWidth(1.0)
     points.SetMarkerStyle(vtk.vtkPlotPoints.PLUS)
 
-    renwin.SetMultiSamples(0)
     renwin.Render()
-    # print(f"Left point1:  {left_chart.GetPoint1()}") # Equals chart_left.GetAxis(1).GetPoint1() instead of (10,10)?
-    # print(f"Left point1:  {left_chart.GetAxis(1).GetPoint1()}")
-    # print(f"Left point2:  {left_chart.GetPoint2()}")  # Equals chart_left.GetAxis(1).GetPoint1() instead of (10,10)?
-    # print(f"Left point1:  {left_chart.GetAxis(2).GetPoint1()}")
-    # print(f"Left point1:  {left_chart.GetAxis(1).GetPoint2()}")
-    # print(f"Right point1: {right_chart.GetPoint1()}")  # Equals chart_right.GetAxis(1).GetPoint1() instead of (330,10)?
-    # print(f"Right point2: {right_chart.GetPoint2()}")  # Equals chart_right.GetAxis(1).GetPoint1() instead of (330,10)?
     iren.Initialize()
     iren.Start()
 
