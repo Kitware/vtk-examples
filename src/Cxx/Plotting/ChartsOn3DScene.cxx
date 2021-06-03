@@ -64,7 +64,7 @@ int main(int, char*[])
   renderer->AddActor(chartActor);
   chartScene->SetRenderer(renderer);
 
-  // Create a table with some points in it...
+  // Create a table with some points in it.
   vtkNew<vtkTable> table;
 
   vtkNew<vtkFloatArray> arrX;
@@ -85,8 +85,7 @@ int main(int, char*[])
 
   // Test charting with a few more points...
   int numPoints = 69;
-  float inc = 7.5 / (numPoints - 1);
-  table->SetNumberOfRows(numPoints);
+  float inc = 7.5 / (numPoints - 1.0);
   table->SetNumberOfRows(numPoints);
   for (int i = 0; i < numPoints; ++i)
   {

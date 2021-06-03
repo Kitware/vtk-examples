@@ -16,7 +16,7 @@ int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
-  // Create a table with some points in it
+  // Create a table with some points in it.
   vtkNew<vtkTable> table;
 
   vtkNew<vtkFloatArray> arrX;
@@ -31,7 +31,7 @@ int main(int, char*[])
   arrS->SetName("Sine");
   table->AddColumn(arrS);
 
-  // Fill in the table with some example values
+  // Fill in the table with some example values.
   int numPoints = 69;
   float inc = 7.5 / (numPoints - 1);
   table->SetNumberOfRows(numPoints);
@@ -47,7 +47,7 @@ int main(int, char*[])
   view->GetRenderWindow()->SetWindowName("LinePlot");
   view->GetRenderer()->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  // Add multiple line plots, setting the colors etc
+  // Add multiple line plots, setting the colors etc.
   vtkNew<vtkChartXY> chart;
   view->GetScene()->AddItem(chart);
   vtkPlot* line = chart->AddPlot(vtkChart::LINE);
