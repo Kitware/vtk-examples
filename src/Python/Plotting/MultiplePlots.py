@@ -7,7 +7,7 @@ def main():
     colors = vtk.vtkNamedColors()
 
     renwin = vtk.vtkRenderWindow()
-    renwin.SetWindowName('MultipleGraphs')
+    renwin.SetWindowName('MultiplePlots')
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renwin)
 
@@ -97,7 +97,7 @@ def main():
 
     # Fill in the table with some example values.
     num_points = 40
-    inc = 7.5 / (num_points - 1)
+    inc = 7.5 / (num_points - 1.0)
     table.SetNumberOfRows(num_points)
     for i in range(num_points):
         table.SetValue(i, 0, i * inc)

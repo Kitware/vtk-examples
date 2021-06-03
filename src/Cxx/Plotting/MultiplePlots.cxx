@@ -24,7 +24,7 @@ int main(int, char*[])
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkRenderWindow> renWin;
-  renWin->SetWindowName("MultipleGraphs");
+  renWin->SetWindowName("MultiplePlots");
   vtkNew<vtkRenderWindowInteractor> iRen;
   iRen->SetRenderWindow(renWin);
 
@@ -42,7 +42,7 @@ int main(int, char*[])
   {
     for (auto col = 0; col < gridDimensionsX; ++col)
     {
-      // index = row * grid_dimensions_x + col
+      // index = row * gridDimensionsX + col
 
       // (xmin, ymin, xmax, ymax)
       viewPorts.push_back(std::array<double, 4>{

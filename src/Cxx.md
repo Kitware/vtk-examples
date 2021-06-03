@@ -1351,7 +1351,8 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [Histogram2D](/Cxx/Plotting/Histogram2D) | 2D Histogram of a vtkImageData.
 [HistogramBarChart](/Cxx/Plotting/HistogramBarChart) | Histogram using bar chart.
 [LinePlot](/Cxx/Plotting/LinePlot) | Line plot.
-[LinePlot3D](/Cxx/Plotting/PlotLine3D) | Line plot of 3d data..
+[LinePlot3D](/Cxx/Plotting/PlotLine3D) | Line plot of 3d data.
+[MultiplePlots](/Cxx/Plotting/MultiplePlots) | Display multiple plots by using viewports in a single render window.
 [ParallelCoordinates](/Cxx/Plotting/ParallelCoordinates) | Parallel coordinates.
 [PieChart](/Cxx/Plotting/PieChart) | Pie chart.
 [PieChartActor](/Cxx/Plotting/PieChartActor) | Pie chart.

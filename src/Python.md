@@ -655,9 +655,10 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 
 | Example Name | Description | Image |
 | -------------- | ------------- | ------- |
-[ScatterPlot](/Python/Plotting/ScatterPlot) |
-[SpiderPlot](/Python/Plotting/SpiderPlot) |
-[SurfacePlot](/Python/Plotting/SurfacePlot) | Surface plot
+[MultiplePlots](/Python/Plotting/MultiplePlots) | Display multiple plots by using viewports in a single render window.
+[ScatterPlot](/Python/Plotting/ScatterPlot) | Scatter plot.
+[SpiderPlot](/Python/Plotting/SpiderPlot) | Spider plot.
+[SurfacePlot](/Python/Plotting/SurfacePlot) | Surface plot.
 
 ## Animation
 
