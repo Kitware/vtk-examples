@@ -9,7 +9,6 @@
 #include <vtkPen.h>
 #include <vtkPlot.h>
 #include <vtkPlotPoints.h>
-//#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>

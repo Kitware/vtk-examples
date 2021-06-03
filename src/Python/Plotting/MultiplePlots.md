@@ -1,6 +1,6 @@
 ### Description
 
-Display Display multiple plots by using viewports in a single render window. 
+Display multiple plots by using viewports in a single render window.
 
 In this case, we display two graphs side-by-side.
 
