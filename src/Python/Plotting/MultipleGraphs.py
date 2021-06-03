@@ -29,7 +29,7 @@ def main():
                               float(col + 1) / grid_dimensions_x,
                               float(grid_dimensions_y - row) / grid_dimensions_y])
 
-    #
+    # Link the renderers to the viewports.
     left_renderer = vtk.vtkRenderer()
     left_renderer.SetBackground(colors.GetColor3d('AliceBlue'))
     left_renderer.SetViewport(viewports[0])
@@ -41,13 +41,16 @@ def main():
     renwin.AddRenderer(right_renderer)
 
     # Create the charts.
+    left_chart = vtk.vtkChartXY()
     left_chart_scene = vtk.vtkContextScene()
     left_chart_actor = vtk.vtkContextActor()
+
+    left_chart_scene.AddItem(left_chart)
     left_chart_actor.SetScene(left_chart_scene)
+
     left_renderer.AddActor(left_chart_actor)
     left_chart_scene.SetRenderer(left_renderer)
 
-    left_chart = vtk.vtkChartXY()
     x_axis = left_chart.GetAxis(vtk.vtkAxis.BOTTOM)
     x_axis.GetGridPen().SetColor(colors.GetColor4ub("LightGrey"))
     x_axis.SetTitle('x')
@@ -57,13 +60,17 @@ def main():
     left_chart.GetBackgroundBrush().SetColorF(*colors.GetColor4d('MistyRose'))
     left_chart.GetBackgroundBrush().SetOpacityF(0.4)
     left_chart.SetTitle('Cosine')
-    left_chart_scene.AddItem(left_chart)
 
+    right_chart = vtk.vtkChartXY()
     right_chart_scene = vtk.vtkContextScene()
     right_chart_actor = vtk.vtkContextActor()
+
+    right_chart_scene.AddItem(right_chart)
     right_chart_actor.SetScene(right_chart_scene)
+
     right_renderer.AddActor(right_chart_actor)
-    right_chart = vtk.vtkChartXY()
+    right_chart_scene.SetRenderer(right_renderer)
+
     x_axis = right_chart.GetAxis(vtk.vtkAxis.BOTTOM)
     x_axis.GetGridPen().SetColor(colors.GetColor4ub("LightCyan"))
     x_axis.SetTitle('x')
@@ -73,7 +80,6 @@ def main():
     right_chart.GetBackgroundBrush().SetColorF(*colors.GetColor4d('Thistle'))
     right_chart.GetBackgroundBrush().SetOpacityF(0.4)
     right_chart.SetTitle('Sine')
-    right_chart_scene.AddItem(right_chart)
 
     # Create the data.
     table = vtk.vtkTable()
@@ -100,13 +106,13 @@ def main():
 
     points = left_chart.AddPlot(vtk.vtkChart.POINTS)
     points.SetInputData(table, 0, 1)
-    points.SetColor(0, 0, 0, 255)
+    points.SetColor(*colors.GetColor4ub('Black'))
     points.SetWidth(1.0)
     points.SetMarkerStyle(vtk.vtkPlotPoints.CROSS)
 
     points = right_chart.AddPlot(vtk.vtkChart.POINTS)
     points.SetInputData(table, 0, 2)
-    points.SetColor(0, 0, 0, 255)
+    points.SetColor(*colors.GetColor4ub('Black'))
     points.SetWidth(1.0)
     points.SetMarkerStyle(vtk.vtkPlotPoints.PLUS)
 
