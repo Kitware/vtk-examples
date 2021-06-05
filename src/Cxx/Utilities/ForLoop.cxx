@@ -1,10 +1,8 @@
-#include <vtkAOSDataArrayTemplate.h>
 #include <vtkArrayDispatch.h>
 #include <vtkDataArrayAccessor.h>
 #include <vtkDataArrayRange.h>
-#include <vtkDoubleArray.h>
-//#include <vtkGenericDataArray.h>
 #include <vtkNew.h>
+#include <vtkTypeFloat64Array.h>
 
 #include <array>
 #include <iomanip>
@@ -70,7 +68,7 @@ struct Mag3Worker1
   }
 };
 
-struct Mag3Worker2
+struct Mag3Worker2a
 {
   template <typename VecArray, typename MagArray>
   void operator()(VecArray* vecs, MagArray* mags)
@@ -98,6 +96,48 @@ struct Mag3Worker2
   }
 };
 
+/**
+ * This is similar to MagWorker2a but demonstrates the use of ReferenceType and
+ * ConstReferenceType.
+ *
+ * Also elements in the range are accessed using operator[]
+ * like an stl indexed container.
+ *
+ */
+struct Mag3Worker2b
+{
+  template <typename VecArray, typename MagArray>
+  void operator()(VecArray* vecs, MagArray* mags)
+  {
+    // Create range objects:
+    const auto vecRange = vtk::DataArrayTupleRange<3>(vecs);
+    auto magRange = vtk::DataArrayValueRange<1>(mags);
+
+    using VecConstTupleRef =
+        typename decltype(vecRange)::ConstTupleReferenceType;
+    using VecConstCompRef =
+        typename decltype(vecRange)::ConstComponentReferenceType;
+    using MagRef = typename decltype(magRange)::ReferenceType;
+    using MagType = typename decltype(magRange)::ValueType;
+
+    for (vtkIdType id = 0; id < vecRange.size(); ++id)
+    {
+      MagRef magRef = magRange[id] = 0;
+      VecConstTupleRef vecTuple = vecRange[id];
+      for (VecConstCompRef& comp : vecTuple)
+      {
+        auto c = static_cast<MagType>(comp);
+        magRef += c * c;
+      }
+      magRef = std::sqrt(magRef);
+    }
+  }
+};
+
+/**
+ * Here we create a functor for use by std::transform.
+ *
+ */
 struct Mag3Worker3
 {
   template <typename VecArray, typename MagArray>
@@ -108,11 +148,11 @@ struct Mag3Worker3
     const auto vecRange = vtk::DataArrayTupleRange<3>(vecs);
     auto magRange = vtk::DataArrayValueRange<1>(mags);
 
-    using VecTuple = typename decltype(vecRange)::const_reference;
+    using VecTuple = typename decltype(vecRange)::ConstTupleReferenceType;
     using MagType = typename decltype(magRange)::ValueType;
 
     // Per-tuple magnitude functor for std::transform:
-    auto computeMag = [](const VecTuple& tuple) -> MagType {
+    auto computeMag = [](VecTuple& tuple) -> MagType {
       MagType mag = 0;
       for (const auto& comp : tuple)
       {
@@ -129,7 +169,9 @@ struct Mag3Worker3
 
 void mag3Dispatch1(vtkDataArray* vecs, vtkDataArray* mags);
 
-void mag3Dispatch2(vtkDataArray* vecs, vtkDataArray* mags);
+void mag3Dispatch2a(vtkDataArray* vecs, vtkDataArray* mags);
+
+void mag3Dispatch2b(vtkDataArray* vecs, vtkDataArray* mags);
 
 void mag3Dispatch3(vtkDataArray* vecs, vtkDataArray* mags);
 
@@ -137,11 +179,16 @@ bool verifyResults(vtkDataArray* magnitudes,
                    std::vector<std::string> const& expectedMagnitudes);
 
 } // namespace
+
 int main(int argc, char* argv[])
 {
-  // init data
-  vtkNew<vtkDoubleArray> darray;
-  vtkNew<vtkDoubleArray> results;
+  // The data and the result arrays.
+  // Of course you can use:
+  // vtkNew<vtkDoubleArray> darray;
+  // vtkNew<vtkDoubleArray> results;
+  // However, lets use the VTK templated data types:
+  vtkNew<vtkTypeFloat64Array> darray;
+  vtkNew<vtkTypeFloat64Array> results;
 
   // The number of components must be set in advance.
   darray->SetNumberOfComponents(3);
@@ -217,15 +264,17 @@ int main(int argc, char* argv[])
   }
 
   // Instantiate with explicit type.
-  mag3Explicit<vtkAOSDataArrayTemplate<double>,
-               vtkAOSDataArrayTemplate<double>>(darray, results);
+  mag3Explicit<vtkTypeFloat64Array, vtkTypeFloat64Array>(darray, results);
   checkResult();
 
   // Worker and dispatcher, there are three different types of worker.
   mag3Dispatch1(darray, results);
   checkResult();
 
-  mag3Dispatch2(darray, results);
+  mag3Dispatch2a(darray, results);
+  checkResult();
+
+  mag3Dispatch2b(darray, results);
   checkResult();
 
   mag3Dispatch3(darray, results);
@@ -351,10 +400,10 @@ void mag3Dispatch1(vtkDataArray* vecs, vtkDataArray* mags)
   }
 }
 
-void mag3Dispatch2(vtkDataArray* vecs, vtkDataArray* mags)
+void mag3Dispatch2a(vtkDataArray* vecs, vtkDataArray* mags)
 {
-  std::cout << "--- Testing mag3Dispatch2" << std::endl;
-  Mag3Worker2 worker2;
+  std::cout << "--- Testing mag3Dispatch2a" << std::endl;
+  Mag3Worker2a worker2a;
 
   // Create a dispatcher. We want to generate fast-paths for when
   // vecs and mags both use doubles or floats, but fallback to a
@@ -364,10 +413,30 @@ void mag3Dispatch2(vtkDataArray* vecs, vtkDataArray* mags)
                                              vtkArrayDispatch::Reals>;
 
   // Generate optimized workers when mags/vecs are both float|double
-  if (!Dispatcher::Execute(vecs, mags, worker2))
+  if (!Dispatcher::Execute(vecs, mags, worker2a))
   {
     // Otherwise fallback to using the vtkDataArray API.
-    worker2(vecs, mags);
+    worker2a(vecs, mags);
+  }
+}
+
+void mag3Dispatch2b(vtkDataArray* vecs, vtkDataArray* mags)
+{
+  std::cout << "--- Testing mag3Dispatch2b" << std::endl;
+  Mag3Worker2b worker2b;
+
+  // Create a dispatcher. We want to generate fast-paths for when
+  // vecs and mags both use doubles or floats, but fallback to a
+  // slow path for any other situation.
+  using Dispatcher =
+      vtkArrayDispatch::Dispatch2ByValueType<vtkArrayDispatch::Reals,
+                                             vtkArrayDispatch::Reals>;
+
+  // Generate optimized workers when mags/vecs are both float|double
+  if (!Dispatcher::Execute(vecs, mags, worker2b))
+  {
+    // Otherwise fallback to using the vtkDataArray API.
+    worker2b(vecs, mags);
   }
 }
 
