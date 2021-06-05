@@ -4,6 +4,7 @@
 #include <vtkNew.h>
 #include <vtkTypeFloat64Array.h>
 
+#include <algorithm>
 #include <array>
 #include <iomanip>
 #include <iostream>
@@ -124,7 +125,7 @@ struct Mag3Worker2b
     {
       MagRef magRef = magRange[id] = 0;
       VecConstTupleRef vecTuple = vecRange[id];
-      for (VecConstCompRef& comp : vecTuple)
+      for (VecConstCompRef&& comp : vecTuple)
       {
         auto c = static_cast<MagType>(comp);
         magRef += c * c;
@@ -148,11 +149,11 @@ struct Mag3Worker3
     const auto vecRange = vtk::DataArrayTupleRange<3>(vecs);
     auto magRange = vtk::DataArrayValueRange<1>(mags);
 
-    using VecTuple = typename decltype(vecRange)::ConstTupleReferenceType;
+    using ConstVecTuple = typename decltype(vecRange)::ConstTupleReferenceType;
     using MagType = typename decltype(magRange)::ValueType;
 
     // Per-tuple magnitude functor for std::transform:
-    auto computeMag = [](VecTuple& tuple) -> MagType {
+    auto computeMag = [](ConstVecTuple&& tuple) -> MagType {
       MagType mag = 0;
       for (const auto& comp : tuple)
       {
