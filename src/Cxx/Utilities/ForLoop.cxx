@@ -296,7 +296,7 @@ namespace {
 
 void naivemag3(vtkDataArray* vectors, vtkDataArray* magnitudes)
 {
-  std::cout << "--- Testing naivemag3 naive" << std::endl;
+  std::cout << "--- Testing naivemag3" << std::endl;
   const vtkIdType numTuples = vectors->GetNumberOfTuples();
   std::array<double, 3> tuple;
   for (vtkIdType t = 0; t < numTuples; ++t)

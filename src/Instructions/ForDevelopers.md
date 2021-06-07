@@ -188,6 +188,8 @@ See here for [how to generate a merge request](https://docs.gitlab.com/ee/user/p
 
 If your example could benefit from an extended description, you can create a file **MyNewExample.md**. Store the file alongside your source code. Use [markdown](https://guides.github.com/features/mastering-markdown/) to format the description. Also look at existing files for layout ideas.
 
+In the markdown file any references to the vtk classes will be automatically converted to HTML links in the final documentation. This will cause problems when a VTK class name is used in a reference or when there are non-existent links in the documentation. To circumvent this just surround the vtk object with two question marks, for example: `?vtkTypeFloat32Array?`.
+
 #### Add arguments to the test
 
 If your example requires arguments, you will need to edit the *CMakeLists.txt* in the topic directory.
