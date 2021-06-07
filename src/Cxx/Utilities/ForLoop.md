@@ -24,8 +24,8 @@ These are especially useful when dealing with data from other sources.
 - Whenever you hold a vtkDataArray on which you know the underlying type (ghost arrays for instance vtkUnsignedCharArray, or global ids vtkIdTypeArray), you should use `?vtkArrayDownCast?`.
 - When you finally hold a typed instance of vtkDataArray:
 
-  - If the array only holds values (tuples with one component), use `GetValue`.
-  - If the array holds tuples, you can prevent a copy for each access with AOS arrays by using `vtk::ArrayTupleRange`. In this case, the pointer of the corresponding tuple in the array is directly used for access.
+    - If the array only holds values (tuples with one component), use `GetValue`.
+    - If the array holds tuples, you can prevent a copy for each access with AOS arrays by using `vtk::ArrayTupleRange`. In this case, the pointer of the corresponding tuple in the array is directly used for access.
 
 If you want to use STL algorithms, such as `std::transform` or `std::sort`, convert your downcasted array into a range and proceed.
 
