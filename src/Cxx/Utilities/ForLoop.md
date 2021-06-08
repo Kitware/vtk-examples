@@ -1,20 +1,31 @@
 ### Description
 
-Here we demonstrate the various ways of doing a for loop.
+As a result of historical and evolving C++ standards there are are multiple ways of doing the same thing with ?vtkDataArrays? in the VTK C++ code base. This example demonstrates various ways of iterating through a vtkDataArray and operating on the resultant tuple to create a new result. The result of the operation is inserted into a new vtkDataArray.
 
-As a result of historical and evolving C++ standards there are are multiple ways of doing the same thing with ?vtkDataArrays? in the VTK C++ code base.
+In this example, all the functions operate on a `?vtkTypeFloat64Array?` of vectors to compute a `?vtkTypeFloat64Array?` of magnitudes. We also test to ensure the correct magnitudes are generated.
 
-The **recommended** way now is to use the **dispatch mechanism** as shown in the example. Four functions called `mag3Displatch*` are provided in the example to illustrate various ways of doing this.
+This example demonstrates:
 
-In the example, all the functions operate on a `?vtkTypeFloat64Array?` of vectors to compute a `?vtkTypeFloat64Array?` of magnitudes. We also test to ensure the correct magnitudes are generated.
+- The classic for loop e.g. `for (auto c = 0; c < 3; ++c)` and `static_cast`.
 
-Another thing, not so well known, is that VTK provides a series of templated data types:
+    - `naivemag3`, demonstrates the classic for loop using a counter.
+    - `mag3GetPointer`, uses raw pointers, it becomes a little complicated calling `mag3Trampoline` which then calls `mag3Helper`. Lots of `static_cast` has to be used.
+    - `mag3Explicit`, instantiate a templated function with explicit types. It is similar to `naivemag3`.
+
+- A dispatcher/worker paradigm. This is the **recommended approach**. In the dispatcher function, we instantiate a worker and use a dispatcher to generate optimised workers when the arrays are both float or double and fall back to just using the worker for other situations. The work is then done in the worker struct.
+
+    - `mag3Dispatch1` instantiates the struct `Mag3Worker1` where we use accessors, APIType and assume the tuple sizes.
+   - `mag3Dispatch2a` instantiates the struct `Mag3Worker2a` where range objects are used.
+   - `mag3Dispatch2b` instantiates the struct `Mag3Worker2b` where range objects are used. Here ReferenceType and ConstReferenceType are used. Also elements in the range are accessed using **operator[]** like a STL indexed container.
+   - `mag3Dispatch3` instantiates the struct `Mag3Worker3` where range objects are used. Here ValueType and ConstReferenceType are used. We also create a lambda to calculate the magnitude for each tuple. This is then used in `std::transform` to generate the magnitudes.
+
+Refer to [Further reading](#further-reading) for more information.
+
+**Note** that VTK provides a (not so well known) series of templated data types that are especially useful when dealing with data from other sources:
 
 - `?vtkTypeFloat32Array?`, `?vtkTypeFloat64Array?`,
 - `?vtkTypeInt8Array?`, `?vtkTypeInt64Array?`,
 - `?vtkTypeUInt8Array?`, `?vtkTypeUInt64Array?`
-
-These are especially useful when dealing with data from other sources.
 
 #### Best Practice
 
@@ -30,8 +41,6 @@ These are especially useful when dealing with data from other sources.
 If you want to use STL algorithms, such as `std::transform` or `std::sort`, convert your downcasted array into a range and proceed.
 
 If you know at compile time how many components are in your array, you should template `vtk::ArrayTupleRange` and `vtk::ArrayValueRange` with the number of components (3 for 3D points, for instance).
-
-The functions in the example illustrate various aspects of these guidelines.
 
 It is left as an exercise for the reader to identify best practices in the example.
 

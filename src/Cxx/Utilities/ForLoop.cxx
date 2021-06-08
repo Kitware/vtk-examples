@@ -145,7 +145,6 @@ struct Mag3Worker3
   void operator()(VecArray* vecs, MagArray* mags)
   {
     // Create range objects:
-    // should we do things like this?
     const auto vecRange = vtk::DataArrayTupleRange<3>(vecs);
     auto magRange = vtk::DataArrayValueRange<1>(mags);
 
