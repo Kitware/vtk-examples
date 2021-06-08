@@ -75,7 +75,7 @@ struct Mag3Worker2a
   void operator()(VecArray* vecs, MagArray* mags)
   {
     // Create range objects:
-    // refer to this https://vtk.org/doc/nightly/html/classvtkArrayDispatch.html
+    // Refer to this: https://vtk.org/doc/nightly/html/classvtkArrayDispatch.html
     const auto vecRange = vtk::DataArrayTupleRange<3>(vecs);
     auto magRange = vtk::DataArrayValueRange<1>(mags);
 
@@ -268,7 +268,7 @@ int main(int argc, char* argv[])
   mag3Explicit<vtkTypeFloat64Array, vtkTypeFloat64Array>(darray, results);
   checkResult();
 
-  // Worker and dispatcher, there are three different types of worker.
+  // Worker and dispatcher, there are four different types of worker.
   mag3Dispatch1(darray, results);
   checkResult();
 
@@ -309,7 +309,7 @@ void naivemag3(vtkDataArray* vectors, vtkDataArray* magnitudes)
       mag += comp * comp;
     }
     mag = std::sqrt(mag);
-    // assume space is allocated
+    // Assume that space is allocated.
     magnitudes->SetTuple(t, &mag);
   }
 }

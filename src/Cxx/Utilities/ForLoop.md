@@ -12,12 +12,12 @@ This example demonstrates:
     - `mag3GetPointer`, uses raw pointers, it becomes a little complicated calling `mag3Trampoline` which then calls `mag3Helper`. Lots of `static_cast` has to be used.
     - `mag3Explicit`, instantiate a templated function with explicit types. It is similar to `naivemag3`.
 
-- A dispatcher/worker paradigm. This is the **recommended approach**. In the dispatcher function, we instantiate a worker and use a dispatcher to generate optimised workers when the arrays are both float or double and fall back to just using the worker for other situations. The work is then done in the worker struct.
+- A dispatcher/worker paradigm. This is the **recommended approach**. In the dispatcher function, we instantiate a worker. Then we use vtkArrayDispatch to generate optimised workers when the arrays are both float or double and fall back to just using the worker for other situations.
 
     - `mag3Dispatch1` instantiates the struct `Mag3Worker1` where we use accessors, APIType and assume the tuple sizes.
-   - `mag3Dispatch2a` instantiates the struct `Mag3Worker2a` where range objects are used.
-   - `mag3Dispatch2b` instantiates the struct `Mag3Worker2b` where range objects are used. Here ReferenceType and ConstReferenceType are used. Also elements in the range are accessed using **operator[]** like a STL indexed container.
-   - `mag3Dispatch3` instantiates the struct `Mag3Worker3` where range objects are used. Here ValueType and ConstReferenceType are used. We also create a lambda to calculate the magnitude for each tuple. This is then used in `std::transform` to generate the magnitudes.
+    - `mag3Dispatch2a` instantiates the struct `Mag3Worker2a` where range objects are used.
+    - `mag3Dispatch2b` instantiates the struct `Mag3Worker2b` where range objects are used. Here ReferenceType and ConstReferenceType are used. Also elements in the range are accessed using **operator[]** like a STL indexed container.
+    - `mag3Dispatch3` instantiates the struct `Mag3Worker3` where range objects are used. Here ValueType and ConstReferenceType are used. We also create a lambda to calculate the magnitude for each tuple. This is then used in `std::transform` to generate the magnitudes.
 
 Refer to [Further reading](#further-reading) for more information.
 
