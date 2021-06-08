@@ -148,11 +148,12 @@ struct Mag3Worker3
     const auto vecRange = vtk::DataArrayTupleRange<3>(vecs);
     auto magRange = vtk::DataArrayValueRange<1>(mags);
 
-    using VecConstTupleRef = typename decltype(vecRange)::ConstTupleReferenceType;
+    using VecConstTupleRef =
+        typename decltype(vecRange)::ConstTupleReferenceType;
     using MagType = typename decltype(magRange)::ValueType;
 
     // Per-tuple magnitude functor for std::transform:
-    auto computeMag = [](VecConstTupleRef&& tuple) -> MagType {
+    auto computeMag = [](VecConstTupleRef tuple) -> MagType {
       MagType mag = 0;
       for (const auto& comp : tuple)
       {
