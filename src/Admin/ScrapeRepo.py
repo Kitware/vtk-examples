@@ -447,11 +447,18 @@ def add_vtk_nightly_doc_link(s, stats):
     :param stats: Statistics
     :return:
     """
-    reg = re.compile(r'[^\./\[s\-](vtk[^ &][0-9a-zA-Z]*)')
-    if reg.findall(s):
+    reg1 = re.compile(r'[^\./\[s\-?](vtk[^ &:\.][0-9a-zA-Z]+)')
+    # ? has been used to indicate that no link is to be built.
+    reg2 = re.compile(r'\?(vtk[0-9a-zA-Z]+)\?')
+    if reg1.findall(s):
         stats['doxy_count'] += 1
-        return re.sub(r'[^\./\[-](vtk[0-9a-zA-Z]*)',
-                      r' [\1](' + r'https://www.vtk.org/doc/nightly/html/class' + r'\1.html#details)', s)
+        s1 = re.sub(r'[^\./\[s\-?](vtk[^ &:\.][0-9a-zA-Z]+)',
+                    r' [\1](' + r'https://www.vtk.org/doc/nightly/html/class' + r'\1.html#details)', s)
+        if reg2.findall(s1):
+            s2 = re.sub(r'\?(vtk[0-9a-zA-Z]+)\?', r'\1', s1)
+            return s2
+        else:
+            return s1
     return s
 
 
@@ -475,7 +482,7 @@ def add_thumbnails_and_links(web_repo_url, root_path, repo_dir, doc_dir, baselin
     :param root_path: Path to the top-level folder e.g. VTKExamples.
     :param repo_dir: Usually 'src'.
     :param doc_dir: Usually 'docs'.
-    :param baseline_dir: The baseline directories relative to root_path/repo_dir.
+    :param baseline_path: The baseline directories relative to root_path/repo_dir.
     :param test_images: The cache containing the rest images.
     :param from_file: The file to copy/edit
     :param to_file: The save file name.
@@ -487,7 +494,7 @@ def add_thumbnails_and_links(web_repo_url, root_path, repo_dir, doc_dir, baselin
     # baseline_path = make_path(root_path, repo_dir, baseline_dir)
     # We need to treat [Lang]HowTo.md files, e.g. CxxHowTo.md, in a special way
     has_how_to = False
-    if ('HowTo' in from_file):
+    if 'HowTo' in from_file:
         lang = re.split('HowTo', from_file)[0]
         has_how_to = True
     with open(from_path, 'r') as md_file:
@@ -773,7 +780,7 @@ def make_instruction_pages(web_repo_url, web_site_url, site_repo_url, root_path,
     corresponding keys in the instructions.
 
     :param web_repo_url: The web repository URL.
-    :param web_site_repo_url: The web site URL.
+    :param web_site_url: The web site URL.
     :param site_repo_url: The URL corresponding to the source files repository.
     :param root_path: Path to the top-level folder e.g. VTKExamples.
     :param repo_dir: Usually 'src'.
@@ -813,10 +820,10 @@ def make_instruction_pages(web_repo_url, web_site_url, site_repo_url, root_path,
             ofh.write(line)
 
 
-def make_tarballs(repo_path, web_repo_dir, example_to_file_names, example_to_CMake, ref_mtime):
+def make_tarballs(web_repo_dir, example_to_file_names, example_to_CMake, ref_mtime):
     """
     Create tarballs for each example.
-    :param repo_path: Repository path.
+    :param web_repo_dir: Repository path.
     :param example_to_file_names: A dictionary to holding the file names for each example.
     :param example_to_CMake: A dictionary to holding the CMakeLists.txt file.
     :param ref_mtime: The reference reference mtime.
@@ -1153,7 +1160,7 @@ def main():
             index_file.write("<br>\n")
 
     # Create tarballs for each example
-    make_tarballs(repo_path, web_repo_dir, example_to_file_names, example_to_CMake, ref_mtime)
+    make_tarballs(web_repo_dir, example_to_file_names, example_to_CMake, ref_mtime)
 
     # Update the test image cache file if necessary
     if stats['test_image_misses'] > 0:

@@ -647,6 +647,7 @@ This section includes vtkUnstructuredGrid.
 [FileOutputWindow](/Cxx/Utilities/FileOutputWindow) | Write errors to a log file  instead of the screen.
 [FilenameFunctions](/Cxx/Utilities/FilenameFunctions) | Do things like get the file extension, strip the file extension, etc.
 [FilterSelfProgress](/Cxx/Developers/FilterSelfProgress) | Monitor a filters progress.
+[ForLoop](/Cxx/Utilities/ForLoop) | Demonstrating various ways of implementing a for loop in VTK.
 [FrameRate](/Cxx/Utilities/FrameRate) | Get the frame rate of the rendering.
 [FullScreen](/Cxx/Utilities/FullScreen) | Maximize/full screen a vtkRenderWindow.
 [FunctionParser](/Cxx/Utilities/FunctionParser) | String function parser.
