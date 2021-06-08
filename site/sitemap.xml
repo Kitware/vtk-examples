@@ -2576,6 +2576,10 @@
      <lastmod>2021-06-08</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/Plotting/MultiplePlots/</loc>
+     <lastmod>2021-06-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://kitware.github.io/vtk-examples/site/Cxx/Plotting/ParallelCoordinates/</loc>
      <lastmod>2021-06-08</lastmod>
      <changefreq>daily</changefreq>
@@ -6489,6 +6493,10 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kitware.github.io/vtk-examples/site/Python/Picking/HighlightWithSilhouette/</loc>
+     <lastmod>2021-06-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Python/Plotting/MultiplePlots/</loc>
      <lastmod>2021-06-08</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
