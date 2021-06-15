@@ -75,7 +75,8 @@ struct Mag3Worker2a
   void operator()(VecArray* vecs, MagArray* mags)
   {
     // Create range objects:
-    // Refer to this: https://vtk.org/doc/nightly/html/classvtkArrayDispatch.html
+    // Refer to this:
+    // https://vtk.org/doc/nightly/html/classvtkArrayDispatch.html
     const auto vecRange = vtk::DataArrayTupleRange<3>(vecs);
     auto magRange = vtk::DataArrayValueRange<1>(mags);
 
@@ -242,27 +243,27 @@ int main(int argc, char* argv[])
     }
   };
 
+  auto resetResults = [&]() {
+    for (vtkIdType i = 0; i < TupleNum; i++)
+    {
+      double v = 0;
+      results->SetTuple(i, &v);
+    }
+  };
+
   // Using naive API.
   naivemag3(darray, results);
   checkResult();
 
   // Reset results to zero.
-  for (vtkIdType i = 0; i < TupleNum; i++)
-  {
-    double v = 0;
-    results->SetTuple(i, &v);
-  }
+  resetResults();
 
   // Using get raw pointer.
   mag3GetPointer(darray, results);
   checkResult();
 
   // Reset results to zero.
-  for (vtkIdType i = 0; i < TupleNum; i++)
-  {
-    double v = 0;
-    results->SetTuple(i, &v);
-  }
+  resetResults();
 
   // Instantiate with explicit type.
   mag3Explicit<vtkTypeFloat64Array, vtkTypeFloat64Array>(darray, results);
