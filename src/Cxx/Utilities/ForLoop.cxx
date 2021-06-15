@@ -75,7 +75,8 @@ struct Mag3Worker2a
   void operator()(VecArray* vecs, MagArray* mags)
   {
     // Create range objects:
-    // Refer to this: https://vtk.org/doc/nightly/html/classvtkArrayDispatch.html
+    // Refer to this:
+    // https://vtk.org/doc/nightly/html/classvtkArrayDispatch.html
     const auto vecRange = vtk::DataArrayTupleRange<3>(vecs);
     auto magRange = vtk::DataArrayValueRange<1>(mags);
 
@@ -200,7 +201,7 @@ int main(int argc, char* argv[])
   darray->SetNumberOfTuples(TupleNum);
   results->SetNumberOfTuples(TupleNum);
 
-  auto printTuple = [](const std::array<double, 3> tuple) {
+  auto printTuple = [](const std::array<vtkTypeFloat64, 3> tuple) {
     std::ostringstream os;
     auto separator = "";
     auto const sep = ", ";
@@ -215,7 +216,7 @@ int main(int argc, char* argv[])
 
   for (vtkIdType i = 0; i < TupleNum; i++)
   {
-    std::array<double, 3> tuple = {{i * 0.1, i * 0.2, i * 0.3}};
+    std::array<vtkTypeFloat64, 3> tuple = {{i * 0.1, i * 0.2, i * 0.3}};
     // std::cout << printTuple(tuple) << std::endl;
 
     // If the number of tuples is not set in advance, we can use InsertTuple.
@@ -242,27 +243,27 @@ int main(int argc, char* argv[])
     }
   };
 
+  auto resetResults = [&]() {
+    for (vtkIdType i = 0; i < TupleNum; i++)
+    {
+      vtkTypeFloat64 v = 0;
+      results->SetTuple(i, &v);
+    }
+  };
+
   // Using naive API.
   naivemag3(darray, results);
   checkResult();
 
   // Reset results to zero.
-  for (vtkIdType i = 0; i < TupleNum; i++)
-  {
-    double v = 0;
-    results->SetTuple(i, &v);
-  }
+  resetResults();
 
   // Using get raw pointer.
   mag3GetPointer(darray, results);
   checkResult();
 
   // Reset results to zero.
-  for (vtkIdType i = 0; i < TupleNum; i++)
-  {
-    double v = 0;
-    results->SetTuple(i, &v);
-  }
+  resetResults();
 
   // Instantiate with explicit type.
   mag3Explicit<vtkTypeFloat64Array, vtkTypeFloat64Array>(darray, results);
@@ -298,12 +299,12 @@ void naivemag3(vtkDataArray* vectors, vtkDataArray* magnitudes)
 {
   std::cout << "--- Testing naivemag3" << std::endl;
   const vtkIdType numTuples = vectors->GetNumberOfTuples();
-  std::array<double, 3> tuple;
+  std::array<vtkTypeFloat64, 3> tuple;
   for (vtkIdType t = 0; t < numTuples; ++t)
   {
     vectors->GetTuple(t, tuple.data());
-    double mag = 0.;
-    for (double comp : tuple)
+    vtkTypeFloat64 mag = 0.;
+    for (vtkTypeFloat64 comp : tuple)
     {
       // std::cout << "comp " << comp << std::endl;
       mag += comp * comp;
