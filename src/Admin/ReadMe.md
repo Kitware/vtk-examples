@@ -8,6 +8,7 @@ Files in this folder generate web pages, provide extra data derived from example
 | `FindMissingExamples.py` | Produce a list of examples that are not mentioned in the src/*.md files. |
 | `FindMissingTestImages.py` | Display examples that are missing test image files. The first part of the script has a function that returns a dictionary that lists examples that do not produce image files. |
 | `getDeletedFile.sh` | Given a file, find that file in a git repository, even if it has been deleted. |
+| `GetExampleNumbers.py` | Get the number of examples by language. |
 | `ScrapeRepo.py` | Create site files from the src repo. |
 | `sitemap_gen.py` | This script crawls a web site from a given starting URL and generates a Sitemap file in the format that is accepted by Google. |
 | `sitemap.xml` | The generated sitemap file from `sitemap_gen.py`. |

@@ -65,7 +65,7 @@ class ElapsedTime:
         self.interval = self.end - self.start
 
 
-class VTKClassesInExamples(object):
+class VTKClassesInExamples:
     """
     Determine what classes are being used or not used in the examples.
     """
