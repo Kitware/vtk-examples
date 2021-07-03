@@ -15,6 +15,14 @@ Textures for the image based lighting and the skymap are supplied from a cubemap
 
 You can select different cubemaps and different surfaces to visualise.
 
+Here are the parameters used to make the example image:
+
+``` text
+<DATA>/skyboxes/skybox2/ Boy
+```
+
+where `<DATA>` is the path to `vtk-examples/Testing/Data`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
+
 For more information, see [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/).
 
 !!! note

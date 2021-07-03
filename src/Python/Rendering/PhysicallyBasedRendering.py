@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import sys
 from pathlib import Path
+from pathlib import PurePath
 
 import vtk
 
@@ -37,26 +37,34 @@ def main():
         print('This path does not exist:', cube_path)
         return
 
+    # A dictionary of the skybox folder name and the skybox files in it.
+    skybox_files = {
+        'skybox0':
+            ['right.jpg', 'left.jpg', 'top.jpg', 'bottom.jpg', 'front.jpg',
+             'back.jpg'],
+        'skybox1':
+            ['skybox-px.jpg', 'skybox-nx.jpg', 'skybox-py.jpg', 'skybox-ny.jpg',
+             'skybox-pz.jpg', 'skybox-nz.jpg'],
+        'skybox2':
+            ['posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg',
+             'negz.jpg']}
+
     # Load the cube map
-    # cubemap = ReadCubeMap(cube_path, '/', '.jpg', 0)
-    cubemap = ReadCubeMap(cube_path, '/', '.jpg', 1)
-    # cubemap = ReadCubeMap(cube_path, '/skybox', '.jpg', 2)
+    cubemap = read_cube_map(cube_path, skybox_files[PurePath(cube_path).name])
 
     # Load the skybox
     # Read it again as there is no deep copy for vtkTexture
-    # skybox = ReadCubeMap(cube_path, '/', '.jpg', 0)
-    skybox = ReadCubeMap(cube_path, '/', '.jpg', 1)
-    # skybox = ReadCubeMap(cube_path, '/skybox', '.jpg', 2)
+    skybox = read_cube_map(cube_path, skybox_files[PurePath(cube_path).name])
     skybox.InterpolateOn()
     skybox.RepeatOff()
     skybox.EdgeClampOn()
 
     # Get the textures
-    material = GetTexture(material_fn)
-    albedo = GetTexture(albedo_fn)
+    material = get_texture(material_fn)
+    albedo = get_texture(albedo_fn)
     albedo.UseSRGBColorSpaceOn()
-    normal = GetTexture(normal_fn)
-    emissive = GetTexture(emissive_fn)
+    normal = get_texture(normal_fn)
+    emissive = get_texture(emissive_fn)
     emissive.UseSRGBColorSpaceOn()
 
     # Get the surface
@@ -65,17 +73,17 @@ def main():
     if surface not in available_surfaces:
         surface = 'boy'
     if surface == 'mobius':
-        source = GetMobius()
+        source = get_mobius()
     elif surface == 'randomhills':
-        source = GetRandomHills()
+        source = get_random_hills()
     elif surface == 'torus':
-        source = GetTorus()
+        source = get_torus()
     elif surface == 'sphere':
-        source = GetSphere()
+        source = get_sphere()
     elif surface == 'cube':
-        source = GetCube()
+        source = get_cube()
     else:
-        source = GetBoy()
+        source = get_boy()
 
     colors = vtk.vtkNamedColors()
 
@@ -86,59 +94,61 @@ def main():
     colors.SetColor('VTKBlueComp', [249, 176, 114, 255])
 
     renderer = vtk.vtkOpenGLRenderer()
-    renderWindow = vtk.vtkRenderWindow()
-    renderWindow.AddRenderer(renderer)
+    render_window = vtk.vtkRenderWindow()
+    render_window.AddRenderer(renderer)
     interactor = vtk.vtkRenderWindowInteractor()
-    interactor.SetRenderWindow(renderWindow)
+    interactor.SetRenderWindow(render_window)
 
     # Lets use a rough metallic surface
-    metallicCoefficient = 1.0
-    roughnessCoefficient = 0.8
+    metallic_coefficient = 1.0
+    roughness_coefficient = 0.8
     # Other parameters
-    occlusionStrength = 10.0
-    normalScale = 10.0
-    emissiveCol = colors.GetColor3d('VTKBlueComp')
-    emissiveFactor = emissiveCol
-    # emissiveFactor = [1.0, 1.0, 1.0]
+    occlusion_strength = 10.0
+    normal_scale = 10.0
+    emissive_col = colors.GetColor3d('VTKBlueComp')
+    emissive_factor = emissive_col
+    # emissive_factor = [1.0, 1.0, 1.0]
 
-    slwP = SliderProperties()
-    slwP.initialValue = metallicCoefficient
-    slwP.title = 'Metallicity'
+    slw_p = SliderProperties()
+    slw_p.initial_value = metallic_coefficient
+    slw_p.title = 'Metallicity'
 
-    sliderWidgetMetallic = MakeSliderWidget(slwP)
-    sliderWidgetMetallic.SetInteractor(interactor)
-    sliderWidgetMetallic.SetAnimationModeToAnimate()
-    sliderWidgetMetallic.EnabledOn()
+    slider_widget_metallic = make_slider_widget(slw_p)
+    slider_widget_metallic.SetInteractor(interactor)
+    slider_widget_metallic.SetAnimationModeToAnimate()
+    slider_widget_metallic.EnabledOn()
 
-    slwP.initialValue = roughnessCoefficient
-    slwP.title = 'Roughness'
-    slwP.p1 = [0.2, 0.9]
-    slwP.p2 = [0.8, 0.9]
+    slw_p.initial_value = roughness_coefficient
+    slw_p.title = 'Roughness'
+    slw_p.p1 = [0.2, 0.9]
+    slw_p.p2 = [0.8, 0.9]
 
-    sliderWidgetRoughness = MakeSliderWidget(slwP)
-    sliderWidgetRoughness.SetInteractor(interactor)
-    sliderWidgetRoughness.SetAnimationModeToAnimate()
-    sliderWidgetRoughness.EnabledOn()
+    slider_widget_roughness = make_slider_widget(slw_p)
+    slider_widget_roughness.SetInteractor(interactor)
+    slider_widget_roughness.SetAnimationModeToAnimate()
+    slider_widget_roughness.EnabledOn()
 
-    slwP.initialValue = occlusionStrength
-    slwP.title = 'Occlusion'
-    slwP.p1 = [0.1, 0.1]
-    slwP.p2 = [0.1, 0.9]
+    slw_p.initial_value = occlusion_strength
+    slw_p.maximum_value = occlusion_strength
+    slw_p.title = 'Occlusion'
+    slw_p.p1 = [0.1, 0.1]
+    slw_p.p2 = [0.1, 0.9]
 
-    sliderWidgetOcclusionStrength = MakeSliderWidget(slwP)
-    sliderWidgetOcclusionStrength.SetInteractor(interactor)
-    sliderWidgetOcclusionStrength.SetAnimationModeToAnimate()
-    sliderWidgetOcclusionStrength.EnabledOn()
+    slider_widget_occlusion_strength = make_slider_widget(slw_p)
+    slider_widget_occlusion_strength.SetInteractor(interactor)
+    slider_widget_occlusion_strength.SetAnimationModeToAnimate()
+    slider_widget_occlusion_strength.EnabledOn()
 
-    slwP.initialValue = normalScale
-    slwP.title = 'Normal'
-    slwP.p1 = [0.85, 0.1]
-    slwP.p2 = [0.85, 0.9]
+    slw_p.initial_value = normal_scale
+    slw_p.maximum_value = normal_scale
+    slw_p.title = 'Normal'
+    slw_p.p1 = [0.85, 0.1]
+    slw_p.p2 = [0.85, 0.9]
 
-    sliderWidgetNormal = MakeSliderWidget(slwP)
-    sliderWidgetNormal.SetInteractor(interactor)
-    sliderWidgetNormal.SetAnimationModeToAnimate()
-    sliderWidgetNormal.EnabledOn()
+    slider_widget_normal = make_slider_widget(slw_p)
+    slider_widget_normal.SetInteractor(interactor)
+    slider_widget_normal.SetAnimationModeToAnimate()
+    slider_widget_normal.EnabledOn()
 
     # Build the pipeline
     mapper = vtk.vtkPolyDataMapper()
@@ -151,20 +161,20 @@ def main():
 
     # configure the basic properties
     actor.GetProperty().SetColor(colors.GetColor3d('White'))
-    actor.GetProperty().SetMetallic(metallicCoefficient)
-    actor.GetProperty().SetRoughness(roughnessCoefficient)
+    actor.GetProperty().SetMetallic(metallic_coefficient)
+    actor.GetProperty().SetRoughness(roughness_coefficient)
 
     # configure textures (needs tcoords on the mesh)
     actor.GetProperty().SetBaseColorTexture(albedo)
     actor.GetProperty().SetORMTexture(material)
-    actor.GetProperty().SetOcclusionStrength(occlusionStrength)
+    actor.GetProperty().SetOcclusionStrength(occlusion_strength)
 
     actor.GetProperty().SetEmissiveTexture(emissive)
-    actor.GetProperty().SetEmissiveFactor(emissiveFactor)
+    actor.GetProperty().SetEmissiveFactor(emissive_factor)
 
     # needs tcoords, normals and tangents on the mesh
     actor.GetProperty().SetNormalTexture(normal)
-    actor.GetProperty().SetNormalScale(normalScale)
+    actor.GetProperty().SetNormalScale(normal_scale)
 
     renderer.UseImageBasedLightingOn()
     if vtk_version_ok(9, 0, 0):
@@ -175,23 +185,23 @@ def main():
     renderer.AddActor(actor)
 
     # Comment out if you don't want a skybox
-    skyboxActor = vtk.vtkSkybox()
-    skyboxActor.SetTexture(skybox)
-    renderer.AddActor(skyboxActor)
+    skybox_actor = vtk.vtkSkybox()
+    skybox_actor.SetTexture(skybox)
+    renderer.AddActor(skybox_actor)
 
     renderer.UseSphericalHarmonicsOff()
 
     # Create the slider callbacks to manipulate metallicity, roughness
     # occlusion strength and normal scaling
-    sliderWidgetMetallic.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMetallic(actor.GetProperty()))
-    sliderWidgetRoughness.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackRoughness(actor.GetProperty()))
-    sliderWidgetOcclusionStrength.AddObserver(vtk.vtkCommand.InteractionEvent,
-                                              SliderCallbackOcclusionStrength(actor.GetProperty()))
-    sliderWidgetNormal.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackNormalScale(actor.GetProperty()))
+    slider_widget_metallic.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMetallic(actor.GetProperty()))
+    slider_widget_roughness.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackRoughness(actor.GetProperty()))
+    slider_widget_occlusion_strength.AddObserver(vtk.vtkCommand.InteractionEvent,
+                                                 SliderCallbackOcclusionStrength(actor.GetProperty()))
+    slider_widget_normal.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackNormalScale(actor.GetProperty()))
 
-    renderWindow.SetSize(640, 480)
-    renderWindow.Render()
-    renderWindow.SetWindowName('PhysicallyBasedRendering')
+    render_window.SetSize(640, 480)
+    render_window.Render()
+    render_window.SetWindowName('PhysicallyBasedRendering')
 
     axes = vtk.vtkAxesActor()
 
@@ -205,9 +215,9 @@ def main():
     widget.SetEnabled(1)
     widget.InteractiveOn()
 
-    interactor.SetRenderWindow(renderWindow)
+    interactor.SetRenderWindow(render_window)
+    interactor.Initialize()
 
-    renderWindow.Render()
     interactor.Start()
 
 
@@ -233,44 +243,31 @@ def vtk_version_ok(major, minor, build):
         return False
 
 
-def ReadCubeMap(folderRoot, fileRoot, ext, key):
+def read_cube_map(folder_root, file_names):
     """
     Read the cube map.
-    :param folderRoot: The folder where the cube maps are stored.
-    :param fileRoot: The root of the individual cube map file names.
-    :param ext: The extension of the cube map files.
-    :param key: The key to data used to build the full file name.
+    :param folder_root: The folder where the cube maps are stored.
+    :param file_names: The names of the cubemap files.
     :return: The cubemap texture.
     """
-    # A map of cube map naming conventions and the corresponding file name
-    # components.
-    fileNames = {
-        0: ['right', 'left', 'top', 'bottom', 'front', 'back'],
-        1: ['posx', 'negx', 'posy', 'negy', 'posz', 'negz'],
-        2: ['-px', '-nx', '-py', '-ny', '-pz', '-nz'],
-        3: ['0', '1', '2', '3', '4', '5']}
-    if key in fileNames:
-        fns = fileNames[key]
-    else:
-        print('ReadCubeMap(): invalid key, unable to continue.')
-        sys.exit()
     texture = vtk.vtkTexture()
     texture.CubeMapOn()
     # Build the file names.
-    for i in range(0, len(fns)):
-        fns[i] = Path(str(folderRoot) + fileRoot + fns[i]).with_suffix(ext)
-        if not fns[i].is_file():
-            print('Nonexistent texture file:', fns[i])
-            return texture
+    fns = list()
+    for fn in file_names:
+        fns.append(folder_root.joinpath(fn))
+        if not fns[-1].is_file():
+            print('Nonexistent texture file:', fns[-1])
+            return None
     i = 0
     for fn in fns:
         # Read the images
-        readerFactory = vtk.vtkImageReader2Factory()
-        imgReader = readerFactory.CreateImageReader2(str(fn))
-        imgReader.SetFileName(str(fn))
+        reader_factory = vtk.vtkImageReader2Factory()
+        img_reader = reader_factory.CreateImageReader2(str(fn))
+        img_reader.SetFileName(str(fn))
 
         flip = vtk.vtkImageFlip()
-        flip.SetInputConnection(imgReader.GetOutputPort())
+        flip.SetInputConnection(img_reader.GetOutputPort())
         flip.SetFilteredAxis(1)  # flip y axis
         texture.SetInputConnection(i, flip.GetOutputPort(0))
         i += 1
@@ -279,7 +276,7 @@ def ReadCubeMap(folderRoot, fileRoot, ext, key):
     return texture
 
 
-def GetTexture(image_path):
+def get_texture(image_path):
     """
     Read an image and convert it to a texture
     :param image_path: The image path.
@@ -291,35 +288,35 @@ def GetTexture(image_path):
         print('Nonexistent texture file:', path)
         return None
     extension = path.suffix.lower()
-    validExtensions = ['.jpg', '.png', '.bmp', '.tiff', '.pnm', '.pgm', '.ppm']
-    if extension not in validExtensions:
+    valid_extensions = ['.jpg', '.png', '.bmp', '.tiff', '.pnm', '.pgm', '.ppm']
+    if extension not in valid_extensions:
         print('Unable to read the texture file (wrong extension):', path)
         return None
     texture = vtk.vtkTexture()
     # Read the images
-    readerFactory = vtk.vtkImageReader2Factory()
-    imgReader = readerFactory.CreateImageReader2(str(path))
-    imgReader.SetFileName(str(path))
+    reader_factory = vtk.vtkImageReader2Factory()
+    img_reader = reader_factory.CreateImageReader2(str(path))
+    img_reader.SetFileName(str(path))
 
-    texture.SetInputConnection(imgReader.GetOutputPort())
+    texture.SetInputConnection(img_reader.GetOutputPort())
     texture.Update()
 
     return texture
 
 
-def GetBoy():
-    uResolution = 51
-    vResolution = 51
+def get_boy():
+    u_resolution = 51
+    v_resolution = 51
     surface = vtk.vtkParametricBoy()
 
     source = vtk.vtkParametricFunctionSource()
-    source.SetUResolution(uResolution)
-    source.SetVResolution(vResolution)
+    source.SetUResolution(u_resolution)
+    source.SetVResolution(v_resolution)
     source.SetParametricFunction(surface)
     source.Update()
 
     # Build the tcoords
-    pd = UVTcoords(uResolution, vResolution, source.GetOutput())
+    pd = uv_tcoords(u_resolution, v_resolution, source.GetOutput())
     # Now the tangents
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputData(pd)
@@ -327,21 +324,21 @@ def GetBoy():
     return tangents.GetOutput()
 
 
-def GetMobius():
-    uResolution = 51
-    vResolution = 51
+def get_mobius():
+    u_resolution = 51
+    v_resolution = 51
     surface = vtk.vtkParametricMobius()
     surface.SetMinimumV(-0.25)
     surface.SetMaximumV(0.25)
 
     source = vtk.vtkParametricFunctionSource()
-    source.SetUResolution(uResolution)
-    source.SetVResolution(vResolution)
+    source.SetUResolution(u_resolution)
+    source.SetVResolution(v_resolution)
     source.SetParametricFunction(surface)
     source.Update()
 
     # Build the tcoords
-    pd = UVTcoords(uResolution, vResolution, source.GetOutput())
+    pd = uv_tcoords(u_resolution, v_resolution, source.GetOutput())
     # Now the tangents
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputData(pd)
@@ -349,17 +346,17 @@ def GetMobius():
 
     transform = vtk.vtkTransform()
     transform.RotateX(90.0)
-    transformFilter = vtk.vtkTransformPolyDataFilter()
-    transformFilter.SetInputConnection(tangents.GetOutputPort())
-    transformFilter.SetTransform(transform)
-    transformFilter.Update()
+    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter.SetInputConnection(tangents.GetOutputPort())
+    transform_filter.SetTransform(transform)
+    transform_filter.Update()
 
-    return transformFilter.GetOutput()
+    return transform_filter.GetOutput()
 
 
-def GetRandomHills():
-    uResolution = 51
-    vResolution = 51
+def get_random_hills():
+    u_resolution = 51
+    v_resolution = 51
     surface = vtk.vtkParametricRandomHills()
     surface.SetRandomSeed(1)
     surface.SetNumberOfHills(30)
@@ -367,13 +364,13 @@ def GetRandomHills():
     # surface.SetHillAmplitude(0)
 
     source = vtk.vtkParametricFunctionSource()
-    source.SetUResolution(uResolution)
-    source.SetVResolution(vResolution)
+    source.SetUResolution(u_resolution)
+    source.SetVResolution(v_resolution)
     source.SetParametricFunction(surface)
     source.Update()
 
     # Build the tcoords
-    pd = UVTcoords(uResolution, vResolution, source.GetOutput())
+    pd = uv_tcoords(u_resolution, v_resolution, source.GetOutput())
     # Now the tangents
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputData(pd)
@@ -382,27 +379,27 @@ def GetRandomHills():
     transform = vtk.vtkTransform()
     transform.RotateZ(180.0)
     transform.RotateX(90.0)
-    transformFilter = vtk.vtkTransformPolyDataFilter()
-    transformFilter.SetInputConnection(tangents.GetOutputPort())
-    transformFilter.SetTransform(transform)
-    transformFilter.Update()
+    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter.SetInputConnection(tangents.GetOutputPort())
+    transform_filter.SetTransform(transform)
+    transform_filter.Update()
 
-    return transformFilter.GetOutput()
+    return transform_filter.GetOutput()
 
 
-def GetTorus():
-    uResolution = 51
-    vResolution = 51
+def get_torus():
+    u_resolution = 51
+    v_resolution = 51
     surface = vtk.vtkParametricTorus()
 
     source = vtk.vtkParametricFunctionSource()
-    source.SetUResolution(uResolution)
-    source.SetVResolution(vResolution)
+    source.SetUResolution(u_resolution)
+    source.SetVResolution(v_resolution)
     source.SetParametricFunction(surface)
     source.Update()
 
     # Build the tcoords
-    pd = UVTcoords(uResolution, vResolution, source.GetOutput())
+    pd = uv_tcoords(u_resolution, v_resolution, source.GetOutput())
     # Now the tangents
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputData(pd)
@@ -410,20 +407,20 @@ def GetTorus():
 
     transform = vtk.vtkTransform()
     transform.RotateX(90.0)
-    transformFilter = vtk.vtkTransformPolyDataFilter()
-    transformFilter.SetInputConnection(tangents.GetOutputPort())
-    transformFilter.SetTransform(transform)
-    transformFilter.Update()
+    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter.SetInputConnection(tangents.GetOutputPort())
+    transform_filter.SetTransform(transform)
+    transform_filter.Update()
 
-    return transformFilter.GetOutput()
+    return transform_filter.GetOutput()
 
 
-def GetSphere():
-    thetaResolution = 32
-    phiResolution = 32
+def get_sphere():
+    theta_resolution = 32
+    phi_resolution = 32
     surface = vtk.vtkTexturedSphereSource()
-    surface.SetThetaResolution(thetaResolution)
-    surface.SetPhiResolution(phiResolution)
+    surface.SetThetaResolution(theta_resolution)
+    surface.SetPhiResolution(phi_resolution)
 
     # Now the tangents
     tangents = vtk.vtkPolyDataTangents()
@@ -432,7 +429,7 @@ def GetSphere():
     return tangents.GetOutput()
 
 
-def GetCube():
+def get_cube():
     surface = vtk.vtkCubeSource()
 
     # Triangulate
@@ -449,43 +446,45 @@ def GetCube():
     return tangents.GetOutput()
 
 
-def UVTcoords(uResolution, vResolution, pd):
+def uv_tcoords(u_resolution, v_resolution, pd):
     """
     Generate u, v texture coordinates on a parametric surface.
-    :param uResolution: u resolution
-    :param vResolution: v resolution
+    :param u_resolution: u resolution
+    :param v_resolution: v resolution
     :param pd: The polydata representing the surface.
     :return: The polydata with the texture coordinates added.
     """
     u0 = 1.0
     v0 = 0.0
-    du = 1.0 / (uResolution - 1)
-    dv = 1.0 / (vResolution - 1)
-    numPts = pd.GetNumberOfPoints()
-    tCoords = vtk.vtkFloatArray()
-    tCoords.SetNumberOfComponents(2)
-    tCoords.SetNumberOfTuples(numPts)
-    tCoords.SetName('Texture Coordinates')
-    ptId = 0
+    du = 1.0 / (u_resolution - 1)
+    dv = 1.0 / (v_resolution - 1)
+    num_pts = pd.GetNumberOfPoints()
+    t_coords = vtk.vtkFloatArray()
+    t_coords.SetNumberOfComponents(2)
+    t_coords.SetNumberOfTuples(num_pts)
+    t_coords.SetName('Texture Coordinates')
+    pt_id = 0
     u = u0
-    for i in range(0, uResolution):
+    for i in range(0, u_resolution):
         v = v0
-        for j in range(0, vResolution):
+        for j in range(0, v_resolution):
             tc = [u, v]
-            tCoords.SetTuple(ptId, tc)
+            t_coords.SetTuple(pt_id, tc)
             v += dv
-            ptId += 1
+            pt_id += 1
         u -= du
-    pd.GetPointData().SetTCoords(tCoords)
+    pd.GetPointData().SetTCoords(t_coords)
     return pd
 
 
-def MakeSliderWidget(properties):
+def make_slider_widget(properties):
+    colors = vtk.vtkNamedColors()
+
     slider = vtk.vtkSliderRepresentation2D()
 
-    slider.SetMinimumValue(properties.minimumValue)
-    slider.SetMaximumValue(properties.maximumValue)
-    slider.SetValue(properties.initialValue)
+    slider.SetMinimumValue(properties.minimum_value)
+    slider.SetMaximumValue(properties.maximum_value)
+    slider.SetValue(properties.initial_value)
     slider.SetTitleText(properties.title)
 
     slider.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
@@ -493,72 +492,90 @@ def MakeSliderWidget(properties):
     slider.GetPoint2Coordinate().SetCoordinateSystemToNormalizedDisplay()
     slider.GetPoint2Coordinate().SetValue(properties.p2[0], properties.p2[1])
 
-    slider.SetTubeWidth(properties.tubeWidth)
-    slider.SetSliderLength(properties.sliderLength)
-    slider.SetTitleHeight(properties.titleHeight)
-    slider.SetLabelHeight(properties.labelHeight)
+    slider.SetTubeWidth(properties.tube_width)
+    slider.SetSliderLength(properties.slider_length)
+    slider.SetTitleHeight(properties.title_height)
+    slider.SetLabelHeight(properties.label_height)
 
-    sliderWidget = vtk.vtkSliderWidget()
-    sliderWidget.SetRepresentation(slider)
+    # Set the color properties
+    # Change the color of the bar.
+    slider.GetTubeProperty().SetColor(colors.GetColor3d(properties.bar_color))
+    # Change the color of the ends of the bar.
+    slider.GetCapProperty().SetColor(colors.GetColor3d(properties.bar_ends_color))
+    # Change the color of the knob that slides.
+    slider.GetSliderProperty().SetColor(colors.GetColor3d(properties.slider_color))
+    # Change the color of the knob when the mouse is held on it.
+    slider.GetSelectedProperty().SetColor(colors.GetColor3d(properties.selected_color))
+    # Change the color of the text displaying the value.
+    slider.GetLabelProperty().SetColor(colors.GetColor3d(properties.value_color))
 
-    return sliderWidget
+    slider_widget = vtk.vtkSliderWidget()
+    slider_widget.SetRepresentation(slider)
+
+    return slider_widget
 
 
 class SliderCallbackMetallic:
-    def __init__(self, actorProperty):
-        self.actorProperty = actorProperty
+    def __init__(self, actor_property):
+        self.actor_property = actor_property
 
     def __call__(self, caller, ev):
-        sliderWidget = caller
-        value = sliderWidget.GetRepresentation().GetValue()
-        self.actorProperty.SetMetallic(value)
+        slider_widget = caller
+        value = slider_widget.GetRepresentation().GetValue()
+        self.actor_property.SetMetallic(value)
 
 
 class SliderCallbackRoughness:
-    def __init__(self, actorProperty):
-        self.actorProperty = actorProperty
+    def __init__(self, actor_property):
+        self.actorProperty = actor_property
 
     def __call__(self, caller, ev):
-        sliderWidget = caller
-        value = sliderWidget.GetRepresentation().GetValue()
+        slider_widget = caller
+        value = slider_widget.GetRepresentation().GetValue()
         self.actorProperty.SetRoughness(value)
 
 
 class SliderCallbackOcclusionStrength:
-    def __init__(self, actorProperty):
-        self.actorProperty = actorProperty
+    def __init__(self, actor_property):
+        self.actorProperty = actor_property
 
     def __call__(self, caller, ev):
-        sliderWidget = caller
-        value = sliderWidget.GetRepresentation().GetValue()
+        slider_widget = caller
+        value = slider_widget.GetRepresentation().GetValue()
         self.actorProperty.SetOcclusionStrength(value)
 
 
 class SliderCallbackNormalScale:
-    def __init__(self, actorProperty):
-        self.actorProperty = actorProperty
+    def __init__(self, actor_property):
+        self.actorProperty = actor_property
 
     def __call__(self, caller, ev):
-        sliderWidget = caller
-        value = sliderWidget.GetRepresentation().GetValue()
+        slider_widget = caller
+        value = slider_widget.GetRepresentation().GetValue()
         self.actorProperty.SetNormalScale(value)
 
 
 class SliderProperties:
-    tubeWidth = 0.008
-    sliderLength = 0.008
-    titleHeight = 0.02
-    labelHeight = 0.02
+    tube_width = 0.008
+    slider_length = 0.008
+    title_height = 0.025
+    label_height = 0.025
 
-    minimumValue = 0.0
-    maximumValue = 1.0
-    initialValue = 1.0
+    minimum_value = 0.0
+    maximum_value = 1.0
+    initial_value = 1.0
 
     p1 = [0.2, 0.1]
     p2 = [0.8, 0.1]
 
     title = None
 
+    title_color = 'MistyRose'
+    value_color = 'Cyan'
+    slider_color = 'Coral'
+    selected_color = 'Lime'
+    bar_color = 'PeachPuff'
+    bar_ends_color = 'Thistle'
 
 if __name__ == '__main__':
     main()

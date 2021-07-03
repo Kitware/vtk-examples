@@ -24,6 +24,7 @@
 #include <vtkPolyDataMapper.h>
 #include <vtkPolyDataTangents.h>
 #include <vtkProperty.h>
+#include <vtkProperty2D.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkSkybox.h>
@@ -31,6 +32,7 @@
 #include <vtkSliderWidget.h>
 #include <vtkSmartPointer.h>
 #include <vtkTIFFReader.h>
+#include <vtkTextProperty.h>
 #include <vtkTexture.h>
 #include <vtkTexturedSphereSource.h>
 #include <vtkTransform.h>
@@ -43,6 +45,8 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <numeric>
+#include <regex>
 #include <sstream>
 #include <string>
 
@@ -98,15 +102,13 @@ vtkSmartPointer<vtkPolyData> UVTcoords(const float& uResolution,
  * Read six images forming a cubemap.
  *
  * @param folderRoot: The folder where the cube maps are stored.
- * @param fileRoot: The root of the individual cube map file names.
- * @param ext: The extension of the cube map files.
- * @param key: The key to data used to build the full file name.
+ * @param fileNames: The names of the cubemap files.
  *
  * @return The cubemap texture.
  */
-vtkSmartPointer<vtkTexture> ReadCubeMap(std::string const& folderRoot,
-                                        std::string const& fileRoot,
-                                        std::string const& ext, int const& key);
+vtkSmartPointer<vtkTexture>
+ReadCubeMap(std::string const& folderRoot,
+            std::vector<std::string> const& fileNames);
 
 /**
  * Read an image and convert it to a texture.
@@ -206,8 +208,8 @@ struct SliderProperties
   // Set up the sliders
   double tubeWidth{0.008};
   double sliderLength{0.008};
-  double titleHeight{0.02};
-  double labelHeight{0.02};
+  double titleHeight{0.025};
+  double labelHeight{0.025};
 
   double minimumValue{0.0};
   double maximumValue{1.0};
@@ -217,6 +219,13 @@ struct SliderProperties
   std::array<double, 2> p2{0.8, 0.1};
 
   std::string title{""};
+
+  std::string titleColor{"MistyRose"};
+  std::string valueColor{"Cyan"};
+  std::string sliderColor{"Coral"};
+  std::string selectedColor{"Lime"};
+  std::string barColor{"PeachPuff"};
+  std::string barEndsColor{"Thistle"};
 };
 
 vtkSmartPointer<vtkSliderWidget>
@@ -240,16 +249,49 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  // Get the cube map
-  // auto cubemap = ReadCubeMap(argv[1], "/", ".jpg", 0);
-  auto cubemap = ReadCubeMap(argv[1], "/", ".jpg", 1);
-  // auto cubemap = ReadCubeMap(argv[1], "/skybox", ".jpg", 2);
+  // Split  path into its components.
+  auto splitPath = [](std::string path) {
+    std::replace(path.begin(), path.end(), '\\', '/');
+
+    std::regex regex("/");
+
+    std::vector<std::string> elements(
+        std::sregex_token_iterator(path.begin(), path.end(), regex, -1),
+        std::sregex_token_iterator());
+    return elements;
+  };
+
+  // Build a string from a vector of strings using a separator.
+  auto join = [](std::vector<std::string> strings, std::string separator) {
+    std::string res =
+        std::accumulate(std::begin(strings), std::end(strings), std::string(),
+                        [&](std::string& ss, std::string& s) {
+                          return ss.empty() ? s : ss + separator + s;
+                        });
+    return res;
+  };
+
+  // A map of the skybox folder name and the skybox files in it.
+  std::map<std::string, std::vector<std::string>> skyboxFiles{
+      {"skybox0",
+       {"right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg",
+        "back.jpg"}},
+      {"skybox1",
+       {"skybox-px.jpg", "skybox-nx.jpg", "skybox-py.jpg", "skybox-ny.jpg",
+        "skybox-pz.jpg", "skybox-nz.jpg"}},
+      {"skybox2",
+       {"posx.jpg", "negx.jpg", "posy.jpg", "negy.jpg", "posz.jpg",
+        "negz.jpg"}}};
+
+  std::vector<std::string> path = splitPath(std::string(argv[1]));
+  // std::string root = join(path, "/");
+
+  // Load the cube map
+  auto cubemap = ReadCubeMap(argv[1], skyboxFiles[path.back()]);
 
   // Load the skybox
   // Read it again as there is no deep copy for vtkTexture
-  // auto skybox = ReadCubeMap(argv[1], "/", ".jpg", 0);
-  auto skybox = ReadCubeMap(argv[1], "/", ".jpg", 1);
-  // auto skybox = ReadCubeMap(argv[1], "/skybox", ".jpg", 2);
+  auto skybox = ReadCubeMap(argv[1], skyboxFiles[path.back()]);
   skybox->InterpolateOn();
   skybox->RepeatOff();
   skybox->EdgeClampOn();
@@ -332,9 +374,6 @@ int main(int argc, char* argv[])
   auto emissiveCol = colors->GetColor3d("VTKBlueComp").GetData();
   std::array<double, 3> emissiveFactor{emissiveCol[0], emissiveCol[1],
                                        emissiveCol[2]};
-  // std::array<double, 3> emissiveFactor{1.0, 1.0, 1.0};
-  //   std::cout << emissiveFactor[0] << ", " <<  emissiveFactor[1] << ", " <<
-  //   emissiveFactor[2] << std::endl;
 
   auto slwP = SliderProperties();
   slwP.initialValue = metallicCoefficient;
@@ -358,6 +397,7 @@ int main(int argc, char* argv[])
   sliderWidgetRoughness->EnabledOn();
 
   slwP.initialValue = occlusionStrength;
+  slwP.maximumValue = occlusionStrength;
   slwP.title = "Occlusion";
   slwP.p1[0] = 0.1;
   slwP.p1[1] = 0.1;
@@ -370,6 +410,7 @@ int main(int argc, char* argv[])
   sliderWidgetOcclusionStrength->EnabledOn();
 
   slwP.initialValue = normalScale;
+  slwP.maximumValue = normalScale;
   slwP.title = "Normal";
   slwP.p1[0] = 0.85;
   slwP.p1[1] = 0.1;
@@ -461,8 +502,8 @@ int main(int argc, char* argv[])
   widget->InteractiveOn();
 
   interactor->SetRenderWindow(renderWindow);
+  interactor->Initialize();
 
-  renderWindow->Render();
   interactor->Start();
   return EXIT_SUCCESS;
 }
@@ -745,36 +786,26 @@ vtkSmartPointer<vtkTexture> GetTexture(std::string path)
   return texture;
 }
 
-vtkSmartPointer<vtkTexture> ReadCubeMap(std::string const& folderRoot,
-                                        std::string const& fileRoot,
-                                        std::string const& ext, int const& key)
+vtkSmartPointer<vtkTexture>
+ReadCubeMap(std::string const& folderRoot,
+            std::vector<std::string> const& fileNames)
 {
-  // A map of cube map naming conventions and the corresponding file name
-  // components.
-  std::map<int, std::vector<std::string>> fileNames{
-      {0, {"right", "left", "top", "bottom", "front", "back"}},
-      {1, {"posx", "negx", "posy", "negy", "posz", "negz"}},
-      {2, {"-px", "-nx", "-py", "-ny", "-pz", "-nz"}},
-      {3, {"0", "1", "2", "3", "4", "5"}}};
-  std::vector<std::string> fns;
-  if (fileNames.count(key))
+  auto root = folderRoot;
+  if (folderRoot.back() != '/')
   {
-    fns = fileNames.at(key);
+    root += '/';
   }
-  else
-  {
-    std::cerr << "ReadCubeMap(): invalid key, unable to continue." << std::endl;
-    std::exit(EXIT_FAILURE);
-  }
+
   vtkNew<vtkTexture> texture;
   texture->CubeMapOn();
   // Build the file names.
-  std::for_each(fns.begin(), fns.end(),
-                [&folderRoot, &fileRoot, &ext](std::string& f) {
-                  f = folderRoot + fileRoot + f + ext;
-                });
+  std::vector<std::string> paths;
+  for (auto f : fileNames)
+  {
+    paths.push_back(root + f);
+  }
   auto i = 0;
-  for (auto const& fn : fns)
+  for (auto const& fn : paths)
   {
     // Read the images
     vtkNew<vtkImageReader2Factory> readerFactory;
@@ -797,6 +828,7 @@ vtkSmartPointer<vtkTexture> ReadCubeMap(std::string const& folderRoot,
 vtkSmartPointer<vtkSliderWidget>
 MakeSliderWidget(SliderProperties const& properties)
 {
+  vtkNew<vtkNamedColors> colors;
   vtkNew<vtkSliderRepresentation2D> slider;
 
   slider->SetMinimumValue(properties.minimumValue);
@@ -813,6 +845,23 @@ MakeSliderWidget(SliderProperties const& properties)
   slider->SetSliderLength(properties.sliderLength);
   slider->SetTitleHeight(properties.titleHeight);
   slider->SetLabelHeight(properties.labelHeight);
+
+  // Set the color properties
+  // Change the color of the bar.
+  slider->GetTubeProperty()->SetColor(
+      colors->GetColor3d(properties.barColor).GetData());
+  // Change the color of the ends of the bar.
+  slider->GetCapProperty()->SetColor(
+      colors->GetColor3d(properties.barEndsColor).GetData());
+  // Change the color of the knob that slides.
+  slider->GetSliderProperty()->SetColor(
+      colors->GetColor3d(properties.sliderColor).GetData());
+  // Change the color of the knob when the mouse is held on it.
+  slider->GetSelectedProperty()->SetColor(
+      colors->GetColor3d(properties.selectedColor).GetData());
+  // Change the color of the text displaying the value.
+  slider->GetLabelProperty()->SetColor(
+      colors->GetColor3d(properties.valueColor).GetData());
 
   vtkNew<vtkSliderWidget> sliderWidget;
   sliderWidget->SetRepresentation(slider);

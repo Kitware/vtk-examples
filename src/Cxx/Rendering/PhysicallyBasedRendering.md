@@ -24,6 +24,14 @@ A Skybox is used to create the illusion of distant three-dimensional surrounding
 
 You can select different cubemaps and different surfaces to visualise.
 
+The parameters for this program are rather complex. Here are the parameters used to make the example image:
+
+``` text
+<DATA>/skyboxes/skybox2/ <DATA>/vtk_Material.png <DATA>/vtk_Base_Color.png <DATA>/vtk_Normal.png <DATA>/vtk_dark_bkg.png Boy
+```
+
+where `<DATA>` is the path to `vtk-examples/Testing/Data`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
+
 For more information, see [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/).
 
 !!! note
