@@ -21,7 +21,7 @@ Here are the parameters used to make the example image:
 <DATA>/skyboxes/skybox2/ Boy
 ```
 
-where `<DATA>` is the path to `vtk-examples/Testing/Data`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
+where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
 
 For more information, see [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/).
 
@@ -29,4 +29,4 @@ For more information, see [Introducing Physically Based Rendering with VTK](http
     - Support was added for [HDR images in VTK 9.0](https://blog.kitware.com/pbrj1/), Thus for better performance, the skybox texture should set `MipmapOn` as well as `InterpolateOn` to exploit hardware capabilities when using HDR images.
     - We are using a cubemap texture (and not a traditional texture), so one should set `UseSphericalHarmonicsOff` on the texture as well. This means that we need to use vtkOpenGLRenderer instead of vtkRenderer as the renderer.
     - Physically Based Rendering (PBR) is only available in VTK 9.0+
-    - The cubemap/skybox files are found in `VTKExamples/Testing/Data/skyboxes/`.
+    - The cubemap/skybox files are found in `?vtk-?examples/src/Testing/Data/skyboxes/`.
