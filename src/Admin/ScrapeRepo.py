@@ -447,15 +447,15 @@ def add_vtk_nightly_doc_link(s, stats):
     :param stats: Statistics
     :return:
     """
-    reg1 = re.compile(r'[^\./\[s\-?](vtk[^ &:\.][0-9a-zA-Z]+)')
+    reg1 = re.compile(r'[^\.\/\[s\-?](vtk[^ &:\.][0-9a-zA-Z]+)')
     # ? has been used to indicate that no link is to be built.
-    reg2 = re.compile(r'\?(vtk[0-9a-zA-Z]+)\?')
+    reg2 = re.compile(r'\?(vtk[0-9a-zA-Z\-]+)\?')
     if reg1.findall(s):
         stats['doxy_count'] += 1
-        s1 = re.sub(r'[^\./\[s\-?](vtk[^ &:\.][0-9a-zA-Z]+)',
+        s1 = re.sub(r'[^\.\/\[s\-?](vtk[^ &:\.-][0-9a-zA-Z]+)',
                     r' [\1](' + r'https://www.vtk.org/doc/nightly/html/class' + r'\1.html#details)', s)
         if reg2.findall(s1):
-            s2 = re.sub(r'\?(vtk[0-9a-zA-Z]+)\?', r'\1', s1)
+            s2 = re.sub(r'\?(vtk[0-9a-zA-Z\-]+)\?', r'\1', s1)
             return s2
         else:
             return s1

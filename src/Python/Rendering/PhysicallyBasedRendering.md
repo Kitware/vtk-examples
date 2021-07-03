@@ -30,7 +30,7 @@ The parameters for this program are rather complex. Here are the parameters used
 <DATA>/skyboxes/skybox2/ <DATA>/vtk_Material.png <DATA>/vtk_Base_Color.png <DATA>/vtk_Normal.png <DATA>/vtk_dark_bkg.png Boy
 ```
 
-where `<DATA>` is the path to `vtk-examples/Testing/Data`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
+where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
 
 For more information, see [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/).
 
@@ -39,4 +39,4 @@ For more information, see [Introducing Physically Based Rendering with VTK](http
     - We are using a cubemap texture (and not a traditional texture), so one should set `UseSphericalHarmonicsOff` on the texture as well. This means that we need to use vtkOpenGLRenderer instead of vtkRenderer as the renderer.
     - Occlusion is subtle, you will see it in the shadowing around objects on the surface.
     - Physically Based Rendering (PBR) is only available in VTK 9.0+
-    - The cubemap/skybox files are found in `VTKExamples/Testing/Data/skyboxes/`.
+    - The cubemap/skybox files are found in `?vtk-?examples/src/Testing/Data/skyboxes/`.
