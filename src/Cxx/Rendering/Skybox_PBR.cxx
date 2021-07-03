@@ -162,8 +162,8 @@ struct SliderProperties
   double maximumValue{1.0};
   double initialValue{0.0};
 
-  std::array<double, 2> p1{0.2, 0.1};
-  std::array<double, 2> p2{0.8, 0.1};
+  std::array<double, 2> p1{0.1, 0.1};
+  std::array<double, 2> p2{0.9, 0.1};
 
   std::string title{""};
 
