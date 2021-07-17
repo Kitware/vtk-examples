@@ -487,14 +487,15 @@ vtkSmartPointer<vtkPolyData> GetBoy()
   vtkNew<vtkParametricFunctionSource> source;
   source->SetUResolution(uResolution);
   source->SetVResolution(vResolution);
+  source->GenerateTextureCoordinatesOn();
   source->SetParametricFunction(surface);
   source->Update();
-  // Build the tcoords
-  auto pd = UVTcoords(uResolution, vResolution, source->GetOutput());
-  // Now the tangents
+
+  // Build the tangents
   vtkNew<vtkPolyDataTangents> tangents;
-  tangents->SetInputData(pd);
+  tangents->SetInputConnection(source->GetOutputPort());
   tangents->Update();
+
   return tangents->GetOutput();
 }
 
@@ -509,13 +510,13 @@ vtkSmartPointer<vtkPolyData> GetMobius()
   vtkNew<vtkParametricFunctionSource> source;
   source->SetUResolution(uResolution);
   source->SetVResolution(vResolution);
+  source->GenerateTextureCoordinatesOn();
   source->SetParametricFunction(surface);
   source->Update();
-  // Build the tcoords
-  auto pd = UVTcoords(uResolution, vResolution, source->GetOutput());
-  // Now the tangents
+
+  // Build the tangents
   vtkNew<vtkPolyDataTangents> tangents;
-  tangents->SetInputData(pd);
+  tangents->SetInputConnection(source->GetOutputPort());
   tangents->Update();
 
   vtkNew<vtkTransform> transform;
@@ -541,14 +542,13 @@ vtkSmartPointer<vtkPolyData> GetRandomHills()
   vtkNew<vtkParametricFunctionSource> source;
   source->SetUResolution(uResolution);
   source->SetVResolution(vResolution);
+  source->GenerateTextureCoordinatesOn();
   source->SetParametricFunction(surface);
-
   source->Update();
-  // Build the tcoords
-  auto pd = UVTcoords(uResolution, vResolution, source->GetOutput());
-  // Now the tangents
+
+  // Build the tangents
   vtkNew<vtkPolyDataTangents> tangents;
-  tangents->SetInputData(pd);
+  tangents->SetInputConnection(source->GetOutputPort());
   tangents->Update();
 
   vtkNew<vtkTransform> transform;
@@ -571,14 +571,13 @@ vtkSmartPointer<vtkPolyData> GetTorus()
   vtkNew<vtkParametricFunctionSource> source;
   source->SetUResolution(uResolution);
   source->SetVResolution(vResolution);
+  source->GenerateTextureCoordinatesOn();
   source->SetParametricFunction(surface);
-
   source->Update();
-  // Build the tcoords
-  auto pd = UVTcoords(uResolution, vResolution, source->GetOutput());
-  // Now the tangents
+
+  // Build the tangents
   vtkNew<vtkPolyDataTangents> tangents;
-  tangents->SetInputData(pd);
+  tangents->SetInputConnection(source->GetOutputPort());
   tangents->Update();
 
   vtkNew<vtkTransform> transform;
