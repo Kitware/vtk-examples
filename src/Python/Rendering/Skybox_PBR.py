@@ -222,14 +222,13 @@ def get_boy():
     source = vtk.vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
+    source.GenerateTextureCoordinatesOn()
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tcoords
-    pd = uv_tcoords(u_resolution, v_resolution, source.GetOutput())
-    # Now the tangents
+    # Build the tangents
     tangents = vtk.vtkPolyDataTangents()
-    tangents.SetInputData(pd)
+    tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
     return tangents.GetOutput()
 
@@ -244,14 +243,13 @@ def get_mobius():
     source = vtk.vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
+    source.GenerateTextureCoordinatesOn()
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tcoords
-    pd = uv_tcoords(u_resolution, v_resolution, source.GetOutput())
-    # Now the tangents
+    # Build the tangents
     tangents = vtk.vtkPolyDataTangents()
-    tangents.SetInputData(pd)
+    tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
 
     transform = vtk.vtkTransform()
@@ -276,14 +274,13 @@ def get_random_hills():
     source = vtk.vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
+    source.GenerateTextureCoordinatesOn()
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tcoords
-    pd = uv_tcoords(u_resolution, v_resolution, source.GetOutput())
-    # Now the tangents
+    # Build the tangents
     tangents = vtk.vtkPolyDataTangents()
-    tangents.SetInputData(pd)
+    tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
 
     transform = vtk.vtkTransform()
@@ -305,14 +302,13 @@ def get_torus():
     source = vtk.vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
+    source.GenerateTextureCoordinatesOn()
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tcoords
-    pd = uv_tcoords(u_resolution, v_resolution, source.GetOutput())
-    # Now the tangents
+    # Build the tangents
     tangents = vtk.vtkPolyDataTangents()
-    tangents.SetInputData(pd)
+    tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
 
     transform = vtk.vtkTransform()
