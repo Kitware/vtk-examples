@@ -81,8 +81,8 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>colorIt</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkElevationFilter</span><span class=p>()</span>
 </span>    <span class=n>colorIt</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>shrink</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>colorIt</span><span class=o>.</span><span class=n>SetLowPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-.</span><span class=mi>5</span><span class=p>)</span>
-    <span class=n>colorIt</span><span class=o>.</span><span class=n>SetHighPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>.</span><span class=mi>5</span><span class=p>)</span>
+    <span class=n>colorIt</span><span class=o>.</span><span class=n>SetLowPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mf>.5</span><span class=p>)</span>
+    <span class=n>colorIt</span><span class=o>.</span><span class=n>SetHighPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>.5</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>colorIt</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>

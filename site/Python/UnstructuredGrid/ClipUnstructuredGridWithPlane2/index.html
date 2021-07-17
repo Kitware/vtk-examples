@@ -130,7 +130,7 @@ The clipped dataset contains a
 <span class=hll>    <span class=n>insideActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>insideActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>insideMapper</span><span class=p>)</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;banana&#39;</span><span class=p>))</span>
-    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=o>.</span><span class=mi>3</span><span class=p>)</span>
+    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>.3</span><span class=p>)</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>clippedMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>()</span>
@@ -140,7 +140,7 @@ The clipped dataset contains a
 <span class=hll>    <span class=n>clippedActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>clippedActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>clippedMapper</span><span class=p>)</span>
     <span class=n>clippedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;tomato&#39;</span><span class=p>))</span>
-    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=o>.</span><span class=mi>3</span><span class=p>)</span>
+    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>.3</span><span class=p>)</span>
     <span class=n>clippedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
 
     <span class=c1># Create transforms to make a better visualization</span>

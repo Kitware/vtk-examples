@@ -110,7 +110,7 @@ function registerListener(event, func) {
     <span class=c1># Add in some surface geometry for interest.</span>
 <span class=hll>    <span class=n>iso</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkContourFilter</span><span class=p>()</span>
 </span>    <span class=n>iso</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>pl3dOutput</span><span class=p>)</span>
-    <span class=n>iso</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=o>.</span><span class=mi>22</span><span class=p>)</span>
+    <span class=n>iso</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>.22</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>normals</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataNormals</span><span class=p>()</span>
 </span>    <span class=n>normals</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>iso</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>

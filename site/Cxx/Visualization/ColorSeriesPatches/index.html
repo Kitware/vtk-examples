@@ -90,7 +90,7 @@ function registerListener(event, func) {
 
 <span class=k>public</span><span class=o>:</span>
   <span class=kt>bool</span> <span class=n>IsValidHTMLColorString</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>s</span><span class=p>);</span>
-<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>RGBToHTMLColor</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>);</span>
+<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>RGBToHTMLColor</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>);</span>
 </span><span class=hll>  <span class=n>vtkColor3ub</span> <span class=nf>HTMLColorToRGB</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>colorString</span><span class=p>);</span>
 </span><span class=hll>  <span class=kt>double</span> <span class=nf>RGBToLumaCCIR601</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>);</span>
 </span><span class=p>};</span>
@@ -133,11 +133,11 @@ function registerListener(event, func) {
 
 <span class=k>private</span><span class=o>:</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeHTMLStyle</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeHTMLHeader</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeTableHeader</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeTD1</span><span class=p>(</span><span class=kt>int</span> <span class=k>const</span> <span class=n>idx</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>name</span><span class=p>);</span>
-<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeTD2</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkColor3ub</span><span class=o>&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>);</span>
-</span>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeTable</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeHTMLHeader</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeTableHeader</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeTD1</span><span class=p>(</span><span class=kt>int</span> <span class=k>const</span> <span class=n>idx</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>name</span><span class=p>);</span>
+<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeTD2</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkColor3ub</span><span class=o>&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>);</span>
+</span>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeTable</span><span class=p>();</span>
 
 <span class=k>private</span><span class=o>:</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>nc</span><span class=p>;</span>
@@ -161,7 +161,7 @@ function registerListener(event, func) {
 
 <span class=k>namespace</span> <span class=p>{</span>
 
-<span class=kt>bool</span> <span class=n>HTMLToFromRGBAColor</span><span class=o>::</span><span class=n>IsValidHTMLColorString</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>s</span><span class=p>)</span>
+<span class=kt>bool</span> <span class=nf>HTMLToFromRGBAColor::IsValidHTMLColorString</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>s</span><span class=p>)</span>
 <span class=p>{</span>
   <span class=k>if</span> <span class=p>(</span><span class=n>s</span><span class=p>.</span><span class=n>size</span><span class=p>()</span> <span class=o>==</span> <span class=mi>7</span> <span class=o>||</span> <span class=n>s</span><span class=p>.</span><span class=n>size</span><span class=p>()</span> <span class=o>==</span> <span class=mi>9</span><span class=p>)</span> <span class=c1>// #rrggbb or #rrggbbaa</span>
   <span class=p>{</span>
@@ -174,7 +174,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=nb>false</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLToFromRGBAColor</span><span class=o>::</span><span class=n>RGBToHTMLColor</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>)</span>
+<span class=hll><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLToFromRGBAColor::RGBToHTMLColor</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>s</span> <span class=o>=</span> <span class=s>&quot;#&quot;</span><span class=p>;</span>
   <span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span> <span class=n>os</span><span class=p>;</span>
@@ -186,9 +186,9 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>s</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>vtkColor3ub</span> <span class=n>HTMLToFromRGBAColor</span><span class=o>::</span><span class=n>HTMLColorToRGB</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>colorString</span><span class=p>)</span>
+<span class=hll><span class=n>vtkColor3ub</span> <span class=nf>HTMLToFromRGBAColor::HTMLColorToRGB</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>colorString</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=hll>  <span class=n>vtkColor3ub</span> <span class=nf>c</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+<span class=hll>  <span class=n>vtkColor3ub</span> <span class=n>c</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
 </span>  <span class=k>if</span> <span class=p>(</span><span class=n>IsValidHTMLColorString</span><span class=p>(</span><span class=n>colorString</span><span class=p>)</span> <span class=o>&amp;&amp;</span> <span class=n>colorString</span><span class=p>.</span><span class=n>size</span><span class=p>()</span> <span class=o>==</span> <span class=mi>7</span><span class=p>)</span>
   <span class=p>{</span>
     <span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
@@ -204,12 +204,12 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>c</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>double</span> <span class=n>HTMLToFromRGBAColor</span><span class=o>::</span><span class=n>RGBToLumaCCIR601</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>)</span>
+<span class=hll><span class=kt>double</span> <span class=nf>HTMLToFromRGBAColor::RGBToLumaCCIR601</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=k>return</span> <span class=mf>0.299</span> <span class=o>*</span> <span class=n>rgb</span><span class=p>.</span><span class=n>GetRed</span><span class=p>()</span> <span class=o>+</span> <span class=mf>0.587</span> <span class=o>*</span> <span class=n>rgb</span><span class=p>.</span><span class=n>GetGreen</span><span class=p>()</span> <span class=o>+</span> <span class=mf>0.114</span> <span class=o>*</span> <span class=n>rgb</span><span class=p>.</span><span class=n>GetBlue</span><span class=p>();</span>
 <span class=p>}</span>
 
-<span class=kt>void</span> <span class=n>ColorStructures</span><span class=o>::</span><span class=n>Init</span><span class=p>()</span>
+<span class=kt>void</span> <span class=nf>ColorStructures::Init</span><span class=p>()</span>
 <span class=p>{</span>
 <span class=hll>  <span class=k>auto</span> <span class=n>cs</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=o>::</span><span class=n>New</span><span class=p>();</span>
 </span>  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span> <span class=n>sizes</span><span class=p>;</span>
@@ -228,7 +228,7 @@ function registerListener(event, func) {
   <span class=k>this</span><span class=o>-&gt;</span><span class=n>max_colors</span> <span class=o>=</span> <span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>max_element</span><span class=p>(</span><span class=n>sizes</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>sizes</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>
 <span class=p>}</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>MakeHTMLStyle</span><span class=p>()</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLTableMaker::MakeHTMLStyle</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>s</span> <span class=o>=</span> <span class=s>&quot;  &lt;style&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
   <span class=n>s</span> <span class=o>+=</span> <span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
@@ -308,7 +308,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>s</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>MakeHTMLHeader</span><span class=p>()</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLTableMaker::MakeHTMLHeader</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>s</span> <span class=o>=</span> <span class=s>&quot;&lt;!DOCTYPE html&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
   <span class=n>s</span> <span class=o>+=</span> <span class=s>&quot;&lt;html lang=</span><span class=se>\&quot;</span><span class=s>en</span><span class=se>\&quot;</span><span class=s>&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
@@ -320,7 +320,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>s</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>MakeTableHeader</span><span class=p>()</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLTableMaker::MakeTableHeader</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>s</span> <span class=o>=</span> <span class=s>&quot;&lt;tr&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
   <span class=n>s</span> <span class=o>+=</span> <span class=s>&quot;&lt;th&gt;Index&lt;/th&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
@@ -335,7 +335,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>s</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>MakeTD1</span><span class=p>(</span><span class=kt>int</span> <span class=k>const</span> <span class=n>idx</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>name</span><span class=p>)</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLTableMaker::MakeTD1</span><span class=p>(</span><span class=kt>int</span> <span class=k>const</span> <span class=n>idx</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>name</span><span class=p>)</span>
 <span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>s</span> <span class=o>=</span> <span class=s>&quot;&lt;tr&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
   <span class=n>s</span> <span class=o>+=</span> <span class=s>&quot;&lt;td&gt;&quot;</span><span class=p>;</span>
@@ -348,7 +348,7 @@ function registerListener(event, func) {
   <span class=n>s</span> <span class=o>+=</span> <span class=s>&quot;&lt;/tr&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
   <span class=k>return</span> <span class=n>s</span><span class=p>;</span>
 <span class=p>}</span>
-<span class=hll><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>MakeTD2</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkColor3ub</span><span class=o>&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgbs</span><span class=p>)</span>
+<span class=hll><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLTableMaker::MakeTD2</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkColor3ub</span><span class=o>&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgbs</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>s</span> <span class=o>=</span> <span class=s>&quot;&lt;tr&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
   <span class=n>s</span> <span class=o>+=</span> <span class=s>&quot;&lt;td&gt;&lt;/td&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
@@ -379,7 +379,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>s</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>MakeTable</span><span class=p>()</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLTableMaker::MakeTable</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=k>auto</span> <span class=n>res</span> <span class=o>=</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>MakeTableHeader</span><span class=p>();</span>
   <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=k>const</span> <span class=nl>p</span> <span class=p>:</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>cs</span><span class=p>.</span><span class=n>cs_colors</span><span class=p>)</span>
@@ -392,7 +392,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>res</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>MakeHTMLTable</span><span class=p>()</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLTableMaker::MakeHTMLTable</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=k>auto</span> <span class=n>res</span> <span class=o>=</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>MakeHTMLHeader</span><span class=p>();</span>
   <span class=n>res</span> <span class=o>+=</span> <span class=s>&quot;&lt;body&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>

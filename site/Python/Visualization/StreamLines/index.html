@@ -102,7 +102,7 @@ function registerListener(event, func) {
 </span>    <span class=n>streamline</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>pl3d</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetBlock</span><span class=p>(</span><span class=mi>0</span><span class=p>))</span>
     <span class=n>streamline</span><span class=o>.</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>seeds</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>streamline</span><span class=o>.</span><span class=n>SetMaximumPropagation</span><span class=p>(</span><span class=mi>200</span><span class=p>)</span>
-    <span class=n>streamline</span><span class=o>.</span><span class=n>SetInitialIntegrationStep</span><span class=p>(</span><span class=o>.</span><span class=mi>2</span><span class=p>)</span>
+    <span class=n>streamline</span><span class=o>.</span><span class=n>SetInitialIntegrationStep</span><span class=p>(</span><span class=mf>.2</span><span class=p>)</span>
     <span class=n>streamline</span><span class=o>.</span><span class=n>SetIntegrationDirectionToForward</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>streamline_mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>

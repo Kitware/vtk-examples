@@ -122,7 +122,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>shrink</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkShrinkFilter</span><span class=p>()</span>
 </span>    <span class=n>shrink</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>shrink</span><span class=o>.</span><span class=n>SetShrinkFactor</span><span class=p>(</span><span class=o>.</span><span class=mi>8</span><span class=p>)</span>
+    <span class=n>shrink</span><span class=o>.</span><span class=n>SetShrinkFactor</span><span class=p>(</span><span class=mf>.8</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>tessellate</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTessellatorFilter</span><span class=p>()</span>
 </span>    <span class=n>tessellate</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>shrink</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>

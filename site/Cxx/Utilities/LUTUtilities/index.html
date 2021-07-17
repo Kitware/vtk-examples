@@ -86,7 +86,7 @@ function registerListener(event, func) {
 <span class=cm>   * @param lut - the lookup table.</span>
 <span class=cm>   * @return a string containing the table data.</span>
 <span class=cm>   */</span>
-<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>DisplayLUTAsString</span><span class=p>(</span><span class=n>vtkLookupTable</span><span class=o>*</span> <span class=n>lut</span><span class=p>)</span>
+<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>DisplayLUTAsString</span><span class=p>(</span><span class=n>vtkLookupTable</span><span class=o>*</span> <span class=n>lut</span><span class=p>)</span>
 </span>  <span class=p>{</span>
 <span class=hll>    <span class=n>vtkIdType</span> <span class=n>tv</span> <span class=o>=</span> <span class=n>lut</span><span class=o>-&gt;</span><span class=n>GetNumberOfTableValues</span><span class=p>();</span>
 </span>    <span class=kt>double</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
@@ -391,7 +391,7 @@ function registerListener(event, func) {
 <span class=c1>//! Display the available color schemes.</span>
 <span class=kt>void</span> <span class=n>DisplayAvailableColorSchemes</span><span class=p>()</span>
 <span class=p>{</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>line</span><span class=p>(</span><span class=s>&quot;-----------------------------------------------------------&quot;</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>line</span><span class=p>(</span><span class=s>&quot;-----------------------------------------------------------&quot;</span>
                    <span class=s>&quot;------------------</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>);</span>
   <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span> <span class=n>colorSchemes</span><span class=p>;</span>
   <span class=n>colorSchemes</span> <span class=o>=</span> <span class=n>GetAllColorSchemes</span><span class=p>();</span>
@@ -409,7 +409,7 @@ function registerListener(event, func) {
 </span><span class=hll>                    <span class=n>vtkLookupTable</span><span class=o>*</span> <span class=n>lut2</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>LUTUtilities</span> <span class=n>lutUtilities</span><span class=p>;</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>line</span><span class=p>(</span><span class=s>&quot;-----------------------------------------------------------&quot;</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>line</span><span class=p>(</span><span class=s>&quot;-----------------------------------------------------------&quot;</span>
                    <span class=s>&quot;------------------</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>);</span>
   <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>line</span><span class=p>;</span>
   <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>reason</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>

@@ -94,7 +94,7 @@ function registerListener(event, func) {
 
     <span class=c1># Map the hyperstreamlines.</span>
 <span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLogLookupTable</span><span class=p>()</span>
-</span>    <span class=n>lut</span><span class=o>.</span><span class=n>SetHueRange</span><span class=p>(</span><span class=o>.</span><span class=mi>6667</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
+</span>    <span class=n>lut</span><span class=o>.</span><span class=n>SetHueRange</span><span class=p>(</span><span class=mf>.6667</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>s1Mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>s1Mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>s1</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>

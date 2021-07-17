@@ -199,7 +199,7 @@ function registerListener(event, func) {
 <span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;</span> <span class=n>CreateUniformDistribution</span><span class=p>(</span><span class=kt>int</span> <span class=n>count</span><span class=p>,</span> <span class=kt>double</span> <span class=n>a</span><span class=p>,</span>
 </span>                                                       <span class=kt>double</span> <span class=n>b</span><span class=p>)</span>
 <span class=p>{</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=n>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=nf>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
   <span class=kt>double</span> <span class=n>rmin</span><span class=p>,</span> <span class=n>rmax</span><span class=p>;</span>
   <span class=n>rmax</span> <span class=o>=</span> <span class=n>b</span><span class=p>;</span>
   <span class=n>rmin</span> <span class=o>=</span> <span class=n>a</span><span class=p>;</span>
@@ -242,7 +242,7 @@ function registerListener(event, func) {
 </span>                                                      <span class=kt>double</span> <span class=n>b</span><span class=p>)</span>
 <span class=p>{</span>
   <span class=kt>double</span> <span class=n>rmin</span><span class=p>,</span> <span class=n>rmax</span><span class=p>;</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=n>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=nf>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
   <span class=n>std</span><span class=o>::</span><span class=n>normal_distribution</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>distribution</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>);</span>
   <span class=n>rmax</span> <span class=o>=</span> <span class=mf>6.0</span> <span class=o>*</span> <span class=n>b</span><span class=p>;</span>
   <span class=n>rmin</span> <span class=o>=</span> <span class=mf>-6.0</span> <span class=o>*</span> <span class=n>b</span><span class=p>;</span>
@@ -283,7 +283,7 @@ function registerListener(event, func) {
 </span>                                                       <span class=kt>double</span> <span class=n>b</span><span class=p>)</span>
 <span class=p>{</span>
   <span class=kt>double</span> <span class=n>rmin</span><span class=p>,</span> <span class=n>rmax</span><span class=p>;</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=n>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=nf>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
   <span class=n>std</span><span class=o>::</span><span class=n>weibull_distribution</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>distribution</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>);</span>
   <span class=n>rmax</span> <span class=o>=</span> <span class=mf>3.0</span><span class=p>;</span>
   <span class=n>rmin</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
@@ -324,7 +324,7 @@ function registerListener(event, func) {
 </span>                                                     <span class=kt>double</span> <span class=n>b</span><span class=p>)</span>
 <span class=p>{</span>
   <span class=kt>double</span> <span class=n>rmin</span><span class=p>,</span> <span class=n>rmax</span><span class=p>;</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=n>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=nf>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
   <span class=n>std</span><span class=o>::</span><span class=n>gamma_distribution</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>distribution</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>);</span>
   <span class=n>rmax</span> <span class=o>=</span> <span class=mf>20.0</span><span class=p>;</span>
   <span class=n>rmin</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
@@ -366,7 +366,7 @@ function registerListener(event, func) {
 </span>                                                      <span class=kt>double</span> <span class=n>b</span><span class=p>)</span>
 <span class=p>{</span>
   <span class=kt>double</span> <span class=n>rmin</span><span class=p>,</span> <span class=n>rmax</span><span class=p>;</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=n>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=nf>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
   <span class=n>std</span><span class=o>::</span><span class=n>cauchy_distribution</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>distribution</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>);</span>
 
   <span class=n>rmin</span> <span class=o>=</span> <span class=mi>-10</span><span class=p>;</span>
@@ -409,7 +409,7 @@ function registerListener(event, func) {
 </span>                                                            <span class=kt>double</span> <span class=n>b</span><span class=p>)</span>
 <span class=p>{</span>
   <span class=kt>double</span> <span class=n>rmin</span><span class=p>,</span> <span class=n>rmax</span><span class=p>;</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=n>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=nf>generator</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
 
   <span class=n>std</span><span class=o>::</span><span class=n>extreme_value_distribution</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>distribution</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>);</span>
   <span class=n>rmax</span> <span class=o>=</span> <span class=mf>5.0</span><span class=p>;</span>

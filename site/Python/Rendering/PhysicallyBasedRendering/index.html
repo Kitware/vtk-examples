@@ -370,14 +370,13 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>SetUResolution</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetVResolution</span><span class=p>(</span><span class=n>v_resolution</span><span class=p>)</span>
+    <span class=n>source</span><span class=o>.</span><span class=n>GenerateTextureCoordinatesOn</span><span class=p>()</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetParametricFunction</span><span class=p>(</span><span class=n>surface</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-    <span class=c1># Build the tcoords</span>
-    <span class=n>pd</span> <span class=o>=</span> <span class=n>uv_tcoords</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>,</span> <span class=n>v_resolution</span><span class=p>,</span> <span class=n>source</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-    <span class=c1># Now the tangents</span>
+    <span class=c1># Build the tangents</span>
 <span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataTangents</span><span class=p>()</span>
-</span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>pd</span><span class=p>)</span>
+</span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>tangents</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
 
@@ -392,14 +391,13 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>SetUResolution</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetVResolution</span><span class=p>(</span><span class=n>v_resolution</span><span class=p>)</span>
+    <span class=n>source</span><span class=o>.</span><span class=n>GenerateTextureCoordinatesOn</span><span class=p>()</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetParametricFunction</span><span class=p>(</span><span class=n>surface</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-    <span class=c1># Build the tcoords</span>
-    <span class=n>pd</span> <span class=o>=</span> <span class=n>uv_tcoords</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>,</span> <span class=n>v_resolution</span><span class=p>,</span> <span class=n>source</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-    <span class=c1># Now the tangents</span>
+    <span class=c1># Build the tangents</span>
 <span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataTangents</span><span class=p>()</span>
-</span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>pd</span><span class=p>)</span>
+</span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
@@ -424,14 +422,13 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>SetUResolution</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetVResolution</span><span class=p>(</span><span class=n>v_resolution</span><span class=p>)</span>
+    <span class=n>source</span><span class=o>.</span><span class=n>GenerateTextureCoordinatesOn</span><span class=p>()</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetParametricFunction</span><span class=p>(</span><span class=n>surface</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-    <span class=c1># Build the tcoords</span>
-    <span class=n>pd</span> <span class=o>=</span> <span class=n>uv_tcoords</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>,</span> <span class=n>v_resolution</span><span class=p>,</span> <span class=n>source</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-    <span class=c1># Now the tangents</span>
+    <span class=c1># Build the tangents</span>
 <span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataTangents</span><span class=p>()</span>
-</span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>pd</span><span class=p>)</span>
+</span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
@@ -453,14 +450,13 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>SetUResolution</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetVResolution</span><span class=p>(</span><span class=n>v_resolution</span><span class=p>)</span>
+    <span class=n>source</span><span class=o>.</span><span class=n>GenerateTextureCoordinatesOn</span><span class=p>()</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetParametricFunction</span><span class=p>(</span><span class=n>surface</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-    <span class=c1># Build the tcoords</span>
-    <span class=n>pd</span> <span class=o>=</span> <span class=n>uv_tcoords</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>,</span> <span class=n>v_resolution</span><span class=p>,</span> <span class=n>source</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-    <span class=c1># Now the tangents</span>
+    <span class=c1># Build the tangents</span>
 <span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataTangents</span><span class=p>()</span>
-</span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>pd</span><span class=p>)</span>
+</span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>

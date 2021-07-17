@@ -84,7 +84,7 @@ function registerListener(event, func) {
     <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>SetBackfaceProperty</span><span class=p>(</span><span class=n>backProperty</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Banana&#39;</span><span class=p>))</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>5</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.5</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
@@ -117,9 +117,9 @@ function registerListener(event, func) {
     <span class=n>sliderRepMinimumU</span><span class=o>.</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s1>&#39;U min&#39;</span><span class=p>)</span>
 
     <span class=n>sliderRepMinimumU</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>()</span>
-    <span class=n>sliderRepMinimumU</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=o>.</span><span class=mi>1</span><span class=p>,</span> <span class=o>.</span><span class=mi>1</span><span class=p>)</span>
+    <span class=n>sliderRepMinimumU</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>.1</span><span class=p>,</span> <span class=mf>.1</span><span class=p>)</span>
     <span class=n>sliderRepMinimumU</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>()</span>
-    <span class=n>sliderRepMinimumU</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=o>.</span><span class=mi>9</span><span class=p>,</span> <span class=o>.</span><span class=mi>1</span><span class=p>)</span>
+    <span class=n>sliderRepMinimumU</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>.9</span><span class=p>,</span> <span class=mf>.1</span><span class=p>)</span>
 
     <span class=n>sliderRepMinimumU</span><span class=o>.</span><span class=n>SetTubeWidth</span><span class=p>(</span><span class=n>tubeWidth</span><span class=p>)</span>
     <span class=n>sliderRepMinimumU</span><span class=o>.</span><span class=n>SetSliderLength</span><span class=p>(</span><span class=n>sliderLength</span><span class=p>)</span>
@@ -142,9 +142,9 @@ function registerListener(event, func) {
     <span class=n>sliderRepMaximumU</span><span class=o>.</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s1>&#39;U max&#39;</span><span class=p>)</span>
 
     <span class=n>sliderRepMaximumU</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>()</span>
-    <span class=n>sliderRepMaximumU</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=o>.</span><span class=mi>1</span><span class=p>,</span> <span class=o>.</span><span class=mi>9</span><span class=p>)</span>
+    <span class=n>sliderRepMaximumU</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>.1</span><span class=p>,</span> <span class=mf>.9</span><span class=p>)</span>
     <span class=n>sliderRepMaximumU</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>()</span>
-    <span class=n>sliderRepMaximumU</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=o>.</span><span class=mi>9</span><span class=p>,</span> <span class=o>.</span><span class=mi>9</span><span class=p>)</span>
+    <span class=n>sliderRepMaximumU</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>.9</span><span class=p>,</span> <span class=mf>.9</span><span class=p>)</span>
 
     <span class=n>sliderRepMaximumU</span><span class=o>.</span><span class=n>SetTubeWidth</span><span class=p>(</span><span class=n>tubeWidth</span><span class=p>)</span>
     <span class=n>sliderRepMaximumU</span><span class=o>.</span><span class=n>SetSliderLength</span><span class=p>(</span><span class=n>sliderLength</span><span class=p>)</span>
@@ -167,9 +167,9 @@ function registerListener(event, func) {
     <span class=n>sliderRepMinimumV</span><span class=o>.</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s1>&#39;V min&#39;</span><span class=p>)</span>
 
     <span class=n>sliderRepMinimumV</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>()</span>
-    <span class=n>sliderRepMinimumV</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=o>.</span><span class=mi>1</span><span class=p>,</span> <span class=o>.</span><span class=mi>1</span><span class=p>)</span>
+    <span class=n>sliderRepMinimumV</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>.1</span><span class=p>,</span> <span class=mf>.1</span><span class=p>)</span>
     <span class=n>sliderRepMinimumV</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>()</span>
-    <span class=n>sliderRepMinimumV</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=o>.</span><span class=mi>1</span><span class=p>,</span> <span class=o>.</span><span class=mi>9</span><span class=p>)</span>
+    <span class=n>sliderRepMinimumV</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>.1</span><span class=p>,</span> <span class=mf>.9</span><span class=p>)</span>
 
     <span class=n>sliderRepMinimumV</span><span class=o>.</span><span class=n>SetTubeWidth</span><span class=p>(</span><span class=n>tubeWidth</span><span class=p>)</span>
     <span class=n>sliderRepMinimumV</span><span class=o>.</span><span class=n>SetSliderLength</span><span class=p>(</span><span class=n>sliderLength</span><span class=p>)</span>
@@ -187,14 +187,14 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>sliderRepMaximumV</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSliderRepresentation2D</span><span class=p>()</span>
 </span>
     <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>SetMinimumValue</span><span class=p>(</span><span class=mf>0.05</span><span class=p>)</span>
-<span class=hll>    <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>SetMaximumValue</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkMath</span><span class=o>.</span><span class=n>Pi</span><span class=p>()</span> <span class=o>-</span> <span class=o>.</span><span class=mi>05</span><span class=p>)</span>
+<span class=hll>    <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>SetMaximumValue</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkMath</span><span class=o>.</span><span class=n>Pi</span><span class=p>()</span> <span class=o>-</span> <span class=mf>.05</span><span class=p>)</span>
 </span><span class=hll>    <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkMath</span><span class=o>.</span><span class=n>Pi</span><span class=p>())</span>
 </span>    <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s1>&#39;V max&#39;</span><span class=p>)</span>
 
     <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>()</span>
-    <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=o>.</span><span class=mi>9</span><span class=p>,</span> <span class=o>.</span><span class=mi>1</span><span class=p>)</span>
+    <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>.9</span><span class=p>,</span> <span class=mf>.1</span><span class=p>)</span>
     <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>()</span>
-    <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=o>.</span><span class=mi>9</span><span class=p>,</span> <span class=o>.</span><span class=mi>9</span><span class=p>)</span>
+    <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>.9</span><span class=p>,</span> <span class=mf>.9</span><span class=p>)</span>
     <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>SetTubeWidth</span><span class=p>(</span><span class=n>tubeWidth</span><span class=p>)</span>
     <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>SetSliderLength</span><span class=p>(</span><span class=n>sliderLength</span><span class=p>)</span>
     <span class=n>sliderRepMaximumV</span><span class=o>.</span><span class=n>SetTitleHeight</span><span class=p>(</span><span class=n>titleHeight</span><span class=p>)</span>
@@ -211,7 +211,7 @@ function registerListener(event, func) {
     <span class=n>surface</span><span class=o>.</span><span class=n>SetMinimumU</span><span class=p>(</span><span class=o>-</span><span class=mf>4.5</span><span class=p>)</span>
     <span class=n>surface</span><span class=o>.</span><span class=n>SetMaximumU</span><span class=p>(</span><span class=mf>4.5</span><span class=p>)</span>
     <span class=n>surface</span><span class=o>.</span><span class=n>SetMinimumV</span><span class=p>(</span><span class=mf>0.05</span><span class=p>)</span>
-<span class=hll>    <span class=n>surface</span><span class=o>.</span><span class=n>SetMaximumV</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkMath</span><span class=o>.</span><span class=n>Pi</span><span class=p>()</span> <span class=o>-</span> <span class=o>.</span><span class=mi>05</span><span class=p>)</span>
+<span class=hll>    <span class=n>surface</span><span class=o>.</span><span class=n>SetMaximumV</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkMath</span><span class=o>.</span><span class=n>Pi</span><span class=p>()</span> <span class=o>-</span> <span class=mf>.05</span><span class=p>)</span>
 </span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
@@ -247,8 +247,8 @@ function registerListener(event, func) {
     <span class=k>def</span> <span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
         <span class=n>sliderWidget</span> <span class=o>=</span> <span class=n>caller</span>
         <span class=n>value</span> <span class=o>=</span> <span class=n>sliderWidget</span><span class=o>.</span><span class=n>GetRepresentation</span><span class=p>()</span><span class=o>.</span><span class=n>GetValue</span><span class=p>()</span>
-        <span class=k>if</span> <span class=n>value</span> <span class=o>&lt;</span> <span class=bp>self</span><span class=o>.</span><span class=n>kuen</span><span class=o>.</span><span class=n>GetMinimumU</span><span class=p>()</span> <span class=o>+</span> <span class=o>.</span><span class=mi>01</span><span class=p>:</span>
-            <span class=n>value</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>kuen</span><span class=o>.</span><span class=n>GetMinimumU</span><span class=p>()</span> <span class=o>+</span> <span class=o>.</span><span class=mi>01</span>
+        <span class=k>if</span> <span class=n>value</span> <span class=o>&lt;</span> <span class=bp>self</span><span class=o>.</span><span class=n>kuen</span><span class=o>.</span><span class=n>GetMinimumU</span><span class=p>()</span> <span class=o>+</span> <span class=mf>.01</span><span class=p>:</span>
+            <span class=n>value</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>kuen</span><span class=o>.</span><span class=n>GetMinimumU</span><span class=p>()</span> <span class=o>+</span> <span class=mf>.01</span>
             <span class=n>sliderWidget</span><span class=o>.</span><span class=n>GetRepresentation</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=n>value</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>kuen</span><span class=o>.</span><span class=n>SetMaximumU</span><span class=p>(</span><span class=n>value</span><span class=p>)</span>
 
@@ -273,8 +273,8 @@ function registerListener(event, func) {
     <span class=k>def</span> <span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
         <span class=n>sliderWidget</span> <span class=o>=</span> <span class=n>caller</span>
         <span class=n>value</span> <span class=o>=</span> <span class=n>sliderWidget</span><span class=o>.</span><span class=n>GetRepresentation</span><span class=p>()</span><span class=o>.</span><span class=n>GetValue</span><span class=p>()</span>
-        <span class=k>if</span> <span class=n>value</span> <span class=o>&lt;</span> <span class=bp>self</span><span class=o>.</span><span class=n>kuen</span><span class=o>.</span><span class=n>GetMinimumV</span><span class=p>()</span> <span class=o>+</span> <span class=o>.</span><span class=mi>01</span><span class=p>:</span>
-            <span class=n>value</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>kuen</span><span class=o>.</span><span class=n>GetMinimumV</span><span class=p>()</span> <span class=o>+</span> <span class=o>.</span><span class=mi>01</span>
+        <span class=k>if</span> <span class=n>value</span> <span class=o>&lt;</span> <span class=bp>self</span><span class=o>.</span><span class=n>kuen</span><span class=o>.</span><span class=n>GetMinimumV</span><span class=p>()</span> <span class=o>+</span> <span class=mf>.01</span><span class=p>:</span>
+            <span class=n>value</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>kuen</span><span class=o>.</span><span class=n>GetMinimumV</span><span class=p>()</span> <span class=o>+</span> <span class=mf>.01</span>
             <span class=n>sliderWidget</span><span class=o>.</span><span class=n>GetRepresentation</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=n>value</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>kuen</span><span class=o>.</span><span class=n>SetMaximumV</span><span class=p>(</span><span class=n>value</span><span class=p>)</span>
 

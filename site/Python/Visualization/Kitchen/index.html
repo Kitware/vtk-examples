@@ -126,7 +126,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>window1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>window1</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapWindow1</span><span class=p>)</span>
     <span class=n>window1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SkyBlue&#39;</span><span class=p>))</span>
-    <span class=n>window1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=o>.</span><span class=mi>6</span><span class=p>)</span>
+    <span class=n>window1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.6</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>window2Geom</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>window2Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -137,7 +137,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>window2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>window2</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapWindow2</span><span class=p>)</span>
     <span class=n>window2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SkyBlue&#39;</span><span class=p>))</span>
-    <span class=n>window2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=o>.</span><span class=mi>6</span><span class=p>)</span>
+    <span class=n>window2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.6</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>klower1Geom</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>klower1Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -295,8 +295,8 @@ function registerListener(event, func) {
     <span class=n>streamers</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>streamers</span><span class=o>.</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>line</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>streamers</span><span class=o>.</span><span class=n>SetMaximumPropagation</span><span class=p>(</span><span class=n>maxTime</span><span class=p>)</span>
-    <span class=n>streamers</span><span class=o>.</span><span class=n>SetInitialIntegrationStep</span><span class=p>(</span><span class=o>.</span><span class=mi>5</span><span class=p>)</span>
-    <span class=n>streamers</span><span class=o>.</span><span class=n>SetMinimumIntegrationStep</span><span class=p>(</span><span class=o>.</span><span class=mi>1</span><span class=p>)</span>
+    <span class=n>streamers</span><span class=o>.</span><span class=n>SetInitialIntegrationStep</span><span class=p>(</span><span class=mf>.5</span><span class=p>)</span>
+    <span class=n>streamers</span><span class=o>.</span><span class=n>SetMinimumIntegrationStep</span><span class=p>(</span><span class=mf>.1</span><span class=p>)</span>
     <span class=n>streamers</span><span class=o>.</span><span class=n>SetIntegratorType</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
     <span class=n>streamers</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 

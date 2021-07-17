@@ -83,7 +83,7 @@ function registerListener(event, func) {
   <span class=k>static</span> <span class=n>WipeInteractorStyle</span><span class=o>*</span> <span class=n>New</span><span class=p>();</span>
 <span class=hll>  <span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>WipeInteractorStyle</span><span class=p>,</span> <span class=n>vtkInteractorStyleImage</span><span class=p>);</span>
 </span>
-  <span class=k>virtual</span> <span class=kt>void</span> <span class=n>OnChar</span><span class=p>()</span>
+  <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>OnChar</span><span class=p>()</span>
   <span class=p>{</span>
     <span class=k>if</span> <span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Wipe</span><span class=p>)</span>
     <span class=p>{</span>
@@ -117,7 +117,7 @@ function registerListener(event, func) {
       <span class=p>}</span>
     <span class=p>}</span>
   <span class=p>}</span>
-<span class=hll>  <span class=kt>void</span> <span class=n>SetWipe</span><span class=p>(</span><span class=n>vtkImageRectilinearWipe</span><span class=o>*</span> <span class=n>wipe</span><span class=p>)</span>
+<span class=hll>  <span class=kt>void</span> <span class=nf>SetWipe</span><span class=p>(</span><span class=n>vtkImageRectilinearWipe</span><span class=o>*</span> <span class=n>wipe</span><span class=p>)</span>
 </span>  <span class=p>{</span>
     <span class=k>this</span><span class=o>-&gt;</span><span class=n>Wipe</span> <span class=o>=</span> <span class=n>wipe</span><span class=p>;</span>
   <span class=p>}</span>

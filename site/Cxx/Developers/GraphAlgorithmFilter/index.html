@@ -118,7 +118,7 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=k>public</span><span class=o>:</span>
   <span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>,</span><span class=n>vtkGraphAlgorithm</span><span class=p>);</span>
-  <span class=k>static</span> <span class=n>vtkTestGraphAlgorithmFilter</span> <span class=o>*</span><span class=n>New</span><span class=p>();</span>
+  <span class=k>static</span> <span class=n>vtkTestGraphAlgorithmFilter</span> <span class=o>*</span><span class=nf>New</span><span class=p>();</span>
 
 <span class=k>protected</span><span class=o>:</span>
   <span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>(){}</span>
@@ -147,7 +147,7 @@ function registerListener(event, func) {
 
 <span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>);</span>
 
-<span class=kt>int</span> <span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>::</span><span class=n>RequestData</span><span class=p>(</span>
+<span class=kt>int</span> <span class=nf>vtkTestGraphAlgorithmFilter::RequestData</span><span class=p>(</span>
     <span class=n>vtkInformation</span><span class=o>*</span> <span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>request</span><span class=p>),</span> <span class=n>vtkInformationVector</span><span class=o>**</span> <span class=n>inputVector</span><span class=p>,</span>
     <span class=n>vtkInformationVector</span><span class=o>*</span> <span class=n>outputVector</span><span class=p>)</span>
 <span class=p>{</span>

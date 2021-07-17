@@ -93,7 +93,7 @@ function registerListener(event, func) {
 
 <span class=k>public</span><span class=o>:</span>
   <span class=kt>bool</span> <span class=n>IsValidHTMLColorString</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>s</span><span class=p>);</span>
-<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>RGBToHTMLColor</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>);</span>
+<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>RGBToHTMLColor</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>);</span>
 </span><span class=hll>  <span class=n>vtkColor3ub</span> <span class=nf>HTMLColorToRGB</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>colorString</span><span class=p>);</span>
 </span><span class=hll>  <span class=kt>double</span> <span class=nf>RGBToLumaCCIR601</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>);</span>
 </span><span class=p>};</span>
@@ -145,27 +145,27 @@ function registerListener(event, func) {
 
 <span class=k>public</span><span class=o>:</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeWebColorPage</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeVTKColorPage</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeSynonymColorPage</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeCombinedColorPage</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeVTKColorPage</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeSynonymColorPage</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeCombinedColorPage</span><span class=p>();</span>
 
 <span class=k>private</span><span class=o>:</span>
   <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;&gt;</span> <span class=n>GetSynonyms</span><span class=p>();</span>
-<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>FormatRGBForHTML</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>);</span>
-</span>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeHTMLStyle</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeHTMLHeader</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeHTMLIndex</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeTableHeader</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>title</span><span class=p>);</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeTD</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>name</span><span class=p>);</span>
+<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>FormatRGBForHTML</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>);</span>
+</span>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeHTMLStyle</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeHTMLHeader</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeHTMLIndex</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeTableHeader</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>title</span><span class=p>);</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeTD</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>name</span><span class=p>);</span>
   <span class=c1>//! Use when the name is a color name known to the web browser.</span>
-<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeTR</span><span class=p>(</span><span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span> <span class=n>name</span><span class=p>,</span> <span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>,</span>
+<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeTR</span><span class=p>(</span><span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span> <span class=n>name</span><span class=p>,</span> <span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>,</span>
 </span>                     <span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span> <span class=n>textColor</span><span class=p>);</span>
   <span class=c1>//! Use when the name is not a color name known to the web browser.</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeTR_HTML</span><span class=p>(</span><span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span> <span class=n>name</span><span class=p>,</span> <span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span> <span class=n>htmlColor</span><span class=p>,</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeTR_HTML</span><span class=p>(</span><span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span> <span class=n>name</span><span class=p>,</span> <span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span> <span class=n>htmlColor</span><span class=p>,</span>
 <span class=hll>                          <span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>,</span> <span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span> <span class=n>textColor</span><span class=p>);</span>
-</span>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeWebColorTables</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeVTKColorTables</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>MakeSynonymColorTable</span><span class=p>();</span>
+</span>  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeWebColorTables</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeVTKColorTables</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>MakeSynonymColorTable</span><span class=p>();</span>
 
 <span class=k>private</span><span class=o>:</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>nc</span><span class=p>;</span>
@@ -192,7 +192,7 @@ function registerListener(event, func) {
 
 <span class=k>namespace</span> <span class=p>{</span>
 
-<span class=kt>bool</span> <span class=n>HTMLToFromRGBAColor</span><span class=o>::</span><span class=n>IsValidHTMLColorString</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>s</span><span class=p>)</span>
+<span class=kt>bool</span> <span class=nf>HTMLToFromRGBAColor::IsValidHTMLColorString</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>s</span><span class=p>)</span>
 <span class=p>{</span>
   <span class=k>if</span> <span class=p>(</span><span class=n>s</span><span class=p>.</span><span class=n>size</span><span class=p>()</span> <span class=o>==</span> <span class=mi>7</span> <span class=o>||</span> <span class=n>s</span><span class=p>.</span><span class=n>size</span><span class=p>()</span> <span class=o>==</span> <span class=mi>9</span><span class=p>)</span> <span class=c1>// #rrggbb or #rrggbbaa</span>
   <span class=p>{</span>
@@ -205,7 +205,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=nb>false</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLToFromRGBAColor</span><span class=o>::</span><span class=n>RGBToHTMLColor</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>)</span>
+<span class=hll><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLToFromRGBAColor::RGBToHTMLColor</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>s</span> <span class=o>=</span> <span class=s>&quot;#&quot;</span><span class=p>;</span>
   <span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span> <span class=n>os</span><span class=p>;</span>
@@ -217,9 +217,9 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>s</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>vtkColor3ub</span> <span class=n>HTMLToFromRGBAColor</span><span class=o>::</span><span class=n>HTMLColorToRGB</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>colorString</span><span class=p>)</span>
+<span class=hll><span class=n>vtkColor3ub</span> <span class=nf>HTMLToFromRGBAColor::HTMLColorToRGB</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>colorString</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=hll>  <span class=n>vtkColor3ub</span> <span class=nf>c</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+<span class=hll>  <span class=n>vtkColor3ub</span> <span class=n>c</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
 </span>  <span class=k>if</span> <span class=p>(</span><span class=n>IsValidHTMLColorString</span><span class=p>(</span><span class=n>colorString</span><span class=p>)</span> <span class=o>&amp;&amp;</span> <span class=n>colorString</span><span class=p>.</span><span class=n>size</span><span class=p>()</span> <span class=o>==</span> <span class=mi>7</span><span class=p>)</span>
   <span class=p>{</span>
     <span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
@@ -235,12 +235,12 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>c</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>double</span> <span class=n>HTMLToFromRGBAColor</span><span class=o>::</span><span class=n>RGBToLumaCCIR601</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>)</span>
+<span class=hll><span class=kt>double</span> <span class=nf>HTMLToFromRGBAColor::RGBToLumaCCIR601</span><span class=p>(</span><span class=n>vtkColor3ub</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>rgb</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=k>return</span> <span class=mf>0.299</span> <span class=o>*</span> <span class=n>rgb</span><span class=p>.</span><span class=n>GetRed</span><span class=p>()</span> <span class=o>+</span> <span class=mf>0.587</span> <span class=o>*</span> <span class=n>rgb</span><span class=p>.</span><span class=n>GetGreen</span><span class=p>()</span> <span class=o>+</span> <span class=mf>0.114</span> <span class=o>*</span> <span class=n>rgb</span><span class=p>.</span><span class=n>GetBlue</span><span class=p>();</span>
 <span class=p>}</span>
 
-<span class=kt>void</span> <span class=n>ColorStructures</span><span class=o>::</span><span class=n>Init</span><span class=p>()</span>
+<span class=kt>void</span> <span class=nf>ColorStructures::Init</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=c1>// clang-format off</span>
     <span class=k>this</span><span class=o>-&gt;</span><span class=n>cn</span> <span class=o>=</span> <span class=p>{</span>
@@ -384,7 +384,7 @@ function registerListener(event, func) {
 </span>  <span class=c1>// clang-format on</span>
 <span class=p>}</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>MakeWebColorPage</span><span class=p>()</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLTableMaker::MakeWebColorPage</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>res</span> <span class=o>=</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>MakeHTMLHeader</span><span class=p>();</span>
   <span class=n>res</span> <span class=o>+=</span> <span class=s>&quot;&lt;body&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
@@ -401,7 +401,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>res</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>MakeVTKColorPage</span><span class=p>()</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLTableMaker::MakeVTKColorPage</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>res</span> <span class=o>=</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>MakeHTMLHeader</span><span class=p>();</span>
   <span class=n>res</span> <span class=o>+=</span> <span class=s>&quot;&lt;body&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
@@ -420,7 +420,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>res</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>MakeSynonymColorPage</span><span class=p>()</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLTableMaker::MakeSynonymColorPage</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>res</span> <span class=o>=</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>MakeHTMLHeader</span><span class=p>();</span>
   <span class=n>res</span> <span class=o>+=</span> <span class=s>&quot;&lt;body&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
@@ -437,7 +437,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>res</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>MakeCombinedColorPage</span><span class=p>()</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>HTMLTableMaker::MakeCombinedColorPage</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>res</span> <span class=o>=</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>MakeHTMLHeader</span><span class=p>();</span>
   <span class=n>res</span> <span class=o>+=</span> <span class=s>&quot;&lt;body&gt;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
@@ -482,13 +482,13 @@ function registerListener(event, func) {
 <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;&gt;</span> <span class=n>HTMLTableMaker</span><span class=o>::</span><span class=n>GetSynonyms</span><span class=p>()</span>
 <span class=p>{</span>
   <span class=k>auto</span> <span class=n>ncsyn</span> <span class=o>=</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>nc</span><span class=o>-&gt;</span><span class=n>GetSynonyms</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>stringstream</span> <span class=n>ss</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>regex_replace</span><span class=p>(</span><span class=n>ncsyn</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>regex</span><span class=p>(</span><span class=s>&quot;</span><span class=se>\n\n</span><span class=s>&quot;</span><span class=p>),</span> <span class=s>&quot;*&quot;</span><span class=p>));</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>stringstream</span> <span class=nf>ss</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>regex_replace</span><span class=p>(</span><span class=n>ncsyn</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>regex</span><span class=p>(</span><span class=s>&quot;</span><span class=se>\n\n</span><span class=s>&quot;</span><span class=p>),</span> <span class=s>&quot;*&quot;</span><span class=p>));</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>synonyms</span><span class=p>;</span>
   <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;&gt;</span> <span class=n>sn</span><span class=p>;</span>
   <span class=k>while</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>getline</span><span class=p>(</span><span class=n>ss</span><span class=p>,</span> <span class=n>synonyms</span><span class=p>,</span> <span class=sc>&#39;*&#39;</span><span class=p>))</span>
   <span class=p>{</span>
     <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span> <span class=n>syns</span><span class=p>;</span>
-    <span class=n>std</span><span class=o>::</span><span class=n>stringstream</span> <span class=n>ss1</span><span class=p>(</span><span class=n>synonyms</span><span class=p>);</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>stringstream</span> <span class=nf>ss1</span><span class=p>(</span><span class=n>synonyms</span><span class=p>);</span>
     <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>color</span><span class=p>;</span>
     <span class=k>while</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>getline</span><span class=p>(</span><span class=n>ss1</span><span class=p>,</span> <span class=n>color</span><span class=p>,</span> <span class=sc>&#39;\n&#39;</span><span class=p>))</span>
     <span class=p>{</span>

@@ -88,7 +88,7 @@ function registerListener(event, func) {
 
 <span class=hll>  <span class=n>vtkSeedImageCallback</span><span class=p>()</span> <span class=o>=</span> <span class=k>default</span><span class=p>;</span>
 </span>
-<span class=hll>  <span class=k>virtual</span> <span class=kt>void</span> <span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=p>,</span> <span class=kt>unsigned</span> <span class=kt>long</span> <span class=n>event</span><span class=p>,</span> <span class=kt>void</span><span class=o>*</span> <span class=n>calldata</span><span class=p>)</span>
+<span class=hll>  <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=p>,</span> <span class=kt>unsigned</span> <span class=kt>long</span> <span class=n>event</span><span class=p>,</span> <span class=kt>void</span><span class=o>*</span> <span class=n>calldata</span><span class=p>)</span>
 </span>  <span class=p>{</span>
 <span class=hll>    <span class=k>if</span> <span class=p>(</span><span class=n>event</span> <span class=o>==</span> <span class=n>vtkCommand</span><span class=o>::</span><span class=n>PlacePointEvent</span><span class=p>)</span>
 </span>    <span class=p>{</span>
@@ -121,11 +121,11 @@ function registerListener(event, func) {
     <span class=p>}</span>
   <span class=p>}</span>
 
-<span class=hll>  <span class=kt>void</span> <span class=n>SetRepresentation</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSeedRepresentation</span><span class=o>&gt;</span> <span class=n>rep</span><span class=p>)</span>
+<span class=hll>  <span class=kt>void</span> <span class=nf>SetRepresentation</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSeedRepresentation</span><span class=o>&gt;</span> <span class=n>rep</span><span class=p>)</span>
 </span>  <span class=p>{</span>
     <span class=k>this</span><span class=o>-&gt;</span><span class=n>SeedRepresentation</span> <span class=o>=</span> <span class=n>rep</span><span class=p>;</span>
   <span class=p>}</span>
-<span class=hll>  <span class=kt>void</span> <span class=n>SetWidget</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSeedWidget</span><span class=o>&gt;</span> <span class=n>widget</span><span class=p>)</span>
+<span class=hll>  <span class=kt>void</span> <span class=nf>SetWidget</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSeedWidget</span><span class=o>&gt;</span> <span class=n>widget</span><span class=p>)</span>
 </span>  <span class=p>{</span>
     <span class=k>this</span><span class=o>-&gt;</span><span class=n>SeedWidget</span> <span class=o>=</span> <span class=n>widget</span><span class=p>;</span>
   <span class=p>}</span>

@@ -88,7 +88,7 @@ function registerListener(event, func) {
 <span class=k>public</span><span class=o>:</span>
   <span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>,</span><span class=n>vtkAlgorithm</span><span class=p>);</span>
 
-  <span class=k>static</span> <span class=n>vtkTestFilterSelfProgressFilter</span> <span class=o>*</span><span class=n>New</span><span class=p>();</span>
+  <span class=k>static</span> <span class=n>vtkTestFilterSelfProgressFilter</span> <span class=o>*</span><span class=nf>New</span><span class=p>();</span>
 
 <span class=k>protected</span><span class=o>:</span>
   <span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>();</span>
@@ -96,7 +96,7 @@ function registerListener(event, func) {
 
   <span class=kt>int</span> <span class=n>RequestData</span><span class=p>(</span><span class=n>vtkInformation</span> <span class=o>*</span><span class=p>,</span> <span class=n>vtkInformationVector</span> <span class=o>**</span><span class=p>,</span> <span class=n>vtkInformationVector</span> <span class=o>*</span><span class=p>)</span> <span class=k>override</span><span class=p>;</span>
 
-  <span class=k>static</span> <span class=kt>void</span> <span class=n>ProgressFunction</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span> <span class=n>caller</span><span class=p>,</span> <span class=kt>long</span> <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>eventId</span><span class=p>,</span> <span class=kt>void</span><span class=o>*</span> <span class=n>clientData</span><span class=p>,</span> <span class=kt>void</span><span class=o>*</span> <span class=n>callData</span><span class=p>);</span>
+  <span class=k>static</span> <span class=kt>void</span> <span class=nf>ProgressFunction</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span> <span class=n>caller</span><span class=p>,</span> <span class=kt>long</span> <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>eventId</span><span class=p>,</span> <span class=kt>void</span><span class=o>*</span> <span class=n>clientData</span><span class=p>,</span> <span class=kt>void</span><span class=o>*</span> <span class=n>callData</span><span class=p>);</span>
 
 <span class=k>private</span><span class=o>:</span>
   <span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>(</span><span class=k>const</span> <span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>&amp;</span><span class=p>)</span> <span class=o>=</span> <span class=k>delete</span><span class=p>;</span>

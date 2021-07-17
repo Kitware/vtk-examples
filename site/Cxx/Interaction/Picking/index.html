@@ -83,7 +83,7 @@ function registerListener(event, func) {
 <span class=hll>  <span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>MouseInteractorStyle2</span><span class=p>,</span> <span class=n>vtkInteractorStyleTrackballCamera</span><span class=p>);</span>
 </span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
-  <span class=k>virtual</span> <span class=kt>void</span> <span class=n>OnLeftButtonDown</span><span class=p>()</span> <span class=k>override</span>
+  <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>OnLeftButtonDown</span><span class=p>()</span> <span class=k>override</span>
   <span class=p>{</span>
     <span class=kt>int</span><span class=o>*</span> <span class=n>clickPos</span> <span class=o>=</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetEventPosition</span><span class=p>();</span>
 

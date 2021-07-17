@@ -82,7 +82,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSphere</span><span class=p>()</span>
 </span>    <span class=n>sphere</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transformSphere</span><span class=p>)</span>
-    <span class=n>sphere</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=o>.</span><span class=mi>5</span><span class=p>)</span>
+    <span class=n>sphere</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>.5</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>transformCylinder</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>transformCylinder</span><span class=o>.</span><span class=n>Identity</span><span class=p>()</span>
@@ -94,7 +94,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>cylinder</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCylinder</span><span class=p>()</span>
 </span>    <span class=n>cylinder</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transformCylinder</span><span class=p>)</span>
-    <span class=n>cylinder</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=o>.</span><span class=mi>3</span><span class=p>)</span>
+    <span class=n>cylinder</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>.3</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>boolean</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImplicitBoolean</span><span class=p>()</span>
 </span>    <span class=n>boolean</span><span class=o>.</span><span class=n>AddFunction</span><span class=p>(</span><span class=n>cylinder</span><span class=p>)</span>

@@ -78,7 +78,7 @@ function registerListener(event, func) {
   <span class=k>static</span> <span class=n>MyInteractor</span><span class=o>*</span> <span class=n>New</span><span class=p>();</span>
 <span class=hll>  <span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>MyInteractor</span><span class=p>,</span> <span class=n>vtkInteractorStyleTrackballCamera</span><span class=p>);</span>
 </span>
-  <span class=k>virtual</span> <span class=kt>void</span> <span class=n>OnLeftButtonDown</span><span class=p>()</span> <span class=k>override</span>
+  <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>OnLeftButtonDown</span><span class=p>()</span> <span class=k>override</span>
   <span class=p>{</span>
     <span class=k>this</span><span class=o>-&gt;</span><span class=n>VisibleFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;There are currently: &quot;</span>
@@ -88,7 +88,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>vtkInteractorStyleTrackballCamera</span><span class=o>::</span><span class=n>OnLeftButtonDown</span><span class=p>();</span>
 </span>  <span class=p>}</span>
 
-<span class=hll>  <span class=kt>void</span> <span class=n>SetVisibleFilter</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSelectVisiblePoints</span><span class=o>&gt;</span> <span class=n>vis</span><span class=p>)</span>
+<span class=hll>  <span class=kt>void</span> <span class=nf>SetVisibleFilter</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSelectVisiblePoints</span><span class=o>&gt;</span> <span class=n>vis</span><span class=p>)</span>
 </span>  <span class=p>{</span>
     <span class=k>this</span><span class=o>-&gt;</span><span class=n>VisibleFilter</span> <span class=o>=</span> <span class=n>vis</span><span class=p>;</span>
   <span class=p>}</span>

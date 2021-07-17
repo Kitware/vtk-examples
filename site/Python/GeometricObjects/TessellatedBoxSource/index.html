@@ -73,7 +73,7 @@ function registerListener(event, func) {
 </span>
 <span class=hll>    <span class=n>shrink</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkShrinkFilter</span><span class=p>()</span>
 </span>    <span class=n>shrink</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>boxSource</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>shrink</span><span class=o>.</span><span class=n>SetShrinkFactor</span><span class=p>(</span><span class=o>.</span><span class=mi>8</span><span class=p>)</span>
+    <span class=n>shrink</span><span class=o>.</span><span class=n>SetShrinkFactor</span><span class=p>(</span><span class=mf>.8</span><span class=p>)</span>
 
     <span class=c1># Create a mapper and actor.</span>
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>()</span>

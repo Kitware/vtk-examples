@@ -154,7 +154,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>outsideActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>outsideActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>outsideMapper</span><span class=p>)</span>
     <span class=n>outsideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>outsideColor</span><span class=p>)</span>
-    <span class=n>outsideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>6</span><span class=p>)</span>
+    <span class=n>outsideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.6</span><span class=p>)</span>
     <span class=n>outsideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
 
     <span class=c1># Inside</span>
@@ -165,7 +165,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>insideActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>insideActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>insideMapper</span><span class=p>)</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>insideColor</span><span class=p>)</span>
-    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>6</span><span class=p>)</span>
+    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.6</span><span class=p>)</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
 
@@ -177,7 +177,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>borderActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>borderActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>borderMapper</span><span class=p>)</span>
     <span class=n>borderActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>borderColor</span><span class=p>)</span>
-    <span class=n>borderActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>6</span><span class=p>)</span>
+    <span class=n>borderActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.6</span><span class=p>)</span>
     <span class=n>borderActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
     <span class=n>borderActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
 
@@ -189,7 +189,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>surfaceActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>surfaceActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>surfaceMapper</span><span class=p>)</span>
     <span class=n>surfaceActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>surfaceColor</span><span class=p>)</span>
-    <span class=n>surfaceActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=o>.</span><span class=mi>1</span><span class=p>)</span>
+    <span class=n>surfaceActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.1</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>

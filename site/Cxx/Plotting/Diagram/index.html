@@ -154,7 +154,7 @@ function registerListener(event, func) {
 <span class=c1>// Make our new derived class to draw a diagram</span>
 <span class=hll><span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>APIDiagram</span><span class=p>);</span>
 </span><span class=c1>// This function draws our API diagram</span>
-<span class=hll><span class=kt>bool</span> <span class=n>APIDiagram</span><span class=o>::</span><span class=n>Paint</span><span class=p>(</span><span class=n>vtkContext2D</span><span class=o>*</span> <span class=n>painter</span><span class=p>)</span>
+<span class=hll><span class=kt>bool</span> <span class=nf>APIDiagram::Paint</span><span class=p>(</span><span class=n>vtkContext2D</span><span class=o>*</span> <span class=n>painter</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=c1>// Drawing a hard wired diagram 800x600 as a demonstration of the 2D API</span>
   <span class=n>painter</span><span class=o>-&gt;</span><span class=n>GetTextProp</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetVerticalJustificationToCentered</span><span class=p>();</span>

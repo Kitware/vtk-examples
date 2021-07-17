@@ -151,7 +151,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>XActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFollower</span><span class=p>()</span>
 </span>    <span class=n>XActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>XTextMapper</span><span class=p>)</span>
-    <span class=n>XActor</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mf>0.02</span><span class=p>,</span> <span class=o>.</span><span class=mi>02</span><span class=p>,</span> <span class=o>.</span><span class=mi>02</span><span class=p>)</span>
+    <span class=n>XActor</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mf>0.02</span><span class=p>,</span> <span class=mf>.02</span><span class=p>,</span> <span class=mf>.02</span><span class=p>)</span>
     <span class=n>XActor</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>0.35</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.05</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.05</span><span class=p>)</span>
     <span class=n>XActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
@@ -162,7 +162,7 @@ function registerListener(event, func) {
 </span>    <span class=n>YTextMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>YText</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>YActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFollower</span><span class=p>()</span>
 </span>    <span class=n>YActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>YTextMapper</span><span class=p>)</span>
-    <span class=n>YActor</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mf>0.02</span><span class=p>,</span> <span class=o>.</span><span class=mi>02</span><span class=p>,</span> <span class=o>.</span><span class=mi>02</span><span class=p>)</span>
+    <span class=n>YActor</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mf>0.02</span><span class=p>,</span> <span class=mf>.02</span><span class=p>,</span> <span class=mf>.02</span><span class=p>)</span>
     <span class=n>YActor</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=o>-</span><span class=mf>0.05</span><span class=p>,</span> <span class=mf>0.35</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.05</span><span class=p>)</span>
     <span class=n>YActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
@@ -172,7 +172,7 @@ function registerListener(event, func) {
 </span>    <span class=n>ZTextMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>ZText</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>ZActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFollower</span><span class=p>()</span>
 </span>    <span class=n>ZActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>ZTextMapper</span><span class=p>)</span>
-    <span class=n>ZActor</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mf>0.02</span><span class=p>,</span> <span class=o>.</span><span class=mi>02</span><span class=p>,</span> <span class=o>.</span><span class=mi>02</span><span class=p>)</span>
+    <span class=n>ZActor</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mf>0.02</span><span class=p>,</span> <span class=mf>.02</span><span class=p>,</span> <span class=mf>.02</span><span class=p>)</span>
     <span class=n>ZActor</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=o>-</span><span class=mf>0.05</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.05</span><span class=p>,</span> <span class=mf>0.35</span><span class=p>)</span>
     <span class=n>ZActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
@@ -193,7 +193,7 @@ function registerListener(event, func) {
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>650</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
-</span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=o>.</span><span class=mi>274</span><span class=p>,</span> <span class=mf>13.72</span><span class=p>)</span>
+</span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>.274</span><span class=p>,</span> <span class=mf>13.72</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>0.433816</span><span class=p>,</span> <span class=mf>0.333131</span><span class=p>,</span> <span class=mf>0.449</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=o>-</span><span class=mf>1.96987</span><span class=p>,</span> <span class=mf>1.15145</span><span class=p>,</span> <span class=mf>1.49053</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>0.378927</span><span class=p>,</span> <span class=mf>0.911821</span><span class=p>,</span> <span class=mf>0.158107</span><span class=p>)</span>

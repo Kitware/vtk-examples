@@ -60,7 +60,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPoints.h&gt;</span><span class=cp></span>
 </span>
 <span class=k>namespace</span> <span class=p>{</span>
-<span class=k>static</span> <span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=n>unmangleName</span><span class=p>(</span><span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=n>name</span><span class=p>);</span>
+<span class=k>static</span> <span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=nf>unmangleName</span><span class=p>(</span><span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=n>name</span><span class=p>);</span>
 <span class=p>}</span>
 
 <span class=kt>int</span> <span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
@@ -93,7 +93,7 @@ function registerListener(event, func) {
 <span class=cp>#include</span> <span class=cpf>&lt;cxxabi.h&gt;</span><span class=cp></span>
 <span class=cp>#endif</span>
 
-<span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=n>unmangleName</span><span class=p>(</span><span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=n>name</span><span class=p>)</span>
+<span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=nf>unmangleName</span><span class=p>(</span><span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=n>name</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=cp>#ifdef GCC_USEDEMANGLE</span>
   <span class=kt>char</span> <span class=k>const</span><span class=o>*</span> <span class=n>mangledName</span> <span class=o>=</span> <span class=n>name</span><span class=p>;</span>

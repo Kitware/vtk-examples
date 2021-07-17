@@ -143,7 +143,7 @@ function registerListener(event, func) {
       <span class=k>if</span> <span class=p>(</span><span class=n>argc</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>PrintUsage</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span>
       <span class=k>else</span>
-        <span class=nf>PrintUsage</span><span class=p>(</span><span class=k>nullptr</span><span class=p>);</span>
+        <span class=n>PrintUsage</span><span class=p>(</span><span class=k>nullptr</span><span class=p>);</span>
       <span class=k>return</span> <span class=n>EXIT_FAILURE</span><span class=p>;</span>
     <span class=p>}</span>
     <span class=k>if</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>i</span><span class=p>])</span> <span class=o>==</span> <span class=s>&quot;-co&quot;</span> <span class=o>||</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>i</span><span class=p>])</span> <span class=o>==</span> <span class=s>&quot;--csv-output&quot;</span><span class=p>)</span>

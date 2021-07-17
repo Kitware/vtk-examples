@@ -88,7 +88,7 @@ function registerListener(event, func) {
 <span class=cp>#include</span> <span class=cpf>&lt;sstream&gt;</span><span class=cp></span>
 
 <span class=k>namespace</span> <span class=p>{</span>
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>ProgramParameters</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>programName</span><span class=p>);</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>ProgramParameters</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>programName</span><span class=p>);</span>
 
 <span class=hll><span class=kt>void</span> <span class=nf>case0</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span><span class=p>,</span> <span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=p>);</span>
 </span><span class=hll><span class=kt>void</span> <span class=nf>case1</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span><span class=p>,</span> <span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=p>);</span>
@@ -494,7 +494,7 @@ function registerListener(event, func) {
 
 <span class=k>namespace</span> <span class=p>{</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>ProgramParameters</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>programName</span><span class=p>)</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>ProgramParameters</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>programName</span><span class=p>)</span>
 <span class=p>{</span>
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>ret</span> <span class=o>=</span>
       <span class=s>&quot;Usage: &quot;</span> <span class=o>+</span> <span class=n>programName</span> <span class=o>+</span> <span class=s>&quot; [n [cases [cases ...]] [rotation] [label]</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
@@ -519,7 +519,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>ret</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case0</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case0</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
@@ -539,7 +539,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case1</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case1</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
@@ -559,7 +559,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case2</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case2</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
@@ -579,7 +579,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case3</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case3</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
@@ -599,7 +599,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case4</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case4</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
@@ -619,7 +619,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case5</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case5</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
@@ -639,7 +639,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case6</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case6</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
@@ -659,7 +659,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case7</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case7</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
@@ -679,7 +679,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case8</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case8</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
@@ -699,7 +699,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case9</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case9</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
@@ -718,7 +718,7 @@ function registerListener(event, func) {
     <span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 9c - 10110001&quot;</span><span class=p>);</span>
   <span class=p>}</span>
 <span class=p>}</span>
-<span class=hll><span class=kt>void</span> <span class=n>case10</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case10</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
@@ -738,7 +738,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case11</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case11</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
@@ -758,7 +758,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case12</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case12</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
@@ -778,7 +778,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case13</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case13</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
@@ -798,7 +798,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span> <span class=n>case14</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span> <span class=nf>case14</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span> <span class=n>scalars</span><span class=p>,</span> <span class=n>vtkVectorText</span><span class=o>*</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=kt>int</span> <span class=n>IN</span><span class=p>,</span> <span class=kt>int</span> <span class=n>OUT</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>IN</span><span class=p>);</span>
   <span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>OUT</span><span class=p>);</span>

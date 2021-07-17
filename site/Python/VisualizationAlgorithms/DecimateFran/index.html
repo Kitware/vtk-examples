@@ -109,8 +109,8 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>decimatedActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>decimatedActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>decimatedMapper</span><span class=p>)</span>
-    <span class=n>decimatedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=o>.</span><span class=mi>5</span><span class=p>)</span>
-    <span class=n>decimatedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=o>.</span><span class=mi>5</span><span class=p>)</span>
+    <span class=n>decimatedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>.5</span><span class=p>)</span>
+    <span class=n>decimatedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>.5</span><span class=p>)</span>
     <span class=n>decimatedActor</span><span class=o>.</span><span class=n>SetTexture</span><span class=p>(</span><span class=n>texture</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>originalMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
@@ -118,8 +118,8 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>originalActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>originalActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>originalMapper</span><span class=p>)</span>
-    <span class=n>originalActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=o>.</span><span class=mi>5</span><span class=p>)</span>
-    <span class=n>originalActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=o>.</span><span class=mi>5</span><span class=p>)</span>
+    <span class=n>originalActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>.5</span><span class=p>)</span>
+    <span class=n>originalActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>.5</span><span class=p>)</span>
     <span class=n>originalActor</span><span class=o>.</span><span class=n>SetTexture</span><span class=p>(</span><span class=n>texture</span><span class=p>)</span>
 
     <span class=c1># Create the RenderWindow, Renderer and Interactor.</span>

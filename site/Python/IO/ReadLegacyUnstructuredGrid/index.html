@@ -89,7 +89,7 @@ function registerListener(event, func) {
     <span class=c1># Tube the edges</span>
 <span class=hll>    <span class=n>tubes</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTubeFilter</span><span class=p>()</span>
 </span>    <span class=n>tubes</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>extractEdges</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>tubes</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=o>.</span><span class=mi>05</span><span class=p>)</span>
+    <span class=n>tubes</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>.05</span><span class=p>)</span>
     <span class=n>tubes</span><span class=o>.</span><span class=n>SetNumberOfSides</span><span class=p>(</span><span class=mi>21</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>edgeMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>

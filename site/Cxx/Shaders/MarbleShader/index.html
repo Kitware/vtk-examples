@@ -166,7 +166,7 @@ function registerListener(event, func) {
 
   <span class=k>auto</span> <span class=n>polyData</span> <span class=o>=</span> <span class=n>ReadPolyData</span><span class=p>(</span><span class=mi>2</span> <span class=o>?</span> <span class=n>argv</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>:</span> <span class=s>&quot;&quot;</span><span class=p>);</span>
 
-  <span class=n>std</span><span class=o>::</span><span class=n>ifstream</span> <span class=n>shaderFile</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>ifstream</span> <span class=nf>shaderFile</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
   <span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span> <span class=n>shaderCode</span><span class=p>;</span>
   <span class=n>shaderCode</span> <span class=o>&lt;&lt;</span> <span class=n>shaderFile</span><span class=p>.</span><span class=n>rdbuf</span><span class=p>();</span>
 

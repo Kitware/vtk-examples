@@ -135,7 +135,7 @@ function registerListener(event, func) {
   <span class=c1>// generate some random colors.</span>
   <span class=k>if</span> <span class=p>(</span><span class=n>numberOfRegions</span> <span class=o>&gt;</span> <span class=mi>9</span><span class=p>)</span>
   <span class=p>{</span>
-    <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=n>mt</span><span class=p>(</span><span class=mi>4355412</span><span class=p>);</span> <span class=c1>// Standard mersenne_twister_engine</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=nf>mt</span><span class=p>(</span><span class=mi>4355412</span><span class=p>);</span> <span class=c1>// Standard mersenne_twister_engine</span>
     <span class=n>std</span><span class=o>::</span><span class=n>uniform_real_distribution</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>distribution</span><span class=p>(</span><span class=mf>.4</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
     <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>10</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>numberOfRegions</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
     <span class=p>{</span>

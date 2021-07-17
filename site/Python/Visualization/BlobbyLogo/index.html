@@ -125,7 +125,7 @@ function registerListener(event, func) {
     <span class=c1># Now create an implicit model of the same letter.</span>
 <span class=hll>    <span class=n>blobbyLogoImp</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImplicitModeller</span><span class=p>()</span>
 </span>    <span class=n>blobbyLogoImp</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>appendAll</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>blobbyLogoImp</span><span class=o>.</span><span class=n>SetMaximumDistance</span><span class=p>(</span><span class=o>.</span><span class=mi>075</span><span class=p>)</span>
+    <span class=n>blobbyLogoImp</span><span class=o>.</span><span class=n>SetMaximumDistance</span><span class=p>(</span><span class=mf>.075</span><span class=p>)</span>
     <span class=n>blobbyLogoImp</span><span class=o>.</span><span class=n>SetSampleDimensions</span><span class=p>(</span><span class=mi>64</span><span class=p>,</span> <span class=mi>64</span><span class=p>,</span> <span class=mi>64</span><span class=p>)</span>
     <span class=n>blobbyLogoImp</span><span class=o>.</span><span class=n>SetAdjustDistance</span><span class=p>(</span><span class=mf>0.05</span><span class=p>)</span>
 
@@ -141,13 +141,13 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>tomato</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkProperty</span><span class=p>()</span>
 </span>    <span class=n>tomato</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;tomato&#39;</span><span class=p>))</span>
-    <span class=n>tomato</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>3</span><span class=p>)</span>
+    <span class=n>tomato</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.3</span><span class=p>)</span>
     <span class=n>tomato</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>banana</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkProperty</span><span class=p>()</span>
 </span>    <span class=n>banana</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;banana&#39;</span><span class=p>))</span>
-    <span class=n>banana</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=o>.</span><span class=mi>7</span><span class=p>)</span>
-    <span class=n>banana</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>4</span><span class=p>)</span>
+    <span class=n>banana</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>.7</span><span class=p>)</span>
+    <span class=n>banana</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.4</span><span class=p>)</span>
     <span class=n>banana</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
 
     <span class=c1># Now an actor.</span>

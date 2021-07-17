@@ -131,7 +131,7 @@ function registerListener(event, func) {
     <span class=c1># Create a cone whose apex indicates the application of load.</span>
     <span class=c1>#</span>
 <span class=hll>    <span class=n>coneSrc</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkConeSource</span><span class=p>()</span>
-</span>    <span class=n>coneSrc</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=o>.</span><span class=mi>5</span><span class=p>)</span>
+</span>    <span class=n>coneSrc</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>.5</span><span class=p>)</span>
     <span class=n>coneSrc</span><span class=o>.</span><span class=n>SetHeight</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
 <span class=hll>    <span class=n>coneMap</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>coneMap</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>coneSrc</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -165,7 +165,7 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>MakeLogLUT</span><span class=p>(</span><span class=n>lut</span><span class=p>):</span>
     <span class=c1># Original</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>SetScaleToLog10</span><span class=p>()</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetHueRange</span><span class=p>(</span><span class=o>.</span><span class=mi>6667</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetHueRange</span><span class=p>(</span><span class=mf>.6667</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>Build</span><span class=p>()</span>
 
 

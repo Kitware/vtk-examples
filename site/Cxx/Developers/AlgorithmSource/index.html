@@ -113,11 +113,11 @@ function registerListener(event, func) {
   <span class=c1>// Get the output data object for a port on this algorithm.</span>
   <span class=n>vtkTest1</span><span class=o>*</span> <span class=nf>GetOutput</span><span class=p>();</span>
   <span class=n>vtkTest1</span><span class=o>*</span> <span class=nf>GetOutput</span><span class=p>(</span><span class=kt>int</span><span class=p>);</span>
-  <span class=k>virtual</span> <span class=kt>void</span> <span class=n>SetOutput</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span> <span class=n>d</span><span class=p>);</span>
+  <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>SetOutput</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span> <span class=n>d</span><span class=p>);</span>
 
   <span class=c1>// Description:</span>
   <span class=c1>// see vtkAlgorithm for details</span>
-  <span class=k>virtual</span> <span class=kt>int</span> <span class=n>ProcessRequest</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=p>,</span>
+  <span class=k>virtual</span> <span class=kt>int</span> <span class=nf>ProcessRequest</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=p>,</span>
                              <span class=n>vtkInformationVector</span><span class=o>**</span><span class=p>,</span>
                              <span class=n>vtkInformationVector</span><span class=o>*</span><span class=p>)</span> <span class=k>override</span><span class=p>;</span>
 
@@ -128,13 +128,13 @@ function registerListener(event, func) {
   <span class=c1>// Description:</span>
   <span class=c1>// This is called by the superclass.</span>
   <span class=c1>// This is the method you should override.</span>
-  <span class=k>virtual</span> <span class=kt>int</span> <span class=n>RequestDataObject</span><span class=p>(</span>
+  <span class=k>virtual</span> <span class=kt>int</span> <span class=nf>RequestDataObject</span><span class=p>(</span>
     <span class=n>vtkInformation</span><span class=o>*</span> <span class=n>request</span><span class=p>,</span>
     <span class=n>vtkInformationVector</span><span class=o>**</span> <span class=n>inputVector</span><span class=p>,</span>
     <span class=n>vtkInformationVector</span><span class=o>*</span> <span class=n>outputVector</span> <span class=p>);</span>
 
   <span class=c1>// convenience method</span>
-  <span class=k>virtual</span> <span class=kt>int</span> <span class=n>RequestInformation</span><span class=p>(</span>
+  <span class=k>virtual</span> <span class=kt>int</span> <span class=nf>RequestInformation</span><span class=p>(</span>
     <span class=n>vtkInformation</span><span class=o>*</span> <span class=n>request</span><span class=p>,</span>
     <span class=n>vtkInformationVector</span><span class=o>**</span> <span class=n>inputVector</span><span class=p>,</span>
     <span class=n>vtkInformationVector</span><span class=o>*</span> <span class=n>outputVector</span> <span class=p>);</span>
@@ -142,7 +142,7 @@ function registerListener(event, func) {
   <span class=c1>// Description:</span>
   <span class=c1>// This is called by the superclass.</span>
   <span class=c1>// This is the method you should override.</span>
-  <span class=k>virtual</span> <span class=kt>int</span> <span class=n>RequestData</span><span class=p>(</span>
+  <span class=k>virtual</span> <span class=kt>int</span> <span class=nf>RequestData</span><span class=p>(</span>
     <span class=n>vtkInformation</span><span class=o>*</span> <span class=n>request</span><span class=p>,</span>
     <span class=n>vtkInformationVector</span><span class=o>**</span> <span class=n>inputVector</span><span class=p>,</span>
     <span class=n>vtkInformationVector</span><span class=o>*</span> <span class=n>outputVector</span> <span class=p>);</span>
@@ -150,12 +150,12 @@ function registerListener(event, func) {
   <span class=c1>// Description:</span>
   <span class=c1>// This is called by the superclass.</span>
   <span class=c1>// This is the method you should override.</span>
-  <span class=k>virtual</span> <span class=kt>int</span> <span class=n>RequestUpdateExtent</span><span class=p>(</span>
+  <span class=k>virtual</span> <span class=kt>int</span> <span class=nf>RequestUpdateExtent</span><span class=p>(</span>
     <span class=n>vtkInformation</span><span class=o>*</span><span class=p>,</span>
     <span class=n>vtkInformationVector</span><span class=o>**</span><span class=p>,</span>
     <span class=n>vtkInformationVector</span><span class=o>*</span> <span class=p>);</span>
 
-  <span class=k>virtual</span> <span class=kt>int</span> <span class=n>FillOutputPortInformation</span><span class=p>(</span> <span class=kt>int</span> <span class=n>port</span><span class=p>,</span> <span class=n>vtkInformation</span><span class=o>*</span> <span class=n>info</span> <span class=p>)</span> <span class=k>override</span><span class=p>;</span>
+  <span class=k>virtual</span> <span class=kt>int</span> <span class=nf>FillOutputPortInformation</span><span class=p>(</span> <span class=kt>int</span> <span class=n>port</span><span class=p>,</span> <span class=n>vtkInformation</span><span class=o>*</span> <span class=n>info</span> <span class=p>)</span> <span class=k>override</span><span class=p>;</span>
 
 <span class=k>private</span><span class=o>:</span>
   <span class=n>vtkTestAlgorithmSource</span><span class=p>(</span> <span class=k>const</span> <span class=n>vtkTestAlgorithmSource</span><span class=o>&amp;</span> <span class=p>);</span> <span class=c1>// Not implemented.</span>

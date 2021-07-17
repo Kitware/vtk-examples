@@ -68,7 +68,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>tessellate</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTessellatorFilter</span><span class=p>()</span>
 </span>    <span class=n>tessellate</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>uGrid</span><span class=p>)</span>
-    <span class=n>tessellate</span><span class=o>.</span><span class=n>SetChordError</span><span class=p>(</span><span class=o>.</span><span class=mi>035</span><span class=p>)</span>
+    <span class=n>tessellate</span><span class=o>.</span><span class=n>SetChordError</span><span class=p>(</span><span class=mf>.035</span><span class=p>)</span>
     <span class=n>tessellate</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=n>cellMap</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>

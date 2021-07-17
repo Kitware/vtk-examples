@@ -131,7 +131,7 @@ function registerListener(event, func) {
     <span class=n>transform</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=n>matrix</span><span class=p>)</span>  <span class=c1># apply direction cosines</span>
     <span class=n>transform</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=o>-</span><span class=mf>90.0</span><span class=p>)</span>  <span class=c1># align cylinder to x axis</span>
     <span class=n>transform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=n>length</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>  <span class=c1># scale along the height vector</span>
-    <span class=n>transform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=o>.</span><span class=mi>5</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>  <span class=c1># translate to start of cylinder</span>
+    <span class=n>transform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>.5</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>  <span class=c1># translate to start of cylinder</span>
 
     <span class=c1># Transform the polydata</span>
 <span class=hll>    <span class=n>transformPD</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>

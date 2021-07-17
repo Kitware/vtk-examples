@@ -194,10 +194,10 @@ function registerListener(event, func) {
         <span class=c1># mapper and actor to display the tubes.</span>
 <span class=hll>        <span class=n>triangleEdgeTubes</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTubeFilter</span><span class=p>()</span>
 </span>        <span class=n>triangleEdgeTubes</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>triangleEdges</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-        <span class=n>triangleEdgeTubes</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=o>.</span><span class=mi>005</span><span class=p>)</span>
+        <span class=n>triangleEdgeTubes</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>.005</span><span class=p>)</span>
         <span class=n>triangleEdgeTubes</span><span class=o>.</span><span class=n>SetNumberOfSides</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span>
         <span class=n>triangleEdgeTubes</span><span class=o>.</span><span class=n>UseDefaultNormalOn</span><span class=p>()</span>
-        <span class=n>triangleEdgeTubes</span><span class=o>.</span><span class=n>SetDefaultNormal</span><span class=p>(</span><span class=o>.</span><span class=mi>577</span><span class=p>,</span> <span class=o>.</span><span class=mi>577</span><span class=p>,</span> <span class=o>.</span><span class=mi>577</span><span class=p>)</span>
+        <span class=n>triangleEdgeTubes</span><span class=o>.</span><span class=n>SetDefaultNormal</span><span class=p>(</span><span class=mf>.577</span><span class=p>,</span> <span class=mf>.577</span><span class=p>,</span> <span class=mf>.577</span><span class=p>)</span>
 
 <span class=hll>        <span class=n>triangleEdgeMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>        <span class=n>triangleEdgeMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>triangleEdgeTubes</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -207,7 +207,7 @@ function registerListener(event, func) {
 </span>        <span class=n>triangleEdgeActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>triangleEdgeMapper</span><span class=p>)</span>
         <span class=n>triangleEdgeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
             <span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;lamp_black&#39;</span><span class=p>))</span>
-        <span class=n>triangleEdgeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>4</span><span class=p>)</span>
+        <span class=n>triangleEdgeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.4</span><span class=p>)</span>
         <span class=n>triangleEdgeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
 
         <span class=c1># Shrink the triangles we found earlier.  Create the associated mapper</span>
@@ -224,24 +224,24 @@ function registerListener(event, func) {
 </span>        <span class=n>Triangles</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>aMapper</span><span class=p>)</span>
         <span class=n>Triangles</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
             <span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;banana&#39;</span><span class=p>))</span>
-        <span class=n>Triangles</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=o>.</span><span class=mi>6</span><span class=p>)</span>
+        <span class=n>Triangles</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.6</span><span class=p>)</span>
 
         <span class=c1># Draw a cube the same size and at the same position as the one</span>
         <span class=c1># created previously.  Extract the edges because we only want to see</span>
 <span class=hll>        <span class=c1># the outline of the cube.  Pass the edges through a vtkTubeFilter so</span>
 </span>        <span class=c1># they are displayed as tubes rather than lines.</span>
 <span class=hll>        <span class=n>CubeModel</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCubeSource</span><span class=p>()</span>
-</span>        <span class=n>CubeModel</span><span class=o>.</span><span class=n>SetCenter</span><span class=p>(</span><span class=o>.</span><span class=mi>5</span><span class=p>,</span> <span class=o>.</span><span class=mi>5</span><span class=p>,</span> <span class=o>.</span><span class=mi>5</span><span class=p>)</span>
+</span>        <span class=n>CubeModel</span><span class=o>.</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>.5</span><span class=p>,</span> <span class=mf>.5</span><span class=p>,</span> <span class=mf>.5</span><span class=p>)</span>
 
 <span class=hll>        <span class=n>Edges</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkExtractEdges</span><span class=p>()</span>
 </span>        <span class=n>Edges</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>CubeModel</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
 <span class=hll>        <span class=n>Tubes</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTubeFilter</span><span class=p>()</span>
 </span>        <span class=n>Tubes</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>Edges</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-        <span class=n>Tubes</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=o>.</span><span class=mi>01</span><span class=p>)</span>
+        <span class=n>Tubes</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>.01</span><span class=p>)</span>
         <span class=n>Tubes</span><span class=o>.</span><span class=n>SetNumberOfSides</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span>
         <span class=n>Tubes</span><span class=o>.</span><span class=n>UseDefaultNormalOn</span><span class=p>()</span>
-        <span class=n>Tubes</span><span class=o>.</span><span class=n>SetDefaultNormal</span><span class=p>(</span><span class=o>.</span><span class=mi>577</span><span class=p>,</span> <span class=o>.</span><span class=mi>577</span><span class=p>,</span> <span class=o>.</span><span class=mi>577</span><span class=p>)</span>
+        <span class=n>Tubes</span><span class=o>.</span><span class=n>SetDefaultNormal</span><span class=p>(</span><span class=mf>.577</span><span class=p>,</span> <span class=mf>.577</span><span class=p>,</span> <span class=mf>.577</span><span class=p>)</span>
         <span class=c1># Create the mapper and actor to display the cube edges.</span>
 <span class=hll>        <span class=n>TubeMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>        <span class=n>TubeMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>Tubes</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -249,7 +249,7 @@ function registerListener(event, func) {
 </span>        <span class=n>CubeEdges</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>TubeMapper</span><span class=p>)</span>
         <span class=n>CubeEdges</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
             <span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;khaki&#39;</span><span class=p>))</span>
-        <span class=n>CubeEdges</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>4</span><span class=p>)</span>
+        <span class=n>CubeEdges</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.4</span><span class=p>)</span>
         <span class=n>CubeEdges</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
 
 <span class=hll>        <span class=c1># Create a sphere to use as a glyph source for vtkGlyph3D.</span>
@@ -260,7 +260,7 @@ function registerListener(event, func) {
         <span class=c1># Remove the part of the cube with data values below 0.5.</span>
 <span class=hll>        <span class=n>ThresholdIn</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkThresholdPoints</span><span class=p>()</span>
 </span>        <span class=n>ThresholdIn</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>Grid</span><span class=p>)</span>
-        <span class=n>ThresholdIn</span><span class=o>.</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=o>.</span><span class=mi>5</span><span class=p>)</span>
+        <span class=n>ThresholdIn</span><span class=o>.</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mf>.5</span><span class=p>)</span>
         <span class=c1># Display spheres at the vertices remaining in the cube data set after</span>
 <span class=hll>        <span class=c1># it was passed through vtkThresholdPoints.</span>
 </span><span class=hll>        <span class=n>Vertices</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGlyph3D</span><span class=p>()</span>
@@ -287,19 +287,19 @@ function registerListener(event, func) {
             <span class=c1># Position the label according to the rotation of the figure.</span>
             <span class=k>if</span> <span class=n>rotation</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
                 <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=mf>0.2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>1.25</span><span class=p>)</span>
-                <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=o>.</span><span class=mi>05</span><span class=p>,</span> <span class=o>.</span><span class=mi>05</span><span class=p>,</span> <span class=o>.</span><span class=mi>05</span><span class=p>)</span>
+                <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mf>.05</span><span class=p>,</span> <span class=mf>.05</span><span class=p>,</span> <span class=mf>.05</span><span class=p>)</span>
             <span class=k>elif</span> <span class=n>rotation</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
                 <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
                 <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=mf>1.25</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>1.25</span><span class=p>)</span>
-                <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=o>.</span><span class=mi>05</span><span class=p>,</span> <span class=o>.</span><span class=mi>05</span><span class=p>,</span> <span class=o>.</span><span class=mi>05</span><span class=p>)</span>
+                <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mf>.05</span><span class=p>,</span> <span class=mf>.05</span><span class=p>,</span> <span class=mf>.05</span><span class=p>)</span>
             <span class=k>elif</span> <span class=n>rotation</span> <span class=o>==</span> <span class=mi>2</span><span class=p>:</span>
                 <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>180</span><span class=p>)</span>
                 <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=mf>1.25</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>)</span>
-                <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=o>.</span><span class=mi>05</span><span class=p>,</span> <span class=o>.</span><span class=mi>05</span><span class=p>,</span> <span class=o>.</span><span class=mi>05</span><span class=p>)</span>
+                <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mf>.05</span><span class=p>,</span> <span class=mf>.05</span><span class=p>,</span> <span class=mf>.05</span><span class=p>)</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>270</span><span class=p>)</span>
                 <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=mf>0.2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>)</span>
-                <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=o>.</span><span class=mi>05</span><span class=p>,</span> <span class=o>.</span><span class=mi>05</span><span class=p>,</span> <span class=o>.</span><span class=mi>05</span><span class=p>)</span>
+                <span class=n>aLabelTransform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mf>.05</span><span class=p>,</span> <span class=mf>.05</span><span class=p>,</span> <span class=mf>.05</span><span class=p>)</span>
 
             <span class=c1># Move the label to a new position.</span>
 <span class=hll>            <span class=n>labelTransform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
@@ -317,7 +317,7 @@ function registerListener(event, func) {
         <span class=c1># and actor.  Set the position of the actor.</span>
 <span class=hll>        <span class=n>baseModel</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCubeSource</span><span class=p>()</span>
 </span>        <span class=n>baseModel</span><span class=o>.</span><span class=n>SetXLength</span><span class=p>(</span><span class=mf>1.5</span><span class=p>)</span>
-        <span class=n>baseModel</span><span class=o>.</span><span class=n>SetYLength</span><span class=p>(</span><span class=o>.</span><span class=mi>01</span><span class=p>)</span>
+        <span class=n>baseModel</span><span class=o>.</span><span class=n>SetYLength</span><span class=p>(</span><span class=mf>.01</span><span class=p>)</span>
         <span class=n>baseModel</span><span class=o>.</span><span class=n>SetZLength</span><span class=p>(</span><span class=mf>1.5</span><span class=p>)</span>
 
 <span class=hll>        <span class=n>baseMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
@@ -325,7 +325,7 @@ function registerListener(event, func) {
 
 <span class=hll>        <span class=n>base</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>base</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>baseMapper</span><span class=p>)</span>
-        <span class=n>base</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=o>.</span><span class=mi>5</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.09</span><span class=p>,</span> <span class=o>.</span><span class=mi>5</span><span class=p>)</span>
+        <span class=n>base</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>.5</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.09</span><span class=p>,</span> <span class=mf>.5</span><span class=p>)</span>
 
         <span class=c1># Set the scalar values for this case of marching cubes.</span>
         <span class=c1># A negative case number will generate a complementary case</span>

@@ -104,7 +104,7 @@ function registerListener(event, func) {
   <span class=c1>// Note: If a Python version is written, it is probably best to use</span>
 <span class=hll>  <span class=c1>//       vtkMinimalStandardRandomSequence in it and here, to ensure</span>
 </span>  <span class=c1>//       that the random number generation is the same.</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=n>mt</span><span class=p>(</span><span class=mi>4355412</span><span class=p>);</span> <span class=c1>// Standard mersenne_twister_engine</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=nf>mt</span><span class=p>(</span><span class=mi>4355412</span><span class=p>);</span> <span class=c1>// Standard mersenne_twister_engine</span>
   <span class=n>std</span><span class=o>::</span><span class=n>uniform_real_distribution</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>distribution</span><span class=p>(</span><span class=mf>0.6</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
 
   <span class=c1>// PolyData file pipeline</span>

@@ -77,7 +77,7 @@ function registerListener(event, func) {
     <span class=c1># Create a tube (cylinder) around the line</span>
 <span class=hll>    <span class=n>tubeFilter</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTubeFilter</span><span class=p>()</span>
 </span>    <span class=n>tubeFilter</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>lineSource</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>tubeFilter</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=o>.</span><span class=mi>01</span><span class=p>)</span> <span class=c1>#default is .5</span>
+    <span class=n>tubeFilter</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>.01</span><span class=p>)</span> <span class=c1>#default is .5</span>
     <span class=n>tubeFilter</span><span class=o>.</span><span class=n>SetNumberOfSides</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span>
     <span class=n>tubeFilter</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 

@@ -78,7 +78,7 @@ function registerListener(event, func) {
 </span>    <span class=n>cone</span><span class=o>.</span><span class=n>SetAngle</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>vertPlane</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlane</span><span class=p>()</span>
-</span>    <span class=n>vertPlane</span><span class=o>.</span><span class=n>SetOrigin</span><span class=p>(</span><span class=o>.</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+</span>    <span class=n>vertPlane</span><span class=o>.</span><span class=n>SetOrigin</span><span class=p>(</span><span class=mf>.1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
     <span class=n>vertPlane</span><span class=o>.</span><span class=n>SetNormal</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>basePlane</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlane</span><span class=p>()</span>
@@ -147,7 +147,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>creamActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>creamActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>creamMapper</span><span class=p>)</span>
     <span class=n>creamActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Mint&#39;</span><span class=p>))</span>
-    <span class=n>creamActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>6</span><span class=p>)</span>
+    <span class=n>creamActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.6</span><span class=p>)</span>
     <span class=n>creamActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span>
 
     <span class=c1># Create the usual rendering stuff.</span>

@@ -77,7 +77,7 @@ function registerListener(event, func) {
   <span class=k>static</span> <span class=n>KeyPressInteractorStyle</span><span class=o>*</span> <span class=n>New</span><span class=p>();</span>
 <span class=hll>  <span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>KeyPressInteractorStyle</span><span class=p>,</span> <span class=n>vtkInteractorStyleTrackballCamera</span><span class=p>);</span>
 </span>
-  <span class=k>virtual</span> <span class=kt>void</span> <span class=n>OnKeyPress</span><span class=p>()</span> <span class=k>override</span>
+  <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>OnKeyPress</span><span class=p>()</span> <span class=k>override</span>
   <span class=p>{</span>
     <span class=c1>// Get the keypress</span>
 <span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=o>*</span> <span class=n>rwi</span> <span class=o>=</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>Interactor</span><span class=p>;</span>

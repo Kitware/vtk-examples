@@ -173,7 +173,7 @@ function registerListener(event, func) {
   <span class=cm>/**</span>
 <span class=cm>   * @return The error message if Parse() failed.</span>
 <span class=cm>   */</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>GetParseError</span><span class=p>()</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>GetParseError</span><span class=p>()</span>
   <span class=p>{</span>
     <span class=k>return</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>parseError</span><span class=p>;</span>
   <span class=p>}</span>
@@ -181,7 +181,7 @@ function registerListener(event, func) {
   <span class=cm>/**</span>
 <span class=cm>   * @return The key name used to identify positional arguments.</span>
 <span class=cm>   */</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>getPositionalKeyName</span><span class=p>()</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>getPositionalKeyName</span><span class=p>()</span>
   <span class=p>{</span>
     <span class=k>return</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>posName</span><span class=p>;</span>
   <span class=p>}</span>
@@ -189,7 +189,7 @@ function registerListener(event, func) {
   <span class=cm>/**</span>
 <span class=cm>   * @return A string of the parsed command arguments.</span>
 <span class=cm>   */</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>DisplayCommandArguments</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>DisplayCommandArguments</span><span class=p>();</span>
 
 <span class=k>private</span><span class=o>:</span>
   <span class=cm>/**</span>
@@ -249,7 +249,7 @@ function registerListener(event, func) {
 <span class=cm> *</span>
 <span class=cm> * @param fn: The program name.</span>
 <span class=cm> */</span>
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>ShowUsage</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>fn</span><span class=p>);</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>ShowUsage</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>fn</span><span class=p>);</span>
 
 <span class=cm>/**</span>
 <span class=cm> * Create a map of the parametric functions and set some parameters.</span>
@@ -633,7 +633,7 @@ function registerListener(event, func) {
 
 <span class=k>namespace</span> <span class=p>{</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>ShowUsage</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>fn</span><span class=p>)</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=nf>ShowUsage</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>fn</span><span class=p>)</span>
 <span class=p>{</span>
   <span class=c1>// Remove the folder (if present) then remove the extension in this order</span>
   <span class=c1>// since the folder name may contain perionds.</span>

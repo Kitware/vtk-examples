@@ -87,14 +87,14 @@ function registerListener(event, func) {
   <span class=k>static</span> <span class=n>MouseInteractorStyle6</span><span class=o>*</span> <span class=n>New</span><span class=p>();</span>
 <span class=hll>  <span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>MouseInteractorStyle6</span><span class=p>,</span> <span class=n>vtkInteractorStyleTrackballActor</span><span class=p>);</span>
 </span>
-  <span class=k>virtual</span> <span class=kt>void</span> <span class=n>OnLeftButtonDown</span><span class=p>()</span> <span class=k>override</span>
+  <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>OnLeftButtonDown</span><span class=p>()</span> <span class=k>override</span>
   <span class=p>{</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Pressed left mouse button.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=c1>// Forward events</span>
 <span class=hll>    <span class=n>vtkInteractorStyleTrackballActor</span><span class=o>::</span><span class=n>OnLeftButtonDown</span><span class=p>();</span>
 </span>  <span class=p>}</span>
 
-  <span class=k>virtual</span> <span class=kt>void</span> <span class=n>OnMiddleButtonUp</span><span class=p>()</span> <span class=k>override</span>
+  <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>OnMiddleButtonUp</span><span class=p>()</span> <span class=k>override</span>
   <span class=p>{</span>
     <span class=c1>// std::cout &lt;&lt; &quot;Pressed middle mouse button.&quot; &lt;&lt; std::endl;</span>
 
@@ -166,7 +166,7 @@ function registerListener(event, func) {
     <span class=k>this</span><span class=o>-&gt;</span><span class=n>StopState</span><span class=p>();</span>
   <span class=p>}</span>
 
-  <span class=k>virtual</span> <span class=kt>void</span> <span class=n>OnRightButtonDown</span><span class=p>()</span> <span class=k>override</span>
+  <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>OnRightButtonDown</span><span class=p>()</span> <span class=k>override</span>
   <span class=p>{</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Pressed right mouse button.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=c1>// Forward events</span>

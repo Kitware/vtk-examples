@@ -84,11 +84,11 @@ function registerListener(event, func) {
 <span class=k>public</span><span class=o>:</span>
 <span class=hll>  <span class=n>vtkmyPWCallback</span><span class=p>()</span> <span class=o>=</span> <span class=k>default</span><span class=p>;</span>
 </span>
-<span class=hll>  <span class=k>static</span> <span class=n>vtkmyPWCallback</span><span class=o>*</span> <span class=n>New</span><span class=p>()</span>
+<span class=hll>  <span class=k>static</span> <span class=n>vtkmyPWCallback</span><span class=o>*</span> <span class=nf>New</span><span class=p>()</span>
 </span>  <span class=p>{</span>
 <span class=hll>    <span class=k>return</span> <span class=k>new</span> <span class=n>vtkmyPWCallback</span><span class=p>;</span>
 </span>  <span class=p>}</span>
-<span class=hll>  <span class=k>virtual</span> <span class=kt>void</span> <span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span> <span class=n>caller</span><span class=p>,</span> <span class=kt>unsigned</span> <span class=kt>long</span><span class=p>,</span> <span class=kt>void</span><span class=o>*</span><span class=p>)</span>
+<span class=hll>  <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span> <span class=n>caller</span><span class=p>,</span> <span class=kt>unsigned</span> <span class=kt>long</span><span class=p>,</span> <span class=kt>void</span><span class=o>*</span><span class=p>)</span>
 </span>  <span class=p>{</span>
 <span class=hll>    <span class=n>vtkPointWidget</span><span class=o>*</span> <span class=n>pointWidget</span> <span class=o>=</span> <span class=k>reinterpret_cast</span><span class=o>&lt;</span><span class=n>vtkPointWidget</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span>
 </span>    <span class=n>pointWidget</span><span class=o>-&gt;</span><span class=n>GetPolyData</span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>PolyData</span><span class=p>);</span>

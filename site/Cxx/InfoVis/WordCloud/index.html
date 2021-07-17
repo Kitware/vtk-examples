@@ -384,7 +384,7 @@ Skipped <span class=m>5</span> words
   <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=mi>6</span><span class=o>&gt;</span> <span class=n>extent</span><span class=p>;</span>
   <span class=kt>bool</span> <span class=n>added</span><span class=p>;</span>
   <span class=c1>// Create a vector of orientations to try.</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=n>mt</span><span class=p>(</span><span class=mi>4355412</span><span class=p>);</span> <span class=c1>// Standard mersenne twister engine</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>mt19937</span> <span class=nf>mt</span><span class=p>(</span><span class=mi>4355412</span><span class=p>);</span> <span class=c1>// Standard mersenne twister engine</span>
   <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=nl>element</span> <span class=p>:</span> <span class=n>sortedWords</span><span class=p>)</span>
   <span class=p>{</span>
     <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>orientations</span><span class=p>;</span>
@@ -467,7 +467,7 @@ Skipped <span class=m>5</span> words
   <span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>s</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>s</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span> <span class=n>s</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=o>::</span><span class=n>tolower</span><span class=p>);</span>
 
   <span class=c1>// Extract words</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>regex</span> <span class=n>wordRegex</span><span class=p>(</span><span class=s>&quot;(</span><span class=se>\\</span><span class=s>w+)&quot;</span><span class=p>);</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>regex</span> <span class=nf>wordRegex</span><span class=p>(</span><span class=s>&quot;(</span><span class=se>\\</span><span class=s>w+)&quot;)</span><span class=p>;</span>
   <span class=k>auto</span> <span class=n>wordsBegin</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>sregex_iterator</span><span class=p>(</span><span class=n>s</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>s</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span> <span class=n>wordRegex</span><span class=p>);</span>
   <span class=k>auto</span> <span class=n>wordsEnd</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>sregex_iterator</span><span class=p>();</span>
 
