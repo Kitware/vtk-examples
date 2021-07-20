@@ -3,7 +3,9 @@
 #include <vtkBMPReader.h>
 #include <vtkCubeSource.h>
 #include <vtkDataSet.h>
+#include <vtkEquirectangularToCubeMapTexture.h>
 #include <vtkFloatArray.h>
+#include <vtkHDRReader.h>
 #include <vtkImageFlip.h>
 #include <vtkImageReader2Factory.h>
 #include <vtkJPEGReader.h>
@@ -11,6 +13,7 @@
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkOpenGLRenderer.h>
+#include <vtkOpenGLTexture.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkPNGReader.h>
 #include <vtkPNMReader.h>
@@ -87,19 +90,6 @@ vtkSmartPointer<vtkPolyData> GetSphere();
 vtkSmartPointer<vtkPolyData> GetCube();
 
 /**
- * Generate u, v texture coordinates on a parametric surface.
- *
- * @param uResolution: u resolution
- * @param vResolution: v resolution
- * @param pd: The polydata representing the surface.
- *
- * @return The polydata with the texture coordinates added.
- */
-vtkSmartPointer<vtkPolyData> UVTcoords(const float& uResolution,
-                                       const float& vResolution,
-                                       vtkSmartPointer<vtkPolyData> pd);
-
-/**
  * Read six images forming a cubemap.
  *
  * @param folderRoot: The folder where the cube maps are stored.
@@ -112,13 +102,35 @@ ReadCubeMap(std::string const& folderRoot,
             std::vector<std::string> const& fileNames);
 
 /**
+ * Read an equirectangular environment file and convert it to a cube map.
+ *
+ * @param fileName: The equirectangular file.
+ *
+ * @return The cubemap texture.
+ */
+vtkSmartPointer<vtkTexture> ReadEnvironmentMap(std::string const& fileName);
+
+/**
  * Read an image and convert it to a texture.
  *
  * @param path: The image path.
  *
  * @return The texture.
  */
-vtkSmartPointer<vtkTexture> GetTexture(std::string path);
+vtkSmartPointer<vtkTexture> ReadTexture(std::string path);
+
+/**
+ * Generate u, v texture coordinates on a parametric surface.
+ *
+ * @param uResolution: u resolution
+ * @param vResolution: v resolution
+ * @param pd: The polydata representing the surface.
+ *
+ * @return The polydata with the texture coordinates added.
+ */
+vtkSmartPointer<vtkPolyData> UVTcoords(const float& uResolution,
+                                       const float& vResolution,
+                                       vtkSmartPointer<vtkPolyData> pd);
 
 class SliderCallbackMetallic : public vtkCommand
 {
@@ -287,22 +299,28 @@ int main(int argc, char* argv[])
   std::vector<std::string> path = splitPath(std::string(argv[1]));
   // std::string root = join(path, "/");
 
-  // Load the cube map
-  auto cubemap = ReadCubeMap(argv[1], skyboxFiles[path.back()]);
-
-  // Load the skybox
-  // Read it again as there is no deep copy for vtkTexture
-  auto skybox = ReadCubeMap(argv[1], skyboxFiles[path.back()]);
-  skybox->InterpolateOn();
-  skybox->RepeatOff();
-  skybox->EdgeClampOn();
+  vtkSmartPointer<vtkTexture> cubemap;
+  vtkSmartPointer<vtkTexture> skybox;
+  if (path.back().find(".", 0) != std::string::npos)
+  {
+    // Load the cube map.
+    cubemap = ReadEnvironmentMap(argv[1]);
+    // Load the skybox.
+    // Read it again as there is no deep copy for vtkTexture.
+    skybox = ReadEnvironmentMap(argv[1]);
+  }
+  else
+  {
+    cubemap = ReadCubeMap(argv[1], skyboxFiles[path.back()]);
+    skybox = ReadCubeMap(argv[1], skyboxFiles[path.back()]);
+  }
 
   // Get the textures
-  auto material = GetTexture(argv[2]);
-  auto albedo = GetTexture(argv[3]);
+  auto material = ReadTexture(argv[2]);
+  auto albedo = ReadTexture(argv[3]);
   albedo->UseSRGBColorSpaceOn();
-  auto normal = GetTexture(argv[4]);
-  auto emissive = GetTexture(argv[5]);
+  auto normal = ReadTexture(argv[4]);
+  auto emissive = ReadTexture(argv[5]);
   emissive->UseSRGBColorSpaceOn();
 
   // Get the surface
@@ -343,8 +361,6 @@ int main(int argc, char* argv[])
   default:
     source = GetBoy();
   };
-  // source->Print(std::cout);
-  // source->PrintSelf(std::cout, vtkIndent(2));
 
   vtkNew<vtkNamedColors> colors;
 
@@ -531,6 +547,7 @@ std::string ShowUsage(std::string fn)
         ", texturing and a skybox.\n\n"
      << "positional arguments:\n"
      << "  path         The path to the cubemap files e.g. skyboxes/skybox2/\n"
+     << "               or to a .hdr, .png, or .jpg equirectangular file.\n"
      << "  material_fn  The path to the material texture file e.g. "
         "vtk_Material.png\n"
      << "  albedo_fn    The path to the albedo (base colour) texture file e.g. "
@@ -576,6 +593,162 @@ bool VTKVersionOk(unsigned long long const& major,
   }
   return false;
 #endif
+}
+
+vtkSmartPointer<vtkTexture>
+ReadCubeMap(std::string const& folderRoot,
+            std::vector<std::string> const& fileNames)
+{
+  auto root = folderRoot;
+  if (folderRoot.back() != '/')
+  {
+    root += '/';
+  }
+
+  vtkNew<vtkTexture> texture;
+  texture->CubeMapOn();
+  // Build the file names.
+  std::vector<std::string> paths;
+  for (auto f : fileNames)
+  {
+    paths.push_back(root + f);
+  }
+  auto i = 0;
+  for (auto const& fn : paths)
+  {
+    // Read the images
+    vtkNew<vtkImageReader2Factory> readerFactory;
+    vtkSmartPointer<vtkImageReader2> imgReader;
+    imgReader.TakeReference(readerFactory->CreateImageReader2(fn.c_str()));
+    imgReader->SetFileName(fn.c_str());
+
+    vtkNew<vtkImageFlip> flip;
+    flip->SetInputConnection(imgReader->GetOutputPort());
+    flip->SetFilteredAxis(1); // flip y axis
+    texture->SetInputConnection(i, flip->GetOutputPort(0));
+    ++i;
+  }
+  texture->MipmapOn();
+  texture->InterpolateOn();
+
+  return texture;
+}
+
+vtkSmartPointer<vtkTexture> ReadEnvironmentMap(std::string const& fileName)
+{
+  // Split  path into its components.
+  auto splitPath = [](std::string path) {
+    std::replace(path.begin(), path.end(), '\\', '/');
+
+    std::regex regex("/");
+
+    std::vector<std::string> elements(
+        std::sregex_token_iterator(path.begin(), path.end(), regex, -1),
+        std::sregex_token_iterator());
+    return elements;
+  };
+
+  // Build a string from a vector of strings using a separator.
+  auto join = [](std::vector<std::string> strings, std::string separator) {
+    std::string res =
+        std::accumulate(std::begin(strings), std::end(strings), std::string(),
+                        [&](std::string& ss, std::string& s) {
+                          return ss.empty() ? s : ss + separator + s;
+                        });
+    return res;
+  };
+
+  // Get the file name extension.
+  auto getSuffix = [](const std::string& fn) -> std::string {
+    auto position = fn.find_last_of('.');
+    if (position == std::string::npos)
+      return "";
+    else
+    {
+      std::string ext(fn.substr(position + 1));
+      if (std::regex_search(ext, std::regex("[^A-Za-z0-9]")))
+        return "";
+      else
+        return "." + ext;
+    }
+  };
+
+  std::vector<std::string> path = splitPath(std::string(fileName));
+  auto suffix = getSuffix(path.back());
+
+  vtkNew<vtkTexture> texture;
+
+  if (std::string(".jpg .png").find(suffix, 0) != std::string::npos)
+  {
+    vtkNew<vtkImageReader2Factory> readerFactory;
+    vtkSmartPointer<vtkImageReader2> imgReader;
+    imgReader.TakeReference(
+        readerFactory->CreateImageReader2(fileName.c_str()));
+    imgReader->SetFileName(fileName.c_str());
+
+    texture->SetInputConnection(imgReader->GetOutputPort());
+  }
+  else
+  {
+    vtkNew<vtkHDRReader> reader;
+    auto extensions = reader->GetFileExtensions();
+    if (std::string(extensions).find(suffix, 0) != std::string::npos)
+    {
+      if (reader->CanReadFile(fileName.c_str()))
+      {
+        reader->SetFileName(fileName.c_str());
+
+        texture->SetColorModeToDirectScalars();
+        texture->SetInputConnection(reader->GetOutputPort());
+      }
+      else
+      {
+        std::cerr << "Unable to read the file: " << fileName << std::endl;
+        return texture;
+      }
+    }
+  }
+
+  // Convert to a cube map.
+  vtkNew<vtkEquirectangularToCubeMapTexture> tcm;
+  tcm->SetInputTexture(vtkOpenGLTexture::SafeDownCast(texture));
+  // Enable mipmapping to handle HDR image.
+  tcm->MipmapOn();
+  tcm->InterpolateOn();
+
+  return tcm;
+}
+
+vtkSmartPointer<vtkTexture> ReadTexture(std::string path)
+{
+  // Read the image which will be the texture
+  std::string extension;
+  if (path.find_last_of(".") != std::string::npos)
+  {
+    extension = path.substr(path.find_last_of("."));
+  }
+  // Make the extension lowercase
+  std::transform(extension.begin(), extension.end(), extension.begin(),
+                 ::tolower);
+  std::vector<std::string> validExtensions{".jpg", ".png", ".bmp", ".tiff",
+                                           ".pnm", ".pgm", ".ppm"};
+  vtkNew<vtkTexture> texture;
+  if (std::find(validExtensions.begin(), validExtensions.end(), extension) ==
+      validExtensions.end())
+  {
+    std::cout << "Unable to read the texture file:" << path << std::endl;
+    return texture;
+  }
+  // Read the images
+  vtkNew<vtkImageReader2Factory> readerFactory;
+  vtkSmartPointer<vtkImageReader2> imgReader;
+  imgReader.TakeReference(readerFactory->CreateImageReader2(path.c_str()));
+  imgReader->SetFileName(path.c_str());
+
+  texture->SetInputConnection(imgReader->GetOutputPort());
+  texture->Update();
+
+  return texture;
 }
 
 vtkSmartPointer<vtkPolyData> GetBoy()
@@ -752,77 +925,6 @@ vtkSmartPointer<vtkPolyData> UVTcoords(const float& uResolution,
   }
   pd->GetPointData()->SetTCoords(tCoords);
   return pd;
-}
-
-vtkSmartPointer<vtkTexture> GetTexture(std::string path)
-{
-  // Read the image which will be the texture
-  std::string extension;
-  if (path.find_last_of(".") != std::string::npos)
-  {
-    extension = path.substr(path.find_last_of("."));
-  }
-  // Make the extension lowercase
-  std::transform(extension.begin(), extension.end(), extension.begin(),
-                 ::tolower);
-  std::vector<std::string> validExtensions{".jpg", ".png", ".bmp", ".tiff",
-                                           ".pnm", ".pgm", ".ppm"};
-  vtkNew<vtkTexture> texture;
-  if (std::find(validExtensions.begin(), validExtensions.end(), extension) ==
-      validExtensions.end())
-  {
-    std::cout << "Unable to read the texture file:" << path << std::endl;
-    return texture;
-  }
-  // Read the images
-  vtkNew<vtkImageReader2Factory> readerFactory;
-  vtkSmartPointer<vtkImageReader2> imgReader;
-  imgReader.TakeReference(readerFactory->CreateImageReader2(path.c_str()));
-  imgReader->SetFileName(path.c_str());
-
-  texture->SetInputConnection(imgReader->GetOutputPort());
-  texture->Update();
-
-  return texture;
-}
-
-vtkSmartPointer<vtkTexture>
-ReadCubeMap(std::string const& folderRoot,
-            std::vector<std::string> const& fileNames)
-{
-  auto root = folderRoot;
-  if (folderRoot.back() != '/')
-  {
-    root += '/';
-  }
-
-  vtkNew<vtkTexture> texture;
-  texture->CubeMapOn();
-  // Build the file names.
-  std::vector<std::string> paths;
-  for (auto f : fileNames)
-  {
-    paths.push_back(root + f);
-  }
-  auto i = 0;
-  for (auto const& fn : paths)
-  {
-    // Read the images
-    vtkNew<vtkImageReader2Factory> readerFactory;
-    vtkSmartPointer<vtkImageReader2> imgReader;
-    imgReader.TakeReference(readerFactory->CreateImageReader2(fn.c_str()));
-    imgReader->SetFileName(fn.c_str());
-
-    vtkNew<vtkImageFlip> flip;
-    flip->SetInputConnection(imgReader->GetOutputPort());
-    flip->SetFilteredAxis(1); // flip y axis
-    texture->SetInputConnection(i, flip->GetOutputPort(0));
-    ++i;
-  }
-  texture->MipmapOn();
-  texture->InterpolateOn();
-
-  return texture;
 }
 
 vtkSmartPointer<vtkSliderWidget>

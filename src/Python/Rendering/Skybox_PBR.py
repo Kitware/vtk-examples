@@ -16,7 +16,8 @@ A Skybox is used to create the illusion of distant three-dimensional surrounding
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('path', help='The path to the cubemap files e.g. skyboxes/skybox2/')
+    parser.add_argument('path', help='The path to the cubemap files e.g. skyboxes/skybox2/ or to a\n'
+                                     ' .hdr, .png, or .jpg equirectangular file.')
     parser.add_argument('surface', nargs='?', default='Boy', help="The surface to use. Boy's surface is the default.")
     args = parser.parse_args()
     return args.path, args.surface
@@ -27,10 +28,37 @@ def main():
         print('You need VTK version 8.90 or greater to run this program.')
         return
     path, surface = get_program_parameters()
-    cube_path = Path(path)
-    if not cube_path.is_dir():
-        print('This path does not exist:', cube_path)
+
+    # A dictionary of the skybox folder name and the skybox files in it.
+    skybox_files = {
+        'skybox0':
+            ['right.jpg', 'left.jpg', 'top.jpg', 'bottom.jpg', 'front.jpg',
+             'back.jpg'],
+        'skybox1':
+            ['skybox-px.jpg', 'skybox-nx.jpg', 'skybox-py.jpg', 'skybox-ny.jpg',
+             'skybox-pz.jpg', 'skybox-nz.jpg'],
+        'skybox2':
+            ['posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg',
+             'negz.jpg']
+    }
+
+    # Load the cube map.
+    if Path(path).is_dir():
+        cubemap = read_cubemap(Path(path), skybox_files[PurePath(Path(path)).name])
+        # Load the skybox.
+        # Read it again as there is no deep copy for vtkTexture.
+        skybox = read_cubemap(Path(path), skybox_files[PurePath(Path(path)).name])
+    elif Path(path).is_file():
+        cubemap = read_environment_map(Path(path))
+        skybox = read_environment_map(Path(path))
+    else:
+        print('Unable to read:', path)
         return
+
+    if cubemap is None or skybox is None:
+        return
+
+    # Get the surface
     surface = surface.lower()
     available_surfaces = {'boy', 'mobius', 'randomhills', 'torus', 'sphere', 'cube'}
     if surface not in available_surfaces:
@@ -48,29 +76,6 @@ def main():
     else:
         source = get_boy()
 
-    # A dictionary of the skybox folder name and the skybox files in it.
-    skybox_files = {
-        'skybox0':
-            ['right.jpg', 'left.jpg', 'top.jpg', 'bottom.jpg', 'front.jpg',
-             'back.jpg'],
-        'skybox1':
-            ['skybox-px.jpg', 'skybox-nx.jpg', 'skybox-py.jpg', 'skybox-ny.jpg',
-             'skybox-pz.jpg', 'skybox-nz.jpg'],
-        'skybox2':
-            ['posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg',
-             'negz.jpg']}
-
-    # Load the cube map
-    cubemap = read_cube_map(cube_path, skybox_files[PurePath(cube_path).name])
-
-    # Load the skybox
-    # Read it again as there is no deep copy for vtkTexture
-    skybox = read_cube_map(cube_path, skybox_files[PurePath(cube_path).name])
-    skybox.InterpolateOn()
-    skybox.MipmapOn()
-    skybox.RepeatOff()
-    skybox.EdgeClampOn()
-
     colors = vtk.vtkNamedColors()
 
     # Set the background color.
@@ -82,7 +87,7 @@ def main():
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)
 
-    # Lets use a smooth metallic surface
+    # Lets use a smooth metallic surface.
     metallic_coefficient = 1.0
     roughness_coefficient = 0.05
 
@@ -105,30 +110,29 @@ def main():
     slider_widget_roughnesss.SetAnimationModeToAnimate()
     slider_widget_roughnesss.EnabledOn()
 
-    # Build the pipeline
+    # Build the pipeline.
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputData(source)
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
 
+    # Enable PBR on the model.
+    actor.GetProperty().SetInterpolationToPBR()
+    # Configure the basic properties.
+    # Set the model colour.
+    actor.GetProperty().SetColor(colors.GetColor3d('White'))
+    actor.GetProperty().SetMetallic(metallic_coefficient)
+    actor.GetProperty().SetRoughness(roughness_coefficient)
+
+    # Use image based lighting and a cube map for the environment.
     renderer.UseImageBasedLightingOn()
     if vtk_version_ok(9, 0, 0):
         renderer.SetEnvironmentTexture(cubemap)
     else:
         renderer.SetEnvironmentCubeMap(cubemap)
-    actor.GetProperty().SetInterpolationToPBR()
-
-    # configure the basic properties
-    actor.GetProperty().SetColor(colors.GetColor3d('White'))
-    actor.GetProperty().SetMetallic(metallic_coefficient)
-    actor.GetProperty().SetRoughness(roughness_coefficient)
-
-    # Create the slider callbacks to manipulate metallicity and roughness
-    slider_widget_metallic.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMetallic(actor.GetProperty()))
-    slider_widget_roughnesss.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackRoughness(actor.GetProperty()))
-
     renderer.SetBackground(colors.GetColor3d("BkgColor"))
+
     renderer.AddActor(actor)
 
     skybox_actor = vtk.vtkSkybox()
@@ -152,6 +156,10 @@ def main():
     widget.SetViewport(0.0, 0.2, 0.2, 0.4)
     widget.SetEnabled(1)
     widget.InteractiveOn()
+
+    # Create the slider callbacks to manipulate metallicity and roughness.
+    slider_widget_metallic.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMetallic(actor.GetProperty()))
+    slider_widget_roughnesss.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackRoughness(actor.GetProperty()))
 
     interactor.SetRenderWindow(render_window)
 
@@ -181,9 +189,10 @@ def vtk_version_ok(major, minor, build):
         return False
 
 
-def read_cube_map(folder_root, file_names):
+def read_cubemap(folder_root, file_names):
     """
-    Read the cube map.
+    Read six images forming a cubemap.
+
     :param folder_root: The folder where the cube maps are stored.
     :param file_names: The names of the cubemap files.
     :return: The cubemap texture.
@@ -199,7 +208,7 @@ def read_cube_map(folder_root, file_names):
             return None
     i = 0
     for fn in fns:
-        # Read the images
+        # Read the images.
         reader_factory = vtk.vtkImageReader2Factory()
         img_reader = reader_factory.CreateImageReader2(str(fn))
         img_reader.SetFileName(str(fn))
@@ -209,9 +218,55 @@ def read_cube_map(folder_root, file_names):
         flip.SetFilteredAxis(1)  # flip y axis
         texture.SetInputConnection(i, flip.GetOutputPort(0))
         i += 1
+
     texture.MipmapOn()
     texture.InterpolateOn()
     return texture
+
+
+def read_environment_map(fn):
+    """
+    Read an equirectangular environment file and convert it to a cube map.
+
+    :param fn: The equirectangular file.
+    :return: The cubemap texture.
+    """
+    if not fn.is_file():
+        print('Nonexistent texture file:', fn)
+        return None
+    suffix = Path(fn).suffix
+    if suffix in ['.jpg', '.png']:
+        reader_factory = vtk.vtkImageReader2Factory()
+        img_reader = reader_factory.CreateImageReader2(str(fn))
+        img_reader.SetFileName(str(fn))
+
+        texture = vtk.vtkTexture()
+        texture.SetInputConnection(img_reader.GetOutputPort())
+    else:
+        reader = vtk.vtkHDRReader()
+        extensions = reader.GetFileExtensions()
+        # Check the image can be read.
+        if not reader.CanReadFile(str(fn)):
+            print('CanReadFile failed for ', fn)
+            return None
+        if suffix not in extensions:
+            print('Unable to read this file extension: ', suffix)
+            return None
+        reader.SetFileName(str(fn))
+        reader.Update()
+
+        texture = vtk.vtkTexture()
+        texture.SetColorModeToDirectScalars()
+        texture.SetInputConnection(reader.GetOutputPort())
+
+    # Convert to a cube map.
+    tcm = vtk.vtkEquirectangularToCubeMapTexture()
+    tcm.SetInputTexture(texture)
+    # Enable mipmapping to handle HDR image.
+    tcm.MipmapOn()
+    tcm.InterpolateOn()
+
+    return tcm
 
 
 def get_boy():
@@ -226,7 +281,7 @@ def get_boy():
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tangents
+    # Build the tangents.
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
@@ -247,7 +302,7 @@ def get_mobius():
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tangents
+    # Build the tangents.
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
@@ -278,7 +333,7 @@ def get_random_hills():
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tangents
+    # Build the tangents.
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
@@ -306,7 +361,7 @@ def get_torus():
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tangents
+    # Build the tangents.
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
@@ -328,7 +383,7 @@ def get_sphere():
     surface.SetThetaResolution(theta_resolution)
     surface.SetPhiResolution(phi_resolution)
 
-    # Now the tangents
+    # Now the tangents.
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(surface.GetOutputPort())
     tangents.Update()
@@ -338,14 +393,14 @@ def get_sphere():
 def get_cube():
     surface = vtk.vtkCubeSource()
 
-    # Triangulate
+    # Triangulate.
     triangulation = vtk.vtkTriangleFilter()
     triangulation.SetInputConnection(surface.GetOutputPort())
     # Subdivide the triangles
     subdivide = vtk.vtkLinearSubdivisionFilter()
     subdivide.SetInputConnection(triangulation.GetOutputPort())
     subdivide.SetNumberOfSubdivisions(3)
-    # Now the tangents
+    # Now the tangents.
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(subdivide.GetOutputPort())
     tangents.Update()
@@ -404,6 +459,7 @@ class SliderProperties:
     selected_color = 'Lime'
     bar_color = 'PeachPuff'
     bar_ends_color = 'Thistle'
+
 
 def make_slider_widget(properties):
     colors = vtk.vtkNamedColors()

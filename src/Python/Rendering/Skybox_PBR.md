@@ -7,21 +7,23 @@ Physically based rendering sets color, metallicity and roughness of the object, 
 - metallicity
 - roughness
 
-Image based lighting uses a cubemap texture to specify the environment.
+Image based lighting uses a cubemap texture to specify the environment. A Skybox is used to create the illusion of distant three-dimensional surroundings. Textures for the image based lighting and the skymap are supplied from a cubemap.  You can select different cubemaps and different surfaces to visualise.
 
-A Skybox is used to create the illusion of distant three-dimensional surroundings.
+Additionally HDR or JPEG equirectangular Environment maps can be used to generate the cubemaps. A good source for these is [polyhaven](https://polyhaven.com/hdris).
 
-Textures for the image based lighting and the skymap are supplied from a cubemap.
-
-You can select different cubemaps and different surfaces to visualise.
-
-Here are the parameters used to make the example image:
+Here are the parameters used to make the example image using the six individual cubemap files:
 
 ``` text
 <DATA>/skyboxes/skybox2/ Boy
 ```
 
-where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
+We also provide an equirectangular file (useful when using ParaView):
+
+``` text
+<DATA>/skyboxes/skybox2/skybox.jpg Boy
+```
+
+where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data`. Note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
 
 For more information, see [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/).
 
