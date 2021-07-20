@@ -17,7 +17,8 @@ A Skybox is used to create the illusion of distant three-dimensional surrounding
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('path', help='The path to the cubemap files e.g. skyboxes/skybox2/')
+    parser.add_argument('path', help='The path to the cubemap files e.g. skyboxes/skybox2/ or to a\n'
+                                     ' .hdr, .png, or .jpg equirectangular file')
     parser.add_argument('material_fn', help='The path to the material texture file e.g. vtk_Material.png')
     parser.add_argument('albedo_fn', help='The path to the albedo (base colour) texture file e.g. vtk_Base_Color.png')
     parser.add_argument('normal_fn', help='The path to the normal texture file e.g. vtk_Normal.png')
@@ -32,10 +33,6 @@ def main():
         print('You need VTK version 8.90 or greater to run this program.')
         return
     path, material_fn, albedo_fn, normal_fn, emissive_fn, surface = get_program_parameters()
-    cube_path = Path(path)
-    if not cube_path.is_dir():
-        print('This path does not exist:', cube_path)
-        return
 
     # A dictionary of the skybox folder name and the skybox files in it.
     skybox_files = {
@@ -49,22 +46,28 @@ def main():
             ['posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg',
              'negz.jpg']}
 
-    # Load the cube map
-    cubemap = read_cube_map(cube_path, skybox_files[PurePath(cube_path).name])
+    # Load the cube map.
+    if Path(path).is_dir():
+        cubemap = read_cubemap(Path(path), skybox_files[PurePath(Path(path)).name])
+        # Load the skybox.
+        # Read it again as there is no deep copy for vtkTexture.
+        skybox = read_cubemap(Path(path), skybox_files[PurePath(Path(path)).name])
+    elif Path(path).is_file():
+        cubemap = read_environment_map(Path(path))
+        skybox = read_environment_map(Path(path))
+    else:
+        print('Unable to read:', path)
+        return
 
-    # Load the skybox
-    # Read it again as there is no deep copy for vtkTexture
-    skybox = read_cube_map(cube_path, skybox_files[PurePath(cube_path).name])
-    skybox.InterpolateOn()
-    skybox.RepeatOff()
-    skybox.EdgeClampOn()
+    if cubemap is None or skybox is None:
+        return
 
     # Get the textures
-    material = get_texture(material_fn)
-    albedo = get_texture(albedo_fn)
+    material = read_texture(material_fn)
+    albedo = read_texture(albedo_fn)
     albedo.UseSRGBColorSpaceOn()
-    normal = get_texture(normal_fn)
-    emissive = get_texture(emissive_fn)
+    normal = read_texture(normal_fn)
+    emissive = read_texture(emissive_fn)
     emissive.UseSRGBColorSpaceOn()
 
     # Get the surface
@@ -99,10 +102,10 @@ def main():
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)
 
-    # Lets use a rough metallic surface
+    # Lets use a rough metallic surface.
     metallic_coefficient = 1.0
     roughness_coefficient = 0.8
-    # Other parameters
+    # Other parameters.
     occlusion_strength = 10.0
     normal_scale = 10.0
     emissive_col = colors.GetColor3d('VTKBlueComp')
@@ -157,14 +160,15 @@ def main():
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
 
+    # Enable PBR on the model.
     actor.GetProperty().SetInterpolationToPBR()
-
-    # configure the basic properties
+    # Configure the basic properties.
+    # Set the model colour.
     actor.GetProperty().SetColor(colors.GetColor3d('White'))
     actor.GetProperty().SetMetallic(metallic_coefficient)
     actor.GetProperty().SetRoughness(roughness_coefficient)
 
-    # configure textures (needs tcoords on the mesh)
+    # Configure textures (needs tcoords on the mesh).
     actor.GetProperty().SetBaseColorTexture(albedo)
     actor.GetProperty().SetORMTexture(material)
     actor.GetProperty().SetOcclusionStrength(occlusion_strength)
@@ -172,7 +176,7 @@ def main():
     actor.GetProperty().SetEmissiveTexture(emissive)
     actor.GetProperty().SetEmissiveFactor(emissive_factor)
 
-    # needs tcoords, normals and tangents on the mesh
+    # Needs tcoords, normals and tangents on the mesh.
     actor.GetProperty().SetNormalTexture(normal)
     actor.GetProperty().SetNormalScale(normal_scale)
 
@@ -182,6 +186,7 @@ def main():
     else:
         renderer.SetEnvironmentCubeMap(cubemap)
     renderer.SetBackground(colors.GetColor3d('BkgColor'))
+
     renderer.AddActor(actor)
 
     # Comment out if you don't want a skybox
@@ -192,7 +197,7 @@ def main():
     renderer.UseSphericalHarmonicsOff()
 
     # Create the slider callbacks to manipulate metallicity, roughness
-    # occlusion strength and normal scaling
+    # occlusion strength and normal scaling.
     slider_widget_metallic.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMetallic(actor.GetProperty()))
     slider_widget_roughness.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackRoughness(actor.GetProperty()))
     slider_widget_occlusion_strength.AddObserver(vtk.vtkCommand.InteractionEvent,
@@ -243,9 +248,10 @@ def vtk_version_ok(major, minor, build):
         return False
 
 
-def read_cube_map(folder_root, file_names):
+def read_cubemap(folder_root, file_names):
     """
-    Read the cube map.
+    Read six images forming a cubemap.
+
     :param folder_root: The folder where the cube maps are stored.
     :param file_names: The names of the cubemap files.
     :return: The cubemap texture.
@@ -261,7 +267,7 @@ def read_cube_map(folder_root, file_names):
             return None
     i = 0
     for fn in fns:
-        # Read the images
+        # Read the images.
         reader_factory = vtk.vtkImageReader2Factory()
         img_reader = reader_factory.CreateImageReader2(str(fn))
         img_reader.SetFileName(str(fn))
@@ -276,7 +282,52 @@ def read_cube_map(folder_root, file_names):
     return texture
 
 
-def get_texture(image_path):
+def read_environment_map(fn):
+    """
+    Read an equirectangular environment file and convert it to a cube map.
+
+    :param fn: The equirectangular file.
+    :return: The cubemap texture.
+    """
+    if not fn.is_file():
+        print('Nonexistent texture file:', fn)
+        return None
+    suffix = Path(fn).suffix
+    if suffix in ['.jpg', '.png']:
+        reader_factory = vtk.vtkImageReader2Factory()
+        img_reader = reader_factory.CreateImageReader2(str(fn))
+        img_reader.SetFileName(str(fn))
+
+        texture = vtk.vtkTexture()
+        texture.SetInputConnection(img_reader.GetOutputPort())
+    else:
+        reader = vtk.vtkHDRReader()
+        extensions = reader.GetFileExtensions()
+        # Check the image can be read.
+        if not reader.CanReadFile(str(fn)):
+            print('CanReadFile failed for ', fn)
+            return None
+        if suffix not in extensions:
+            print('Unable to read this file extension: ', suffix)
+            return None
+        reader.SetFileName(str(fn))
+        reader.Update()
+
+        texture = vtk.vtkTexture()
+        texture.SetColorModeToDirectScalars()
+        texture.SetInputConnection(reader.GetOutputPort())
+
+    # Convert to a cube map.
+    tcm = vtk.vtkEquirectangularToCubeMapTexture()
+    tcm.SetInputTexture(texture)
+    # Enable mipmapping to handle HDR image.
+    tcm.MipmapOn()
+    tcm.InterpolateOn()
+
+    return tcm
+
+
+def read_texture(image_path):
     """
     Read an image and convert it to a texture
     :param image_path: The image path.
@@ -473,6 +524,29 @@ def uv_tcoords(u_resolution, v_resolution, pd):
     return pd
 
 
+class SliderProperties:
+    tube_width = 0.008
+    slider_length = 0.008
+    title_height = 0.025
+    label_height = 0.025
+
+    minimum_value = 0.0
+    maximum_value = 1.0
+    initial_value = 1.0
+
+    p1 = [0.2, 0.1]
+    p2 = [0.8, 0.1]
+
+    title = None
+
+    title_color = 'MistyRose'
+    value_color = 'Cyan'
+    slider_color = 'Coral'
+    selected_color = 'Lime'
+    bar_color = 'PeachPuff'
+    bar_ends_color = 'Thistle'
+
+
 def make_slider_widget(properties):
     colors = vtk.vtkNamedColors()
 
@@ -550,28 +624,6 @@ class SliderCallbackNormalScale:
         value = slider_widget.GetRepresentation().GetValue()
         self.actorProperty.SetNormalScale(value)
 
-
-class SliderProperties:
-    tube_width = 0.008
-    slider_length = 0.008
-    title_height = 0.025
-    label_height = 0.025
-
-    minimum_value = 0.0
-    maximum_value = 1.0
-    initial_value = 1.0
-
-    p1 = [0.2, 0.1]
-    p2 = [0.8, 0.1]
-
-    title = None
-
-    title_color = 'MistyRose'
-    value_color = 'Cyan'
-    slider_color = 'Coral'
-    selected_color = 'Lime'
-    bar_color = 'PeachPuff'
-    bar_ends_color = 'Thistle'
 
 if __name__ == '__main__':
     main()
