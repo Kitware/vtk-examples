@@ -165,11 +165,11 @@ function registerListener(event, func) {
     <span class=n>metallic_coefficient</span> <span class=o>=</span> <span class=mf>1.0</span>
     <span class=n>roughness_coefficient</span> <span class=o>=</span> <span class=mf>0.8</span>
     <span class=c1># Other parameters.</span>
-    <span class=n>occlusion_strength</span> <span class=o>=</span> <span class=mf>10.0</span>
-    <span class=n>normal_scale</span> <span class=o>=</span> <span class=mf>10.0</span>
+    <span class=n>occlusion_strength</span> <span class=o>=</span> <span class=mf>1.0</span>
+    <span class=n>normal_scale</span> <span class=o>=</span> <span class=mf>1.0</span>
     <span class=n>emissive_col</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;VTKBlueComp&#39;</span><span class=p>)</span>
-    <span class=n>emissive_factor</span> <span class=o>=</span> <span class=n>emissive_col</span>
-    <span class=c1># emissive_factor = [1.0, 1.0, 1.0]</span>
+    <span class=c1># emissive_factor = emissive_col</span>
+    <span class=n>emissive_factor</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
 
     <span class=n>slw_p</span> <span class=o>=</span> <span class=n>SliderProperties</span><span class=p>()</span>
     <span class=n>slw_p</span><span class=o>.</span><span class=n>initial_value</span> <span class=o>=</span> <span class=n>metallic_coefficient</span>
@@ -191,7 +191,7 @@ function registerListener(event, func) {
     <span class=n>slider_widget_roughness</span><span class=o>.</span><span class=n>EnabledOn</span><span class=p>()</span>
 
     <span class=n>slw_p</span><span class=o>.</span><span class=n>initial_value</span> <span class=o>=</span> <span class=n>occlusion_strength</span>
-    <span class=n>slw_p</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=n>occlusion_strength</span>
+    <span class=n>slw_p</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mi>1</span>
     <span class=n>slw_p</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>&#39;Occlusion&#39;</span>
     <span class=n>slw_p</span><span class=o>.</span><span class=n>p1</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>]</span>
     <span class=n>slw_p</span><span class=o>.</span><span class=n>p2</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.9</span><span class=p>]</span>
@@ -202,7 +202,7 @@ function registerListener(event, func) {
     <span class=n>slider_widget_occlusion_strength</span><span class=o>.</span><span class=n>EnabledOn</span><span class=p>()</span>
 
     <span class=n>slw_p</span><span class=o>.</span><span class=n>initial_value</span> <span class=o>=</span> <span class=n>normal_scale</span>
-    <span class=n>slw_p</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=n>normal_scale</span>
+    <span class=n>slw_p</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mi>5</span>
     <span class=n>slw_p</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>&#39;Normal&#39;</span>
     <span class=n>slw_p</span><span class=o>.</span><span class=n>p1</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.85</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>]</span>
     <span class=n>slw_p</span><span class=o>.</span><span class=n>p2</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.85</span><span class=p>,</span> <span class=mf>0.9</span><span class=p>]</span>

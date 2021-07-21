@@ -444,12 +444,13 @@ function registerListener(event, func) {
   <span class=k>auto</span> <span class=n>metallicCoefficient</span> <span class=o>=</span> <span class=mf>1.0</span><span class=p>;</span>
   <span class=k>auto</span> <span class=n>roughnessCoefficient</span> <span class=o>=</span> <span class=mf>0.8</span><span class=p>;</span>
   <span class=c1>// Other parameters</span>
-  <span class=k>auto</span> <span class=n>occlusionStrength</span> <span class=o>=</span> <span class=mf>10.0</span><span class=p>;</span>
-  <span class=k>auto</span> <span class=n>normalScale</span> <span class=o>=</span> <span class=mf>10.0</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>occlusionStrength</span> <span class=o>=</span> <span class=mf>1.0</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>normalScale</span> <span class=o>=</span> <span class=mf>1.0</span><span class=p>;</span>
   <span class=c1>// Make VTK silvery in appearance</span>
-  <span class=k>auto</span> <span class=n>emissiveCol</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;VTKBlueComp&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>3</span><span class=o>&gt;</span> <span class=n>emissiveFactor</span><span class=p>{</span><span class=n>emissiveCol</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>emissiveCol</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span>
-                                       <span class=n>emissiveCol</span><span class=p>[</span><span class=mi>2</span><span class=p>]};</span>
+  <span class=c1>// auto emissiveCol = colors-&gt;GetColor3d(&quot;VTKBlueComp&quot;).GetData();</span>
+  <span class=c1>// std::array&lt;double, 3&gt; emissiveFactor{emissiveCol[0], emissiveCol[1],</span>
+  <span class=c1>//                                      emissiveCol[2]};</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>3</span><span class=o>&gt;</span> <span class=n>emissiveFactor</span><span class=p>{</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>};</span>
 
   <span class=k>auto</span> <span class=n>slwP</span> <span class=o>=</span> <span class=n>SliderProperties</span><span class=p>();</span>
   <span class=n>slwP</span><span class=p>.</span><span class=n>initialValue</span> <span class=o>=</span> <span class=n>metallicCoefficient</span><span class=p>;</span>
@@ -473,7 +474,7 @@ function registerListener(event, func) {
   <span class=n>sliderWidgetRoughness</span><span class=o>-&gt;</span><span class=n>EnabledOn</span><span class=p>();</span>
 
   <span class=n>slwP</span><span class=p>.</span><span class=n>initialValue</span> <span class=o>=</span> <span class=n>occlusionStrength</span><span class=p>;</span>
-  <span class=n>slwP</span><span class=p>.</span><span class=n>maximumValue</span> <span class=o>=</span> <span class=n>occlusionStrength</span><span class=p>;</span>
+  <span class=n>slwP</span><span class=p>.</span><span class=n>maximumValue</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
   <span class=n>slwP</span><span class=p>.</span><span class=n>title</span> <span class=o>=</span> <span class=s>&quot;Occlusion&quot;</span><span class=p>;</span>
   <span class=n>slwP</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.1</span><span class=p>;</span>
   <span class=n>slwP</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.1</span><span class=p>;</span>
@@ -486,7 +487,7 @@ function registerListener(event, func) {
   <span class=n>sliderWidgetOcclusionStrength</span><span class=o>-&gt;</span><span class=n>EnabledOn</span><span class=p>();</span>
 
   <span class=n>slwP</span><span class=p>.</span><span class=n>initialValue</span> <span class=o>=</span> <span class=n>normalScale</span><span class=p>;</span>
-  <span class=n>slwP</span><span class=p>.</span><span class=n>maximumValue</span> <span class=o>=</span> <span class=n>normalScale</span><span class=p>;</span>
+  <span class=n>slwP</span><span class=p>.</span><span class=n>maximumValue</span> <span class=o>=</span> <span class=mi>5</span><span class=p>;</span>
   <span class=n>slwP</span><span class=p>.</span><span class=n>title</span> <span class=o>=</span> <span class=s>&quot;Normal&quot;</span><span class=p>;</span>
   <span class=n>slwP</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.85</span><span class=p>;</span>
   <span class=n>slwP</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.1</span><span class=p>;</span>
