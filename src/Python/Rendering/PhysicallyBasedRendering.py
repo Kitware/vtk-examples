@@ -106,11 +106,11 @@ def main():
     metallic_coefficient = 1.0
     roughness_coefficient = 0.8
     # Other parameters.
-    occlusion_strength = 10.0
-    normal_scale = 10.0
+    occlusion_strength = 1.0
+    normal_scale = 1.0
     emissive_col = colors.GetColor3d('VTKBlueComp')
-    emissive_factor = emissive_col
-    # emissive_factor = [1.0, 1.0, 1.0]
+    # emissive_factor = emissive_col
+    emissive_factor = [1.0, 1.0, 1.0]
 
     slw_p = SliderProperties()
     slw_p.initial_value = metallic_coefficient
@@ -132,7 +132,7 @@ def main():
     slider_widget_roughness.EnabledOn()
 
     slw_p.initial_value = occlusion_strength
-    slw_p.maximum_value = occlusion_strength
+    slw_p.maximum_value = 1
     slw_p.title = 'Occlusion'
     slw_p.p1 = [0.1, 0.1]
     slw_p.p2 = [0.1, 0.9]
@@ -143,7 +143,7 @@ def main():
     slider_widget_occlusion_strength.EnabledOn()
 
     slw_p.initial_value = normal_scale
-    slw_p.maximum_value = normal_scale
+    slw_p.maximum_value = 5
     slw_p.title = 'Normal'
     slw_p.p1 = [0.85, 0.1]
     slw_p.p2 = [0.85, 0.9]

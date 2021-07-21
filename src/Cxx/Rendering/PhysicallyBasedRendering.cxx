@@ -385,12 +385,13 @@ int main(int argc, char* argv[])
   auto metallicCoefficient = 1.0;
   auto roughnessCoefficient = 0.8;
   // Other parameters
-  auto occlusionStrength = 10.0;
-  auto normalScale = 10.0;
+  auto occlusionStrength = 1.0;
+  auto normalScale = 1.0;
   // Make VTK silvery in appearance
-  auto emissiveCol = colors->GetColor3d("VTKBlueComp").GetData();
-  std::array<double, 3> emissiveFactor{emissiveCol[0], emissiveCol[1],
-                                       emissiveCol[2]};
+  // auto emissiveCol = colors->GetColor3d("VTKBlueComp").GetData();
+  // std::array<double, 3> emissiveFactor{emissiveCol[0], emissiveCol[1],
+  //                                      emissiveCol[2]};
+  std::array<double, 3> emissiveFactor{1.0, 1.0, 1.0};
 
   auto slwP = SliderProperties();
   slwP.initialValue = metallicCoefficient;
@@ -414,7 +415,7 @@ int main(int argc, char* argv[])
   sliderWidgetRoughness->EnabledOn();
 
   slwP.initialValue = occlusionStrength;
-  slwP.maximumValue = occlusionStrength;
+  slwP.maximumValue = 1;
   slwP.title = "Occlusion";
   slwP.p1[0] = 0.1;
   slwP.p1[1] = 0.1;
@@ -427,7 +428,7 @@ int main(int argc, char* argv[])
   sliderWidgetOcclusionStrength->EnabledOn();
 
   slwP.initialValue = normalScale;
-  slwP.maximumValue = normalScale;
+  slwP.maximumValue = 5;
   slwP.title = "Normal";
   slwP.p1[0] = 0.85;
   slwP.p1[1] = 0.1;
