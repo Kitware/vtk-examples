@@ -16,6 +16,7 @@ Here are some snippets and examples that highlight interesting features that may
 | -------------- | ---------------------- | ------- |
 [CameraModel1](/Cxx/Visualization/CameraModel1) | Illustrate camera movement around the focal point.
 [CameraModel2](/Cxx/Visualization/CameraModel2) | camera movement centered at the camera position.
+[CameraOrientationWidget](/Cxx/Widgets/CameraOrientationWidget) | This 3D camera orientation widget can be used in conjunction with [CameraPosition](/Cxx/Snippets/CameraPosition) to get a nice camera position.
 [CameraPosition](/Cxx/Snippets/CameraPosition) | Get the camera position while moving the image.
 [MergeSelections](/Cxx/PolyData/MergeSelections) | Use the same camera for all renderers.
 [ShareCamera](/Cxx/Utilities/ShareCamera) | Use the same camera for all renderers.
