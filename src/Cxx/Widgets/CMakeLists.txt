@@ -53,6 +53,7 @@ if (BUILD_TESTING)
   set(KIT Widgets)
 
   set(NEEDS_ARGS
+    CameraOrientationWidget
     CheckerboardWidget
     OrientationMarkerWidget1
     RectilinearWipeWidget
@@ -61,6 +62,9 @@ if (BUILD_TESTING)
     )
 
   set(DATA ${WikiExamples_SOURCE_DIR}/src/Testing/Data)
+
+  add_test(${KIT}-CameraOrientationWidget ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestCameraOrientationWidget ${DATA}/cow.vtp)
 
   add_test(${KIT}-CheckerboardWidget ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestCheckerboardWidget ${DATA}/Gourds2.jpg ${DATA}/Ox.jpg)

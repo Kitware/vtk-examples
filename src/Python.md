@@ -643,6 +643,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 | -------------- | ------------- | ------- |
 [BalloonWidget](/Python/Widgets/BalloonWidget) | Uses a vtkBalloonWidget to draw labels when the mouse stays above an actor.
 [BoxWidget](/Python/Widgets/BoxWidget) | This 3D widget defines a region of interest that is represented by an arbitrarily oriented hexahedron with interior face angles of 90 degrees (orthogonal faces). The object creates 7 handles that can be moused on and manipulated.
+[CameraOrientationWidget](/Python/Widgets/CameraOrientationWidget) | Demonstrates a 3D camera orientation widget.
 [CompassWidget](/Python/Widgets/CompassWidget) | Draws an interactive compass.
 [ContourWidget](/Python/Widgets/ContourWidget) | Draw a contour (line) which can be deformed by the user
 [OrientationMarkerWidget](/Python/Widgets/OrientationMarkerWidget) | Draws two cubes. One of them can be clicked to be rotated, and will rotate the second one. The second one has annotations on it, and can also be moved.

@@ -1305,6 +1305,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [BorderWidget](/Cxx/Widgets/BorderWidget) | 2D selection, 2D box.
 [BoxWidget](/Cxx/Widgets/BoxWidget) |
 [BoxWidget2](/Cxx/Widgets/BoxWidget2) |
+[CameraOrientationWidget](/Cxx/Widgets/CameraOrientationWidget) | Demonstrates a 3D camera orientation widget.
 [CaptionWidget](/Cxx/Widgets/CaptionWidget) |
 [CheckerboardWidget](/Cxx/Widgets/CheckerboardWidget) | Compare two images using a checkerboard.
 [CompassWidget](/Cxx/Widgets/CompassWidget) | Draws an interactive compass.
