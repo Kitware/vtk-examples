@@ -95,7 +95,7 @@ if (BUILD_TESTING)
     TestSpatterShader ${DATA}/Shaders/PerlinNoise.glsl ${DATA}/horse.ply)
 
   add_test(${KIT}-SphereMap ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestSphereMap ${DATA}/Bunny.vtp ${DATA}/wintersun.jpg)
+    TestSphereMap ${DATA}/Bunny.vtp ${DATA}/skyboxes/wintersun.jpg)
 
 
   include(${WikiExamples_SOURCE_DIR}/CMake/ExamplesTesting.cmake)

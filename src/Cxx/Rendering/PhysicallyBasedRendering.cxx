@@ -550,13 +550,13 @@ std::string ShowUsage(std::string fn)
      << "  path         The path to the cubemap files e.g. skyboxes/skybox2/\n"
      << "               or to a .hdr, .png, or .jpg equirectangular file.\n"
      << "  material_fn  The path to the material texture file e.g. "
-        "vtk_Material.png\n"
+        "Textures/Isotropic/vtk_Material.png\n"
      << "  albedo_fn    The path to the albedo (base colour) texture file e.g. "
-        "vtk_Base_Color.png\n"
+        "Textures/Isotropic/vtk_Base_Color.png\n"
      << "  normal_fn    The path to the normal texture file e.g. "
-        "vtk_Normal.png\n"
+        "Textures/Isotropic/vtk_Normal.png\n"
      << "  emissive_fn  The path to the emissive texture file e.g. "
-        "vtk_dark_bkg.png\n"
+        "Textures/Isotropic/vtk_dark_bkg.png\n"
      << "  surface      The surface to use. Boy's surface is the default.\n\n"
      << "Physically based rendering sets color, metallicity and roughness of "
         "the object.\n"
@@ -794,7 +794,7 @@ vtkSmartPointer<vtkPolyData> GetMobius()
   tangents->Update();
 
   vtkNew<vtkTransform> transform;
-  transform->RotateX(90.0);
+  transform->RotateX(-90.0);
   vtkNew<vtkTransformPolyDataFilter> transformFilter;
   transformFilter->SetInputConnection(tangents->GetOutputPort());
   transformFilter->SetTransform(transform);
@@ -826,8 +826,8 @@ vtkSmartPointer<vtkPolyData> GetRandomHills()
   tangents->Update();
 
   vtkNew<vtkTransform> transform;
-  transform->RotateZ(180.0);
-  transform->RotateX(90.0);
+  transform->Translate(0.0, 5.0, 15.0);
+  transform->RotateX(-90.0);
   vtkNew<vtkTransformPolyDataFilter> transformFilter;
   transformFilter->SetInputConnection(tangents->GetOutputPort());
   transformFilter->SetTransform(transform);
@@ -855,7 +855,7 @@ vtkSmartPointer<vtkPolyData> GetTorus()
   tangents->Update();
 
   vtkNew<vtkTransform> transform;
-  transform->RotateX(90.0);
+  transform->RotateX(-90.0);
   vtkNew<vtkTransformPolyDataFilter> transformFilter;
   transformFilter->SetInputConnection(tangents->GetOutputPort());
   transformFilter->SetTransform(transform);

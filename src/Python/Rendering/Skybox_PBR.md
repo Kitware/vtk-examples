@@ -25,7 +25,11 @@ We also provide an equirectangular file (useful when using ParaView):
 
 where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data`. Note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
 
-For more information, see [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/).
+#### Further Reading
+- [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/)
+- [PBR Journey Part 1: High Dynamic Range Image Based Lighting with VTK](https://blog.kitware.com/pbrj1/)
+- [PBR Journey Part 2 : Anisotropy model with VTK](https://blog.kitware.com/pbr-journey-part-2-anisotropy-model-with-vtk/)
+- [PBR Journey Part 3 : Clear Coat Model with VTK](https://blog.kitware.com/pbr-journey-part-3-clear-coat-model-with-vtk/)
 
 !!! note
     - Support was added for [HDR images in VTK 9.0](https://blog.kitware.com/pbrj1/), Thus for better performance, the skybox texture should set `MipmapOn` as well as `InterpolateOn` to exploit hardware capabilities when using HDR images.

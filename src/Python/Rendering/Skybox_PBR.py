@@ -308,7 +308,7 @@ def get_mobius():
     tangents.Update()
 
     transform = vtk.vtkTransform()
-    transform.RotateX(90.0)
+    transform.RotateX(-90.0)
     transform_filter = vtk.vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
@@ -339,8 +339,8 @@ def get_random_hills():
     tangents.Update()
 
     transform = vtk.vtkTransform()
-    transform.RotateZ(180.0)
-    transform.RotateX(90.0)
+    transform.Translate(0.0, 5.0, 15.0)
+    transform.RotateX(-90.0)
     transform_filter = vtk.vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
@@ -367,7 +367,7 @@ def get_torus():
     tangents.Update()
 
     transform = vtk.vtkTransform()
-    transform.RotateX(90.0)
+    transform.RotateX(-90.0)
     transform_filter = vtk.vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
