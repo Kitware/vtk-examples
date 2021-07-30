@@ -29,18 +29,22 @@ Additionally HDR or JPEG equirectangular Environment maps can be used to generat
 The parameters for this program are rather complex. Here are the parameters used to make the example image:
 
 ``` text
-<DATA>/skyboxes/skybox2/ <DATA>/vtk_Material.png <DATA>/vtk_Base_Color.png <DATA>/vtk_Normal.png <DATA>/vtk_dark_bkg.png Boy
+<DATA>/skyboxes/skybox2/ <DATA1>/vtk_Material.png <DATA1>/vtk_Base_Color.png <DATA1>/vtk_Normal.png <DATA1>/vtk_dark_bkg.png Boy
 ```
 
 We also provide an equirectangular file (useful when using ParaView):
 
 ``` text
-<DATA>/skyboxes/skybox2/skybox.jpg <DATA>/vtk_Material.png <DATA>/vtk_Base_Color.png <DATA>/vtk_Normal.png <DATA>/vtk_dark_bkg.png Boy
+<DATA>/skyboxes/skybox2/skybox.jpg <DATA1>/vtk_Material.png <DATA1>/vtk_Base_Color.png <DATA1>/vtk_Normal.png <DATA1>/vtk_dark_bkg.png Boy
 ```
 
-where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
+where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data` and `<DATA1>` is the path to `?vtk-?examples/src/Testing/Data/Textures/Isotropic`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
 
-For more information, see [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/).
+#### Further Reading
+- [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/)
+- [PBR Journey Part 1: High Dynamic Range Image Based Lighting with VTK](https://blog.kitware.com/pbrj1/)
+- [PBR Journey Part 2 : Anisotropy model with VTK](https://blog.kitware.com/pbr-journey-part-2-anisotropy-model-with-vtk/)
+- [PBR Journey Part 3 : Clear Coat Model with VTK](https://blog.kitware.com/pbr-journey-part-3-clear-coat-model-with-vtk/)
 
 !!! note
     - Support was added for [HDR images in VTK 9.0](https://blog.kitware.com/pbrj1/), Thus for better performance, the skybox texture should set `MipmapOn` as well as `InterpolateOn` to exploit hardware capabilities when using HDR images.

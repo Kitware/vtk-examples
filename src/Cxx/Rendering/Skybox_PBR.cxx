@@ -261,10 +261,11 @@ int main(int argc, char* argv[])
 
   // Get the surface
   std::string desiredSurface = "boy";
-  if (argc > 6)
+  if (argc > 1)
   {
-    desiredSurface = argv[6];
+    desiredSurface = argv[2];
   }
+  std::cout << desiredSurface << std::endl;
   std::transform(desiredSurface.begin(), desiredSurface.end(),
                  desiredSurface.begin(),
                  [](char c) { return std::tolower(c); });
@@ -624,7 +625,7 @@ vtkSmartPointer<vtkPolyData> GetMobius()
   tangents->Update();
 
   vtkNew<vtkTransform> transform;
-  transform->RotateX(90.0);
+  transform->RotateX(-90.0);
   vtkNew<vtkTransformPolyDataFilter> transformFilter;
   transformFilter->SetInputConnection(tangents->GetOutputPort());
   transformFilter->SetTransform(transform);
@@ -656,8 +657,8 @@ vtkSmartPointer<vtkPolyData> GetRandomHills()
   tangents->Update();
 
   vtkNew<vtkTransform> transform;
-  transform->RotateZ(180.0);
-  transform->RotateX(90.0);
+  transform->Translate(0.0, 5.0, 15.0);
+  transform->RotateX(-90.0);
   vtkNew<vtkTransformPolyDataFilter> transformFilter;
   transformFilter->SetInputConnection(tangents->GetOutputPort());
   transformFilter->SetTransform(transform);
@@ -685,7 +686,7 @@ vtkSmartPointer<vtkPolyData> GetTorus()
   tangents->Update();
 
   vtkNew<vtkTransform> transform;
-  transform->RotateX(90.0);
+  transform->RotateX(-90.0);
   vtkNew<vtkTransformPolyDataFilter> transformFilter;
   transformFilter->SetInputConnection(tangents->GetOutputPort());
   transformFilter->SetTransform(transform);

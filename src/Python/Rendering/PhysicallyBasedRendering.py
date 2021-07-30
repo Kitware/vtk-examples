@@ -19,10 +19,13 @@ A Skybox is used to create the illusion of distant three-dimensional surrounding
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('path', help='The path to the cubemap files e.g. skyboxes/skybox2/ or to a\n'
                                      ' .hdr, .png, or .jpg equirectangular file')
-    parser.add_argument('material_fn', help='The path to the material texture file e.g. vtk_Material.png')
-    parser.add_argument('albedo_fn', help='The path to the albedo (base colour) texture file e.g. vtk_Base_Color.png')
-    parser.add_argument('normal_fn', help='The path to the normal texture file e.g. vtk_Normal.png')
-    parser.add_argument('emissive_fn', help='The path to the emissive texture file e.g. vtk_dark_bkg.png')
+    parser.add_argument('material_fn',
+                        help='The path to the material texture file e.g. Textures/Isotropic/vtk_Material.png')
+    parser.add_argument('albedo_fn',
+                        help='The path to the albedo (base colour) texture file e.g. Textures/Isotropic/vtk_Base_Color.png')
+    parser.add_argument('normal_fn', help='The path to the normal texture file e.g. Textures/Isotropic/vtk_Normal.png')
+    parser.add_argument('emissive_fn',
+                        help='The path to the emissive texture file e.g. Textures/Isotropic/vtk_dark_bkg.png')
     parser.add_argument('surface', nargs='?', default='Boy', help="The surface to use. Boy's surface is the default.")
     args = parser.parse_args()
     return args.path, args.material_fn, args.albedo_fn, args.normal_fn, args.emissive_fn, args.surface
@@ -108,7 +111,7 @@ def main():
     # Other parameters.
     occlusion_strength = 1.0
     normal_scale = 1.0
-    emissive_col = colors.GetColor3d('VTKBlueComp')
+    # emissive_col = colors.GetColor3d('VTKBlueComp')
     # emissive_factor = emissive_col
     emissive_factor = [1.0, 1.0, 1.0]
 
@@ -394,7 +397,7 @@ def get_mobius():
     tangents.Update()
 
     transform = vtk.vtkTransform()
-    transform.RotateX(90.0)
+    transform.RotateX(-90.0)
     transform_filter = vtk.vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
@@ -425,8 +428,8 @@ def get_random_hills():
     tangents.Update()
 
     transform = vtk.vtkTransform()
-    transform.RotateZ(180.0)
-    transform.RotateX(90.0)
+    transform.Translate(0.0, 5.0, 15.0)
+    transform.RotateX(-90.0)
     transform_filter = vtk.vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
@@ -453,7 +456,7 @@ def get_torus():
     tangents.Update()
 
     transform = vtk.vtkTransform()
-    transform.RotateX(90.0)
+    transform.RotateX(-90.0)
     transform_filter = vtk.vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)

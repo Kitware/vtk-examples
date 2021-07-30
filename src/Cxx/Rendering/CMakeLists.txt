@@ -148,8 +148,8 @@ if (BUILD_TESTING)
 
   if( NOT VTK_VERSION VERSION_LESS "8.90.0")
     add_test(${KIT}-PhysicallyBasedRendering ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestPhysicallyBasedRendering ${DATA}/skyboxes/skybox2/ ${DATA}/vtk_Material.png
-       ${DATA}/vtk_Base_Color.png ${DATA}/vtk_Normal.png ${DATA}/vtk_dark_bkg.png Boy)
+      TestPhysicallyBasedRendering ${DATA}/skyboxes/skybox2/ ${DATA}/Textures/Isotropic/vtk_Material.png
+       ${DATA}/Textures/Isotropic/vtk_Base_Color.png ${DATA}/Textures/Isotropic/vtk_Normal.png ${DATA}/Textures/Isotropic/vtk_dark_bkg.png Boy)
     add_test(${KIT}-Skybox_PBR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
       TestSkybox_PBR ${DATA}/skyboxes/skybox2 Boy)
   endif()
