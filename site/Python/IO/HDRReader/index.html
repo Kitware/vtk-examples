@@ -71,7 +71,7 @@ function registerListener(event, func) {
 <span class=s1>   &#39;&#39;&#39;</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;file_name&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Path to the hdr file e.g. spiaggia_di_mondello_1k.hdr or gradient_xyz.hdr.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;file_name&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Path to the hdr file e.g. skyboxes/spiaggia_di_mondello_1k.hdr.&#39;</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span>
 
