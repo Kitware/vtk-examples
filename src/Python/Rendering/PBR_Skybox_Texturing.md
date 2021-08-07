@@ -24,18 +24,18 @@ A Skybox is used to create the illusion of distant three-dimensional surrounding
 
 You can select different cubemaps and different surfaces to visualise.
 
-Additionally HDR or JPEG equirectangular Environment maps can be used to generate the cubemaps. A good source for these is [polyhaven](https://polyhaven.com/hdris).
+Additionally HDR or JPEG equirectangular Environment maps can be used to generate the cubemaps. A good source for Skybox HDRSs and Textures is [Poly Haven](https://polyhaven.com/all). Start with the 4K HDR versions of Skyboxes.
 
 The parameters for this program are rather complex. Here are the parameters used to make the example image:
 
 ``` text
-<DATA>/skyboxes/skybox2/ <DATA1>/vtk_Material.png <DATA1>/vtk_Base_Color.png <DATA1>/vtk_Normal.png <DATA1>/vtk_dark_bkg.png Boy
+<DATA>/skyboxes/skybox2/ <DATA1>/vtk_Base_Color.png <DATA1>/vtk_Normal.png <DATA1>/vtk_Material.png <DATA1>/vtk_dark_bkg.png Boy
 ```
 
 We also provide an equirectangular file (useful when using ParaView):
 
 ``` text
-<DATA>/skyboxes/skybox2/skybox.jpg <DATA1>/vtk_Material.png <DATA1>/vtk_Base_Color.png <DATA1>/vtk_Normal.png <DATA1>/vtk_dark_bkg.png Boy
+<DATA>/skyboxes/skybox2/skybox.jpg <DATA1>/vtk_Base_Color.png <DATA1>/vtk_Normal.png <DATA1>/vtk_Material.png <DATA1>/vtk_dark_bkg.png Boy
 ```
 
 where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data` and `<DATA1>` is the path to `?vtk-?examples/src/Testing/Data/Textures/Isotropic`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.

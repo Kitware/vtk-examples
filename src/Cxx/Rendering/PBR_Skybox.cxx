@@ -1,30 +1,27 @@
 #include <vtkActor.h>
 #include <vtkAxesActor.h>
-#include <vtkBMPReader.h>
 #include <vtkCubeSource.h>
-#include <vtkDataSet.h>
 #include <vtkEquirectangularToCubeMapTexture.h>
 #include <vtkFloatArray.h>
 #include <vtkHDRReader.h>
 #include <vtkImageFlip.h>
+#include <vtkImageReader2.h>
 #include <vtkImageReader2Factory.h>
-#include <vtkJPEGReader.h>
+#include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkLinearSubdivisionFilter.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkOpenGLRenderer.h>
 #include <vtkOpenGLTexture.h>
 #include <vtkOrientationMarkerWidget.h>
-#include <vtkPNGReader.h>
-#include <vtkPNMReader.h>
 #include <vtkParametricBoy.h>
 #include <vtkParametricFunctionSource.h>
 #include <vtkParametricMobius.h>
 #include <vtkParametricRandomHills.h>
 #include <vtkParametricTorus.h>
 #include <vtkPointData.h>
-#include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkPolyDataNormals.h>
 #include <vtkPolyDataTangents.h>
 #include <vtkProperty.h>
 #include <vtkProperty2D.h>
@@ -34,7 +31,6 @@
 #include <vtkSliderRepresentation2D.h>
 #include <vtkSliderWidget.h>
 #include <vtkSmartPointer.h>
-#include <vtkTIFFReader.h>
 #include <vtkTextProperty.h>
 #include <vtkTexture.h>
 #include <vtkTexturedSphereSource.h>
@@ -43,15 +39,16 @@
 #include <vtkTriangleFilter.h>
 #include <vtkVersion.h>
 
-#include <algorithm>
 #include <array>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <map>
 #include <numeric>
 #include <regex>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #if VTK_VERSION_NUMBER >= 90000000000ULL
 #define VTK_VER_GE_90 1
@@ -111,15 +108,6 @@ ReadCubeMap(std::string const& folderRoot,
 vtkSmartPointer<vtkTexture> ReadEnvironmentMap(std::string const& fileName);
 
 /**
- * Read an image and convert it to a texture.
- *
- * @param path: The image path.
- *
- * @return The texture.
- */
-vtkSmartPointer<vtkTexture> ReadTexture(std::string path);
-
-/**
  * Generate u, v texture coordinates on a parametric surface.
  *
  * @param uResolution: u resolution
@@ -174,48 +162,6 @@ public:
   vtkProperty* property;
 };
 
-class SliderCallbackOcclusionStrength : public vtkCommand
-{
-public:
-  static SliderCallbackOcclusionStrength* New()
-  {
-    return new SliderCallbackOcclusionStrength;
-  }
-  virtual void Execute(vtkObject* caller, unsigned long, void*)
-  {
-    vtkSliderWidget* sliderWidget = reinterpret_cast<vtkSliderWidget*>(caller);
-    double value = static_cast<vtkSliderRepresentation2D*>(
-                       sliderWidget->GetRepresentation())
-                       ->GetValue();
-    this->property->SetOcclusionStrength(value);
-  }
-  SliderCallbackOcclusionStrength() : property(nullptr)
-  {
-  }
-  vtkProperty* property;
-};
-
-class SliderCallbackNormalScale : public vtkCommand
-{
-public:
-  static SliderCallbackNormalScale* New()
-  {
-    return new SliderCallbackNormalScale;
-  }
-  virtual void Execute(vtkObject* caller, unsigned long, void*)
-  {
-    vtkSliderWidget* sliderWidget = reinterpret_cast<vtkSliderWidget*>(caller);
-    double value = static_cast<vtkSliderRepresentation2D*>(
-                       sliderWidget->GetRepresentation())
-                       ->GetValue();
-    this->property->SetNormalScale(value);
-  }
-  SliderCallbackNormalScale() : property(nullptr)
-  {
-  }
-  vtkProperty* property;
-};
-
 struct SliderProperties
 {
   // Set up the sliders
@@ -254,9 +200,7 @@ int main(int argc, char* argv[])
               << std::endl;
     return EXIT_FAILURE;
   }
-
-  std::string filePath{""};
-  if (argc < 6)
+  if (argc < 2)
   {
     std::cout << ShowUsage(argv[0]) << std::endl;
     return EXIT_FAILURE;
@@ -315,20 +259,13 @@ int main(int argc, char* argv[])
     skybox = ReadCubeMap(argv[1], skyboxFiles[path.back()]);
   }
 
-  // Get the textures
-  auto material = ReadTexture(argv[2]);
-  auto albedo = ReadTexture(argv[3]);
-  albedo->UseSRGBColorSpaceOn();
-  auto normal = ReadTexture(argv[4]);
-  auto emissive = ReadTexture(argv[5]);
-  emissive->UseSRGBColorSpaceOn();
-
   // Get the surface
   std::string desiredSurface = "boy";
-  if (argc > 6)
+  if (argc > 2)
   {
-    desiredSurface = argv[6];
+    desiredSurface = argv[2];
   }
+  std::cout << desiredSurface << std::endl;
   std::transform(desiredSurface.begin(), desiredSurface.end(),
                  desiredSurface.begin(),
                  [](char c) { return std::tolower(c); });
@@ -365,15 +302,8 @@ int main(int argc, char* argv[])
   vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
-  std::array<unsigned char, 4> col{{26, 51, 102, 255}};
-  colors->SetColor("BkgColor", col.data());
-  // VTK blue
-  std::array<unsigned char, 4> col1{{6, 79, 141, 255}};
-  colors->SetColor("VTKBlue", col1.data());
-  // Let's make a complementary colour to VTKBlue
-  std::transform(col1.begin(), std::prev(col1.end()), col1.begin(),
-                 [](unsigned char c) { return 255 - c; });
-  colors->SetColor("VTKBlueComp", col1.data());
+  std::array<unsigned char, 4> bkg{{26, 51, 102, 255}};
+  colors->SetColor("BkgColor", bkg.data());
 
   vtkNew<vtkOpenGLRenderer> renderer;
   vtkNew<vtkRenderWindow> renderWindow;
@@ -381,17 +311,10 @@ int main(int argc, char* argv[])
   vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  // Lets use a rough metallic surface
+  // Lets use a smooth metallic surface
+  auto diffuseCoefficient = 1.0;
+  auto roughnessCoefficient = 0.05;
   auto metallicCoefficient = 1.0;
-  auto roughnessCoefficient = 0.8;
-  // Other parameters
-  auto occlusionStrength = 1.0;
-  auto normalScale = 1.0;
-  // Make VTK silvery in appearance
-  // auto emissiveCol = colors->GetColor3d("VTKBlueComp").GetData();
-  // std::array<double, 3> emissiveFactor{emissiveCol[0], emissiveCol[1],
-  //                                      emissiveCol[2]};
-  std::array<double, 3> emissiveFactor{1.0, 1.0, 1.0};
 
   auto slwP = SliderProperties();
   slwP.initialValue = metallicCoefficient;
@@ -414,32 +337,6 @@ int main(int argc, char* argv[])
   sliderWidgetRoughness->SetAnimationModeToAnimate();
   sliderWidgetRoughness->EnabledOn();
 
-  slwP.initialValue = occlusionStrength;
-  slwP.maximumValue = 1;
-  slwP.title = "Occlusion";
-  slwP.p1[0] = 0.1;
-  slwP.p1[1] = 0.1;
-  slwP.p2[0] = 0.1;
-  slwP.p2[1] = 0.9;
-
-  auto sliderWidgetOcclusionStrength = MakeSliderWidget(slwP);
-  sliderWidgetOcclusionStrength->SetInteractor(interactor);
-  sliderWidgetOcclusionStrength->SetAnimationModeToAnimate();
-  sliderWidgetOcclusionStrength->EnabledOn();
-
-  slwP.initialValue = normalScale;
-  slwP.maximumValue = 5;
-  slwP.title = "Normal";
-  slwP.p1[0] = 0.85;
-  slwP.p1[1] = 0.1;
-  slwP.p2[0] = 0.85;
-  slwP.p2[1] = 0.9;
-
-  auto sliderWidgetNormal = MakeSliderWidget(slwP);
-  sliderWidgetNormal->SetInteractor(interactor);
-  sliderWidgetNormal->SetAnimationModeToAnimate();
-  sliderWidgetNormal->EnabledOn();
-
   // Build the pipeline
   vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(source);
@@ -447,65 +344,43 @@ int main(int argc, char* argv[])
   vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
 
-  actor->GetProperty()->SetInterpolationToPBR();
-
-  // configure the basic properties
-  actor->GetProperty()->SetColor(colors->GetColor3d("White").GetData());
-  actor->GetProperty()->SetMetallic(metallicCoefficient);
-  actor->GetProperty()->SetRoughness(roughnessCoefficient);
-
-  // configure textures (needs tcoords on the mesh)
-  actor->GetProperty()->SetBaseColorTexture(albedo);
-  actor->GetProperty()->SetORMTexture(material);
-  actor->GetProperty()->SetOcclusionStrength(occlusionStrength);
-
-  actor->GetProperty()->SetEmissiveTexture(emissive);
-  actor->GetProperty()->SetEmissiveFactor(emissiveFactor.data());
-
-  // needs tcoords, normals and tangents on the mesh
-  actor->GetProperty()->SetNormalTexture(normal);
-  actor->GetProperty()->SetNormalScale(normalScale);
-
   renderer->UseImageBasedLightingOn();
 #if VTK_VER_GE_90
   renderer->SetEnvironmentTexture(cubemap);
 #else
   renderer->SetEnvironmentCubeMap(cubemap);
 #endif
+  actor->GetProperty()->SetInterpolationToPBR();
+
+  // configure the basic properties
+  actor->GetProperty()->SetColor(colors->GetColor4d("White").GetData());
+  actor->GetProperty()->SetDiffuse(diffuseCoefficient);
+  actor->GetProperty()->SetRoughness(roughnessCoefficient);
+  actor->GetProperty()->SetMetallic(metallicCoefficient);
+
+  // Create the slider callbacks to manipulate metallicity and roughness
+  vtkNew<SliderCallbackMetallic> callbackMetallic;
+  callbackMetallic->property = actor->GetProperty();
+  vtkNew<SliderCallbackRoughness> callbackRoughness;
+  callbackRoughness->property = actor->GetProperty();
+
+  sliderWidgetMetallic->AddObserver(vtkCommand::InteractionEvent,
+                                    callbackMetallic);
+  sliderWidgetRoughness->AddObserver(vtkCommand::InteractionEvent,
+                                     callbackRoughness);
+
   renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
   renderer->AddActor(actor);
 
-  // Comment out if you don't want a skybox
   vtkNew<vtkSkybox> skyboxActor;
   skyboxActor->SetTexture(skybox);
   renderer->AddActor(skyboxActor);
 
   renderer->UseSphericalHarmonicsOff();
 
-  // Create the slider callbacks to manipulate metallicity, roughness,
-  // occlusion strength and normal scaling
-  vtkNew<SliderCallbackMetallic> callbackMetallic;
-  callbackMetallic->property = actor->GetProperty();
-  vtkNew<SliderCallbackRoughness> callbackRoughness;
-  callbackRoughness->property = actor->GetProperty();
-  auto callbackOcclusionStrength =
-      vtkSmartPointer<SliderCallbackOcclusionStrength>::New();
-  callbackOcclusionStrength->property = actor->GetProperty();
-  vtkNew<SliderCallbackNormalScale> callbackNormalScale;
-  callbackNormalScale->property = actor->GetProperty();
-
-  sliderWidgetMetallic->AddObserver(vtkCommand::InteractionEvent,
-                                    callbackMetallic);
-  sliderWidgetRoughness->AddObserver(vtkCommand::InteractionEvent,
-                                     callbackRoughness);
-  sliderWidgetOcclusionStrength->AddObserver(vtkCommand::InteractionEvent,
-                                             callbackOcclusionStrength);
-  sliderWidgetNormal->AddObserver(vtkCommand::InteractionEvent,
-                                  callbackNormalScale);
-
   renderWindow->SetSize(640, 480);
   renderWindow->Render();
-  renderWindow->SetWindowName("PhysicallyBasedRendering");
+  renderWindow->SetWindowName("PBR_Skybox");
 
   vtkNew<vtkAxesActor> axes;
 
@@ -515,13 +390,13 @@ int main(int argc, char* argv[])
   widget->SetOutlineColor(rgba[0], rgba[1], rgba[2]);
   widget->SetOrientationMarker(axes);
   widget->SetInteractor(interactor);
-  widget->SetViewport(0.0, 0.0, 0.2, 0.2);
+  widget->SetViewport(0.0, 0.2, 0.2, 0.4);
   widget->SetEnabled(1);
   widget->InteractiveOn();
 
   interactor->SetRenderWindow(renderWindow);
-  interactor->Initialize();
 
+  renderWindow->Render();
   interactor->Start();
   return EXIT_SUCCESS;
 }
@@ -542,27 +417,17 @@ std::string ShowUsage(std::string fn)
     fn.erase(period_idx);
   }
   std::ostringstream os;
-  os << "\nusage: " << fn
-     << " path material_fn albedo_fn normal_fn emissive_fn [surface]\n\n"
-     << "Demonstrates physically based rendering, image based lighting, "
-        ", texturing and a skybox.\n\n"
+  os << "\nusage: " << fn << " path [surface]\n\n"
+     << "Demonstrates physically based rendering, image based lighting and a "
+        "skybox.\n\n"
      << "positional arguments:\n"
-     << "  path         The path to the cubemap files e.g. skyboxes/skybox2/\n"
+     << "  path        The path to the cubemap files e.g. skyboxes/skybox2/\n"
      << "               or to a .hdr, .png, or .jpg equirectangular file.\n"
-     << "  material_fn  The path to the material texture file e.g. "
-        "Textures/Isotropic/vtk_Material.png\n"
-     << "  albedo_fn    The path to the albedo (base colour) texture file e.g. "
-        "Textures/Isotropic/vtk_Base_Color.png\n"
-     << "  normal_fn    The path to the normal texture file e.g. "
-        "Textures/Isotropic/vtk_Normal.png\n"
-     << "  emissive_fn  The path to the emissive texture file e.g. "
-        "Textures/Isotropic/vtk_dark_bkg.png\n"
-     << "  surface      The surface to use. Boy's surface is the default.\n\n"
+     << "  surface     The surface to use. Boy's surface is the default.\n\n"
      << "Physically based rendering sets color, metallicity and roughness of "
         "the object.\n"
      << "Image based lighting uses a cubemap texture to specify the "
         "environment.\n"
-     << "Texturing is used to generate lighting effects.\n"
      << "A Skybox is used to create the illusion of distant three-dimensional "
         "surroundings.\n"
      << "\n"
@@ -718,38 +583,6 @@ vtkSmartPointer<vtkTexture> ReadEnvironmentMap(std::string const& fileName)
   tcm->InterpolateOn();
 
   return tcm;
-}
-
-vtkSmartPointer<vtkTexture> ReadTexture(std::string path)
-{
-  // Read the image which will be the texture
-  std::string extension;
-  if (path.find_last_of(".") != std::string::npos)
-  {
-    extension = path.substr(path.find_last_of("."));
-  }
-  // Make the extension lowercase
-  std::transform(extension.begin(), extension.end(), extension.begin(),
-                 ::tolower);
-  std::vector<std::string> validExtensions{".jpg", ".png", ".bmp", ".tiff",
-                                           ".pnm", ".pgm", ".ppm"};
-  vtkNew<vtkTexture> texture;
-  if (std::find(validExtensions.begin(), validExtensions.end(), extension) ==
-      validExtensions.end())
-  {
-    std::cout << "Unable to read the texture file:" << path << std::endl;
-    return texture;
-  }
-  // Read the images
-  vtkNew<vtkImageReader2Factory> readerFactory;
-  vtkSmartPointer<vtkImageReader2> imgReader;
-  imgReader.TakeReference(readerFactory->CreateImageReader2(path.c_str()));
-  imgReader->SetFileName(path.c_str());
-
-  texture->SetInputConnection(imgReader->GetOutputPort());
-  texture->Update();
-
-  return texture;
 }
 
 vtkSmartPointer<vtkPolyData> GetBoy()
