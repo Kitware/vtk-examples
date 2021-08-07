@@ -14,28 +14,35 @@ Physically based rendering sets color, metallicity and roughness of the object.
 Image based lighting uses a cubemap texture to specify the environment.
 Texturing is used to generate lighting effects.
 A Skybox is used to create the illusion of distant three-dimensional surroundings.
+
+The parameter order is:
+ skybox, base_color, normal_texture, material_texture, emissive_texture, surface
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('path', help='The path to the cubemap files e.g. skyboxes/skybox2/ or to a\n'
                                      ' .hdr, .png, or .jpg equirectangular file')
+    parser.add_argument('base_fn',
+                        help='The path to the base colour (albedo) texture file'
+                             ' e.g. Textures/Isotropic/vtk_Base_Color.png')
+    parser.add_argument('normal_fn', help='The path to the normal texture file'
+                                          ' e.g. Textures/Isotropic/vtk_Normal.png')
     parser.add_argument('material_fn',
-                        help='The path to the material texture file e.g. Textures/Isotropic/vtk_Material.png')
-    parser.add_argument('albedo_fn',
-                        help='The path to the albedo (base colour) texture file e.g. Textures/Isotropic/vtk_Base_Color.png')
-    parser.add_argument('normal_fn', help='The path to the normal texture file e.g. Textures/Isotropic/vtk_Normal.png')
+                        help='The path to the material (orm) texture file'
+                             ' e.g. Textures/Isotropic/vtk_Material.png')
     parser.add_argument('emissive_fn',
-                        help='The path to the emissive texture file e.g. Textures/Isotropic/vtk_dark_bkg.png')
+                        help='The path to the emissive texture file'
+                             ' e.g. Textures/Isotropic/vtk_dark_bkg.png')
     parser.add_argument('surface', nargs='?', default='Boy', help="The surface to use. Boy's surface is the default.")
     args = parser.parse_args()
-    return args.path, args.material_fn, args.albedo_fn, args.normal_fn, args.emissive_fn, args.surface
+    return args.path, args.base_fn, args.normal_fn, args.material_fn, args.emissive_fn, args.surface
 
 
 def main():
     if not vtk_version_ok(8, 90, 0):
         print('You need VTK version 8.90 or greater to run this program.')
         return
-    path, material_fn, albedo_fn, normal_fn, emissive_fn, surface = get_program_parameters()
+    path, base_fn, normal_fn, material_fn, emissive_fn, surface = get_program_parameters()
 
     # A dictionary of the skybox folder name and the skybox files in it.
     skybox_files = {
@@ -66,10 +73,10 @@ def main():
         return
 
     # Get the textures
-    material = read_texture(material_fn)
-    albedo = read_texture(albedo_fn)
-    albedo.UseSRGBColorSpaceOn()
+    base_color = read_texture(base_fn)
+    base_color.UseSRGBColorSpaceOn()
     normal = read_texture(normal_fn)
+    material = read_texture(material_fn)
     emissive = read_texture(emissive_fn)
     emissive.UseSRGBColorSpaceOn()
 
@@ -106,8 +113,9 @@ def main():
     interactor.SetRenderWindow(render_window)
 
     # Lets use a rough metallic surface.
-    metallic_coefficient = 1.0
+    diffuse_coefficient = 1.0
     roughness_coefficient = 0.8
+    metallic_coefficient = 1.0
     # Other parameters.
     occlusion_strength = 1.0
     normal_scale = 1.0
@@ -137,8 +145,8 @@ def main():
     slw_p.initial_value = occlusion_strength
     slw_p.maximum_value = 1
     slw_p.title = 'Occlusion'
-    slw_p.p1 = [0.1, 0.1]
-    slw_p.p2 = [0.1, 0.9]
+    slw_p.p1 = [0.1, 0.2]
+    slw_p.p2 = [0.1, 0.8]
 
     slider_widget_occlusion_strength = make_slider_widget(slw_p)
     slider_widget_occlusion_strength.SetInteractor(interactor)
@@ -148,8 +156,8 @@ def main():
     slw_p.initial_value = normal_scale
     slw_p.maximum_value = 5
     slw_p.title = 'Normal'
-    slw_p.p1 = [0.85, 0.1]
-    slw_p.p2 = [0.85, 0.9]
+    slw_p.p1 = [0.85, 0.2]
+    slw_p.p2 = [0.85, 0.8]
 
     slider_widget_normal = make_slider_widget(slw_p)
     slider_widget_normal.SetInteractor(interactor)
@@ -168,11 +176,12 @@ def main():
     # Configure the basic properties.
     # Set the model colour.
     actor.GetProperty().SetColor(colors.GetColor3d('White'))
-    actor.GetProperty().SetMetallic(metallic_coefficient)
+    actor.GetProperty().SetDiffuse(diffuse_coefficient)
     actor.GetProperty().SetRoughness(roughness_coefficient)
+    actor.GetProperty().SetMetallic(metallic_coefficient)
 
     # Configure textures (needs tcoords on the mesh).
-    actor.GetProperty().SetBaseColorTexture(albedo)
+    actor.GetProperty().SetBaseColorTexture(base_color)
     actor.GetProperty().SetORMTexture(material)
     actor.GetProperty().SetOcclusionStrength(occlusion_strength)
 
@@ -209,7 +218,7 @@ def main():
 
     render_window.SetSize(640, 480)
     render_window.Render()
-    render_window.SetWindowName('PhysicallyBasedRendering')
+    render_window.SetWindowName('PBR_Skybox_Texturing')
 
     axes = vtk.vtkAxesActor()
 
@@ -224,8 +233,8 @@ def main():
     widget.InteractiveOn()
 
     interactor.SetRenderWindow(render_window)
-    interactor.Initialize()
 
+    render_window.Render()
     interactor.Start()
 
 
@@ -346,12 +355,14 @@ def read_texture(image_path):
     if extension not in valid_extensions:
         print('Unable to read the texture file (wrong extension):', path)
         return None
-    texture = vtk.vtkTexture()
+
     # Read the images
     reader_factory = vtk.vtkImageReader2Factory()
     img_reader = reader_factory.CreateImageReader2(str(path))
     img_reader.SetFileName(str(path))
 
+    texture = vtk.vtkTexture()
+    texture.InterpolateOn()
     texture.SetInputConnection(img_reader.GetOutputPort())
     texture.Update()
 

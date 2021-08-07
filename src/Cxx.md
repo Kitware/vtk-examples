@@ -873,7 +873,8 @@ This section includes vtkUnstructuredGrid.
 [Model](/Cxx/Rendering/Model) | Illustrative diagram of graphics objects.
 [MotionBlur](/Cxx/Rendering/MotionBlur) | Example of motion blur.
 [OutlineGlowPass](/Cxx/Rendering/OutlineGlowPass) | Demonstrates how to render a object in a scene with a glowing outline.
-[PhysicallyBasedRendering](/Cxx/Rendering/PhysicallyBasedRendering) | Demonstrates physically based rendering, image based lighting, texturing and a skybox.
+[PBR_Skybox](/Cxx/Rendering/PBR_Skybox) | Demonstrates physically based rendering, image based lighting and a skybox.
+[PBR_Skybox_Texturing](/Cxx/Rendering/PBR_Skybox_Texturing) | Demonstrates physically based rendering, image based lighting, texturing and a skybox.
 [Rainbow](/Cxx/Rendering/Rainbow) | Use and manipulation of vtkLookupTables.
 [Rotations](/Cxx/Rendering/Rotations) | Rotations of a cow about her axes.
 [RotationsA](/Cxx/Rendering/RotationsA) | Perform six rotations of a cow about her x-axis (Figure 3-31a).
@@ -881,7 +882,6 @@ This section includes vtkUnstructuredGrid.
 [RotationsC](/Cxx/Rendering/RotationsC) | Perform six rotations of a cow about her z-axis (Figure 3-31c).
 [RotationsD](/Cxx/Rendering/RotationsD) | First a rotation of a cow about her x-axis, then six rotations about her y-axis (Figure 3-31d).
 [Shadows](/Cxx/Rendering/Shadows) | Draw model with shadows.
-[Skybox_PBR](/Cxx/Rendering/Skybox_PBR) | Demonstrates physically based rendering, image based lighting and a skybox.
 [SpecularSpheres](/Cxx/Rendering/SpecularSpheres) | Demonstrates the effect of specular lighting on spheres.
 [StippledLine](/Cxx/Rendering/StippledLine) | Draw a stippled line.
 [StringToImageDemo](/Cxx/Rendering/StringToImageDemo) | Demonstrates how to generate images from strings.

@@ -88,8 +88,9 @@ def main():
     interactor.SetRenderWindow(render_window)
 
     # Lets use a smooth metallic surface.
-    metallic_coefficient = 1.0
+    diffuse_coefficient = 1.0
     roughness_coefficient = 0.05
+    metallic_coefficient = 1.0
 
     slw_p = SliderProperties()
     slw_p.initial_value = metallic_coefficient
@@ -102,8 +103,8 @@ def main():
 
     slw_p.initial_value = roughness_coefficient
     slw_p.title = 'Roughness'
-    slw_p.p1 = [0.1, 0.9]
-    slw_p.p2 = [0.9, 0.9]
+    slw_p.p1 = [0.2, 0.9]
+    slw_p.p2 = [0.8, 0.9]
 
     slider_widget_roughnesss = make_slider_widget(slw_p)
     slider_widget_roughnesss.SetInteractor(interactor)
@@ -122,8 +123,9 @@ def main():
     # Configure the basic properties.
     # Set the model colour.
     actor.GetProperty().SetColor(colors.GetColor3d('White'))
-    actor.GetProperty().SetMetallic(metallic_coefficient)
+    actor.GetProperty().SetDiffuse(diffuse_coefficient)
     actor.GetProperty().SetRoughness(roughness_coefficient)
+    actor.GetProperty().SetMetallic(metallic_coefficient)
 
     # Use image based lighting and a cube map for the environment.
     renderer.UseImageBasedLightingOn()
@@ -143,7 +145,7 @@ def main():
 
     render_window.SetSize(640, 480)
     render_window.Render()
-    render_window.SetWindowName("Skybox-PBR")
+    render_window.SetWindowName("PBR_Skybox")
 
     axes = vtk.vtkAxesActor()
 
@@ -448,8 +450,8 @@ class SliderProperties:
     maximum_value = 1.0
     initial_value = 1.0
 
-    p1 = [0.1, 0.1]
-    p2 = [0.9, 0.1]
+    p1 = [0.2, 0.1]
+    p2 = [0.8, 0.1]
 
     title = None
 

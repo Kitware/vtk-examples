@@ -9,7 +9,7 @@ Physically based rendering sets color, metallicity and roughness of the object, 
 
 Image based lighting uses a cubemap texture to specify the environment. A Skybox is used to create the illusion of distant three-dimensional surroundings. Textures for the image based lighting and the skymap are supplied from a cubemap.  You can select different cubemaps and different surfaces to visualise.
 
-Additionally HDR or JPEG equirectangular Environment maps can be used to generate the cubemaps. A good source for these is [polyhaven](https://polyhaven.com/hdris).
+Additionally HDR or JPEG equirectangular Environment maps can be used to generate the cubemaps. A good source for Skybox HDRSs and Textures is [Poly Haven](https://polyhaven.com/all). Start with the 4K HDR versions of Skyboxes.
 
 Here are the parameters used to make the example image using the six individual cubemap files:
 
