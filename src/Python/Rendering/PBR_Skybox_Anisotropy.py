@@ -74,10 +74,14 @@ def main():
 
     # Get the textures
     base_color = read_texture(base_fn)
+    base_color.SetColorModeToDirectScalars()
     base_color.UseSRGBColorSpaceOn()
     normal = read_texture(normal_fn)
+    normal.SetColorModeToDirectScalars()
     material = read_texture(material_fn)
+    material.SetColorModeToDirectScalars()
     anisotropy = read_texture(anisotropy_fn)
+    material.SetColorModeToDirectScalars()
 
     # Get the surface
     surface = surface.lower()
@@ -155,6 +159,7 @@ def main():
     else:
         renderer.SetEnvironmentCubeMap(cubemap)
     renderer.SetBackground(colors.GetColor3d('BkgColor'))
+    renderer.UseSphericalHarmonicsOff()
 
     renderer.AddActor(actor)
 
@@ -162,9 +167,6 @@ def main():
     skybox_actor = vtk.vtkSkybox()
     skybox_actor.SetTexture(skybox)
     renderer.AddActor(skybox_actor)
-
-    renderer.UseSphericalHarmonicsOff()
-    render_window.Render()
 
     render_window.SetSize(1688, 1066)
     render_window.Render()
