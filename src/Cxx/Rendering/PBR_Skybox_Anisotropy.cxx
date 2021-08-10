@@ -270,6 +270,7 @@ int main(int argc, char* argv[])
 #else
   renderer->SetEnvironmentCubeMap(skybox);
 #endif
+  renderer->UseSphericalHarmonicsOff();
   renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
 
   // Lets use a rough metallic surface.
@@ -312,8 +313,6 @@ int main(int argc, char* argv[])
   renderer->AddActor(actor);
   // Comment out if you don't want a skybox.
   renderer->AddActor(skyboxActor);
-
-  renderer->UseSphericalHarmonicsOff();
 
   renderWindow->SetSize(800, 500);
   renderWindow->Render();

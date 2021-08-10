@@ -118,8 +118,8 @@ def main():
         renderer.SetEnvironmentTexture(skybox)
     else:
         renderer.SetEnvironmentCubeMap(skybox)
-    renderer.SetBackground(colors.GetColor3d('BkgColor'))
     renderer.UseSphericalHarmonicsOff()
+    renderer.SetBackground(colors.GetColor3d('BkgColor'))
 
     # Lets use a rough metallic surface.
     diffuse_coefficient = 1.0
