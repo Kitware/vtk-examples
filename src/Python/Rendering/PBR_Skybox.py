@@ -152,7 +152,7 @@ def main():
     widget.SetOrientationMarker(axes)
     widget.SetInteractor(interactor)
     widget.SetViewport(0.0, 0.2, 0.2, 0.4)
-    widget.SetEnabled(1)
+    widget.EnabledOn()
     widget.InteractiveOn()
 
     # Create the slider callbacks to manipulate metallicity and roughness.

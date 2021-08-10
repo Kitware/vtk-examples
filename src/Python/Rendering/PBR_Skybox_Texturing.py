@@ -222,7 +222,7 @@ def main():
     widget.SetOrientationMarker(axes)
     widget.SetInteractor(interactor)
     widget.SetViewport(0.0, 0.0, 0.2, 0.2)
-    widget.SetEnabled(1)
+    widget.EnabledOn()
     widget.InteractiveOn()
 
     interactor.SetRenderWindow(render_window)

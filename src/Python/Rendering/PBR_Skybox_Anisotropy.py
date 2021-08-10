@@ -176,7 +176,7 @@ def main():
     widget.SetOrientationMarker(axes)
     widget.SetInteractor(interactor)
     widget.SetViewport(0.0, 0.0, 0.2, 0.2)
-    widget.SetEnabled(1)
+    widget.EnabledOn()
     widget.InteractiveOn()
 
     interactor.SetRenderWindow(render_window)
@@ -189,6 +189,42 @@ def main():
             cam_orient_manipulator.On()
         except AttributeError:
             pass
+
+        # Set up tome mapping so we can vary the exposure.
+        #
+        # Custom Passes.
+    camera_p = vtk.vtkCameraPass()
+    seq = vtk.vtkSequencePass()
+    opaque = vtk.vtkOpaquePass()
+    lights = vtk.vtkLightsPass()
+    overlay = vtk.vtkOverlayPass()
+
+    passes = vtk.vtkRenderPassCollection()
+    passes.AddItem(lights)
+    passes.AddItem(opaque)
+    passes.AddItem(overlay)
+    seq.SetPasses(passes)
+    camera_p.SetDelegatePass(seq)
+
+    tone_mapping_p = vtk.vtkToneMappingPass()
+    tone_mapping_p.SetToneMappingType(vtk.vtkToneMappingPass().GenericFilmic)
+    tone_mapping_p.SetGenericFilmicUncharted2Presets()
+    tone_mapping_p.SetExposure(1.0)
+    tone_mapping_p.SetDelegatePass(camera_p)
+
+    renderer.SetPass(tone_mapping_p)
+    slw_p = SliderProperties()
+    slw_p.initial_value = 1.0
+    slw_p.maximum_value = 5.0
+    slw_p.title = 'Exposure'
+
+    slider_widget_exposure = make_slider_widget(slw_p)
+    slider_widget_exposure.SetInteractor(interactor)
+    slider_widget_exposure.SetAnimationModeToAnimate()
+    slider_widget_exposure.EnabledOn()
+
+    # Create the slider callbacks to manipulate exposure.
+    slider_widget_exposure.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackExposure(tone_mapping_p))
 
     render_window.Render()
     interactor.Start()
@@ -492,6 +528,77 @@ def uv_tcoords(u_resolution, v_resolution, pd):
         u -= du
     pd.GetPointData().SetTCoords(t_coords)
     return pd
+
+
+class SliderProperties:
+    tube_width = 0.008
+    slider_length = 0.008
+    title_height = 0.025
+    label_height = 0.025
+
+    minimum_value = 0.0
+    maximum_value = 1.0
+    initial_value = 1.0
+
+    p1 = [0.2, 0.1]
+    p2 = [0.8, 0.1]
+
+    title = None
+
+    title_color = 'MistyRose'
+    value_color = 'Cyan'
+    slider_color = 'Coral'
+    selected_color = 'Lime'
+    bar_color = 'PeachPuff'
+    bar_ends_color = 'Thistle'
+
+
+def make_slider_widget(properties):
+    colors = vtk.vtkNamedColors()
+
+    slider = vtk.vtkSliderRepresentation2D()
+
+    slider.SetMinimumValue(properties.minimum_value)
+    slider.SetMaximumValue(properties.maximum_value)
+    slider.SetValue(properties.initial_value)
+    slider.SetTitleText(properties.title)
+
+    slider.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
+    slider.GetPoint1Coordinate().SetValue(properties.p1[0], properties.p1[1])
+    slider.GetPoint2Coordinate().SetCoordinateSystemToNormalizedDisplay()
+    slider.GetPoint2Coordinate().SetValue(properties.p2[0], properties.p2[1])
+
+    slider.SetTubeWidth(properties.tube_width)
+    slider.SetSliderLength(properties.slider_length)
+    slider.SetTitleHeight(properties.title_height)
+    slider.SetLabelHeight(properties.label_height)
+
+    # Set the color properties
+    # Change the color of the bar.
+    slider.GetTubeProperty().SetColor(colors.GetColor3d(properties.bar_color))
+    # Change the color of the ends of the bar.
+    slider.GetCapProperty().SetColor(colors.GetColor3d(properties.bar_ends_color))
+    # Change the color of the knob that slides.
+    slider.GetSliderProperty().SetColor(colors.GetColor3d(properties.slider_color))
+    # Change the color of the knob when the mouse is held on it.
+    slider.GetSelectedProperty().SetColor(colors.GetColor3d(properties.selected_color))
+    # Change the color of the text displaying the value.
+    slider.GetLabelProperty().SetColor(colors.GetColor3d(properties.value_color))
+
+    slider_widget = vtk.vtkSliderWidget()
+    slider_widget.SetRepresentation(slider)
+
+    return slider_widget
+
+
+class SliderCallbackExposure:
+    def __init__(self, tone_mapping_property):
+        self.tone_mapping_property = tone_mapping_property
+
+    def __call__(self, caller, ev):
+        slider_widget = caller
+        value = slider_widget.GetRepresentation().GetValue()
+        self.tone_mapping_property.SetExposure(value)
 
 
 if __name__ == '__main__':

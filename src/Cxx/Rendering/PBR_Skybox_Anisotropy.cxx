@@ -43,6 +43,16 @@
 #include <vtkTriangleFilter.h>
 #include <vtkVersion.h>
 
+#include "vtkCameraPass.h"
+#include "vtkLightsPass.h"
+#include "vtkOpaquePass.h"
+#include "vtkOpenGLRenderer.h"
+#include "vtkRenderPassCollection.h"
+#include "vtkSequencePass.h"
+#include "vtkToneMappingPass.h"
+
+#include "vtkOverlayPass.h "
+
 #include <algorithm>
 #include <array>
 #include <cstdlib>
@@ -126,6 +136,55 @@ vtkSmartPointer<vtkTexture> ReadEnvironmentMap(std::string const& fileName);
  * @return The texture.
  */
 vtkSmartPointer<vtkTexture> ReadTexture(std::string path);
+
+class SliderCallbackExposure : public vtkCommand
+{
+public:
+  static SliderCallbackExposure* New()
+  {
+    return new SliderCallbackExposure;
+  }
+  virtual void Execute(vtkObject* caller, unsigned long, void*)
+  {
+    vtkSliderWidget* sliderWidget = reinterpret_cast<vtkSliderWidget*>(caller);
+    double value = static_cast<vtkSliderRepresentation2D*>(
+                       sliderWidget->GetRepresentation())
+                       ->GetValue();
+    this->property->SetExposure(value);
+  }
+  SliderCallbackExposure() : property(nullptr)
+  {
+  }
+  vtkToneMappingPass* property;
+};
+
+struct SliderProperties
+{
+  // Set up the sliders
+  double tubeWidth{0.008};
+  double sliderLength{0.008};
+  double titleHeight{0.025};
+  double labelHeight{0.025};
+
+  double minimumValue{0.0};
+  double maximumValue{1.0};
+  double initialValue{0.0};
+
+  std::array<double, 2> p1{0.2, 0.1};
+  std::array<double, 2> p2{0.8, 0.1};
+
+  std::string title{""};
+
+  std::string titleColor{"MistyRose"};
+  std::string valueColor{"Cyan"};
+  std::string sliderColor{"Coral"};
+  std::string selectedColor{"Lime"};
+  std::string barColor{"PeachPuff"};
+  std::string barEndsColor{"Thistle"};
+};
+
+vtkSmartPointer<vtkSliderWidget>
+MakeSliderWidget(SliderProperties const& properties);
 
 } // namespace
 
@@ -327,7 +386,7 @@ int main(int argc, char* argv[])
   widget->SetOrientationMarker(axes);
   widget->SetInteractor(interactor);
   widget->SetViewport(0.0, 0.0, 0.2, 0.2);
-  widget->SetEnabled(1);
+  widget->EnabledOn();
   widget->InteractiveOn();
 
   interactor->SetRenderWindow(renderWindow);
@@ -337,6 +396,46 @@ int main(int argc, char* argv[])
   // Enable the widget.
   camOrientManipulator->On();
 #endif
+
+  // Set up tome mapping so we can vary the exposure.
+  // 
+  // Custom Passes.
+  vtkNew<vtkCameraPass> cameraP;
+  vtkNew<vtkSequencePass> seq;
+  vtkNew<vtkOpaquePass> opaque;
+  vtkNew<vtkLightsPass> lights;
+  vtkNew<vtkOverlayPass> overlay;
+
+  vtkNew<vtkRenderPassCollection> passes;
+  passes->AddItem(lights);
+  passes->AddItem(opaque);
+  passes->AddItem(overlay);
+  seq->SetPasses(passes);
+  cameraP->SetDelegatePass(seq);
+
+  vtkNew<vtkToneMappingPass> toneMappingP;
+  toneMappingP->SetToneMappingType(vtkToneMappingPass::GenericFilmic);
+  toneMappingP->SetGenericFilmicUncharted2Presets();
+  toneMappingP->SetExposure(1.0);
+  toneMappingP->SetDelegatePass(cameraP);
+
+  vtkOpenGLRenderer::SafeDownCast(renderer)->SetPass(toneMappingP);
+
+  auto slwP = SliderProperties();
+  slwP.initialValue = 1.0;
+  slwP.maximumValue = 5.0;
+  slwP.title = "Exposure";
+
+  auto sliderWidgetExposure = MakeSliderWidget(slwP);
+  sliderWidgetExposure->SetInteractor(interactor);
+  sliderWidgetExposure->SetAnimationModeToAnimate();
+  sliderWidgetExposure->EnabledOn();
+
+  vtkNew<SliderCallbackExposure> callbackExposure;
+  callbackExposure->property =
+      dynamic_cast<vtkToneMappingPass*>(renderer->GetPass());
+  sliderWidgetExposure->AddObserver(vtkCommand::InteractionEvent,
+                                    callbackExposure);
 
   interactor->Start();
   return EXIT_SUCCESS;
@@ -714,6 +813,50 @@ vtkSmartPointer<vtkPolyData> GetCube()
   tangents->SetInputConnection(subdivide->GetOutputPort());
   tangents->Update();
   return tangents->GetOutput();
+}
+
+vtkSmartPointer<vtkSliderWidget>
+MakeSliderWidget(SliderProperties const& properties)
+{
+  vtkNew<vtkNamedColors> colors;
+  vtkNew<vtkSliderRepresentation2D> slider;
+
+  slider->SetMinimumValue(properties.minimumValue);
+  slider->SetMaximumValue(properties.maximumValue);
+  slider->SetValue(properties.initialValue);
+  slider->SetTitleText(properties.title.c_str());
+
+  slider->GetPoint1Coordinate()->SetCoordinateSystemToNormalizedDisplay();
+  slider->GetPoint1Coordinate()->SetValue(properties.p1[0], properties.p1[1]);
+  slider->GetPoint2Coordinate()->SetCoordinateSystemToNormalizedDisplay();
+  slider->GetPoint2Coordinate()->SetValue(properties.p2[0], properties.p2[1]);
+
+  slider->SetTubeWidth(properties.tubeWidth);
+  slider->SetSliderLength(properties.sliderLength);
+  slider->SetTitleHeight(properties.titleHeight);
+  slider->SetLabelHeight(properties.labelHeight);
+
+  // Set the color properties
+  // Change the color of the bar.
+  slider->GetTubeProperty()->SetColor(
+      colors->GetColor3d(properties.barColor).GetData());
+  // Change the color of the ends of the bar.
+  slider->GetCapProperty()->SetColor(
+      colors->GetColor3d(properties.barEndsColor).GetData());
+  // Change the color of the knob that slides.
+  slider->GetSliderProperty()->SetColor(
+      colors->GetColor3d(properties.sliderColor).GetData());
+  // Change the color of the knob when the mouse is held on it.
+  slider->GetSelectedProperty()->SetColor(
+      colors->GetColor3d(properties.selectedColor).GetData());
+  // Change the color of the text displaying the value.
+  slider->GetLabelProperty()->SetColor(
+      colors->GetColor3d(properties.valueColor).GetData());
+
+  vtkNew<vtkSliderWidget> sliderWidget;
+  sliderWidget->SetRepresentation(slider);
+
+  return sliderWidget;
 }
 
 } // namespace
