@@ -441,8 +441,9 @@ This section includes vtkUnstructuredGrid.
 [Model](/Python/Rendering/Model) | Illustrative diagram of graphics objects.
 [MotionBlur](/Python/Rendering/MotionBlur) | Example of motion blur.
 [OutlineGlowPass](/Python/Rendering/OutlineGlowPass) | Demonstrates how to render a object in a scene with a glowing outline.
-[PBR_Skybox](/Python/Rendering/PBR_Skybox) | Demonstrates physically based rendering, image based lighting and a skybox.
-[PBR_Skybox_Texturing](/Python/Rendering/PBR_Skybox_Texturing) | Demonstrates physically based rendering, image based lighting, texturing and a skybox.
+[PBR_Skybox](/Python/Rendering/PBR_Skybox) | Demonstrates physically based rendering, a skybox and image based lighting.
+[PBR_Skybox_Texturing](/Python/Rendering/PBR_Skybox_Texturing) | Demonstrates physically based rendering, a skybox, image based lighting and texturing.
+[PBR_Skybox_Anisotropy](/Python/Rendering/PBR_Skybox_Anisotropy) | Demonstrates physically based rendering, a skybox, image based lighting, and anisotropic texturing.
 [Rainbow](/Python/Rendering/Rainbow) | Use and manipulation of vtkLookupTables.
 [Rotations](/Python/Rendering/Rotations) | Rotations of a cow about her axes.
 [RotationsA](/Python/Rendering/RotationsA) | Perform six rotations of a cow about her x-axis (Figure 3-31a).
