@@ -8,7 +8,7 @@ import vtk
 
 def get_program_parameters():
     import argparse
-    description = 'Demonstrates physically based rendering, image based lighting, anisotropic texturing and a skybox.'
+    description = 'Demonstrates physically based rendering, image based lighting, texturing and a skybox.'
     epilogue = '''
 Physically based rendering sets color, metallicity and roughness of the object.
 Image based lighting uses a cubemap texture to specify the environment.
@@ -16,7 +16,7 @@ Texturing is used to generate lighting effects.
 A Skybox is used to create the illusion of distant three-dimensional surroundings.
 
 The parameter order is:
- skybox, base_color, normal_texture, material_texture, anisotropic_texture, surface
+ skybox, base_color, normal_texture, material_texture, emissive_texture, surface
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -56,16 +56,20 @@ def main():
             ['posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg',
              'negz.jpg']}
 
-    # Load the skybox or cube map.
+    # Load the cube map.
     if Path(path).is_dir():
+        cubemap = read_cubemap(Path(path), skybox_files[PurePath(Path(path)).name])
+        # Load the skybox.
+        # Read it again as there is no deep copy for vtkTexture.
         skybox = read_cubemap(Path(path), skybox_files[PurePath(Path(path)).name])
     elif Path(path).is_file():
+        cubemap = read_environment_map(Path(path))
         skybox = read_environment_map(Path(path))
     else:
         print('Unable to read:', path)
         return
 
-    if skybox is None:
+    if cubemap is None or skybox is None:
         return
 
     # Get the textures
@@ -111,16 +115,6 @@ def main():
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)
 
-    # Turn off the default lighting and use image based lighting.
-    renderer.AutomaticLightCreationOff()
-    renderer.UseImageBasedLightingOn()
-    if vtk_version_ok(9, 0, 0):
-        renderer.SetEnvironmentTexture(skybox)
-    else:
-        renderer.SetEnvironmentCubeMap(skybox)
-    renderer.SetBackground(colors.GetColor3d('BkgColor'))
-    renderer.UseSphericalHarmonicsOff()
-
     # Lets use a rough metallic surface.
     diffuse_coefficient = 1.0
     roughness_coefficient = 1.0
@@ -129,7 +123,7 @@ def main():
     occlusion_strength = 1.0
     normal_scale = 1.0
     anisotropy_coefficient = 1.0
-    anisotropy_rotation = 0.0
+    anisotropy_rotation = 0
 
     # Build the pipeline
     mapper = vtk.vtkPolyDataMapper()
@@ -137,6 +131,7 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
+
     # Enable PBR on the model.
     actor.GetProperty().SetInterpolationToPBR()
     # Configure the basic properties.
@@ -145,10 +140,12 @@ def main():
     actor.GetProperty().SetDiffuse(diffuse_coefficient)
     actor.GetProperty().SetRoughness(roughness_coefficient)
     actor.GetProperty().SetMetallic(metallic_coefficient)
+
     # Configure textures (needs tcoords on the mesh).
     actor.GetProperty().SetBaseColorTexture(base_color)
     actor.GetProperty().SetORMTexture(material)
     actor.GetProperty().SetOcclusionStrength(occlusion_strength)
+
     # Needs tcoords, normals and tangents on the mesh.
     actor.GetProperty().SetNormalTexture(normal)
     actor.GetProperty().SetNormalScale(normal_scale)
@@ -156,14 +153,22 @@ def main():
     actor.GetProperty().SetAnisotropy(anisotropy_coefficient)
     actor.GetProperty().SetAnisotropyRotation(anisotropy_rotation)
 
-    skybox_actor = vtk.vtkSkybox()
-    skybox_actor.SetTexture(skybox)
+    renderer.UseImageBasedLightingOn()
+    if vtk_version_ok(9, 0, 0):
+        renderer.SetEnvironmentTexture(cubemap)
+    else:
+        renderer.SetEnvironmentCubeMap(cubemap)
+    renderer.SetBackground(colors.GetColor3d('BkgColor'))
+    renderer.UseSphericalHarmonicsOff()
 
     renderer.AddActor(actor)
-    # Comment out if you don't want a skybox.
+
+    # Comment out if you don't want a skybox
+    skybox_actor = vtk.vtkSkybox()
+    skybox_actor.SetTexture(skybox)
     renderer.AddActor(skybox_actor)
 
-    render_window.SetSize(800, 500)
+    render_window.SetSize(1688, 1066)
     render_window.Render()
     render_window.SetWindowName('PBR_Skybox_Anisotropy')
 
@@ -180,15 +185,6 @@ def main():
     widget.InteractiveOn()
 
     interactor.SetRenderWindow(render_window)
-
-    if vtk_version_ok(9, 0, 20210718):
-        try:
-            cam_orient_manipulator = vtk.vtkCameraOrientationWidget()
-            cam_orient_manipulator.SetParentRenderer(renderer)
-            # Enable the widget.
-            cam_orient_manipulator.On()
-        except AttributeError:
-            pass
 
     render_window.Render()
     interactor.Start()

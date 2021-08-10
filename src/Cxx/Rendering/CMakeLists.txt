@@ -46,7 +46,6 @@ set(KIT_LIBS ${VTK_LIBRARIES})
 set(RECENT_SRCS
   PBR_Skybox
   PBR_Skybox_Texturing
-  PBR_Skybox_Anisotropy
 )
 
 #
@@ -147,20 +146,14 @@ if (BUILD_TESTING)
     TestWalkCowB ${DATA}/cow.g 2)
 
   if(NOT VTK_VERSION VERSION_LESS "8.90.0")
-    add_test(${KIT}-PBR_Skybox ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestPBR_Skybox ${DATA}/skyboxes/skybox2 Boy)
     add_test(${KIT}-PBR_Skybox_Texturing ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
       TestPBR_Skybox_Texturing ${DATA}/skyboxes/skybox2/
        ${DATA}/Textures/Isotropic/vtk_Base_Color.png
        ${DATA}/Textures/Isotropic/vtk_Normal.png
        ${DATA}/Textures/Isotropic/vtk_Material.png
        ${DATA}/Textures/Isotropic/vtk_dark_bkg.png Boy)
-    add_test(${KIT}-PBR_Skybox_Anisotropy ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestPBR_Skybox_Anisotropy ${DATA}/skyboxes/skybox2/
-       ${DATA}/Textures/Anisotropic/CarbonFiberAniso_albedo.png
-       ${DATA}/Textures/Anisotropic/CarbonFiberAniso_normal.png
-       ${DATA}/Textures/Anisotropic/CarbonFiberAniso_orm.png
-       ${DATA}/Textures/Anisotropic/CarbonFiberAniso_anisotropyAngle.png Boy)
+    add_test(${KIT}-PBR_Skybox ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+      TestPBR_Skybox ${DATA}/skyboxes/skybox2 Boy)
   endif()
 
 

@@ -22,12 +22,16 @@ Additionally HDR or JPEG equirectangular Environment maps can be used to generat
 The parameters for this program are rather complex. Here are the parameters used to make the example image:
 
 ``` text
-<DATA>/skyboxes/skybox2/  <DATA1>/CarbonFiberAniso_albedo.png <DATA1>/CarbonFiberAniso_normal.png <DATA1>/CarbonFiberAniso_orm.png <DATA1>/CarbonFiberAniso_anisotropyAngle.png Boy
+<DATA>/skyboxes/skybox2/ <DATA1>/vtk_Material.png <DATA1>/vtk_Base_Color.png <DATA1>/vtk_Normal.png <DATA1>/vtk_dark_bkg.png Boy
 ```
 
-We also provide an equirectangular file (useful when using ParaView): `<DATA>/skyboxes/skybox2/skybox.jpg`.
+We also provide an equirectangular file (useful when using ParaView):
 
-where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data` and `<DATA1>` is the path to `?vtk-?examples/src/Testing/Data/Textures/Anisotropic`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
+``` text
+<DATA>/skyboxes/skybox2/skybox.jpg <DATA1>/vtk_Material.png <DATA1>/vtk_Base_Color.png <DATA1>/vtk_Normal.png <DATA1>/vtk_dark_bkg.png Boy
+```
+
+where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data` and `<DATA1>` is the path to `?vtk-?examples/src/Testing/Data/Textures/Isotropic`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
 
 #### Further Reading
 - [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/)
