@@ -42,20 +42,16 @@ def main():
              'negz.jpg']
     }
 
-    # Load the cube map.
+    # Load the skybox or cube map.
     if Path(path).is_dir():
-        cubemap = read_cubemap(Path(path), skybox_files[PurePath(Path(path)).name])
-        # Load the skybox.
-        # Read it again as there is no deep copy for vtkTexture.
         skybox = read_cubemap(Path(path), skybox_files[PurePath(Path(path)).name])
     elif Path(path).is_file():
-        cubemap = read_environment_map(Path(path))
         skybox = read_environment_map(Path(path))
     else:
         print('Unable to read:', path)
         return
 
-    if cubemap is None or skybox is None:
+    if skybox is None:
         return
 
     # Get the surface
@@ -87,6 +83,16 @@ def main():
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)
 
+    # Turn off the default lighting and use image based lighting.
+    renderer.AutomaticLightCreationOff()
+    renderer.UseImageBasedLightingOn()
+    if vtk_version_ok(9, 0, 0):
+        renderer.SetEnvironmentTexture(skybox)
+    else:
+        renderer.SetEnvironmentCubeMap(skybox)
+    renderer.SetBackground(colors.GetColor3d('BkgColor'))
+    renderer.UseSphericalHarmonicsOff()
+
     # Lets use a smooth metallic surface.
     diffuse_coefficient = 1.0
     roughness_coefficient = 0.05
@@ -117,7 +123,6 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-
     # Enable PBR on the model.
     actor.GetProperty().SetInterpolationToPBR()
     # Configure the basic properties.
@@ -127,23 +132,14 @@ def main():
     actor.GetProperty().SetRoughness(roughness_coefficient)
     actor.GetProperty().SetMetallic(metallic_coefficient)
 
-    # Use image based lighting and a cube map for the environment.
-    renderer.UseImageBasedLightingOn()
-    if vtk_version_ok(9, 0, 0):
-        renderer.SetEnvironmentTexture(cubemap)
-    else:
-        renderer.SetEnvironmentCubeMap(cubemap)
-    renderer.SetBackground(colors.GetColor3d("BkgColor"))
-
-    renderer.AddActor(actor)
-
     skybox_actor = vtk.vtkSkybox()
     skybox_actor.SetTexture(skybox)
+
+    renderer.AddActor(actor)
+    # Comment out if you don't want a skybox.
     renderer.AddActor(skybox_actor)
 
-    renderer.UseSphericalHarmonicsOff()
-
-    render_window.SetSize(640, 480)
+    render_window.SetSize(800, 500)
     render_window.Render()
     render_window.SetWindowName("PBR_Skybox")
 
@@ -164,6 +160,15 @@ def main():
     slider_widget_roughnesss.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackRoughness(actor.GetProperty()))
 
     interactor.SetRenderWindow(render_window)
+
+    if vtk_version_ok(9, 0, 20210718):
+        try:
+            cam_orient_manipulator = vtk.vtkCameraOrientationWidget()
+            cam_orient_manipulator.SetParentRenderer(renderer)
+            # Enable the widget.
+            cam_orient_manipulator.On()
+        except AttributeError:
+            pass
 
     render_window.Render()
     interactor.Start()
