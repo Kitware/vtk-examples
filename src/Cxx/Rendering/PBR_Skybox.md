@@ -17,11 +17,7 @@ Here are the parameters used to make the example image using the six individual 
 <DATA>/skyboxes/skybox2/ Boy
 ```
 
-We also provide an equirectangular file (useful when using ParaView):
-
-``` text
-<DATA>/skyboxes/skybox2/skybox.jpg Boy
-```
+We also provide an equirectangular file (useful when using ParaView): `<DATA>/skyboxes/skybox2/skybox.jpg`.
 
 where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data`. Note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
 

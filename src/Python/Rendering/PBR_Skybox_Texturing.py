@@ -56,20 +56,16 @@ def main():
             ['posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg',
              'negz.jpg']}
 
-    # Load the cube map.
+    # Load the skybox or cube map.
     if Path(path).is_dir():
-        cubemap = read_cubemap(Path(path), skybox_files[PurePath(Path(path)).name])
-        # Load the skybox.
-        # Read it again as there is no deep copy for vtkTexture.
         skybox = read_cubemap(Path(path), skybox_files[PurePath(Path(path)).name])
     elif Path(path).is_file():
-        cubemap = read_environment_map(Path(path))
         skybox = read_environment_map(Path(path))
     else:
         print('Unable to read:', path)
         return
 
-    if cubemap is None or skybox is None:
+    if skybox is None:
         return
 
     # Get the textures
@@ -103,7 +99,7 @@ def main():
     # Set the background color.
     colors.SetColor('BkgColor', [26, 51, 102, 255])
     colors.SetColor('VTKBlue', [6, 79, 141, 255])
-    # Let's make a complementary colour to VTKBlue
+    # Let's make a complementary colour to VTKBlue.
     colors.SetColor('VTKBlueComp', [249, 176, 114, 255])
 
     renderer = vtk.vtkOpenGLRenderer()
@@ -111,6 +107,16 @@ def main():
     render_window.AddRenderer(renderer)
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)
+
+    # Turn off the default lighting and use image based lighting.
+    renderer.AutomaticLightCreationOff()
+    renderer.UseImageBasedLightingOn()
+    if vtk_version_ok(9, 0, 0):
+        renderer.SetEnvironmentTexture(skybox)
+    else:
+        renderer.SetEnvironmentCubeMap(skybox)
+    renderer.SetBackground(colors.GetColor3d('BkgColor'))
+    renderer.UseSphericalHarmonicsOff()
 
     # Lets use a rough metallic surface.
     diffuse_coefficient = 1.0
@@ -170,7 +176,6 @@ def main():
 
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
-
     # Enable PBR on the model.
     actor.GetProperty().SetInterpolationToPBR()
     # Configure the basic properties.
@@ -179,34 +184,18 @@ def main():
     actor.GetProperty().SetDiffuse(diffuse_coefficient)
     actor.GetProperty().SetRoughness(roughness_coefficient)
     actor.GetProperty().SetMetallic(metallic_coefficient)
-
     # Configure textures (needs tcoords on the mesh).
     actor.GetProperty().SetBaseColorTexture(base_color)
     actor.GetProperty().SetORMTexture(material)
     actor.GetProperty().SetOcclusionStrength(occlusion_strength)
-
     actor.GetProperty().SetEmissiveTexture(emissive)
     actor.GetProperty().SetEmissiveFactor(emissive_factor)
-
     # Needs tcoords, normals and tangents on the mesh.
     actor.GetProperty().SetNormalTexture(normal)
     actor.GetProperty().SetNormalScale(normal_scale)
 
-    renderer.UseImageBasedLightingOn()
-    if vtk_version_ok(9, 0, 0):
-        renderer.SetEnvironmentTexture(cubemap)
-    else:
-        renderer.SetEnvironmentCubeMap(cubemap)
-    renderer.SetBackground(colors.GetColor3d('BkgColor'))
-
-    renderer.AddActor(actor)
-
-    # Comment out if you don't want a skybox
     skybox_actor = vtk.vtkSkybox()
     skybox_actor.SetTexture(skybox)
-    renderer.AddActor(skybox_actor)
-
-    renderer.UseSphericalHarmonicsOff()
 
     # Create the slider callbacks to manipulate metallicity, roughness
     # occlusion strength and normal scaling.
@@ -216,7 +205,11 @@ def main():
                                                  SliderCallbackOcclusionStrength(actor.GetProperty()))
     slider_widget_normal.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackNormalScale(actor.GetProperty()))
 
-    render_window.SetSize(640, 480)
+    renderer.AddActor(actor)
+    # Comment out if you don't want a skybox.
+    renderer.AddActor(skybox_actor)
+
+    render_window.SetSize(800, 500)
     render_window.Render()
     render_window.SetWindowName('PBR_Skybox_Texturing')
 
@@ -233,6 +226,15 @@ def main():
     widget.InteractiveOn()
 
     interactor.SetRenderWindow(render_window)
+
+    if vtk_version_ok(9, 0, 20210718):
+        try:
+            cam_orient_manipulator = vtk.vtkCameraOrientationWidget()
+            cam_orient_manipulator.SetParentRenderer(renderer)
+            # Enable the widget.
+            cam_orient_manipulator.On()
+        except AttributeError:
+            pass
 
     render_window.Render()
     interactor.Start()
