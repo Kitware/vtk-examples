@@ -54,6 +54,14 @@
 #define VTK_VER_GE_90 1
 #endif
 
+#if VTK_VERSION_NUMBER >= 90020210809ULL
+#define VTK_HAS_COW 1
+#endif
+
+#if VTK_HAS_COW
+#include <vtkCameraOrientationWidget.h>
+#endif
+
 namespace {
 /**
  * Show the command lime parameters.
@@ -243,19 +251,14 @@ int main(int argc, char* argv[])
   std::vector<std::string> path = splitPath(std::string(argv[1]));
   // std::string root = join(path, "/");
 
-  vtkSmartPointer<vtkTexture> cubemap;
   vtkSmartPointer<vtkTexture> skybox;
+  // Load the skybox or cube map.
   if (path.back().find(".", 0) != std::string::npos)
   {
-    // Load the cube map.
-    cubemap = ReadEnvironmentMap(argv[1]);
-    // Load the skybox.
-    // Read it again as there is no deep copy for vtkTexture.
     skybox = ReadEnvironmentMap(argv[1]);
   }
   else
   {
-    cubemap = ReadCubeMap(argv[1], skyboxFiles[path.back()]);
     skybox = ReadCubeMap(argv[1], skyboxFiles[path.back()]);
   }
 
@@ -311,7 +314,18 @@ int main(int argc, char* argv[])
   vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  // Lets use a smooth metallic surface
+  // Turn off the default lighting and use image based lighting.
+  renderer->AutomaticLightCreationOff();
+  renderer->UseImageBasedLightingOn();
+#if VTK_VER_GE_90
+  renderer->SetEnvironmentTexture(skybox);
+#else
+  renderer->SetEnvironmentCubeMap(skybox);
+#endif
+  renderer->UseSphericalHarmonicsOff();
+  renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
+
+  // Lets use a smooth metallic surface.
   auto diffuseCoefficient = 1.0;
   auto roughnessCoefficient = 0.05;
   auto metallicCoefficient = 1.0;
@@ -343,16 +357,9 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-
-  renderer->UseImageBasedLightingOn();
-#if VTK_VER_GE_90
-  renderer->SetEnvironmentTexture(cubemap);
-#else
-  renderer->SetEnvironmentCubeMap(cubemap);
-#endif
+  // Enable PBR on the model.
   actor->GetProperty()->SetInterpolationToPBR();
-
-  // configure the basic properties
+  // Configure the basic properties.
   actor->GetProperty()->SetColor(colors->GetColor4d("White").GetData());
   actor->GetProperty()->SetDiffuse(diffuseCoefficient);
   actor->GetProperty()->SetRoughness(roughnessCoefficient);
@@ -369,16 +376,14 @@ int main(int argc, char* argv[])
   sliderWidgetRoughness->AddObserver(vtkCommand::InteractionEvent,
                                      callbackRoughness);
 
-  renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
-  renderer->AddActor(actor);
-
   vtkNew<vtkSkybox> skyboxActor;
   skyboxActor->SetTexture(skybox);
+
+  renderer->AddActor(actor);
+  // Comment out if you don't want a skybox.
   renderer->AddActor(skyboxActor);
 
-  renderer->UseSphericalHarmonicsOff();
-
-  renderWindow->SetSize(640, 480);
+  renderWindow->SetSize(800, 500);
   renderWindow->Render();
   renderWindow->SetWindowName("PBR_Skybox");
 
@@ -395,8 +400,13 @@ int main(int argc, char* argv[])
   widget->InteractiveOn();
 
   interactor->SetRenderWindow(renderWindow);
+#if VTK_HAS_COW
+  vtkNew<vtkCameraOrientationWidget> camOrientManipulator;
+  camOrientManipulator->SetParentRenderer(renderer);
+  // Enable the widget.
+  camOrientManipulator->On();
+#endif
 
-  renderWindow->Render();
   interactor->Start();
   return EXIT_SUCCESS;
 }

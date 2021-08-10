@@ -57,6 +57,14 @@
 #define VTK_VER_GE_90 1
 #endif
 
+#if VTK_VERSION_NUMBER >= 90020210809ULL
+#define VTK_HAS_COW 1
+#endif
+
+#if VTK_HAS_COW
+#include <vtkCameraOrientationWidget.h>
+#endif
+
 namespace {
 /**
  * Show the command lime parameters.
@@ -299,19 +307,14 @@ int main(int argc, char* argv[])
   std::vector<std::string> path = splitPath(std::string(argv[1]));
   // std::string root = join(path, "/");
 
-  vtkSmartPointer<vtkTexture> cubemap;
   vtkSmartPointer<vtkTexture> skybox;
+  // Load the skybox or cube map.
   if (path.back().find(".", 0) != std::string::npos)
   {
-    // Load the cube map.
-    cubemap = ReadEnvironmentMap(argv[1]);
-    // Load the skybox.
-    // Read it again as there is no deep copy for vtkTexture.
     skybox = ReadEnvironmentMap(argv[1]);
   }
   else
   {
-    cubemap = ReadCubeMap(argv[1], skyboxFiles[path.back()]);
     skybox = ReadCubeMap(argv[1], skyboxFiles[path.back()]);
   }
 
@@ -370,7 +373,7 @@ int main(int argc, char* argv[])
   // VTK blue
   std::array<unsigned char, 4> col1{{6, 79, 141, 255}};
   colors->SetColor("VTKBlue", col1.data());
-  // Let's make a complementary colour to VTKBlue
+  // Let's make a complementary colour to VTKBlue.
   std::transform(col1.begin(), std::prev(col1.end()), col1.begin(),
                  [](unsigned char c) { return 255 - c; });
   colors->SetColor("VTKBlueComp", col1.data());
@@ -381,6 +384,17 @@ int main(int argc, char* argv[])
   vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
+  // Turn off the default lighting and use image based lighting.
+  renderer->AutomaticLightCreationOff();
+  renderer->UseImageBasedLightingOn();
+#if VTK_VER_GE_90
+  renderer->SetEnvironmentTexture(skybox);
+#else
+  renderer->SetEnvironmentCubeMap(skybox);
+#endif
+  renderer->UseSphericalHarmonicsOff();
+  renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
+
   // Lets use a rough metallic surface
   auto diffuseCoefficient = 1.0;
   auto roughnessCoefficient = 0.8;
@@ -388,7 +402,7 @@ int main(int argc, char* argv[])
   // Other parameters
   auto occlusionStrength = 1.0;
   auto normalScale = 1.0;
-  // Make VTK silvery in appearance
+  // Make VTK silvery in appearance.
   // auto emissiveCol = colors->GetColor3d("VTKBlueComp").GetData();
   // std::array<double, 3> emissiveFactor{emissiveCol[0], emissiveCol[1],
   //                                      emissiveCol[2]};
@@ -447,45 +461,28 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-
+  // Enable PBR on the model.
   actor->GetProperty()->SetInterpolationToPBR();
-
-  // configure the basic properties
+  // Configure the basic properties.
   actor->GetProperty()->SetColor(colors->GetColor3d("White").GetData());
   actor->GetProperty()->SetDiffuse(diffuseCoefficient);
   actor->GetProperty()->SetRoughness(roughnessCoefficient);
   actor->GetProperty()->SetMetallic(metallicCoefficient);
-
-  // configure textures (needs tcoords on the mesh)
+  // Configure textures (needs tcoords on the mesh).
   actor->GetProperty()->SetBaseColorTexture(baseColor);
   actor->GetProperty()->SetORMTexture(material);
   actor->GetProperty()->SetOcclusionStrength(occlusionStrength);
-
   actor->GetProperty()->SetEmissiveTexture(emissive);
   actor->GetProperty()->SetEmissiveFactor(emissiveFactor.data());
-
-  // needs tcoords, normals and tangents on the mesh
+  // Needs tcoords, normals and tangents on the mesh.
   actor->GetProperty()->SetNormalTexture(normal);
   actor->GetProperty()->SetNormalScale(normalScale);
 
-  renderer->UseImageBasedLightingOn();
-#if VTK_VER_GE_90
-  renderer->SetEnvironmentTexture(cubemap);
-#else
-  renderer->SetEnvironmentCubeMap(cubemap);
-#endif
-  renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
-  renderer->AddActor(actor);
-
-  // Comment out if you don't want a skybox
   vtkNew<vtkSkybox> skyboxActor;
   skyboxActor->SetTexture(skybox);
-  renderer->AddActor(skyboxActor);
-
-  renderer->UseSphericalHarmonicsOff();
 
   // Create the slider callbacks to manipulate metallicity, roughness,
-  // occlusion strength and normal scaling
+  // occlusion strength and normal scaling.
   vtkNew<SliderCallbackMetallic> callbackMetallic;
   callbackMetallic->property = actor->GetProperty();
   vtkNew<SliderCallbackRoughness> callbackRoughness;
@@ -505,7 +502,11 @@ int main(int argc, char* argv[])
   sliderWidgetNormal->AddObserver(vtkCommand::InteractionEvent,
                                   callbackNormalScale);
 
-  renderWindow->SetSize(640, 480);
+  renderer->AddActor(actor);
+  // Comment out if you don't want a skybox
+  renderer->AddActor(skyboxActor);
+
+  renderWindow->SetSize(800, 500);
   renderWindow->Render();
   renderWindow->SetWindowName("PBR_Skybox_Texturing");
 
@@ -518,12 +519,16 @@ int main(int argc, char* argv[])
   widget->SetOrientationMarker(axes);
   widget->SetInteractor(interactor);
   widget->SetViewport(0.0, 0.0, 0.2, 0.2);
-  widget->SetEnabled(1);
+  widget->EnabledOn();
   widget->InteractiveOn();
 
   interactor->SetRenderWindow(renderWindow);
-
-  interactor->Initialize();
+#if VTK_HAS_COW
+  vtkNew<vtkCameraOrientationWidget> camOrientManipulator;
+  camOrientManipulator->SetParentRenderer(renderer);
+  // Enable the widget.
+  camOrientManipulator->On();
+#endif
 
   interactor->Start();
   return EXIT_SUCCESS;
