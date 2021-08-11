@@ -40,7 +40,7 @@ We can also use the six individual cubemap files by specifying the folder where 
 
 We also provide an equirectangular file (useful when using ParaView): `<DATA>/Skyboxes/skybox2/skybox.jpg`.
 
-Where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data` and <DATA1> is the path to `?vtk-?examples/src/Testing/Data/Textures/Isotropic`.
+Where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data` and `<DATA1>` is the path to `?vtk-?examples/src/Testing/Data/Textures/Isotropic`.
 
 Note that three cubemap skyboxes are available in `<DATA>/Skyboxes/` namely `skybox0`, `skybox1` and `skybox2`.
 
