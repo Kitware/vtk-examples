@@ -20,7 +20,7 @@ The parameter order is:
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('path', help='The path to the cubemap files e.g. skyboxes/skybox2/ or to a\n'
+    parser.add_argument('path', help='The path to the cubemap files e.g. Skyboxes/skybox2/ or to a\n'
                                      ' .hdr, .png, or .jpg equirectangular file')
     parser.add_argument('base_fn',
                         help='The path to the base colour (albedo) texture file'

@@ -14,7 +14,7 @@ A callback is used to print out the color window (move the mouse horizontally ov
    '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('file_name', help='Path to the hdr file e.g. skyboxes/spiaggia_di_mondello_1k.hdr.')
+    parser.add_argument('file_name', help='Path to the hdr file e.g. Skyboxes/spiaggia_di_mondello_1k.hdr.')
     args = parser.parse_args()
     return args.file_name
 

@@ -16,9 +16,9 @@ Image based lighting uses a cubemap texture to specify the environment.
 Textures are provided for:
 
 - setting the base colour
+- normals  
 - **O**cclusion factor, the **R**oughness factor, and the **M**etalness factor (ORM)
 - emissivity
-- normals  
 
 A Skybox is used to create the illusion of distant three-dimensional surroundings.
 
@@ -29,14 +29,23 @@ Additionally HDR or JPEG equirectangular Environment maps can be used to generat
 The parameters for this program are rather complex. Here are the parameters used to make the example image:
 
 ``` text
-<DATA>/skyboxes/skybox2/ <DATA1>/vtk_Base_Color.png <DATA1>/vtk_Normal.png <DATA1>/vtk_Material.png <DATA1>/vtk_dark_bkg.png Boy
+<DATA>/Skyboxes/spiaggia_di_mondello_4k.hdr <DATA1>/vtk_Base_Color.png <DATA1>/vtk_Normal.png <DATA1>/vtk_Material.png <DATA1>/vtk_dark_bkg.png Boy
 ```
 
-We also provide an equirectangular file (useful when using ParaView): `<DATA>/skyboxes/skybox2/skybox.jpg`.
+We can also use the six individual cubemap files by specifying the folder where the cubemap files are:
 
-where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data` and `<DATA1>` is the path to `?vtk-?examples/src/Testing/Data/Textures/Isotropic`. Also note that three skyboxes are available: `skybox0`, `skybox1` and `skybox2`.
+``` text
+<DATA>/Skyboxes/skybox2/  <DATA1>/vtk_Base_Color.png <DATA1>/vtk_Normal.png <DATA1>/vtk_Material.png <DATA1>/vtk_dark_bkg.png Boy
+```
+
+We also provide an equirectangular file (useful when using ParaView): `<DATA>/Skyboxes/skybox2/skybox.jpg`.
+
+Where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data` and `<DATA1>` is the path to `?vtk-?examples/src/Testing/Data/Textures/Isotropic`.
+
+Note that three cubemap skyboxes are available in `<DATA>/Skyboxes/` namely `skybox0`, `skybox1` and `skybox2`.
 
 #### Further Reading
+
 - [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/)
 - [PBR Journey Part 1: High Dynamic Range Image Based Lighting with VTK](https://blog.kitware.com/pbrj1/)
 - [PBR Journey Part 2 : Anisotropy model with VTK](https://blog.kitware.com/pbr-journey-part-2-anisotropy-model-with-vtk/)

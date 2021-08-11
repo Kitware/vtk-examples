@@ -544,7 +544,7 @@ std::string ShowUsage(std::string fn)
      << "Demonstrates physically based rendering, image based lighting, "
         ", texturing and a skybox.\n\n"
      << "positional arguments:\n"
-     << "  path         The path to the cubemap files e.g. skyboxes/skybox2/\n"
+     << "  path         The path to the cubemap files e.g. Skyboxes/skybox2/\n"
      << "               or to a .hdr, .png, or .jpg equirectangular file.\n"
      << "  albedo_fn    The path to the base colour (albedo) texture file e.g. "
         "Textures/Isotropic/vtk_Base_Color.png\n"
