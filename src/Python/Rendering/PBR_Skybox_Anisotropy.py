@@ -8,26 +8,41 @@ import vtk
 
 def get_program_parameters():
     import argparse
-    description = 'Demonstrates physically based rendering, image based lighting and a skybox.'
+    description = 'Demonstrates physically based rendering, image based lighting, anisotropic texturing and a skybox.'
     epilogue = '''
 Physically based rendering sets color, metallicity and roughness of the object.
 Image based lighting uses a cubemap texture to specify the environment.
+Texturing is used to generate lighting effects.
 A Skybox is used to create the illusion of distant three-dimensional surroundings.
+
+The parameter order is:
+ skybox, base_color, normal_texture, material_texture, anisotropic_texture, surface
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('path', help='The path to the cubemap files e.g. skyboxes/skybox2/ or to a\n'
-                                     ' .hdr, .png, or .jpg equirectangular file.')
+                                     ' .hdr, .png, or .jpg equirectangular file')
+    parser.add_argument('base_fn',
+                        help='The path to the base colour (albedo) texture file'
+                             ' e.g. Textures/Anisotropic/CarbonFiberAniso_albedo.png')
+    parser.add_argument('normal_fn', help='The path to the normal texture file'
+                                          ' e.g. Textures/Anisotropic/CarbonFiberAniso_normal.png')
+    parser.add_argument('material_fn',
+                        help='The path to the material (orm) texture file'
+                             ' e.g. Textures/Anisotropic/CarbonFiberAniso_orm.png')
+    parser.add_argument('anisotropy_fn',
+                        help='The path to the anisotropy texture file'
+                             ' e.g. Textures/Anisotropic/CarbonFiberAniso_anisotropyAngle.png')
     parser.add_argument('surface', nargs='?', default='Boy', help="The surface to use. Boy's surface is the default.")
     args = parser.parse_args()
-    return args.path, args.surface
+    return args.path, args.base_fn, args.normal_fn, args.material_fn, args.anisotropy_fn, args.surface
 
 
 def main():
     if not vtk_version_ok(8, 90, 0):
         print('You need VTK version 8.90 or greater to run this program.')
         return
-    path, surface = get_program_parameters()
+    path, base_fn, normal_fn, material_fn, anisotropy_fn, surface = get_program_parameters()
 
     # A dictionary of the skybox folder name and the skybox files in it.
     skybox_files = {
@@ -39,8 +54,7 @@ def main():
              'skybox-pz.jpg', 'skybox-nz.jpg'],
         'skybox2':
             ['posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg',
-             'negz.jpg']
-    }
+             'negz.jpg']}
 
     # Load the skybox or cube map.
     if Path(path).is_dir():
@@ -53,6 +67,17 @@ def main():
 
     if skybox is None:
         return
+
+    # Get the textures
+    base_color = read_texture(base_fn)
+    base_color.SetColorModeToDirectScalars()
+    base_color.UseSRGBColorSpaceOn()
+    normal = read_texture(normal_fn)
+    normal.SetColorModeToDirectScalars()
+    material = read_texture(material_fn)
+    material.SetColorModeToDirectScalars()
+    anisotropy = read_texture(anisotropy_fn)
+    material.SetColorModeToDirectScalars()
 
     # Get the surface
     surface = surface.lower()
@@ -76,6 +101,9 @@ def main():
 
     # Set the background color.
     colors.SetColor('BkgColor', [26, 51, 102, 255])
+    colors.SetColor('VTKBlue', [6, 79, 141, 255])
+    # Let's make a complementary colour to VTKBlue
+    colors.SetColor('VTKBlueComp', [249, 176, 114, 255])
 
     renderer = vtk.vtkOpenGLRenderer()
     render_window = vtk.vtkRenderWindow()
@@ -90,8 +118,8 @@ def main():
         renderer.SetEnvironmentTexture(skybox)
     else:
         renderer.SetEnvironmentCubeMap(skybox)
-    renderer.SetBackground(colors.GetColor3d('BkgColor'))
     renderer.UseSphericalHarmonicsOff()
+    renderer.SetBackground(colors.GetColor3d('BkgColor'))
 
     # Set up tone mapping so we can vary the exposure.
     #
@@ -111,13 +139,12 @@ def main():
 
     tone_mapping_p = vtk.vtkToneMappingPass()
     tone_mapping_p.SetToneMappingType(vtk.vtkToneMappingPass().GenericFilmic)
-    tone_mapping_p.SetGenericFilmicDefaultPresets()
+    tone_mapping_p.SetGenericFilmicUncharted2Presets()
+    tone_mapping_p.SetExposure(1.0)
     tone_mapping_p.SetUseACES(True)
-
     tone_mapping_p.SetDelegatePass(camera_p)
 
     renderer.SetPass(tone_mapping_p)
-
     slw_p = SliderProperties()
     slw_p.initial_value = 1.0
     slw_p.maximum_value = 5.0
@@ -128,33 +155,17 @@ def main():
     slider_widget_exposure.SetAnimationModeToAnimate()
     slider_widget_exposure.EnabledOn()
 
-    # Lets use a smooth metallic surface.
+    # Lets use a rough metallic surface.
     diffuse_coefficient = 1.0
-    roughness_coefficient = 0.05
+    roughness_coefficient = 1.0
     metallic_coefficient = 1.0
+    # Other parameters.
+    occlusion_strength = 1.0
+    normal_scale = 1.0
+    anisotropy_coefficient = 1.0
+    anisotropy_rotation = 0.0
 
-    slw_p.initial_value = metallic_coefficient
-    slw_p.maximum_value = 1.0
-    slw_p.title = 'Metallicity'
-    slw_p.p1 = [0.1, 0.2]
-    slw_p.p2 = [0.1, 0.8]
-
-    slider_widget_metallic = make_slider_widget(slw_p)
-    slider_widget_metallic.SetInteractor(interactor)
-    slider_widget_metallic.SetAnimationModeToAnimate()
-    slider_widget_metallic.EnabledOn()
-
-    slw_p.initial_value = roughness_coefficient
-    slw_p.title = 'Roughness'
-    slw_p.p1 = [0.85, 0.2]
-    slw_p.p2 = [0.85, 0.8]
-
-    slider_widget_roughnesss = make_slider_widget(slw_p)
-    slider_widget_roughnesss.SetInteractor(interactor)
-    slider_widget_roughnesss.SetAnimationModeToAnimate()
-    slider_widget_roughnesss.EnabledOn()
-
-    # Build the pipeline.
+    # Build the pipeline
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputData(source)
 
@@ -168,6 +179,16 @@ def main():
     actor.GetProperty().SetDiffuse(diffuse_coefficient)
     actor.GetProperty().SetRoughness(roughness_coefficient)
     actor.GetProperty().SetMetallic(metallic_coefficient)
+    # Configure textures (needs tcoords on the mesh).
+    actor.GetProperty().SetBaseColorTexture(base_color)
+    actor.GetProperty().SetORMTexture(material)
+    actor.GetProperty().SetOcclusionStrength(occlusion_strength)
+    # Needs tcoords, normals and tangents on the mesh.
+    actor.GetProperty().SetNormalTexture(normal)
+    actor.GetProperty().SetNormalScale(normal_scale)
+    actor.GetProperty().SetAnisotropyTexture(anisotropy)
+    actor.GetProperty().SetAnisotropy(anisotropy_coefficient)
+    actor.GetProperty().SetAnisotropyRotation(anisotropy_rotation)
 
     skybox_actor = vtk.vtkSkybox()
     skybox_actor.SetTexture(skybox)
@@ -179,25 +200,19 @@ def main():
 
     render_window.SetSize(800, 500)
     render_window.Render()
-    render_window.SetWindowName("PBR_Skybox")
+    render_window.SetWindowName('PBR_Skybox_Anisotropy')
 
     axes = vtk.vtkAxesActor()
 
     widget = vtk.vtkOrientationMarkerWidget()
     rgba = [0.0, 0.0, 0.0, 0.0]
-    colors.GetColor("Carrot", rgba)
+    colors.GetColor('Carrot', rgba)
     widget.SetOutlineColor(rgba[0], rgba[1], rgba[2])
     widget.SetOrientationMarker(axes)
     widget.SetInteractor(interactor)
     widget.SetViewport(0.0, 0.0, 0.2, 0.2)
     widget.EnabledOn()
     widget.InteractiveOn()
-
-    # Create the slider callback to manipulate exposure.
-    slider_widget_exposure.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackExposure(tone_mapping_p))
-    # Create the slider callbacks to manipulate metallicity and roughness.
-    slider_widget_metallic.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMetallic(actor.GetProperty()))
-    slider_widget_roughnesss.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackRoughness(actor.GetProperty()))
 
     interactor.SetRenderWindow(render_window)
 
@@ -209,6 +224,9 @@ def main():
             cam_orient_manipulator.On()
         except AttributeError:
             pass
+
+    # Create the slider callback to manipulate exposure.
+    slider_widget_exposure.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackExposure(tone_mapping_p))
 
     render_window.Render()
     interactor.Start()
@@ -265,7 +283,6 @@ def read_cubemap(folder_root, file_names):
         flip.SetFilteredAxis(1)  # flip y axis
         texture.SetInputConnection(i, flip.GetOutputPort(0))
         i += 1
-
     texture.MipmapOn()
     texture.InterpolateOn()
     return texture
@@ -316,6 +333,36 @@ def read_environment_map(fn):
     return tcm
 
 
+def read_texture(image_path):
+    """
+    Read an image and convert it to a texture
+    :param image_path: The image path.
+    :return: The texture.
+    """
+    # Read the image which will be the texture
+    path = Path(image_path)
+    if not path.is_file():
+        print('Nonexistent texture file:', path)
+        return None
+    extension = path.suffix.lower()
+    valid_extensions = ['.jpg', '.png', '.bmp', '.tiff', '.pnm', '.pgm', '.ppm']
+    if extension not in valid_extensions:
+        print('Unable to read the texture file (wrong extension):', path)
+        return None
+
+    # Read the images
+    reader_factory = vtk.vtkImageReader2Factory()
+    img_reader = reader_factory.CreateImageReader2(str(path))
+    img_reader.SetFileName(str(path))
+
+    texture = vtk.vtkTexture()
+    texture.InterpolateOn()
+    texture.SetInputConnection(img_reader.GetOutputPort())
+    texture.Update()
+
+    return texture
+
+
 def get_boy():
     u_resolution = 51
     v_resolution = 51
@@ -328,7 +375,7 @@ def get_boy():
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tangents.
+    # Build the tangents
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
@@ -349,7 +396,7 @@ def get_mobius():
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tangents.
+    # Build the tangents
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
@@ -380,7 +427,7 @@ def get_random_hills():
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tangents.
+    # Build the tangents
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
@@ -408,7 +455,7 @@ def get_torus():
     source.SetParametricFunction(surface)
     source.Update()
 
-    # Build the tangents.
+    # Build the tangents
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
@@ -430,7 +477,7 @@ def get_sphere():
     surface.SetThetaResolution(theta_resolution)
     surface.SetPhiResolution(phi_resolution)
 
-    # Now the tangents.
+    # Now the tangents
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(surface.GetOutputPort())
     tangents.Update()
@@ -440,14 +487,14 @@ def get_sphere():
 def get_cube():
     surface = vtk.vtkCubeSource()
 
-    # Triangulate.
+    # Triangulate
     triangulation = vtk.vtkTriangleFilter()
     triangulation.SetInputConnection(surface.GetOutputPort())
     # Subdivide the triangles
     subdivide = vtk.vtkLinearSubdivisionFilter()
     subdivide.SetInputConnection(triangulation.GetOutputPort())
     subdivide.SetNumberOfSubdivisions(3)
-    # Now the tangents.
+    # Now the tangents
     tangents = vtk.vtkPolyDataTangents()
     tangents.SetInputConnection(subdivide.GetOutputPort())
     tangents.Update()
@@ -554,26 +601,6 @@ class SliderCallbackExposure:
         slider_widget = caller
         value = slider_widget.GetRepresentation().GetValue()
         self.tone_mapping_property.SetExposure(value)
-
-
-class SliderCallbackMetallic:
-    def __init__(self, actor_property):
-        self.actor_property = actor_property
-
-    def __call__(self, caller, ev):
-        slider_widget = caller
-        value = slider_widget.GetRepresentation().GetValue()
-        self.actor_property.SetMetallic(value)
-
-
-class SliderCallbackRoughness:
-    def __init__(self, actor_property):
-        self.actor_property = actor_property
-
-    def __call__(self, caller, ev):
-        slider_widget = caller
-        value = slider_widget.GetRepresentation().GetValue()
-        self.actor_property.SetRoughness(value)
 
 
 if __name__ == '__main__':

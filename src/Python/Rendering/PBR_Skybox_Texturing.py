@@ -118,6 +118,41 @@ def main():
     renderer.SetBackground(colors.GetColor3d('BkgColor'))
     renderer.UseSphericalHarmonicsOff()
 
+    # Set up tone mapping so we can vary the exposure.
+    #
+    # Custom Passes.
+    camera_p = vtk.vtkCameraPass()
+    seq = vtk.vtkSequencePass()
+    opaque = vtk.vtkOpaquePass()
+    lights = vtk.vtkLightsPass()
+    overlay = vtk.vtkOverlayPass()
+
+    passes = vtk.vtkRenderPassCollection()
+    passes.AddItem(lights)
+    passes.AddItem(opaque)
+    passes.AddItem(overlay)
+    seq.SetPasses(passes)
+    camera_p.SetDelegatePass(seq)
+
+    tone_mapping_p = vtk.vtkToneMappingPass()
+    tone_mapping_p.SetToneMappingType(vtk.vtkToneMappingPass().GenericFilmic)
+    tone_mapping_p.SetGenericFilmicDefaultPresets()
+    tone_mapping_p.SetUseACES(True)
+
+    tone_mapping_p.SetDelegatePass(camera_p)
+
+    renderer.SetPass(tone_mapping_p)
+
+    slw_p = SliderProperties()
+    slw_p.initial_value = 1.0
+    slw_p.maximum_value = 5.0
+    slw_p.title = 'Exposure'
+
+    slider_widget_exposure = make_slider_widget(slw_p)
+    slider_widget_exposure.SetInteractor(interactor)
+    slider_widget_exposure.SetAnimationModeToAnimate()
+    slider_widget_exposure.EnabledOn()
+
     # Lets use a rough metallic surface.
     diffuse_coefficient = 1.0
     roughness_coefficient = 0.8
@@ -125,28 +160,7 @@ def main():
     # Other parameters.
     occlusion_strength = 1.0
     normal_scale = 1.0
-    # emissive_col = colors.GetColor3d('VTKBlueComp')
-    # emissive_factor = emissive_col
-    emissive_factor = [1.0, 1.0, 1.0]
-
-    slw_p = SliderProperties()
-    slw_p.initial_value = metallic_coefficient
-    slw_p.title = 'Metallicity'
-
-    slider_widget_metallic = make_slider_widget(slw_p)
-    slider_widget_metallic.SetInteractor(interactor)
-    slider_widget_metallic.SetAnimationModeToAnimate()
-    slider_widget_metallic.EnabledOn()
-
-    slw_p.initial_value = roughness_coefficient
-    slw_p.title = 'Roughness'
-    slw_p.p1 = [0.2, 0.9]
-    slw_p.p2 = [0.8, 0.9]
-
-    slider_widget_roughness = make_slider_widget(slw_p)
-    slider_widget_roughness.SetInteractor(interactor)
-    slider_widget_roughness.SetAnimationModeToAnimate()
-    slider_widget_roughness.EnabledOn()
+    emissive_factor = colors.GetColor3d('White')
 
     slw_p.initial_value = occlusion_strength
     slw_p.maximum_value = 1
@@ -196,11 +210,10 @@ def main():
 
     skybox_actor = vtk.vtkSkybox()
     skybox_actor.SetTexture(skybox)
+    skybox_actor.GammaCorrectOn()
 
-    # Create the slider callbacks to manipulate metallicity, roughness
-    # occlusion strength and normal scaling.
-    slider_widget_metallic.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMetallic(actor.GetProperty()))
-    slider_widget_roughness.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackRoughness(actor.GetProperty()))
+    # Create the slider callback to manipulate exposure.
+    slider_widget_exposure.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackExposure(tone_mapping_p))
     slider_widget_occlusion_strength.AddObserver(vtk.vtkCommand.InteractionEvent,
                                                  SliderCallbackOcclusionStrength(actor.GetProperty()))
     slider_widget_normal.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackNormalScale(actor.GetProperty()))
@@ -222,7 +235,7 @@ def main():
     widget.SetOrientationMarker(axes)
     widget.SetInteractor(interactor)
     widget.SetViewport(0.0, 0.0, 0.2, 0.2)
-    widget.SetEnabled(1)
+    widget.EnabledOn()
     widget.InteractiveOn()
 
     interactor.SetRenderWindow(render_window)
@@ -601,24 +614,14 @@ def make_slider_widget(properties):
     return slider_widget
 
 
-class SliderCallbackMetallic:
-    def __init__(self, actor_property):
-        self.actor_property = actor_property
+class SliderCallbackExposure:
+    def __init__(self, tone_mapping_property):
+        self.tone_mapping_property = tone_mapping_property
 
     def __call__(self, caller, ev):
         slider_widget = caller
         value = slider_widget.GetRepresentation().GetValue()
-        self.actor_property.SetMetallic(value)
-
-
-class SliderCallbackRoughness:
-    def __init__(self, actor_property):
-        self.actorProperty = actor_property
-
-    def __call__(self, caller, ev):
-        slider_widget = caller
-        value = slider_widget.GetRepresentation().GetValue()
-        self.actorProperty.SetRoughness(value)
+        self.tone_mapping_property.SetExposure(value)
 
 
 class SliderCallbackOcclusionStrength:
