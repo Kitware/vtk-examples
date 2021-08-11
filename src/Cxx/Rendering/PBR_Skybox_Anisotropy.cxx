@@ -1,6 +1,7 @@
 #include <vtkActor.h>
 #include <vtkAxesActor.h>
 #include <vtkBMPReader.h>
+#include <vtkCameraPass.h>
 #include <vtkCubeSource.h>
 #include <vtkDataSet.h>
 #include <vtkEquirectangularToCubeMapTexture.h>
@@ -9,12 +10,15 @@
 #include <vtkImageFlip.h>
 #include <vtkImageReader2Factory.h>
 #include <vtkJPEGReader.h>
+#include <vtkLightsPass.h>
 #include <vtkLinearSubdivisionFilter.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
+#include <vtkOpaquePass.h>
 #include <vtkOpenGLRenderer.h>
 #include <vtkOpenGLTexture.h>
 #include <vtkOrientationMarkerWidget.h>
+#include <vtkOverlayPass.h>
 #include <vtkPNGReader.h>
 #include <vtkPNMReader.h>
 #include <vtkParametricBoy.h>
@@ -28,8 +32,10 @@
 #include <vtkPolyDataTangents.h>
 #include <vtkProperty.h>
 #include <vtkProperty2D.h>
+#include <vtkRenderPassCollection.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkSequencePass.h>
 #include <vtkSkybox.h>
 #include <vtkSliderRepresentation2D.h>
 #include <vtkSliderWidget.h>
@@ -38,20 +44,11 @@
 #include <vtkTextProperty.h>
 #include <vtkTexture.h>
 #include <vtkTexturedSphereSource.h>
+#include <vtkToneMappingPass.h>
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
 #include <vtkTriangleFilter.h>
 #include <vtkVersion.h>
-
-#include "vtkCameraPass.h"
-#include "vtkLightsPass.h"
-#include "vtkOpaquePass.h"
-#include "vtkOpenGLRenderer.h"
-#include "vtkRenderPassCollection.h"
-#include "vtkSequencePass.h"
-#include "vtkToneMappingPass.h"
-
-#include "vtkOverlayPass.h "
 
 #include <algorithm>
 #include <array>
@@ -332,6 +329,40 @@ int main(int argc, char* argv[])
   renderer->UseSphericalHarmonicsOff();
   renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
 
+  // Set up tone mapping so we can vary the exposure.
+  //
+  // Custom Passes.
+  vtkNew<vtkCameraPass> cameraP;
+  vtkNew<vtkSequencePass> seq;
+  vtkNew<vtkOpaquePass> opaque;
+  vtkNew<vtkLightsPass> lights;
+  vtkNew<vtkOverlayPass> overlay;
+
+  vtkNew<vtkRenderPassCollection> passes;
+  passes->AddItem(lights);
+  passes->AddItem(opaque);
+  passes->AddItem(overlay);
+  seq->SetPasses(passes);
+  cameraP->SetDelegatePass(seq);
+
+  vtkNew<vtkToneMappingPass> toneMappingP;
+  toneMappingP->SetToneMappingType(vtkToneMappingPass::GenericFilmic);
+  toneMappingP->SetGenericFilmicUncharted2Presets();
+  toneMappingP->SetExposure(1.0);
+  toneMappingP->SetDelegatePass(cameraP);
+
+  vtkOpenGLRenderer::SafeDownCast(renderer)->SetPass(toneMappingP);
+
+  auto slwP = SliderProperties();
+  slwP.initialValue = 1.0;
+  slwP.maximumValue = 5.0;
+  slwP.title = "Exposure";
+
+  auto sliderWidgetExposure = MakeSliderWidget(slwP);
+  sliderWidgetExposure->SetInteractor(interactor);
+  sliderWidgetExposure->SetAnimationModeToAnimate();
+  sliderWidgetExposure->EnabledOn();
+
   // Lets use a rough metallic surface.
   auto diffuseCoefficient = 1.0;
   auto roughnessCoefficient = 1.0;
@@ -368,6 +399,7 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkSkybox> skyboxActor;
   skyboxActor->SetTexture(skybox);
+  skyboxActor->GammaCorrectOn();
 
   renderer->AddActor(actor);
   // Comment out if you don't want a skybox.
@@ -397,40 +429,7 @@ int main(int argc, char* argv[])
   camOrientManipulator->On();
 #endif
 
-  // Set up tome mapping so we can vary the exposure.
-  // 
-  // Custom Passes.
-  vtkNew<vtkCameraPass> cameraP;
-  vtkNew<vtkSequencePass> seq;
-  vtkNew<vtkOpaquePass> opaque;
-  vtkNew<vtkLightsPass> lights;
-  vtkNew<vtkOverlayPass> overlay;
-
-  vtkNew<vtkRenderPassCollection> passes;
-  passes->AddItem(lights);
-  passes->AddItem(opaque);
-  passes->AddItem(overlay);
-  seq->SetPasses(passes);
-  cameraP->SetDelegatePass(seq);
-
-  vtkNew<vtkToneMappingPass> toneMappingP;
-  toneMappingP->SetToneMappingType(vtkToneMappingPass::GenericFilmic);
-  toneMappingP->SetGenericFilmicUncharted2Presets();
-  toneMappingP->SetExposure(1.0);
-  toneMappingP->SetDelegatePass(cameraP);
-
-  vtkOpenGLRenderer::SafeDownCast(renderer)->SetPass(toneMappingP);
-
-  auto slwP = SliderProperties();
-  slwP.initialValue = 1.0;
-  slwP.maximumValue = 5.0;
-  slwP.title = "Exposure";
-
-  auto sliderWidgetExposure = MakeSliderWidget(slwP);
-  sliderWidgetExposure->SetInteractor(interactor);
-  sliderWidgetExposure->SetAnimationModeToAnimate();
-  sliderWidgetExposure->EnabledOn();
-
+  // Create the slider callback to manipulate exposure.
   vtkNew<SliderCallbackExposure> callbackExposure;
   callbackExposure->property =
       dynamic_cast<vtkToneMappingPass*>(renderer->GetPass());

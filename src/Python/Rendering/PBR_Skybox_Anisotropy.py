@@ -121,6 +121,40 @@ def main():
     renderer.UseSphericalHarmonicsOff()
     renderer.SetBackground(colors.GetColor3d('BkgColor'))
 
+    # Set up tone mapping so we can vary the exposure.
+    #
+    # Custom Passes.
+    camera_p = vtk.vtkCameraPass()
+    seq = vtk.vtkSequencePass()
+    opaque = vtk.vtkOpaquePass()
+    lights = vtk.vtkLightsPass()
+    overlay = vtk.vtkOverlayPass()
+
+    passes = vtk.vtkRenderPassCollection()
+    passes.AddItem(lights)
+    passes.AddItem(opaque)
+    passes.AddItem(overlay)
+    seq.SetPasses(passes)
+    camera_p.SetDelegatePass(seq)
+
+    tone_mapping_p = vtk.vtkToneMappingPass()
+    tone_mapping_p.SetToneMappingType(vtk.vtkToneMappingPass().GenericFilmic)
+    tone_mapping_p.SetGenericFilmicUncharted2Presets()
+    tone_mapping_p.SetExposure(1.0)
+    tone_mapping_p.SetUseACES(True)
+    tone_mapping_p.SetDelegatePass(camera_p)
+
+    renderer.SetPass(tone_mapping_p)
+    slw_p = SliderProperties()
+    slw_p.initial_value = 1.0
+    slw_p.maximum_value = 5.0
+    slw_p.title = 'Exposure'
+
+    slider_widget_exposure = make_slider_widget(slw_p)
+    slider_widget_exposure.SetInteractor(interactor)
+    slider_widget_exposure.SetAnimationModeToAnimate()
+    slider_widget_exposure.EnabledOn()
+
     # Lets use a rough metallic surface.
     diffuse_coefficient = 1.0
     roughness_coefficient = 1.0
@@ -158,6 +192,7 @@ def main():
 
     skybox_actor = vtk.vtkSkybox()
     skybox_actor.SetTexture(skybox)
+    skybox_actor.GammaCorrectOn()
 
     renderer.AddActor(actor)
     # Comment out if you don't want a skybox.
@@ -190,40 +225,7 @@ def main():
         except AttributeError:
             pass
 
-        # Set up tome mapping so we can vary the exposure.
-        #
-        # Custom Passes.
-    camera_p = vtk.vtkCameraPass()
-    seq = vtk.vtkSequencePass()
-    opaque = vtk.vtkOpaquePass()
-    lights = vtk.vtkLightsPass()
-    overlay = vtk.vtkOverlayPass()
-
-    passes = vtk.vtkRenderPassCollection()
-    passes.AddItem(lights)
-    passes.AddItem(opaque)
-    passes.AddItem(overlay)
-    seq.SetPasses(passes)
-    camera_p.SetDelegatePass(seq)
-
-    tone_mapping_p = vtk.vtkToneMappingPass()
-    tone_mapping_p.SetToneMappingType(vtk.vtkToneMappingPass().GenericFilmic)
-    tone_mapping_p.SetGenericFilmicUncharted2Presets()
-    tone_mapping_p.SetExposure(1.0)
-    tone_mapping_p.SetDelegatePass(camera_p)
-
-    renderer.SetPass(tone_mapping_p)
-    slw_p = SliderProperties()
-    slw_p.initial_value = 1.0
-    slw_p.maximum_value = 5.0
-    slw_p.title = 'Exposure'
-
-    slider_widget_exposure = make_slider_widget(slw_p)
-    slider_widget_exposure.SetInteractor(interactor)
-    slider_widget_exposure.SetAnimationModeToAnimate()
-    slider_widget_exposure.EnabledOn()
-
-    # Create the slider callbacks to manipulate exposure.
+    # Create the slider callback to manipulate exposure.
     slider_widget_exposure.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackExposure(tone_mapping_p))
 
     render_window.Render()

@@ -1,5 +1,6 @@
 #include <vtkActor.h>
 #include <vtkAxesActor.h>
+#include <vtkCameraPass.h>
 #include <vtkCubeSource.h>
 #include <vtkEquirectangularToCubeMapTexture.h>
 #include <vtkFloatArray.h>
@@ -8,12 +9,15 @@
 #include <vtkImageReader2.h>
 #include <vtkImageReader2Factory.h>
 #include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkLightsPass.h>
 #include <vtkLinearSubdivisionFilter.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
+#include <vtkOpaquePass.h>
 #include <vtkOpenGLRenderer.h>
 #include <vtkOpenGLTexture.h>
 #include <vtkOrientationMarkerWidget.h>
+#include <vtkOverlayPass.h>
 #include <vtkParametricBoy.h>
 #include <vtkParametricFunctionSource.h>
 #include <vtkParametricMobius.h>
@@ -25,8 +29,10 @@
 #include <vtkPolyDataTangents.h>
 #include <vtkProperty.h>
 #include <vtkProperty2D.h>
+#include <vtkRenderPassCollection.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
+#include <vtkSequencePass.h>
 #include <vtkSkybox.h>
 #include <vtkSliderRepresentation2D.h>
 #include <vtkSliderWidget.h>
@@ -34,6 +40,7 @@
 #include <vtkTextProperty.h>
 #include <vtkTexture.h>
 #include <vtkTexturedSphereSource.h>
+#include <vtkToneMappingPass.h>
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
 #include <vtkTriangleFilter.h>
@@ -127,6 +134,27 @@ vtkSmartPointer<vtkTexture> ReadEnvironmentMap(std::string const& fileName);
 vtkSmartPointer<vtkPolyData> UVTcoords(const float& uResolution,
                                        const float& vResolution,
                                        vtkSmartPointer<vtkPolyData> pd);
+
+class SliderCallbackExposure : public vtkCommand
+{
+public:
+  static SliderCallbackExposure* New()
+  {
+    return new SliderCallbackExposure;
+  }
+  virtual void Execute(vtkObject* caller, unsigned long, void*)
+  {
+    vtkSliderWidget* sliderWidget = reinterpret_cast<vtkSliderWidget*>(caller);
+    double value = static_cast<vtkSliderRepresentation2D*>(
+                       sliderWidget->GetRepresentation())
+                       ->GetValue();
+    this->property->SetExposure(value);
+  }
+  SliderCallbackExposure() : property(nullptr)
+  {
+  }
+  vtkToneMappingPass* property;
+};
 
 class SliderCallbackMetallic : public vtkCommand
 {
@@ -325,14 +353,52 @@ int main(int argc, char* argv[])
   renderer->UseSphericalHarmonicsOff();
   renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
 
+  // Set up tone mapping so we can vary the exposure.
+  //
+  // Custom Passes.
+  vtkNew<vtkCameraPass> cameraP;
+  vtkNew<vtkSequencePass> seq;
+  vtkNew<vtkOpaquePass> opaque;
+  vtkNew<vtkLightsPass> lights;
+  vtkNew<vtkOverlayPass> overlay;
+
+  vtkNew<vtkRenderPassCollection> passes;
+  passes->AddItem(lights);
+  passes->AddItem(opaque);
+  passes->AddItem(overlay);
+  seq->SetPasses(passes);
+  cameraP->SetDelegatePass(seq);
+
+  vtkNew<vtkToneMappingPass> toneMappingP;
+  toneMappingP->SetToneMappingType(vtkToneMappingPass::GenericFilmic);
+  toneMappingP->SetGenericFilmicUncharted2Presets();
+  toneMappingP->SetExposure(1.0);
+  toneMappingP->SetDelegatePass(cameraP);
+
+  vtkOpenGLRenderer::SafeDownCast(renderer)->SetPass(toneMappingP);
+
+  auto slwP = SliderProperties();
+  slwP.initialValue = 1.0;
+  slwP.maximumValue = 5.0;
+  slwP.title = "Exposure";
+
+  auto sliderWidgetExposure = MakeSliderWidget(slwP);
+  sliderWidgetExposure->SetInteractor(interactor);
+  sliderWidgetExposure->SetAnimationModeToAnimate();
+  sliderWidgetExposure->EnabledOn();
+
   // Lets use a smooth metallic surface.
   auto diffuseCoefficient = 1.0;
   auto roughnessCoefficient = 0.05;
   auto metallicCoefficient = 1.0;
 
-  auto slwP = SliderProperties();
   slwP.initialValue = metallicCoefficient;
   slwP.title = "Metallicity";
+  slwP.maximumValue = 1.0;
+  slwP.p1[0] = 0.1;
+  slwP.p1[1] = 0.2;
+  slwP.p2[0] = 0.1;
+  slwP.p2[1] = 0.8;
 
   auto sliderWidgetMetallic = MakeSliderWidget(slwP);
   sliderWidgetMetallic->SetInteractor(interactor);
@@ -341,10 +407,10 @@ int main(int argc, char* argv[])
 
   slwP.initialValue = roughnessCoefficient;
   slwP.title = "Roughness";
-  slwP.p1[0] = 0.2;
-  slwP.p1[1] = 0.9;
-  slwP.p2[0] = 0.8;
-  slwP.p2[1] = 0.9;
+  slwP.p1[0] = 0.85;
+  slwP.p1[1] = 0.2;
+  slwP.p2[0] = 0.85;
+  slwP.p2[1] = 0.8;
 
   auto sliderWidgetRoughness = MakeSliderWidget(slwP);
   sliderWidgetRoughness->SetInteractor(interactor);
@@ -365,19 +431,25 @@ int main(int argc, char* argv[])
   actor->GetProperty()->SetRoughness(roughnessCoefficient);
   actor->GetProperty()->SetMetallic(metallicCoefficient);
 
+  // Create the slider callback to manipulate exposure.
+  vtkNew<SliderCallbackExposure> callbackExposure;
+  callbackExposure->property =
+      dynamic_cast<vtkToneMappingPass*>(renderer->GetPass());
+  sliderWidgetExposure->AddObserver(vtkCommand::InteractionEvent,
+                                    callbackExposure);
   // Create the slider callbacks to manipulate metallicity and roughness
   vtkNew<SliderCallbackMetallic> callbackMetallic;
   callbackMetallic->property = actor->GetProperty();
-  vtkNew<SliderCallbackRoughness> callbackRoughness;
-  callbackRoughness->property = actor->GetProperty();
-
   sliderWidgetMetallic->AddObserver(vtkCommand::InteractionEvent,
                                     callbackMetallic);
+  vtkNew<SliderCallbackRoughness> callbackRoughness;
+  callbackRoughness->property = actor->GetProperty();
   sliderWidgetRoughness->AddObserver(vtkCommand::InteractionEvent,
                                      callbackRoughness);
 
   vtkNew<vtkSkybox> skyboxActor;
   skyboxActor->SetTexture(skybox);
+  skyboxActor->GammaCorrectOn();
 
   renderer->AddActor(actor);
   // Comment out if you don't want a skybox.
@@ -395,7 +467,7 @@ int main(int argc, char* argv[])
   widget->SetOutlineColor(rgba[0], rgba[1], rgba[2]);
   widget->SetOrientationMarker(axes);
   widget->SetInteractor(interactor);
-  widget->SetViewport(0.0, 0.2, 0.2, 0.4);
+  widget->SetViewport(0.0, 0.0, 0.2, 0.2);
   widget->EnabledOn();
   widget->InteractiveOn();
 

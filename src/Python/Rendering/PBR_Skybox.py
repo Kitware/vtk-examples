@@ -93,14 +93,51 @@ def main():
     renderer.SetBackground(colors.GetColor3d('BkgColor'))
     renderer.UseSphericalHarmonicsOff()
 
+    # Set up tone mapping so we can vary the exposure.
+    #
+    # Custom Passes.
+    camera_p = vtk.vtkCameraPass()
+    seq = vtk.vtkSequencePass()
+    opaque = vtk.vtkOpaquePass()
+    lights = vtk.vtkLightsPass()
+    overlay = vtk.vtkOverlayPass()
+
+    passes = vtk.vtkRenderPassCollection()
+    passes.AddItem(lights)
+    passes.AddItem(opaque)
+    passes.AddItem(overlay)
+    seq.SetPasses(passes)
+    camera_p.SetDelegatePass(seq)
+
+    tone_mapping_p = vtk.vtkToneMappingPass()
+    tone_mapping_p.SetToneMappingType(vtk.vtkToneMappingPass().GenericFilmic)
+    tone_mapping_p.SetGenericFilmicDefaultPresets()
+    tone_mapping_p.SetUseACES(True)
+
+    tone_mapping_p.SetDelegatePass(camera_p)
+
+    renderer.SetPass(tone_mapping_p)
+
+    slw_p = SliderProperties()
+    slw_p.initial_value = 1.0
+    slw_p.maximum_value = 5.0
+    slw_p.title = 'Exposure'
+
+    slider_widget_exposure = make_slider_widget(slw_p)
+    slider_widget_exposure.SetInteractor(interactor)
+    slider_widget_exposure.SetAnimationModeToAnimate()
+    slider_widget_exposure.EnabledOn()
+
     # Lets use a smooth metallic surface.
     diffuse_coefficient = 1.0
     roughness_coefficient = 0.05
     metallic_coefficient = 1.0
 
-    slw_p = SliderProperties()
     slw_p.initial_value = metallic_coefficient
+    slw_p.maximum_value = 1.0
     slw_p.title = 'Metallicity'
+    slw_p.p1 = [0.1, 0.2]
+    slw_p.p2 = [0.1, 0.8]
 
     slider_widget_metallic = make_slider_widget(slw_p)
     slider_widget_metallic.SetInteractor(interactor)
@@ -109,8 +146,8 @@ def main():
 
     slw_p.initial_value = roughness_coefficient
     slw_p.title = 'Roughness'
-    slw_p.p1 = [0.2, 0.9]
-    slw_p.p2 = [0.8, 0.9]
+    slw_p.p1 = [0.85, 0.2]
+    slw_p.p2 = [0.85, 0.8]
 
     slider_widget_roughnesss = make_slider_widget(slw_p)
     slider_widget_roughnesss.SetInteractor(interactor)
@@ -134,6 +171,7 @@ def main():
 
     skybox_actor = vtk.vtkSkybox()
     skybox_actor.SetTexture(skybox)
+    skybox_actor.GammaCorrectOn()
 
     renderer.AddActor(actor)
     # Comment out if you don't want a skybox.
@@ -151,10 +189,12 @@ def main():
     widget.SetOutlineColor(rgba[0], rgba[1], rgba[2])
     widget.SetOrientationMarker(axes)
     widget.SetInteractor(interactor)
-    widget.SetViewport(0.0, 0.2, 0.2, 0.4)
+    widget.SetViewport(0.0, 0.0, 0.2, 0.2)
     widget.EnabledOn()
     widget.InteractiveOn()
 
+    # Create the slider callback to manipulate exposure.
+    slider_widget_exposure.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackExposure(tone_mapping_p))
     # Create the slider callbacks to manipulate metallicity and roughness.
     slider_widget_metallic.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMetallic(actor.GetProperty()))
     slider_widget_roughnesss.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackRoughness(actor.GetProperty()))
@@ -504,6 +544,16 @@ def make_slider_widget(properties):
     slider_widget.SetRepresentation(slider)
 
     return slider_widget
+
+
+class SliderCallbackExposure:
+    def __init__(self, tone_mapping_property):
+        self.tone_mapping_property = tone_mapping_property
+
+    def __call__(self, caller, ev):
+        slider_widget = caller
+        value = slider_widget.GetRepresentation().GetValue()
+        self.tone_mapping_property.SetExposure(value)
 
 
 class SliderCallbackMetallic:
