@@ -24,8 +24,8 @@ A Skybox is used to create the illusion of distant three-dimensional surrounding
 
 
 def main():
-    if not vtk_version_ok(8, 90, 0):
-        print('You need VTK version 8.90 or greater to run this program.')
+    if not vtk_version_ok(9, 0, 0):
+        print('You need VTK version 9.0 or greater to run this program.')
         return
     path, surface = get_program_parameters()
 
@@ -86,10 +86,7 @@ def main():
     # Turn off the default lighting and use image based lighting.
     renderer.AutomaticLightCreationOff()
     renderer.UseImageBasedLightingOn()
-    if vtk_version_ok(9, 0, 0):
-        renderer.SetEnvironmentTexture(skybox)
-    else:
-        renderer.SetEnvironmentCubeMap(skybox)
+    renderer.SetEnvironmentTexture(skybox)
     renderer.SetBackground(colors.GetColor3d('BkgColor'))
     renderer.UseSphericalHarmonicsOff()
 

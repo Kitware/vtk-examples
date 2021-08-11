@@ -60,10 +60,6 @@
 #include <sstream>
 #include <string>
 
-#if VTK_VERSION_NUMBER >= 90000000000ULL
-#define VTK_VER_GE_90 1
-#endif
-
 #if VTK_VERSION_NUMBER >= 90020210809ULL
 #define VTK_HAS_COW 1
 #endif
@@ -187,9 +183,9 @@ MakeSliderWidget(SliderProperties const& properties);
 
 int main(int argc, char* argv[])
 {
-  if (!VTKVersionOk(8, 90, 0))
+  if (!VTKVersionOk(9, 0, 0))
   {
-    std::cerr << "You need VTK version 8.90 or greater to run this program."
+    std::cerr << "You need VTK version 9.0 or greater to run this program."
               << std::endl;
     return EXIT_FAILURE;
   }
@@ -321,11 +317,7 @@ int main(int argc, char* argv[])
   // Turn off the default lighting and use image based lighting.
   renderer->AutomaticLightCreationOff();
   renderer->UseImageBasedLightingOn();
-#if VTK_VER_GE_90
   renderer->SetEnvironmentTexture(skybox);
-#else
-  renderer->SetEnvironmentCubeMap(skybox);
-#endif
   renderer->UseSphericalHarmonicsOff();
   renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
 
