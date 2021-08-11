@@ -83,7 +83,7 @@ if (BUILD_TESTING)
     TestColorByNormal ${DATA}/Armadillo.ply)
 
   add_test(${KIT}-CubeMap ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestCubeMap ${DATA}/horse.ply ${DATA}/skyboxes/skybox1/)
+    TestCubeMap ${DATA}/horse.ply ${DATA}/Skyboxes/skybox1/)
 
   add_test(${KIT}-MarbleShader ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestMarbleShader ${DATA}/Shaders/PerlinNoise.glsl ${DATA}/horse.ply)
@@ -95,7 +95,7 @@ if (BUILD_TESTING)
     TestSpatterShader ${DATA}/Shaders/PerlinNoise.glsl ${DATA}/horse.ply)
 
   add_test(${KIT}-SphereMap ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestSphereMap ${DATA}/Bunny.vtp ${DATA}/skyboxes/wintersun.jpg)
+    TestSphereMap ${DATA}/Bunny.vtp ${DATA}/Skyboxes/wintersun.jpg)
 
 
   include(${WikiExamples_SOURCE_DIR}/CMake/ExamplesTesting.cmake)

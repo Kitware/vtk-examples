@@ -20,7 +20,7 @@ The parameter order is:
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('path', help='The path to the cubemap files e.g. skyboxes/skybox2/ or to a\n'
+    parser.add_argument('path', help='The path to the cubemap files e.g. Skyboxes/skybox2/ or to a\n'
                                      ' .hdr, .png, or .jpg equirectangular file')
     parser.add_argument('base_fn',
                         help='The path to the base colour (albedo) texture file'
@@ -39,8 +39,8 @@ The parameter order is:
 
 
 def main():
-    if not vtk_version_ok(8, 90, 0):
-        print('You need VTK version 8.90 or greater to run this program.')
+    if not vtk_version_ok(9, 0, 0):
+        print('You need VTK version 9.0 or greater to run this program.')
         return
     path, base_fn, normal_fn, material_fn, emissive_fn, surface = get_program_parameters()
 
@@ -111,10 +111,7 @@ def main():
     # Turn off the default lighting and use image based lighting.
     renderer.AutomaticLightCreationOff()
     renderer.UseImageBasedLightingOn()
-    if vtk_version_ok(9, 0, 0):
-        renderer.SetEnvironmentTexture(skybox)
-    else:
-        renderer.SetEnvironmentCubeMap(skybox)
+    renderer.SetEnvironmentTexture(skybox)
     renderer.SetBackground(colors.GetColor3d('BkgColor'))
     renderer.UseSphericalHarmonicsOff()
 

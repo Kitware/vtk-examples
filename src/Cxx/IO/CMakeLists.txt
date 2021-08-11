@@ -166,7 +166,7 @@ if (BUILD_TESTING)
     endif()
 
   add_test(${KIT}-HDRReader ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestHDRReader ${DATA}/skyboxes/spiaggia_di_mondello_1k.hdr)
+    TestHDRReader ${DATA}/Skyboxes/spiaggia_di_mondello_1k.hdr)
 
   add_test(${KIT}-ImportPolyDataScene ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestImportPolyDataScene ${DATA}/ExportBunny.vtp)
