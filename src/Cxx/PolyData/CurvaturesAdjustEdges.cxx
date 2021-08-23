@@ -257,7 +257,7 @@ int main(int argc, char* argv[])
 #include <vtkIdFilter.h>
 #include <vtkIdList.h>
 #include <vtkNew.h>
-#include <vtkPointdata.h>
+#include <vtkPointData.h>
 #include <vtkSmartPointer.h>
 #include <vtkType.h>
 
