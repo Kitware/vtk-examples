@@ -209,6 +209,7 @@ If you are new to VTK then these [tutorials](#tutorial) will help to get you sta
 [ColoredTriangle](/Python/PolyData/ColoredTriangle) | Creates a file TriangleColored.vtp.
 [CombinePolyData](/Python/Filtering/CombinePolyData) | This example combines Polydata objects, and displays the result to the screen.
 [ConnectivityFilter](/Python/Filtering/ConnectivityFilter) | Color any dataset type based on connectivity.
+[CurvaturesAdjustEdges](/Python/PolyData/CurvaturesAdjustEdges) | Get the Gaussian and Mean curvatures of a surface with adjustments for edge effects.
 [CurvaturesDemo](/Python/PolyData/CurvaturesDemo) | Demonstrates how to get the Gaussian and Mean curvatures of a surface.
 [ExtractPolyLinesFromPolyData](/Python/PolyData/ExtractPolyLinesFromPolyData) | Extract polylines from polydata.
 [ExtractSelection](/Python/PolyData/ExtractSelection) |

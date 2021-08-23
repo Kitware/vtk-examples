@@ -309,6 +309,7 @@ These examples demonstrate how to create an display one of the many vtkParametri
 [ConvexHull](/Cxx/PolyData/ConvexHull) | Convex hull using vtkHull.
 [ConvexHullShrinkWrap](/Cxx/PolyData/ConvexHullShrinkWrap) | Convex hull using shrink wrapping.
 [CopyAllArrays](/Cxx/PolyData/CopyAllArrays) | Copy all arrays from one vtkPolyData to another.
+[CurvaturesAdjustEdges](/Cxx/PolyData/CurvaturesAdjustEdges) | Get the Gaussian and Mean curvatures of a surface with adjustments for edge effects.
 [CurvaturesDemo](/Cxx/PolyData/CurvaturesDemo) | Demonstrates how to get the Gaussian and Mean curvatures of a surface.
 [DataBounds](/Cxx/PolyData/DataBounds) | Get the minimum and maximum value in each dimension. (Axis aligned bounding box)
 [DataSetSurfaceFilter](/Cxx/PolyData/DataSetSurfaceFilter) | Convert vtkUnstructuredGrid to vtkPolyData.
