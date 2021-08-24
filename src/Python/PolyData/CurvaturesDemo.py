@@ -16,12 +16,13 @@ In order to get a nice coloured image, a vtkColorTransferFunction has been used 
  a set of colours for the vtkLookUp tables. We have used a diverging colour space.
 Because of the symmetry of the ranges selected for the lookup tables, the white colouration
  represents a midpoint value whilst the blue represents values less than the midopoint value
- and red represents colours greater than the midpoint value.
+ and orange represents colours greater than the midpoint value.
 
 In the case of the Random Hills Gaussian Curvature surface, this colouration shows the nature
  of the surface quite nicely. The blue areas are saddle points (negative Gaussian curvature)
- and the red areas have a positive Gaussian curvature.  In the case of the mean curvature the
- blue colouration is representing negative curvature perpendicular to one of the principal axes.
+ and the orange areas have a positive Gaussian curvature.
+In the case of the mean curvature the blue colouration is representing negative curvature
+ perpendicular to one of the principal axes.
 
 This example also demonstrates the use of lists and the linking of the elements of the
  lists together to form a pipeline.
@@ -83,18 +84,23 @@ def main():
     ctf = vtk.vtkColorTransferFunction()
     ctf.SetColorSpaceToDiverging()
     p1 = [0.0] + list(colors.GetColor3d('MidnightBlue'))
-    p2 = [1.0] + list(colors.GetColor3d('DarkOrange'))
+    p2 = [0.5] + list(colors.GetColor3d('Gainsboro'))
+    p3 = [1.0] + list(colors.GetColor3d('DarkOrange'))
     ctf.AddRGBPoint(*p1)
     ctf.AddRGBPoint(*p2)
+    ctf.AddRGBPoint(*p3)
+
+    table_size = 256
+
     cc = list()
-    for i in range(256):
-        cc.append(ctf.GetColor(float(i) / 255.0))
+    for i in range(table_size):
+        cc.append(ctf.GetColor(float(i) / table_size))
 
     # Lookup table.
     lut = list()
     for idx in range(len(sources)):
         lut.append(vtk.vtkLookupTable())
-        lut[idx].SetNumberOfColors(256)
+        lut[idx].SetNumberOfColors(table_size)
         for i, item in enumerate(cc):
             lut[idx].SetTableValue(i, item[0], item[1], item[2], 1.0)
         if idx == 0:
@@ -190,6 +196,9 @@ def main():
 
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
+    style = vtk.vtkInteractorStyleTrackballCamera()
+    interactor.SetInteractorStyle(style)
+
 
     renderWindow.Render()
 

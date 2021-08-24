@@ -16,15 +16,15 @@ been used to generate a set of colours for the vtkLookUp tables. We
 have used a diverging colour space.  Because of the symmetry of the
 ranges selected for the lookup tables, the white colouration
 represents a midpoint value whilst the blue represents values less
-than the midopoint value and red represents colours greater than the
+than the midopoint value and orange represents colours greater than the
 midpoint value.
 
 In the case of the Random Hills Gaussian Curvature surface, this
 colouration shows the nature of the surface quite nicely. The blue
-areas are saddle points (negative Gaussian curvature) and the red
-areas have a positive Gaussian curvature.  In the case of the mean
-curvature the blue colouration is representing negative curvature
-perpendicular to one of the principal axes.
+areas are saddle points (negative Gaussian curvature) and the orange
+areas have a positive Gaussian curvature.
+In the case of the mean curvature the blue colouration is representing
+negative curvature perpendicular to one of the principal axes.
 
 This example also demonstrates the use of std::vector and the linking
 of the elements of the vector together to form a pipeline.
@@ -53,7 +53,9 @@ of the elements of the vector together to form a pipeline.
 #include <vtkTransformFilter.h>
 #include <vtkTriangleFilter.h>
 
+#include <algorithm>
 #include <array>
+#include <iterator>
 #include <vector>
 
 int main(int, char* argv[])
@@ -109,6 +111,9 @@ int main(int, char* argv[])
   ctf->AddRGBPoint(0.0, colors->GetColor3d("MidnightBlue").GetRed(),
                    colors->GetColor3d("MidnightBlue").GetGreen(),
                    colors->GetColor3d("MidnightBlue").GetBlue());
+  ctf->AddRGBPoint(0.5, colors->GetColor3d("Gainsboro").GetRed(),
+                   colors->GetColor3d("Gainsboro").GetGreen(),
+                   colors->GetColor3d("Gainsboro").GetBlue());
   ctf->AddRGBPoint(1.0, colors->GetColor3d("DarkOrange").GetRed(),
                    colors->GetColor3d("DarkOrange").GetGreen(),
                    colors->GetColor3d("DarkOrange").GetBlue());
@@ -121,10 +126,11 @@ int main(int, char* argv[])
     lut->SetNumberOfColors(256);
     for (auto i = 0; i < lut->GetNumberOfColors(); ++i)
     {
-      std::array<double, 4> color;
-      ctf->GetColor(double(i) / lut->GetNumberOfColors(), color.data());
-      color[3] = 1.0;
-      lut->SetTableValue(i, color.data());
+      std::array<double, 3> rgb;
+      ctf->GetColor(double(i) / lut->GetNumberOfColors(), rgb.data());
+      std::array<double, 4> rgba{0.0, 0.0, 0.0, 1.0};
+      std::copy(std::begin(rgb), std::end(rgb), std::begin(rgba));
+      lut->SetTableValue(i, rgba.data());
     }
     if (idx == 0)
     {

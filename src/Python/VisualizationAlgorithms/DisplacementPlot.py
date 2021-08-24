@@ -99,6 +99,7 @@ def MakeLUT(colorScheme, lut):
         # Green to purple diverging.
         ctf.SetColorSpaceToDiverging()
         ctf.AddRGBPoint(0.0, 0.085, 0.532, 0.201)
+        ctf.AddRGBPoint(0.5, 0.865, 0.865, 0.865)
         ctf.AddRGBPoint(1.0, 0.436, 0.308, 0.631)
         lut.SetNumberOfTableValues(nc)
         lut.Build()
