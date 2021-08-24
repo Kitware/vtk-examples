@@ -32,10 +32,12 @@
 #include <vtkTriangleFilter.h>
 #include <vtkXMLPolyDataWriter.h>
 
+#include <algorithm>
 #include <array>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <iterator>
 
 // Here is the ComputeCurvatures definition.
 //

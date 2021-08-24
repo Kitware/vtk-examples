@@ -130,6 +130,7 @@ void MakeLUT(int const& colorScheme, vtkLookupTable* lut)
     // Cool to warm diverging.
     ctf->SetColorSpaceToDiverging();
     ctf->AddRGBPoint(0.0, 0.230, 0.299, 0.754);
+    ctf->AddRGBPoint(0.5, 0.865, 0.865, 0.865);
     ctf->AddRGBPoint(1.0, 0.706, 0.016, 0.150);
     lut->SetNumberOfTableValues(nc);
     lut->Build();

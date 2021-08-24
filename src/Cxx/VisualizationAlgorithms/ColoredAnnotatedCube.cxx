@@ -5,7 +5,6 @@
 #include <vtkCaptionActor2D.h>
 #include <vtkCellData.h>
 #include <vtkColorSeries.h>
-#include <vtkColorTransferFunction.h>
 #include <vtkConeSource.h>
 #include <vtkCubeSource.h>
 #include <vtkElevationFilter.h>
