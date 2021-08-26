@@ -6,7 +6,6 @@ from vtk.util import numpy_support
 
 
 def main():
-
     # source = get_bour()
     # source = get_cube()
     # source = get_enneper()

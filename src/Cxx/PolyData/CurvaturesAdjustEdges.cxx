@@ -47,7 +47,7 @@
 #include <set>
 #include <string>
 
-namespace ComputeCurvatures {
+namespace {
 
 /**
 @class ComputeCurvatures
@@ -118,7 +118,7 @@ private:
                                          {"Mean_Curvature", 1.0e-8}};
 };
 
-} // namespace ComputeCurvatures
+} // namespace
 
 namespace {
 
@@ -146,20 +146,18 @@ int main(int argc, char* argv[])
   // auto source = GetSphere();
   // auto source = GetTorus();
 
-  ComputeCurvatures::ComputeCurvatures cc(source);
+  ComputeCurvatures cc(source);
 
   // After running update() the source will contain the Gaussian and Mean
   // Curvatures.
   cc.Update();
 
-  //  Uncomment the following lines if you want to write out the polydata.
-  /*
-  vtkNew<vtkXMLPolyDataWriter> writer;
-  writer->SetFileName("Source.vtp");
-  writer->SetInputData(source);
-  writer->SetDataModeToAscii();
-  writer->Write();
-  */
+  // Uncomment the following lines if you want to write out the polydata.
+  // vtkNew<vtkXMLPolyDataWriter> writer;
+  // writer->SetFileName("Source.vtp");
+  // writer->SetInputData(cc.source);
+  // writer->SetDataModeToAscii();
+  // writer->Write();
 
   // Let's visualise what we have done.
 
@@ -269,7 +267,7 @@ int main(int argc, char* argv[])
 #include <numeric>
 #include <vector>
 
-namespace ComputeCurvatures {
+namespace {
 
 void ComputeCurvatures::Update()
 {
@@ -556,7 +554,7 @@ void ComputeCurvatures::SetEpsilons(double const& gauss_eps,
   this->epsilons["Mean_Curvature"] = mean_eps;
 }
 
-} // namespace ComputeCurvatures
+} // namespace
 
 namespace {
 
