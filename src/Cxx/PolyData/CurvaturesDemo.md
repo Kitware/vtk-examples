@@ -11,6 +11,6 @@ Two different surfaces are used in this demonstration with each surface coloured
 In order to get a nice coloured image, a vtkColorTransferFunction has been used to generate a set of colours for the vtkLookupTable tables. We have used a diverging colour space.
 Because of the symmetry of the ranges selected for the lookup tables, the white colouration represents a midpoint value whilst the blue represents values less than the midopoint value and orange represents colours greater than the midpoint value.
   
-In the case of the Random Hills Gaussian curvature surface, this colouration shows the nature of the surface quite nicely. The blue areas are saddle points (negative Gaussian curvature) and the orange areas have a positive Gaussian curvature. In the case of the mean curvature the blue colouration is representing negative curvature perpendicular to one of the principal axes.
-  
-This example also demonstrates the use of std::vector's  and the linking of the elements of the vectors together to form a pipeline.
+In the case of the Random Hills Gaussian curvature surface, this colouration shows the nature of the surface quite nicely. The blue areas are saddle points (negative Gaussian curvature) and the orange areas have a positive Gaussian curvature.
+
+In the case of the mean curvature the blue colouration represents negative curvature perpendicular to one of the principal axes.

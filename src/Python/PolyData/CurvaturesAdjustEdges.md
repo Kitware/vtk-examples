@@ -2,7 +2,7 @@
 
 This example demonstrates how to calculate Gaussian and Mean curvatures for a vtkPolyData source. A class called `ComputeCurvatures` is initialised with the vtkPolyData source. The method `Update()` in the class will generate the Gaussian and Mean curvatures, adjusting curvature for edge variations (which can be quite large) and finally adding the vtkDoubleArray of curvatures into the original vtkPolyData.
 
-You should be able to take this class and just drop it into your code. With respect to C++, the class has its own namespace: `ComputeCurvatures` so you can easily create a definition header file and an impementation file for your own use.
+You should be able to take this class and just drop it into your code.
 
 In order for vtkCurvatures to work, the surface must be triangulated.
 
