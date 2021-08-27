@@ -31,8 +31,11 @@ def main():
     colors = vtk.vtkNamedColors()
     colors.SetColor("ParaViewBkg", [82, 87, 110, 255])
 
+    window_width = 1024
+    window_height = 512
+
     ren_win = vtk.vtkRenderWindow()
-    ren_win.SetSize(1024, 512)
+    ren_win.SetSize(window_width, window_height)
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(ren_win)
     style = vtk.vtkInteractorStyleTrackballCamera()
@@ -55,6 +58,8 @@ def main():
     cam_orient_manipulator = vtk.vtkCameraOrientationWidget()
     for idx, curvature_name in enumerate(cc.curvature_type):
 
+        curvature_title = curvature_name.replace('_', '\n')
+
         scalar_range = source.GetPointData().GetScalars(curvature_name).GetRange()
 
         mapper = vtk.vtkPolyDataMapper()
@@ -67,12 +72,16 @@ def main():
         actor = vtk.vtkActor()
         actor.SetMapper(mapper)
 
-        renderer = vtk.vtkRenderer()
-
-        ren_win.AddRenderer(renderer)
-
-        renderer.AddActor(actor)
-        renderer.SetBackground(colors.GetColor3d('ParaViewBkg'))
+        # Create a scalar bar
+        scalar_bar = vtk.vtkScalarBarActor()
+        scalar_bar.SetLookupTable(mapper.GetLookupTable())
+        scalar_bar.SetTitle(curvature_title)
+        scalar_bar.UnconstrainedFontSizeOn()
+        scalar_bar.SetNumberOfLabels(5)
+        scalar_bar.SetMaximumWidthInPixels(window_width // 8)
+        scalar_bar.SetMaximumHeightInPixels(window_height // 3)
+        scalar_bar.SetBarRatio(scalar_bar.GetBarRatio() * 0.5)
+        scalar_bar.SetPosition(0.85, 0.1)
 
         text_mapper = vtk.vtkTextMapper()
         text_mapper.SetInput(curvature_name)
@@ -82,7 +91,14 @@ def main():
         text_actor.SetMapper(text_mapper)
         text_actor.SetPosition(250, 16)
 
+        renderer = vtk.vtkRenderer()
+        renderer.SetBackground(colors.GetColor3d('ParaViewBkg'))
+
+        renderer.AddActor(actor)
         renderer.AddActor(text_actor)
+        renderer.AddActor(scalar_bar)
+
+        ren_win.AddRenderer(renderer)
 
         if idx == 0:
             cam_orient_manipulator.SetParentRenderer(renderer)

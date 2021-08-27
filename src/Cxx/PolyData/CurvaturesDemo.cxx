@@ -46,6 +46,7 @@ of the elements of the vector together to form a pipeline.
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkScalarBarActor.h>
 #include <vtkSmartPointer.h>
 #include <vtkSuperquadricSource.h>
 #include <vtkTextMapper.h>
@@ -225,12 +226,14 @@ int main(int, char* argv[])
   std::vector<vtkSmartPointer<vtkPolyDataMapper>> mappers;
   std::vector<vtkSmartPointer<vtkTextMapper>> textmappers;
   std::vector<vtkSmartPointer<vtkActor2D>> textactors;
+  std::vector<vtkSmartPointer<vtkScalarBarActor>> scalarBars;
   for (auto idx = 0; idx < sources.size(); ++idx)
   {
     mappers.push_back(vtkSmartPointer<vtkPolyDataMapper>::New());
     actors.push_back(vtkSmartPointer<vtkActor>::New());
     textmappers.push_back(vtkSmartPointer<vtkTextMapper>::New());
     textactors.push_back(vtkSmartPointer<vtkActor2D>::New());
+    scalarBars.push_back(vtkSmartPointer<vtkScalarBarActor>::New());
     renderers.push_back(vtkSmartPointer<vtkRenderer>::New());
   }
 
@@ -246,8 +249,18 @@ int main(int, char* argv[])
   textProperty->SetFontSize(24);
   textProperty->SetJustificationToCentered();
 
+  // RenderWindow Dimensions
+  //
+  auto rendererSize = 512;
+  auto gridDimensions = 2;
+  auto windowWidth = rendererSize * gridDimensions;
+  auto windowHeight = rendererSize * gridDimensions;
+
   for (auto idx = 0; idx < sources.size(); ++idx)
   {
+    auto curvatureTitle = names[idx][0];
+    std::replace(curvatureTitle.begin(), curvatureTitle.end(), '_', '\n');
+
     sources[idx].Update();
     sources[idx].source->GetPointData()->SetActiveScalars(
         names[idx][0].c_str());
@@ -269,12 +282,17 @@ int main(int, char* argv[])
 
     textactors[idx]->SetMapper(textmappers[idx]);
     textactors[idx]->SetPosition(250, 16);
-  }
 
-  // Create the RenderWindow
-  //
-  auto rendererSize = 512;
-  auto gridDimensions = 2;
+    // Create a scalar bar
+    scalarBars[idx]->SetLookupTable(mappers[idx]->GetLookupTable());
+    scalarBars[idx]->SetTitle(curvatureTitle.c_str());
+    scalarBars[idx]->UnconstrainedFontSizeOn();
+    scalarBars[idx]->SetNumberOfLabels(5);
+    scalarBars[idx]->SetMaximumWidthInPixels(windowWidth / 8);
+    scalarBars[idx]->SetMaximumHeightInPixels(windowHeight / 3);
+    scalarBars[idx]->SetBarRatio(scalarBars[idx]->GetBarRatio() * 0.5);
+    scalarBars[idx]->SetPosition(0.85, 0.1);
+  }
 
   vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(rendererSize * gridDimensions,
@@ -296,6 +314,7 @@ int main(int, char* argv[])
 
       renderers[idx]->AddActor(actors[idx]);
       renderers[idx]->AddActor(textactors[idx]);
+      renderers[idx]->AddActor(scalarBars[idx]);
       renderers[idx]->SetBackground(colors->GetColor3d("SlateGray").GetData());
     }
   }
