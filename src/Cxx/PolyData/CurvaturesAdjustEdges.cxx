@@ -23,6 +23,7 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkScalarBarActor.h>
 #include <vtkSmartPointer.h>
 #include <vtkTextMapper.h>
 #include <vtkTextProperty.h>
@@ -166,6 +167,9 @@ int main(int argc, char* argv[])
   colors->SetColor("ParaViewBkg",
                    std::array<unsigned char, 4>{82, 87, 110, 255}.data());
 
+  auto windowWidth = 1024;
+  auto windowHeight = 512;
+
   vtkNew<vtkRenderWindow> renWin;
   renWin->SetSize(1024, 512);
   vtkNew<vtkRenderWindowInteractor> iRen;
@@ -193,6 +197,8 @@ int main(int argc, char* argv[])
   for (size_t idx = 0; idx < cc.curvatureType.size(); ++idx)
   {
     auto curvature_name = cc.curvatureType[idx];
+    auto curvatureTitle = curvature_name;
+    std::replace(curvatureTitle.begin(), curvatureTitle.end(), '_', '\n');
 
     auto scalarRange =
         source->GetPointData()->GetScalars(curvature_name.c_str())->GetRange();
@@ -207,28 +213,40 @@ int main(int argc, char* argv[])
     vtkNew<vtkActor> actor;
     actor->SetMapper(mapper);
 
-    vtkNew<vtkRenderer> renderer;
-
-    renWin->AddRenderer(renderer);
-
-    renderer->AddActor(actor);
-    renderer->SetBackground(colors->GetColor3d("ParaViewBkg").GetData());
+    // Create a scalar bar
+    vtkNew<vtkScalarBarActor> scalarBar;
+    scalarBar->SetLookupTable(mapper->GetLookupTable());
+    scalarBar->SetTitle(curvatureTitle.c_str());
+    scalarBar->UnconstrainedFontSizeOn();
+    scalarBar->SetNumberOfLabels(5);
+    scalarBar->SetMaximumWidthInPixels(windowWidth / 8);
+    scalarBar->SetMaximumHeightInPixels(windowHeight / 3);
+    scalarBar->SetBarRatio(scalarBar->GetBarRatio() * 0.5);
+    scalarBar->SetPosition(0.85, 0.1);
 
     vtkNew<vtkTextMapper> textMapper;
     textMapper->SetInput(curvature_name.c_str());
     textMapper->SetTextProperty(textProperty);
 
-    vtkNew<vtkActor2D> text_actor;
-    text_actor->SetMapper(textMapper);
-    text_actor->SetPosition(250, 16);
+    vtkNew<vtkActor2D> textActor;
+    textActor->SetMapper(textMapper);
+    textActor->SetPosition(250, 16);
 
-    renderer->AddActor(text_actor);
+    vtkNew<vtkRenderer> renderer;
+    renderer->SetBackground(colors->GetColor3d("ParaViewBkg").GetData());
+
+    renderer->AddActor(actor);
+    renderer->AddActor(textActor);
+    renderer->AddActor(scalarBar);
+
+    renWin->AddRenderer(renderer);
 
     if (idx == 0)
     {
       camOrientManipulator->SetParentRenderer(renderer);
       camera = renderer->GetActiveCamera();
       camera->Elevation(60);
+      camera->Zoom(1.5);
     }
     else
     {

@@ -117,11 +117,7 @@ def main():
     actors = list()
     text_mappers = list()
     text_actors = list()
-
-    # Create a common text property.
-    text_property = vtk.vtkTextProperty()
-    text_property.SetFontSize(24)
-    text_property.SetJustificationToCentered()
+    scalar_bars = list()
 
     names = {
         0: ['Gauss_Curvature', 'Torus - Gaussian Curvature'],
@@ -130,9 +126,24 @@ def main():
         3: ['Mean_Curvature', 'Random Hills - Mean Curvature'],
     }
 
+    # Create a common text property.
+    text_property = vtk.vtkTextProperty()
+    text_property.SetFontSize(24)
+    text_property.SetJustificationToCentered()
+
+    # RenderWindow Dimensions
+    #
+    renderer_size = 512
+    grid_dimensions = 2
+    window_width = renderer_size * grid_dimensions
+    window_height = renderer_size * grid_dimensions
+
     # Link the pipeline together.
     for idx, item in enumerate(sources):
         item.update()
+
+        curvature_title = names[idx][0].replace('_', '\n')
+
         item.source.GetPointData().SetActiveScalars(names[idx][0])
         scalar_range = item.source.GetPointData().GetScalars(names[idx][0]).GetRange()
 
@@ -154,10 +165,18 @@ def main():
         text_actors[idx].SetMapper(text_mappers[idx])
         text_actors[idx].SetPosition(250, 16)
 
-        renderers.append(vtk.vtkRenderer())
+        # Create a scalar bar
+        scalar_bars.append(vtk.vtkScalarBarActor())
+        scalar_bars[idx].SetLookupTable(mappers[idx].GetLookupTable())
+        scalar_bars[idx].SetTitle(curvature_title)
+        scalar_bars[idx].UnconstrainedFontSizeOn()
+        scalar_bars[idx].SetNumberOfLabels(5)
+        scalar_bars[idx].SetMaximumWidthInPixels(window_width // 8)
+        scalar_bars[idx].SetMaximumHeightInPixels(window_height // 3)
+        scalar_bars[idx].SetBarRatio(scalar_bars[idx].GetBarRatio() * 0.5)
+        scalar_bars[idx].SetPosition(0.85, 0.1)
 
-    grid_dimensions = 2
-    renderer_size = 512
+        renderers.append(vtk.vtkRenderer())
 
     for idx in range(len(sources)):
         if idx < grid_dimensions * grid_dimensions:
@@ -189,6 +208,7 @@ def main():
 
             renderers[idx].AddActor(actors[idx])
             renderers[idx].AddActor(text_actors[idx])
+            renderers[idx].AddActor(scalar_bars[idx])
             renderers[idx].SetBackground(colors.GetColor3d('SlateGray'))
 
     interactor = vtk.vtkRenderWindowInteractor()
