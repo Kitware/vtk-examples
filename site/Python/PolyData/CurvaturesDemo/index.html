@@ -174,11 +174,7 @@ function registerListener(event, func) {
     <span class=n>actors</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>text_mappers</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>text_actors</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-
-    <span class=c1># Create a common text property.</span>
-<span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTextProperty</span><span class=p>()</span>
-</span>    <span class=n>text_property</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>24</span><span class=p>)</span>
-    <span class=n>text_property</span><span class=o>.</span><span class=n>SetJustificationToCentered</span><span class=p>()</span>
+    <span class=n>scalar_bars</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
 
     <span class=n>names</span> <span class=o>=</span> <span class=p>{</span>
         <span class=mi>0</span><span class=p>:</span> <span class=p>[</span><span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>,</span> <span class=s1>&#39;Torus - Gaussian Curvature&#39;</span><span class=p>],</span>
@@ -187,9 +183,24 @@ function registerListener(event, func) {
         <span class=mi>3</span><span class=p>:</span> <span class=p>[</span><span class=s1>&#39;Mean_Curvature&#39;</span><span class=p>,</span> <span class=s1>&#39;Random Hills - Mean Curvature&#39;</span><span class=p>],</span>
     <span class=p>}</span>
 
+    <span class=c1># Create a common text property.</span>
+<span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTextProperty</span><span class=p>()</span>
+</span>    <span class=n>text_property</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>24</span><span class=p>)</span>
+    <span class=n>text_property</span><span class=o>.</span><span class=n>SetJustificationToCentered</span><span class=p>()</span>
+
+    <span class=c1># RenderWindow Dimensions</span>
+    <span class=c1>#</span>
+    <span class=n>renderer_size</span> <span class=o>=</span> <span class=mi>512</span>
+    <span class=n>grid_dimensions</span> <span class=o>=</span> <span class=mi>2</span>
+    <span class=n>window_width</span> <span class=o>=</span> <span class=n>renderer_size</span> <span class=o>*</span> <span class=n>grid_dimensions</span>
+    <span class=n>window_height</span> <span class=o>=</span> <span class=n>renderer_size</span> <span class=o>*</span> <span class=n>grid_dimensions</span>
+
     <span class=c1># Link the pipeline together.</span>
     <span class=k>for</span> <span class=n>idx</span><span class=p>,</span> <span class=n>item</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>sources</span><span class=p>):</span>
         <span class=n>item</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
+
+        <span class=n>curvature_title</span> <span class=o>=</span> <span class=n>names</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;_&#39;</span><span class=p>,</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+
         <span class=n>item</span><span class=o>.</span><span class=n>source</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=n>names</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span>
         <span class=n>scalar_range</span> <span class=o>=</span> <span class=n>item</span><span class=o>.</span><span class=n>source</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>(</span><span class=n>names</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span><span class=o>.</span><span class=n>GetRange</span><span class=p>()</span>
 
@@ -211,11 +222,19 @@ function registerListener(event, func) {
 </span>        <span class=n>text_actors</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>text_mappers</span><span class=p>[</span><span class=n>idx</span><span class=p>])</span>
         <span class=n>text_actors</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>250</span><span class=p>,</span> <span class=mi>16</span><span class=p>)</span>
 
+        <span class=c1># Create a scalar bar</span>
+<span class=hll>        <span class=n>scalar_bars</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkScalarBarActor</span><span class=p>())</span>
+</span>        <span class=n>scalar_bars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>mappers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>GetLookupTable</span><span class=p>())</span>
+        <span class=n>scalar_bars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetTitle</span><span class=p>(</span><span class=n>curvature_title</span><span class=p>)</span>
+        <span class=n>scalar_bars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>UnconstrainedFontSizeOn</span><span class=p>()</span>
+        <span class=n>scalar_bars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetNumberOfLabels</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+        <span class=n>scalar_bars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetMaximumWidthInPixels</span><span class=p>(</span><span class=n>window_width</span> <span class=o>//</span> <span class=mi>8</span><span class=p>)</span>
+        <span class=n>scalar_bars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetMaximumHeightInPixels</span><span class=p>(</span><span class=n>window_height</span> <span class=o>//</span> <span class=mi>3</span><span class=p>)</span>
+        <span class=n>scalar_bars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetBarRatio</span><span class=p>(</span><span class=n>scalar_bars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>GetBarRatio</span><span class=p>()</span> <span class=o>*</span> <span class=mf>0.5</span><span class=p>)</span>
+        <span class=n>scalar_bars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>0.85</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)</span>
+
 <span class=hll>        <span class=n>renderers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>())</span>
 </span>
-    <span class=n>grid_dimensions</span> <span class=o>=</span> <span class=mi>2</span>
-    <span class=n>renderer_size</span> <span class=o>=</span> <span class=mi>512</span>
-
     <span class=k>for</span> <span class=n>idx</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>sources</span><span class=p>)):</span>
         <span class=k>if</span> <span class=n>idx</span> <span class=o>&lt;</span> <span class=n>grid_dimensions</span> <span class=o>*</span> <span class=n>grid_dimensions</span><span class=p>:</span>
 <span class=hll>            <span class=n>renderers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>)</span>
@@ -246,6 +265,7 @@ function registerListener(event, func) {
 
             <span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actors</span><span class=p>[</span><span class=n>idx</span><span class=p>])</span>
             <span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>text_actors</span><span class=p>[</span><span class=n>idx</span><span class=p>])</span>
+            <span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>scalar_bars</span><span class=p>[</span><span class=n>idx</span><span class=p>])</span>
             <span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>

@@ -103,6 +103,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkScalarBarActor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSuperquadricSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTextMapper.h&gt;</span><span class=cp></span>
@@ -282,12 +283,14 @@ function registerListener(event, func) {
 </span><span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;&gt;</span> <span class=n>mappers</span><span class=p>;</span>
 </span><span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;&gt;</span> <span class=n>textmappers</span><span class=p>;</span>
 </span><span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;&gt;</span> <span class=n>textactors</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkScalarBarActor</span><span class=o>&gt;&gt;</span> <span class=n>scalarBars</span><span class=p>;</span>
 </span>  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>idx</span> <span class=o>&lt;</span> <span class=n>sources</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> <span class=o>++</span><span class=n>idx</span><span class=p>)</span>
   <span class=p>{</span>
 <span class=hll>    <span class=n>mappers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span>
 </span><span class=hll>    <span class=n>actors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span>
 </span><span class=hll>    <span class=n>textmappers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span>
 </span><span class=hll>    <span class=n>textactors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span>
+</span><span class=hll>    <span class=n>scalarBars</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkScalarBarActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span>
 </span><span class=hll>    <span class=n>renderers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span>
 </span>  <span class=p>}</span>
 
@@ -303,8 +306,18 @@ function registerListener(event, func) {
 </span>  <span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>24</span><span class=p>);</span>
   <span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetJustificationToCentered</span><span class=p>();</span>
 
+  <span class=c1>// RenderWindow Dimensions</span>
+  <span class=c1>//</span>
+  <span class=k>auto</span> <span class=n>rendererSize</span> <span class=o>=</span> <span class=mi>512</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>gridDimensions</span> <span class=o>=</span> <span class=mi>2</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>windowWidth</span> <span class=o>=</span> <span class=n>rendererSize</span> <span class=o>*</span> <span class=n>gridDimensions</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>windowHeight</span> <span class=o>=</span> <span class=n>rendererSize</span> <span class=o>*</span> <span class=n>gridDimensions</span><span class=p>;</span>
+
   <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>idx</span> <span class=o>&lt;</span> <span class=n>sources</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> <span class=o>++</span><span class=n>idx</span><span class=p>)</span>
   <span class=p>{</span>
+    <span class=k>auto</span> <span class=n>curvatureTitle</span> <span class=o>=</span> <span class=n>names</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>0</span><span class=p>];</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>replace</span><span class=p>(</span><span class=n>curvatureTitle</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>curvatureTitle</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span> <span class=sc>&#39;_&#39;</span><span class=p>,</span> <span class=sc>&#39;\n&#39;</span><span class=p>);</span>
+
     <span class=n>sources</span><span class=p>[</span><span class=n>idx</span><span class=p>].</span><span class=n>Update</span><span class=p>();</span>
     <span class=n>sources</span><span class=p>[</span><span class=n>idx</span><span class=p>].</span><span class=n>source</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetActiveScalars</span><span class=p>(</span>
         <span class=n>names</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>0</span><span class=p>].</span><span class=n>c_str</span><span class=p>());</span>
@@ -326,12 +339,17 @@ function registerListener(event, func) {
 
     <span class=n>textactors</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textmappers</span><span class=p>[</span><span class=n>idx</span><span class=p>]);</span>
     <span class=n>textactors</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>250</span><span class=p>,</span> <span class=mi>16</span><span class=p>);</span>
-  <span class=p>}</span>
 
-  <span class=c1>// Create the RenderWindow</span>
-  <span class=c1>//</span>
-  <span class=k>auto</span> <span class=n>rendererSize</span> <span class=o>=</span> <span class=mi>512</span><span class=p>;</span>
-  <span class=k>auto</span> <span class=n>gridDimensions</span> <span class=o>=</span> <span class=mi>2</span><span class=p>;</span>
+    <span class=c1>// Create a scalar bar</span>
+    <span class=n>scalarBars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>mappers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>GetLookupTable</span><span class=p>());</span>
+    <span class=n>scalarBars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=n>curvatureTitle</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
+    <span class=n>scalarBars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>UnconstrainedFontSizeOn</span><span class=p>();</span>
+    <span class=n>scalarBars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetNumberOfLabels</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span>
+    <span class=n>scalarBars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetMaximumWidthInPixels</span><span class=p>(</span><span class=n>windowWidth</span> <span class=o>/</span> <span class=mi>8</span><span class=p>);</span>
+    <span class=n>scalarBars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetMaximumHeightInPixels</span><span class=p>(</span><span class=n>windowHeight</span> <span class=o>/</span> <span class=mi>3</span><span class=p>);</span>
+    <span class=n>scalarBars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetBarRatio</span><span class=p>(</span><span class=n>scalarBars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>GetBarRatio</span><span class=p>()</span> <span class=o>*</span> <span class=mf>0.5</span><span class=p>);</span>
+    <span class=n>scalarBars</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>0.85</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>);</span>
+  <span class=p>}</span>
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=n>rendererSize</span> <span class=o>*</span> <span class=n>gridDimensions</span><span class=p>,</span>
@@ -353,6 +371,7 @@ function registerListener(event, func) {
 
       <span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actors</span><span class=p>[</span><span class=n>idx</span><span class=p>]);</span>
       <span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>textactors</span><span class=p>[</span><span class=n>idx</span><span class=p>]);</span>
+      <span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>scalarBars</span><span class=p>[</span><span class=n>idx</span><span class=p>]);</span>
       <span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
     <span class=p>}</span>
   <span class=p>}</span>
@@ -690,6 +709,7 @@ function registerListener(event, func) {
   <span class=s>vtkFiltersGeneral</span>
   <span class=s>vtkFiltersSources</span>
   <span class=s>vtkInteractionStyle</span>
+  <span class=s>vtkRenderingAnnotation</span>
   <span class=s>vtkRenderingContextOpenGL2</span>
   <span class=s>vtkRenderingCore</span>
   <span class=s>vtkRenderingFreeType</span>

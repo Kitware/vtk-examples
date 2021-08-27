@@ -108,8 +108,11 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>&quot;ParaViewBkg&quot;</span><span class=p>,</span> <span class=p>[</span><span class=mi>82</span><span class=p>,</span> <span class=mi>87</span><span class=p>,</span> <span class=mi>110</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
+    <span class=n>window_width</span> <span class=o>=</span> <span class=mi>1024</span>
+    <span class=n>window_height</span> <span class=o>=</span> <span class=mi>512</span>
+
 <span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
-</span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>1024</span><span class=p>,</span> <span class=mi>512</span><span class=p>)</span>
+</span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=n>window_width</span><span class=p>,</span> <span class=n>window_height</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
 <span class=hll>    <span class=n>style</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkInteractorStyleTrackballCamera</span><span class=p>()</span>
@@ -132,6 +135,8 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>cam_orient_manipulator</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCameraOrientationWidget</span><span class=p>()</span>
 </span>    <span class=k>for</span> <span class=n>idx</span><span class=p>,</span> <span class=n>curvature_name</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>cc</span><span class=o>.</span><span class=n>curvature_type</span><span class=p>):</span>
 
+        <span class=n>curvature_title</span> <span class=o>=</span> <span class=n>curvature_name</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;_&#39;</span><span class=p>,</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+
         <span class=n>scalar_range</span> <span class=o>=</span> <span class=n>source</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>(</span><span class=n>curvature_name</span><span class=p>)</span><span class=o>.</span><span class=n>GetRange</span><span class=p>()</span>
 
 <span class=hll>        <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
@@ -144,12 +149,16 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
 
-<span class=hll>        <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span>
-        <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
-
-        <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
-        <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;ParaViewBkg&#39;</span><span class=p>))</span>
+        <span class=c1># Create a scalar bar</span>
+<span class=hll>        <span class=n>scalar_bar</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkScalarBarActor</span><span class=p>()</span>
+</span>        <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>mapper</span><span class=o>.</span><span class=n>GetLookupTable</span><span class=p>())</span>
+        <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetTitle</span><span class=p>(</span><span class=n>curvature_title</span><span class=p>)</span>
+        <span class=n>scalar_bar</span><span class=o>.</span><span class=n>UnconstrainedFontSizeOn</span><span class=p>()</span>
+        <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetNumberOfLabels</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+        <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetMaximumWidthInPixels</span><span class=p>(</span><span class=n>window_width</span> <span class=o>//</span> <span class=mi>8</span><span class=p>)</span>
+        <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetMaximumHeightInPixels</span><span class=p>(</span><span class=n>window_height</span> <span class=o>//</span> <span class=mi>3</span><span class=p>)</span>
+        <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetBarRatio</span><span class=p>(</span><span class=n>scalar_bar</span><span class=o>.</span><span class=n>GetBarRatio</span><span class=p>()</span> <span class=o>*</span> <span class=mf>0.5</span><span class=p>)</span>
+        <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>0.85</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)</span>
 
 <span class=hll>        <span class=n>text_mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTextMapper</span><span class=p>()</span>
 </span>        <span class=n>text_mapper</span><span class=o>.</span><span class=n>SetInput</span><span class=p>(</span><span class=n>curvature_name</span><span class=p>)</span>
@@ -159,7 +168,14 @@ function registerListener(event, func) {
 </span>        <span class=n>text_actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>text_mapper</span><span class=p>)</span>
         <span class=n>text_actor</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>250</span><span class=p>,</span> <span class=mi>16</span><span class=p>)</span>
 
+<span class=hll>        <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+</span>        <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;ParaViewBkg&#39;</span><span class=p>))</span>
+
+        <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
         <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>text_actor</span><span class=p>)</span>
+        <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>scalar_bar</span><span class=p>)</span>
+
+        <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
         <span class=k>if</span> <span class=n>idx</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
             <span class=n>cam_orient_manipulator</span><span class=o>.</span><span class=n>SetParentRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
