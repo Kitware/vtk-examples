@@ -99,7 +99,7 @@ function registerListener(event, func) {
   <span class=n>ComputeCurvatures</span><span class=p>()</span> <span class=o>=</span> <span class=k>default</span><span class=p>;</span>
   <span class=o>~</span><span class=n>ComputeCurvatures</span><span class=p>()</span> <span class=o>=</span> <span class=k>default</span><span class=p>;</span>
 
-<span class=hll>  <span class=n>ComputeCurvatures</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>source</span><span class=p>)</span>
+<span class=hll>  <span class=k>explicit</span> <span class=n>ComputeCurvatures</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>source</span><span class=p>)</span>
 </span>  <span class=p>{</span>
     <span class=k>this</span><span class=o>-&gt;</span><span class=n>source</span> <span class=o>=</span> <span class=n>source</span><span class=p>;</span>
   <span class=p>}</span>
