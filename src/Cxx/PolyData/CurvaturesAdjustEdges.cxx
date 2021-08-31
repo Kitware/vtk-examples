@@ -66,7 +66,7 @@ public:
   ComputeCurvatures() = default;
   ~ComputeCurvatures() = default;
 
-  ComputeCurvatures(vtkPolyData* source)
+  explicit ComputeCurvatures(vtkPolyData* source)
   {
     this->source = source;
   }

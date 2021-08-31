@@ -307,7 +307,7 @@ int main(int, char* argv[])
       auto idx = row * gridDimensions + col;
       renderers[idx]->SetViewport(
           static_cast<double>(col) / gridDimensions,
-          (static_cast<double>(gridDimensions) - (row + 1)) / gridDimensions,
+          (static_cast<double>(gridDimensions) - (row + 1.0)) / gridDimensions,
           (static_cast<double>(col) + 1) / gridDimensions,
           (static_cast<double>(gridDimensions) - row) / gridDimensions);
       renderWindow->AddRenderer(renderers[idx]);
