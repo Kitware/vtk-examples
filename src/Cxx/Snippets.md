@@ -8,6 +8,10 @@ Snippets are chunks of code that can be cut (*snipped*) and pasted into examples
 
 Output the camera position while moving the image.
 
+#### [ComputeCurvatures](/Cxx/Snippets/ComputeCurvatures.md)
+
+A class that refines vtkCurvatures to adjust for edge effects.
+
 #### [PointToGlyph](/Cxx/Snippets/PointToGlyph.md)
 
 Represent points as glyphs.
