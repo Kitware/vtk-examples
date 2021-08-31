@@ -2,7 +2,7 @@
 
 Draw the borders of a vtkRenderer's viewports.
 
-To use the snippet, click the *Copy to clipboard* at the upper left of the code blocks.
+To use the snippet, click the *Copy to clipboard* at the upper right of the code blocks.
 
 ### Declaration Section
 

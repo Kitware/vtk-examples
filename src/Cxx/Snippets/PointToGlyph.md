@@ -2,7 +2,7 @@
 
 Represent points as glyphs. The point is represented as a sphere.
 
-To use the snippet, click the *Copy to clipboard* at the upper left of the code blocks.
+To use the snippet, click the *Copy to clipboard* at the upper right of the code blocks.
 
 ### Declaration Section
 

@@ -4,7 +4,7 @@ Get the program parameters.
 
 This particular snippet requires a file name and an optional figure number.
 
-To use the snippet, click the *Copy to clipboard* at the upper left of the code blocks.
+To use the snippet, click the *Copy to clipboard* at the upper right of the code blocks.
 
 ### Implementation
 

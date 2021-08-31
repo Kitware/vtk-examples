@@ -2,7 +2,7 @@
 
 Given a filename, render window and optionally a rgba value, take a screenshot of the render window and write it to a file. The extension of the filename determines what writer to use.
 
-To use the snippet, click the *Copy to clipboard* at the upper left of the code blocks.
+To use the snippet, click the *Copy to clipboard* at the upper right of the code blocks.
 
 ## C++
 

@@ -2,7 +2,7 @@
 
 A callback that gives you the camera position and focal point.
 
-To use the snippet, click the *Copy to clipboard* at the upper left of the code blocks.
+To use the snippet, click the *Copy to clipboard* at the upper right of the code blocks.
 
 ### Implementation
 
