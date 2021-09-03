@@ -48,13 +48,6 @@
 #include <string>
 #include <vector>
 
-enum SURFACE_TYPE
-{
-  PLANE = 0,
-  SPHERE,
-  PARAMETRIC_SURFACE
-};
-
 namespace {
 
 //! Divide a range into bands
@@ -312,16 +305,6 @@ int main(int, char*[])
   lut->SetNumberOfTableValues(adjBands.size());
 
   // We will use the midpoint of the band as the label.
-  // std::vector<std::string> labels;
-  // for (std::vector<std::vector<double>>::const_iterator p = bands.begin();
-  //     p != bands.end(); ++p)
-  //{
-  //  std::ostringstream os;
-  //  os << std::fixed << std::setw(6) << std::setprecision(2) << (*p)[1];
-  //  labels.push_back(os.str());
-  //}
-
-  // We will use the midpoint of the band as the label.
   std::vector<std::string> labels;
   for (std::map<int, std::vector<double>>::const_iterator p = adjBands.begin();
        p != adjBands.end(); ++p)
@@ -344,18 +327,6 @@ int main(int, char*[])
 
   // Create a lookup table with the colors reversed.
   auto lutr = ReverseLUT(lut);
-
-  //// Create the contour bands.
-  // vtkNew<vtkBandedPolyDataContourFilter> bcf;
-  // bcf->SetInputData(src);
-  //// Use either the minimum or maximum value for each band.
-  // int i = 0;
-  // for (std::vector<std::vector<double>>::const_iterator p = bands.begin();
-  //     p != bands.end(); ++p)
-  //{
-  //  bcf->SetValue(i, (*p)[2]);
-  //  ++i;
-  //}
 
   // Create the contour bands.
   vtkNew<vtkBandedPolyDataContourFilter> bcf;
