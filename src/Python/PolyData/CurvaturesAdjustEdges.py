@@ -5,7 +5,7 @@ import vtk
 from vtk.util import numpy_support
 
 
-def main():
+def main(argv):
     # source = get_bour()
     # source = get_cube()
     # source = get_enneper()
@@ -15,8 +15,9 @@ def main():
     # source = get_torus()
 
     cc = ComputeCurvatures(source)
-
-    # After running update() the source will contain the Gaussian and Mean Curvatures.
+    cc.set_curvature_type_to_gaussian()
+    cc.update()
+    cc.set_curvature_type_to_mean()
     cc.update()
 
     # Uncomment the following lines if you want to write out the polydata.
@@ -46,7 +47,8 @@ def main():
     text_property.SetFontSize(24)
     text_property.SetJustificationToCentered()
 
-    lut = get_lut()
+    # lut = get_diverging_lut1()
+    lut = get_diverging_lut()
 
     # Define viewport ranges
     xmins = [0, 0.5]
@@ -56,7 +58,8 @@ def main():
 
     camera = None
     cam_orient_manipulator = vtk.vtkCameraOrientationWidget()
-    for idx, curvature_name in enumerate(cc.curvature_type):
+    curvature_types = ['Gauss_Curvature', 'Mean_Curvature']
+    for idx, curvature_name in enumerate(curvature_types):
 
         curvature_title = curvature_name.replace('_', '\n')
 
@@ -84,7 +87,7 @@ def main():
         scalar_bar.SetPosition(0.85, 0.1)
 
         text_mapper = vtk.vtkTextMapper()
-        text_mapper.SetInput(curvature_name)
+        text_mapper.SetInput(curvature_title)
         text_mapper.SetTextProperty(text_property)
 
         text_actor = vtk.vtkActor2D()
@@ -135,38 +138,79 @@ class ComputeCurvatures:
         :param mean_eps: Mean curvatures less than this will be set to zero.
         """
         self.source = polydata_source
-        self.curvature_type = ['Gauss_Curvature', 'Mean_Curvature']
+        self.curvature_type = 'Gauss_Curvature'
         self.adjusted_curvatures = dict()
         self.bounds = {'Gauss_Curvature': [0.0, 0.0], 'Mean_Curvature': [0.0, 0.0]}
         self.bounds_state = {'Gauss_Curvature': False, 'Mean_Curvature': False}
         self.epsilons = {'Gauss_Curvature': gauss_eps, 'Mean_Curvature': mean_eps}
 
-    def update(self):
-        for curvature_name in self.curvature_type:
-            self.compute_curvature_and_fix_up_boundary(curvature_name)
-            #  Set small values to zero.
-            if self.epsilons[curvature_name] != 0.0:
-                eps = abs(self.epsilons[curvature_name])
-                self.adjusted_curvatures[curvature_name] = np.where(
-                    abs(self.adjusted_curvatures[curvature_name]) < eps, 0,
-                    self.adjusted_curvatures[curvature_name])
-            # Set upper and lower bounds.
-            if self.bounds_state[curvature_name]:
-                lower_bound = self.bounds[curvature_name][0]
-                self.adjusted_curvatures[curvature_name] = np.where(
-                    self.adjusted_curvatures[curvature_name] < lower_bound, lower_bound,
-                    self.adjusted_curvatures[curvature_name])
-                upper_bound = self.bounds[curvature_name][1]
-                self.adjusted_curvatures[curvature_name] = np.where(
-                    self.adjusted_curvatures[curvature_name] > upper_bound, upper_bound,
-                    self.adjusted_curvatures[curvature_name])
-            self.update_curvatures(curvature_name)
+    # Remember to run Update after these set and on/off methods.
+    def get_curvature_type(self):
+        return self.curvature_type
 
-    def compute_curvature_and_fix_up_boundary(self, curvature_name):
+    def set_curvature_type_to_gaussian(self):
+        self.curvature_type = 'Gauss_Curvature'
+
+    def set_gauss_epsilon(self, eps=1.0e-08):
+        self.bounds['Gauss_Curvature'] = abs(eps)
+
+    def set_gauss_curvature_bounds(self, lower=0.0, upper=0.0):
+        if lower <= upper:
+            self.bounds['Gauss_Curvature'] = [lower, upper]
+        else:
+            self.bounds['Gauss_Curvature'] = [upper, lower]
+            print('set_gauss_curvature_bounds: bounds swapped since lower > upper')
+
+    def gauss_bounds_on(self):
+        self.bounds_state['Gauss_Curvature'] = True
+
+    def gauss_bounds_off(self):
+        self.bounds_state['Gauss_Curvature'] = False
+
+    def set_curvature_type_to_mean(self):
+        self.curvature_type = 'Mean_Curvature'
+
+    def set_mean_epsilon(self, eps=1.0e-08):
+        self.bounds['Gauss_Curvature'] = abs(eps)
+
+    def set_mean_curvature_bounds(self, lower=0.0, upper=0.0):
+        if lower <= upper:
+            self.bounds['Mean_Curvature'] = [lower, upper]
+        else:
+            self.bounds['Mean_Curvature'] = [upper, lower]
+            print('set_mean_curvature_bounds: bounds swapped since lower > upper')
+
+    def mean_bounds_on(self):
+        self.bounds_state['Mean_Curvature'] = True
+
+    def mean_bounds_off(self):
+        self.bounds_state['Mean_Curvature'] = False
+
+    def update(self):
+        self.compute_curvature_and_fix_up_boundary()
+        #  Set small values to zero.
+        if self.epsilons[self.curvature_type] != 0.0:
+            eps = abs(self.epsilons[self.curvature_type])
+            self.adjusted_curvatures[self.curvature_type] = np.where(
+                abs(self.adjusted_curvatures[self.curvature_type]) < eps, 0,
+                self.adjusted_curvatures[self.curvature_type])
+        # Set upper and lower bounds.
+        if self.bounds_state[self.curvature_type]:
+            lower_bound = self.bounds[self.curvature_type][0]
+            self.adjusted_curvatures[self.curvature_type] = np.where(
+                self.adjusted_curvatures[self.curvature_type] < lower_bound, lower_bound,
+                self.adjusted_curvatures[self.curvature_type])
+            upper_bound = self.bounds[self.curvature_type][1]
+            self.adjusted_curvatures[self.curvature_type] = np.where(
+                self.adjusted_curvatures[self.curvature_type] > upper_bound, upper_bound,
+                self.adjusted_curvatures[self.curvature_type])
+        self.update_curvature()
+
+    def compute_curvature_and_fix_up_boundary(self):
         # Curvature as vtkPolyData.
-        curvature_data = self.compute_curvature(curvature_name)
+        curvature_data = self.compute_curvature()
         # Curvature as python list.
-        curvature = self.extract_data(curvature_data, curvature_name)
+        curvature = self.extract_data(curvature_data)
         # Ids of the boundary points.
         p_ids = self.extract_boundary_ids()
         # Remove duplicate Ids.
@@ -196,21 +240,23 @@ class ComputeCurvatures:
                 new_curv = 0
             # Set the new curvature value.
             curvature[p_id] = new_curv
-        self.adjusted_curvatures[curvature_name] = np.array(curvature)
+        self.adjusted_curvatures[self.curvature_type] = np.array(curvature)
 
-    def compute_curvature(self, curvature_name):
+    def compute_curvature(self):
         curvature_filter = vtk.vtkCurvatures()
         curvature_filter.SetInputData(self.source)
-        if 'gaus' in curvature_name.lower():
+        if 'Gauss_Curvature' == self.curvature_type:
             curvature_filter.SetCurvatureTypeToGaussian()
-        else:
+        elif 'Mean_Curvature' == self.curvature_type:
             curvature_filter.SetCurvatureTypeToMean()
+        else:
+            print('Curvature type must be either Gaussian or Mean.')
+            return None
         curvature_filter.Update()
         return curvature_filter.GetOutput()
 
-    @staticmethod
-    def extract_data(curvature_data, curvature_name):
-        array = curvature_data.GetPointData().GetAbstractArray(curvature_name)
+    def extract_data(self, curvature_data):
+        array = curvature_data.GetPointData().GetAbstractArray(self.curvature_type)
         n = curvature_data.GetNumberOfPoints()
         data = []
         for i in range(n):
@@ -267,46 +313,51 @@ class ComputeCurvatures:
         pt_b = np.array(self.source.GetPoint(pt_id_b))
         return np.linalg.norm(pt_a - pt_b)
 
-    def update_curvatures(self, curvature_name):
+    def update_curvature(self):
         """
         Add the adjusted curvatures into the self.source.
          :return:
         """
-        if self.source.GetNumberOfPoints() != len(self.adjusted_curvatures[curvature_name]):
-            print(curvature_name, ':\nCannot add the adjusted curvatures to the source.\n'
-                                  ' The number of points in source does not equal the\n'
-                                  ' number of point ids in the adjusted curvature array.')
+        if self.source.GetNumberOfPoints() != len(self.adjusted_curvatures[self.curvature_type]):
+            s = f'{self.curvature_type:15s}:\nCannot add the adjusted curvatures to the source.\n'
+            s += ' The number of points in source does not equal the\n'
+            s += ' number of point ids in the adjusted curvature array.'
+            print(s)
             return
-        curvatures = numpy_support.numpy_to_vtk(num_array=self.adjusted_curvatures[curvature_name].ravel(), deep=True,
+        curvatures = numpy_support.numpy_to_vtk(num_array=self.adjusted_curvatures[self.curvature_type].ravel(),
+                                                deep=True,
                                                 array_type=vtk.VTK_DOUBLE)
-        curvatures.SetName(curvature_name)
+        curvatures.SetName(self.curvature_type)
         self.source.GetPointData().AddArray(curvatures)
-        self.source.GetPointData().SetActiveScalars(curvature_name)
-
-    # Remember to run Update after these set and on/off methods.
-    def set_gauss_curvature_bounds(self, lower=0.0, upper=0.0):
-        self.bounds['Gauss_Curvature'] = [lower, upper]
-
-    def gauss_bounds_on(self):
-        self.bounds_state['Gauss_Curvature'] = True
-
-    def gauss_bounds_off(self):
-        self.bounds_state['Gauss_Curvature'] = False
-
-    def set_mean_curvature_bounds(self, lower=0.0, upper=0.0):
-        self.bounds['Mean_Curvature'] = [lower, upper]
-
-    def mean_bounds_on(self):
-        self.bounds_state['Mean_Curvature'] = True
-
-    def mean_bounds_off(self):
-        self.bounds_state['Mean_Curvature'] = False
-
-    def set_epsilons(self, gauss_eps=1.0e-08, mean_eps=1.0e-08):
-        self.epsilons = {'Gauss_Curvature': gauss_eps, 'Mean_Curvature': mean_eps}
+        self.source.GetPointData().SetActiveScalars(self.curvature_type)
 
 
-def get_lut():
+def get_diverging_lut1():
+    colors = vtk.vtkNamedColors()
+    # Colour transfer function.
+    ctf = vtk.vtkColorTransferFunction()
+    ctf.SetColorSpaceToDiverging()
+    p1 = [0.0] + list(colors.GetColor3d('MidnightBlue'))
+    p2 = [0.5] + list(colors.GetColor3d('Gainsboro'))
+    p3 = [1.0] + list(colors.GetColor3d('DarkOrange'))
+    ctf.AddRGBPoint(*p1)
+    ctf.AddRGBPoint(*p2)
+    ctf.AddRGBPoint(*p3)
+
+    table_size = 256
+    lut = vtk.vtkLookupTable()
+    lut.SetNumberOfTableValues(table_size)
+    lut.Build()
+
+    for i in range(0, table_size):
+        rgba = list(ctf.GetColor(float(i) / table_size))
+        rgba.append(1)
+        lut.SetTableValue(i, rgba)
+
+    return lut
+
+
+def get_diverging_lut():
     """
     See: [Diverging Color Maps for Scientific Visualization](https://www.kennethmoreland.com/color-maps/)
                        start point         midPoint            end point
@@ -512,4 +563,6 @@ def get_torus():
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+
+    main(sys.argv)

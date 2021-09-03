@@ -463,7 +463,7 @@ These examples demonstrate how to create an display one of the many vtkParametri
 [ColorDisconnectedRegions](/Cxx/PolyData/ColorDisconnectedRegions) | Color each disconnected region of a vtkPolyData a different color.
 [ColorDisconnectedRegionsDemo](/Cxx/PolyData/ColorDisconnectedRegionsDemo) | Color each disconnected region of a vtkPolyData a different color for any vtkPolyData.
 [ColoredElevationMap](/Cxx/Meshes/ColoredElevationMap) | Color a mesh by height.
-[Curvatures](/Cxx/PolyData/Curvatures) | Compute Gaussian, Mean, Min, and Max Curvatures.
+[Curvatures](/Cxx/PolyData/Curvatures) | Compute Gaussian and Mean Curvatures.
 [Decimation](/Cxx/Meshes/Decimation) | Reduce the number of triangles in a mesh.
 [DeformPointSet](/Cxx/Meshes/DeformPointSet) | Deform a point set with a control polyhedra.
 [DelaunayMesh](/Cxx/Modelling/DelaunayMesh) | Two-dimensional Delaunay triangulation of a random set of points. Points and edges are shown highlighted with sphere glyphs and tubes.

@@ -1,16 +1,135 @@
-### Description
+#!/usr/bin/env python
 
-A class that refines vtkCurvatures to adjust for edge effects.
-
-To use the snippet, click the *Copy to clipboard* at the upper right of the code blocks.
-
-### Implementation
-
-``` Python
+from pathlib import Path
 
 import numpy as np
 import vtk
 from vtk.util import numpy_support
+
+
+def get_program_parameters(argv):
+    import argparse
+    import textwrap
+
+    description = 'Calculate Gauss or Mean Curvature.'
+    epilogue = textwrap.dedent('''
+    ''')
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description=description,
+                                     epilog=epilogue)
+    parser.add_argument('file_name', help=' e.g. cowHead.vtp.')
+    parser.add_argument('-l', default=0, type=float, help='Lower bound e.g. -20.')
+    parser.add_argument('-u', default=0, type=float, help='Upper bound e.g. 20.')
+    parser.add_argument('-i', default=16, type=int, help='The color map index e.g. 16.')
+
+    group1 = parser.add_mutually_exclusive_group()
+    group1.add_argument('-m', help='Use Mean Curvature.', action='store_true')
+
+    args = parser.parse_args()
+    return args.file_name, args.l, args.u, args.i, args.m
+
+
+def main(argv):
+    file_name, lower_bound, upper_bound, color_map_idx, mean_curvature = get_program_parameters(argv)
+
+    if not Path(file_name).is_file():
+        print(f'The path: {file_name} does not exist.')
+        return
+    reader = vtk.vtkXMLPolyDataReader()
+    reader.SetFileName(file_name)
+    reader.Update()
+
+    cc = ComputeCurvatures(reader.GetOutput())
+    if mean_curvature:
+        cc.set_curvature_type_to_mean()
+        if lower_bound == upper_bound == 0:
+            cc.mean_bounds_off()
+        else:
+            cc.set_mean_curvature_bounds(lower_bound, upper_bound)
+            cc.mean_bounds_on()
+    else:
+        cc.set_curvature_type_to_gaussian()
+        if lower_bound == upper_bound == 0:
+            cc.gauss_bounds_off()
+        else:
+            # Try these bounds: -100.0, 200.0
+            cc.set_gauss_curvature_bounds(lower_bound, upper_bound)
+            cc.gauss_bounds_on()
+    cc.update()
+    scalar_range = cc.source.GetPointData().GetScalars(cc.get_curvature_type()).GetRange()
+
+    # Uncomment the following lines if you want to write out the polydata.
+    # writer = vtk.vtkXMLPolyDataWriter()
+    # writer.SetFileName('Source.vtp')
+    # writer.SetInputData(source)
+    # writer.SetDataModeToAscii()
+    # writer.Write()
+
+    # Build a lookup table
+    color_series = vtk.vtkColorSeries()
+    color_series.SetColorScheme(color_map_idx)
+    print(f'Using color scheme #: {color_series.GetColorScheme()}, {color_series.GetColorSchemeName()}')
+
+    lut = vtk.vtkColorTransferFunction()
+    lut.SetColorSpaceToHSV()
+
+    # Use a color series to create a transfer function
+    for i in range(0, color_series.GetNumberOfColors()):
+        color = color_series.GetColor(i)
+        double_color = list(map(lambda x: x / 255.0, color))
+        t = scalar_range[0] + (scalar_range[1] - scalar_range[0]) / (color_series.GetNumberOfColors() - 1) * i
+        lut.AddRGBPoint(t, double_color[0], double_color[1], double_color[2])
+
+    colors = vtk.vtkNamedColors()
+
+    # Create a mapper and actor.
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInputData(cc.source)
+    mapper.SetScalarModeToUsePointFieldData()
+    mapper.SelectColorArray(cc.get_curvature_type())
+    mapper.SetScalarRange(scalar_range)
+    mapper.SetLookupTable(lut)
+
+    actor = vtk.vtkActor()
+    actor.SetMapper(mapper)
+
+    windowWidth = 800
+    windowHeight = 800
+
+    # Create a scalar bar
+    scalar_bar = vtk.vtkScalarBarActor()
+    scalar_bar.SetLookupTable(mapper.GetLookupTable())
+    scalar_bar.SetTitle(cc.get_curvature_type().replace('_', '\n'))
+    scalar_bar.UnconstrainedFontSizeOn()
+    scalar_bar.SetNumberOfLabels(5)
+    scalar_bar.SetMaximumWidthInPixels(windowWidth // 8)
+    scalar_bar.SetMaximumHeightInPixels(windowHeight // 3)
+
+    # Create a renderer, render window, and interactor
+    renderer = vtk.vtkRenderer()
+    ren_win = vtk.vtkRenderWindow()
+    ren_win.AddRenderer(renderer)
+    ren_win.SetSize(windowWidth, windowHeight)
+    ren_win.SetWindowName('Curvatures')
+
+    iren = vtk.vtkRenderWindowInteractor()
+    iren.SetRenderWindow(ren_win)
+    # Important: The interactor must be set prior to enabling the widget.
+    iren.SetRenderWindow(ren_win)
+
+    cam_orient_manipulator = vtk.vtkCameraOrientationWidget()
+    cam_orient_manipulator.SetParentRenderer(renderer)
+    # Enable the widget.
+    cam_orient_manipulator.On()
+
+    # Add the actors to the scene
+    renderer.AddActor(actor)
+    renderer.AddActor2D(scalar_bar)
+    renderer.SetBackground(colors.GetColor3d('DarkSlateGray'))
+
+    # Render and interact
+    ren_win.Render()
+    iren.Start()
+
 
 class ComputeCurvatures:
     """
@@ -223,21 +342,8 @@ class ComputeCurvatures:
         self.source.GetPointData().AddArray(curvatures)
         self.source.GetPointData().SetActiveScalars(self.curvature_type)
 
-```
 
-### Usage
+if __name__ == '__main__':
+    import sys
 
-```python
-    cc = ComputeCurvatures(source)
-    cc.set_curvature_type_to_gaussian()
-     # Add any further refinements that you would like to make here e.g.:
-    # cc.set_gauss_curvature_bounds(-0.5, 1.0)
-    # cc.gauss_bounds_on()
-    cc.update()
-    # The source will contain the curvature that you selected.
-
-    # You can then do:
-    # curvatures.set_curvature_type_to_mean()
-    # cc.update()
-    # This will add the mean curvature to the source.
-```
+    main(sys.argv)

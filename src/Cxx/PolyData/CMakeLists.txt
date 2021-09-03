@@ -151,7 +151,7 @@ if (BUILD_TESTING)
     TestConvexHull ${DATA}/cowHead.vtp)
 
   add_test(${KIT}-Curvatures ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestCurvatures ${DATA}/cowHead.vtp)
+    TestCurvatures ${DATA}/cowHead.vtp m -20 20 16)
 
   add_test(${KIT}-DataSetSurfaceFilter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestDataSetSurfaceFilter ${DATA}/uGridEx.vtk)
