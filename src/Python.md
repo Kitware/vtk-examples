@@ -269,6 +269,7 @@ This section includes examples of manipulating meshes.
 [BoundaryEdges](/Python/Meshes/BoundaryEdges) | Find the edges that are used by only one face.
 [ClosedSurface](/Python/PolyData/ClosedSurface) | Check if a surface is closed.
 [ColoredElevationMap](/Python/Meshes/ColoredElevationMap) | Color a mesh by height.
+[Curvatures](/Python/PolyData/Curvatures) | Compute Gaussian, and Mean Curvatures.
 [Decimation](/Python/Meshes/Decimation) | Reduce the number of triangles in a mesh.
 [DeformPointSet](/Python/Meshes/DeformPointSet) | Use the vtkDeformPointSet filter to deform a vtkSphereSource with arbitrary polydata.
 [DelaunayMesh](/Python/Modelling/DelaunayMesh) | Two-dimensional Delaunay triangulation of a random set of points. Points and edges are shown highlighted with sphere glyphs and tubes.

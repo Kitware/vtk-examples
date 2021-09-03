@@ -87,7 +87,7 @@ public:
   ComputeCurvatures() = default;
   ~ComputeCurvatures() = default;
 
-  ComputeCurvatures(vtkPolyData* source)
+  explicit ComputeCurvatures(vtkPolyData* source)
   {
     this->source = source;
   }
@@ -104,33 +104,43 @@ public:
   void Update();
 
   // Remember to run Update after these set and on/off methods.
+
+  std::string GetCurvatureType();
+
+  void SetCurvatureTypeToGaussian();
+
+  void SetGaussEpsilon(double const& gauss_eps = 1.0e-8);
+
   void SetGaussCurvatureBounds(double const& lower = 0.0,
                                double const& upper = 0.0);
   void GaussBoundsOn();
+
   void GaussBoundsOff();
+
+  void SetCurvatureTypeToMean();
+
+  void SetMeanEpsilon(double const& gauss_eps = 1.0e-8);
+
   void SetMeanCurvatureBounds(double const& lower = 0.0,
                               double const& upper = 0.0);
   void MeanBoundsOn();
+
   void MeanBoundsOff();
-  void SetEpsilons(double const& gauss_eps = 1.0e-8,
-                   double const& mean_eps = 1.0e-8);
 
 private:
-  void ComputeCurvatureAndFixUpBoundary(std::string const& curvatureName);
-  vtkSmartPointer<vtkPolyData>
-  ComputeCurvature(std::string const& curvatureName);
-  std::vector<double> ExtractData(vtkPolyData* curvatureData,
-                                  std::string const& name);
+  void ComputeCurvatureAndFixUpBoundary();
+  vtkSmartPointer<vtkPolyData> ComputeCurvature();
+  std::vector<double> ExtractData(vtkPolyData* curvatureData);
   std::vector<vtkIdType> ExtractBoundaryIds();
   double ComputeDistance(vtkIdType const& ptIdA, vtkIdType const& ptIdB);
   std::set<vtkIdType> PointNeighborhood(vtkIdType const& pId);
-  void UpdateCurvatures(std::string const& curvatureName);
+  void UpdateCurvature();
 
 public:
   vtkSmartPointer<vtkPolyData> source;
-  std::array<std::string, 2> curvatureType{"Gauss_Curvature", "Mean_Curvature"};
 
 private:
+  std::string curvatureType{"Gauss_Curvature"};
   std::map<std::string, std::vector<double>> adjustedCurvatures;
   std::map<std::string, std::vector<double>> bounds{
       {"Gauss_Curvature", {0.0, 0.0}}, {"Mean_Curvature", {0.0, 0.0}}};
@@ -140,6 +150,11 @@ private:
                                          {"Mean_Curvature", 1.0e-8}};
 };
 
+} // namespace
+
+namespace {
+vtkSmartPointer<vtkLookupTable> GetDivergingLut();
+vtkSmartPointer<vtkLookupTable> GetDivergingLut1();
 } // namespace
 
 int main(int, char* argv[])
@@ -196,30 +211,7 @@ int main(int, char* argv[])
   sources.push_back(randomHillsPoly);
   sources.push_back(randomHillsPoly);
 
-  // Colour transfer function.
-  vtkNew<vtkColorTransferFunction> ctf;
-  ctf->SetColorSpaceToDiverging();
-  ctf->AddRGBPoint(0.0, colors->GetColor3d("MidnightBlue").GetRed(),
-                   colors->GetColor3d("MidnightBlue").GetGreen(),
-                   colors->GetColor3d("MidnightBlue").GetBlue());
-  ctf->AddRGBPoint(0.5, colors->GetColor3d("Gainsboro").GetRed(),
-                   colors->GetColor3d("Gainsboro").GetGreen(),
-                   colors->GetColor3d("Gainsboro").GetBlue());
-  ctf->AddRGBPoint(1.0, colors->GetColor3d("DarkOrange").GetRed(),
-                   colors->GetColor3d("DarkOrange").GetGreen(),
-                   colors->GetColor3d("DarkOrange").GetBlue());
-
-  // Lookup table.
-  vtkNew<vtkLookupTable> lut;
-  lut->SetNumberOfColors(256);
-  for (auto i = 0; i < lut->GetNumberOfColors(); ++i)
-  {
-    std::array<double, 3> rgb;
-    ctf->GetColor(double(i) / lut->GetNumberOfColors(), rgb.data());
-    std::array<double, 4> rgba{0.0, 0.0, 0.0, 1.0};
-    std::copy(std::begin(rgb), std::end(rgb), std::begin(rgba));
-    lut->SetTableValue(i, rgba.data());
-  }
+  auto lut = GetDivergingLut1();
 
   std::vector<vtkSmartPointer<vtkRenderer>> renderers;
   std::vector<vtkSmartPointer<vtkActor>> actors;
@@ -237,11 +229,11 @@ int main(int, char* argv[])
     renderers.push_back(vtkSmartPointer<vtkRenderer>::New());
   }
 
-  std::map<int, std::vector<std::string>> names{
-      {0, {"Gauss_Curvature", "Torus - Gaussian Curvature"}},
-      {1, {"Mean_Curvature", "Torus - Mean Curvature"}},
-      {2, {"Gauss_Curvature", "Random Hills - Gaussian Curvature"}},
-      {3, {"Mean_Curvature", "Random Hills - Mean Curvature"}},
+  std::map<int, std::string> curvatures{
+      {0, {"Gauss_Curvature"}},
+      {1, {"Mean_Curvature"}},
+      {2, {"Gauss_Curvature"}},
+      {3, {"Mean_Curvature"}},
   };
 
   // Create a common text property.
@@ -258,26 +250,36 @@ int main(int, char* argv[])
 
   for (auto idx = 0; idx < sources.size(); ++idx)
   {
-    auto curvatureTitle = names[idx][0];
-    std::replace(curvatureTitle.begin(), curvatureTitle.end(), '_', '\n');
-
+    if ("Gauss_Curvature" == curvatures[idx])
+    {
+      sources[idx].SetCurvatureTypeToGaussian();
+    }
+    if ("Mean_Curvature" == curvatures[idx])
+    {
+      sources[idx].SetCurvatureTypeToMean();
+    }
     sources[idx].Update();
+
+    auto curvatureType = sources[idx].GetCurvatureType();
+    auto curvatureName = sources[idx].GetCurvatureType();
+    std::replace(curvatureName.begin(), curvatureName.end(), '_', '\n');
+
     sources[idx].source->GetPointData()->SetActiveScalars(
-        names[idx][0].c_str());
+        curvatureType.c_str());
     auto scalarRange = sources[idx]
                            .source->GetPointData()
-                           ->GetScalars(names[idx][0].c_str())
+                           ->GetScalars(curvatureType.c_str())
                            ->GetRange();
 
     mappers[idx]->SetInputData(sources[idx].source);
     mappers[idx]->SetScalarModeToUsePointFieldData();
-    mappers[idx]->SelectColorArray(names[idx][0].c_str());
+    mappers[idx]->SelectColorArray(curvatureType.c_str());
     mappers[idx]->SetScalarRange(scalarRange);
     mappers[idx]->SetLookupTable(lut);
 
     actors[idx]->SetMapper(mappers[idx]);
 
-    textmappers[idx]->SetInput(names[idx][1].c_str());
+    textmappers[idx]->SetInput(curvatureName.c_str());
     textmappers[idx]->SetTextProperty(textProperty);
 
     textactors[idx]->SetMapper(textmappers[idx]);
@@ -285,7 +287,7 @@ int main(int, char* argv[])
 
     // Create a scalar bar
     scalarBars[idx]->SetLookupTable(mappers[idx]->GetLookupTable());
-    scalarBars[idx]->SetTitle(curvatureTitle.c_str());
+    scalarBars[idx]->SetTitle(curvatureName.c_str());
     scalarBars[idx]->UnconstrainedFontSizeOn();
     scalarBars[idx]->SetNumberOfLabels(5);
     scalarBars[idx]->SetMaximumWidthInPixels(windowWidth / 8);
@@ -351,57 +353,132 @@ int main(int, char* argv[])
 
 namespace {
 
-void ComputeCurvatures::Update()
+std::string ComputeCurvatures::GetCurvatureType()
 {
-  for (auto curvatureName : this->curvatureType)
+  return this->curvatureType;
+}
+
+void ComputeCurvatures::SetCurvatureTypeToGaussian()
+{
+  this->curvatureType = "Gauss_Curvature";
+}
+
+void ComputeCurvatures::SetGaussEpsilon(double const& gauss_eps)
+{
+  this->epsilons["Gauss_Curvature"] = std::abs(gauss_eps);
+}
+
+void ComputeCurvatures::SetGaussCurvatureBounds(double const& lower,
+                                                double const& upper)
+{
+  if (lower <= upper)
   {
-    this->ComputeCurvatureAndFixUpBoundary(curvatureName);
-    // Set small values to zero.
-    if (this->epsilons[curvatureName] != 0.0)
-    {
-      auto eps = std::abs(this->epsilons[curvatureName]);
-      for (size_t i = 0; i < this->adjustedCurvatures[curvatureName].size();
-           ++i)
-      {
-        if (std::abs(this->adjustedCurvatures[curvatureName][i]) < eps)
-        {
-          this->adjustedCurvatures[curvatureName][i] = 0.0;
-        }
-      }
-    }
-    //  Set upper and lower bounds.
-    if (this->boundsState[curvatureName])
-    {
-      auto lowerBound = this->bounds[curvatureName][0];
-      for (size_t i = 0; i < this->adjustedCurvatures[curvatureName].size();
-           ++i)
-      {
-        if (this->adjustedCurvatures[curvatureName][i] < lowerBound)
-        {
-          this->adjustedCurvatures[curvatureName][i] = lowerBound;
-        }
-      }
-      auto upperBound = this->bounds[curvatureName][1];
-      for (size_t i = 0; i < this->adjustedCurvatures[curvatureName].size();
-           ++i)
-      {
-        if (this->adjustedCurvatures[curvatureName][i] > upperBound)
-        {
-          this->adjustedCurvatures[curvatureName][i] = upperBound;
-        }
-      }
-    }
-    this->UpdateCurvatures(curvatureName);
+    this->bounds["Gauss_Curvature"][0] = lower;
+    this->bounds["Gauss_Curvature"][1] = upper;
+  }
+  else
+  {
+    this->bounds["Gauss_Curvature"][0] = upper;
+    this->bounds["Gauss_Curvature"][1] = lower;
+    std::cout << "SetGaussCurvatureBounds: bounds swapped since lower > upper"
+              << std::endl;
   }
 }
 
-void ComputeCurvatures::ComputeCurvatureAndFixUpBoundary(
-    std::string const& curvatureName)
+void ComputeCurvatures::GaussBoundsOn()
+{
+  boundsState["Gauss_Curvature"] = true;
+}
+
+void ComputeCurvatures::GaussBoundsOff()
+{
+  boundsState["Gauss_Curvature"] = false;
+}
+
+void ComputeCurvatures::SetCurvatureTypeToMean()
+{
+  this->curvatureType = "Mean_Curvature";
+}
+
+void ComputeCurvatures::SetMeanEpsilon(double const& gauss_eps)
+{
+  this->epsilons["Mean_Curvature"] = std::abs(gauss_eps);
+}
+
+void ComputeCurvatures::SetMeanCurvatureBounds(double const& lower,
+                                               double const& upper)
+{
+  if (lower <= upper)
+  {
+    this->bounds["Mean_Curvature"][0] = lower;
+    this->bounds["Mean_Curvature"][1] = upper;
+  }
+  else
+  {
+    this->bounds["Mean_Curvature"][0] = upper;
+    this->bounds["Mean_Curvature"][1] = lower;
+    std::cout << "SetMeanCurvatureBounds: bounds swapped since lower > upper"
+              << std::endl;
+  }
+}
+
+void ComputeCurvatures::MeanBoundsOn()
+{
+  boundsState["Mean_Curvature"] = true;
+}
+
+void ComputeCurvatures::MeanBoundsOff()
+{
+  boundsState["Mean_Curvature"] = false;
+}
+
+void ComputeCurvatures::Update()
+{
+  this->ComputeCurvatureAndFixUpBoundary();
+  // Set small values to zero.
+  if (this->epsilons[this->curvatureType] != 0.0)
+  {
+    auto eps = std::abs(this->epsilons[this->curvatureType]);
+    for (size_t i = 0; i < this->adjustedCurvatures[this->curvatureType].size();
+         ++i)
+    {
+      if (std::abs(this->adjustedCurvatures[this->curvatureType][i]) < eps)
+      {
+        this->adjustedCurvatures[this->curvatureType][i] = 0.0;
+      }
+    }
+  }
+  //  Set upper and lower bounds.
+  if (this->boundsState[this->curvatureType])
+  {
+    auto lowerBound = this->bounds[this->curvatureType][0];
+    for (size_t i = 0; i < this->adjustedCurvatures[this->curvatureType].size();
+         ++i)
+    {
+      if (this->adjustedCurvatures[this->curvatureType][i] < lowerBound)
+      {
+        this->adjustedCurvatures[this->curvatureType][i] = lowerBound;
+      }
+    }
+    auto upperBound = this->bounds[this->curvatureType][1];
+    for (size_t i = 0; i < this->adjustedCurvatures[this->curvatureType].size();
+         ++i)
+    {
+      if (this->adjustedCurvatures[this->curvatureType][i] > upperBound)
+      {
+        this->adjustedCurvatures[this->curvatureType][i] = upperBound;
+      }
+    }
+  }
+  this->UpdateCurvature();
+}
+
+void ComputeCurvatures::ComputeCurvatureAndFixUpBoundary()
 {
   // Curvature as vtkPolyData.
-  auto curvatureData = this->ComputeCurvature(curvatureName);
+  auto curvatureData = this->ComputeCurvature();
   // Curvature as a vector.
-  auto curvature = this->ExtractData(curvatureData, curvatureName);
+  auto curvature = this->ExtractData(curvatureData);
   // Ids of the boundary points.
   auto pIds = this->ExtractBoundaryIds();
   // Remove duplicate Ids.
@@ -466,37 +543,35 @@ void ComputeCurvatures::ComputeCurvatureAndFixUpBoundary(
     // Set the new curvature value.
     curvature[pId] = newCurv;
   }
-  this->adjustedCurvatures[curvatureName] = curvature;
+  this->adjustedCurvatures[this->curvatureType] = curvature;
 }
 
-vtkSmartPointer<vtkPolyData>
-ComputeCurvatures::ComputeCurvature(std::string const& curvatureName)
+vtkSmartPointer<vtkPolyData> ComputeCurvatures::ComputeCurvature()
 {
-  auto ct = curvatureName;
-  std::transform(ct.begin(), ct.end(), ct.begin(),
-                 [](unsigned char c) { return std::tolower(c); });
-
   vtkNew<vtkCurvatures> curvatureFilter;
   curvatureFilter->SetInputData(this->source);
-  std::size_t found = ct.find("gaus");
-  if (found != std::string::npos)
+  if ("Gauss_Curvature" == this->curvatureType)
   {
     curvatureFilter->SetCurvatureTypeToGaussian();
   }
-  else
+  else if ("Mean_Curvature" == this->curvatureType)
   {
     curvatureFilter->SetCurvatureTypeToMean();
+  }
+  else
+  {
+    std::cerr << "Curvature type must be either Gaussian or Mean." << std::endl;
+    vtkSmartPointer<vtkPolyData> ret;
+    return ret;
   }
   curvatureFilter->Update();
   return curvatureFilter->GetOutput();
 }
 
-std::vector<double>
-ComputeCurvatures::ExtractData(vtkPolyData* curvatureData,
-                               std::string const& curvatureName)
+std::vector<double> ComputeCurvatures::ExtractData(vtkPolyData* curvatureData)
 {
-  auto array =
-      curvatureData->GetPointData()->GetAbstractArray(curvatureName.c_str());
+  auto array = curvatureData->GetPointData()->GetAbstractArray(
+      this->curvatureType.c_str());
   auto n = curvatureData->GetNumberOfPoints();
   std::vector<double> data;
   for (auto i = 0; i < n; ++i)
@@ -573,12 +648,12 @@ double ComputeCurvatures::ComputeDistance(vtkIdType const& ptIdA,
   return vtkMath::Norm(ptC);
 }
 
-void ComputeCurvatures::UpdateCurvatures(std::string const& curvatureName)
+void ComputeCurvatures::UpdateCurvature()
 {
   if (static_cast<size_t>(this->source->GetNumberOfPoints()) !=
-      this->adjustedCurvatures[curvatureName].size())
+      this->adjustedCurvatures[this->curvatureType].size())
   {
-    std::string s = curvatureName;
+    std::string s = this->curvatureType;
     s += ":\nCannot add the adjusted curvatures to the source.\n";
     s += " The number of points in source does not equal the\n";
     s += " number of point ids in the adjusted curvature array.";
@@ -586,54 +661,87 @@ void ComputeCurvatures::UpdateCurvatures(std::string const& curvatureName)
     return;
   }
   vtkNew<vtkDoubleArray> curvatures;
-  curvatures->SetName(curvatureName.c_str());
-  for (auto curvature : this->adjustedCurvatures[curvatureName])
+  curvatures->SetName(this->curvatureType.c_str());
+  for (auto curvature : this->adjustedCurvatures[this->curvatureType])
   {
     curvatures->InsertNextTuple1(curvature);
   }
   this->source->GetPointData()->AddArray(curvatures);
-  this->source->GetPointData()->SetActiveScalars(curvatureName.c_str());
+  this->source->GetPointData()->SetActiveScalars(this->curvatureType.c_str());
 }
 
-void ComputeCurvatures::SetGaussCurvatureBounds(double const& lower,
-                                                double const& upper)
+} // namespace
+
+namespace {
+// clang-format off
+/**
+ * See: [Diverging Color Maps for Scientific Visualization](https://www.kennethmoreland.com/color-maps/)
+ *
+ *                   start point         midPoint            end point
+ * cool to warm:     0.230, 0.299, 0.754 0.865, 0.865, 0.865 0.706, 0.016, 0.150
+ * purple to orange: 0.436, 0.308, 0.631 0.865, 0.865, 0.865 0.759, 0.334, 0.046
+ * green to purple:  0.085, 0.532, 0.201 0.865, 0.865, 0.865 0.436, 0.308, 0.631
+ * blue to brown:    0.217, 0.525, 0.910 0.865, 0.865, 0.865 0.677, 0.492, 0.093
+ * green to red:     0.085, 0.532, 0.201 0.865, 0.865, 0.865 0.758, 0.214, 0.233
+ *
+ */
+// clang-format on
+vtkSmartPointer<vtkLookupTable> GetDivergingLut()
 {
-  this->bounds["Gauss_Curvature"][0] = lower;
-  this->bounds["Gauss_Curvature"][1] = upper;
+
+  vtkNew<vtkColorTransferFunction> ctf;
+  ctf->SetColorSpaceToDiverging();
+  ctf->AddRGBPoint(0.0, 0.230, 0.299, 0.754);
+  ctf->AddRGBPoint(0.5, 0.865, 0.865, 0.865);
+  ctf->AddRGBPoint(1.0, 0.706, 0.016, 0.150);
+
+  auto tableSize = 256;
+  vtkNew<vtkLookupTable> lut;
+  lut->SetNumberOfTableValues(tableSize);
+  lut->Build();
+
+  for (auto i = 0; i < lut->GetNumberOfColors(); ++i)
+  {
+    std::array<double, 3> rgb;
+    ctf->GetColor(static_cast<double>(i) / lut->GetNumberOfColors(),
+                  rgb.data());
+    std::array<double, 4> rgba{0.0, 0.0, 0.0, 1.0};
+    std::copy(std::begin(rgb), std::end(rgb), std::begin(rgba));
+    lut->SetTableValue(static_cast<vtkIdType>(i), rgba.data());
+  }
+
+  return lut;
 }
 
-void ComputeCurvatures::GaussBoundsOn()
+vtkSmartPointer<vtkLookupTable> GetDivergingLut1()
 {
-  boundsState["Gauss_Curvature"] = true;
-}
+  vtkNew<vtkNamedColors> colors;
+  // Colour transfer function.
+  vtkNew<vtkColorTransferFunction> ctf;
+  ctf->SetColorSpaceToDiverging();
+  ctf->AddRGBPoint(0.0, colors->GetColor3d("MidnightBlue").GetRed(),
+                   colors->GetColor3d("MidnightBlue").GetGreen(),
+                   colors->GetColor3d("MidnightBlue").GetBlue());
+  ctf->AddRGBPoint(0.5, colors->GetColor3d("Gainsboro").GetRed(),
+                   colors->GetColor3d("Gainsboro").GetGreen(),
+                   colors->GetColor3d("Gainsboro").GetBlue());
+  ctf->AddRGBPoint(1.0, colors->GetColor3d("DarkOrange").GetRed(),
+                   colors->GetColor3d("DarkOrange").GetGreen(),
+                   colors->GetColor3d("DarkOrange").GetBlue());
 
-void ComputeCurvatures::GaussBoundsOff()
-{
-  boundsState["Gauss_Curvature"] = false;
-}
+  // Lookup table.
+  vtkNew<vtkLookupTable> lut;
+  lut->SetNumberOfColors(256);
+  for (auto i = 0; i < lut->GetNumberOfColors(); ++i)
+  {
+    std::array<double, 3> rgb;
+    ctf->GetColor(double(i) / lut->GetNumberOfColors(), rgb.data());
+    std::array<double, 4> rgba{0.0, 0.0, 0.0, 1.0};
+    std::copy(std::begin(rgb), std::end(rgb), std::begin(rgba));
+    lut->SetTableValue(i, rgba.data());
+  }
 
-void ComputeCurvatures::SetMeanCurvatureBounds(double const& lower,
-                                               double const& upper)
-{
-  this->bounds["Mean_Curvature"][0] = lower;
-  this->bounds["Mean_Curvature"][1] = upper;
-}
-
-void ComputeCurvatures::MeanBoundsOn()
-{
-  boundsState["Mean_Curvature"] = true;
-}
-
-void ComputeCurvatures::MeanBoundsOff()
-{
-  boundsState["Mean_Curvature"] = false;
-}
-
-void ComputeCurvatures::SetEpsilons(double const& gauss_eps,
-                                    double const& mean_eps)
-{
-  this->epsilons["Gauss_Curvature"] = gauss_eps;
-  this->epsilons["Mean_Curvature"] = mean_eps;
+  return lut;
 }
 
 } // namespace
