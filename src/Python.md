@@ -608,6 +608,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 | Example Name | Description | Image |
 | -------------- | ------------- | ------- |
 [CallBack](/Python/Interaction/CallBack) | Setting up a callback with client data. Two different methods are demonstrated.
+[CellPicking](/Python/Picking/CellPicking) | Cell Picking.
 [HighlightPickedActor](/Python/Picking/HighlightPickedActor) | Pick and highlight an actor based on mouse clicks.
 [HighlightWithSilhouette](/Python/Picking/HighlightWithSilhouette) | Highlight a picked actor by adding a silhouette.
 [InteractorStyleTrackballActor](/Python/Interaction/InteractorStyleTrackballActor) |

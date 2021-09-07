@@ -57,8 +57,8 @@ public:
     if (picker->GetCellId() != -1)
     {
 
-      std::cout << "Pick position is: " << worldPosition[0] << " "
-                << worldPosition[1] << " " << worldPosition[2] << endl;
+      std::cout << "Pick position is: (" << worldPosition[0] << ", "
+                << worldPosition[1] << ", " << worldPosition[2] << ")" << endl;
 
       vtkNew<vtkIdTypeArray> ids;
       ids->SetNumberOfComponents(1);
@@ -81,15 +81,15 @@ public:
       vtkNew<vtkUnstructuredGrid> selected;
       selected->ShallowCopy(extractSelection->GetOutput());
 
-      std::cout << "There are " << selected->GetNumberOfPoints()
-                << " points in the selection." << std::endl;
-      std::cout << "There are " << selected->GetNumberOfCells()
-                << " cells in the selection." << std::endl;
+      std::cout << "Number of points in the selection: "
+                << selected->GetNumberOfPoints() << std::endl;
+      std::cout << "Number of cells in the selection : "
+                << selected->GetNumberOfCells() << std::endl;
       selectedMapper->SetInputData(selected);
       selectedActor->SetMapper(selectedMapper);
       selectedActor->GetProperty()->EdgeVisibilityOn();
       selectedActor->GetProperty()->SetColor(
-          colors->GetColor3d("Red").GetData());
+          colors->GetColor3d("Tomato").GetData());
 
       selectedActor->GetProperty()->SetLineWidth(3);
 
@@ -126,7 +126,7 @@ int main(int, char*[])
   mapper->SetInputConnection(triangleFilter->GetOutputPort());
 
   vtkNew<vtkActor> actor;
-  actor->GetProperty()->SetColor(colors->GetColor3d("Green").GetData());
+  actor->GetProperty()->SetColor(colors->GetColor3d("SeaGreen").GetData());
   actor->SetMapper(mapper);
 
   vtkNew<vtkRenderer> renderer;
@@ -148,7 +148,7 @@ int main(int, char*[])
   renderer->AddActor(actor);
   renderer->ResetCamera();
 
-  renderer->SetBackground(colors->GetColor3d("Blue").GetData());
+  renderer->SetBackground(colors->GetColor3d("PaleTurquoise").GetData());
 
   renderWindow->Render();
   renderWindowInteractor->Start();
