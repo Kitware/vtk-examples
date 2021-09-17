@@ -370,6 +370,7 @@ This section includes vtkUnstructuredGrid.
 [SelectExamples](/Python/Utilities/SelectExamples) | Given a VTK Class and a language, select the matching examples.
 [Screenshot](/Python/Utilities/Screenshot) |
 [ShareCamera](/Python/Utilities/ShareCamera) | Share a camera between multiple renderers.
+[VTKImportsForPython](/Python/Utilities/VTKImportsForPython) | Allows you to generate specific import statements for your Python code.
 [VTKVersion](/Python/Utilities/VTKVersion) |
 [VTKWithNumpy](/Python/Utilities/VTKWithNumpy) |
 [Variant](/Python/Utilities/Variant) |
