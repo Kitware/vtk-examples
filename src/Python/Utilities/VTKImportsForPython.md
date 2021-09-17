@@ -11,26 +11,7 @@ For instance if you have:
 import vtk
 ```
 
-It will output either a text file or to the console something like this:
-
-``` text
-Rainbow
-from vtkmodules.vtkCommonColor import vtkNamedColors
-from vtkmodules.vtkCommonCore import vtkLookupTable
-from vtkmodules.vtkFiltersCore import vtkStructuredGridOutlineFilter
-from vtkmodules.vtkFiltersGeometry import vtkStructuredGridGeometryFilter
-from vtkmodules.vtkIOParallel import vtkMultiBlockPLOT3DReader
-from vtkmodules.vtkRenderingCore import (
-    vtkActor,
-    vtkPolyDataMapper,
-    vtkRenderWindow,
-    vtkRenderWindowInteractor,
-    vtkRenderer
-    )
-
-```
-
-where the first line is the program name and subsequent lines are the import statements.
+It will output either a text file, or to the console, a series of `from ... import` statements where the first line is the program name and subsequent lines are the import statements.
 
 You can replace `import vtk` with these statements. This means that only the relevant VTK modules are loaded when the Python program runs.
 
