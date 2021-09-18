@@ -3,7 +3,7 @@
 This example lets you generate a series of import statements for your Python code.
 
 The imports are generated using the VTK modules, along with the VTK classes and constants in your Python source file(s).
-it requires `modules.json` found in your VTK build directory.
+For older versions of VTK, `modules.json` is required, this is found in your VTK build directory.
 
 For instance if you have:
 

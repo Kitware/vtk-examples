@@ -11,19 +11,12 @@ from vtkmodules.vtkCommonCore import vtkVersion
 
 def get_program_parameters(argv):
     import argparse
-    description = 'Generate a list of Python import statements.'
+    description = 'Generate Python import statements from a Python script.'
     epilogue = '''
-This list of Python imports is generated using the VTK modules, along
- with the VTK classes and constants in your Python source file(s).
- 
-The list will contain the program name followed by the import statements.
-
-Uses modules.json (from your VTK build directory) and your source
- folder(s), file(s) to get the VTK modules, classes
- and constants needed by the python source.
+The output will contain program name(s) followed by the import statements.
+You can specify a folder for the Python sources or paths to several sources.
 
 Note: If there are spaces in the paths, enclose the path in quotes.
-
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawTextHelpFormatter)
