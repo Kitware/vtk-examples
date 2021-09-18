@@ -6,6 +6,8 @@ import json
 import re
 from pathlib import Path
 
+from vtkmodules.vtkCommonCore import vtkVersion
+
 
 def get_program_parameters(argv):
     import argparse
@@ -25,7 +27,7 @@ Note: If there are spaces in the paths, enclose the path in quotes.
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('json',
+    parser.add_argument('-j', '--json',
                         help='The path to the VTK JSON file (modules.json).')
     parser.add_argument('sources', nargs='+', help='The path to a folder of Python files or to a Python file.')
     parser.add_argument('-f', '--file', help='The file name to write the output too.')
@@ -101,11 +103,18 @@ def format_imports(imports):
 
 
 def main(json_path, src_paths, ofn):
-    jpath = Path(json_path)
-    if jpath.is_dir():
-        jpath = jpath / 'modules.json'
-    if not jpath.is_file():
-        print(f'Non existent JSON file: {jpath}')
+    use_json = not vtk_version_ok(9, 0, 20210918)
+    if use_json:
+        if not json_path:
+            print('modules.json (from your VTK build directory) is needed.')
+            return
+        jpath = Path(json_path)
+        if jpath.is_dir():
+            jpath = jpath / 'modules.json'
+        if not jpath.is_file():
+            print(f'Non existent JSON file: {jpath}')
+    else:
+        jpath = None
 
     classes_constants = collections.defaultdict(set)
     for fn in src_paths:
@@ -122,8 +131,12 @@ def main(json_path, src_paths, ofn):
     if not classes_constants:
         print('No classes or constants were present.')
         return
+    if use_json:
+        vtk_modules = get_available_modules(jpath)
+    else:
+        vtklib = importlib.__import__('vtkmodules')
+        vtk_modules = sorted(vtklib.__all__)
 
-    vtk_modules = get_available_modules(jpath)
     name_to_module = dict()
     for module in vtk_modules:
         try:
@@ -147,6 +160,25 @@ def main(json_path, src_paths, ofn):
         path.write_text(''.join(res))
     else:
         print(''.join(res))
+
+
+def vtk_version_ok(major, minor, build):
+    """
+    Check the VTK version.
+
+    :param major: Requested major version.
+    :param minor: Requested minor version.
+    :param build: Requested build version.
+    :return: True if the requested VTK version is >= the actual VTK version.
+    """
+    requested_version = (100 * int(major) + int(minor)) * 100000000 + int(build)
+    ver = vtkVersion()
+    actual_version = (100 * ver.GetVTKMajorVersion() + ver.GetVTKMinorVersion()) \
+                     * 100000000 + ver.GetVTKBuildVersion()
+    if requested_version >= actual_version:
+        return True
+    else:
+        return False
 
 
 if __name__ == '__main__':
