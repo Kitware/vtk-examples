@@ -76,12 +76,12 @@ def format_imports(imports):
     name_keys = sorted(imports.keys())
     res = list()
     for name in name_keys:
-        res.append(f'{name}\n')
+        res.append(f'\n{name}')
         module_keys = sorted(imports[name].keys())
         for module in module_keys:
             classes = sorted(list(imports[name][module]))
             if len(classes) == 1:
-                res.append(f'from vtkmodules.{module} import {classes[0]}\n')
+                res.append(f'from vtkmodules.{module} import {classes[0]}')
             else:
                 c_list = list()
                 for c in classes:
@@ -89,8 +89,24 @@ def format_imports(imports):
                 s = '(\n'
                 s += ',\n'.join(c_list)
                 s += '\n    )'
-                res.append(f'from vtkmodules.{module} import {s}\n')
-        res.append('\n')
+                res.append(f'from vtkmodules.{module} import {s}')
+        additional_modules = ['vtkInteractionStyle', 'vtkRenderingFreeType', 'vtkRenderingOpenGL2', 'vtkRenderingUI']
+        comments = [
+            '',
+            '# You may need to uncomment one or more of the following imports.',
+            '# If vtkRenderWindow is used and you want to use OpenGL,',
+            '#   you also need the vtkRenderingOpenGL2 module.',
+            '# If vtkRenderWindowInteractor is used,',
+            '#    uncomment vtkRenderingUI and possibly vtkInteractionStyl',
+            '# If text rendering is used, uncomment vtkRenderingFreeType.',
+            ''
+        ]
+        res += comments
+        preface = '# noinspection PyUnresolvedReferences'
+        for module in additional_modules:
+            res.append(preface)
+            res.append(f'# import vtkmodules.{module}')
+        res.append('')
 
     return res
 
@@ -150,9 +166,9 @@ def main(json_path, src_paths, ofn):
     res = format_imports(imports)
     if ofn:
         path = Path(ofn)
-        path.write_text(''.join(res))
+        path.write_text('\n'.join(res))
     else:
-        print(''.join(res))
+        print('\n'.join(res))
 
 
 def vtk_version_ok(major, minor, build):
@@ -168,7 +184,7 @@ def vtk_version_ok(major, minor, build):
     ver = vtkVersion()
     actual_version = (100 * ver.GetVTKMajorVersion() + ver.GetVTKMinorVersion()) \
                      * 100000000 + ver.GetVTKBuildVersion()
-    if requested_version >= actual_version:
+    if actual_version >= requested_version:
         return True
     else:
         return False
