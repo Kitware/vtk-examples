@@ -56,8 +56,8 @@ def get_classes_constants(path):
     res = collections.defaultdict(set)
     content = path.read_text().split('\n')
     for line in content:
-        vtk_class_pattern = re.compile(r'(vtk[a-zA-Z]+\S+\(\))')
-        vtk_class_pattern1 = re.compile(r'[^\(\)]+')
+        vtk_class_pattern = re.compile(r'(vtk[a-zA-Z]+\S+\()')
+        vtk_class_pattern1 = re.compile(r'[^\(]+')
         vtk_constants_pattern = re.compile(r'(VTK_[A-Z_]+)')
         m = vtk_class_pattern.search(line)
         if m:
@@ -165,7 +165,7 @@ def main(json_path, src_paths, ofn):
 
     res = format_imports(imports)
     if ofn:
-        path = Path(ofn)
+        path = Path(ofn).with_suffix('.txt')
         path.write_text('\n'.join(res))
     else:
         print('\n'.join(res))
