@@ -152,9 +152,9 @@ See [clang-format](https://clang.llvm.org/docs/ClangFormat.html) for more inform
 
 ### Python
 
-In general, Python submissions should follow the VTK Programming style and the comments outlined for C++ above (with language appropriate modification).
+In general, Python submissions should follow the VTK Programming style and the comments outlined for C++ above (with language appropriate modifications).
 
-Python code styling follows [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
+Python code styling follows [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/). 
 
 Python code is tested in a similar manner to C++ code, so it must follow this layout:
 
@@ -211,7 +211,9 @@ if __name__ == '__main__':
 
 ```
 
-For the Input/Output of filenames and parameters. Use this snippet [GetProgramParameters](__WEB_SITE_URL__/Python/Snippets/GetProgramParameters/) 
+For the Input/Output of filenames and parameters. Use this snippet [GetProgramParameters](__WEB_SITE_URL__/Python/Snippets/GetProgramParameters/).
+
+Finally, when you are happy with everything, make sure only the requisite VTK classes and constants that you are using in your code are loaded when your program runs. To do this, run your code through [VTKImportsForPython](__WEB_SITE_URL__/Python/Utilities/VTKImportsForPython/), it will analyse your code producing a list of import statements for you.
 
 ### Java
 
