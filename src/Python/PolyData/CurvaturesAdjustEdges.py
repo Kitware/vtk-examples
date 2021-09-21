@@ -1,54 +1,148 @@
 #!/usr/bin/env python
 
+import math
+
 import numpy as np
-import vtk
 from vtk.util import numpy_support
+from vtkmodules.numpy_interface import dataset_adapter as dsa
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonComputationalGeometry import (
+    vtkParametricBour,
+    vtkParametricEnneper,
+    vtkParametricMobius,
+    vtkParametricRandomHills,
+    vtkParametricTorus
+)
+from vtkmodules.vtkCommonCore import (
+    VTK_DOUBLE,
+    vtkDoubleArray,
+    vtkFloatArray,
+    vtkIdList,
+    vtkLookupTable,
+    vtkPoints,
+    vtkVersion
+)
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import (
+    vtkDelaunay2D,
+    vtkFeatureEdges,
+    vtkIdFilter,
+    vtkPolyDataNormals,
+    vtkPolyDataTangents,
+    vtkTriangleFilter
+)
+from vtkmodules.vtkFiltersGeneral import (
+    vtkCurvatures,
+    vtkTransformPolyDataFilter
+)
+from vtkmodules.vtkFiltersModeling import vtkLinearSubdivisionFilter
+from vtkmodules.vtkFiltersSources import (
+    vtkCubeSource,
+    vtkParametricFunctionSource,
+    vtkTexturedSphereSource
+)
+# noinspection PyUnresolvedReferences
+from vtkmodules.vtkIOXML import vtkXMLPolyDataWriter
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
+from vtkmodules.vtkRenderingAnnotation import vtkScalarBarActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkActor2D,
+    vtkColorTransferFunction,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextMapper,
+    vtkTextProperty
+)
 
 
 def main(argv):
-    # source = get_bour()
-    # source = get_cube()
-    # source = get_enneper()
-    # source = get_mobius()
-    source = get_random_hills()
-    # source = get_sphere()
-    # source = get_torus()
+    # desired_surface = 'Bour'
+    # desired_surface = 'Cube'
+    # desired_surface = 'Hills'
+    # desired_surface = 'Enneper'
+    # desired_surface = 'Mobius'
+    desired_surface = 'RandomHills'
+    # desired_surface = 'Sphere'
+    # desired_surface = 'Torus'
+    source = get_source(desired_surface)
+    if not source:
+        print('The surface is not available.')
+        return
 
-    cc = ComputeCurvatures(source)
-    cc.set_curvature_type_to_gaussian()
-    cc.update()
-    cc.set_curvature_type_to_mean()
-    cc.update()
+    gc = vtkCurvatures()
+    gc.SetInputData(source)
+    gc.SetCurvatureTypeToGaussian()
+    gc.Update()
+    if desired_surface in ['Bour', 'Enneper', 'Hills', 'RandomHills', 'Torus']:
+        adjust_edge_curvatures(gc.GetOutput(), 'Gauss_Curvature')
+    if desired_surface == 'Bour':
+        # Gaussian curvature is -1/(r(r+1)^4))
+        constrain_curvatures(gc.GetOutput(), 'Gauss_Curvature', -0.0625, -0.0625)
+    if desired_surface == 'Enneper':
+        # Gaussian curvature is -4/(1 + r^2)^4
+        constrain_curvatures(gc.GetOutput(), 'Gauss_Curvature', -0.25, -0.25)
+    if desired_surface == 'Cube':
+        constrain_curvatures(gc.GetOutput(), 'Gauss_Curvature', 0.0, 0.0)
+    if desired_surface == 'Mobius':
+        constrain_curvatures(gc.GetOutput(), 'Gauss_Curvature', 0.0, 0.0)
+    if desired_surface == 'Sphere':
+        # Gaussian curvature is 1/r^2
+        constrain_curvatures(gc.GetOutput(), 'Gauss_Curvature', 4.0, 4.0)
+    source.GetPointData().AddArray(
+        gc.GetOutput().GetPointData().GetAbstractArray('Gauss_Curvature'))
+
+    mc = vtkCurvatures()
+    mc.SetInputData(source)
+    mc.SetCurvatureTypeToMean()
+    mc.Update()
+    if desired_surface in ['Bour', 'Enneper', 'Hills', 'RandomHills', 'Torus']:
+        adjust_edge_curvatures(mc.GetOutput(), 'Mean_Curvature')
+    if desired_surface == 'Bour':
+        # Mean curvature is 0
+        constrain_curvatures(mc.GetOutput(), 'Mean_Curvature', 0.0, 0.0)
+    if desired_surface == 'Enneper':
+        # Mean curvature is 0
+        constrain_curvatures(mc.GetOutput(), 'Mean_Curvature', 0.0, 0.0)
+    if desired_surface == 'Sphere':
+        # Mean curvature is 1/r
+        constrain_curvatures(mc.GetOutput(), 'Mean_Curvature', 2.0, 2.0)
+    source.GetPointData().AddArray(
+        mc.GetOutput().GetPointData().GetAbstractArray('Mean_Curvature'))
 
     # Uncomment the following lines if you want to write out the polydata.
-    # writer = vtk.vtkXMLPolyDataWriter()
+    # writer = vtkXMLPolyDataWriter()
     # writer.SetFileName('Source.vtp')
     # writer.SetInputData(source)
-    # writer.SetDataModeToAscii()
+    # writer.SetDataModeToBinary()
     # writer.Write()
 
     # Let's visualise what we have done.
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     colors.SetColor("ParaViewBkg", [82, 87, 110, 255])
 
     window_width = 1024
     window_height = 512
 
-    ren_win = vtk.vtkRenderWindow()
+    ren_win = vtkRenderWindow()
     ren_win.SetSize(window_width, window_height)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(ren_win)
-    style = vtk.vtkInteractorStyleTrackballCamera()
+    style = vtkInteractorStyleTrackballCamera()
     iren.SetInteractorStyle(style)
 
     # Create a common text property.
-    text_property = vtk.vtkTextProperty()
+    text_property = vtkTextProperty()
     text_property.SetFontSize(24)
     text_property.SetJustificationToCentered()
 
-    # lut = get_diverging_lut1()
     lut = get_diverging_lut()
+    # lut = get_diverging_lut1()
 
     # Define viewport ranges
     xmins = [0, 0.5]
@@ -57,44 +151,56 @@ def main(argv):
     ymaxs = [1.0, 1.0]
 
     camera = None
-    cam_orient_manipulator = vtk.vtkCameraOrientationWidget()
+
+    has_cow = False
+    if vtk_version_ok(9, 0, 20210718):
+        cam_orient_manipulator = vtkCameraOrientationWidget()
+        has_cow = True
+
     curvature_types = ['Gauss_Curvature', 'Mean_Curvature']
     for idx, curvature_name in enumerate(curvature_types):
 
         curvature_title = curvature_name.replace('_', '\n')
 
+        source.GetPointData().SetActiveScalars(curvature_name)
         scalar_range = source.GetPointData().GetScalars(curvature_name).GetRange()
 
-        mapper = vtk.vtkPolyDataMapper()
+        bands = get_bands(scalar_range, 10)
+        freq = get_frequencies(bands, source)
+        bands, freq = adjust_ranges(bands, freq)
+        print(curvature_name)
+        print_bands_frequencies(bands, freq)
+
+        mapper = vtkPolyDataMapper()
         mapper.SetInputData(source)
         mapper.SetScalarModeToUsePointFieldData()
         mapper.SelectColorArray(curvature_name)
         mapper.SetScalarRange(scalar_range)
         mapper.SetLookupTable(lut)
 
-        actor = vtk.vtkActor()
+        actor = vtkActor()
         actor.SetMapper(mapper)
 
         # Create a scalar bar
-        scalar_bar = vtk.vtkScalarBarActor()
+        scalar_bar = vtkScalarBarActor()
         scalar_bar.SetLookupTable(mapper.GetLookupTable())
         scalar_bar.SetTitle(curvature_title)
         scalar_bar.UnconstrainedFontSizeOn()
-        scalar_bar.SetNumberOfLabels(5)
+        scalar_bar.SetNumberOfLabels(min(5, len(freq)))
         scalar_bar.SetMaximumWidthInPixels(window_width // 8)
         scalar_bar.SetMaximumHeightInPixels(window_height // 3)
         scalar_bar.SetBarRatio(scalar_bar.GetBarRatio() * 0.5)
         scalar_bar.SetPosition(0.85, 0.1)
 
-        text_mapper = vtk.vtkTextMapper()
+        text_mapper = vtkTextMapper()
         text_mapper.SetInput(curvature_title)
         text_mapper.SetTextProperty(text_property)
 
-        text_actor = vtk.vtkActor2D()
+        text_actor = vtkActor2D()
         text_actor.SetMapper(text_mapper)
         text_actor.SetPosition(250, 16)
 
-        renderer = vtk.vtkRenderer()
+        renderer = vtkRenderer()
         renderer.SetBackground(colors.GetColor3d('ParaViewBkg'))
 
         renderer.AddActor(actor)
@@ -104,7 +210,8 @@ def main(argv):
         ren_win.AddRenderer(renderer)
 
         if idx == 0:
-            cam_orient_manipulator.SetParentRenderer(renderer)
+            if has_cow:
+                cam_orient_manipulator.SetParentRenderer(renderer)
             camera = renderer.GetActiveCamera()
             camera.Elevation(60)
         else:
@@ -112,249 +219,188 @@ def main(argv):
         renderer.SetViewport(xmins[idx], ymins[idx], xmaxs[idx], ymaxs[idx])
         renderer.ResetCamera()
 
-    # Enable the widget.
-    cam_orient_manipulator.On()
+    if has_cow:
+        # Enable the widget.
+        cam_orient_manipulator.On()
 
     ren_win.Render()
     ren_win.SetWindowName('CurvaturesAdjustEdges')
     iren.Start()
 
 
-class ComputeCurvatures:
+def vtk_version_ok(major, minor, build):
     """
-    This class takes a vtkPolyData source and:
-     - calculates Gaussian and Mean curvatures,
-     - adjusts curvatures along the edges using a weighted average,
-     - inserts the adjusted curvatures into the vtkPolyData source.
+    Check the VTK version.
 
-     Additional methods are provided for setting bounds and precision.
+    :param major: Requested major version.
+    :param minor: Requested minor version.
+    :param build: Requested build version.
+    :return: True if the requested VTK version is >= the actual VTK version.
+    """
+    requested_version = (100 * int(major) + int(minor)) * 100000000 + int(build)
+    ver = vtkVersion()
+    actual_version = (100 * ver.GetVTKMajorVersion() + ver.GetVTKMinorVersion()) \
+                     * 100000000 + ver.GetVTKBuildVersion()
+    if actual_version >= requested_version:
+        return True
+    else:
+        return False
+
+
+def adjust_edge_curvatures(source, curvature_name, epsilon=1.0e-08):
+    """
+    This function adjusts curvatures along the edges of the surface by replacing
+     the value with the average value of the curvatures of points in the neighborhood.
+
+    Remember to update the vtkCurvatures object before calling this.
+
+    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.
+    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.
+    :param epsilon: Absolute curvature values less than this will be set to zero.
+    :return:
     """
 
-    def __init__(self, polydata_source, gauss_eps=1.0e-08, mean_eps=1.0e-08):
+    def point_neighbourhood(pt_id):
         """
+        Find the ids of the neighbours of pt_id.
 
-        :param polydata_source: The polydata source.
-        :param gauss_eps: Gaussian curvatures less than this will be set to zero.
-        :param mean_eps: Mean curvatures less than this will be set to zero.
+        :param pt_id: The point id.
+        :return: The neighbour ids.
         """
-        self.source = polydata_source
-        self.curvature_type = 'Gauss_Curvature'
-        self.adjusted_curvatures = dict()
-        self.bounds = {'Gauss_Curvature': [0.0, 0.0], 'Mean_Curvature': [0.0, 0.0]}
-        self.bounds_state = {'Gauss_Curvature': False, 'Mean_Curvature': False}
-        self.epsilons = {'Gauss_Curvature': gauss_eps, 'Mean_Curvature': mean_eps}
-
-    # Remember to run Update after these set and on/off methods.
-    def get_curvature_type(self):
-        return self.curvature_type
-
-    def set_curvature_type_to_gaussian(self):
-        self.curvature_type = 'Gauss_Curvature'
-
-    def set_gauss_epsilon(self, eps=1.0e-08):
-        self.bounds['Gauss_Curvature'] = abs(eps)
-
-    def set_gauss_curvature_bounds(self, lower=0.0, upper=0.0):
-        if lower <= upper:
-            self.bounds['Gauss_Curvature'] = [lower, upper]
-        else:
-            self.bounds['Gauss_Curvature'] = [upper, lower]
-            print('set_gauss_curvature_bounds: bounds swapped since lower > upper')
-
-    def gauss_bounds_on(self):
-        self.bounds_state['Gauss_Curvature'] = True
-
-    def gauss_bounds_off(self):
-        self.bounds_state['Gauss_Curvature'] = False
-
-    def set_curvature_type_to_mean(self):
-        self.curvature_type = 'Mean_Curvature'
-
-    def set_mean_epsilon(self, eps=1.0e-08):
-        self.bounds['Gauss_Curvature'] = abs(eps)
-
-    def set_mean_curvature_bounds(self, lower=0.0, upper=0.0):
-        if lower <= upper:
-            self.bounds['Mean_Curvature'] = [lower, upper]
-        else:
-            self.bounds['Mean_Curvature'] = [upper, lower]
-            print('set_mean_curvature_bounds: bounds swapped since lower > upper')
-
-    def mean_bounds_on(self):
-        self.bounds_state['Mean_Curvature'] = True
-
-    def mean_bounds_off(self):
-        self.bounds_state['Mean_Curvature'] = False
-
-    def update(self):
-        self.compute_curvature_and_fix_up_boundary()
-        #  Set small values to zero.
-        if self.epsilons[self.curvature_type] != 0.0:
-            eps = abs(self.epsilons[self.curvature_type])
-            self.adjusted_curvatures[self.curvature_type] = np.where(
-                abs(self.adjusted_curvatures[self.curvature_type]) < eps, 0,
-                self.adjusted_curvatures[self.curvature_type])
-        # Set upper and lower bounds.
-        if self.bounds_state[self.curvature_type]:
-            lower_bound = self.bounds[self.curvature_type][0]
-            self.adjusted_curvatures[self.curvature_type] = np.where(
-                self.adjusted_curvatures[self.curvature_type] < lower_bound, lower_bound,
-                self.adjusted_curvatures[self.curvature_type])
-            upper_bound = self.bounds[self.curvature_type][1]
-            self.adjusted_curvatures[self.curvature_type] = np.where(
-                self.adjusted_curvatures[self.curvature_type] > upper_bound, upper_bound,
-                self.adjusted_curvatures[self.curvature_type])
-        self.update_curvature()
-
-    def compute_curvature_and_fix_up_boundary(self):
-        # Curvature as vtkPolyData.
-        curvature_data = self.compute_curvature()
-        # Curvature as python list.
-        curvature = self.extract_data(curvature_data)
-        # Ids of the boundary points.
-        p_ids = self.extract_boundary_ids()
-        # Remove duplicate Ids.
-        p_ids_set = set(p_ids)
-
-        # Iterate over the edge points and compute the curvature as the weighted
-        # average of the neighbors.
-        count_invalid = 0
-        for p_id in p_ids:
-            p_ids_neighbors = self.point_neighborhood(p_id)
-            # Keep only interior points.
-            p_ids_neighbors -= p_ids_set
-            # Compute distances and extract curvature values.
-            curvs = [curvature[p_id_n] for p_id_n in p_ids_neighbors]
-            dists = [self.compute_distance(p_id_n, p_id) for p_id_n in p_ids_neighbors]
-            curvs = np.array(curvs)
-            dists = np.array(dists)
-            curvs = curvs[dists > 0]
-            dists = dists[dists > 0]
-            if len(curvs) > 0:
-                weights = 1 / np.array(dists)
-                weights /= weights.sum()
-                new_curv = np.dot(curvs, weights)
-            else:
-                # Corner case.
-                count_invalid += 1
-                new_curv = 0
-            # Set the new curvature value.
-            curvature[p_id] = new_curv
-        self.adjusted_curvatures[self.curvature_type] = np.array(curvature)
-
-    def compute_curvature(self):
-        curvature_filter = vtk.vtkCurvatures()
-        curvature_filter.SetInputData(self.source)
-        if 'Gauss_Curvature' == self.curvature_type:
-            curvature_filter.SetCurvatureTypeToGaussian()
-        elif 'Mean_Curvature' == self.curvature_type:
-            curvature_filter.SetCurvatureTypeToMean()
-        else:
-            print('Curvature type must be either Gaussian or Mean.')
-            return None
-        curvature_filter.Update()
-        return curvature_filter.GetOutput()
-
-    def extract_data(self, curvature_data):
-        array = curvature_data.GetPointData().GetAbstractArray(self.curvature_type)
-        n = curvature_data.GetNumberOfPoints()
-        data = []
-        for i in range(n):
-            data.append(array.GetVariantValue(i).ToDouble())
-        return data
-
-    def extract_boundary_ids(self):
-        """
-        See here: https://discourse.vtk.org/t/2530/3
-        """
-        array_name = 'ids'
-        id_filter = vtk.vtkIdFilter()
-        id_filter.SetInputData(self.source)
-        id_filter.SetPointIds(True)
-        id_filter.SetCellIds(False)
-        id_filter.SetPointIdsArrayName(array_name)
-        id_filter.SetCellIdsArrayName(array_name)
-        id_filter.Update()
-
-        edges = vtk.vtkFeatureEdges()
-        edges.SetInputConnection(id_filter.GetOutputPort())
-        edges.BoundaryEdgesOn()
-        edges.ManifoldEdgesOff()
-        edges.NonManifoldEdgesOff()
-        edges.FeatureEdgesOff()
-        edges.Update()
-
-        array = edges.GetOutput().GetPointData().GetArray(array_name)
-        n = edges.GetOutput().GetNumberOfPoints()
-        boundary_ids = []
-        for i in range(n):
-            boundary_ids.append(array.GetValue(i))
-        return boundary_ids
-
-    def point_neighborhood(self, p_id):
         """
         Extract the topological neighbors for point pId. In two steps:
-        1) self.source.GetPointCells(pId, cell_ids)
-        2) self.source.GetCellPoints(c_id, point_ids) for all c_id in cell_ids
+        1) source.GetPointCells(pt_id, cell_ids)
+        2) source.GetCellPoints(cell_id, cell_point_ids) for all cell_id in cell_ids
         """
-        cell_ids = vtk.vtkIdList()
-        self.source.GetPointCells(p_id, cell_ids)
-        neighbors = set()
-        for i in range(0, cell_ids.GetNumberOfIds()):
-            cell_id = cell_ids.GetId(i)
-            cell_point_ids = vtk.vtkIdList()
-            self.source.GetCellPoints(cell_id, cell_point_ids)
-            for j in range(0, cell_point_ids.GetNumberOfIds()):
-                neighbors.add(cell_point_ids.GetId(j))
-        return neighbors
+        cell_ids = vtkIdList()
+        source.GetPointCells(pt_id, cell_ids)
+        neighbour = set()
+        for cell_idx in range(0, cell_ids.GetNumberOfIds()):
+            cell_id = cell_ids.GetId(cell_idx)
+            cell_point_ids = vtkIdList()
+            source.GetCellPoints(cell_id, cell_point_ids)
+            for cell_pt_idx in range(0, cell_point_ids.GetNumberOfIds()):
+                neighbour.add(cell_point_ids.GetId(cell_pt_idx))
+        return neighbour
 
-    def compute_distance(self, pt_id_a, pt_id_b):
-        pt_a = np.array(self.source.GetPoint(pt_id_a))
-        pt_b = np.array(self.source.GetPoint(pt_id_b))
+    def compute_distance(pt_id_a, pt_id_b):
+        """
+        Compute the distance between two points given their ids.
+
+        :param pt_id_a:
+        :param pt_id_b:
+        :return:
+        """
+        pt_a = np.array(source.GetPoint(pt_id_a))
+        pt_b = np.array(source.GetPoint(pt_id_b))
         return np.linalg.norm(pt_a - pt_b)
 
-    def update_curvature(self):
-        """
-        Add the adjusted curvatures into the self.source.
-         :return:
-        """
-        if self.source.GetNumberOfPoints() != len(self.adjusted_curvatures[self.curvature_type]):
-            s = f'{self.curvature_type:15s}:\nCannot add the adjusted curvatures to the source.\n'
-            s += ' The number of points in source does not equal the\n'
-            s += ' number of point ids in the adjusted curvature array.'
-            print(s)
-            return
-        curvatures = numpy_support.numpy_to_vtk(num_array=self.adjusted_curvatures[self.curvature_type].ravel(),
-                                                deep=True,
-                                                array_type=vtk.VTK_DOUBLE)
-        curvatures.SetName(self.curvature_type)
-        self.source.GetPointData().AddArray(curvatures)
-        self.source.GetPointData().SetActiveScalars(self.curvature_type)
+    # Get the active scalars
+    source.GetPointData().SetActiveScalars(curvature_name)
+    np_source = dsa.WrapDataObject(source)
+    curvatures = np_source.PointData[curvature_name]
+
+    #  Get the boundary point IDs.
+    array_name = 'ids'
+    id_filter = vtkIdFilter()
+    id_filter.SetInputData(source)
+    id_filter.SetPointIds(True)
+    id_filter.SetCellIds(False)
+    id_filter.SetPointIdsArrayName(array_name)
+    id_filter.SetCellIdsArrayName(array_name)
+    id_filter.Update()
+
+    edges = vtkFeatureEdges()
+    edges.SetInputConnection(id_filter.GetOutputPort())
+    edges.BoundaryEdgesOn()
+    edges.ManifoldEdgesOff()
+    edges.NonManifoldEdgesOff()
+    edges.FeatureEdgesOff()
+    edges.Update()
+
+    edge_array = edges.GetOutput().GetPointData().GetArray(array_name)
+    boundary_ids = []
+    for i in range(edges.GetOutput().GetNumberOfPoints()):
+        boundary_ids.append(edge_array.GetValue(i))
+    # Remove duplicate Ids.
+    p_ids_set = set(boundary_ids)
+
+    # Iterate over the edge points and compute the curvature as the weighted
+    # average of the neighbours.
+    count_invalid = 0
+    for p_id in boundary_ids:
+        p_ids_neighbors = point_neighbourhood(p_id)
+        # Keep only interior points.
+        p_ids_neighbors -= p_ids_set
+        # Compute distances and extract curvature values.
+        curvs = [curvatures[p_id_n] for p_id_n in p_ids_neighbors]
+        dists = [compute_distance(p_id_n, p_id) for p_id_n in p_ids_neighbors]
+        curvs = np.array(curvs)
+        dists = np.array(dists)
+        curvs = curvs[dists > 0]
+        dists = dists[dists > 0]
+        if len(curvs) > 0:
+            weights = 1 / np.array(dists)
+            weights /= weights.sum()
+            new_curv = np.dot(curvs, weights)
+        else:
+            # Corner case.
+            count_invalid += 1
+            # Assuming the curvature of the point is planar.
+            new_curv = 0.0
+        # Set the new curvature value.
+        curvatures[p_id] = new_curv
+
+    #  Set small values to zero.
+    if epsilon != 0.0:
+        curvatures = np.where(abs(curvatures) < epsilon, 0, curvatures)
+        # Curvatures is now an ndarray
+        curv = numpy_support.numpy_to_vtk(num_array=curvatures.ravel(),
+                                          deep=True,
+                                          array_type=VTK_DOUBLE)
+        curv.SetName(curvature_name)
+        source.GetPointData().RemoveArray(curvature_name)
+        source.GetPointData().AddArray(curv)
+        source.GetPointData().SetActiveScalars(curvature_name)
 
 
-def get_diverging_lut1():
-    colors = vtk.vtkNamedColors()
-    # Colour transfer function.
-    ctf = vtk.vtkColorTransferFunction()
-    ctf.SetColorSpaceToDiverging()
-    p1 = [0.0] + list(colors.GetColor3d('MidnightBlue'))
-    p2 = [0.5] + list(colors.GetColor3d('Gainsboro'))
-    p3 = [1.0] + list(colors.GetColor3d('DarkOrange'))
-    ctf.AddRGBPoint(*p1)
-    ctf.AddRGBPoint(*p2)
-    ctf.AddRGBPoint(*p3)
+def constrain_curvatures(source, curvature_name, lower_bound=0.0, upper_bound=0.0):
+    """
+    This function constrains curvatures to the range [lower_bound ... upper_bound].
 
-    table_size = 256
-    lut = vtk.vtkLookupTable()
-    lut.SetNumberOfTableValues(table_size)
-    lut.Build()
+    Remember to update the vtkCurvatures object before calling this.
 
-    for i in range(0, table_size):
-        rgba = list(ctf.GetColor(float(i) / table_size))
-        rgba.append(1)
-        lut.SetTableValue(i, rgba)
+    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.
+    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.
+    :param lower_bound: The lower bound.
+    :param upper_bound: The upper bound.
+    :return:
+    """
 
-    return lut
+    bounds = list()
+    if lower_bound < upper_bound:
+        bounds.append(lower_bound)
+        bounds.append(upper_bound)
+    else:
+        bounds.append(upper_bound)
+        bounds.append(lower_bound)
+
+    # Get the active scalars
+    source.GetPointData().SetActiveScalars(curvature_name)
+    np_source = dsa.WrapDataObject(source)
+    curvatures = np_source.PointData[curvature_name]
+
+    # Set upper and lower bounds.
+    curvatures = np.where(curvatures < bounds[0], bounds[0], curvatures)
+    curvatures = np.where(curvatures > bounds[1], bounds[1], curvatures)
+    # Curvatures is now an ndarray
+    curv = numpy_support.numpy_to_vtk(num_array=curvatures.ravel(),
+                                      deep=True,
+                                      array_type=VTK_DOUBLE)
+    curv.SetName(curvature_name)
+    source.GetPointData().RemoveArray(curvature_name)
+    source.GetPointData().AddArray(curv)
+    source.GetPointData().SetActiveScalars(curvature_name)
 
 
 def get_diverging_lut():
@@ -369,7 +415,7 @@ def get_diverging_lut():
 
     :return:
     """
-    ctf = vtk.vtkColorTransferFunction()
+    ctf = vtkColorTransferFunction()
     ctf.SetColorSpaceToDiverging()
     # Cool to warm.
     ctf.AddRGBPoint(0.0, 0.230, 0.299, 0.754)
@@ -377,7 +423,32 @@ def get_diverging_lut():
     ctf.AddRGBPoint(1.0, 0.706, 0.016, 0.150)
 
     table_size = 256
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
+    lut.SetNumberOfTableValues(table_size)
+    lut.Build()
+
+    for i in range(0, table_size):
+        rgba = list(ctf.GetColor(float(i) / table_size))
+        rgba.append(1)
+        lut.SetTableValue(i, rgba)
+
+    return lut
+
+
+def get_diverging_lut1():
+    colors = vtkNamedColors()
+    # Colour transfer function.
+    ctf = vtkColorTransferFunction()
+    ctf.SetColorSpaceToDiverging()
+    p1 = [0.0] + list(colors.GetColor3d('MidnightBlue'))
+    p2 = [0.5] + list(colors.GetColor3d('Gainsboro'))
+    p3 = [1.0] + list(colors.GetColor3d('DarkOrange'))
+    ctf.AddRGBPoint(*p1)
+    ctf.AddRGBPoint(*p2)
+    ctf.AddRGBPoint(*p3)
+
+    table_size = 256
+    lut = vtkLookupTable()
     lut.SetNumberOfTableValues(table_size)
     lut.Build()
 
@@ -392,9 +463,9 @@ def get_diverging_lut():
 def get_bour():
     u_resolution = 51
     v_resolution = 51
-    surface = vtk.vtkParametricBour()
+    surface = vtkParametricBour()
 
-    source = vtk.vtkParametricFunctionSource()
+    source = vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
     source.GenerateTextureCoordinatesOn()
@@ -402,13 +473,13 @@ def get_bour():
     source.Update()
 
     # Build the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.RotateX(0.0)
-    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter = vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
     transform_filter.Update()
@@ -417,28 +488,110 @@ def get_bour():
 
 
 def get_cube():
-    surface = vtk.vtkCubeSource()
+    surface = vtkCubeSource()
 
     # Triangulate.
-    triangulation = vtk.vtkTriangleFilter()
+    triangulation = vtkTriangleFilter()
     triangulation.SetInputConnection(surface.GetOutputPort())
     # Subdivide the triangles
-    subdivide = vtk.vtkLinearSubdivisionFilter()
+    subdivide = vtkLinearSubdivisionFilter()
     subdivide.SetInputConnection(triangulation.GetOutputPort())
     subdivide.SetNumberOfSubdivisions(3)
     # Now the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(subdivide.GetOutputPort())
     tangents.Update()
     return tangents.GetOutput()
 
 
+def get_hills():
+    # Create four hills on a plane.
+    # This will have regions of negative, zero and positive Gsaussian curvatures.
+
+    x_res = 50
+    y_res = 50
+    x_min = -5.0
+    x_max = 5.0
+    dx = (x_max - x_min) / (x_res - 1)
+    y_min = -5.0
+    y_max = 5.0
+    dy = (y_max - y_min) / (x_res - 1)
+
+    # Make a grid.
+    points = vtkPoints()
+    for i in range(0, x_res):
+        x = x_min + i * dx
+        for j in range(0, y_res):
+            y = y_min + j * dy
+            points.InsertNextPoint(x, y, 0)
+
+    # Add the grid points to a polydata object.
+    plane = vtkPolyData()
+    plane.SetPoints(points)
+
+    # Triangulate the grid.
+    delaunay = vtkDelaunay2D()
+    delaunay.SetInputData(plane)
+    delaunay.Update()
+
+    polydata = delaunay.GetOutput()
+
+    elevation = vtkDoubleArray()
+    elevation.SetNumberOfTuples(points.GetNumberOfPoints())
+
+    #  We define the parameters for the hills here.
+    # [[0: x0, 1: y0, 2: x variance, 3: y variance, 4: amplitude]...]
+    hd = [[-2.5, -2.5, 2.5, 6.5, 3.5], [2.5, 2.5, 2.5, 2.5, 2],
+          [5.0, -2.5, 1.5, 1.5, 2.5], [-5.0, 5, 2.5, 3.0, 3]]
+    xx = [0.0] * 2
+    for i in range(0, points.GetNumberOfPoints()):
+        x = list(polydata.GetPoint(i))
+        for j in range(0, len(hd)):
+            xx[0] = (x[0] - hd[j][0] / hd[j][2]) ** 2.0
+            xx[1] = (x[1] - hd[j][1] / hd[j][3]) ** 2.0
+            x[2] += hd[j][4] * math.exp(-(xx[0] + xx[1]) / 2.0)
+            polydata.GetPoints().SetPoint(i, x)
+            elevation.SetValue(i, x[2])
+
+    textures = vtkFloatArray()
+    textures.SetNumberOfComponents(2)
+    textures.SetNumberOfTuples(2 * polydata.GetNumberOfPoints())
+    textures.SetName("Textures")
+
+    for i in range(0, x_res):
+        tc = [i / (x_res - 1.0), 0.0]
+        for j in range(0, y_res):
+            # tc[1] = 1.0 - j / (y_res - 1.0)
+            tc[1] = j / (y_res - 1.0)
+            textures.SetTuple(i * y_res + j, tc)
+
+    polydata.GetPointData().SetScalars(elevation)
+    polydata.GetPointData().GetScalars().SetName("Elevation")
+    polydata.GetPointData().SetTCoords(textures)
+
+    normals = vtkPolyDataNormals()
+    normals.SetInputData(polydata)
+    normals.SetInputData(polydata)
+    normals.SetFeatureAngle(30)
+    normals.SplittingOff()
+
+    tr1 = vtkTransform()
+    tr1.RotateX(-90)
+
+    tf1 = vtkTransformPolyDataFilter()
+    tf1.SetInputConnection(normals.GetOutputPort())
+    tf1.SetTransform(tr1)
+    tf1.Update()
+
+    return tf1.GetOutput()
+
+
 def get_enneper():
     u_resolution = 51
     v_resolution = 51
-    surface = vtk.vtkParametricEnneper()
+    surface = vtkParametricEnneper()
 
-    source = vtk.vtkParametricFunctionSource()
+    source = vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
     source.GenerateTextureCoordinatesOn()
@@ -446,13 +599,13 @@ def get_enneper():
     source.Update()
 
     # Build the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.RotateX(0.0)
-    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter = vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
     transform_filter.Update()
@@ -463,11 +616,11 @@ def get_enneper():
 def get_mobius():
     u_resolution = 51
     v_resolution = 51
-    surface = vtk.vtkParametricMobius()
+    surface = vtkParametricMobius()
     surface.SetMinimumV(-0.25)
     surface.SetMaximumV(0.25)
 
-    source = vtk.vtkParametricFunctionSource()
+    source = vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
     source.GenerateTextureCoordinatesOn()
@@ -475,13 +628,13 @@ def get_mobius():
     source.Update()
 
     # Build the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.RotateX(-90.0)
-    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter = vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
     transform_filter.Update()
@@ -492,13 +645,13 @@ def get_mobius():
 def get_random_hills():
     u_resolution = 51
     v_resolution = 51
-    surface = vtk.vtkParametricRandomHills()
+    surface = vtkParametricRandomHills()
     surface.SetRandomSeed(1)
     surface.SetNumberOfHills(30)
     # If you want a plane
     # surface.SetHillAmplitude(0)
 
-    source = vtk.vtkParametricFunctionSource()
+    source = vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
     source.GenerateTextureCoordinatesOn()
@@ -506,14 +659,14 @@ def get_random_hills():
     source.Update()
 
     # Build the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.Translate(0.0, 5.0, 15.0)
     transform.RotateX(-90.0)
-    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter = vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
     transform_filter.Update()
@@ -524,23 +677,24 @@ def get_random_hills():
 def get_sphere():
     theta_resolution = 32
     phi_resolution = 32
-    surface = vtk.vtkTexturedSphereSource()
+    surface = vtkTexturedSphereSource()
     surface.SetThetaResolution(theta_resolution)
     surface.SetPhiResolution(phi_resolution)
 
     # Now the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(surface.GetOutputPort())
     tangents.Update()
+
     return tangents.GetOutput()
 
 
 def get_torus():
     u_resolution = 51
     v_resolution = 51
-    surface = vtk.vtkParametricTorus()
+    surface = vtkParametricTorus()
 
-    source = vtk.vtkParametricFunctionSource()
+    source = vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
     source.GenerateTextureCoordinatesOn()
@@ -548,18 +702,162 @@ def get_torus():
     source.Update()
 
     # Build the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.RotateX(-90.0)
-    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter = vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
     transform_filter.Update()
 
     return transform_filter.GetOutput()
+
+
+def get_source(source):
+    surface = source.lower()
+    available_surfaces = ['bour', 'cube', 'enneper', 'hills', 'mobius', 'randomhills', 'sphere', 'torus']
+    if surface not in available_surfaces:
+        return None
+    elif surface == 'bour':
+        return get_bour()
+    elif surface == 'cube':
+        return get_cube()
+    elif surface == 'enneper':
+        return get_enneper()
+    elif surface == 'hills':
+        return get_hills()
+    elif surface == 'mobius':
+        return get_mobius()
+    elif surface == 'randomhills':
+        return get_random_hills()
+    elif surface == 'sphere':
+        return get_sphere()
+    elif surface == 'torus':
+        return get_torus()
+    return None
+
+
+def get_frequencies(bands, src):
+    """
+    Count the number of scalars in each band.
+    The scalars used are the active scalars in the polydata.
+
+    :param: bands - The bands.
+    :param: src - The vtkPolyData source.
+    :return: The frequencies of the scalars in each band.
+    """
+    freq = dict()
+    for i in range(len(bands)):
+        freq[i] = 0
+    tuples = src.GetPointData().GetScalars().GetNumberOfTuples()
+    for i in range(tuples):
+        x = src.GetPointData().GetScalars().GetTuple1(i)
+        for j in range(len(bands)):
+            if x <= bands[j][2]:
+                freq[j] += 1
+                break
+    return freq
+
+
+def adjust_ranges(bands, freq):
+    """
+    The bands and frequencies are adjusted so that the first and last
+     frequencies in the range are non-zero.
+    :param bands: The bands dictionary.
+    :param freq: The frequency dictionary.
+    :return: Adjusted bands and frequencies.
+    """
+    # Get the indices of the first and last non-zero elements.
+    first = 0
+    for k, v in freq.items():
+        if v != 0:
+            first = k
+            break
+    rev_keys = list(freq.keys())[::-1]
+    last = rev_keys[0]
+    for idx in list(freq.keys())[::-1]:
+        if freq[idx] != 0:
+            last = idx
+            break
+    # Now adjust the ranges.
+    min_key = min(freq.keys())
+    max_key = max(freq.keys())
+    for idx in range(min_key, first):
+        freq.pop(idx)
+        bands.pop(idx)
+    for idx in range(last + 1, max_key + 1):
+        freq.popitem()
+        bands.popitem()
+    old_keys = freq.keys()
+    adj_freq = dict()
+    adj_bands = dict()
+
+    for idx, k in enumerate(old_keys):
+        adj_freq[idx] = freq[k]
+        adj_bands[idx] = bands[k]
+
+    return adj_bands, adj_freq
+
+
+def get_bands(d_r, number_of_bands, precision=2, nearest_integer=False):
+    """
+    Divide a range into bands
+    :param: d_r - [min, max] the range that is to be covered by the bands.
+    :param: number_of_bands - The number of bands, a positive integer.
+    :param: precision - The decimal precision of the bounds.
+    :param: nearest_integer - If True then [floor(min), ceil(max)] is used.
+    :return: A dictionary consisting of the band number and [min, midpoint, max] for each band.
+    """
+    prec = abs(precision)
+    if prec > 14:
+        prec = 14
+
+    bands = dict()
+    if (d_r[1] < d_r[0]) or (number_of_bands <= 0):
+        return bands
+    x = list(d_r)
+    if nearest_integer:
+        x[0] = math.floor(x[0])
+        x[1] = math.ceil(x[1])
+    dx = (x[1] - x[0]) / float(number_of_bands)
+    b = [x[0], x[0] + dx / 2.0, x[0] + dx]
+    i = 0
+    while i < number_of_bands:
+        b = list(map(lambda ele_b: round(ele_b, prec), b))
+        if i == 0:
+            b[0] = x[0]
+        bands[i] = b
+        b = [b[0] + dx, b[1] + dx, b[2] + dx]
+        i += 1
+    return bands
+
+
+def print_bands_frequencies(bands, freq, precision=2):
+    prec = abs(precision)
+    if prec > 14:
+        prec = 14
+
+    if len(bands) != len(freq):
+        print('Bands and Frequencies must be the same size.')
+        return
+    s = f'Bands & Frequencies:\n'
+    total = 0
+    width = prec + 6
+    for k, v in bands.items():
+        total += freq[k]
+        for j, q in enumerate(v):
+            if j == 0:
+                s += f'{k:4d} ['
+            if j == len(v) - 1:
+                s += f'{q:{width}.{prec}f}]: {freq[k]:8d}\n'
+            else:
+                s += f'{q:{width}.{prec}f}, '
+    width = 3 * width + 13
+    s += f'{"Total":{width}s}{total:8d}\n'
+    print(s)
 
 
 if __name__ == '__main__':

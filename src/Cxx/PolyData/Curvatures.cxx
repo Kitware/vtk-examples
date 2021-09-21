@@ -1,10 +1,10 @@
-#include <array>
 #include <vtkActor.h>
 #include <vtkCameraOrientationWidget.h>
 #include <vtkColorSeries.h>
 #include <vtkColorTransferFunction.h>
 #include <vtkCurvatures.h>
-#include <vtkLookupTable.h>
+#include <vtkFeatureEdges.h>
+#include <vtkIdFilter.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPointData.h>
@@ -14,97 +14,38 @@
 #include <vtkRenderer.h>
 #include <vtkScalarBarActor.h>
 #include <vtkTextProperty.h>
+#include <vtkVersion.h>
 #include <vtkXMLPolyDataReader.h>
 #include <vtkXMLPolyDataWriter.h>
 
-// Here is the ComputeCurvatures definition.
-//
-// Includes needed by the ComputeCurvatures definition.
+#if VTK_VERSION_NUMBER >= 90020210809ULL
+#define HAS_COW
+#include <vtkCameraOrientationWidget.h>
+#endif
+
 #include <array>
-#include <map>
+#include <numeric>
 #include <set>
-#include <string>
 
 namespace {
 
-/**
-@class ComputeCurvatures
-
-This class takes a vtkPolyData source and:
- - calculates Gaussian and Mean curvatures,
- - adjusts curvatures along the edges using a weighted average,
- - inserts the adjusted curvatures into the vtkPolyData source.
-
- Additional methods are provided for setting bounds and precision.
-*/
-class ComputeCurvatures
-{
-public:
-  ComputeCurvatures() = default;
-  ~ComputeCurvatures() = default;
-
-  explicit ComputeCurvatures(vtkPolyData* source)
-  {
-    this->source = source;
-  }
-
-  ComputeCurvatures(vtkPolyData* source, double const& gaussEps,
-                    double const& meanEps)
-  {
-    this->source = source;
-    this->epsilons["Gauss_Curvature"] = gaussEps;
-    this->epsilons["Mean_Curvature"] = meanEps;
-  }
-
-public:
-  void Update();
-
-  // Remember to run Update after these set and on/off methods.
-
-  std::string GetCurvatureType();
-
-  void SetCurvatureTypeToGaussian();
-
-  void SetGaussEpsilon(double const& gauss_eps = 1.0e-8);
-
-  void SetGaussCurvatureBounds(double const& lower = 0.0,
-                               double const& upper = 0.0);
-  void GaussBoundsOn();
-
-  void GaussBoundsOff();
-
-  void SetCurvatureTypeToMean();
-
-  void SetMeanEpsilon(double const& gauss_eps = 1.0e-8);
-
-  void SetMeanCurvatureBounds(double const& lower = 0.0,
-                              double const& upper = 0.0);
-  void MeanBoundsOn();
-
-  void MeanBoundsOff();
-
-private:
-  void ComputeCurvatureAndFixUpBoundary();
-  vtkSmartPointer<vtkPolyData> ComputeCurvature();
-  std::vector<double> ExtractData(vtkPolyData* curvatureData);
-  std::vector<vtkIdType> ExtractBoundaryIds();
-  double ComputeDistance(vtkIdType const& ptIdA, vtkIdType const& ptIdB);
-  std::set<vtkIdType> PointNeighborhood(vtkIdType const& pId);
-  void UpdateCurvature();
-
-public:
-  vtkSmartPointer<vtkPolyData> source;
-
-private:
-  std::string curvatureType{"Gauss_Curvature"};
-  std::map<std::string, std::vector<double>> adjustedCurvatures;
-  std::map<std::string, std::vector<double>> bounds{
-      {"Gauss_Curvature", {0.0, 0.0}}, {"Mean_Curvature", {0.0, 0.0}}};
-  std::map<std::string, bool> boundsState{{"Gauss_Curvature", false},
-                                          {"Mean_Curvature", false}};
-  std::map<std::string, double> epsilons{{"Gauss_Curvature", 1.0e-8},
-                                         {"Mean_Curvature", 1.0e-8}};
-};
+//! Adjust curvatures along the edges of the surface.
+/*!
+ * This function adjusts curvatures along the edges of the surface by replacing
+ *  the value with the average value of the curvatures of points in the
+ *  neighborhood.
+ *
+ * Remember to update the vtkCurvatures object before calling this.
+ *
+ * @param source - A vtkPolyData object corresponding to the vtkCurvatures
+ * object.
+ * @param curvatureName: The name of the curvature, "Gauss_Curvature" or
+ * "Mean_Curvature".
+ * @param epsilon: Curvature values less than this will be set to zero.
+ * @return
+ */
+void AdjustEdgeCurvatures(vtkPolyData* source, std::string const& curvatureName,
+                          double const& epsilon = 1.0e-08);
 
 } // namespace
 
@@ -115,27 +56,26 @@ int main(int argc, char* argv[])
   // Parse command line arguments
   if (argc < 2)
   {
-    std::cerr << "Usage: " << argv[0]
-              << " Filename(.vtp) e.g. cowHead.vtp m -20 20 16" << std::endl;
+    std::cerr << "Usage: " << argv[0] << " Filename(.vtp) e.g. cowHead.vtp m 16"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   // Defaults
-  std::array<double, 2> gaussBounds{0.0, 0.0};
-  std::array<double, 2> meanBounds{0.0, 0.0};
-  std::string curvature{"mean"};
+  auto scheme = 16;
+  std::string curvature{"Mean_Curvature"};
   if (argc > 2)
   {
     std::string tmp = argv[2];
     if (tmp[0] == 'g' || tmp[0] == 'G')
     {
-      curvature = "gauss";
+      curvature = "Gauss_Curvature";
     }
     else
     {
       if (tmp[0] == 'm' || tmp[0] == 'm')
       {
-        curvature = "mean";
+        curvature = "Mean_Curvature";
       }
       else
       {
@@ -144,24 +84,10 @@ int main(int argc, char* argv[])
       }
     }
   }
-  if (argc > 4)
-  {
-    if (curvature == "gauss")
-    {
-      gaussBounds[0] = std::stod(argv[3]);
-      gaussBounds[1] = std::stod(argv[4]);
-    }
-    if (curvature == "mean")
-    {
-      meanBounds[0] = std::stod(argv[3]);
-      meanBounds[1] = std::stod(argv[4]);
-    }
-  }
 
-  int scheme = 16;
-  if (argc > 5)
+  if (argc > 3)
   {
-    scheme = atoi(argv[5]);
+    scheme = atoi(argv[3]);
   }
 
   // Create a polydata
@@ -169,35 +95,21 @@ int main(int argc, char* argv[])
   reader->SetFileName(argv[1]);
   reader->Update();
 
-  ComputeCurvatures cc(reader->GetOutput());
-  if (curvature == "gauss")
+  auto source = reader->GetOutput();
+
+  vtkNew<vtkCurvatures> cc;
+  cc->SetInputData(source);
+  if (curvature == "Gauss_Curvature")
   {
-    cc.SetCurvatureTypeToGaussian();
-    if (gaussBounds[0] == 0 && gaussBounds[1] == 0)
-    {
-      cc.GaussBoundsOff();
-    }
-    else
-    {
-        // Try these bounds: -100.0, 200.0
-      cc.SetGaussCurvatureBounds(gaussBounds[0], gaussBounds[1]);
-      cc.GaussBoundsOn();
-    }
+    cc->SetCurvatureTypeToGaussian();
+    cc->Update();
   }
   else
   {
-    if (curvature == "mean")
+    if (curvature == "Mean_Curvature")
     {
-      cc.SetCurvatureTypeToMean();
-      if (meanBounds[0] == 0 && meanBounds[1] == 0)
-      {
-        cc.MeanBoundsOff();
-      }
-      else
-      {
-        cc.SetMeanCurvatureBounds(meanBounds[0], meanBounds[1]);
-        cc.MeanBoundsOn();
-      }
+      cc->SetCurvatureTypeToMean();
+      cc->Update();
     }
     else
     {
@@ -205,29 +117,21 @@ int main(int argc, char* argv[])
       return EXIT_FAILURE;
     }
   }
-  cc.Update();
+  AdjustEdgeCurvatures(cc->GetOutput(), curvature);
+  source->GetPointData()->AddArray(
+      cc->GetOutput()->GetPointData()->GetAbstractArray(curvature.c_str()));
 
-  curvature = cc.GetCurvatureType();
-  std::array<double, 2> scalarRange{0.0, 0.0};
-  cc.source->GetPointData()
-      ->GetScalars(curvature.c_str())
-      ->GetRange(scalarRange.data());
+  auto scalarRange =
+      source->GetPointData()->GetScalars(curvature.c_str())->GetRange();
 
   auto curvatureTitle = curvature;
   std::replace(curvatureTitle.begin(), curvatureTitle.end(), '_', '\n');
 
-  // Uncomment the following lines if you want to write out the polydata.
-  // vtkNew<vtkXMLPolyDataWriter> writer;
-  // writer->SetFileName("Source.vtp");
-  // writer->SetInputData(cc.source);
-  // writer->SetDataModeToAscii();
-  // writer->Write();
-
   // Build a lookup table
   vtkNew<vtkColorSeries> colorSeries;
   colorSeries->SetColorScheme(scheme);
-  std::cout << "Using color scheme #: " << colorSeries->GetColorScheme()
-            << ", " << colorSeries->GetColorSchemeName() << std::endl;
+  std::cout << "Using color scheme #: " << colorSeries->GetColorScheme() << ", "
+            << colorSeries->GetColorSchemeName() << std::endl;
 
   vtkNew<vtkColorTransferFunction> lut;
   lut->SetColorSpaceToHSV();
@@ -249,10 +153,10 @@ int main(int argc, char* argv[])
 
   // Create a mapper and actor.
   vtkNew<vtkPolyDataMapper> mapper;
-  mapper->SetInputData(cc.source);
+  mapper->SetInputData(source);
   mapper->SetScalarModeToUsePointFieldData();
   mapper->SelectColorArray(curvature.c_str());
-  mapper->SetScalarRange(scalarRange.data());
+  mapper->SetScalarRange(scalarRange);
   mapper->SetLookupTable(lut);
 
   vtkNew<vtkActor> actor;
@@ -282,10 +186,12 @@ int main(int argc, char* argv[])
   // Important: The interactor must be set prior to enabling the widget.
   iRen->SetRenderWindow(renWin);
 
+#ifdef HAS_COW
   vtkNew<vtkCameraOrientationWidget> camOrientManipulator;
   camOrientManipulator->SetParentRenderer(renderer);
   // Enable the widget.
   camOrientManipulator->On();
+#endif
 
   // Add the actors to the scene
   renderer->AddActor(actor);
@@ -299,261 +205,59 @@ int main(int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 
-// Here is the implementation for ComputeCurvatures
-//
-// Includes needed by the ComputeCurvatures implementation.
-
-#include <vtkCurvatures.h>
-#include <vtkDoubleArray.h>
-#include <vtkFeatureEdges.h>
-#include <vtkIdFilter.h>
-#include <vtkIdList.h>
-#include <vtkNew.h>
-#include <vtkPointData.h>
-#include <vtkSmartPointer.h>
-#include <vtkType.h>
-
-#include <algorithm>
-#include <cctype>
-#include <iterator>
-#include <numeric>
-#include <vector>
-
 namespace {
-
-std::string ComputeCurvatures::GetCurvatureType()
+void AdjustEdgeCurvatures(vtkPolyData* source, std::string const& curvatureName,
+                          double const& epsilon)
 {
-  return this->curvatureType;
-}
-
-void ComputeCurvatures::SetCurvatureTypeToGaussian()
-{
-  this->curvatureType = "Gauss_Curvature";
-}
-
-void ComputeCurvatures::SetGaussEpsilon(double const& gauss_eps)
-{
-  this->epsilons["Gauss_Curvature"] = std::abs(gauss_eps);
-}
-
-void ComputeCurvatures::SetGaussCurvatureBounds(double const& lower,
-                                                double const& upper)
-{
-  if (lower <= upper)
-  {
-    this->bounds["Gauss_Curvature"][0] = lower;
-    this->bounds["Gauss_Curvature"][1] = upper;
-  }
-  else
-  {
-    this->bounds["Gauss_Curvature"][0] = upper;
-    this->bounds["Gauss_Curvature"][1] = lower;
-    std::cout << "SetGaussCurvatureBounds: bounds swapped since lower > upper"
-              << std::endl;
-  }
-}
-
-void ComputeCurvatures::GaussBoundsOn()
-{
-  boundsState["Gauss_Curvature"] = true;
-}
-
-void ComputeCurvatures::GaussBoundsOff()
-{
-  boundsState["Gauss_Curvature"] = false;
-}
-
-void ComputeCurvatures::SetCurvatureTypeToMean()
-{
-  this->curvatureType = "Mean_Curvature";
-}
-
-void ComputeCurvatures::SetMeanEpsilon(double const& gauss_eps)
-{
-  this->epsilons["Mean_Curvature"] = std::abs(gauss_eps);
-}
-
-void ComputeCurvatures::SetMeanCurvatureBounds(double const& lower,
-                                               double const& upper)
-{
-  if (lower <= upper)
-  {
-    this->bounds["Mean_Curvature"][0] = lower;
-    this->bounds["Mean_Curvature"][1] = upper;
-  }
-  else
-  {
-    this->bounds["Mean_Curvature"][0] = upper;
-    this->bounds["Mean_Curvature"][1] = lower;
-    std::cout << "SetMeanCurvatureBounds: bounds swapped since lower > upper"
-              << std::endl;
-  }
-}
-
-void ComputeCurvatures::MeanBoundsOn()
-{
-  boundsState["Mean_Curvature"] = true;
-}
-
-void ComputeCurvatures::MeanBoundsOff()
-{
-  boundsState["Mean_Curvature"] = false;
-}
-
-void ComputeCurvatures::Update()
-{
-  this->ComputeCurvatureAndFixUpBoundary();
-  // Set small values to zero.
-  if (this->epsilons[this->curvatureType] != 0.0)
-  {
-    auto eps = std::abs(this->epsilons[this->curvatureType]);
-    for (size_t i = 0; i < this->adjustedCurvatures[this->curvatureType].size();
-         ++i)
+  auto PointNeighbourhood =
+      [&source](vtkIdType const& pId) -> std::set<vtkIdType> {
+    // Extract the topological neighbors for point pId. In two steps:
+    //  1) source->GetPointCells(pId, cellIds)
+    //  2) source->GetCellPoints(cellId, cellPointIds) for all cellId in cellIds
+    vtkNew<vtkIdList> cellIds;
+    source->GetPointCells(pId, cellIds);
+    std::set<vtkIdType> neighbours;
+    for (vtkIdType i = 0; i < cellIds->GetNumberOfIds(); ++i)
     {
-      if (std::abs(this->adjustedCurvatures[this->curvatureType][i]) < eps)
+      auto cellId = cellIds->GetId(i);
+      vtkNew<vtkIdList> cellPointIds;
+      source->GetCellPoints(cellId, cellPointIds);
+      for (vtkIdType j = 0; j < cellPointIds->GetNumberOfIds(); ++j)
       {
-        this->adjustedCurvatures[this->curvatureType][i] = 0.0;
+        neighbours.insert(cellPointIds->GetId(j));
       }
     }
-  }
-  //  Set upper and lower bounds.
-  if (this->boundsState[this->curvatureType])
-  {
-    auto lowerBound = this->bounds[this->curvatureType][0];
-    for (size_t i = 0; i < this->adjustedCurvatures[this->curvatureType].size();
-         ++i)
-    {
-      if (this->adjustedCurvatures[this->curvatureType][i] < lowerBound)
-      {
-        this->adjustedCurvatures[this->curvatureType][i] = lowerBound;
-      }
-    }
-    auto upperBound = this->bounds[this->curvatureType][1];
-    for (size_t i = 0; i < this->adjustedCurvatures[this->curvatureType].size();
-         ++i)
-    {
-      if (this->adjustedCurvatures[this->curvatureType][i] > upperBound)
-      {
-        this->adjustedCurvatures[this->curvatureType][i] = upperBound;
-      }
-    }
-  }
-  this->UpdateCurvature();
-}
+    return neighbours;
+  };
 
-void ComputeCurvatures::ComputeCurvatureAndFixUpBoundary()
-{
-  // Curvature as vtkPolyData.
-  auto curvatureData = this->ComputeCurvature();
+  auto ComputeDistance = [&source](vtkIdType const& ptIdA,
+                                   vtkIdType const& ptIdB) {
+    std::array<double, 3> ptA{0.0, 0.0, 0.0};
+    std::array<double, 3> ptB{0.0, 0.0, 0.0};
+    std::array<double, 3> ptC{0.0, 0.0, 0.0};
+    source->GetPoint(ptIdA, ptA.data());
+    source->GetPoint(ptIdB, ptB.data());
+    std::transform(std::begin(ptA), std::end(ptA), std::begin(ptB),
+                   std::begin(ptC), std::minus<double>());
+    // Calculate the norm.
+    auto result = std::sqrt(std::inner_product(std::begin(ptC), std::end(ptC),
+                                               std::begin(ptC), 0.0));
+    return result;
+  };
+
+  source->GetPointData()->SetActiveScalars(curvatureName.c_str());
   // Curvature as a vector.
-  auto curvature = this->ExtractData(curvatureData);
-  // Ids of the boundary points.
-  auto pIds = this->ExtractBoundaryIds();
-  // Remove duplicate Ids.
-  std::set<vtkIdType> pIdsSet(pIds.begin(), pIds.end());
-  for (auto pId : pIds)
+  auto array = source->GetPointData()->GetAbstractArray(curvatureName.c_str());
+  std::vector<double> curvatures;
+  for (vtkIdType i = 0; i < source->GetNumberOfPoints(); ++i)
   {
-    auto pIdsNeighbors = this->PointNeighborhood(pId);
-    std::set<vtkIdType> pIdsNeighborsInterior;
-    std::set_difference(
-        pIdsNeighbors.begin(), pIdsNeighbors.end(), pIdsSet.begin(),
-        pIdsSet.end(),
-        std::inserter(pIdsNeighborsInterior, pIdsNeighborsInterior.begin()));
-    // Compute distances and extract curvature values.
-    std::vector<double> curvs;
-    std::vector<double> dists;
-    for (auto pIdN : pIdsNeighborsInterior)
-    {
-      curvs.push_back(curvature[pIdN]);
-      dists.push_back(this->ComputeDistance(pIdN, pId));
-    }
-    std::vector<vtkIdType> nonZeroDistIds;
-    for (size_t i = 0; i < dists.size(); ++i)
-    {
-      if (dists[i] > 0)
-      {
-        nonZeroDistIds.push_back(i);
-      }
-    }
-    std::vector<double> curvsNonZero;
-    std::vector<double> distsNonZero;
-    for (auto i : nonZeroDistIds)
-    {
-      curvsNonZero.push_back(curvs[i]);
-      distsNonZero.push_back(dists[i]);
-    }
-    // Iterate over the edge points and compute the curvature as the weighted
-    // average of the neighbors.
-    auto countInvalid = 0;
-    auto newCurv = 0.0;
-    if (curvsNonZero.size() > 0)
-    {
-      std::vector<double> weights;
-      double sum = 0.0;
-      for (auto d : distsNonZero)
-      {
-        sum += 1.0 / d;
-        weights.push_back(1.0 / d);
-      }
-      for (size_t i = 0; i < weights.size(); ++i)
-      {
-        weights[i] = weights[i] / sum;
-      }
-      newCurv = std::inner_product(curvsNonZero.begin(), curvsNonZero.end(),
-                                   weights.begin(), 0.0);
-    }
-    else
-    {
-      // Corner case.
-      countInvalid += 1;
-      newCurv = 0;
-    }
-    // Set the new curvature value.
-    curvature[pId] = newCurv;
+    curvatures.push_back(array->GetVariantValue(i).ToDouble());
   }
-  this->adjustedCurvatures[this->curvatureType] = curvature;
-}
 
-vtkSmartPointer<vtkPolyData> ComputeCurvatures::ComputeCurvature()
-{
-  vtkNew<vtkCurvatures> curvatureFilter;
-  curvatureFilter->SetInputData(this->source);
-  if ("Gauss_Curvature" == this->curvatureType)
-  {
-    curvatureFilter->SetCurvatureTypeToGaussian();
-  }
-  else if ("Mean_Curvature" == this->curvatureType)
-  {
-    curvatureFilter->SetCurvatureTypeToMean();
-  }
-  else
-  {
-    std::cerr << "Curvature type must be either Gaussian or Mean." << std::endl;
-    vtkSmartPointer<vtkPolyData> ret;
-    return ret;
-  }
-  curvatureFilter->Update();
-  return curvatureFilter->GetOutput();
-}
-
-std::vector<double> ComputeCurvatures::ExtractData(vtkPolyData* curvatureData)
-{
-  auto array = curvatureData->GetPointData()->GetAbstractArray(
-      this->curvatureType.c_str());
-  auto n = curvatureData->GetNumberOfPoints();
-  std::vector<double> data;
-  for (auto i = 0; i < n; ++i)
-  {
-    data.push_back(array->GetVariantValue(i).ToDouble());
-  }
-  return data;
-}
-
-std::vector<vtkIdType> ComputeCurvatures::ExtractBoundaryIds()
-{
+  // Get the boundary point IDs.
   std::string name = "Ids";
   vtkNew<vtkIdFilter> idFilter;
-  idFilter->SetInputData(this->source);
+  idFilter->SetInputData(source);
   idFilter->SetPointIds(true);
   idFilter->SetCellIds(false);
   idFilter->SetPointIdsArrayName(name.c_str());
@@ -569,74 +273,107 @@ std::vector<vtkIdType> ComputeCurvatures::ExtractBoundaryIds()
   edges->FeatureEdgesOff();
   edges->Update();
 
-  auto array =
+  auto edgeAarray =
       edges->GetOutput()->GetPointData()->GetAbstractArray(name.c_str());
-  auto n = edges->GetOutput()->GetNumberOfPoints();
   std::vector<vtkIdType> boundaryIds;
-  for (auto i = 0; i < n; ++i)
+  for (vtkIdType i = 0; i < edges->GetOutput()->GetNumberOfPoints(); ++i)
   {
-    boundaryIds.push_back(array->GetVariantValue(i).ToInt());
+    boundaryIds.push_back(edgeAarray->GetVariantValue(i).ToInt());
   }
-  return boundaryIds;
-}
-
-/**
- * Extract the topological neighbors for point pId. In two steps:
- * 1) self.source.GetPointCells(pId, cellIds)
- * 2) self.source.GetCellPoints(cellId, cellPointIds) for all cellId in
- * cellIds
- */
-std::set<vtkIdType> ComputeCurvatures::PointNeighborhood(vtkIdType const& pId)
-{
-  vtkNew<vtkIdList> cellIds;
-  this->source->GetPointCells(pId, cellIds);
-  std::set<vtkIdType> neighbors;
-  auto n = cellIds->GetNumberOfIds();
-  for (auto i = 0; i < n; ++i)
+  // Remove duplicate Ids.
+  std::set<vtkIdType> pIdsSet(boundaryIds.begin(), boundaryIds.end());
+  for (auto const pId : boundaryIds)
   {
-    auto cellId = cellIds->GetId(i);
-    vtkNew<vtkIdList> cellPointIds;
-    this->source->GetCellPoints(cellId, cellPointIds);
-    for (auto j = 0; j < cellPointIds->GetNumberOfIds(); ++j)
+    auto pIdsNeighbors = PointNeighbourhood(pId);
+    std::set<vtkIdType> pIdsNeighborsInterior;
+    std::set_difference(
+        pIdsNeighbors.begin(), pIdsNeighbors.end(), pIdsSet.begin(),
+        pIdsSet.end(),
+        std::inserter(pIdsNeighborsInterior, pIdsNeighborsInterior.begin()));
+    // Compute distances and extract curvature values.
+    std::vector<double> curvs;
+    std::vector<double> dists;
+    for (auto const pIdN : pIdsNeighborsInterior)
     {
-      neighbors.insert(cellPointIds->GetId(j));
+      curvs.push_back(curvatures[pIdN]);
+      dists.push_back(ComputeDistance(pIdN, pId));
+    }
+    std::vector<vtkIdType> nonZeroDistIds;
+    for (size_t i = 0; i < dists.size(); ++i)
+    {
+      if (dists[i] > 0)
+      {
+        nonZeroDistIds.push_back(i);
+      }
+    }
+    std::vector<double> curvsNonZero;
+    std::vector<double> distsNonZero;
+    for (auto const i : nonZeroDistIds)
+    {
+      curvsNonZero.push_back(curvs[i]);
+      distsNonZero.push_back(dists[i]);
+    }
+    // Iterate over the edge points and compute the curvature as the weighted
+    // average of the neighbours.
+    auto countInvalid = 0;
+    auto newCurv = 0.0;
+    if (curvsNonZero.size() > 0)
+    {
+      std::vector<double> weights;
+      double sum = 0.0;
+      for (auto const d : distsNonZero)
+      {
+        sum += 1.0 / d;
+        weights.push_back(1.0 / d);
+      }
+      for (size_t i = 0; i < weights.size(); ++i)
+      {
+        weights[i] = weights[i] / sum;
+      }
+      newCurv = std::inner_product(curvsNonZero.begin(), curvsNonZero.end(),
+                                   weights.begin(), 0.0);
+    }
+    else
+    {
+      // Corner case.
+      countInvalid += 1;
+      // Assuming the curvature of the point is planar.
+      newCurv = 0.0;
+    }
+    // Set the new curvature value.
+    curvatures[pId] = newCurv;
+  }
+
+  // Set small values to zero.
+  if (epsilon != 0.0)
+  {
+    auto eps = std::abs(epsilon);
+    for (size_t i = 0; i < curvatures.size(); ++i)
+    {
+      if (std::abs(curvatures[i]) < eps)
+      {
+        curvatures[i] = 0.0;
+      }
     }
   }
-  return neighbors;
-}
 
-double ComputeCurvatures::ComputeDistance(vtkIdType const& ptIdA,
-                                          vtkIdType const& ptIdB)
-{
-  double ptA[3]{0.0, 0.0, 0.0};
-  double ptB[3]{0.0, 0.0, 0.0};
-  double ptC[3]{0.0, 0.0, 0.0};
-  this->source->GetPoint(ptIdA, ptA);
-  this->source->GetPoint(ptIdB, ptB);
-  vtkMath::Subtract(ptA, ptB, ptC);
-  return vtkMath::Norm(ptC);
-}
-
-void ComputeCurvatures::UpdateCurvature()
-{
-  if (static_cast<size_t>(this->source->GetNumberOfPoints()) !=
-      this->adjustedCurvatures[this->curvatureType].size())
+  if (static_cast<size_t>(source->GetNumberOfPoints()) != curvatures.size())
   {
-    std::string s = this->curvatureType;
+    std::string s = curvatureName;
     s += ":\nCannot add the adjusted curvatures to the source.\n";
     s += " The number of points in source does not equal the\n";
     s += " number of point ids in the adjusted curvature array.";
     std::cerr << s << std::endl;
     return;
   }
-  vtkNew<vtkDoubleArray> curvatures;
-  curvatures->SetName(this->curvatureType.c_str());
-  for (auto curvature : this->adjustedCurvatures[this->curvatureType])
+  vtkNew<vtkDoubleArray> adjustedCurvatures;
+  adjustedCurvatures->SetName(curvatureName.c_str());
+  for (auto curvature : curvatures)
   {
-    curvatures->InsertNextTuple1(curvature);
+    adjustedCurvatures->InsertNextTuple1(curvature);
   }
-  this->source->GetPointData()->AddArray(curvatures);
-  this->source->GetPointData()->SetActiveScalars(this->curvatureType.c_str());
+  source->GetPointData()->AddArray(adjustedCurvatures);
+  source->GetPointData()->SetActiveScalars(curvatureName.c_str());
 }
 
 } // namespace

@@ -4,58 +4,132 @@ import math
 from collections import OrderedDict
 
 import numpy as np
-import vtk
 from vtk.util import numpy_support
+from vtkmodules.numpy_interface import dataset_adapter as dsa
+from vtkmodules.vtkCommonColor import (
+    vtkColorSeries,
+    vtkNamedColors
+)
+from vtkmodules.vtkCommonComputationalGeometry import (
+    vtkParametricRandomHills,
+    vtkParametricTorus
+)
+from vtkmodules.vtkCommonCore import (
+    VTK_DOUBLE,
+    vtkDoubleArray,
+    vtkFloatArray,
+    vtkIdList,
+    vtkLookupTable,
+    vtkPoints,
+    vtkVariant,
+    vtkVariantArray
+)
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import (
+    vtkCleanPolyData,
+    vtkDelaunay2D,
+    vtkElevationFilter,
+    vtkFeatureEdges,
+    vtkGlyph3D,
+    vtkIdFilter,
+    vtkMaskPoints,
+    vtkPolyDataNormals,
+    vtkReverseSense,
+    vtkTriangleFilter
+)
+from vtkmodules.vtkFiltersGeneral import (
+    vtkCurvatures,
+    vtkTransformPolyDataFilter
+)
+from vtkmodules.vtkFiltersModeling import vtkBandedPolyDataContourFilter
+from vtkmodules.vtkFiltersSources import (
+    vtkArrowSource,
+    vtkParametricFunctionSource,
+    vtkPlaneSource,
+    vtkSphereSource,
+    vtkSuperquadricSource
+)
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
+from vtkmodules.vtkRenderingAnnotation import vtkScalarBarActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkColorTransferFunction,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main(argv):
     # ------------------------------------------------------------
     # Create the surface, lookup tables, contour filter etc.
     # ------------------------------------------------------------
+    # desired_surface = 'Hills'
     # desired_surface = 'ParametricTorus'
     # desired_surface = 'Plane'
     desired_surface = 'RandomHills'
     # desired_surface = 'Sphere'
     # desired_surface = 'Torus'
-    surface = desired_surface.lower()
-    available_surfaces = ['parametrictorus', 'plane', 'randomhills', 'sphere', 'torus']
-    if surface not in available_surfaces:
-        print('No surface specified.')
+    source = get_source(desired_surface)
+    if not source:
+        print('The surface is not available.')
         return
-    if surface == 'parametrictorus':
-        src = make_parametric_torus()
-    elif surface == 'plane':
-        src = make_elevations(make_plane())
-    elif surface == 'randomhills':
-        src = make_parametric_hills()
-    elif surface == 'sphere':
-        src = make_elevations(make_sphere())
-    elif surface == 'torus':
-        src = make_elevations(make_torus())
-    else:
-        print('No surface specified.')
-        return
+
+    # The length of the normal arrow glyphs.
+    scale_factor = 1.0
+    if desired_surface == 'Hills':
+        scale_factor = 0.5
+    elif desired_surface == 'Sphere':
+        scale_factor = 2.0
     print(desired_surface)
 
-    curvatures = ComputeCurvatures(src)
-    curvatures.set_curvature_type_to_gaussian()
-    # curvatures.set_curvature_type_to_mean()
-    curvatures.update()
+    gaussian_curvature = True
+    if gaussian_curvature:
+        curvature = 'Gauss_Curvature'
+    else:
+        curvature = 'Mean_Curvature'
 
-    src.GetPointData().SetActiveScalars(curvatures.get_curvature_type())
-    scalar_range_curvatures = src.GetPointData().GetScalars(curvatures.get_curvature_type()).GetRange()
-    scalar_range_elevation = src.GetPointData().GetScalars('Elevation').GetRange()
+    cc = vtkCurvatures()
+    cc.SetInputData(source)
+    needs_adjusting = ['Hills', 'ParametricTorus', 'Plane', 'RandomHills', 'Torus']
+    if gaussian_curvature:
+        cc.SetCurvatureTypeToGaussian()
+        cc.Update()
+        if desired_surface in needs_adjusting:
+            adjust_edge_curvatures(cc.GetOutput(), curvature)
+        if desired_surface == 'Plane':
+            constrain_curvatures(cc.GetOutput(), curvature, 0.0, 0.0)
+        if desired_surface == 'Sphere':
+            # Gaussian curvature is 1/r^2
+            constrain_curvatures(cc.GetOutput(), curvature, 4.0, 4.0)
+    else:
+        cc.SetCurvatureTypeToMean()
+        cc.Update()
+        if desired_surface in needs_adjusting:
+            adjust_edge_curvatures(cc.GetOutput(), curvature)
+        if desired_surface == 'Plane':
+            constrain_curvatures(cc.GetOutput(), curvature, 0.0, 0.0)
+        if desired_surface == 'Sphere':
+            # Mean curvature is 1/r
+            constrain_curvatures(cc.GetOutput(), curvature, 2.0, 2.0)
 
-    lut = make_categorical_lut()
-    lut1 = make_diverging_lut()
+    cc.GetOutput().GetPointData().SetActiveScalars(curvature)
+    scalar_range_curvatures = cc.GetOutput().GetPointData().GetScalars(curvature).GetRange()
+    scalar_range_elevation = cc.GetOutput().GetPointData().GetScalars('Elevation').GetRange()
+
+    lut = get_categorical_lut()
+    lut1 = get_diverging_lut()
     lut.SetTableRange(scalar_range_curvatures)
     lut1.SetTableRange(scalar_range_elevation)
     number_of_bands = lut.GetNumberOfTableValues()
-    bands = make_bands(scalar_range_curvatures, number_of_bands, False)
-    if surface == 'randomhills':
+    bands = get_bands(scalar_range_curvatures, number_of_bands, 10)
+    if desired_surface == 'RandomHills':
         # These are my custom bands.
         # Generated by first running:
-        # bands = make_bands(scalar_range_curvatures, number_of_bands, False)
+        # bands = get_bands(scalar_range_curvatures, number_of_bands, False)
         # then:
         #  freq = frequencies(bands, src)
         #  print_bands_frequencies(bands, freq)
@@ -72,51 +146,38 @@ def main(argv):
             [0.0746, 0.104], [0.104, 0.251], [0.251, 1.131]]
         # Comment this out if you want to see how allocating
         # equally spaced bands works.
-        bands = make_custom_bands(scalar_range_curvatures, number_of_bands, my_bands)
-        # bands = make_bands(scalar_range_curvatures, number_of_bands, False)
+        bands = get_custom_bands(scalar_range_curvatures, number_of_bands, my_bands)
+        # Adjust the number of table values
+        lut.SetNumberOfTableValues(len(bands))
+    elif desired_surface == 'Hills':
+        my_bands = [
+            [-2.104, -0.15], [-0.15, -0.1], [-0.1, -0.05],
+            [-0.05, -0.02], [-0.02, -0.005], [-0.005, -0.0005],
+            [-0.0005, 0.0005], [0.0005, 0.09], [0.09, 4.972]]
+        # Comment this out if you want to see how allocating
+        # equally spaced bands works.
+        bands = get_custom_bands(scalar_range_curvatures, number_of_bands, my_bands)
         # Adjust the number of table values
         lut.SetNumberOfTableValues(len(bands))
 
     # Let's do a frequency table.
     # The number of scalars in each band.
-    freq = frequencies(bands, src)
+    freq = frequencies(bands, cc.GetOutput())
+    bands, freq = adjust_ranges(bands, freq)
+    print_bands_frequencies(bands, freq)
 
-    min_key = min(freq.keys())
-    max_key = max(freq.keys())
-    if surface == 'sphere':
-        freq[0] = 0
-    first, last = adjust_frequency_ranges(freq)
-    for idx in range(min_key, first):
-        freq.pop(idx)
-        bands.pop(idx)
-    for idx in range(last + 1, max_key + 1):
-        freq.popitem()
-        bands.popitem()
-    old_keys = freq.keys()
-    adj_freq = OrderedDict()
-    adj_bands = OrderedDict()
-
-    for idx, k in enumerate(old_keys):
-        adj_freq[idx] = freq[k]
-        adj_bands[idx] = bands[k]
-    # print_bands_frequencies(bands, freq)
-    print_bands_frequencies(adj_bands, adj_freq)
-
-    min_key = min(adj_freq.keys())
-    max_key = max(adj_freq.keys())
-    scalar_range_curvatures = (adj_bands[min_key][0], adj_bands[max_key][2])
     lut.SetTableRange(scalar_range_curvatures)
-    lut.SetNumberOfTableValues(len(adj_bands))
+    lut.SetNumberOfTableValues(len(bands))
 
     # We will use the midpoint of the band as the label.
     labels = []
-    for k in adj_bands:
-        labels.append('{:4.2f}'.format(adj_bands[k][1]))
+    for k in bands:
+        labels.append('{:4.2f}'.format(bands[k][1]))
 
     # Annotate
-    values = vtk.vtkVariantArray()
+    values = vtkVariantArray()
     for i in range(len(labels)):
-        values.InsertNextValue(vtk.vtkVariant(labels[i]))
+        values.InsertNextValue(vtkVariant(labels[i]))
     for i in range(values.GetNumberOfTuples()):
         lut.SetAnnotation(i, values.GetValue(i).ToString())
 
@@ -124,47 +185,47 @@ def main(argv):
     lutr = reverse_lut(lut)
 
     # Create the contour bands.
-    bcf = vtk.vtkBandedPolyDataContourFilter()
-    bcf.SetInputData(src)
+    bcf = vtkBandedPolyDataContourFilter()
+    bcf.SetInputData(cc.GetOutput())
     # Use either the minimum or maximum value for each band.
-    for k in adj_bands:
-        bcf.SetValue(k, adj_bands[k][2])
+    for k in bands:
+        bcf.SetValue(k, bands[k][2])
     # We will use an indexed lookup table.
     bcf.SetScalarModeToIndex()
     bcf.GenerateContourEdgesOn()
 
     # Generate the glyphs on the original surface.
-    glyph = make_glyphs(src, False)
+    glyph = get_glyphs(cc.GetOutput(), scale_factor, False)
 
     # ------------------------------------------------------------
     # Create the mappers and actors
     # ------------------------------------------------------------
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('BkgColor', [179, 204, 255, 255])
     colors.SetColor("ParaViewBkg", [82, 87, 110, 255])
 
-    src_mapper = vtk.vtkPolyDataMapper()
+    src_mapper = vtkPolyDataMapper()
     src_mapper.SetInputConnection(bcf.GetOutputPort())
     src_mapper.SetScalarRange(scalar_range_curvatures)
     src_mapper.SetLookupTable(lut)
     src_mapper.SetScalarModeToUseCellData()
 
-    src_actor = vtk.vtkActor()
+    src_actor = vtkActor()
     src_actor.SetMapper(src_mapper)
 
     # Create contour edges
-    edge_mapper = vtk.vtkPolyDataMapper()
+    edge_mapper = vtkPolyDataMapper()
     edge_mapper.SetInputData(bcf.GetContourEdgesOutput())
     edge_mapper.SetResolveCoincidentTopologyToPolygonOffset()
 
-    edge_actor = vtk.vtkActor()
+    edge_actor = vtkActor()
     edge_actor.SetMapper(edge_mapper)
     edge_actor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
-    glyph_mapper = vtk.vtkPolyDataMapper()
+    glyph_mapper = vtkPolyDataMapper()
     glyph_mapper.SetInputConnection(glyph.GetOutputPort())
     glyph_mapper.SetScalarModeToUsePointFieldData()
     glyph_mapper.SetColorModeToMapScalars()
@@ -174,19 +235,19 @@ def main(argv):
     glyph_mapper.SetLookupTable(lut1)
     glyph_mapper.SetScalarRange(scalar_range_elevation)
 
-    glyph_actor = vtk.vtkActor()
+    glyph_actor = vtkActor()
     glyph_actor.SetMapper(glyph_mapper)
 
     window_width = 800
     window_height = 800
 
     # Add scalar bars.
-    scalar_bar = vtk.vtkScalarBarActor()
+    scalar_bar = vtkScalarBarActor()
     # This LUT puts the lowest value at the top of the scalar bar.
     # scalar_bar->SetLookupTable(lut);
     # Use this LUT if you want the highest value at the top.
     scalar_bar.SetLookupTable(lutr)
-    scalar_bar.SetTitle(curvatures.get_curvature_type().replace('_', '\n'))
+    scalar_bar.SetTitle(curvature.replace('_', '\n'))
     scalar_bar.GetTitleTextProperty().SetColor(
         colors.GetColor3d('AliceBlue'))
     scalar_bar.GetLabelTextProperty().SetColor(
@@ -198,7 +259,7 @@ def main(argv):
     scalar_bar.SetMaximumHeightInPixels(window_height // 3)
     scalar_bar.SetPosition(0.85, 0.05)
 
-    scalar_bar_elev = vtk.vtkScalarBarActor()
+    scalar_bar_elev = vtkScalarBarActor()
     # This LUT puts the lowest value at the top of the scalar bar.
     # scalar_bar_elev->SetLookupTable(lut);
     # Use this LUT if you want the highest value at the top.
@@ -211,7 +272,10 @@ def main(argv):
     scalar_bar_elev.GetAnnotationTextProperty().SetColor(
         colors.GetColor3d('AliceBlue'))
     scalar_bar_elev.UnconstrainedFontSizeOn()
-    scalar_bar_elev.SetNumberOfLabels(5)
+    if desired_surface == 'Plane':
+        scalar_bar_elev.SetNumberOfLabels(1)
+    else:
+        scalar_bar_elev.SetNumberOfLabels(5)
     scalar_bar_elev.SetMaximumWidthInPixels(window_width // 8)
     scalar_bar_elev.SetMaximumHeightInPixels(window_height // 3)
     # scalar_bar_elev.SetBarRatio(scalar_bar_elev.GetBarRatio() * 0.5)
@@ -220,16 +284,16 @@ def main(argv):
     # ------------------------------------------------------------
     # Create the RenderWindow, Renderer and Interactor
     # ------------------------------------------------------------
-    ren = vtk.vtkRenderer()
-    ren_win = vtk.vtkRenderWindow()
-    iren = vtk.vtkRenderWindowInteractor()
-    style = vtk.vtkInteractorStyleTrackballCamera()
+    ren = vtkRenderer()
+    ren_win = vtkRenderWindow()
+    iren = vtkRenderWindowInteractor()
+    style = vtkInteractorStyleTrackballCamera()
     iren.SetInteractorStyle(style)
 
     ren_win.AddRenderer(ren)
     # Important: The interactor must be set prior to enabling the widget.
     iren.SetRenderWindow(ren_win)
-    cam_orient_manipulator = vtk.vtkCameraOrientationWidget()
+    cam_orient_manipulator = vtkCameraOrientationWidget()
     cam_orient_manipulator.SetParentRenderer(ren)
     # Enable the widget.
     cam_orient_manipulator.On()
@@ -257,32 +321,7 @@ def main(argv):
     iren.Start()
 
 
-def make_bands(d_r, number_of_bands, nearest_integer):
-    """
-    Divide a range into bands
-    :param: d_r - [min, max] the range that is to be covered by the bands.
-    :param: number_of_bands - the number of bands, a positive integer.
-    :param: nearest_integer - if True then [floor(min), ceil(max)] is used.
-    :return: A dictionary consisting of the band number and [min, midpoint, max] for each band.
-    """
-    bands = OrderedDict()
-    if (d_r[1] < d_r[0]) or (number_of_bands <= 0):
-        return bands
-    x = list(d_r)
-    if nearest_integer:
-        x[0] = math.floor(x[0])
-        x[1] = math.ceil(x[1])
-    dx = (x[1] - x[0]) / float(number_of_bands)
-    b = [x[0], x[0] + dx / 2.0, x[0] + dx]
-    i = 0
-    while i < number_of_bands:
-        bands[i] = b
-        b = [b[0] + dx, b[1] + dx, b[2] + dx]
-        i += 1
-    return bands
-
-
-def make_custom_bands(d_r, number_of_bands, my_bands):
+def get_custom_bands(d_r, number_of_bands, my_bands):
     """
     Divide a range into custom bands.
 
@@ -293,9 +332,9 @@ def make_custom_bands(d_r, number_of_bands, my_bands):
 
     :param: d_r - [min, max] the range that is to be covered by the bands.
     :param: number_of_bands - the number of bands, a positive integer.
-    :return: A dixtionary consisting of band number and [min, midpoint, max] for each band.
+    :return: A dictionary consisting of band number and [min, midpoint, max] for each band.
     """
-    bands = OrderedDict()
+    bands = dict()
     if (d_r[1] < d_r[0]) or (number_of_bands <= 0):
         return bands
     x = my_bands
@@ -361,7 +400,7 @@ def adjust_frequency_ranges(freq):
     return first, last
 
 
-def make_elevations(src):
+def get_elevations(src):
     """
     Generate elevations over the surface.
     :param: src - the vtkPolyData source.
@@ -371,7 +410,7 @@ def make_elevations(src):
     src.GetBounds(bounds)
     if abs(bounds[2]) < 1.0e-8 and abs(bounds[3]) < 1.0e-8:
         bounds[3] = bounds[2] + 1
-    elev_filter = vtk.vtkElevationFilter()
+    elev_filter = vtkElevationFilter()
     elev_filter.SetInputData(src)
     elev_filter.SetLowPoint(0, bounds[2], 0)
     elev_filter.SetHighPoint(0, bounds[3], 0)
@@ -380,12 +419,94 @@ def make_elevations(src):
     return elev_filter.GetPolyDataOutput()
 
 
-def make_parametric_hills():
+def get_hills():
+    # Create four hills on a plane.
+    # This will have regions of negative, zero and positive Gsaussian curvatures.
+
+    x_res = 50
+    y_res = 50
+    x_min = -5.0
+    x_max = 5.0
+    dx = (x_max - x_min) / (x_res - 1)
+    y_min = -5.0
+    y_max = 5.0
+    dy = (y_max - y_min) / (x_res - 1)
+
+    # Make a grid.
+    points = vtkPoints()
+    for i in range(0, x_res):
+        x = x_min + i * dx
+        for j in range(0, y_res):
+            y = y_min + j * dy
+            points.InsertNextPoint(x, y, 0)
+
+    # Add the grid points to a polydata object.
+    plane = vtkPolyData()
+    plane.SetPoints(points)
+
+    # Triangulate the grid.
+    delaunay = vtkDelaunay2D()
+    delaunay.SetInputData(plane)
+    delaunay.Update()
+
+    polydata = delaunay.GetOutput()
+
+    elevation = vtkDoubleArray()
+    elevation.SetNumberOfTuples(points.GetNumberOfPoints())
+
+    #  We define the parameters for the hills here.
+    # [[0: x0, 1: y0, 2: x variance, 3: y variance, 4: amplitude]...]
+    hd = [[-2.5, -2.5, 2.5, 6.5, 3.5], [2.5, 2.5, 2.5, 2.5, 2],
+          [5.0, -2.5, 1.5, 1.5, 2.5], [-5.0, 5, 2.5, 3.0, 3]]
+    xx = [0.0] * 2
+    for i in range(0, points.GetNumberOfPoints()):
+        x = list(polydata.GetPoint(i))
+        for j in range(0, len(hd)):
+            xx[0] = (x[0] - hd[j][0] / hd[j][2]) ** 2.0
+            xx[1] = (x[1] - hd[j][1] / hd[j][3]) ** 2.0
+            x[2] += hd[j][4] * math.exp(-(xx[0] + xx[1]) / 2.0)
+            polydata.GetPoints().SetPoint(i, x)
+            elevation.SetValue(i, x[2])
+
+    textures = vtkFloatArray()
+    textures.SetNumberOfComponents(2)
+    textures.SetNumberOfTuples(2 * polydata.GetNumberOfPoints())
+    textures.SetName("Textures")
+
+    for i in range(0, x_res):
+        tc = [i / (x_res - 1.0), 0.0]
+        for j in range(0, y_res):
+            # tc[1] = 1.0 - j / (y_res - 1.0)
+            tc[1] = j / (y_res - 1.0)
+            textures.SetTuple(i * y_res + j, tc)
+
+    polydata.GetPointData().SetScalars(elevation)
+    polydata.GetPointData().GetScalars().SetName("Elevation")
+    polydata.GetPointData().SetTCoords(textures)
+
+    normals = vtkPolyDataNormals()
+    normals.SetInputData(polydata)
+    normals.SetInputData(polydata)
+    normals.SetFeatureAngle(30)
+    normals.SplittingOff()
+
+    tr1 = vtkTransform()
+    tr1.RotateX(-90)
+
+    tf1 = vtkTransformPolyDataFilter()
+    tf1.SetInputConnection(normals.GetOutputPort())
+    tf1.SetTransform(tr1)
+    tf1.Update()
+
+    return tf1.GetOutput()
+
+
+def get_parametric_hills():
     """
     Make a parametric hills surface as the source.
     :return: vtkPolyData with normal and scalar data.
     """
-    fn = vtk.vtkParametricRandomHills()
+    fn = vtkParametricRandomHills()
     fn.AllowRandomGenerationOn()
     fn.SetRandomSeed(1)
     fn.SetNumberOfHills(30)
@@ -394,7 +515,7 @@ def make_parametric_hills():
     # if fn.GetClassName() == 'vtkParametricRandomHills':
     #    fn.ClockwiseOrderingOff()
 
-    source = vtk.vtkParametricFunctionSource()
+    source = vtkParametricFunctionSource()
     source.SetParametricFunction(fn)
     source.SetUResolution(50)
     source.SetVResolution(50)
@@ -406,10 +527,10 @@ def make_parametric_hills():
     # Rename the scalars to 'Elevation' since we are using the Z-scalars as elevations.
     source.GetOutput().GetPointData().GetScalars().SetName('Elevation')
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.Translate(0.0, 5.0, 15.0)
     transform.RotateX(-90.0)
-    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter = vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(source.GetOutputPort())
     transform_filter.SetTransform(transform)
     transform_filter.Update()
@@ -417,17 +538,17 @@ def make_parametric_hills():
     return transform_filter.GetOutput()
 
 
-def make_parametric_torus():
+def get_parametric_torus():
     """
     Make a parametric torus as the source.
     :return: vtkPolyData with normal and scalar data.
     """
 
-    fn = vtk.vtkParametricTorus()
+    fn = vtkParametricTorus()
     fn.SetRingRadius(5)
     fn.SetCrossSectionRadius(2)
 
-    source = vtk.vtkParametricFunctionSource()
+    source = vtkParametricFunctionSource()
     source.SetParametricFunction(fn)
     source.SetUResolution(50)
     source.SetVResolution(50)
@@ -440,9 +561,9 @@ def make_parametric_torus():
     # Rename the scalars to 'Elevation' since we are using the Z-scalars as elevations.
     source.GetOutput().GetPointData().GetScalars().SetName('Elevation')
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.RotateX(-90.0)
-    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter = vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(source.GetOutputPort())
     transform_filter.SetTransform(transform)
     transform_filter.Update()
@@ -450,13 +571,13 @@ def make_parametric_torus():
     return transform_filter.GetOutput()
 
 
-def make_plane():
+def get_plane():
     """
     Make a plane as the source.
     :return: vtkPolyData with normal and scalar data.
     """
 
-    source = vtk.vtkPlaneSource()
+    source = vtkPlaneSource()
     source.SetOrigin(-10.0, -10.0, 0.0)
     source.SetPoint2(-10.0, 10.0, 0.0)
     source.SetPoint1(10.0, -10.0, 0.0)
@@ -464,10 +585,10 @@ def make_plane():
     source.SetYResolution(20)
     source.Update()
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.Translate(0.0, 0.0, 0.0)
     transform.RotateX(-90.0)
-    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter = vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(source.GetOutputPort())
     transform_filter.SetTransform(transform)
     transform_filter.Update()
@@ -475,12 +596,12 @@ def make_plane():
     # We have a m x n array of quadrilaterals arranged as a regular tiling in a
     # plane. So pass it through a triangle filter since the curvature filter only
     # operates on polys.
-    tri = vtk.vtkTriangleFilter()
+    tri = vtkTriangleFilter()
     tri.SetInputConnection(transform_filter.GetOutputPort())
 
     # Pass it though a CleanPolyDataFilter and merge any points which
     # are coincident, or very close
-    cleaner = vtk.vtkCleanPolyData()
+    cleaner = vtkCleanPolyData()
     cleaner.SetInputConnection(tri.GetOutputPort())
     cleaner.SetTolerance(0.005)
     cleaner.Update()
@@ -488,8 +609,8 @@ def make_plane():
     return cleaner.GetOutput()
 
 
-def make_sphere():
-    source = vtk.vtkSphereSource()
+def get_sphere():
+    source = vtkSphereSource()
     source.SetCenter(0.0, 0.0, 0.0)
     source.SetRadius(10.0)
     source.SetThetaResolution(32)
@@ -499,12 +620,12 @@ def make_sphere():
     return source.GetOutput()
 
 
-def make_torus():
+def get_torus():
     """
     Make a torus as the source.
     :return: vtkPolyData with normal and scalar data.
     """
-    source = vtk.vtkSuperquadricSource()
+    source = vtkSuperquadricSource()
     source.SetCenter(0.0, 0.0, 0.0)
     source.SetScale(1.0, 1.0, 1.0)
     source.SetPhiResolution(64)
@@ -516,13 +637,13 @@ def make_torus():
 
     # The quadric is made of strips, so pass it through a triangle filter as
     # the curvature filter only operates on polys
-    tri = vtk.vtkTriangleFilter()
+    tri = vtkTriangleFilter()
     tri.SetInputConnection(source.GetOutputPort())
 
     # The quadric has nasty discontinuities from the way the edges are generated
     # so let's pass it though a CleanPolyDataFilter and merge any points which
     # are coincident, or very close
-    cleaner = vtk.vtkCleanPolyData()
+    cleaner = vtkCleanPolyData()
     cleaner.SetInputConnection(tri.GetOutputPort())
     cleaner.SetTolerance(0.005)
     cleaner.Update()
@@ -530,80 +651,164 @@ def make_torus():
     return cleaner.GetOutput()
 
 
-def clipper(src, dx, dy, dz):
+def adjust_edge_curvatures(source, curvature_name, epsilon=1.0e-08):
     """
-    Clip a vtkPolyData source.
-    A cube is made whose size corresponds the the bounds of the source.
-    Then each side is shrunk by the appropriate dx, dy or dz. After
-    this operation the source is clipped by the cube.
-    :param: src - the vtkPolyData source
-    :param: dx - the amount to clip in the x-direction
-    :param: dy - the amount to clip in the y-direction
-    :param: dz - the amount to clip in the z-direction
-    :return: vtkPolyData.
+    This function adjusts curvatures along the edges of the surface by replacing
+     the value with the average value of the curvatures of points in the neighborhood.
+
+    Remember to update the vtkCurvatures object before calling this.
+
+    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.
+    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.
+    :param epsilon: Absolute curvature values less than this will be set to zero.
+    :return:
     """
-    bounds = [0, 0, 0, 0, 0, 0]
-    src.GetBounds(bounds)
 
-    plane1 = vtk.vtkPlane()
-    plane1.SetOrigin(bounds[0] + dx, 0, 0)
-    plane1.SetNormal(1, 0, 0)
+    def point_neighbourhood(pt_id):
+        """
+        Find the ids of the neighbours of pt_id.
 
-    plane2 = vtk.vtkPlane()
-    plane2.SetOrigin(bounds[1] - dx, 0, 0)
-    plane2.SetNormal(-1, 0, 0)
+        :param pt_id: The point id.
+        :return: The neighbour ids.
+        """
+        """
+        Extract the topological neighbors for point pId. In two steps:
+        1) source.GetPointCells(pt_id, cell_ids)
+        2) source.GetCellPoints(cell_id, cell_point_ids) for all cell_id in cell_ids
+        """
+        cell_ids = vtkIdList()
+        source.GetPointCells(pt_id, cell_ids)
+        neighbour = set()
+        for cell_idx in range(0, cell_ids.GetNumberOfIds()):
+            cell_id = cell_ids.GetId(cell_idx)
+            cell_point_ids = vtkIdList()
+            source.GetCellPoints(cell_id, cell_point_ids)
+            for cell_pt_idx in range(0, cell_point_ids.GetNumberOfIds()):
+                neighbour.add(cell_point_ids.GetId(cell_pt_idx))
+        return neighbour
 
-    plane3 = vtk.vtkPlane()
-    plane3.SetOrigin(0, bounds[2] + dy, 0)
-    plane3.SetNormal(0, 1, 0)
+    def compute_distance(pt_id_a, pt_id_b):
+        """
+        Compute the distance between two points given their ids.
 
-    plane4 = vtk.vtkPlane()
-    plane4.SetOrigin(0, bounds[3] - dy, 0)
-    plane4.SetNormal(0, -1, 0)
+        :param pt_id_a:
+        :param pt_id_b:
+        :return:
+        """
+        pt_a = np.array(source.GetPoint(pt_id_a))
+        pt_b = np.array(source.GetPoint(pt_id_b))
+        return np.linalg.norm(pt_a - pt_b)
 
-    plane5 = vtk.vtkPlane()
-    plane5.SetOrigin(0, 0, bounds[4] + dz)
-    plane5.SetNormal(0, 0, 1)
+    # Get the active scalars
+    source.GetPointData().SetActiveScalars(curvature_name)
+    np_source = dsa.WrapDataObject(source)
+    curvatures = np_source.PointData[curvature_name]
 
-    plane6 = vtk.vtkPlane()
-    plane6.SetOrigin(0, 0, bounds[5] - dz)
-    plane6.SetNormal(0, 0, -1)
+    #  Get the boundary point IDs.
+    array_name = 'ids'
+    id_filter = vtkIdFilter()
+    id_filter.SetInputData(source)
+    id_filter.SetPointIds(True)
+    id_filter.SetCellIds(False)
+    id_filter.SetPointIdsArrayName(array_name)
+    id_filter.SetCellIdsArrayName(array_name)
+    id_filter.Update()
 
-    clip_function = vtk.vtkImplicitBoolean()
-    clip_function.SetOperationTypeToUnion()
-    clip_function.AddFunction(plane1)
-    clip_function.AddFunction(plane2)
-    clip_function.AddFunction(plane3)
-    clip_function.AddFunction(plane4)
-    clip_function.AddFunction(plane5)
-    clip_function.AddFunction(plane6)
+    edges = vtkFeatureEdges()
+    edges.SetInputConnection(id_filter.GetOutputPort())
+    edges.BoundaryEdgesOn()
+    edges.ManifoldEdgesOff()
+    edges.NonManifoldEdgesOff()
+    edges.FeatureEdgesOff()
+    edges.Update()
 
-    # Clip it.
-    pd_clipper = vtk.vtkClipPolyData()
-    pd_clipper.SetClipFunction(clip_function)
-    pd_clipper.SetInputData(src)
-    pd_clipper.GenerateClipScalarsOff()
-    pd_clipper.GenerateClippedOutputOff()
-    # pd_clipper.GenerateClippedOutputOn()
-    pd_clipper.Update()
-    return pd_clipper.GetOutput()
+    edge_array = edges.GetOutput().GetPointData().GetArray(array_name)
+    boundary_ids = []
+    for i in range(edges.GetOutput().GetNumberOfPoints()):
+        boundary_ids.append(edge_array.GetValue(i))
+    # Remove duplicate Ids.
+    p_ids_set = set(boundary_ids)
+
+    # Iterate over the edge points and compute the curvature as the weighted
+    # average of the neighbours.
+    count_invalid = 0
+    for p_id in boundary_ids:
+        p_ids_neighbors = point_neighbourhood(p_id)
+        # Keep only interior points.
+        p_ids_neighbors -= p_ids_set
+        # Compute distances and extract curvature values.
+        curvs = [curvatures[p_id_n] for p_id_n in p_ids_neighbors]
+        dists = [compute_distance(p_id_n, p_id) for p_id_n in p_ids_neighbors]
+        curvs = np.array(curvs)
+        dists = np.array(dists)
+        curvs = curvs[dists > 0]
+        dists = dists[dists > 0]
+        if len(curvs) > 0:
+            weights = 1 / np.array(dists)
+            weights /= weights.sum()
+            new_curv = np.dot(curvs, weights)
+        else:
+            # Corner case.
+            count_invalid += 1
+            # Assuming the curvature of the point is planar.
+            new_curv = 0.0
+        # Set the new curvature value.
+        curvatures[p_id] = new_curv
+
+    #  Set small values to zero.
+    if epsilon != 0.0:
+        curvatures = np.where(abs(curvatures) < epsilon, 0, curvatures)
+        # Curvatures is now an ndarray
+        curv = numpy_support.numpy_to_vtk(num_array=curvatures.ravel(),
+                                          deep=True,
+                                          array_type=VTK_DOUBLE)
+        curv.SetName(curvature_name)
+        source.GetPointData().RemoveArray(curvature_name)
+        source.GetPointData().AddArray(curv)
+        source.GetPointData().SetActiveScalars(curvature_name)
 
 
-def calculate_curvatures(src):
+def constrain_curvatures(source, curvature_name, lower_bound=0.0, upper_bound=0.0):
     """
-    The source must be triangulated.
-    :param: src - the source.
-    :return: vtkPolyData with normal and scalar data representing curvatures.
+    This function constrains curvatures to the range [lower_bound ... upper_bound].
+
+    Remember to update the vtkCurvatures object before calling this.
+
+    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.
+    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.
+    :param lower_bound: The lower bound.
+    :param upper_bound: The upper bound.
+    :return:
     """
-    curvature = vtk.vtkCurvatures()
-    curvature.SetCurvatureTypeToGaussian()
-    curvature.SetInputData(src)
-    curvature.Update()
-    return curvature.GetOutput()
+
+    bounds = list()
+    if lower_bound < upper_bound:
+        bounds.append(lower_bound)
+        bounds.append(upper_bound)
+    else:
+        bounds.append(upper_bound)
+        bounds.append(lower_bound)
+
+    # Get the active scalars
+    source.GetPointData().SetActiveScalars(curvature_name)
+    np_source = dsa.WrapDataObject(source)
+    curvatures = np_source.PointData[curvature_name]
+
+    # Set upper and lower bounds.
+    curvatures = np.where(curvatures < bounds[0], bounds[0], curvatures)
+    curvatures = np.where(curvatures > bounds[1], bounds[1], curvatures)
+    # Curvatures is now an ndarray
+    curv = numpy_support.numpy_to_vtk(num_array=curvatures.ravel(),
+                                      deep=True,
+                                      array_type=VTK_DOUBLE)
+    curv.SetName(curvature_name)
+    source.GetPointData().RemoveArray(curvature_name)
+    source.GetPointData().AddArray(curv)
+    source.GetPointData().SetActiveScalars(curvature_name)
 
 
 def get_color_series():
-    color_series = vtk.vtkColorSeries()
+    color_series = vtkColorSeries()
     # Select a color scheme.
     # color_series_enum = color_series.BREWER_DIVERGING_BROWN_BLUE_GREEN_9
     # color_series_enum = color_series.BREWER_DIVERGING_SPECTRAL_10
@@ -617,33 +822,33 @@ def get_color_series():
     return color_series
 
 
-def make_categorical_lut():
+def get_categorical_lut():
     """
     Make a lookup table using vtkColorSeries.
     :return: An indexed (categorical) lookup table.
     """
     color_series = get_color_series()
     # Make the lookup table.
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     color_series.BuildLookupTable(lut, color_series.CATEGORICAL)
     lut.SetNanColor(0, 0, 0, 1)
     return lut
 
 
-def make_ordinal_lut():
+def get_ordinal_lut():
     """
     Make a lookup table using vtkColorSeries.
     :return: An ordinal (not indexed) lookup table.
     """
     color_series = get_color_series()
     # Make the lookup table.
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     color_series.BuildLookupTable(lut, color_series.ORDINAL)
     lut.SetNanColor(0, 0, 0, 1)
     return lut
 
 
-def make_diverging_lut():
+def get_diverging_lut():
     """
     See: [Diverging Color Maps for Scientific Visualization](https://www.kennethmoreland.com/color-maps/)
                        start point         midPoint            end point
@@ -655,7 +860,7 @@ def make_diverging_lut():
 
     :return:
     """
-    ctf = vtk.vtkColorTransferFunction()
+    ctf = vtkColorTransferFunction()
     ctf.SetColorSpaceToDiverging()
     # Cool to warm.
     ctf.AddRGBPoint(0.0, 0.085, 0.532, 0.201)
@@ -663,7 +868,7 @@ def make_diverging_lut():
     ctf.AddRGBPoint(1.0, 0.758, 0.214, 0.233)
 
     table_size = 256
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetNumberOfTableValues(table_size)
     lut.Build()
 
@@ -681,7 +886,7 @@ def reverse_lut(lut):
     :param: lut - An indexed lookup table.
     :return: The reversed indexed lookup table.
     """
-    lutr = vtk.vtkLookupTable()
+    lutr = vtkLookupTable()
     lutr.DeepCopy(lut)
     t = lut.GetNumberOfTableValues() - 1
     rev_range = reversed(list(range(t + 1)))
@@ -698,7 +903,7 @@ def reverse_lut(lut):
     return lutr
 
 
-def make_glyphs(src, reverse_normals):
+def get_glyphs(src, scale_factor=1.0, reverse_normals=False):
     """
     Glyph the normals on the surface.
 
@@ -713,10 +918,10 @@ def make_glyphs(src, reverse_normals):
     # Sometimes the contouring algorithm can create a volume whose gradient
     # vector and ordering of polygon (using the right hand rule) are
     # inconsistent. vtkReverseSense cures this problem.
-    reverse = vtk.vtkReverseSense()
+    reverse = vtkReverseSense()
 
     # Choose a random subset of points.
-    mask_pts = vtk.vtkMaskPoints()
+    mask_pts = vtkMaskPoints()
     mask_pts.SetOnRatio(5)
     mask_pts.RandomModeOn()
     if reverse_normals:
@@ -728,16 +933,16 @@ def make_glyphs(src, reverse_normals):
         mask_pts.SetInputData(src)
 
     # Source for the glyph filter
-    arrow = vtk.vtkArrowSource()
+    arrow = vtkArrowSource()
     arrow.SetTipResolution(16)
     arrow.SetTipLength(0.3)
     arrow.SetTipRadius(0.1)
 
-    glyph = vtk.vtkGlyph3D()
+    glyph = vtkGlyph3D()
     glyph.SetSourceConnection(arrow.GetOutputPort())
     glyph.SetInputConnection(mask_pts.GetOutputPort())
     glyph.SetVectorModeToUseNormal()
-    glyph.SetScaleFactor(1.0)
+    glyph.SetScaleFactor(scale_factor)
     glyph.SetColorModeToColorByVector()
     glyph.SetScaleModeToScaleByVector()
     glyph.OrientOn()
@@ -745,257 +950,144 @@ def make_glyphs(src, reverse_normals):
     return glyph
 
 
-def print_bands(bands):
-    s = f'Bands:\n'
-    for k, v in bands.items():
-        for j, q in enumerate(v):
-            if j == 0:
-                s += f'{k:4d} ['
-            if j == len(v) - 1:
-                s += f'{q:8.3f}]\n'
-            else:
-                s += f'{q:8.3f}, '
-    print(s)
+def get_source(source):
+    surface = source.lower()
+    available_surfaces = ['hills', 'parametrictorus', 'plane', 'randomhills', 'sphere', 'torus']
+    if surface not in available_surfaces:
+        return None
+    elif surface == 'hills':
+        return get_hills()
+    elif surface == 'parametrictorus':
+        return get_parametric_torus()
+    elif surface == 'plane':
+        return get_elevations(get_plane())
+    elif surface == 'randomhills':
+        return get_parametric_hills()
+    elif surface == 'sphere':
+        return get_elevations(get_sphere())
+    elif surface == 'torus':
+        return get_elevations(get_torus())
+    return None
 
 
-def print_frequencies(freq):
-    s = ''
-    for i, p in freq.items():
+def get_bands(d_r, number_of_bands, precision=2, nearest_integer=False):
+    """
+    Divide a range into bands
+    :param: d_r - [min, max] the range that is to be covered by the bands.
+    :param: number_of_bands - The number of bands, a positive integer.
+    :param: precision - The decimal precision of the bounds.
+    :param: nearest_integer - If True then [floor(min), ceil(max)] is used.
+    :return: A dictionary consisting of the band number and [min, midpoint, max] for each band.
+    """
+    prec = abs(precision)
+    if prec > 14:
+        prec = 14
+
+    bands = dict()
+    if (d_r[1] < d_r[0]) or (number_of_bands <= 0):
+        return bands
+    x = list(d_r)
+    if nearest_integer:
+        x[0] = math.floor(x[0])
+        x[1] = math.ceil(x[1])
+    dx = (x[1] - x[0]) / float(number_of_bands)
+    b = [x[0], x[0] + dx / 2.0, x[0] + dx]
+    i = 0
+    while i < number_of_bands:
+        b = list(map(lambda ele_b: round(ele_b, prec), b))
         if i == 0:
-            s += f'Frequencies: ['
-        if i == len(freq) - 1:
-            s += f'{i}: {p} ]'
-        else:
-            s += f'{i}: {p}, '
-    print(s)
+            b[0] = x[0]
+        bands[i] = b
+        b = [b[0] + dx, b[1] + dx, b[2] + dx]
+        i += 1
+    return bands
 
 
-def print_bands_frequencies(bands, freq):
+def get_frequencies(bands, src):
+    """
+    Count the number of scalars in each band.
+    The scalars used are the active scalars in the polydata.
+
+    :param: bands - The bands.
+    :param: src - The vtkPolyData source.
+    :return: The frequencies of the scalars in each band.
+    """
+    freq = dict()
+    for i in range(len(bands)):
+        freq[i] = 0
+    tuples = src.GetPointData().GetScalars().GetNumberOfTuples()
+    for i in range(tuples):
+        x = src.GetPointData().GetScalars().GetTuple1(i)
+        for j in range(len(bands)):
+            if x <= bands[j][2]:
+                freq[j] += 1
+                break
+    return freq
+
+
+def adjust_ranges(bands, freq):
+    """
+    The bands and frequencies are adjusted so that the first and last
+     frequencies in the range are non-zero.
+    :param bands: The bands dictionary.
+    :param freq: The frequency dictionary.
+    :return: Adjusted bands and frequencies.
+    """
+    # Get the indices of the first and last non-zero elements.
+    first = 0
+    for k, v in freq.items():
+        if v != 0:
+            first = k
+            break
+    rev_keys = list(freq.keys())[::-1]
+    last = rev_keys[0]
+    for idx in list(freq.keys())[::-1]:
+        if freq[idx] != 0:
+            last = idx
+            break
+    # Now adjust the ranges.
+    min_key = min(freq.keys())
+    max_key = max(freq.keys())
+    for idx in range(min_key, first):
+        freq.pop(idx)
+        bands.pop(idx)
+    for idx in range(last + 1, max_key + 1):
+        freq.popitem()
+        bands.popitem()
+    old_keys = freq.keys()
+    adj_freq = dict()
+    adj_bands = dict()
+
+    for idx, k in enumerate(old_keys):
+        adj_freq[idx] = freq[k]
+        adj_bands[idx] = bands[k]
+
+    return adj_bands, adj_freq
+
+
+def print_bands_frequencies(bands, freq, precision=2):
+    prec = abs(precision)
+    if prec > 14:
+        prec = 14
+
     if len(bands) != len(freq):
-        print('Bands and frequencies must be the same size.')
+        print('Bands and Frequencies must be the same size.')
         return
-    s = f'Bands & frequencies:\n'
+    s = f'Bands & Frequencies:\n'
+    total = 0
+    width = prec + 6
     for k, v in bands.items():
+        total += freq[k]
         for j, q in enumerate(v):
             if j == 0:
                 s += f'{k:4d} ['
             if j == len(v) - 1:
-                s += f'{q:8.3f}]: {freq[k]:6d}\n'
+                s += f'{q:{width}.{prec}f}]: {freq[k]:8d}\n'
             else:
-                s += f'{q:8.3f}, '
+                s += f'{q:{width}.{prec}f}, '
+    width = 3 * width + 13
+    s += f'{"Total":{width}s}{total:8d}\n'
     print(s)
-
-
-class ComputeCurvatures:
-    """
-    This class takes a vtkPolyData source and:
-     - calculates Gaussian and Mean curvatures,
-     - adjusts curvatures along the edges using a weighted average,
-     - inserts the adjusted curvatures into the vtkPolyData source.
-
-     Additional methods are provided for setting bounds and precision.
-    """
-
-    def __init__(self, polydata_source, gauss_eps=1.0e-08, mean_eps=1.0e-08):
-        """
-
-        :param polydata_source: The polydata source.
-        :param gauss_eps: Gaussian curvatures less than this will be set to zero.
-        :param mean_eps: Mean curvatures less than this will be set to zero.
-        """
-        self.source = polydata_source
-        self.curvature_type = 'Gauss_Curvature'
-        self.adjusted_curvatures = dict()
-        self.bounds = {'Gauss_Curvature': [0.0, 0.0], 'Mean_Curvature': [0.0, 0.0]}
-        self.bounds_state = {'Gauss_Curvature': False, 'Mean_Curvature': False}
-        self.epsilons = {'Gauss_Curvature': gauss_eps, 'Mean_Curvature': mean_eps}
-
-    # Remember to run Update after these set and on/off methods.
-    def get_curvature_type(self):
-        return self.curvature_type
-
-    def set_curvature_type_to_gaussian(self):
-        self.curvature_type = 'Gauss_Curvature'
-
-    def set_gauss_epsilon(self, eps=1.0e-08):
-        self.bounds['Gauss_Curvature'] = abs(eps)
-
-    def set_gauss_curvature_bounds(self, lower=0.0, upper=0.0):
-        if lower <= upper:
-            self.bounds['Gauss_Curvature'] = [lower, upper]
-        else:
-            self.bounds['Gauss_Curvature'] = [upper, lower]
-            print('set_gauss_curvature_bounds: bounds swapped since lower > upper')
-
-    def gauss_bounds_on(self):
-        self.bounds_state['Gauss_Curvature'] = True
-
-    def gauss_bounds_off(self):
-        self.bounds_state['Gauss_Curvature'] = False
-
-    def set_curvature_type_to_mean(self):
-        self.curvature_type = 'Mean_Curvature'
-
-    def set_mean_epsilon(self, eps=1.0e-08):
-        self.bounds['Gauss_Curvature'] = abs(eps)
-
-    def set_mean_curvature_bounds(self, lower=0.0, upper=0.0):
-        if lower <= upper:
-            self.bounds['Mean_Curvature'] = [lower, upper]
-        else:
-            self.bounds['Mean_Curvature'] = [upper, lower]
-            print('set_mean_curvature_bounds: bounds swapped since lower > upper')
-
-    def mean_bounds_on(self):
-        self.bounds_state['Mean_Curvature'] = True
-
-    def mean_bounds_off(self):
-        self.bounds_state['Mean_Curvature'] = False
-
-    def update(self):
-        self.compute_curvature_and_fix_up_boundary()
-        #  Set small values to zero.
-        if self.epsilons[self.curvature_type] != 0.0:
-            eps = abs(self.epsilons[self.curvature_type])
-            self.adjusted_curvatures[self.curvature_type] = np.where(
-                abs(self.adjusted_curvatures[self.curvature_type]) < eps, 0,
-                self.adjusted_curvatures[self.curvature_type])
-        # Set upper and lower bounds.
-        if self.bounds_state[self.curvature_type]:
-            lower_bound = self.bounds[self.curvature_type][0]
-            self.adjusted_curvatures[self.curvature_type] = np.where(
-                self.adjusted_curvatures[self.curvature_type] < lower_bound, lower_bound,
-                self.adjusted_curvatures[self.curvature_type])
-            upper_bound = self.bounds[self.curvature_type][1]
-            self.adjusted_curvatures[self.curvature_type] = np.where(
-                self.adjusted_curvatures[self.curvature_type] > upper_bound, upper_bound,
-                self.adjusted_curvatures[self.curvature_type])
-        self.update_curvature()
-
-    def compute_curvature_and_fix_up_boundary(self):
-        # Curvature as vtkPolyData.
-        curvature_data = self.compute_curvature()
-        # Curvature as python list.
-        curvature = self.extract_data(curvature_data)
-        # Ids of the boundary points.
-        p_ids = self.extract_boundary_ids()
-        # Remove duplicate Ids.
-        p_ids_set = set(p_ids)
-
-        # Iterate over the edge points and compute the curvature as the weighted
-        # average of the neighbors.
-        count_invalid = 0
-        for p_id in p_ids:
-            p_ids_neighbors = self.point_neighborhood(p_id)
-            # Keep only interior points.
-            p_ids_neighbors -= p_ids_set
-            # Compute distances and extract curvature values.
-            curvs = [curvature[p_id_n] for p_id_n in p_ids_neighbors]
-            dists = [self.compute_distance(p_id_n, p_id) for p_id_n in p_ids_neighbors]
-            curvs = np.array(curvs)
-            dists = np.array(dists)
-            curvs = curvs[dists > 0]
-            dists = dists[dists > 0]
-            if len(curvs) > 0:
-                weights = 1 / np.array(dists)
-                weights /= weights.sum()
-                new_curv = np.dot(curvs, weights)
-            else:
-                # Corner case.
-                count_invalid += 1
-                new_curv = 0
-            # Set the new curvature value.
-            curvature[p_id] = new_curv
-        self.adjusted_curvatures[self.curvature_type] = np.array(curvature)
-
-    def compute_curvature(self):
-        curvature_filter = vtk.vtkCurvatures()
-        curvature_filter.SetInputData(self.source)
-        if 'Gauss_Curvature' == self.curvature_type:
-            curvature_filter.SetCurvatureTypeToGaussian()
-        elif 'Mean_Curvature' == self.curvature_type:
-            curvature_filter.SetCurvatureTypeToMean()
-        else:
-            print('Curvature type must be either Gaussian or Mean.')
-            return None
-        curvature_filter.Update()
-        return curvature_filter.GetOutput()
-
-    def extract_data(self, curvature_data):
-        array = curvature_data.GetPointData().GetAbstractArray(self.curvature_type)
-        n = curvature_data.GetNumberOfPoints()
-        data = []
-        for i in range(n):
-            data.append(array.GetVariantValue(i).ToDouble())
-        return data
-
-    def extract_boundary_ids(self):
-        """
-        See here: https://discourse.vtk.org/t/2530/3
-        """
-        array_name = 'ids'
-        id_filter = vtk.vtkIdFilter()
-        id_filter.SetInputData(self.source)
-        id_filter.SetPointIds(True)
-        id_filter.SetCellIds(False)
-        id_filter.SetPointIdsArrayName(array_name)
-        id_filter.SetCellIdsArrayName(array_name)
-        id_filter.Update()
-
-        edges = vtk.vtkFeatureEdges()
-        edges.SetInputConnection(id_filter.GetOutputPort())
-        edges.BoundaryEdgesOn()
-        edges.ManifoldEdgesOff()
-        edges.NonManifoldEdgesOff()
-        edges.FeatureEdgesOff()
-        edges.Update()
-
-        array = edges.GetOutput().GetPointData().GetArray(array_name)
-        n = edges.GetOutput().GetNumberOfPoints()
-        boundary_ids = []
-        for i in range(n):
-            boundary_ids.append(array.GetValue(i))
-        return boundary_ids
-
-    def point_neighborhood(self, p_id):
-        """
-        Extract the topological neighbors for point pId. In two steps:
-        1) self.source.GetPointCells(pId, cell_ids)
-        2) self.source.GetCellPoints(c_id, point_ids) for all c_id in cell_ids
-        """
-        cell_ids = vtk.vtkIdList()
-        self.source.GetPointCells(p_id, cell_ids)
-        neighbors = set()
-        for i in range(0, cell_ids.GetNumberOfIds()):
-            cell_id = cell_ids.GetId(i)
-            cell_point_ids = vtk.vtkIdList()
-            self.source.GetCellPoints(cell_id, cell_point_ids)
-            for j in range(0, cell_point_ids.GetNumberOfIds()):
-                neighbors.add(cell_point_ids.GetId(j))
-        return neighbors
-
-    def compute_distance(self, pt_id_a, pt_id_b):
-        pt_a = np.array(self.source.GetPoint(pt_id_a))
-        pt_b = np.array(self.source.GetPoint(pt_id_b))
-        return np.linalg.norm(pt_a - pt_b)
-
-    def update_curvature(self):
-        """
-        Add the adjusted curvatures into the self.source.
-         :return:
-        """
-        if self.source.GetNumberOfPoints() != len(self.adjusted_curvatures[self.curvature_type]):
-            s = f'{self.curvature_type:15s}:\nCannot add the adjusted curvatures to the source.\n'
-            s += ' The number of points in source does not equal the\n'
-            s += ' number of point ids in the adjusted curvature array.'
-            print(s)
-            return
-        curvatures = numpy_support.numpy_to_vtk(num_array=self.adjusted_curvatures[self.curvature_type].ravel(),
-                                                deep=True,
-                                                array_type=vtk.VTK_DOUBLE)
-        curvatures.SetName(self.curvature_type)
-        self.source.GetPointData().AddArray(curvatures)
-        self.source.GetPointData().SetActiveScalars(self.curvature_type)
 
 
 if __name__ == '__main__':
