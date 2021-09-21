@@ -19,13 +19,12 @@ In the above image you can see that the random hills incorporate all of these ge
 The surface selected is the parametric random hills surface. The problem with the random hills surface is:
 
 - Most of the gaussian curvatures will lie in the range -1 to 0.2 (say) with a few large values say 20 to 40 at the peaks of the hills.
-- The edges of the random hills surface also have large irregular values so we need to handle these also. This is actually done in the class, `ComputeCurvatures`.
+- The edges of the random hills surface also have large irregular values so we need to handle these also. In order to fix this, a function is provided to adjust the edges.
 
 So we need to manually generate custom bands to group the curvatures. The bands selected in the examples show that the surface is mostly planar with some hyperbolic regions (saddle points) and some spherical regions.
 
 Feel free to experiment with different color schemes and/or the other sources from the parametric function group or the torus etc.
 
 You will usually need to adjust the parameters for `maskPts`, `arrow` and `glyph` for a nice appearance.
-Do this in the function `MakeGlyphs()`.
 
-`PrintBandsFrequencies()` allows you to inspect the bands and the number of scalars in each band. This are useful if you want to get an idea of the distribution of the scalars in each band.
+A histogram of the frequencies is also output to the console. This is useful if you want to get an idea of the distribution of the scalars in each band.

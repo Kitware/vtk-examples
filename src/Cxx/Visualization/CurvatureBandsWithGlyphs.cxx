@@ -4,13 +4,17 @@
 #include <vtkCamera.h>
 #include <vtkCameraOrientationWidget.h>
 #include <vtkCleanPolyData.h>
-#include <vtkClipPolyData.h>
 #include <vtkColorSeries.h>
 #include <vtkColorTransferFunction.h>
 #include <vtkCurvatures.h>
+#include <vtkDelaunay2D.h>
+#include <vtkDoubleArray.h>
 #include <vtkElevationFilter.h>
+#include <vtkFeatureEdges.h>
+#include <vtkFloatArray.h>
 #include <vtkGlyph3D.h>
-#include <vtkImplicitBoolean.h>
+#include <vtkIdFilter.h>
+#include <vtkIdList.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkLookupTable.h>
 #include <vtkMaskPoints.h>
@@ -19,24 +23,27 @@
 #include <vtkParametricFunctionSource.h>
 #include <vtkParametricRandomHills.h>
 #include <vtkParametricTorus.h>
-#include <vtkPlane.h>
 #include <vtkPlaneSource.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkPolyDataNormals.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkReverseSense.h>
 #include <vtkScalarBarActor.h>
+#include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkSuperquadricSource.h>
 #include <vtkTextProperty.h>
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
 #include <vtkTriangleFilter.h>
+#include <vtkVariant.h>
 #include <vtkVariantArray.h>
+#include <vtkVersion.h>
 
 #include <algorithm>
 #include <array>
@@ -48,114 +55,87 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
+#include <numeric>
+#include <set>
 #include <sstream>
 #include <string>
 #include <vector>
 
-// Here is the ComputeCurvatures definition.
-//
-// Includes needed by the ComputeCurvatures definition.
-#include <array>
-#include <map>
-#include <set>
-#include <string>
-
 namespace {
 
-/**
-@class ComputeCurvatures
-
-This class takes a vtkPolyData source and:
- - calculates Gaussian and Mean curvatures,
- - adjusts curvatures along the edges using a weighted average,
- - inserts the adjusted curvatures into the vtkPolyData source.
-
- Additional methods are provided for setting bounds and precision.
-*/
-class ComputeCurvatures
-{
-public:
-  ComputeCurvatures() = default;
-  ~ComputeCurvatures() = default;
-
-  explicit ComputeCurvatures(vtkPolyData* source)
-  {
-    this->source = source;
-  }
-
-  ComputeCurvatures(vtkPolyData* source, double const& gaussEps,
-                    double const& meanEps)
-  {
-    this->source = source;
-    this->epsilons["Gauss_Curvature"] = gaussEps;
-    this->epsilons["Mean_Curvature"] = meanEps;
-  }
-
-public:
-  void Update();
-
-  // Remember to run Update after these set and on/off methods.
-
-  std::string GetCurvatureType();
-
-  void SetCurvatureTypeToGaussian();
-
-  void SetGaussEpsilon(double const& gauss_eps = 1.0e-8);
-
-  void SetGaussCurvatureBounds(double const& lower = 0.0,
-                               double const& upper = 0.0);
-  void GaussBoundsOn();
-
-  void GaussBoundsOff();
-
-  void SetCurvatureTypeToMean();
-
-  void SetMeanEpsilon(double const& gauss_eps = 1.0e-8);
-
-  void SetMeanCurvatureBounds(double const& lower = 0.0,
-                              double const& upper = 0.0);
-  void MeanBoundsOn();
-
-  void MeanBoundsOff();
-
-private:
-  void ComputeCurvatureAndFixUpBoundary();
-  vtkSmartPointer<vtkPolyData> ComputeCurvature();
-  std::vector<double> ExtractData(vtkPolyData* curvatureData);
-  std::vector<vtkIdType> ExtractBoundaryIds();
-  double ComputeDistance(vtkIdType const& ptIdA, vtkIdType const& ptIdB);
-  std::set<vtkIdType> PointNeighborhood(vtkIdType const& pId);
-  void UpdateCurvature();
-
-public:
-  vtkSmartPointer<vtkPolyData> source;
-
-private:
-  std::string curvatureType{"Gauss_Curvature"};
-  std::map<std::string, std::vector<double>> adjustedCurvatures;
-  std::map<std::string, std::vector<double>> bounds{
-      {"Gauss_Curvature", {0.0, 0.0}}, {"Mean_Curvature", {0.0, 0.0}}};
-  std::map<std::string, bool> boundsState{{"Gauss_Curvature", false},
-                                          {"Mean_Curvature", false}};
-  std::map<std::string, double> epsilons{{"Gauss_Curvature", 1.0e-8},
-                                         {"Mean_Curvature", 1.0e-8}};
-};
-
-} // namespace
-
-namespace {
-
-//! Divide a range into bands
+//! Adjust curvatures along the edges of the surface.
 /*!
-@param dR - [min, max] the range that is to be covered by the bands.
-@param numberOfBands - the number of bands, a positive integer.
-@param nearestInteger - if True then [floor(min), ceil(max)] is used.
-@return A map consisting of the band inxex and [min, midpoint, max] for each
-band.
+ * This function adjusts curvatures along the edges of the surface by replacing
+ *  the value with the average value of the curvatures of points in the
+ *  neighborhood.
+ *
+ * Remember to update the vtkCurvatures object before calling this.
+ *
+ * @param source - A vtkPolyData object corresponding to the vtkCurvatures
+ * object.
+ * @param curvatureName: The name of the curvature, "Gauss_Curvature" or
+ * "Mean_Curvature".
+ * @param epsilon: Curvature values less than this will be set to zero.
+ * @return
+ */
+void AdjustEdgeCurvatures(vtkPolyData* source, std::string const& curvatureName,
+                          double const& epsilon = 1.0e-08);
+
+//! Constrain curvatures to the range [lower_bound ... upper_bound].
+/*!
+ * Remember to update the vtkCurvatures object before calling this.
+ *
+ * @param source - A vtkPolyData object corresponding to the vtkCurvatures
+ * object.
+ * @param curvatureName: The name of the curvature, "Gauss_Curvature" or
+ * "Mean_Curvature".
+ * @param lowerBound: The lower bound.
+ * @param upperBound: The upper bound.
+ * @return
+ */
+void ConstrainCurvatures(vtkPolyData* source, std::string const& curvatureName,
+                         double const& lowerBound = 0.0,
+                         double const& upperBound = 0.0);
+
+//! Generate elevations over the surface.
+/*!
+@param src - the vtkPolyData source.
+@return elev - the elevations.
 */
-std::map<int, std::vector<double>> MakeBands(double const dR[2],
-                                             int const& numberOfBands,
-                                             bool const& nearestInteger);
+vtkSmartPointer<vtkPolyData> GetElevations(vtkPolyData* src);
+
+vtkSmartPointer<vtkPolyData> GetHills();
+vtkSmartPointer<vtkPolyData> GetParametricHills();
+vtkSmartPointer<vtkPolyData> GetParametricTorus();
+vtkSmartPointer<vtkPolyData> GetPlane();
+vtkSmartPointer<vtkPolyData> GetSphere();
+vtkSmartPointer<vtkPolyData> GetTorus();
+vtkSmartPointer<vtkPolyData> GetSource(std::string const& source);
+
+vtkSmartPointer<vtkColorSeries> GetColorSeries();
+
+vtkSmartPointer<vtkLookupTable> GetCategoricalLUT();
+
+vtkSmartPointer<vtkLookupTable> GetOrdinaLUT();
+
+vtkSmartPointer<vtkLookupTable> GetDivergingLUT();
+
+vtkSmartPointer<vtkLookupTable> ReverseLUT(vtkLookupTable* lut);
+
+//!  Glyph the normals on the surface.
+/*!
+@param src - the vtkPolyData source.
+#param scaleFactor - the scale factor for the glyphs.
+@param reverseNormals - if True the normals on the surface are reversed.
+@return The glyphs.
+*/
+vtkNew<vtkGlyph3D> GetGlyphs(vtkPolyData* src, double const& scaleFactor = 1.0,
+                             bool const& reverseNormals = false);
+
+std::map<int, std::vector<double>> GetBands(double const dR[2],
+                                            int const& numberOfBands,
+                                            int const& precision = 2,
+                                            bool const& nearestInteger = false);
 
 //! Divide a range into custom bands
 /*!
@@ -171,8 +151,8 @@ like this: [[r1, r2], [r2, r3], [r3, r4]...]
 band.
 */
 std::map<int, std::vector<double>>
-MakeCustomBands(double const dR[2], int const& numberOfBands,
-                std::vector<std::array<double, 2>> const& myBands);
+GetCustomBands(double const dR[2], int const& numberOfBands,
+               std::vector<std::array<double, 2>> const& myBands);
 
 //! Divide a range into integral bands
 /*!
@@ -181,175 +161,121 @@ Divide a range into bands
 @returnA map consisting of the band inxex and [min, midpoint, max] for each
 band.
 */
-std::map<int, std::vector<double>> MakeIntegralBands(double const dR[2]);
-
-//! Generate elevations over the surface.
-/*!
-@param src - the vtkPolyData source.
-@return elev - the elevations.
-*/
-vtkSmartPointer<vtkPolyData> MakeElevations(vtkPolyData* src);
-
-//! Make a parametric hills surface as the source.
-/*!
-@return - vtkPolyData.
-*/
-vtkSmartPointer<vtkPolyData> MakeParametricHills();
-
-//! Make a parametric torus as the source.
-/*!
-@return - vtkPolyData.
-*/
-vtkSmartPointer<vtkPolyData> MakeParametricTorus();
-
-//! Make a Plane as the source.
-/*!
-@return - vtkPolyData.
-*/
-vtkSmartPointer<vtkPolyData> MakePlane();
-
-//! Make a MakeSphere as the source.
-/*!
-@return - vtkPolyData.
-*/
-vtkSmartPointer<vtkPolyData> MakeSphere();
-
-//! Make a torus as the source.
-/*!
-@return - vtkPolyData.
-*/
-vtkSmartPointer<vtkPolyData> MakeTorus();
-
-//! Clip a vtkPolyData source.
-/*!
-A cube is made whose size corresponds the the bounds of the source.
-Then each side is shrunk by the appropriate dx, dy or dz. After
-this operation the source is clipped by the cube.
-@param src - the vtkPolyData source
-@param dx - the amount to clip in the x-direction
-@param dy - the amount to clip in the y-direction
-@param dz - the amount to clip in the z-direction
-@return - clipped vtkPolyData.
-*/
-vtkSmartPointer<vtkPolyData> Clipper(vtkPolyData* src, double const& dx,
-                                     double const& dy, double const& dz);
-
-vtkSmartPointer<vtkColorSeries> GetColorSeries();
-
-vtkSmartPointer<vtkLookupTable> MakeCategoricalLUT();
-
-vtkSmartPointer<vtkLookupTable> MakeOrdinaLUT();
-
-vtkSmartPointer<vtkLookupTable> MakeDivergingLUT();
-
-vtkSmartPointer<vtkLookupTable> ReverseLUT(vtkLookupTable* lut);
+std::map<int, std::vector<double>> GetIntegralBands(double const dR[2]);
 
 //! Count the number of scalars in each band.
-/*!
-@param bands - the bands.
-@param src - the vtkPolyData source.
-@return The frequencies of the scalars in each band.
-*/
-std::map<int, int> Frequencies(std::map<int, std::vector<double>>& bands,
-                               vtkPolyData* src);
-
-std::pair<int, int> AdjustFrequencyRanges(std::map<int, int>& freq);
-
-void PrintBands(std::map<int, std::vector<double>> const& bands);
-
-void PrintFrequencies(std::map<int, int> const& freq);
-
-void PrintBandsFrequencies(std::map<int, std::vector<double>> const& bands,
+/*
+ * The scalars used are the active scalars in the polydata.
+ *
+ * @param bands - the bands.
+ * @param src - the vtkPolyData source.
+ * @return The frequencies of the scalars in each band.
+ */
+std::map<int, int> GetFrequencies(std::map<int, std::vector<double>>& bands,
+                                  vtkPolyData* src);
+//!
+/*
+ * The bands and frequencies are adjusted so that the first and last
+ *  frequencies in the range are non-zero.
+ * @param bands: The bands.
+ * @param freq: The frequencies.
+ */
+void AdjustFrequencyRanges(std::map<int, std::vector<double>>& bands,
                            std::map<int, int>& freq);
 
-//!  Glyph the normals on the surface.
-/*!
-@param src - the vtkPolyData source.
-@param reverseNormals - if True the normals on the surface are reversed.
-@return The glyphs.
-*/
-vtkNew<vtkGlyph3D> MakeGlyphs(vtkPolyData* src, bool const& reverseNormals);
+void PrintBandsFrequencies(std::map<int, std::vector<double>> const& bands,
+                           std::map<int, int>& freq, int const& precision = 2);
 
 } // namespace
 
 int main(int, char*[])
 {
   // Get the surface
-  // std::string desiredSurface = "ParametricTorus";
-  // std::string desiredSurface = "Plane";
+   //std::string desiredSurface = "Hills";
+   //std::string desiredSurface = "ParametricTorus";
+   //std::string desiredSurface = "Plane";
   std::string desiredSurface = "RandomHills";
-  // std::string desiredSurface = "Sphere";
-  // std::string desiredSurface = "Torus";
-  auto lcSurface = desiredSurface;
-  std::transform(lcSurface.begin(), lcSurface.end(), lcSurface.begin(),
-                 [](char c) { return std::tolower(c); });
-  std::map<std::string, int> availableSurfaces = {{"parametrictorus", 0},
-                                                  {"plane", 1},
-                                                  {"randomhills", 2},
-                                                  {"sphere", 3},
-                                                  {"torus", 4}};
-  vtkSmartPointer<vtkPolyData> src;
-  if (availableSurfaces.find(lcSurface) == availableSurfaces.end())
-  {
-    std::cout << "No surface specified." << std::endl;
-    return EXIT_FAILURE;
-  }
-  switch (availableSurfaces[lcSurface])
-  {
-  case 0: {
-    src = MakeParametricTorus();
-    break;
-  }
-  case 1: {
-    src = MakePlane();
-    src = MakeElevations(src);
-    break;
-  }
-  case 2: {
-    src = MakeParametricHills();
-    break;
-  }
-  case 3: {
-    src = MakeSphere();
-    src = MakeElevations(src);
-    break;
-  }
-  case 4: {
-    src = MakeTorus();
-    src = MakeElevations(src);
-    break;
-  }
-  default: {
-    std::cout << "No surface specified." << std::endl;
-    return EXIT_FAILURE;
-  }
-  }
+   //std::string desiredSurface = "Sphere";
+   //std::string desiredSurface = "Torus";
+  auto source = GetSource(desiredSurface);
+
+  // The length of the normal arrow glyphs.
+  auto scaleFactor = 1.0;
+  if (desiredSurface == "Hills")
+    scaleFactor = 0.5;
+  if (desiredSurface == "Sphere")
+    scaleFactor = 2.0;
   std::cout << desiredSurface << std::endl;
 
-  auto curvatures = ComputeCurvatures(src);
-  curvatures.SetCurvatureTypeToGaussian();
-  curvatures.Update();
+  auto gaussianCurvature = true;
+  std::string curvature =
+      (gaussianCurvature) ? "Gauss_Curvature" : "Mean_Curvature";
 
-  src->GetPointData()->SetActiveScalars(curvatures.GetCurvatureType().c_str());
-  auto scalarRangeCurvatures =
-      src->GetPointData()
-          ->GetScalars(curvatures.GetCurvatureType().c_str())
-          ->GetRange();
+  vtkNew<vtkCurvatures> cc;
+  cc->SetInputData(source);
+  std::vector<std::string> needsAdjusting{"Hills", "ParametricTorus", "Plane",
+                                          "RandomHills", "Torus"};
+  if (gaussianCurvature)
+  {
+    cc->SetCurvatureTypeToGaussian();
+    cc->Update();
+    if (std::find(needsAdjusting.begin(), needsAdjusting.end(),
+                  desiredSurface) != needsAdjusting.end())
+    {
+      AdjustEdgeCurvatures(cc->GetOutput(), curvature);
+    }
+    if (desiredSurface == "Plane")
+    {
+      ConstrainCurvatures(cc->GetOutput(), curvature, 0.0, 0.0);
+    }
+    if (desiredSurface == "Sphere")
+    {
+
+      // Gaussian curvature is 1/r^2
+      ConstrainCurvatures(cc->GetOutput(), curvature, 4.0, 4.0);
+    }
+  }
+  else
+  {
+
+    cc->SetCurvatureTypeToMean();
+    cc->Update();
+    if (std::find(needsAdjusting.begin(), needsAdjusting.end(),
+                  desiredSurface) != needsAdjusting.end())
+    {
+      AdjustEdgeCurvatures(cc->GetOutput(), curvature);
+    }
+    if (desiredSurface == "Plane")
+    {
+      ConstrainCurvatures(cc->GetOutput(), curvature, 0.0, 0.0);
+    }
+    if (desiredSurface == "Sphere")
+    {
+
+      // Mean curvature is 1/r
+      ConstrainCurvatures(cc->GetOutput(), curvature, 2.0, 2.0);
+    }
+  }
+
+  cc->GetOutput()->GetPointData()->SetActiveScalars(curvature.c_str());
+  auto scalarRangeCurvatures = cc->GetOutput()
+                                   ->GetPointData()
+                                   ->GetScalars(curvature.c_str())
+                                   ->GetRange();
   auto scalarRangeElevation =
-      src->GetPointData()->GetScalars("Elevation")->GetRange();
+      cc->GetOutput()->GetPointData()->GetScalars("Elevation")->GetRange();
 
-  auto lut = MakeCategoricalLUT();
-  auto lut1 = MakeDivergingLUT();
+  auto lut = GetCategoricalLUT();
+  auto lut1 = GetDivergingLUT();
   lut->SetTableRange(scalarRangeCurvatures);
   lut1->SetTableRange(scalarRangeElevation);
-  vtkIdType numberOfBands = lut->GetNumberOfTableValues();
-  std::map<int, std::vector<double>> bands;
-
+  auto numberOfBands = lut->GetNumberOfTableValues();
+  auto bands = GetBands(scalarRangeCurvatures, numberOfBands, 10);
   if (desiredSurface == "RandomHills")
   {
     // These are my custom bands.
     // Generated by first running:
-    // bands = MakeBands(scalarRangeCurvatures, numberOfBands, false);
+    // bands = GetBands(scalarRangeCurvatures, numberOfBands, false);
     // then:
     //  std::vector<int> freq = Frequencies(bands, src);
     //  PrintBandsFrequencies(bands, freq);
@@ -367,71 +293,39 @@ int main(int, char*[])
 
     // Comment this out if you want to see how allocating
     // equally spaced bands works.
-    bands = MakeCustomBands(scalarRangeCurvatures, numberOfBands, myBands);
-    // bands = MakeBands(scalarRangeCurvatures, numberOfBands, false);
+    bands = GetCustomBands(scalarRangeCurvatures, numberOfBands, myBands);
     // Adjust the number of table values
     lut->SetNumberOfTableValues(static_cast<vtkIdType>(bands.size()));
   }
-  else
+  else if (desiredSurface == "Hills")
   {
-    bands = MakeBands(scalarRangeCurvatures, numberOfBands, false);
+    std::vector<std::array<double, 2>> myBands = {
+        {-2.104, -0.15},   {-0.15, -0.1},   {-0.1, -0.05},
+        {-0.05, -0.02},    {-0.02, -0.005}, {-0.005, -0.0005},
+        {-0.0005, 0.0005}, {0.0005, 0.09},  {0.09, 4.972},
+    };
+
+    // Comment this out if you want to see how allocating
+    // equally spaced bands works.
+    bands = GetCustomBands(scalarRangeCurvatures, numberOfBands, myBands);
+    // Adjust the number of table values
+    lut->SetNumberOfTableValues(static_cast<vtkIdType>(bands.size()));
   }
 
   // Let's do a frequency table.
-  // The number of scalars in each band.
-  std::map<int, int> freq = Frequencies(bands, src);
+  auto freq = GetFrequencies(bands, cc->GetOutput());
+  AdjustFrequencyRanges(bands, freq);
+  PrintBandsFrequencies(bands, freq);
 
-  std::vector<int> keys;
-  for (int k = 0; k < freq.size(); ++k)
-  {
-    keys.push_back(k);
-  }
-  auto minKey = std::min_element(keys.begin(), keys.end());
-  auto maxKey = std::max_element(keys.begin(), keys.end());
-  if (lcSurface == "sphere")
-  {
-    freq[0] = 0;
-  }
-  auto freqRange = AdjustFrequencyRanges(freq);
-  std::map<int, int>::iterator freqItr;
-  freqItr = freq.find(freqRange.first);
-  freq.erase(freq.begin(), freqItr);
-  freqItr = ++freq.find(freqRange.second);
-  freq.erase(freqItr, freq.end());
-  std::map<int, std::vector<double>>::iterator bandItr;
-  bandItr = bands.find(freqRange.first);
-  bands.erase(bands.begin(), bandItr);
-  bandItr = ++bands.find(freqRange.second);
-  bands.erase(bandItr, bands.end());
-  // Reindex freq and bands.
-  std::map<int, int> adjFreq;
-  int idx = 0;
-  for (auto p : freq)
-  {
-    adjFreq[idx] = p.second;
-    ++idx;
-  }
-  std::map<int, std::vector<double>> adjBands;
-  idx = 0;
-  for (auto p : bands)
-  {
-    adjBands[idx] = p.second;
-    ++idx;
-  }
-  // PrintBandsFrequencies(bands, freq);
-  PrintBandsFrequencies(adjBands, adjFreq);
-  freq.erase(freq.begin(), freq.end());
-  bands.erase(bands.begin(), bands.end());
-
-  scalarRangeCurvatures[0] = adjBands.begin()->second[0];
-  scalarRangeCurvatures[1] = std::prev(adjBands.end())->second[2];
+  scalarRangeCurvatures[0] = bands.begin()->second[0];
+  scalarRangeCurvatures[1] = std::prev(bands.end())->second[2];
   lut->SetTableRange(scalarRangeCurvatures);
-  lut->SetNumberOfTableValues(adjBands.size());
+  lut->SetNumberOfTableValues(bands.size());
 
   // We will use the midpoint of the band as the label.
   std::vector<std::string> labels;
-  for (std::map<int, std::vector<double>>::const_iterator p = adjBands.begin();
-       p != adjBands.end(); ++p)
+  for (std::map<int, std::vector<double>>::const_iterator p = bands.begin();
+       p != bands.end(); ++p)
   {
     std::ostringstream os;
     os << std::fixed << std::setw(6) << std::setprecision(2) << p->second[1];
@@ -454,11 +348,11 @@ int main(int, char*[])
 
   // Create the contour bands.
   vtkNew<vtkBandedPolyDataContourFilter> bcf;
-  bcf->SetInputData(src);
+  bcf->SetInputData(cc->GetOutput());
   // Use either the minimum or maximum value for each band.
   int i = 0;
-  for (std::map<int, std::vector<double>>::const_iterator p = adjBands.begin();
-       p != adjBands.end(); ++p)
+  for (std::map<int, std::vector<double>>::const_iterator p = bands.begin();
+       p != bands.end(); ++p)
   {
     bcf->SetValue(i, p->second[2]);
     ++i;
@@ -469,7 +363,7 @@ int main(int, char*[])
 
   // Generate the glyphs on the original surface.
 
-  auto glyph = MakeGlyphs(src, false);
+  auto glyph = GetGlyphs(cc->GetOutput(), scaleFactor, false);
 
   // ------------------------------------------------------------
   // Create the mappers and actors
@@ -517,7 +411,7 @@ int main(int, char*[])
   auto windowHeight = 800;
 
   // Add scalar bars.
-  auto curvatureType = curvatures.GetCurvatureType();
+  auto curvatureType = curvature;
   std::replace(curvatureType.begin(), curvatureType.end(), '_', '\n');
 
   vtkNew<vtkScalarBarActor> scalarBar;
@@ -547,9 +441,9 @@ int main(int, char*[])
   scalarBarElev->GetAnnotationTextProperty()->SetColor(
       colors->GetColor3d("AliceBlue").GetData());
   scalarBarElev->UnconstrainedFontSizeOn();
-  if (lut1->GetNumberOfTableValues() < 5)
+  if (desiredSurface == "Plane")
   {
-    scalarBarElev->SetNumberOfLabels(lut1->GetNumberOfTableValues());
+    scalarBarElev->SetNumberOfLabels(1);
   }
   else
   {
@@ -604,261 +498,60 @@ int main(int, char*[])
   return EXIT_SUCCESS;
 }
 
-// Here is the implementation for ComputeCurvatures
-//
-// Includes needed by the ComputeCurvatures implementation.
-
-#include <vtkCurvatures.h>
-#include <vtkDoubleArray.h>
-#include <vtkFeatureEdges.h>
-#include <vtkIdFilter.h>
-#include <vtkIdList.h>
-#include <vtkNew.h>
-#include <vtkPointData.h>
-#include <vtkSmartPointer.h>
-#include <vtkType.h>
-
-#include <algorithm>
-#include <cctype>
-#include <iterator>
-#include <numeric>
-#include <vector>
-
 namespace {
 
-std::string ComputeCurvatures::GetCurvatureType()
+void AdjustEdgeCurvatures(vtkPolyData* source, std::string const& curvatureName,
+                          double const& epsilon)
 {
-  return this->curvatureType;
-}
-
-void ComputeCurvatures::SetCurvatureTypeToGaussian()
-{
-  this->curvatureType = "Gauss_Curvature";
-}
-
-void ComputeCurvatures::SetGaussEpsilon(double const& gauss_eps)
-{
-  this->epsilons["Gauss_Curvature"] = std::abs(gauss_eps);
-}
-
-void ComputeCurvatures::SetGaussCurvatureBounds(double const& lower,
-                                                double const& upper)
-{
-  if (lower <= upper)
-  {
-    this->bounds["Gauss_Curvature"][0] = lower;
-    this->bounds["Gauss_Curvature"][1] = upper;
-  }
-  else
-  {
-    this->bounds["Gauss_Curvature"][0] = upper;
-    this->bounds["Gauss_Curvature"][1] = lower;
-    std::cout << "SetGaussCurvatureBounds: bounds swapped since lower > upper"
-              << std::endl;
-  }
-}
-
-void ComputeCurvatures::GaussBoundsOn()
-{
-  boundsState["Gauss_Curvature"] = true;
-}
-
-void ComputeCurvatures::GaussBoundsOff()
-{
-  boundsState["Gauss_Curvature"] = false;
-}
-
-void ComputeCurvatures::SetCurvatureTypeToMean()
-{
-  this->curvatureType = "Mean_Curvature";
-}
-
-void ComputeCurvatures::SetMeanEpsilon(double const& gauss_eps)
-{
-  this->epsilons["Mean_Curvature"] = std::abs(gauss_eps);
-}
-
-void ComputeCurvatures::SetMeanCurvatureBounds(double const& lower,
-                                               double const& upper)
-{
-  if (lower <= upper)
-  {
-    this->bounds["Mean_Curvature"][0] = lower;
-    this->bounds["Mean_Curvature"][1] = upper;
-  }
-  else
-  {
-    this->bounds["Mean_Curvature"][0] = upper;
-    this->bounds["Mean_Curvature"][1] = lower;
-    std::cout << "SetMeanCurvatureBounds: bounds swapped since lower > upper"
-              << std::endl;
-  }
-}
-
-void ComputeCurvatures::MeanBoundsOn()
-{
-  boundsState["Mean_Curvature"] = true;
-}
-
-void ComputeCurvatures::MeanBoundsOff()
-{
-  boundsState["Mean_Curvature"] = false;
-}
-
-void ComputeCurvatures::Update()
-{
-  this->ComputeCurvatureAndFixUpBoundary();
-  // Set small values to zero.
-  if (this->epsilons[this->curvatureType] != 0.0)
-  {
-    auto eps = std::abs(this->epsilons[this->curvatureType]);
-    for (size_t i = 0; i < this->adjustedCurvatures[this->curvatureType].size();
-         ++i)
+  auto PointNeighbourhood =
+      [&source](vtkIdType const& pId) -> std::set<vtkIdType> {
+    // Extract the topological neighbors for point pId. In two steps:
+    //  1) source->GetPointCells(pId, cellIds)
+    //  2) source->GetCellPoints(cellId, cellPointIds) for all cellId in cellIds
+    vtkNew<vtkIdList> cellIds;
+    source->GetPointCells(pId, cellIds);
+    std::set<vtkIdType> neighbours;
+    for (vtkIdType i = 0; i < cellIds->GetNumberOfIds(); ++i)
     {
-      if (std::abs(this->adjustedCurvatures[this->curvatureType][i]) < eps)
+      auto cellId = cellIds->GetId(i);
+      vtkNew<vtkIdList> cellPointIds;
+      source->GetCellPoints(cellId, cellPointIds);
+      for (vtkIdType j = 0; j < cellPointIds->GetNumberOfIds(); ++j)
       {
-        this->adjustedCurvatures[this->curvatureType][i] = 0.0;
+        neighbours.insert(cellPointIds->GetId(j));
       }
     }
-  }
-  //  Set upper and lower bounds.
-  if (this->boundsState[this->curvatureType])
-  {
-    auto lowerBound = this->bounds[this->curvatureType][0];
-    for (size_t i = 0; i < this->adjustedCurvatures[this->curvatureType].size();
-         ++i)
-    {
-      if (this->adjustedCurvatures[this->curvatureType][i] < lowerBound)
-      {
-        this->adjustedCurvatures[this->curvatureType][i] = lowerBound;
-      }
-    }
-    auto upperBound = this->bounds[this->curvatureType][1];
-    for (size_t i = 0; i < this->adjustedCurvatures[this->curvatureType].size();
-         ++i)
-    {
-      if (this->adjustedCurvatures[this->curvatureType][i] > upperBound)
-      {
-        this->adjustedCurvatures[this->curvatureType][i] = upperBound;
-      }
-    }
-  }
-  this->UpdateCurvature();
-}
+    return neighbours;
+  };
 
-void ComputeCurvatures::ComputeCurvatureAndFixUpBoundary()
-{
-  // Curvature as vtkPolyData.
-  auto curvatureData = this->ComputeCurvature();
+  auto ComputeDistance = [&source](vtkIdType const& ptIdA,
+                                   vtkIdType const& ptIdB) {
+    std::array<double, 3> ptA{0.0, 0.0, 0.0};
+    std::array<double, 3> ptB{0.0, 0.0, 0.0};
+    std::array<double, 3> ptC{0.0, 0.0, 0.0};
+    source->GetPoint(ptIdA, ptA.data());
+    source->GetPoint(ptIdB, ptB.data());
+    std::transform(std::begin(ptA), std::end(ptA), std::begin(ptB),
+                   std::begin(ptC), std::minus<double>());
+    // Calculate the norm.
+    auto result = std::sqrt(std::inner_product(std::begin(ptC), std::end(ptC),
+                                               std::begin(ptC), 0.0));
+    return result;
+  };
+
+  source->GetPointData()->SetActiveScalars(curvatureName.c_str());
   // Curvature as a vector.
-  auto curvature = this->ExtractData(curvatureData);
-  // Ids of the boundary points.
-  auto pIds = this->ExtractBoundaryIds();
-  // Remove duplicate Ids.
-  std::set<vtkIdType> pIdsSet(pIds.begin(), pIds.end());
-  for (auto pId : pIds)
+  auto array = source->GetPointData()->GetAbstractArray(curvatureName.c_str());
+  std::vector<double> curvatures;
+  for (vtkIdType i = 0; i < source->GetNumberOfPoints(); ++i)
   {
-    auto pIdsNeighbors = this->PointNeighborhood(pId);
-    std::set<vtkIdType> pIdsNeighborsInterior;
-    std::set_difference(
-        pIdsNeighbors.begin(), pIdsNeighbors.end(), pIdsSet.begin(),
-        pIdsSet.end(),
-        std::inserter(pIdsNeighborsInterior, pIdsNeighborsInterior.begin()));
-    // Compute distances and extract curvature values.
-    std::vector<double> curvs;
-    std::vector<double> dists;
-    for (auto pIdN : pIdsNeighborsInterior)
-    {
-      curvs.push_back(curvature[pIdN]);
-      dists.push_back(this->ComputeDistance(pIdN, pId));
-    }
-    std::vector<vtkIdType> nonZeroDistIds;
-    for (size_t i = 0; i < dists.size(); ++i)
-    {
-      if (dists[i] > 0)
-      {
-        nonZeroDistIds.push_back(i);
-      }
-    }
-    std::vector<double> curvsNonZero;
-    std::vector<double> distsNonZero;
-    for (auto i : nonZeroDistIds)
-    {
-      curvsNonZero.push_back(curvs[i]);
-      distsNonZero.push_back(dists[i]);
-    }
-    // Iterate over the edge points and compute the curvature as the weighted
-    // average of the neighbors.
-    auto countInvalid = 0;
-    auto newCurv = 0.0;
-    if (curvsNonZero.size() > 0)
-    {
-      std::vector<double> weights;
-      double sum = 0.0;
-      for (auto d : distsNonZero)
-      {
-        sum += 1.0 / d;
-        weights.push_back(1.0 / d);
-      }
-      for (size_t i = 0; i < weights.size(); ++i)
-      {
-        weights[i] = weights[i] / sum;
-      }
-      newCurv = std::inner_product(curvsNonZero.begin(), curvsNonZero.end(),
-                                   weights.begin(), 0.0);
-    }
-    else
-    {
-      // Corner case.
-      countInvalid += 1;
-      newCurv = 0;
-    }
-    // Set the new curvature value.
-    curvature[pId] = newCurv;
+    curvatures.push_back(array->GetVariantValue(i).ToDouble());
   }
-  this->adjustedCurvatures[this->curvatureType] = curvature;
-}
 
-vtkSmartPointer<vtkPolyData> ComputeCurvatures::ComputeCurvature()
-{
-  vtkNew<vtkCurvatures> curvatureFilter;
-  curvatureFilter->SetInputData(this->source);
-  if ("Gauss_Curvature" == this->curvatureType)
-  {
-    curvatureFilter->SetCurvatureTypeToGaussian();
-  }
-  else if ("Mean_Curvature" == this->curvatureType)
-  {
-    curvatureFilter->SetCurvatureTypeToMean();
-  }
-  else
-  {
-    std::cerr << "Curvature type must be either Gaussian or Mean." << std::endl;
-    vtkSmartPointer<vtkPolyData> ret;
-    return ret;
-  }
-  curvatureFilter->Update();
-  return curvatureFilter->GetOutput();
-}
-
-std::vector<double> ComputeCurvatures::ExtractData(vtkPolyData* curvatureData)
-{
-  auto array = curvatureData->GetPointData()->GetAbstractArray(
-      this->curvatureType.c_str());
-  auto n = curvatureData->GetNumberOfPoints();
-  std::vector<double> data;
-  for (auto i = 0; i < n; ++i)
-  {
-    data.push_back(array->GetVariantValue(i).ToDouble());
-  }
-  return data;
-}
-
-std::vector<vtkIdType> ComputeCurvatures::ExtractBoundaryIds()
-{
+  // Get the boundary point IDs.
   std::string name = "Ids";
   vtkNew<vtkIdFilter> idFilter;
-  idFilter->SetInputData(this->source);
+  idFilter->SetInputData(source);
   idFilter->SetPointIds(true);
   idFilter->SetCellIds(false);
   idFilter->SetPointIdsArrayName(name.c_str());
@@ -874,180 +567,159 @@ std::vector<vtkIdType> ComputeCurvatures::ExtractBoundaryIds()
   edges->FeatureEdgesOff();
   edges->Update();
 
-  auto array =
+  auto edgeAarray =
       edges->GetOutput()->GetPointData()->GetAbstractArray(name.c_str());
-  auto n = edges->GetOutput()->GetNumberOfPoints();
   std::vector<vtkIdType> boundaryIds;
-  for (auto i = 0; i < n; ++i)
+  for (vtkIdType i = 0; i < edges->GetOutput()->GetNumberOfPoints(); ++i)
   {
-    boundaryIds.push_back(array->GetVariantValue(i).ToInt());
+    boundaryIds.push_back(edgeAarray->GetVariantValue(i).ToInt());
   }
-  return boundaryIds;
-}
-
-/**
- * Extract the topological neighbors for point pId. In two steps:
- * 1) self.source.GetPointCells(pId, cellIds)
- * 2) self.source.GetCellPoints(cellId, cellPointIds) for all cellId in cellIds
- */
-std::set<vtkIdType> ComputeCurvatures::PointNeighborhood(vtkIdType const& pId)
-{
-  vtkNew<vtkIdList> cellIds;
-  this->source->GetPointCells(pId, cellIds);
-  std::set<vtkIdType> neighbors;
-  auto n = cellIds->GetNumberOfIds();
-  for (auto i = 0; i < n; ++i)
+  // Remove duplicate Ids.
+  std::set<vtkIdType> pIdsSet(boundaryIds.begin(), boundaryIds.end());
+  for (auto const pId : boundaryIds)
   {
-    auto cellId = cellIds->GetId(i);
-    vtkNew<vtkIdList> cellPointIds;
-    this->source->GetCellPoints(cellId, cellPointIds);
-    for (auto j = 0; j < cellPointIds->GetNumberOfIds(); ++j)
+    auto pIdsNeighbors = PointNeighbourhood(pId);
+    std::set<vtkIdType> pIdsNeighborsInterior;
+    std::set_difference(
+        pIdsNeighbors.begin(), pIdsNeighbors.end(), pIdsSet.begin(),
+        pIdsSet.end(),
+        std::inserter(pIdsNeighborsInterior, pIdsNeighborsInterior.begin()));
+    // Compute distances and extract curvature values.
+    std::vector<double> curvs;
+    std::vector<double> dists;
+    for (auto const pIdN : pIdsNeighborsInterior)
     {
-      neighbors.insert(cellPointIds->GetId(j));
+      curvs.push_back(curvatures[pIdN]);
+      dists.push_back(ComputeDistance(pIdN, pId));
+    }
+    std::vector<vtkIdType> nonZeroDistIds;
+    for (size_t i = 0; i < dists.size(); ++i)
+    {
+      if (dists[i] > 0)
+      {
+        nonZeroDistIds.push_back(i);
+      }
+    }
+    std::vector<double> curvsNonZero;
+    std::vector<double> distsNonZero;
+    for (auto const i : nonZeroDistIds)
+    {
+      curvsNonZero.push_back(curvs[i]);
+      distsNonZero.push_back(dists[i]);
+    }
+    // Iterate over the edge points and compute the curvature as the weighted
+    // average of the neighbours.
+    auto countInvalid = 0;
+    auto newCurv = 0.0;
+    if (curvsNonZero.size() > 0)
+    {
+      std::vector<double> weights;
+      double sum = 0.0;
+      for (auto const d : distsNonZero)
+      {
+        sum += 1.0 / d;
+        weights.push_back(1.0 / d);
+      }
+      for (size_t i = 0; i < weights.size(); ++i)
+      {
+        weights[i] = weights[i] / sum;
+      }
+      newCurv = std::inner_product(curvsNonZero.begin(), curvsNonZero.end(),
+                                   weights.begin(), 0.0);
+    }
+    else
+    {
+      // Corner case.
+      countInvalid += 1;
+      // Assuming the curvature of the point is planar.
+      newCurv = 0.0;
+    }
+    // Set the new curvature value.
+    curvatures[pId] = newCurv;
+  }
+
+  // Set small values to zero.
+  if (epsilon != 0.0)
+  {
+    auto eps = std::abs(epsilon);
+    for (size_t i = 0; i < curvatures.size(); ++i)
+    {
+      if (std::abs(curvatures[i]) < eps)
+      {
+        curvatures[i] = 0.0;
+      }
     }
   }
-  return neighbors;
-}
 
-double ComputeCurvatures::ComputeDistance(vtkIdType const& ptIdA,
-                                          vtkIdType const& ptIdB)
-{
-  double ptA[3]{0.0, 0.0, 0.0};
-  double ptB[3]{0.0, 0.0, 0.0};
-  double ptC[3]{0.0, 0.0, 0.0};
-  this->source->GetPoint(ptIdA, ptA);
-  this->source->GetPoint(ptIdB, ptB);
-  vtkMath::Subtract(ptA, ptB, ptC);
-  return vtkMath::Norm(ptC);
-}
-
-void ComputeCurvatures::UpdateCurvature()
-{
-  if (static_cast<size_t>(this->source->GetNumberOfPoints()) !=
-      this->adjustedCurvatures[this->curvatureType].size())
+  if (static_cast<size_t>(source->GetNumberOfPoints()) != curvatures.size())
   {
-    std::string s = this->curvatureType;
+    std::string s = curvatureName;
     s += ":\nCannot add the adjusted curvatures to the source.\n";
     s += " The number of points in source does not equal the\n";
     s += " number of point ids in the adjusted curvature array.";
     std::cerr << s << std::endl;
     return;
   }
-  vtkNew<vtkDoubleArray> curvatures;
-  curvatures->SetName(this->curvatureType.c_str());
-  for (auto curvature : this->adjustedCurvatures[this->curvatureType])
+  vtkNew<vtkDoubleArray> adjustedCurvatures;
+  adjustedCurvatures->SetName(curvatureName.c_str());
+  for (auto curvature : curvatures)
   {
-    curvatures->InsertNextTuple1(curvature);
+    adjustedCurvatures->InsertNextTuple1(curvature);
   }
-  this->source->GetPointData()->AddArray(curvatures);
-  this->source->GetPointData()->SetActiveScalars(this->curvatureType.c_str());
+  source->GetPointData()->AddArray(adjustedCurvatures);
+  source->GetPointData()->SetActiveScalars(curvatureName.c_str());
 }
 
-} // namespace
-
-namespace {
-
-std::map<int, std::vector<double>> MakeBands(double const dR[2],
-                                             int const& numberOfBands,
-                                             bool const& nearestInteger)
+void ConstrainCurvatures(vtkPolyData* source, std::string const& curvatureName,
+                         double const& lowerBound, double const& upperBound)
 {
-  std::map<int, std::vector<double>> bands;
-  if ((dR[1] < dR[0]) || (numberOfBands <= 0))
+  std::array<double, 2> bounds{0.0, 0.0};
+  if (lowerBound < upperBound)
   {
-    return bands;
+    bounds[0] = lowerBound;
+    bounds[1] = upperBound;
   }
-  double x[2];
-  for (int i = 0; i < 2; ++i)
+  else
   {
-    x[i] = dR[i];
+    bounds[0] = upperBound;
+    bounds[1] = lowerBound;
   }
-  if (nearestInteger)
+
+  source->GetPointData()->SetActiveScalars(curvatureName.c_str());
+  // Curvature as a vector.
+  auto array = source->GetPointData()->GetAbstractArray(curvatureName.c_str());
+  std::vector<double> curvatures;
+  for (vtkIdType i = 0; i < source->GetNumberOfPoints(); ++i)
   {
-    x[0] = std::floor(x[0]);
-    x[1] = std::ceil(x[1]);
+    curvatures.push_back(array->GetVariantValue(i).ToDouble());
   }
-  double dx = (x[1] - x[0]) / static_cast<double>(numberOfBands);
-  std::vector<double> b;
-  b.push_back(x[0]);
-  b.push_back(x[0] + dx / 2.0);
-  b.push_back(x[0] + dx);
-  for (int i = 0; i < numberOfBands; ++i)
+  //  Set upper and lower bounds.
+  for (size_t i = 0; i < curvatures.size(); ++i)
   {
-    bands[i] = b;
-    for (std::vector<double>::iterator p = b.begin(); p != b.end(); ++p)
+    if (curvatures[i] < bounds[0])
     {
-      *p = *p + dx;
+      curvatures[i] = bounds[0];
+    }
+    else
+    {
+      if (curvatures[i] > bounds[1])
+      {
+        curvatures[i] = bounds[1];
+      }
     }
   }
-  return bands;
+  vtkNew<vtkDoubleArray> adjustedCurvatures;
+  for (auto curvature : curvatures)
+  {
+    adjustedCurvatures->InsertNextTuple1(curvature);
+  }
+  adjustedCurvatures->SetName(curvatureName.c_str());
+  source->GetPointData()->RemoveArray(curvatureName.c_str());
+  source->GetPointData()->AddArray(adjustedCurvatures);
+  source->GetPointData()->SetActiveScalars(curvatureName.c_str());
 }
 
-std::map<int, std::vector<double>>
-MakeCustomBands(double const dR[2], int const& numberOfBands,
-                std::vector<std::array<double, 2>> const& myBands)
-{
-  std::map<int, std::vector<double>> bands;
-  if ((dR[1] < dR[0]) || (numberOfBands <= 0))
-  {
-    return bands;
-  }
-
-  std::vector<std::array<double, 2>> x;
-  std::copy(myBands.begin(), myBands.end(), std::back_inserter(x));
-
-  // Determine the index of the range minimum and range maximum.
-  int idxMin = 0;
-  for (auto idx = 0; idx < myBands.size(); ++idx)
-  {
-    if (dR[0] < myBands[idx][1] && dR[0] >= myBands[idx][0])
-    {
-      idxMin = idx;
-      break;
-    }
-  }
-  int idxMax = static_cast<int>(myBands.size()) - 1;
-  for (int idx = static_cast<int>(myBands.size()) - 1; idx >= 0; --idx)
-  {
-    if (dR[1] < myBands[idx][1] && dR[1] >= myBands[idx][0])
-    {
-      idxMax = static_cast<int>(idx);
-      break;
-    }
-  }
-
-  // Set the minimum to match the range minimum.
-  x[idxMin][0] = dR[0];
-  x[idxMax][1] = dR[1];
-  for (int i = idxMin; i < idxMax + 1; ++i)
-  {
-    std::vector<double> b(3);
-    b[0] = x[i][0];
-    b[1] = x[i][0] + (x[i][1] - x[i][0]) / 2.0;
-    b[2] = x[i][1];
-    bands[i] = b;
-  }
-  return bands;
-}
-
-std::map<int, std::vector<double>> MakeIntegralBands(double const dR[2])
-{
-  std::map<int, std::vector<double>> bands;
-  if (dR[1] < dR[0])
-  {
-    return bands;
-  }
-  double x[2];
-  for (int i = 0; i < 2; ++i)
-  {
-    x[i] = dR[i];
-  }
-  x[0] = std::floor(x[0]);
-  x[1] = std::ceil(x[1]);
-  int numberOfBands = static_cast<int>(std::abs(x[1]) + std::abs(x[0]));
-  return MakeBands(x, numberOfBands, false);
-}
-
-vtkSmartPointer<vtkPolyData> MakeElevations(vtkPolyData* src)
+vtkSmartPointer<vtkPolyData> GetElevations(vtkPolyData* src)
 {
   double bounds[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
   src->GetBounds(bounds);
@@ -1065,7 +737,105 @@ vtkSmartPointer<vtkPolyData> MakeElevations(vtkPolyData* src)
   return elevFilter->GetPolyDataOutput();
 }
 
-vtkSmartPointer<vtkPolyData> MakeParametricHills()
+vtkSmartPointer<vtkPolyData> GetHills()
+{
+  // Create four hills on a plane.
+  // This will have regions of negative, zero and positive Gsaussian curvatures.
+
+  auto xRes = 50;
+  auto yRes = 50;
+  auto xMin = -5.0;
+  auto xMax = 5.0;
+  auto dx = (xMax - xMin) / (xRes - 1.0);
+  auto yMin = -5.0;
+  auto yMax = 5.0;
+  auto dy = (yMax - yMin) / (xRes - 1.0);
+
+  // Make a grid.
+  vtkNew<vtkPoints> points;
+  for (auto i = 0; i < xRes; ++i)
+  {
+    auto x = xMin + i * dx;
+    for (auto j = 0; j < yRes; ++j)
+    {
+      auto y = yMin + j * dy;
+      points->InsertNextPoint(x, y, 0);
+    }
+  }
+
+  // Add the grid points to a polydata object.
+  vtkNew<vtkPolyData> plane;
+  plane->SetPoints(points);
+
+  // Triangulate the grid.
+  vtkNew<vtkDelaunay2D> delaunay;
+  delaunay->SetInputData(plane);
+  delaunay->Update();
+
+  auto polydata = delaunay->GetOutput();
+
+  vtkNew<vtkDoubleArray> elevation;
+  elevation->SetNumberOfTuples(points->GetNumberOfPoints());
+
+  //  We define the parameters for the hills here.
+  // [[0: x0, 1: y0, 2: x variance, 3: y variance, 4: amplitude]...]
+  std::vector<std::array<double, 5>> hd{{-2.5, -2.5, 2.5, 6.5, 3.5},
+                                        {2.5, 2.5, 2.5, 2.5, 2},
+                                        {5.0, -2.5, 1.5, 1.5, 2.5},
+                                        {-5.0, 5, 2.5, 3.0, 3}};
+  std::array<double, 2> xx{0.0, 0.0};
+  for (auto i = 0; i < points->GetNumberOfPoints(); ++i)
+  {
+    auto x = polydata->GetPoint(i);
+    for (size_t j = 0; j < hd.size(); ++j)
+    {
+      xx[0] = std::pow(x[0] - hd[j][0] / hd[j][2], 2.0);
+      xx[1] = std::pow(x[1] - hd[j][1] / hd[j][3], 2.0);
+      x[2] += hd[j][4] * std::exp(-(xx[0] + xx[1]) / 2.0);
+    }
+    polydata->GetPoints()->SetPoint(i, x);
+    elevation->SetValue(i, x[2]);
+  }
+
+  vtkNew<vtkFloatArray> textures;
+  textures->SetNumberOfComponents(2);
+  textures->SetNumberOfTuples(2 * polydata->GetNumberOfPoints());
+  textures->SetName("Textures");
+
+  for (auto i = 0; i < xRes; ++i)
+  {
+    float tc[2];
+    tc[0] = i / (xRes - 1.0);
+    for (auto j = 0; j < yRes; ++j)
+    {
+      // tc[1] = 1.0 - j / (yRes - 1.0);
+      tc[1] = j / (yRes - 1.0);
+      textures->SetTuple(static_cast<vtkIdType>(i) * yRes + j, tc);
+    }
+  }
+
+  polydata->GetPointData()->SetScalars(elevation);
+  polydata->GetPointData()->GetScalars()->SetName("Elevation");
+  polydata->GetPointData()->SetTCoords(textures);
+
+  vtkNew<vtkPolyDataNormals> normals;
+  normals->SetInputData(polydata);
+  normals->SetInputData(polydata);
+  normals->SetFeatureAngle(30);
+  normals->SplittingOff();
+
+  vtkNew<vtkTransform> tr1;
+  tr1->RotateX(-90);
+
+  vtkNew<vtkTransformPolyDataFilter> tf1;
+  tf1->SetInputConnection(normals->GetOutputPort());
+  tf1->SetTransform(tr1);
+  tf1->Update();
+
+  return tf1->GetOutput();
+}
+
+vtkSmartPointer<vtkPolyData> GetParametricHills()
 {
   vtkNew<vtkParametricRandomHills> fn;
   fn->AllowRandomGenerationOn();
@@ -1097,7 +867,7 @@ vtkSmartPointer<vtkPolyData> MakeParametricHills()
   return transformFilter->GetOutput();
 }
 
-vtkSmartPointer<vtkPolyData> MakeParametricTorus()
+vtkSmartPointer<vtkPolyData> GetParametricTorus()
 {
   vtkNew<vtkParametricTorus> fn;
   fn->SetRingRadius(5);
@@ -1127,7 +897,7 @@ vtkSmartPointer<vtkPolyData> MakeParametricTorus()
   return transformFilter->GetOutput();
 }
 
-vtkSmartPointer<vtkPolyData> MakePlane()
+vtkSmartPointer<vtkPolyData> GetPlane()
 {
   vtkNew<vtkPlaneSource> source;
   source->SetOrigin(-10.0, -10.0, 0.0);
@@ -1161,7 +931,7 @@ vtkSmartPointer<vtkPolyData> MakePlane()
   return cleaner->GetOutput();
 }
 
-vtkSmartPointer<vtkPolyData> MakeSphere()
+vtkSmartPointer<vtkPolyData> GetSphere()
 {
   vtkNew<vtkSphereSource> source;
   source->SetCenter(0.0, 0.0, 0.0);
@@ -1173,7 +943,7 @@ vtkSmartPointer<vtkPolyData> MakeSphere()
   return source->GetOutput();
 }
 
-vtkSmartPointer<vtkPolyData> MakeTorus()
+vtkSmartPointer<vtkPolyData> GetTorus()
 {
   vtkNew<vtkSuperquadricSource> source;
   source->SetCenter(0.0, 0.0, 0.0);
@@ -1202,55 +972,42 @@ vtkSmartPointer<vtkPolyData> MakeTorus()
   return cleaner->GetOutput();
 }
 
-vtkSmartPointer<vtkPolyData> Clipper(vtkPolyData* src, double const& dx,
-                                     double const& dy, double const& dz)
+vtkSmartPointer<vtkPolyData> GetSource(std::string const& source)
 {
-  double bounds[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-  src->GetBounds(bounds);
-
-  vtkNew<vtkPlane> plane1;
-  plane1->SetOrigin(bounds[0] + dx, 0, 0);
-  plane1->SetNormal(1, 0, 0);
-
-  vtkNew<vtkPlane> plane2;
-  plane2->SetOrigin(bounds[1] - dx, 0, 0);
-  plane2->SetNormal(-1, 0, 0);
-
-  vtkNew<vtkPlane> plane3;
-  plane3->SetOrigin(0, bounds[2] + dy, 0);
-  plane3->SetNormal(0, 1, 0);
-
-  vtkNew<vtkPlane> plane4;
-  plane4->SetOrigin(0, bounds[3] - dy, 0);
-  plane4->SetNormal(0, -1, 0);
-
-  vtkNew<vtkPlane> plane5;
-  plane5->SetOrigin(0, 0, bounds[4] + dz);
-  plane5->SetNormal(0, 0, 1);
-
-  vtkNew<vtkPlane> plane6;
-  plane6->SetOrigin(0, 0, bounds[5] - dz);
-  plane6->SetNormal(0, 0, -1);
-
-  vtkNew<vtkImplicitBoolean> clipFunction;
-  clipFunction->SetOperationTypeToUnion();
-  clipFunction->AddFunction(plane1);
-  clipFunction->AddFunction(plane2);
-  clipFunction->AddFunction(plane3);
-  clipFunction->AddFunction(plane4);
-  clipFunction->AddFunction(plane5);
-  clipFunction->AddFunction(plane6);
-
-  // Create clipper for the random hills
-  vtkNew<vtkClipPolyData> clipper;
-  clipper->SetClipFunction(clipFunction);
-  clipper->SetInputData(src);
-  clipper->GenerateClipScalarsOff();
-  clipper->GenerateClippedOutputOff();
-  // clipper->GenerateClippedOutputOn();
-  clipper->Update();
-
-  return clipper->GetOutput();
+  std::string surface = source;
+  std::transform(surface.begin(), surface.end(), surface.begin(),
+                 [](unsigned char c) { return std::tolower(c); });
+  std::map<std::string, int> available_surfaces = {
+      {"hills", 0},       {"parametrictorus", 1}, {"plane", 2},
+      {"randomhills", 3}, {"sphere", 4},          {"torus", 5}};
+  if (available_surfaces.find(surface) == available_surfaces.end())
+  {
+    std::cout << "The surface is not available." << std::endl;
+    std::cout << "Using RandomHills instead." << std::endl;
+    surface = "randomhills";
+  }
+  switch (available_surfaces[surface])
+  {
+  case 0:
+    return GetHills();
+    break;
+  case 1:
+    return GetParametricTorus();
+    break;
+  case 2:
+    return GetElevations(GetPlane());
+    break;
+  case 3:
+    return GetParametricHills();
+    break;
+  case 4:
+    return GetElevations(GetSphere());
+    break;
+  case 5:
+    return GetElevations(GetTorus());
+    break;
+  }
+  return GetParametricHills();
 }
 
 vtkSmartPointer<vtkColorSeries> GetColorSeries()
@@ -1271,7 +1028,7 @@ vtkSmartPointer<vtkColorSeries> GetColorSeries()
   return colorSeries;
 }
 
-vtkSmartPointer<vtkLookupTable> MakeCategoricalLUT()
+vtkSmartPointer<vtkLookupTable> GetCategoricalLUT()
 {
   vtkSmartPointer<vtkColorSeries> colorSeries = GetColorSeries();
   // Make the lookup table.
@@ -1282,7 +1039,7 @@ vtkSmartPointer<vtkLookupTable> MakeCategoricalLUT()
   return lut;
 }
 
-vtkSmartPointer<vtkLookupTable> MakeOrdinaLUT()
+vtkSmartPointer<vtkLookupTable> GetOrdinaLUT()
 {
   vtkSmartPointer<vtkColorSeries> colorSeries = GetColorSeries();
   // Make the lookup table.
@@ -1306,7 +1063,7 @@ vtkSmartPointer<vtkLookupTable> MakeOrdinaLUT()
  *
  */
 // clang-format on
-vtkSmartPointer<vtkLookupTable> MakeDivergingLUT()
+vtkSmartPointer<vtkLookupTable> GetDivergingLUT()
 {
 
   vtkNew<vtkColorTransferFunction> ctf;
@@ -1358,149 +1115,8 @@ vtkSmartPointer<vtkLookupTable> ReverseLUT(vtkLookupTable* lut)
   return lutr;
 }
 
-std::map<int, int> Frequencies(std::map<int, std::vector<double>>& bands,
-                               vtkPolyData* src)
-{
-  std::map<int, int> freq;
-  for (int i = 0; i < bands.size(); ++i)
-  {
-    freq[i] = 0;
-  }
-  vtkIdType tuples = src->GetPointData()->GetScalars()->GetNumberOfTuples();
-  for (int i = 0; i < tuples; ++i)
-  {
-    double* x = src->GetPointData()->GetScalars()->GetTuple(i);
-    for (int j = 0; j < bands.size(); ++j)
-    {
-      if (*x <= bands[j][2])
-      {
-        freq[j] = freq[j] + 1;
-        break;
-      }
-    }
-  }
-  return freq;
-}
-
-std::pair<int, int> AdjustFrequencyRanges(std::map<int, int>& freq)
-{
-  auto first = 0;
-  for (auto i = 0; i < freq.size(); ++i)
-  {
-    if (freq[i] != 0)
-    {
-      first = i;
-      break;
-    }
-  }
-  std::vector<int> keys;
-  for (std::map<int, int>::iterator it = freq.begin(); it != freq.end(); ++it)
-  {
-    keys.push_back(it->first);
-  }
-  std::reverse(keys.begin(), keys.end());
-  auto last = keys[0];
-  for (auto i = 0; i < keys.size(); ++i)
-  {
-    if (freq[keys[i]] != 0)
-    {
-      last = keys[i];
-      break;
-    }
-  }
-  return std::pair<int, int>(first, last);
-}
-
-void PrintBands(std::map<int, std::vector<double>> const& bands)
-{
-  std::ostringstream os;
-  os << "Bands:\n";
-  size_t idx = 0;
-  for (std::map<int, std::vector<double>>::const_iterator p = bands.begin();
-       p != bands.end(); ++p)
-  {
-    for (std::vector<double>::const_iterator q = p->second.begin();
-         q != p->second.end(); ++q)
-    {
-      if (q == p->second.begin())
-      {
-        os << std::setw(4) << idx << " [";
-      }
-      if (q == std::prev(p->second.end()))
-      {
-        os << std::fixed << std::setw(6) << std::setprecision(3) << *q << "]\n";
-      }
-      else
-      {
-        os << std::fixed << std::setw(6) << std::setprecision(3) << *q << ", ";
-      }
-    }
-    ++idx;
-  }
-  std::cout << os.str() << std::endl;
-}
-
-void PrintFrequencies(std::map<int, int> const& freq)
-{
-  std::ostringstream os;
-  int i = 0;
-  for (std::map<int, int>::const_iterator p = freq.begin(); p != freq.end();
-       ++p)
-  {
-    if (i == 0)
-    {
-      os << "Frequencies: [";
-    }
-    if (p == std::prev(freq.end()))
-    {
-      os << i << ": " << p->second << "]\n";
-    }
-    else
-    {
-      os << i << ": " << p->second << ", ";
-    }
-    ++i;
-  }
-  std::cout << os.str() << endl;
-}
-
-void PrintBandsFrequencies(std::map<int, std::vector<double>> const& bands,
-                           std::map<int, int>& freq)
-{
-  if (bands.size() != freq.size())
-  {
-    std::cout << "Bands and frequencies must be the same size." << std::endl;
-    return;
-  }
-  std::ostringstream os;
-  os << "Bands & frequencies:\n";
-  size_t idx = 0;
-  for (std::map<int, std::vector<double>>::const_iterator p = bands.begin();
-       p != bands.end(); ++p)
-  {
-    for (std::vector<double>::const_iterator q = p->second.begin();
-         q != p->second.end(); ++q)
-    {
-      if (q == p->second.begin())
-      {
-        os << std::setw(4) << idx << " [";
-      }
-      if (q == std::prev(p->second.end()))
-      {
-        os << std::fixed << std::setw(6) << std::setprecision(3) << *q
-           << "]: " << std::setw(6) << freq[p->first] << "\n";
-      }
-      else
-      {
-        os << std::fixed << std::setw(6) << std::setprecision(3) << *q << ", ";
-      }
-    }
-    ++idx;
-  }
-  std::cout << os.str() << endl;
-}
-
-vtkNew<vtkGlyph3D> MakeGlyphs(vtkPolyData* src, bool const& reverseNormals)
+vtkNew<vtkGlyph3D> GetGlyphs(vtkPolyData* src, double const& scaleFactor,
+                             bool const& reverseNormals)
 {
   // Sometimes the contouring algorithm can create a volume whose gradient
   // vector and ordering of polygon(using the right hand rule) are
@@ -1531,13 +1147,258 @@ vtkNew<vtkGlyph3D> MakeGlyphs(vtkPolyData* src, bool const& reverseNormals)
   glyph->SetSourceConnection(arrow->GetOutputPort());
   glyph->SetInputConnection(maskPts->GetOutputPort());
   glyph->SetVectorModeToUseNormal();
-  glyph->SetScaleFactor(1.0);
+  glyph->SetScaleFactor(scaleFactor);
   glyph->SetColorModeToColorByVector();
   glyph->SetScaleModeToScaleByVector();
   glyph->OrientOn();
   glyph->Update();
 
   return glyph;
+}
+
+std::map<int, std::vector<double>> GetBands(double const dR[2],
+                                            int const& numberOfBands,
+                                            int const& precision,
+                                            bool const& nearestInteger)
+{
+  auto prec = abs(precision);
+  prec = (prec > 14) ? 14 : prec;
+
+  auto RoundOff = [&prec](const double& x) {
+    auto pow_10 = std::pow(10.0, prec);
+    return std::round(x * pow_10) / pow_10;
+  };
+
+  std::map<int, std::vector<double>> bands;
+  if ((dR[1] < dR[0]) || (numberOfBands <= 0))
+  {
+    return bands;
+  }
+  double x[2];
+  for (int i = 0; i < 2; ++i)
+  {
+    x[i] = dR[i];
+  }
+  if (nearestInteger)
+  {
+    x[0] = std::floor(x[0]);
+    x[1] = std::ceil(x[1]);
+  }
+  double dx = (x[1] - x[0]) / static_cast<double>(numberOfBands);
+  std::vector<double> b;
+  b.push_back(x[0]);
+  b.push_back(x[0] + dx / 2.0);
+  b.push_back(x[0] + dx);
+  for (int i = 0; i < numberOfBands; ++i)
+  {
+    if (i == 0)
+    {
+      for (std::vector<double>::iterator p = b.begin(); p != b.end(); ++p)
+      {
+        *p = RoundOff(*p);
+      }
+      b[0] = x[0];
+    }
+    bands[i] = b;
+    for (std::vector<double>::iterator p = b.begin(); p != b.end(); ++p)
+    {
+      *p = RoundOff(*p + dx);
+    }
+  }
+  return bands;
+}
+
+std::map<int, std::vector<double>>
+GetCustomBands(double const dR[2], int const& numberOfBands,
+               std::vector<std::array<double, 2>> const& myBands)
+{
+  std::map<int, std::vector<double>> bands;
+  if ((dR[1] < dR[0]) || (numberOfBands <= 0))
+  {
+    return bands;
+  }
+
+  std::vector<std::array<double, 2>> x;
+  std::copy(myBands.begin(), myBands.end(), std::back_inserter(x));
+
+  // Determine the index of the range minimum and range maximum.
+  int idxMin = 0;
+  for (auto idx = 0; idx < static_cast<int>(myBands.size()); ++idx)
+  {
+    if (dR[0] < myBands[idx][1] && dR[0] >= myBands[idx][0])
+    {
+      idxMin = idx;
+      break;
+    }
+  }
+  int idxMax = static_cast<int>(myBands.size()) - 1;
+  for (int idx = static_cast<int>(myBands.size()) - 1; idx >= 0; --idx)
+  {
+    if (dR[1] < myBands[idx][1] && dR[1] >= myBands[idx][0])
+    {
+      idxMax = static_cast<int>(idx);
+      break;
+    }
+  }
+
+  // Set the minimum to match the range minimum.
+  x[idxMin][0] = dR[0];
+  x[idxMax][1] = dR[1];
+  for (int i = idxMin; i < idxMax + 1; ++i)
+  {
+    std::vector<double> b(3);
+    b[0] = x[i][0];
+    b[1] = x[i][0] + (x[i][1] - x[i][0]) / 2.0;
+    b[2] = x[i][1];
+    bands[i] = b;
+  }
+  return bands;
+}
+
+std::map<int, std::vector<double>> GetIntegralBands(double const dR[2])
+{
+  std::map<int, std::vector<double>> bands;
+  if (dR[1] < dR[0])
+  {
+    return bands;
+  }
+  double x[2];
+  for (int i = 0; i < 2; ++i)
+  {
+    x[i] = dR[i];
+  }
+  x[0] = std::floor(x[0]);
+  x[1] = std::ceil(x[1]);
+  int numberOfBands = static_cast<int>(std::abs(x[1]) + std::abs(x[0]));
+  return GetBands(x, numberOfBands, false);
+}
+
+std::map<int, int> GetFrequencies(std::map<int, std::vector<double>>& bands,
+                                  vtkPolyData* src)
+{
+  std::map<int, int> freq;
+  for (auto i = 0; i < static_cast<int>(bands.size()); ++i)
+  {
+    freq[i] = 0;
+  }
+  vtkIdType tuples = src->GetPointData()->GetScalars()->GetNumberOfTuples();
+  for (int i = 0; i < tuples; ++i)
+  {
+    double* x = src->GetPointData()->GetScalars()->GetTuple(i);
+    for (auto j = 0; j < static_cast<int>(bands.size()); ++j)
+    {
+      if (*x <= bands[j][2])
+      {
+        freq[j] = freq[j] + 1;
+        break;
+      }
+    }
+  }
+  return freq;
+}
+
+void AdjustFrequencyRanges(std::map<int, std::vector<double>>& bands,
+                           std::map<int, int>& freq)
+{
+  // Get the indices of the first and last non-zero elements.
+  auto first = 0;
+  for (auto i = 0; i < static_cast<int>(freq.size()); ++i)
+  {
+    if (freq[i] != 0)
+    {
+      first = i;
+      break;
+    }
+  }
+  std::vector<int> keys;
+  for (std::map<int, int>::iterator it = freq.begin(); it != freq.end(); ++it)
+  {
+    keys.push_back(it->first);
+  }
+  std::reverse(keys.begin(), keys.end());
+  auto last = keys[0];
+  for (size_t i = 0; i < keys.size(); ++i)
+  {
+    if (freq[keys[i]] != 0)
+    {
+      last = keys[i];
+      break;
+    }
+  }
+  // Now adjust the ranges.
+  std::map<int, int>::iterator freqItr;
+  freqItr = freq.find(first);
+  freq.erase(freq.begin(), freqItr);
+  freqItr = ++freq.find(last);
+  freq.erase(freqItr, freq.end());
+  std::map<int, std::vector<double>>::iterator bandItr;
+  bandItr = bands.find(first);
+  bands.erase(bands.begin(), bandItr);
+  bandItr = ++bands.find(last);
+  bands.erase(bandItr, bands.end());
+  // Reindex freq and bands.
+  std::map<int, int> adjFreq;
+  int idx = 0;
+  for (auto p : freq)
+  {
+    adjFreq[idx] = p.second;
+    ++idx;
+  }
+  std::map<int, std::vector<double>> adjBands;
+  idx = 0;
+  for (auto p : bands)
+  {
+    adjBands[idx] = p.second;
+    ++idx;
+  }
+  bands = adjBands;
+  freq = adjFreq;
+}
+
+void PrintBandsFrequencies(std::map<int, std::vector<double>> const& bands,
+                           std::map<int, int>& freq, int const& precision)
+{
+  auto prec = abs(precision);
+  prec = (prec > 14) ? 14 : prec;
+
+  if (bands.size() != freq.size())
+  {
+    std::cout << "Bands and frequencies must be the same size." << std::endl;
+    return;
+  }
+  std::ostringstream os;
+  os << "Bands & Frequencies:\n";
+  size_t idx = 0;
+  auto total = 0;
+  auto width = prec + 6;
+  for (std::map<int, std::vector<double>>::const_iterator p = bands.begin();
+       p != bands.end(); ++p)
+  {
+    total += freq[p->first];
+    for (std::vector<double>::const_iterator q = p->second.begin();
+         q != p->second.end(); ++q)
+    {
+      if (q == p->second.begin())
+      {
+        os << std::setw(4) << idx << " [";
+      }
+      if (q == std::prev(p->second.end()))
+      {
+        os << std::fixed << std::setw(width) << std::setprecision(prec) << *q
+           << "]: " << std::setw(8) << freq[p->first] << "\n";
+      }
+      else
+      {
+        os << std::fixed << std::setw(width) << std::setprecision(prec) << *q
+           << ", ";
+      }
+    }
+    ++idx;
+  }
+  width = 3 * width + 13;
+  os << std::left << std::setw(width) << "Total" << std::right << std::setw(8)
+     << total << std::endl;
+  std::cout << os.str() << endl;
 }
 
 } // namespace
