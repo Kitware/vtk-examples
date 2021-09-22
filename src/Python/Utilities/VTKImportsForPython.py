@@ -131,7 +131,7 @@ def main(json_path, src_paths, ofn):
         if path.is_file() and path.suffix == '.py':
             classes_constants.update(get_classes_constants(path))
         elif path.is_dir():
-            paths = list(Path(fn).rglob('*.py'))
+            paths = list(Path(fn).glob('*.py'))
             program_path = Path(__file__)
             for path in paths:
                 if path.resolve() != program_path.resolve():
@@ -165,7 +165,9 @@ def main(json_path, src_paths, ofn):
 
     res = format_imports(imports)
     if ofn:
-        path = Path(ofn).with_suffix('.txt')
+        path = Path(ofn)
+        if path.suffix == '':
+            path = Path(ofn).with_suffix('.txt')
         path.write_text('\n'.join(res))
     else:
         print('\n'.join(res))
