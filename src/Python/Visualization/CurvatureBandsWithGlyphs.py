@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import math
-from collections import OrderedDict
 
 import numpy as np
 from vtk.util import numpy_support
@@ -22,7 +21,8 @@ from vtkmodules.vtkCommonCore import (
     vtkLookupTable,
     vtkPoints,
     vtkVariant,
-    vtkVariantArray
+    vtkVariantArray,
+    vtkVersion
 )
 from vtkmodules.vtkCommonDataModel import vtkPolyData
 from vtkmodules.vtkCommonTransforms import vtkTransform
@@ -162,7 +162,7 @@ def main(argv):
 
     # Let's do a frequency table.
     # The number of scalars in each band.
-    freq = frequencies(bands, cc.GetOutput())
+    freq = get_frequencies(bands, cc.GetOutput())
     bands, freq = adjust_ranges(bands, freq)
     print_bands_frequencies(bands, freq)
 
@@ -293,10 +293,12 @@ def main(argv):
     ren_win.AddRenderer(ren)
     # Important: The interactor must be set prior to enabling the widget.
     iren.SetRenderWindow(ren_win)
-    cam_orient_manipulator = vtkCameraOrientationWidget()
-    cam_orient_manipulator.SetParentRenderer(ren)
-    # Enable the widget.
-    cam_orient_manipulator.On()
+    if vtk_version_ok(9, 0, 20210718):
+        cam_orient_manipulator = vtkCameraOrientationWidget()
+        cam_orient_manipulator = vtkCameraOrientationWidget()
+        cam_orient_manipulator.SetParentRenderer(ren)
+        # Enable the widget.
+        cam_orient_manipulator.On()
 
     # add actors
     ren.AddViewProp(src_actor)
@@ -321,83 +323,179 @@ def main(argv):
     iren.Start()
 
 
-def get_custom_bands(d_r, number_of_bands, my_bands):
+def vtk_version_ok(major, minor, build):
     """
-    Divide a range into custom bands.
+    Check the VTK version.
 
-    You need to specify each band as an list [r1, r2] where r1 < r2 and
-    append these to a list.
-    The list should ultimately look
-    like this: [[r1, r2], [r2, r3], [r3, r4]...]
-
-    :param: d_r - [min, max] the range that is to be covered by the bands.
-    :param: number_of_bands - the number of bands, a positive integer.
-    :return: A dictionary consisting of band number and [min, midpoint, max] for each band.
+    :param major: Requested major version.
+    :param minor: Requested minor version.
+    :param build: Requested build version.
+    :return: True if the requested VTK version is >= the actual VTK version.
     """
-    bands = dict()
-    if (d_r[1] < d_r[0]) or (number_of_bands <= 0):
-        return bands
-    x = my_bands
-    # Determine the index of the range minimum and range maximum.
-    idx_min = 0
-    for idx in range(0, len(my_bands)):
-        if my_bands[idx][1] > d_r[0] >= my_bands[idx][0]:
-            idx_min = idx
-            break
-
-    idx_max = len(my_bands) - 1
-    for idx in range(len(my_bands) - 1, -1, -1):
-        if my_bands[idx][1] > d_r[1] >= my_bands[idx][0]:
-            idx_max = idx
-            break
-
-    # Set the minimum to match the range minimum.
-    x[idx_min][0] = d_r[0]
-    x[idx_max][1] = d_r[1]
-    x = x[idx_min: idx_max + 1]
-    for idx, e in enumerate(x):
-        bands[idx] = [e[0], e[0] + (e[1] - e[0]) / 2, e[1]]
-    return bands
+    requested_version = (100 * int(major) + int(minor)) * 100000000 + int(build)
+    ver = vtkVersion()
+    actual_version = (100 * ver.GetVTKMajorVersion() + ver.GetVTKMinorVersion()) \
+                     * 100000000 + ver.GetVTKBuildVersion()
+    if actual_version >= requested_version:
+        return True
+    else:
+        return False
 
 
-def frequencies(bands, src):
+def adjust_edge_curvatures(source, curvature_name, epsilon=1.0e-08):
     """
-    Count the number of scalars in each band.
-    :param: bands - the bands.
-    :param: src - the vtkPolyData source.
-    :return: The frequencies of the scalars in each band.
+    This function adjusts curvatures along the edges of the surface by replacing
+     the value with the average value of the curvatures of points in the neighborhood.
+
+    Remember to update the vtkCurvatures object before calling this.
+
+    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.
+    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.
+    :param epsilon: Absolute curvature values less than this will be set to zero.
+    :return:
     """
-    freq = OrderedDict()
-    for i in range(len(bands)):
-        freq[i] = 0
-    tuples = src.GetPointData().GetScalars().GetNumberOfTuples()
-    for i in range(tuples):
-        x = src.GetPointData().GetScalars().GetTuple1(i)
-        for j in range(len(bands)):
-            if x <= bands[j][2]:
-                freq[j] = freq[j] + 1
-                break
-    return freq
+
+    def point_neighbourhood(pt_id):
+        """
+        Find the ids of the neighbours of pt_id.
+
+        :param pt_id: The point id.
+        :return: The neighbour ids.
+        """
+        """
+        Extract the topological neighbors for point pId. In two steps:
+        1) source.GetPointCells(pt_id, cell_ids)
+        2) source.GetCellPoints(cell_id, cell_point_ids) for all cell_id in cell_ids
+        """
+        cell_ids = vtkIdList()
+        source.GetPointCells(pt_id, cell_ids)
+        neighbour = set()
+        for cell_idx in range(0, cell_ids.GetNumberOfIds()):
+            cell_id = cell_ids.GetId(cell_idx)
+            cell_point_ids = vtkIdList()
+            source.GetCellPoints(cell_id, cell_point_ids)
+            for cell_pt_idx in range(0, cell_point_ids.GetNumberOfIds()):
+                neighbour.add(cell_point_ids.GetId(cell_pt_idx))
+        return neighbour
+
+    def compute_distance(pt_id_a, pt_id_b):
+        """
+        Compute the distance between two points given their ids.
+
+        :param pt_id_a:
+        :param pt_id_b:
+        :return:
+        """
+        pt_a = np.array(source.GetPoint(pt_id_a))
+        pt_b = np.array(source.GetPoint(pt_id_b))
+        return np.linalg.norm(pt_a - pt_b)
+
+    # Get the active scalars
+    source.GetPointData().SetActiveScalars(curvature_name)
+    np_source = dsa.WrapDataObject(source)
+    curvatures = np_source.PointData[curvature_name]
+
+    #  Get the boundary point IDs.
+    array_name = 'ids'
+    id_filter = vtkIdFilter()
+    id_filter.SetInputData(source)
+    id_filter.SetPointIds(True)
+    id_filter.SetCellIds(False)
+    id_filter.SetPointIdsArrayName(array_name)
+    id_filter.SetCellIdsArrayName(array_name)
+    id_filter.Update()
+
+    edges = vtkFeatureEdges()
+    edges.SetInputConnection(id_filter.GetOutputPort())
+    edges.BoundaryEdgesOn()
+    edges.ManifoldEdgesOff()
+    edges.NonManifoldEdgesOff()
+    edges.FeatureEdgesOff()
+    edges.Update()
+
+    edge_array = edges.GetOutput().GetPointData().GetArray(array_name)
+    boundary_ids = []
+    for i in range(edges.GetOutput().GetNumberOfPoints()):
+        boundary_ids.append(edge_array.GetValue(i))
+    # Remove duplicate Ids.
+    p_ids_set = set(boundary_ids)
+
+    # Iterate over the edge points and compute the curvature as the weighted
+    # average of the neighbours.
+    count_invalid = 0
+    for p_id in boundary_ids:
+        p_ids_neighbors = point_neighbourhood(p_id)
+        # Keep only interior points.
+        p_ids_neighbors -= p_ids_set
+        # Compute distances and extract curvature values.
+        curvs = [curvatures[p_id_n] for p_id_n in p_ids_neighbors]
+        dists = [compute_distance(p_id_n, p_id) for p_id_n in p_ids_neighbors]
+        curvs = np.array(curvs)
+        dists = np.array(dists)
+        curvs = curvs[dists > 0]
+        dists = dists[dists > 0]
+        if len(curvs) > 0:
+            weights = 1 / np.array(dists)
+            weights /= weights.sum()
+            new_curv = np.dot(curvs, weights)
+        else:
+            # Corner case.
+            count_invalid += 1
+            # Assuming the curvature of the point is planar.
+            new_curv = 0.0
+        # Set the new curvature value.
+        curvatures[p_id] = new_curv
+
+    #  Set small values to zero.
+    if epsilon != 0.0:
+        curvatures = np.where(abs(curvatures) < epsilon, 0, curvatures)
+        # Curvatures is now an ndarray
+        curv = numpy_support.numpy_to_vtk(num_array=curvatures.ravel(),
+                                          deep=True,
+                                          array_type=VTK_DOUBLE)
+        curv.SetName(curvature_name)
+        source.GetPointData().RemoveArray(curvature_name)
+        source.GetPointData().AddArray(curv)
+        source.GetPointData().SetActiveScalars(curvature_name)
 
 
-def adjust_frequency_ranges(freq):
+def constrain_curvatures(source, curvature_name, lower_bound=0.0, upper_bound=0.0):
     """
-    Get the indices of the first and last non-zero elements.
-    :param freq: The frequency dictionary.
-    :return: The indices of the first and last non-zero elements.
+    This function constrains curvatures to the range [lower_bound ... upper_bound].
+
+    Remember to update the vtkCurvatures object before calling this.
+
+    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.
+    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.
+    :param lower_bound: The lower bound.
+    :param upper_bound: The upper bound.
+    :return:
     """
-    first = 0
-    for k, v in freq.items():
-        if v != 0:
-            first = k
-            break
-    rev_keys = list(freq.keys())[::-1]
-    last = rev_keys[0]
-    for idx in list(freq.keys())[::-1]:
-        if freq[idx] != 0:
-            last = idx
-            break
-    return first, last
+
+    bounds = list()
+    if lower_bound < upper_bound:
+        bounds.append(lower_bound)
+        bounds.append(upper_bound)
+    else:
+        bounds.append(upper_bound)
+        bounds.append(lower_bound)
+
+    # Get the active scalars
+    source.GetPointData().SetActiveScalars(curvature_name)
+    np_source = dsa.WrapDataObject(source)
+    curvatures = np_source.PointData[curvature_name]
+
+    # Set upper and lower bounds.
+    curvatures = np.where(curvatures < bounds[0], bounds[0], curvatures)
+    curvatures = np.where(curvatures > bounds[1], bounds[1], curvatures)
+    # Curvatures is now an ndarray
+    curv = numpy_support.numpy_to_vtk(num_array=curvatures.ravel(),
+                                      deep=True,
+                                      array_type=VTK_DOUBLE)
+    curv.SetName(curvature_name)
+    source.GetPointData().RemoveArray(curvature_name)
+    source.GetPointData().AddArray(curv)
+    source.GetPointData().SetActiveScalars(curvature_name)
 
 
 def get_elevations(src):
@@ -651,160 +749,24 @@ def get_torus():
     return cleaner.GetOutput()
 
 
-def adjust_edge_curvatures(source, curvature_name, epsilon=1.0e-08):
-    """
-    This function adjusts curvatures along the edges of the surface by replacing
-     the value with the average value of the curvatures of points in the neighborhood.
-
-    Remember to update the vtkCurvatures object before calling this.
-
-    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.
-    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.
-    :param epsilon: Absolute curvature values less than this will be set to zero.
-    :return:
-    """
-
-    def point_neighbourhood(pt_id):
-        """
-        Find the ids of the neighbours of pt_id.
-
-        :param pt_id: The point id.
-        :return: The neighbour ids.
-        """
-        """
-        Extract the topological neighbors for point pId. In two steps:
-        1) source.GetPointCells(pt_id, cell_ids)
-        2) source.GetCellPoints(cell_id, cell_point_ids) for all cell_id in cell_ids
-        """
-        cell_ids = vtkIdList()
-        source.GetPointCells(pt_id, cell_ids)
-        neighbour = set()
-        for cell_idx in range(0, cell_ids.GetNumberOfIds()):
-            cell_id = cell_ids.GetId(cell_idx)
-            cell_point_ids = vtkIdList()
-            source.GetCellPoints(cell_id, cell_point_ids)
-            for cell_pt_idx in range(0, cell_point_ids.GetNumberOfIds()):
-                neighbour.add(cell_point_ids.GetId(cell_pt_idx))
-        return neighbour
-
-    def compute_distance(pt_id_a, pt_id_b):
-        """
-        Compute the distance between two points given their ids.
-
-        :param pt_id_a:
-        :param pt_id_b:
-        :return:
-        """
-        pt_a = np.array(source.GetPoint(pt_id_a))
-        pt_b = np.array(source.GetPoint(pt_id_b))
-        return np.linalg.norm(pt_a - pt_b)
-
-    # Get the active scalars
-    source.GetPointData().SetActiveScalars(curvature_name)
-    np_source = dsa.WrapDataObject(source)
-    curvatures = np_source.PointData[curvature_name]
-
-    #  Get the boundary point IDs.
-    array_name = 'ids'
-    id_filter = vtkIdFilter()
-    id_filter.SetInputData(source)
-    id_filter.SetPointIds(True)
-    id_filter.SetCellIds(False)
-    id_filter.SetPointIdsArrayName(array_name)
-    id_filter.SetCellIdsArrayName(array_name)
-    id_filter.Update()
-
-    edges = vtkFeatureEdges()
-    edges.SetInputConnection(id_filter.GetOutputPort())
-    edges.BoundaryEdgesOn()
-    edges.ManifoldEdgesOff()
-    edges.NonManifoldEdgesOff()
-    edges.FeatureEdgesOff()
-    edges.Update()
-
-    edge_array = edges.GetOutput().GetPointData().GetArray(array_name)
-    boundary_ids = []
-    for i in range(edges.GetOutput().GetNumberOfPoints()):
-        boundary_ids.append(edge_array.GetValue(i))
-    # Remove duplicate Ids.
-    p_ids_set = set(boundary_ids)
-
-    # Iterate over the edge points and compute the curvature as the weighted
-    # average of the neighbours.
-    count_invalid = 0
-    for p_id in boundary_ids:
-        p_ids_neighbors = point_neighbourhood(p_id)
-        # Keep only interior points.
-        p_ids_neighbors -= p_ids_set
-        # Compute distances and extract curvature values.
-        curvs = [curvatures[p_id_n] for p_id_n in p_ids_neighbors]
-        dists = [compute_distance(p_id_n, p_id) for p_id_n in p_ids_neighbors]
-        curvs = np.array(curvs)
-        dists = np.array(dists)
-        curvs = curvs[dists > 0]
-        dists = dists[dists > 0]
-        if len(curvs) > 0:
-            weights = 1 / np.array(dists)
-            weights /= weights.sum()
-            new_curv = np.dot(curvs, weights)
-        else:
-            # Corner case.
-            count_invalid += 1
-            # Assuming the curvature of the point is planar.
-            new_curv = 0.0
-        # Set the new curvature value.
-        curvatures[p_id] = new_curv
-
-    #  Set small values to zero.
-    if epsilon != 0.0:
-        curvatures = np.where(abs(curvatures) < epsilon, 0, curvatures)
-        # Curvatures is now an ndarray
-        curv = numpy_support.numpy_to_vtk(num_array=curvatures.ravel(),
-                                          deep=True,
-                                          array_type=VTK_DOUBLE)
-        curv.SetName(curvature_name)
-        source.GetPointData().RemoveArray(curvature_name)
-        source.GetPointData().AddArray(curv)
-        source.GetPointData().SetActiveScalars(curvature_name)
-
-
-def constrain_curvatures(source, curvature_name, lower_bound=0.0, upper_bound=0.0):
-    """
-    This function constrains curvatures to the range [lower_bound ... upper_bound].
-
-    Remember to update the vtkCurvatures object before calling this.
-
-    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.
-    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.
-    :param lower_bound: The lower bound.
-    :param upper_bound: The upper bound.
-    :return:
-    """
-
-    bounds = list()
-    if lower_bound < upper_bound:
-        bounds.append(lower_bound)
-        bounds.append(upper_bound)
-    else:
-        bounds.append(upper_bound)
-        bounds.append(lower_bound)
-
-    # Get the active scalars
-    source.GetPointData().SetActiveScalars(curvature_name)
-    np_source = dsa.WrapDataObject(source)
-    curvatures = np_source.PointData[curvature_name]
-
-    # Set upper and lower bounds.
-    curvatures = np.where(curvatures < bounds[0], bounds[0], curvatures)
-    curvatures = np.where(curvatures > bounds[1], bounds[1], curvatures)
-    # Curvatures is now an ndarray
-    curv = numpy_support.numpy_to_vtk(num_array=curvatures.ravel(),
-                                      deep=True,
-                                      array_type=VTK_DOUBLE)
-    curv.SetName(curvature_name)
-    source.GetPointData().RemoveArray(curvature_name)
-    source.GetPointData().AddArray(curv)
-    source.GetPointData().SetActiveScalars(curvature_name)
+def get_source(source):
+    surface = source.lower()
+    available_surfaces = ['hills', 'parametrictorus', 'plane', 'randomhills', 'sphere', 'torus']
+    if surface not in available_surfaces:
+        return None
+    elif surface == 'hills':
+        return get_hills()
+    elif surface == 'parametrictorus':
+        return get_parametric_torus()
+    elif surface == 'plane':
+        return get_elevations(get_plane())
+    elif surface == 'randomhills':
+        return get_parametric_hills()
+    elif surface == 'sphere':
+        return get_elevations(get_sphere())
+    elif surface == 'torus':
+        return get_elevations(get_torus())
+    return None
 
 
 def get_color_series():
@@ -950,26 +912,6 @@ def get_glyphs(src, scale_factor=1.0, reverse_normals=False):
     return glyph
 
 
-def get_source(source):
-    surface = source.lower()
-    available_surfaces = ['hills', 'parametrictorus', 'plane', 'randomhills', 'sphere', 'torus']
-    if surface not in available_surfaces:
-        return None
-    elif surface == 'hills':
-        return get_hills()
-    elif surface == 'parametrictorus':
-        return get_parametric_torus()
-    elif surface == 'plane':
-        return get_elevations(get_plane())
-    elif surface == 'randomhills':
-        return get_parametric_hills()
-    elif surface == 'sphere':
-        return get_elevations(get_sphere())
-    elif surface == 'torus':
-        return get_elevations(get_torus())
-    return None
-
-
 def get_bands(d_r, number_of_bands, precision=2, nearest_integer=False):
     """
     Divide a range into bands
@@ -1000,6 +942,45 @@ def get_bands(d_r, number_of_bands, precision=2, nearest_integer=False):
         bands[i] = b
         b = [b[0] + dx, b[1] + dx, b[2] + dx]
         i += 1
+    return bands
+
+
+def get_custom_bands(d_r, number_of_bands, my_bands):
+    """
+    Divide a range into custom bands.
+
+    You need to specify each band as an list [r1, r2] where r1 < r2 and
+    append these to a list.
+    The list should ultimately look
+    like this: [[r1, r2], [r2, r3], [r3, r4]...]
+
+    :param: d_r - [min, max] the range that is to be covered by the bands.
+    :param: number_of_bands - the number of bands, a positive integer.
+    :return: A dictionary consisting of band number and [min, midpoint, max] for each band.
+    """
+    bands = dict()
+    if (d_r[1] < d_r[0]) or (number_of_bands <= 0):
+        return bands
+    x = my_bands
+    # Determine the index of the range minimum and range maximum.
+    idx_min = 0
+    for idx in range(0, len(my_bands)):
+        if my_bands[idx][1] > d_r[0] >= my_bands[idx][0]:
+            idx_min = idx
+            break
+
+    idx_max = len(my_bands) - 1
+    for idx in range(len(my_bands) - 1, -1, -1):
+        if my_bands[idx][1] > d_r[1] >= my_bands[idx][0]:
+            idx_max = idx
+            break
+
+    # Set the minimum to match the range minimum.
+    x[idx_min][0] = d_r[0]
+    x[idx_max][1] = d_r[1]
+    x = x[idx_min: idx_max + 1]
+    for idx, e in enumerate(x):
+        bands[idx] = [e[0], e[0] + (e[1] - e[0]) / 2, e[1]]
     return bands
 
 
