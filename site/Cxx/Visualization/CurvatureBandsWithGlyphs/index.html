@@ -59,7 +59,6 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkArrowSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkBandedPolyDataContourFilter.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCamera.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCameraOrientationWidget.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCleanPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkColorSeries.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkColorTransferFunction.h&gt;</span><span class=cp></span>
@@ -102,6 +101,11 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkVariantArray.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkVersion.h&gt;</span><span class=cp></span>
 </span>
+<span class=cp>#if VTK_VERSION_NUMBER &gt;= 90020210809ULL</span>
+<span class=cp>#define HAS_COW</span>
+<span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCameraOrientationWidget.h&gt;</span><span class=cp></span>
+</span><span class=cp>#endif</span>
+
 <span class=cp>#include</span> <span class=cpf>&lt;algorithm&gt;</span><span class=cp></span>
 <span class=cp>#include</span> <span class=cpf>&lt;array&gt;</span><span class=cp></span>
 <span class=cp>#include</span> <span class=cpf>&lt;cctype&gt;</span><span class=cp></span>
@@ -248,20 +252,25 @@ function registerListener(event, func) {
 <span class=kt>int</span> <span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
   <span class=c1>// Get the surface</span>
-   <span class=c1>//std::string desiredSurface = &quot;Hills&quot;;</span>
-   <span class=c1>//std::string desiredSurface = &quot;ParametricTorus&quot;;</span>
-   <span class=c1>//std::string desiredSurface = &quot;Plane&quot;;</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>desiredSurface</span> <span class=o>=</span> <span class=s>&quot;RandomHills&quot;</span><span class=p>;</span>
-   <span class=c1>//std::string desiredSurface = &quot;Sphere&quot;;</span>
-   <span class=c1>//std::string desiredSurface = &quot;Torus&quot;;</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>desiredSurface</span><span class=p>{</span><span class=s>&quot;RandomHills&quot;</span><span class=p>};</span>
+  <span class=c1>// desiredSurface = &quot;Hills&quot;;</span>
+  <span class=c1>// desiredSurface = &quot;ParametricTorus&quot;;</span>
+  <span class=c1>// desiredSurface = &quot;Plane&quot;;</span>
+  <span class=c1>// desiredSurface = &quot;RandomHills&quot;;</span>
+  <span class=c1>// desiredSurface = &quot;Sphere&quot;;</span>
+  <span class=c1>// desiredSurface = &quot;Torus&quot;;</span>
   <span class=k>auto</span> <span class=n>source</span> <span class=o>=</span> <span class=n>GetSource</span><span class=p>(</span><span class=n>desiredSurface</span><span class=p>);</span>
 
   <span class=c1>// The length of the normal arrow glyphs.</span>
   <span class=k>auto</span> <span class=n>scaleFactor</span> <span class=o>=</span> <span class=mf>1.0</span><span class=p>;</span>
   <span class=k>if</span> <span class=p>(</span><span class=n>desiredSurface</span> <span class=o>==</span> <span class=s>&quot;Hills&quot;</span><span class=p>)</span>
-    <span class=n>scaleFactor</span> <span class=o>=</span> <span class=mf>0.5</span><span class=p>;</span>
+  <span class=p>{</span>
+     <span class=n>scaleFactor</span> <span class=o>=</span> <span class=mf>0.5</span><span class=p>;</span>
+ <span class=p>}</span>
   <span class=k>if</span> <span class=p>(</span><span class=n>desiredSurface</span> <span class=o>==</span> <span class=s>&quot;Sphere&quot;</span><span class=p>)</span>
+ <span class=p>{</span>
     <span class=n>scaleFactor</span> <span class=o>=</span> <span class=mf>2.0</span><span class=p>;</span>
+ <span class=p>}</span>
   <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>desiredSurface</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
   <span class=k>auto</span> <span class=n>gaussianCurvature</span> <span class=o>=</span> <span class=nb>true</span><span class=p>;</span>
@@ -327,19 +336,21 @@ function registerListener(event, func) {
   <span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableRange</span><span class=p>(</span><span class=n>scalarRangeCurvatures</span><span class=p>);</span>
   <span class=n>lut1</span><span class=o>-&gt;</span><span class=n>SetTableRange</span><span class=p>(</span><span class=n>scalarRangeElevation</span><span class=p>);</span>
   <span class=k>auto</span> <span class=n>numberOfBands</span> <span class=o>=</span> <span class=n>lut</span><span class=o>-&gt;</span><span class=n>GetNumberOfTableValues</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bands</span> <span class=o>=</span> <span class=n>GetBands</span><span class=p>(</span><span class=n>scalarRangeCurvatures</span><span class=p>,</span> <span class=n>numberOfBands</span><span class=p>,</span> <span class=mi>10</span><span class=p>);</span>
+  <span class=k>auto</span> <span class=n>precision</span> <span class=o>=</span> <span class=mi>10</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>bands</span> <span class=o>=</span> <span class=n>GetBands</span><span class=p>(</span><span class=n>scalarRangeCurvatures</span><span class=p>,</span> <span class=n>numberOfBands</span><span class=p>,</span> <span class=n>precision</span><span class=p>,</span> <span class=nb>false</span><span class=p>);</span>
+
   <span class=k>if</span> <span class=p>(</span><span class=n>desiredSurface</span> <span class=o>==</span> <span class=s>&quot;RandomHills&quot;</span><span class=p>)</span>
   <span class=p>{</span>
     <span class=c1>// These are my custom bands.</span>
     <span class=c1>// Generated by first running:</span>
-    <span class=c1>// bands = GetBands(scalarRangeCurvatures, numberOfBands, false);</span>
+    <span class=c1>// bands = GetBands(scalarRangeCurvatures, numberOfBands, precision, false);</span>
     <span class=c1>// then:</span>
     <span class=c1>//  std::vector&lt;int&gt; freq = Frequencies(bands, src);</span>
     <span class=c1>//  PrintBandsFrequencies(bands, freq);</span>
     <span class=c1>// Finally using the output to create this table:</span>
     <span class=c1>// std::vector&lt;std::array&lt;double, 2&gt;&gt; myBands = {</span>
     <span class=c1>//    {-0.630, -0.190},  {-0.190, -0.043}, {-0.043, -0.0136},</span>
-    <span class=c1>//    {-0.0136, 0.0158}, {0.0158, 0.0452}, {0.0452, 0.0746},</span>
+    <span class=c1>//    {-0.0136, 0.0158}, {0.0158, 0.0452}, {0.0452, 0.0746},12</span>
     <span class=c1>//    {0.0746, 0.104},   {0.104, 0.251},   {0.251, 1.131}};</span>
     <span class=c1>//  This demonstrates that the gaussian curvature of the surface</span>
     <span class=c1>//   is mostly planar with some hyperbolic regions (saddle points)</span>
@@ -523,10 +534,12 @@ function registerListener(event, func) {
   <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
   <span class=c1>// Important: The interactor must be set prior to enabling the widget.</span>
   <span class=n>iren</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
+<span class=cp>#ifdef HAS_COW</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCameraOrientationWidget</span><span class=o>&gt;</span> <span class=n>camOrientManipulator</span><span class=p>;</span>
 </span>  <span class=n>camOrientManipulator</span><span class=o>-&gt;</span><span class=n>SetParentRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
   <span class=c1>// Enable the widget.</span>
   <span class=n>camOrientManipulator</span><span class=o>-&gt;</span><span class=n>On</span><span class=p>();</span>
+<span class=cp>#endif</span>
 
   <span class=c1>// add actors</span>
   <span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>srcActor</span><span class=p>);</span>

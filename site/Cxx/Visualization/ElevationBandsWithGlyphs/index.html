@@ -59,11 +59,13 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkArrowSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkBandedPolyDataContourFilter.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCamera.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCameraOrientationWidget.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCleanPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkColorSeries.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkColorTransferFunction.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkDelaunay2D.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkDoubleArray.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkElevationFilter.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkFloatArray.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkGlyph3D.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkInteractorStyleTrackballCamera.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkLookupTable.h&gt;</span><span class=cp></span>
@@ -77,20 +79,29 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPointData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataNormals.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkProperty.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkReverseSense.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkScalarBarActor.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSphereSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSuperquadricSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTextProperty.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTransform.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTriangleFilter.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkVariant.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkVariantArray.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkVersion.h&gt;</span><span class=cp></span>
 </span>
+<span class=cp>#if VTK_VERSION_NUMBER &gt;= 90020210809ULL</span>
+<span class=cp>#define HAS_COW</span>
+<span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCameraOrientationWidget.h&gt;</span><span class=cp></span>
+</span><span class=cp>#endif</span>
+
 <span class=cp>#include</span> <span class=cpf>&lt;algorithm&gt;</span><span class=cp></span>
 <span class=cp>#include</span> <span class=cpf>&lt;array&gt;</span><span class=cp></span>
 <span class=cp>#include</span> <span class=cpf>&lt;cctype&gt;</span><span class=cp></span>
@@ -101,23 +112,52 @@ function registerListener(event, func) {
 <span class=cp>#include</span> <span class=cpf>&lt;iomanip&gt;</span><span class=cp></span>
 <span class=cp>#include</span> <span class=cpf>&lt;iostream&gt;</span><span class=cp></span>
 <span class=cp>#include</span> <span class=cpf>&lt;iterator&gt;</span><span class=cp></span>
+<span class=cp>#include</span> <span class=cpf>&lt;numeric&gt;</span><span class=cp></span>
+<span class=cp>#include</span> <span class=cpf>&lt;set&gt;</span><span class=cp></span>
 <span class=cp>#include</span> <span class=cpf>&lt;sstream&gt;</span><span class=cp></span>
 <span class=cp>#include</span> <span class=cpf>&lt;string&gt;</span><span class=cp></span>
 <span class=cp>#include</span> <span class=cpf>&lt;vector&gt;</span><span class=cp></span>
 
 <span class=k>namespace</span> <span class=p>{</span>
-
-<span class=c1>//! Divide a range into bands</span>
+<span class=c1>//! Generate elevations over the surface.</span>
 <span class=cm>/*!</span>
-<span class=cm>@param dR - [min, max] the range that is to be covered by the bands.</span>
-<span class=cm>@param numberOfBands - the number of bands, a positive integer.</span>
-<span class=cm>@param nearestInteger - if True then [floor(min), ceil(max)] is used.</span>
-<span class=cm>@return A map consisting of the band inxex and [min, midpoint, max] for each</span>
-<span class=cm>band.</span>
+<span class=hll><span class=cm>@param src - the vtkPolyData source.</span>
+</span><span class=cm>@return elev - the elevations.</span>
 <span class=cm>*/</span>
-<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>MakeBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span>
-                                             <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>numberOfBands</span><span class=p>,</span>
-                                             <span class=kt>bool</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>nearestInteger</span><span class=p>);</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetElevations</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>);</span>
+</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetHills</span><span class=p>();</span>
+</span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetParametricHills</span><span class=p>();</span>
+</span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetParametricTorus</span><span class=p>();</span>
+</span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetPlane</span><span class=p>();</span>
+</span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetSphere</span><span class=p>();</span>
+</span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetTorus</span><span class=p>();</span>
+</span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetSource</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>source</span><span class=p>);</span>
+</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkColorSeries</span><span class=o>&gt;</span> <span class=n>GetColorSeries</span><span class=p>();</span>
+</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>GetCategoricalLUT</span><span class=p>();</span>
+</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>GetOrdinaLUT</span><span class=p>();</span>
+</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>GetDivergingLUT</span><span class=p>();</span>
+</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>ReverseLUT</span><span class=p>(</span><span class=n>vtkLookupTable</span><span class=o>*</span> <span class=n>lut</span><span class=p>);</span>
+</span>
+<span class=c1>//!  Glyph the normals on the surface.</span>
+<span class=cm>/*!</span>
+<span class=hll><span class=cm>@param src - the vtkPolyData source.</span>
+</span><span class=cm>#param scaleFactor - the scale factor for the glyphs.</span>
+<span class=cm>@param reverseNormals - if True the normals on the surface are reversed.</span>
+<span class=cm>@return The glyphs.</span>
+<span class=cm>*/</span>
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;</span> <span class=n>GetGlyphs</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>,</span> <span class=kt>double</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>scaleFactor</span> <span class=o>=</span> <span class=mf>1.0</span><span class=p>,</span>
+</span>                             <span class=kt>bool</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>reverseNormals</span> <span class=o>=</span> <span class=nb>false</span><span class=p>);</span>
+
+<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>GetBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span>
+                                            <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>numberOfBands</span><span class=p>,</span>
+                                            <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>precision</span> <span class=o>=</span> <span class=mi>2</span><span class=p>,</span>
+                                            <span class=kt>bool</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>nearestInteger</span> <span class=o>=</span> <span class=nb>false</span><span class=p>);</span>
 
 <span class=c1>//! Divide a range into custom bands</span>
 <span class=cm>/*!</span>
@@ -133,8 +173,8 @@ function registerListener(event, func) {
 <span class=cm>band.</span>
 <span class=cm>*/</span>
 <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span>
-<span class=n>MakeCustomBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span> <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>numberOfBands</span><span class=p>,</span>
-                <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>2</span><span class=o>&gt;&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>myBands</span><span class=p>);</span>
+<span class=n>GetCustomBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span> <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>numberOfBands</span><span class=p>,</span>
+               <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>2</span><span class=o>&gt;&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>myBands</span><span class=p>);</span>
 
 <span class=c1>//! Divide a range into integral bands</span>
 <span class=cm>/*!</span>
@@ -143,155 +183,76 @@ function registerListener(event, func) {
 <span class=cm>@returnA map consisting of the band inxex and [min, midpoint, max] for each</span>
 <span class=cm>band.</span>
 <span class=cm>*/</span>
-<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>MakeIntegralBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
+<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>GetIntegralBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
 
-<span class=c1>//! Generate elevations over the surface.</span>
-<span class=cm>/*!</span>
-<span class=hll><span class=cm>@param src - the vtkPolyData source.</span>
-</span><span class=cm>@return elev - the elevations.</span>
-<span class=cm>*/</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakeElevations</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>);</span>
-</span>
-<span class=c1>//! Make a parametric hills surface as the source.</span>
-<span class=cm>/*!</span>
-<span class=hll><span class=cm>@return - vtkPolyData.</span>
-</span><span class=cm>*/</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakeParametricHills</span><span class=p>();</span>
-</span>
-<span class=c1>//! Make a parametric torus as the source.</span>
-<span class=cm>/*!</span>
-<span class=hll><span class=cm>@return - vtkPolyData.</span>
-</span><span class=cm>*/</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakeParametricTorus</span><span class=p>();</span>
-</span>
-<span class=c1>//! Make a Plane as the source.</span>
-<span class=cm>/*!</span>
-<span class=hll><span class=cm>@return - vtkPolyData.</span>
-</span><span class=cm>*/</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakePlane</span><span class=p>();</span>
-</span>
-<span class=c1>//! Make a MakeSphere as the source.</span>
-<span class=cm>/*!</span>
-<span class=hll><span class=cm>@return - vtkPolyData.</span>
-</span><span class=cm>*/</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakeSphere</span><span class=p>();</span>
-</span>
-<span class=c1>//! Make a torus as the source.</span>
-<span class=cm>/*!</span>
-<span class=hll><span class=cm>@return - vtkPolyData.</span>
-</span><span class=cm>*/</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakeTorus</span><span class=p>();</span>
-</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkColorSeries</span><span class=o>&gt;</span> <span class=n>GetColorSeries</span><span class=p>();</span>
-</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>MakeCategoricalLUT</span><span class=p>();</span>
-</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>MakeOrdinaLUT</span><span class=p>();</span>
-</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>MakeDivergingLUT</span><span class=p>();</span>
-</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>ReverseLUT</span><span class=p>(</span><span class=n>vtkLookupTable</span><span class=o>*</span> <span class=n>lut</span><span class=p>);</span>
-</span>
 <span class=c1>//! Count the number of scalars in each band.</span>
-<span class=cm>/*!</span>
-<span class=cm>@param bands - the bands.</span>
-<span class=hll><span class=cm>@param src - the vtkPolyData source.</span>
-</span><span class=cm>@return The frequencies of the scalars in each band.</span>
-<span class=cm>*/</span>
-<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>Frequencies</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;&amp;</span> <span class=n>bands</span><span class=p>,</span>
-<span class=hll>                               <span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>);</span>
-</span>
-<span class=n>std</span><span class=o>::</span><span class=n>pair</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>AdjustFrequencyRanges</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;&amp;</span> <span class=n>freq</span><span class=p>);</span>
-
-<span class=kt>void</span> <span class=nf>PrintBands</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>bands</span><span class=p>);</span>
-
-<span class=kt>void</span> <span class=nf>PrintFrequencies</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>freq</span><span class=p>);</span>
-
-<span class=kt>void</span> <span class=nf>PrintBandsFrequencies</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>bands</span><span class=p>,</span>
+<span class=cm>/*</span>
+<span class=cm> * The scalars used are the active scalars in the polydata.</span>
+<span class=cm> *</span>
+<span class=cm> * @param bands - the bands.</span>
+<span class=hll><span class=cm> * @param src - the vtkPolyData source.</span>
+</span><span class=cm> * @return The frequencies of the scalars in each band.</span>
+<span class=cm> */</span>
+<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>GetFrequencies</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;&amp;</span> <span class=n>bands</span><span class=p>,</span>
+<span class=hll>                                  <span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>);</span>
+</span><span class=c1>//!</span>
+<span class=cm>/*</span>
+<span class=cm> * The bands and frequencies are adjusted so that the first and last</span>
+<span class=cm> *  frequencies in the range are non-zero.</span>
+<span class=cm> * @param bands: The bands.</span>
+<span class=cm> * @param freq: The frequencies.</span>
+<span class=cm> */</span>
+<span class=kt>void</span> <span class=nf>AdjustFrequencyRanges</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;&amp;</span> <span class=n>bands</span><span class=p>,</span>
                            <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;&amp;</span> <span class=n>freq</span><span class=p>);</span>
 
-<span class=c1>//!  Glyph the normals on the surface.</span>
-<span class=cm>/*!</span>
-<span class=hll><span class=cm>@param src - the vtkPolyData source.</span>
-</span><span class=cm>@param reverseNormals - if True the normals on the surface are reversed.</span>
-<span class=cm>@return The glyphs.</span>
-<span class=cm>*/</span>
-<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;</span> <span class=n>MakeGlyphs</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>,</span> <span class=kt>bool</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>reverseNormals</span><span class=p>);</span>
-</span>
+<span class=kt>void</span> <span class=nf>PrintBandsFrequencies</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>bands</span><span class=p>,</span>
+                           <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;&amp;</span> <span class=n>freq</span><span class=p>,</span> <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>precision</span> <span class=o>=</span> <span class=mi>2</span><span class=p>);</span>
+
 <span class=p>}</span> <span class=c1>// namespace</span>
 
-<span class=c1>//! Make and display the surface.</span>
 <span class=kt>int</span> <span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
   <span class=c1>// Get the surface</span>
-  <span class=c1>// std::string desiredSurface = &quot;ParametricTorus&quot;;</span>
-  <span class=c1>// std::string desiredSurface = &quot;Plane&quot;;</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>desiredSurface</span> <span class=o>=</span> <span class=s>&quot;RandomHills&quot;</span><span class=p>;</span>
-  <span class=c1>// std::string desiredSurface = &quot;Sphere&quot;;</span>
-  <span class=c1>// std::string desiredSurface = &quot;Torus&quot;;</span>
-  <span class=k>auto</span> <span class=n>lcSurface</span> <span class=o>=</span> <span class=n>desiredSurface</span><span class=p>;</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>lcSurface</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>lcSurface</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span> <span class=n>lcSurface</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span>
-                 <span class=p>[](</span><span class=kt>char</span> <span class=n>c</span><span class=p>)</span> <span class=p>{</span> <span class=k>return</span> <span class=n>std</span><span class=o>::</span><span class=n>tolower</span><span class=p>(</span><span class=n>c</span><span class=p>);</span> <span class=p>});</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>availableSurfaces</span> <span class=o>=</span> <span class=p>{{</span><span class=s>&quot;parametrictorus&quot;</span><span class=p>,</span> <span class=mi>0</span><span class=p>},</span>
-                                                  <span class=p>{</span><span class=s>&quot;plane&quot;</span><span class=p>,</span> <span class=mi>1</span><span class=p>},</span>
-                                                  <span class=p>{</span><span class=s>&quot;randomhills&quot;</span><span class=p>,</span> <span class=mi>2</span><span class=p>},</span>
-                                                  <span class=p>{</span><span class=s>&quot;sphere&quot;</span><span class=p>,</span> <span class=mi>3</span><span class=p>},</span>
-                                                  <span class=p>{</span><span class=s>&quot;torus&quot;</span><span class=p>,</span> <span class=mi>4</span><span class=p>}};</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>src</span><span class=p>;</span>
-</span>  <span class=k>if</span> <span class=p>(</span><span class=n>availableSurfaces</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>lcSurface</span><span class=p>)</span> <span class=o>==</span> <span class=n>availableSurfaces</span><span class=p>.</span><span class=n>end</span><span class=p>())</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>desiredSurface</span><span class=p>{</span><span class=s>&quot;RandomHills&quot;</span><span class=p>};</span>
+  <span class=c1>// desiredSurface = &quot;Hills&quot;;</span>
+  <span class=c1>// desiredSurface = &quot;ParametricTorus&quot;;</span>
+  <span class=c1>// desiredSurface = &quot;Plane&quot;;</span>
+  <span class=c1>// desiredSurface = &quot;RandomHills&quot;;</span>
+  <span class=c1>// desiredSurface = &quot;Sphere&quot;;</span>
+  <span class=c1>// desiredSurface = &quot;Torus&quot;;</span>
+  <span class=k>auto</span> <span class=n>source</span> <span class=o>=</span> <span class=n>GetSource</span><span class=p>(</span><span class=n>desiredSurface</span><span class=p>);</span>
+
+  <span class=c1>// The length of the normal arrow glyphs.</span>
+  <span class=k>auto</span> <span class=n>scaleFactor</span> <span class=o>=</span> <span class=mf>1.0</span><span class=p>;</span>
+  <span class=k>if</span> <span class=p>(</span><span class=n>desiredSurface</span> <span class=o>==</span> <span class=s>&quot;Hills&quot;</span><span class=p>)</span>
   <span class=p>{</span>
-    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;No surface specified.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-    <span class=k>return</span> <span class=n>EXIT_FAILURE</span><span class=p>;</span>
+    <span class=n>scaleFactor</span> <span class=o>=</span> <span class=mf>0.5</span><span class=p>;</span>
   <span class=p>}</span>
-  <span class=k>switch</span> <span class=p>(</span><span class=n>availableSurfaces</span><span class=p>[</span><span class=n>lcSurface</span><span class=p>])</span>
+  <span class=k>if</span> <span class=p>(</span><span class=n>desiredSurface</span> <span class=o>==</span> <span class=s>&quot;Sphere&quot;</span><span class=p>)</span>
   <span class=p>{</span>
-  <span class=k>case</span> <span class=mi>0</span><span class=o>:</span> <span class=p>{</span>
-    <span class=n>src</span> <span class=o>=</span> <span class=n>MakeParametricTorus</span><span class=p>();</span>
-    <span class=k>break</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=k>case</span> <span class=mi>1</span><span class=o>:</span> <span class=p>{</span>
-    <span class=n>src</span> <span class=o>=</span> <span class=n>MakePlane</span><span class=p>();</span>
-    <span class=n>src</span> <span class=o>=</span> <span class=n>MakeElevations</span><span class=p>(</span><span class=n>src</span><span class=p>);</span>
-    <span class=k>break</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=k>case</span> <span class=mi>2</span><span class=o>:</span> <span class=p>{</span>
-    <span class=n>src</span> <span class=o>=</span> <span class=n>MakeParametricHills</span><span class=p>();</span>
-    <span class=k>break</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=k>case</span> <span class=mi>3</span><span class=o>:</span> <span class=p>{</span>
-    <span class=n>src</span> <span class=o>=</span> <span class=n>MakeSphere</span><span class=p>();</span>
-    <span class=n>src</span> <span class=o>=</span> <span class=n>MakeElevations</span><span class=p>(</span><span class=n>src</span><span class=p>);</span>
-    <span class=k>break</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=k>case</span> <span class=mi>4</span><span class=o>:</span> <span class=p>{</span>
-    <span class=n>src</span> <span class=o>=</span> <span class=n>MakeTorus</span><span class=p>();</span>
-    <span class=n>src</span> <span class=o>=</span> <span class=n>MakeElevations</span><span class=p>(</span><span class=n>src</span><span class=p>);</span>
-    <span class=k>break</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=k>default</span><span class=o>:</span> <span class=p>{</span>
-    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;No surface specified.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-    <span class=k>return</span> <span class=n>EXIT_FAILURE</span><span class=p>;</span>
-  <span class=p>}</span>
+    <span class=n>scaleFactor</span> <span class=o>=</span> <span class=mf>2.0</span><span class=p>;</span>
   <span class=p>}</span>
   <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>desiredSurface</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
-  <span class=n>src</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=s>&quot;Elevation&quot;</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>scalarRange</span> <span class=o>=</span> <span class=n>src</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>(</span><span class=s>&quot;Elevation&quot;</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>();</span>
+  <span class=n>source</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=s>&quot;Elevation&quot;</span><span class=p>);</span>
+  <span class=k>auto</span> <span class=n>scalarRange</span> <span class=o>=</span>
+      <span class=n>source</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>(</span><span class=s>&quot;Elevation&quot;</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>();</span>
 
-  <span class=k>auto</span> <span class=n>lut</span> <span class=o>=</span> <span class=n>MakeCategoricalLUT</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>lut1</span> <span class=o>=</span> <span class=n>MakeOrdinaLUT</span><span class=p>();</span>
+  <span class=k>auto</span> <span class=n>lut</span> <span class=o>=</span> <span class=n>GetCategoricalLUT</span><span class=p>();</span>
+  <span class=k>auto</span> <span class=n>lut1</span> <span class=o>=</span> <span class=n>GetOrdinaLUT</span><span class=p>();</span>
   <span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableRange</span><span class=p>(</span><span class=n>scalarRange</span><span class=p>);</span>
   <span class=n>lut1</span><span class=o>-&gt;</span><span class=n>SetTableRange</span><span class=p>(</span><span class=n>scalarRange</span><span class=p>);</span>
 <span class=hll>  <span class=n>vtkIdType</span> <span class=n>numberOfBands</span> <span class=o>=</span> <span class=n>lut</span><span class=o>-&gt;</span><span class=n>GetNumberOfTableValues</span><span class=p>();</span>
-</span>  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>bands</span><span class=p>;</span>
+</span>  <span class=k>auto</span> <span class=n>precision</span> <span class=o>=</span> <span class=mi>10</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>bands</span> <span class=o>=</span> <span class=n>GetBands</span><span class=p>(</span><span class=n>scalarRange</span><span class=p>,</span> <span class=n>numberOfBands</span><span class=p>,</span> <span class=n>precision</span><span class=p>,</span> <span class=nb>false</span><span class=p>);</span>
 
   <span class=k>if</span> <span class=p>(</span><span class=n>desiredSurface</span> <span class=o>==</span> <span class=s>&quot;RandomHills&quot;</span><span class=p>)</span>
   <span class=p>{</span>
     <span class=c1>// These are my custom bands.</span>
     <span class=c1>// Generated by first running:</span>
-    <span class=c1>// bands = MakeBands(scalarRange, numberOfBands, false);</span>
+    <span class=c1>// bands = GetBands(scalarRange, numberOfBands, precision, false);</span>
     <span class=c1>// then:</span>
-    <span class=c1>//  std::vector&lt;int&gt; freq = Frequencies(bands, src);</span>
+    <span class=c1>//  std::vector&lt;int&gt; freq = Frequencies(bands, source);</span>
     <span class=c1>//  PrintBandsFrequencies(bands, freq);</span>
     <span class=c1>// Finally using the output to create this table:</span>
     <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>2</span><span class=o>&gt;&gt;</span> <span class=n>myBands</span> <span class=o>=</span> <span class=p>{</span>
@@ -299,72 +260,27 @@ function registerListener(event, func) {
         <span class=p>{</span><span class=mf>4.0</span><span class=p>,</span> <span class=mf>5.0</span><span class=p>},</span> <span class=p>{</span><span class=mf>5.0</span><span class=p>,</span> <span class=mf>6.0</span><span class=p>},</span> <span class=p>{</span><span class=mf>6.0</span><span class=p>,</span> <span class=mf>7.0</span><span class=p>},</span> <span class=p>{</span><span class=mf>7.0</span><span class=p>,</span> <span class=mf>8.0</span><span class=p>}};</span>
     <span class=c1>// Comment this out if you want to see how allocating</span>
     <span class=c1>// equally spaced bands works.</span>
-    <span class=n>bands</span> <span class=o>=</span> <span class=n>MakeCustomBands</span><span class=p>(</span><span class=n>scalarRange</span><span class=p>,</span> <span class=n>numberOfBands</span><span class=p>,</span> <span class=n>myBands</span><span class=p>);</span>
-    <span class=c1>// bands = MakeBands(scalarRange, numberOfBands, false);</span>
+    <span class=n>bands</span> <span class=o>=</span> <span class=n>GetCustomBands</span><span class=p>(</span><span class=n>scalarRange</span><span class=p>,</span> <span class=n>numberOfBands</span><span class=p>,</span> <span class=n>myBands</span><span class=p>);</span>
+    <span class=c1>// bands = GetBands(scalarRange, numberOfBands, precision, false);</span>
     <span class=c1>// Adjust the number of table values</span>
-<span class=hll>    <span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>size</span><span class=p>()));</span>
-</span><span class=hll>    <span class=n>lut1</span><span class=o>-&gt;</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>size</span><span class=p>()));</span>
-</span>  <span class=p>}</span>
-  <span class=k>else</span>
-  <span class=p>{</span>
-    <span class=n>bands</span> <span class=o>=</span> <span class=n>MakeBands</span><span class=p>(</span><span class=n>scalarRange</span><span class=p>,</span> <span class=n>numberOfBands</span><span class=p>,</span> <span class=nb>false</span><span class=p>);</span>
   <span class=p>}</span>
-
+<span class=hll>  <span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>size</span><span class=p>()));</span>
+</span><span class=hll>  <span class=n>lut1</span><span class=o>-&gt;</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>size</span><span class=p>()));</span>
+</span>
   <span class=c1>// Let&#39;s do a frequency table.</span>
-  <span class=c1>// The number of scalars in each band.</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>freq</span> <span class=o>=</span> <span class=n>Frequencies</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>src</span><span class=p>);</span>
+  <span class=k>auto</span> <span class=n>freq</span> <span class=o>=</span> <span class=n>GetFrequencies</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>source</span><span class=p>);</span>
+  <span class=n>AdjustFrequencyRanges</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>freq</span><span class=p>);</span>
+  <span class=n>PrintBandsFrequencies</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>freq</span><span class=p>);</span>
 
-  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span> <span class=n>keys</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>k</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>k</span> <span class=o>&lt;</span> <span class=n>freq</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> <span class=o>++</span><span class=n>k</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=n>keys</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>k</span><span class=p>);</span>
-  <span class=p>}</span>
-  <span class=k>auto</span> <span class=n>minKey</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>min_element</span><span class=p>(</span><span class=n>keys</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>keys</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>
-  <span class=k>auto</span> <span class=n>maxKey</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>max_element</span><span class=p>(</span><span class=n>keys</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>keys</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>
-  <span class=k>if</span> <span class=p>(</span><span class=n>lcSurface</span> <span class=o>==</span> <span class=s>&quot;sphere&quot;</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=n>freq</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=k>auto</span> <span class=n>freqRange</span> <span class=o>=</span> <span class=n>AdjustFrequencyRanges</span><span class=p>(</span><span class=n>freq</span><span class=p>);</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;::</span><span class=n>iterator</span> <span class=n>freqItr</span><span class=p>;</span>
-  <span class=n>freqItr</span> <span class=o>=</span> <span class=n>freq</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>freqRange</span><span class=p>.</span><span class=n>first</span><span class=p>);</span>
-  <span class=n>freq</span><span class=p>.</span><span class=n>erase</span><span class=p>(</span><span class=n>freq</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>freqItr</span><span class=p>);</span>
-  <span class=n>freqItr</span> <span class=o>=</span> <span class=o>++</span><span class=n>freq</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>freqRange</span><span class=p>.</span><span class=n>second</span><span class=p>);</span>
-  <span class=n>freq</span><span class=p>.</span><span class=n>erase</span><span class=p>(</span><span class=n>freqItr</span><span class=p>,</span> <span class=n>freq</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;::</span><span class=n>iterator</span> <span class=n>bandItr</span><span class=p>;</span>
-  <span class=n>bandItr</span> <span class=o>=</span> <span class=n>bands</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>freqRange</span><span class=p>.</span><span class=n>first</span><span class=p>);</span>
-  <span class=n>bands</span><span class=p>.</span><span class=n>erase</span><span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>bandItr</span><span class=p>);</span>
-  <span class=n>bandItr</span> <span class=o>=</span> <span class=o>++</span><span class=n>bands</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>freqRange</span><span class=p>.</span><span class=n>second</span><span class=p>);</span>
-  <span class=n>bands</span><span class=p>.</span><span class=n>erase</span><span class=p>(</span><span class=n>bandItr</span><span class=p>,</span> <span class=n>bands</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>
-  <span class=c1>// Reindex freq and bands.</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>adjFreq</span><span class=p>;</span>
-  <span class=kt>int</span> <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=nl>p</span> <span class=p>:</span> <span class=n>freq</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=n>adjFreq</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span> <span class=o>=</span> <span class=n>p</span><span class=p>.</span><span class=n>second</span><span class=p>;</span>
-    <span class=o>++</span><span class=n>idx</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>adjBands</span><span class=p>;</span>
-  <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=nl>p</span> <span class=p>:</span> <span class=n>bands</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=n>adjBands</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span> <span class=o>=</span> <span class=n>p</span><span class=p>.</span><span class=n>second</span><span class=p>;</span>
-    <span class=o>++</span><span class=n>idx</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=c1>// PrintBandsFrequencies(bands, freq);</span>
-  <span class=n>PrintBandsFrequencies</span><span class=p>(</span><span class=n>adjBands</span><span class=p>,</span> <span class=n>adjFreq</span><span class=p>);</span>
-  <span class=n>freq</span><span class=p>.</span><span class=n>erase</span><span class=p>(</span><span class=n>freq</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>freq</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>
-  <span class=n>bands</span><span class=p>.</span><span class=n>erase</span><span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>bands</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>
-
-  <span class=n>scalarRange</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>adjBands</span><span class=p>.</span><span class=n>begin</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
-  <span class=n>scalarRange</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>prev</span><span class=p>(</span><span class=n>adjBands</span><span class=p>.</span><span class=n>end</span><span class=p>())</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
+  <span class=n>scalarRange</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>bands</span><span class=p>.</span><span class=n>begin</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
+  <span class=n>scalarRange</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>prev</span><span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>end</span><span class=p>())</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
   <span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableRange</span><span class=p>(</span><span class=n>scalarRange</span><span class=p>);</span>
-  <span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=n>adjBands</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
+  <span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
 
   <span class=c1>// We will use the midpoint of the band as the label.</span>
   <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span> <span class=n>labels</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;::</span><span class=n>const_iterator</span> <span class=n>p</span> <span class=o>=</span> <span class=n>adjBands</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span>
-       <span class=n>p</span> <span class=o>!=</span> <span class=n>adjBands</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>p</span><span class=p>)</span>
+  <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;::</span><span class=n>const_iterator</span> <span class=n>p</span> <span class=o>=</span> <span class=n>bands</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span>
+       <span class=n>p</span> <span class=o>!=</span> <span class=n>bands</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>p</span><span class=p>)</span>
   <span class=p>{</span>
     <span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span> <span class=n>os</span><span class=p>;</span>
     <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>fixed</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setprecision</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
@@ -387,23 +303,21 @@ function registerListener(event, func) {
 
   <span class=c1>// Create the contour bands.</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBandedPolyDataContourFilter</span><span class=o>&gt;</span> <span class=n>bcf</span><span class=p>;</span>
-</span>  <span class=n>bcf</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>src</span><span class=p>);</span>
+</span>  <span class=n>bcf</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>source</span><span class=p>);</span>
   <span class=c1>// Use either the minimum or maximum value for each band.</span>
   <span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;::</span><span class=n>const_iterator</span> <span class=n>p</span> <span class=o>=</span> <span class=n>adjBands</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span>
-       <span class=n>p</span> <span class=o>!=</span> <span class=n>adjBands</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>p</span><span class=p>)</span>
+  <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;::</span><span class=n>const_iterator</span> <span class=n>p</span> <span class=o>=</span> <span class=n>bands</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span>
+       <span class=n>p</span> <span class=o>!=</span> <span class=n>bands</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>p</span><span class=p>)</span>
   <span class=p>{</span>
     <span class=n>bcf</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
     <span class=o>++</span><span class=n>i</span><span class=p>;</span>
   <span class=p>}</span>
-
   <span class=c1>// We will use an indexed lookup table.</span>
   <span class=n>bcf</span><span class=o>-&gt;</span><span class=n>SetScalarModeToIndex</span><span class=p>();</span>
   <span class=n>bcf</span><span class=o>-&gt;</span><span class=n>GenerateContourEdgesOn</span><span class=p>();</span>
 
   <span class=c1>// Generate the glyphs on the original surface.</span>
-
-  <span class=k>auto</span> <span class=n>glyph</span> <span class=o>=</span> <span class=n>MakeGlyphs</span><span class=p>(</span><span class=n>src</span><span class=p>,</span> <span class=nb>false</span><span class=p>);</span>
+  <span class=k>auto</span> <span class=n>glyph</span> <span class=o>=</span> <span class=n>GetGlyphs</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>scaleFactor</span><span class=p>,</span> <span class=nb>false</span><span class=p>);</span>
 
   <span class=c1>// ------------------------------------------------------------</span>
   <span class=c1>// Create the mappers and actors</span>
@@ -480,10 +394,12 @@ function registerListener(event, func) {
   <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
   <span class=c1>// Important: The interactor must be set prior to enabling the widget.</span>
   <span class=n>iren</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
+<span class=cp>#ifdef HAS_COW</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCameraOrientationWidget</span><span class=o>&gt;</span> <span class=n>camOrientManipulator</span><span class=p>;</span>
 </span>  <span class=n>camOrientManipulator</span><span class=o>-&gt;</span><span class=n>SetParentRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
   <span class=c1>// Enable the widget.</span>
   <span class=n>camOrientManipulator</span><span class=o>-&gt;</span><span class=n>On</span><span class=p>();</span>
+<span class=cp>#endif</span>
 
   <span class=c1>// add actors</span>
   <span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>srcActor</span><span class=p>);</span>
@@ -512,108 +428,7 @@ function registerListener(event, func) {
 <span class=p>}</span>
 
 <span class=k>namespace</span> <span class=p>{</span>
-
-<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>MakeBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span>
-                                             <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>numberOfBands</span><span class=p>,</span>
-                                             <span class=kt>bool</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>nearestInteger</span><span class=p>)</span>
-<span class=p>{</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>bands</span><span class=p>;</span>
-  <span class=k>if</span> <span class=p>((</span><span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>||</span> <span class=p>(</span><span class=n>numberOfBands</span> <span class=o>&lt;=</span> <span class=mi>0</span><span class=p>))</span>
-  <span class=p>{</span>
-    <span class=k>return</span> <span class=n>bands</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=kt>double</span> <span class=n>x</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
-  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>dR</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
-  <span class=p>}</span>
-  <span class=k>if</span> <span class=p>(</span><span class=n>nearestInteger</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>floor</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span>
-    <span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>ceil</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
-  <span class=p>}</span>
-  <span class=kt>double</span> <span class=n>dx</span> <span class=o>=</span> <span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>/</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>numberOfBands</span><span class=p>);</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>b</span><span class=p>;</span>
-  <span class=n>b</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span>
-  <span class=n>b</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=n>dx</span> <span class=o>/</span> <span class=mf>2.0</span><span class=p>);</span>
-  <span class=n>b</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=n>dx</span><span class=p>);</span>
-  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>numberOfBands</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=n>bands</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>b</span><span class=p>;</span>
-    <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;::</span><span class=n>iterator</span> <span class=n>p</span> <span class=o>=</span> <span class=n>b</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span> <span class=n>p</span> <span class=o>!=</span> <span class=n>b</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>p</span><span class=p>)</span>
-    <span class=p>{</span>
-      <span class=o>*</span><span class=n>p</span> <span class=o>=</span> <span class=o>*</span><span class=n>p</span> <span class=o>+</span> <span class=n>dx</span><span class=p>;</span>
-    <span class=p>}</span>
-  <span class=p>}</span>
-  <span class=k>return</span> <span class=n>bands</span><span class=p>;</span>
-<span class=p>}</span>
-
-<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span>
-<span class=n>MakeCustomBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span> <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>numberOfBands</span><span class=p>,</span>
-                <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>2</span><span class=o>&gt;&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>myBands</span><span class=p>)</span>
-<span class=p>{</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>bands</span><span class=p>;</span>
-  <span class=k>if</span> <span class=p>((</span><span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>||</span> <span class=p>(</span><span class=n>numberOfBands</span> <span class=o>&lt;=</span> <span class=mi>0</span><span class=p>))</span>
-  <span class=p>{</span>
-    <span class=k>return</span> <span class=n>bands</span><span class=p>;</span>
-  <span class=p>}</span>
-
-  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>2</span><span class=o>&gt;&gt;</span> <span class=n>x</span><span class=p>;</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>copy</span><span class=p>(</span><span class=n>myBands</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>myBands</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span> <span class=n>std</span><span class=o>::</span><span class=n>back_inserter</span><span class=p>(</span><span class=n>x</span><span class=p>));</span>
-
-  <span class=c1>// Determine the index of the range minimum and range maximum.</span>
-  <span class=kt>int</span> <span class=n>idxMin</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>idx</span> <span class=o>&lt;</span> <span class=n>myBands</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> <span class=o>++</span><span class=n>idx</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=k>if</span> <span class=p>(</span><span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>myBands</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span> <span class=o>&amp;&amp;</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&gt;=</span> <span class=n>myBands</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span>
-    <span class=p>{</span>
-      <span class=n>idxMin</span> <span class=o>=</span> <span class=n>idx</span><span class=p>;</span>
-      <span class=k>break</span><span class=p>;</span>
-    <span class=p>}</span>
-  <span class=p>}</span>
-  <span class=kt>int</span> <span class=n>idxMax</span> <span class=o>=</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>myBands</span><span class=p>.</span><span class=n>size</span><span class=p>())</span> <span class=o>-</span> <span class=mi>1</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>idx</span> <span class=o>=</span> <span class=n>myBands</span><span class=p>.</span><span class=n>size</span><span class=p>()</span> <span class=o>-</span> <span class=mi>1</span><span class=p>;</span> <span class=n>idx</span> <span class=o>&gt;=</span> <span class=mi>0</span><span class=p>;</span> <span class=o>--</span><span class=n>idx</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=k>if</span> <span class=p>(</span><span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>myBands</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span> <span class=o>&amp;&amp;</span> <span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&gt;=</span> <span class=n>myBands</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span>
-    <span class=p>{</span>
-      <span class=n>idxMax</span> <span class=o>=</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>idx</span><span class=p>);</span>
-      <span class=k>break</span><span class=p>;</span>
-    <span class=p>}</span>
-  <span class=p>}</span>
-
-  <span class=c1>// Set the minimum to match the range minimum.</span>
-  <span class=n>x</span><span class=p>[</span><span class=n>idxMin</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
-  <span class=n>x</span><span class=p>[</span><span class=n>idxMax</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
-  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>idxMin</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>idxMax</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>b</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
-    <span class=n>b</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=mi>0</span><span class=p>];</span>
-    <span class=n>b</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span> <span class=o>/</span> <span class=mf>2.0</span><span class=p>;</span>
-    <span class=n>b</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>=</span> <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=mi>1</span><span class=p>];</span>
-    <span class=n>bands</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>b</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=k>return</span> <span class=n>bands</span><span class=p>;</span>
-<span class=p>}</span>
-
-<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>MakeIntegralBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
-<span class=p>{</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>bands</span><span class=p>;</span>
-  <span class=k>if</span> <span class=p>(</span><span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
-  <span class=p>{</span>
-    <span class=k>return</span> <span class=n>bands</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=kt>double</span> <span class=n>x</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
-  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>dR</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
-  <span class=p>}</span>
-  <span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>floor</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span>
-  <span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>ceil</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
-  <span class=kt>int</span> <span class=n>numberOfBands</span> <span class=o>=</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>abs</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span> <span class=o>+</span> <span class=n>std</span><span class=o>::</span><span class=n>abs</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]));</span>
-  <span class=k>return</span> <span class=n>MakeBands</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>numberOfBands</span><span class=p>,</span> <span class=nb>false</span><span class=p>);</span>
-<span class=p>}</span>
-
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakeElevations</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>)</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetElevations</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>)</span>
 </span><span class=p>{</span>
   <span class=kt>double</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>6</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>};</span>
   <span class=n>src</span><span class=o>-&gt;</span><span class=n>GetBounds</span><span class=p>(</span><span class=n>bounds</span><span class=p>);</span>
@@ -631,7 +446,105 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>elevFilter</span><span class=o>-&gt;</span><span class=n>GetPolyDataOutput</span><span class=p>();</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakeParametricHills</span><span class=p>()</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetHills</span><span class=p>()</span>
+</span><span class=p>{</span>
+  <span class=c1>// Create four hills on a plane.</span>
+  <span class=c1>// This will have regions of negative, zero and positive Gsaussian curvatures.</span>
+
+  <span class=k>auto</span> <span class=n>xRes</span> <span class=o>=</span> <span class=mi>50</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>yRes</span> <span class=o>=</span> <span class=mi>50</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>xMin</span> <span class=o>=</span> <span class=mf>-5.0</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>xMax</span> <span class=o>=</span> <span class=mf>5.0</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>dx</span> <span class=o>=</span> <span class=p>(</span><span class=n>xMax</span> <span class=o>-</span> <span class=n>xMin</span><span class=p>)</span> <span class=o>/</span> <span class=p>(</span><span class=n>xRes</span> <span class=o>-</span> <span class=mf>1.0</span><span class=p>);</span>
+  <span class=k>auto</span> <span class=n>yMin</span> <span class=o>=</span> <span class=mf>-5.0</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>yMax</span> <span class=o>=</span> <span class=mf>5.0</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>dy</span> <span class=o>=</span> <span class=p>(</span><span class=n>yMax</span> <span class=o>-</span> <span class=n>yMin</span><span class=p>)</span> <span class=o>/</span> <span class=p>(</span><span class=n>xRes</span> <span class=o>-</span> <span class=mf>1.0</span><span class=p>);</span>
+
+  <span class=c1>// Make a grid.</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span> <span class=n>points</span><span class=p>;</span>
+</span>  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>xRes</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=k>auto</span> <span class=n>x</span> <span class=o>=</span> <span class=n>xMin</span> <span class=o>+</span> <span class=n>i</span> <span class=o>*</span> <span class=n>dx</span><span class=p>;</span>
+    <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>j</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>j</span> <span class=o>&lt;</span> <span class=n>yRes</span><span class=p>;</span> <span class=o>++</span><span class=n>j</span><span class=p>)</span>
+    <span class=p>{</span>
+      <span class=k>auto</span> <span class=n>y</span> <span class=o>=</span> <span class=n>yMin</span> <span class=o>+</span> <span class=n>j</span> <span class=o>*</span> <span class=n>dy</span><span class=p>;</span>
+      <span class=n>points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+
+  <span class=c1>// Add the grid points to a polydata object.</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>plane</span><span class=p>;</span>
+</span>  <span class=n>plane</span><span class=o>-&gt;</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>);</span>
+
+  <span class=c1>// Triangulate the grid.</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDelaunay2D</span><span class=o>&gt;</span> <span class=n>delaunay</span><span class=p>;</span>
+</span>  <span class=n>delaunay</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>plane</span><span class=p>);</span>
+  <span class=n>delaunay</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
+
+  <span class=k>auto</span> <span class=n>polydata</span> <span class=o>=</span> <span class=n>delaunay</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
+
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>&gt;</span> <span class=n>elevation</span><span class=p>;</span>
+</span>  <span class=n>elevation</span><span class=o>-&gt;</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=n>points</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>());</span>
+
+  <span class=c1>//  We define the parameters for the hills here.</span>
+  <span class=c1>// [[0: x0, 1: y0, 2: x variance, 3: y variance, 4: amplitude]...]</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>5</span><span class=o>&gt;&gt;</span> <span class=n>hd</span><span class=p>{{</span><span class=mf>-2.5</span><span class=p>,</span> <span class=mf>-2.5</span><span class=p>,</span> <span class=mf>2.5</span><span class=p>,</span> <span class=mf>6.5</span><span class=p>,</span> <span class=mf>3.5</span><span class=p>},</span>
+                                        <span class=p>{</span><span class=mf>2.5</span><span class=p>,</span> <span class=mf>2.5</span><span class=p>,</span> <span class=mf>2.5</span><span class=p>,</span> <span class=mf>2.5</span><span class=p>,</span> <span class=mi>2</span><span class=p>},</span>
+                                        <span class=p>{</span><span class=mf>5.0</span><span class=p>,</span> <span class=mf>-2.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>,</span> <span class=mf>2.5</span><span class=p>},</span>
+                                        <span class=p>{</span><span class=mf>-5.0</span><span class=p>,</span> <span class=mi>5</span><span class=p>,</span> <span class=mf>2.5</span><span class=p>,</span> <span class=mf>3.0</span><span class=p>,</span> <span class=mi>3</span><span class=p>}};</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>2</span><span class=o>&gt;</span> <span class=n>xx</span><span class=p>{</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>};</span>
+  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>points</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>();</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=k>auto</span> <span class=n>x</span> <span class=o>=</span> <span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
+    <span class=k>for</span> <span class=p>(</span><span class=kt>size_t</span> <span class=n>j</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>j</span> <span class=o>&lt;</span> <span class=n>hd</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> <span class=o>++</span><span class=n>j</span><span class=p>)</span>
+    <span class=p>{</span>
+      <span class=n>xx</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>pow</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>-</span> <span class=n>hd</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span> <span class=o>/</span> <span class=n>hd</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>2</span><span class=p>],</span> <span class=mf>2.0</span><span class=p>);</span>
+      <span class=n>xx</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>pow</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>hd</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span> <span class=o>/</span> <span class=n>hd</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>3</span><span class=p>],</span> <span class=mf>2.0</span><span class=p>);</span>
+      <span class=n>x</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>+=</span> <span class=n>hd</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>4</span><span class=p>]</span> <span class=o>*</span> <span class=n>std</span><span class=o>::</span><span class=n>exp</span><span class=p>(</span><span class=o>-</span><span class=p>(</span><span class=n>xx</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=n>xx</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span> <span class=o>/</span> <span class=mf>2.0</span><span class=p>);</span>
+    <span class=p>}</span>
+    <span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetPoints</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPoint</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>x</span><span class=p>);</span>
+    <span class=n>elevation</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>x</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
+  <span class=p>}</span>
+
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>&gt;</span> <span class=n>textures</span><span class=p>;</span>
+</span>  <span class=n>textures</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
+  <span class=n>textures</span><span class=o>-&gt;</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=mi>2</span> <span class=o>*</span> <span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>());</span>
+  <span class=n>textures</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Textures&quot;</span><span class=p>);</span>
+
+  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>xRes</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=kt>float</span> <span class=n>tc</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
+    <span class=n>tc</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>i</span> <span class=o>/</span> <span class=p>(</span><span class=n>xRes</span> <span class=o>-</span> <span class=mf>1.0</span><span class=p>);</span>
+    <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>j</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>j</span> <span class=o>&lt;</span> <span class=n>yRes</span><span class=p>;</span> <span class=o>++</span><span class=n>j</span><span class=p>)</span>
+    <span class=p>{</span>
+      <span class=c1>// tc[1] = 1.0 - j / (yRes - 1.0);</span>
+      <span class=n>tc</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>j</span> <span class=o>/</span> <span class=p>(</span><span class=n>yRes</span> <span class=o>-</span> <span class=mf>1.0</span><span class=p>);</span>
+<span class=hll>      <span class=n>textures</span><span class=o>-&gt;</span><span class=n>SetTuple</span><span class=p>(</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=p>(</span><span class=n>i</span><span class=p>)</span> <span class=o>*</span> <span class=n>yRes</span> <span class=o>+</span> <span class=n>j</span><span class=p>,</span> <span class=n>tc</span><span class=p>);</span>
+</span>    <span class=p>}</span>
+  <span class=p>}</span>
+
+  <span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetScalars</span><span class=p>(</span><span class=n>elevation</span><span class=p>);</span>
+  <span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Elevation&quot;</span><span class=p>);</span>
+  <span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetTCoords</span><span class=p>(</span><span class=n>textures</span><span class=p>);</span>
+
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataNormals</span><span class=o>&gt;</span> <span class=n>normals</span><span class=p>;</span>
+</span>  <span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>polydata</span><span class=p>);</span>
+  <span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>polydata</span><span class=p>);</span>
+  <span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=mi>30</span><span class=p>);</span>
+  <span class=n>normals</span><span class=o>-&gt;</span><span class=n>SplittingOff</span><span class=p>();</span>
+
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span> <span class=n>tr1</span><span class=p>;</span>
+</span>  <span class=n>tr1</span><span class=o>-&gt;</span><span class=n>RotateX</span><span class=p>(</span><span class=mi>-90</span><span class=p>);</span>
+
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span> <span class=n>tf1</span><span class=p>;</span>
+</span>  <span class=n>tf1</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+  <span class=n>tf1</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>tr1</span><span class=p>);</span>
+  <span class=n>tf1</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
+
+  <span class=k>return</span> <span class=n>tf1</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
+<span class=p>}</span>
+
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetParametricHills</span><span class=p>()</span>
 </span><span class=p>{</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkParametricRandomHills</span><span class=o>&gt;</span> <span class=n>fn</span><span class=p>;</span>
 </span>  <span class=n>fn</span><span class=o>-&gt;</span><span class=n>AllowRandomGenerationOn</span><span class=p>();</span>
@@ -663,7 +576,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>transformFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakeParametricTorus</span><span class=p>()</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetParametricTorus</span><span class=p>()</span>
 </span><span class=p>{</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkParametricTorus</span><span class=o>&gt;</span> <span class=n>fn</span><span class=p>;</span>
 </span>  <span class=n>fn</span><span class=o>-&gt;</span><span class=n>SetRingRadius</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span>
@@ -693,7 +606,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>transformFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakePlane</span><span class=p>()</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetPlane</span><span class=p>()</span>
 </span><span class=p>{</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlaneSource</span><span class=o>&gt;</span> <span class=n>source</span><span class=p>;</span>
 </span>  <span class=n>source</span><span class=o>-&gt;</span><span class=n>SetOrigin</span><span class=p>(</span><span class=mf>-10.0</span><span class=p>,</span> <span class=mf>-10.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
@@ -727,7 +640,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>cleaner</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakeSphere</span><span class=p>()</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetSphere</span><span class=p>()</span>
 </span><span class=p>{</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span> <span class=n>source</span><span class=p>;</span>
 </span>  <span class=n>source</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
@@ -739,7 +652,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>source</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>MakeTorus</span><span class=p>()</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetTorus</span><span class=p>()</span>
 </span><span class=p>{</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSuperquadricSource</span><span class=o>&gt;</span> <span class=n>source</span><span class=p>;</span>
 </span>  <span class=n>source</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
@@ -768,6 +681,44 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>cleaner</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=p>}</span>
 
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>GetSource</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>source</span><span class=p>)</span>
+</span><span class=p>{</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>surface</span> <span class=o>=</span> <span class=n>source</span><span class=p>;</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>surface</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>surface</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span> <span class=n>surface</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span>
+                 <span class=p>[](</span><span class=kt>unsigned</span> <span class=kt>char</span> <span class=n>c</span><span class=p>)</span> <span class=p>{</span> <span class=k>return</span> <span class=n>std</span><span class=o>::</span><span class=n>tolower</span><span class=p>(</span><span class=n>c</span><span class=p>);</span> <span class=p>});</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>available_surfaces</span> <span class=o>=</span> <span class=p>{</span>
+      <span class=p>{</span><span class=s>&quot;hills&quot;</span><span class=p>,</span> <span class=mi>0</span><span class=p>},</span>       <span class=p>{</span><span class=s>&quot;parametrictorus&quot;</span><span class=p>,</span> <span class=mi>1</span><span class=p>},</span> <span class=p>{</span><span class=s>&quot;plane&quot;</span><span class=p>,</span> <span class=mi>2</span><span class=p>},</span>
+      <span class=p>{</span><span class=s>&quot;randomhills&quot;</span><span class=p>,</span> <span class=mi>3</span><span class=p>},</span> <span class=p>{</span><span class=s>&quot;sphere&quot;</span><span class=p>,</span> <span class=mi>4</span><span class=p>},</span>          <span class=p>{</span><span class=s>&quot;torus&quot;</span><span class=p>,</span> <span class=mi>5</span><span class=p>}};</span>
+  <span class=k>if</span> <span class=p>(</span><span class=n>available_surfaces</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>surface</span><span class=p>)</span> <span class=o>==</span> <span class=n>available_surfaces</span><span class=p>.</span><span class=n>end</span><span class=p>())</span>
+  <span class=p>{</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;The surface is not available.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Using RandomHills instead.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+    <span class=n>surface</span> <span class=o>=</span> <span class=s>&quot;randomhills&quot;</span><span class=p>;</span>
+  <span class=p>}</span>
+  <span class=k>switch</span> <span class=p>(</span><span class=n>available_surfaces</span><span class=p>[</span><span class=n>surface</span><span class=p>])</span>
+  <span class=p>{</span>
+  <span class=k>case</span> <span class=mi>0</span><span class=o>:</span>
+    <span class=k>return</span> <span class=n>GetHills</span><span class=p>();</span>
+    <span class=k>break</span><span class=p>;</span>
+  <span class=k>case</span> <span class=mi>1</span><span class=o>:</span>
+    <span class=k>return</span> <span class=n>GetParametricTorus</span><span class=p>();</span>
+    <span class=k>break</span><span class=p>;</span>
+  <span class=k>case</span> <span class=mi>2</span><span class=o>:</span>
+    <span class=k>return</span> <span class=n>GetElevations</span><span class=p>(</span><span class=n>GetPlane</span><span class=p>());</span>
+    <span class=k>break</span><span class=p>;</span>
+  <span class=k>case</span> <span class=mi>3</span><span class=o>:</span>
+    <span class=k>return</span> <span class=n>GetParametricHills</span><span class=p>();</span>
+    <span class=k>break</span><span class=p>;</span>
+  <span class=k>case</span> <span class=mi>4</span><span class=o>:</span>
+    <span class=k>return</span> <span class=n>GetElevations</span><span class=p>(</span><span class=n>GetSphere</span><span class=p>());</span>
+    <span class=k>break</span><span class=p>;</span>
+  <span class=k>case</span> <span class=mi>5</span><span class=o>:</span>
+    <span class=k>return</span> <span class=n>GetElevations</span><span class=p>(</span><span class=n>GetTorus</span><span class=p>());</span>
+    <span class=k>break</span><span class=p>;</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=n>GetParametricHills</span><span class=p>();</span>
+<span class=p>}</span>
+
 <span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkColorSeries</span><span class=o>&gt;</span> <span class=n>GetColorSeries</span><span class=p>()</span>
 </span><span class=p>{</span>
 
@@ -786,7 +737,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>colorSeries</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>MakeCategoricalLUT</span><span class=p>()</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>GetCategoricalLUT</span><span class=p>()</span>
 </span><span class=p>{</span>
 <span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkColorSeries</span><span class=o>&gt;</span> <span class=n>colorSeries</span> <span class=o>=</span> <span class=n>GetColorSeries</span><span class=p>();</span>
 </span>  <span class=c1>// Make the lookup table.</span>
@@ -797,7 +748,7 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>lut</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>MakeOrdinaLUT</span><span class=p>()</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>GetOrdinaLUT</span><span class=p>()</span>
 </span><span class=p>{</span>
 <span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkColorSeries</span><span class=o>&gt;</span> <span class=n>colorSeries</span> <span class=o>=</span> <span class=n>GetColorSeries</span><span class=p>();</span>
 </span>  <span class=c1>// Make the lookup table.</span>
@@ -821,7 +772,7 @@ function registerListener(event, func) {
 <span class=cm> *</span>
 <span class=cm> */</span>
 <span class=c1>// clang-format on</span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>MakeDivergingLUT</span><span class=p>()</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>GetDivergingLUT</span><span class=p>()</span>
 </span><span class=p>{</span>
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkColorTransferFunction</span><span class=o>&gt;</span> <span class=n>ctf</span><span class=p>;</span>
@@ -873,150 +824,9 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>lutr</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>Frequencies</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;&amp;</span> <span class=n>bands</span><span class=p>,</span>
-<span class=hll>                               <span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>)</span>
-</span><span class=p>{</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>freq</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>bands</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=n>freq</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-  <span class=p>}</span>
-<span class=hll>  <span class=n>vtkIdType</span> <span class=n>tuples</span> <span class=o>=</span> <span class=n>src</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>();</span>
-</span>  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>tuples</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=kt>double</span><span class=o>*</span> <span class=n>x</span> <span class=o>=</span> <span class=n>src</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetTuple</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
-    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>j</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>j</span> <span class=o>&lt;</span> <span class=n>bands</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> <span class=o>++</span><span class=n>j</span><span class=p>)</span>
-    <span class=p>{</span>
-      <span class=k>if</span> <span class=p>(</span><span class=o>*</span><span class=n>x</span> <span class=o>&lt;=</span> <span class=n>bands</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>2</span><span class=p>])</span>
-      <span class=p>{</span>
-        <span class=n>freq</span><span class=p>[</span><span class=n>j</span><span class=p>]</span> <span class=o>=</span> <span class=n>freq</span><span class=p>[</span><span class=n>j</span><span class=p>]</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>
-        <span class=k>break</span><span class=p>;</span>
-      <span class=p>}</span>
-    <span class=p>}</span>
-  <span class=p>}</span>
-  <span class=k>return</span> <span class=n>freq</span><span class=p>;</span>
-<span class=p>}</span>
-
-<span class=n>std</span><span class=o>::</span><span class=n>pair</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>AdjustFrequencyRanges</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;&amp;</span> <span class=n>freq</span><span class=p>)</span>
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;</span> <span class=n>GetGlyphs</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>,</span> <span class=kt>double</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>scaleFactor</span><span class=p>,</span>
+</span>                             <span class=kt>bool</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>reverseNormals</span><span class=p>)</span>
 <span class=p>{</span>
-  <span class=k>auto</span> <span class=n>first</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>freq</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=k>if</span> <span class=p>(</span><span class=n>freq</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
-    <span class=p>{</span>
-      <span class=n>first</span> <span class=o>=</span> <span class=n>i</span><span class=p>;</span>
-      <span class=k>break</span><span class=p>;</span>
-    <span class=p>}</span>
-  <span class=p>}</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span> <span class=n>keys</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;::</span><span class=n>iterator</span> <span class=n>it</span> <span class=o>=</span> <span class=n>freq</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span> <span class=n>it</span> <span class=o>!=</span> <span class=n>freq</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>it</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=n>keys</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>it</span><span class=o>-&gt;</span><span class=n>first</span><span class=p>);</span>
-  <span class=p>}</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>reverse</span><span class=p>(</span><span class=n>keys</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>keys</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>
-  <span class=k>auto</span> <span class=n>last</span> <span class=o>=</span> <span class=n>keys</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
-  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>keys</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=k>if</span> <span class=p>(</span><span class=n>freq</span><span class=p>[</span><span class=n>keys</span><span class=p>[</span><span class=n>i</span><span class=p>]]</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
-    <span class=p>{</span>
-      <span class=n>last</span> <span class=o>=</span> <span class=n>keys</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
-      <span class=k>break</span><span class=p>;</span>
-    <span class=p>}</span>
-  <span class=p>}</span>
-  <span class=k>return</span> <span class=n>std</span><span class=o>::</span><span class=n>pair</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>first</span><span class=p>,</span> <span class=n>last</span><span class=p>);</span>
-<span class=p>}</span>
-
-<span class=kt>void</span> <span class=n>PrintBands</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>bands</span><span class=p>)</span>
-<span class=p>{</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span> <span class=n>os</span><span class=p>;</span>
-  <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Bands:</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-  <span class=kt>size_t</span> <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;::</span><span class=n>const_iterator</span> <span class=n>p</span> <span class=o>=</span> <span class=n>bands</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span>
-       <span class=n>p</span> <span class=o>!=</span> <span class=n>bands</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>p</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;::</span><span class=n>const_iterator</span> <span class=n>q</span> <span class=o>=</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span>
-         <span class=n>q</span> <span class=o>!=</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>q</span><span class=p>)</span>
-    <span class=p>{</span>
-      <span class=k>if</span> <span class=p>(</span><span class=n>q</span> <span class=o>==</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>begin</span><span class=p>())</span>
-      <span class=p>{</span>
-        <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>idx</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; [&quot;</span><span class=p>;</span>
-      <span class=p>}</span>
-      <span class=k>if</span> <span class=p>(</span><span class=n>q</span> <span class=o>==</span> <span class=n>std</span><span class=o>::</span><span class=n>prev</span><span class=p>(</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>end</span><span class=p>()))</span>
-      <span class=p>{</span>
-        <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>fixed</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setprecision</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=o>*</span><span class=n>q</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;]</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-      <span class=p>}</span>
-      <span class=k>else</span>
-      <span class=p>{</span>
-        <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>fixed</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setprecision</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=o>*</span><span class=n>q</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;, &quot;</span><span class=p>;</span>
-      <span class=p>}</span>
-    <span class=p>}</span>
-    <span class=o>++</span><span class=n>idx</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>os</span><span class=p>.</span><span class=n>str</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=p>}</span>
-
-<span class=kt>void</span> <span class=n>PrintFrequencies</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>freq</span><span class=p>)</span>
-<span class=p>{</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span> <span class=n>os</span><span class=p>;</span>
-  <span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;::</span><span class=n>const_iterator</span> <span class=n>p</span> <span class=o>=</span> <span class=n>freq</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span> <span class=n>p</span> <span class=o>!=</span> <span class=n>freq</span><span class=p>.</span><span class=n>end</span><span class=p>();</span>
-       <span class=o>++</span><span class=n>p</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=k>if</span> <span class=p>(</span><span class=n>i</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
-    <span class=p>{</span>
-      <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Frequencies: [&quot;</span><span class=p>;</span>
-    <span class=p>}</span>
-    <span class=k>if</span> <span class=p>(</span><span class=n>p</span> <span class=o>==</span> <span class=n>std</span><span class=o>::</span><span class=n>prev</span><span class=p>(</span><span class=n>freq</span><span class=p>.</span><span class=n>end</span><span class=p>()))</span>
-    <span class=p>{</span>
-      <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>i</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;]</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-    <span class=p>}</span>
-    <span class=k>else</span>
-    <span class=p>{</span>
-      <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>i</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;, &quot;</span><span class=p>;</span>
-    <span class=p>}</span>
-    <span class=o>++</span><span class=n>i</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>os</span><span class=p>.</span><span class=n>str</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
-<span class=p>}</span>
-
-<span class=kt>void</span> <span class=n>PrintBandsFrequencies</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>bands</span><span class=p>,</span>
-                           <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;&amp;</span> <span class=n>freq</span><span class=p>)</span>
-<span class=p>{</span>
-  <span class=k>if</span> <span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>size</span><span class=p>()</span> <span class=o>!=</span> <span class=n>freq</span><span class=p>.</span><span class=n>size</span><span class=p>())</span>
-  <span class=p>{</span>
-    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Bands and frequencies must be the same size.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-    <span class=k>return</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span> <span class=n>os</span><span class=p>;</span>
-  <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Bands &amp; frequencies:</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-  <span class=kt>size_t</span> <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-  <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;::</span><span class=n>const_iterator</span> <span class=n>p</span> <span class=o>=</span> <span class=n>bands</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span>
-       <span class=n>p</span> <span class=o>!=</span> <span class=n>bands</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>p</span><span class=p>)</span>
-  <span class=p>{</span>
-    <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;::</span><span class=n>const_iterator</span> <span class=n>q</span> <span class=o>=</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span>
-         <span class=n>q</span> <span class=o>!=</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>q</span><span class=p>)</span>
-    <span class=p>{</span>
-      <span class=k>if</span> <span class=p>(</span><span class=n>q</span> <span class=o>==</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>begin</span><span class=p>())</span>
-      <span class=p>{</span>
-        <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>idx</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; [&quot;</span><span class=p>;</span>
-      <span class=p>}</span>
-      <span class=k>if</span> <span class=p>(</span><span class=n>q</span> <span class=o>==</span> <span class=n>std</span><span class=o>::</span><span class=n>prev</span><span class=p>(</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>end</span><span class=p>()))</span>
-      <span class=p>{</span>
-        <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>fixed</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setprecision</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=o>*</span><span class=n>q</span>
-           <span class=o>&lt;&lt;</span> <span class=s>&quot;]: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>freq</span><span class=p>[</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>first</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-      <span class=p>}</span>
-      <span class=k>else</span>
-      <span class=p>{</span>
-        <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>fixed</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setprecision</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=o>*</span><span class=n>q</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;, &quot;</span><span class=p>;</span>
-      <span class=p>}</span>
-    <span class=p>}</span>
-    <span class=o>++</span><span class=n>idx</span><span class=p>;</span>
-  <span class=p>}</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>os</span><span class=p>.</span><span class=n>str</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
-<span class=p>}</span>
-
-<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;</span> <span class=n>MakeGlyphs</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>,</span> <span class=kt>bool</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>reverseNormals</span><span class=p>)</span>
-</span><span class=p>{</span>
   <span class=c1>// Sometimes the contouring algorithm can create a volume whose gradient</span>
   <span class=c1>// vector and ordering of polygon(using the right hand rule) are</span>
 <span class=hll>  <span class=c1>// inconsistent. vtkReverseSense cures this problem.</span>
@@ -1046,13 +856,258 @@ function registerListener(event, func) {
 </span>  <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>arrow</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>maskPts</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetVectorModeToUseNormal</span><span class=p>();</span>
-  <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetScaleFactor</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span>
+  <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetScaleFactor</span><span class=p>(</span><span class=n>scaleFactor</span><span class=p>);</span>
   <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetColorModeToColorByVector</span><span class=p>();</span>
   <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetScaleModeToScaleByVector</span><span class=p>();</span>
   <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>OrientOn</span><span class=p>();</span>
   <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
   <span class=k>return</span> <span class=n>glyph</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>GetBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span>
+                                            <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>numberOfBands</span><span class=p>,</span>
+                                            <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>precision</span><span class=p>,</span>
+                                            <span class=kt>bool</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>nearestInteger</span><span class=p>)</span>
+<span class=p>{</span>
+  <span class=k>auto</span> <span class=n>prec</span> <span class=o>=</span> <span class=n>abs</span><span class=p>(</span><span class=n>precision</span><span class=p>);</span>
+  <span class=n>prec</span> <span class=o>=</span> <span class=p>(</span><span class=n>prec</span> <span class=o>&gt;</span> <span class=mi>14</span><span class=p>)</span> <span class=o>?</span> <span class=mi>14</span> <span class=o>:</span> <span class=n>prec</span><span class=p>;</span>
+
+  <span class=k>auto</span> <span class=n>RoundOff</span> <span class=o>=</span> <span class=p>[</span><span class=o>&amp;</span><span class=n>prec</span><span class=p>](</span><span class=k>const</span> <span class=kt>double</span><span class=o>&amp;</span> <span class=n>x</span><span class=p>)</span> <span class=p>{</span>
+    <span class=k>auto</span> <span class=n>pow_10</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>pow</span><span class=p>(</span><span class=mf>10.0</span><span class=p>,</span> <span class=n>prec</span><span class=p>);</span>
+    <span class=k>return</span> <span class=n>std</span><span class=o>::</span><span class=n>round</span><span class=p>(</span><span class=n>x</span> <span class=o>*</span> <span class=n>pow_10</span><span class=p>)</span> <span class=o>/</span> <span class=n>pow_10</span><span class=p>;</span>
+  <span class=p>};</span>
+
+  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>bands</span><span class=p>;</span>
+  <span class=k>if</span> <span class=p>((</span><span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>||</span> <span class=p>(</span><span class=n>numberOfBands</span> <span class=o>&lt;=</span> <span class=mi>0</span><span class=p>))</span>
+  <span class=p>{</span>
+    <span class=k>return</span> <span class=n>bands</span><span class=p>;</span>
+  <span class=p>}</span>
+  <span class=kt>double</span> <span class=n>x</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
+  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>dR</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+  <span class=p>}</span>
+  <span class=k>if</span> <span class=p>(</span><span class=n>nearestInteger</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>floor</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span>
+    <span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>ceil</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
+  <span class=p>}</span>
+  <span class=kt>double</span> <span class=n>dx</span> <span class=o>=</span> <span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>/</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>numberOfBands</span><span class=p>);</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>b</span><span class=p>;</span>
+  <span class=n>b</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span>
+  <span class=n>b</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=n>dx</span> <span class=o>/</span> <span class=mf>2.0</span><span class=p>);</span>
+  <span class=n>b</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=n>dx</span><span class=p>);</span>
+  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>numberOfBands</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=k>if</span> <span class=p>(</span><span class=n>i</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=p>{</span>
+      <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;::</span><span class=n>iterator</span> <span class=n>p</span> <span class=o>=</span> <span class=n>b</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span> <span class=n>p</span> <span class=o>!=</span> <span class=n>b</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>p</span><span class=p>)</span>
+      <span class=p>{</span>
+        <span class=o>*</span><span class=n>p</span> <span class=o>=</span> <span class=n>RoundOff</span><span class=p>(</span><span class=o>*</span><span class=n>p</span><span class=p>);</span>
+      <span class=p>}</span>
+      <span class=n>b</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
+    <span class=p>}</span>
+    <span class=n>bands</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>b</span><span class=p>;</span>
+    <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;::</span><span class=n>iterator</span> <span class=n>p</span> <span class=o>=</span> <span class=n>b</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span> <span class=n>p</span> <span class=o>!=</span> <span class=n>b</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>p</span><span class=p>)</span>
+    <span class=p>{</span>
+      <span class=o>*</span><span class=n>p</span> <span class=o>=</span> <span class=n>RoundOff</span><span class=p>(</span><span class=o>*</span><span class=n>p</span> <span class=o>+</span> <span class=n>dx</span><span class=p>);</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=n>bands</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span>
+<span class=n>GetCustomBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span> <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>numberOfBands</span><span class=p>,</span>
+               <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>2</span><span class=o>&gt;&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>myBands</span><span class=p>)</span>
+<span class=p>{</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>bands</span><span class=p>;</span>
+  <span class=k>if</span> <span class=p>((</span><span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>||</span> <span class=p>(</span><span class=n>numberOfBands</span> <span class=o>&lt;=</span> <span class=mi>0</span><span class=p>))</span>
+  <span class=p>{</span>
+    <span class=k>return</span> <span class=n>bands</span><span class=p>;</span>
+  <span class=p>}</span>
+
+  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>2</span><span class=o>&gt;&gt;</span> <span class=n>x</span><span class=p>;</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>copy</span><span class=p>(</span><span class=n>myBands</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>myBands</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span> <span class=n>std</span><span class=o>::</span><span class=n>back_inserter</span><span class=p>(</span><span class=n>x</span><span class=p>));</span>
+
+  <span class=c1>// Determine the index of the range minimum and range maximum.</span>
+  <span class=kt>int</span> <span class=n>idxMin</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>idx</span> <span class=o>&lt;</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>myBands</span><span class=p>.</span><span class=n>size</span><span class=p>());</span> <span class=o>++</span><span class=n>idx</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=k>if</span> <span class=p>(</span><span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>myBands</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span> <span class=o>&amp;&amp;</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&gt;=</span> <span class=n>myBands</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span>
+    <span class=p>{</span>
+      <span class=n>idxMin</span> <span class=o>=</span> <span class=n>idx</span><span class=p>;</span>
+      <span class=k>break</span><span class=p>;</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+  <span class=kt>int</span> <span class=n>idxMax</span> <span class=o>=</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>myBands</span><span class=p>.</span><span class=n>size</span><span class=p>())</span> <span class=o>-</span> <span class=mi>1</span><span class=p>;</span>
+  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>idx</span> <span class=o>=</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>myBands</span><span class=p>.</span><span class=n>size</span><span class=p>())</span> <span class=o>-</span> <span class=mi>1</span><span class=p>;</span> <span class=n>idx</span> <span class=o>&gt;=</span> <span class=mi>0</span><span class=p>;</span> <span class=o>--</span><span class=n>idx</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=k>if</span> <span class=p>(</span><span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>myBands</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span> <span class=o>&amp;&amp;</span> <span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&gt;=</span> <span class=n>myBands</span><span class=p>[</span><span class=n>idx</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span>
+    <span class=p>{</span>
+      <span class=n>idxMax</span> <span class=o>=</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>idx</span><span class=p>);</span>
+      <span class=k>break</span><span class=p>;</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+
+  <span class=c1>// Set the minimum to match the range minimum.</span>
+  <span class=n>x</span><span class=p>[</span><span class=n>idxMin</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
+  <span class=n>x</span><span class=p>[</span><span class=n>idxMax</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
+  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>idxMin</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>idxMax</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>b</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
+    <span class=n>b</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=mi>0</span><span class=p>];</span>
+    <span class=n>b</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span> <span class=o>/</span> <span class=mf>2.0</span><span class=p>;</span>
+    <span class=n>b</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>=</span> <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=mi>1</span><span class=p>];</span>
+    <span class=n>bands</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>b</span><span class=p>;</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=n>bands</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>GetIntegralBands</span><span class=p>(</span><span class=kt>double</span> <span class=k>const</span> <span class=n>dR</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
+<span class=p>{</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>bands</span><span class=p>;</span>
+  <span class=k>if</span> <span class=p>(</span><span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
+  <span class=p>{</span>
+    <span class=k>return</span> <span class=n>bands</span><span class=p>;</span>
+  <span class=p>}</span>
+  <span class=kt>double</span> <span class=n>x</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
+  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>dR</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+  <span class=p>}</span>
+  <span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>floor</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span>
+  <span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>ceil</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
+  <span class=kt>int</span> <span class=n>numberOfBands</span> <span class=o>=</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>abs</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span> <span class=o>+</span> <span class=n>std</span><span class=o>::</span><span class=n>abs</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]));</span>
+  <span class=k>return</span> <span class=n>GetBands</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>numberOfBands</span><span class=p>,</span> <span class=nb>false</span><span class=p>);</span>
+<span class=p>}</span>
+
+<span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>GetFrequencies</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;&amp;</span> <span class=n>bands</span><span class=p>,</span>
+<span class=hll>                                  <span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>src</span><span class=p>)</span>
+</span><span class=p>{</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>freq</span><span class=p>;</span>
+  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>size</span><span class=p>());</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>freq</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+  <span class=p>}</span>
+<span class=hll>  <span class=n>vtkIdType</span> <span class=n>tuples</span> <span class=o>=</span> <span class=n>src</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>();</span>
+</span>  <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>tuples</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=kt>double</span><span class=o>*</span> <span class=n>x</span> <span class=o>=</span> <span class=n>src</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetTuple</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
+    <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>j</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>j</span> <span class=o>&lt;</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>size</span><span class=p>());</span> <span class=o>++</span><span class=n>j</span><span class=p>)</span>
+    <span class=p>{</span>
+      <span class=k>if</span> <span class=p>(</span><span class=o>*</span><span class=n>x</span> <span class=o>&lt;=</span> <span class=n>bands</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>2</span><span class=p>])</span>
+      <span class=p>{</span>
+        <span class=n>freq</span><span class=p>[</span><span class=n>j</span><span class=p>]</span> <span class=o>=</span> <span class=n>freq</span><span class=p>[</span><span class=n>j</span><span class=p>]</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>
+        <span class=k>break</span><span class=p>;</span>
+      <span class=p>}</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=n>freq</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=kt>void</span> <span class=n>AdjustFrequencyRanges</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;&amp;</span> <span class=n>bands</span><span class=p>,</span>
+                           <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;&amp;</span> <span class=n>freq</span><span class=p>)</span>
+<span class=p>{</span>
+  <span class=c1>// Get the indices of the first and last non-zero elements.</span>
+  <span class=k>auto</span> <span class=n>first</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>freq</span><span class=p>.</span><span class=n>size</span><span class=p>());</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=k>if</span> <span class=p>(</span><span class=n>freq</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=p>{</span>
+      <span class=n>first</span> <span class=o>=</span> <span class=n>i</span><span class=p>;</span>
+      <span class=k>break</span><span class=p>;</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span> <span class=n>keys</span><span class=p>;</span>
+  <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;::</span><span class=n>iterator</span> <span class=n>it</span> <span class=o>=</span> <span class=n>freq</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span> <span class=n>it</span> <span class=o>!=</span> <span class=n>freq</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>it</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>keys</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>it</span><span class=o>-&gt;</span><span class=n>first</span><span class=p>);</span>
+  <span class=p>}</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>reverse</span><span class=p>(</span><span class=n>keys</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>keys</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>
+  <span class=k>auto</span> <span class=n>last</span> <span class=o>=</span> <span class=n>keys</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
+  <span class=k>for</span> <span class=p>(</span><span class=kt>size_t</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>keys</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=k>if</span> <span class=p>(</span><span class=n>freq</span><span class=p>[</span><span class=n>keys</span><span class=p>[</span><span class=n>i</span><span class=p>]]</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=p>{</span>
+      <span class=n>last</span> <span class=o>=</span> <span class=n>keys</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+      <span class=k>break</span><span class=p>;</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+  <span class=c1>// Now adjust the ranges.</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;::</span><span class=n>iterator</span> <span class=n>freqItr</span><span class=p>;</span>
+  <span class=n>freqItr</span> <span class=o>=</span> <span class=n>freq</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>first</span><span class=p>);</span>
+  <span class=n>freq</span><span class=p>.</span><span class=n>erase</span><span class=p>(</span><span class=n>freq</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>freqItr</span><span class=p>);</span>
+  <span class=n>freqItr</span> <span class=o>=</span> <span class=o>++</span><span class=n>freq</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>last</span><span class=p>);</span>
+  <span class=n>freq</span><span class=p>.</span><span class=n>erase</span><span class=p>(</span><span class=n>freqItr</span><span class=p>,</span> <span class=n>freq</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;::</span><span class=n>iterator</span> <span class=n>bandItr</span><span class=p>;</span>
+  <span class=n>bandItr</span> <span class=o>=</span> <span class=n>bands</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>first</span><span class=p>);</span>
+  <span class=n>bands</span><span class=p>.</span><span class=n>erase</span><span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>bandItr</span><span class=p>);</span>
+  <span class=n>bandItr</span> <span class=o>=</span> <span class=o>++</span><span class=n>bands</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>last</span><span class=p>);</span>
+  <span class=n>bands</span><span class=p>.</span><span class=n>erase</span><span class=p>(</span><span class=n>bandItr</span><span class=p>,</span> <span class=n>bands</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>
+  <span class=c1>// Reindex freq and bands.</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>adjFreq</span><span class=p>;</span>
+  <span class=kt>int</span> <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=nl>p</span> <span class=p>:</span> <span class=n>freq</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>adjFreq</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span> <span class=o>=</span> <span class=n>p</span><span class=p>.</span><span class=n>second</span><span class=p>;</span>
+    <span class=o>++</span><span class=n>idx</span><span class=p>;</span>
+  <span class=p>}</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=n>adjBands</span><span class=p>;</span>
+  <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=nl>p</span> <span class=p>:</span> <span class=n>bands</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>adjBands</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span> <span class=o>=</span> <span class=n>p</span><span class=p>.</span><span class=n>second</span><span class=p>;</span>
+    <span class=o>++</span><span class=n>idx</span><span class=p>;</span>
+  <span class=p>}</span>
+  <span class=n>bands</span> <span class=o>=</span> <span class=n>adjBands</span><span class=p>;</span>
+  <span class=n>freq</span> <span class=o>=</span> <span class=n>adjFreq</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=kt>void</span> <span class=n>PrintBandsFrequencies</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>bands</span><span class=p>,</span>
+                           <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;&amp;</span> <span class=n>freq</span><span class=p>,</span> <span class=kt>int</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>precision</span><span class=p>)</span>
+<span class=p>{</span>
+  <span class=k>auto</span> <span class=n>prec</span> <span class=o>=</span> <span class=n>abs</span><span class=p>(</span><span class=n>precision</span><span class=p>);</span>
+  <span class=n>prec</span> <span class=o>=</span> <span class=p>(</span><span class=n>prec</span> <span class=o>&gt;</span> <span class=mi>14</span><span class=p>)</span> <span class=o>?</span> <span class=mi>14</span> <span class=o>:</span> <span class=n>prec</span><span class=p>;</span>
+
+  <span class=k>if</span> <span class=p>(</span><span class=n>bands</span><span class=p>.</span><span class=n>size</span><span class=p>()</span> <span class=o>!=</span> <span class=n>freq</span><span class=p>.</span><span class=n>size</span><span class=p>())</span>
+  <span class=p>{</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Bands and frequencies must be the same size.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+    <span class=k>return</span><span class=p>;</span>
+  <span class=p>}</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span> <span class=n>os</span><span class=p>;</span>
+  <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Bands &amp; Frequencies:</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
+  <span class=kt>size_t</span> <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>total</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+  <span class=k>auto</span> <span class=n>width</span> <span class=o>=</span> <span class=n>prec</span> <span class=o>+</span> <span class=mi>6</span><span class=p>;</span>
+  <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;&gt;::</span><span class=n>const_iterator</span> <span class=n>p</span> <span class=o>=</span> <span class=n>bands</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span>
+       <span class=n>p</span> <span class=o>!=</span> <span class=n>bands</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>p</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>total</span> <span class=o>+=</span> <span class=n>freq</span><span class=p>[</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>first</span><span class=p>];</span>
+    <span class=k>for</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;::</span><span class=n>const_iterator</span> <span class=n>q</span> <span class=o>=</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span>
+         <span class=n>q</span> <span class=o>!=</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>q</span><span class=p>)</span>
+    <span class=p>{</span>
+      <span class=k>if</span> <span class=p>(</span><span class=n>q</span> <span class=o>==</span> <span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>begin</span><span class=p>())</span>
+      <span class=p>{</span>
+        <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>idx</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; [&quot;</span><span class=p>;</span>
+      <span class=p>}</span>
+      <span class=k>if</span> <span class=p>(</span><span class=n>q</span> <span class=o>==</span> <span class=n>std</span><span class=o>::</span><span class=n>prev</span><span class=p>(</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>second</span><span class=p>.</span><span class=n>end</span><span class=p>()))</span>
+      <span class=p>{</span>
+        <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>fixed</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=n>width</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setprecision</span><span class=p>(</span><span class=n>prec</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=o>*</span><span class=n>q</span>
+           <span class=o>&lt;&lt;</span> <span class=s>&quot;]: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>freq</span><span class=p>[</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>first</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
+      <span class=p>}</span>
+      <span class=k>else</span>
+      <span class=p>{</span>
+        <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>fixed</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=n>width</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setprecision</span><span class=p>(</span><span class=n>prec</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=o>*</span><span class=n>q</span>
+           <span class=o>&lt;&lt;</span> <span class=s>&quot;, &quot;</span><span class=p>;</span>
+      <span class=p>}</span>
+    <span class=p>}</span>
+    <span class=o>++</span><span class=n>idx</span><span class=p>;</span>
+  <span class=p>}</span>
+  <span class=n>width</span> <span class=o>=</span> <span class=mi>3</span> <span class=o>*</span> <span class=n>width</span> <span class=o>+</span> <span class=mi>13</span><span class=p>;</span>
+  <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>left</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=n>width</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Total&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>right</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span>
+     <span class=o>&lt;&lt;</span> <span class=n>total</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>os</span><span class=p>.</span><span class=n>str</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
 <span class=p>}</span>
 
 <span class=p>}</span> <span class=c1>// namespace</span>

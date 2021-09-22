@@ -188,7 +188,7 @@ function registerListener(event, func) {
         <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>is_file</span><span class=p>()</span> <span class=ow>and</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=o>==</span> <span class=s1>&#39;.py&#39;</span><span class=p>:</span>
             <span class=n>classes_constants</span><span class=o>.</span><span class=n>update</span><span class=p>(</span><span class=n>get_classes_constants</span><span class=p>(</span><span class=n>path</span><span class=p>))</span>
         <span class=k>elif</span> <span class=n>path</span><span class=o>.</span><span class=n>is_dir</span><span class=p>():</span>
-            <span class=n>paths</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span><span class=o>.</span><span class=n>rglob</span><span class=p>(</span><span class=s1>&#39;*.py&#39;</span><span class=p>))</span>
+            <span class=n>paths</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span><span class=o>.</span><span class=n>glob</span><span class=p>(</span><span class=s1>&#39;*.py&#39;</span><span class=p>))</span>
             <span class=n>program_path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=vm>__file__</span><span class=p>)</span>
             <span class=k>for</span> <span class=n>path</span> <span class=ow>in</span> <span class=n>paths</span><span class=p>:</span>
                 <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>resolve</span><span class=p>()</span> <span class=o>!=</span> <span class=n>program_path</span><span class=o>.</span><span class=n>resolve</span><span class=p>():</span>
@@ -222,7 +222,9 @@ function registerListener(event, func) {
 </span>
     <span class=n>res</span> <span class=o>=</span> <span class=n>format_imports</span><span class=p>(</span><span class=n>imports</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>ofn</span><span class=p>:</span>
-        <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ofn</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>&#39;.txt&#39;</span><span class=p>)</span>
+        <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ofn</span><span class=p>)</span>
+        <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=o>==</span> <span class=s1>&#39;&#39;</span><span class=p>:</span>
+            <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ofn</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>&#39;.txt&#39;</span><span class=p>)</span>
         <span class=n>path</span><span class=o>.</span><span class=n>write_text</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
