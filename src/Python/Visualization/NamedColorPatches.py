@@ -11,7 +11,7 @@ In this case Digital CCIR601 is used which gives less weight to the
 
 """
 
-import vtk
+from vtkmodules.vtkCommonColor import vtkNamedColors
 
 
 def main():
@@ -211,7 +211,7 @@ class HTMLTableMaker:
 
     def __init__(self):
         self.cs = ColorStructures()
-        self.nc = vtk.vtkNamedColors()
+        self.nc = vtkNamedColors()
         self.htmlRGBA = HTMLToFromRGBAColor()
 
     @staticmethod

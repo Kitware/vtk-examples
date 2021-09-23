@@ -3,7 +3,6 @@
 from pathlib import Path
 
 import numpy as np
-from vtk.util import numpy_support
 from vtkmodules.numpy_interface import dataset_adapter as dsa
 from vtkmodules.vtkCommonColor import (
     vtkColorSeries,
@@ -34,6 +33,7 @@ from vtkmodules.vtkRenderingCore import (
     vtkRenderWindowInteractor,
     vtkRenderer
 )
+from vtk.util import numpy_support
 
 
 def get_program_parameters(argv):

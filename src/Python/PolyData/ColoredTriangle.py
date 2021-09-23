@@ -1,4 +1,14 @@
-import vtk
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkPoints,
+    vtkUnsignedCharArray
+    )
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData,
+    vtkTriangle
+    )
+from vtkmodules.vtkIOXML import vtkXMLPolyDataWriter
 
 
 def get_program_parameters():
@@ -15,40 +25,40 @@ def get_program_parameters():
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     filename = get_program_parameters()
 
     # setup points and vertices
-    Points = vtk.vtkPoints()
-    Triangles = vtk.vtkCellArray()
+    Points = vtkPoints()
+    Triangles = vtkCellArray()
 
     Points.InsertNextPoint(1.0, 0.0, 0.0)
     Points.InsertNextPoint(0.0, 0.0, 0.0)
     Points.InsertNextPoint(0.0, 1.0, 0.0)
 
-    Triangle = vtk.vtkTriangle()
+    Triangle = vtkTriangle()
     Triangle.GetPointIds().SetId(0, 0)
     Triangle.GetPointIds().SetId(1, 1)
     Triangle.GetPointIds().SetId(2, 2)
     Triangles.InsertNextCell(Triangle)
 
     # setup colors
-    Colors = vtk.vtkUnsignedCharArray()
+    Colors = vtkUnsignedCharArray()
     Colors.SetNumberOfComponents(3)
     Colors.SetName('Colors')
     Colors.InsertNextTuple3(*colors.GetColor3ub('Red'))
     Colors.InsertNextTuple3(*colors.GetColor3ub('Lime'))
     Colors.InsertNextTuple3(*colors.GetColor3ub('Blue'))
 
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(Points)
     polydata.SetPolys(Triangles)
 
     polydata.GetPointData().SetScalars(Colors)
     polydata.Modified()
 
-    writer = vtk.vtkXMLPolyDataWriter()
+    writer = vtkXMLPolyDataWriter()
     writer.SetFileName(filename)
     writer.SetInputData(polydata)
     writer.Write()

@@ -11,8 +11,10 @@ In this case Digital CCIR601 is used which gives less weight to the
 
 """
 
-import vtk
-
+from vtkmodules.vtkCommonColor import (
+    vtkColorSeries,
+    vtkNamedColors
+    )
 
 def main():
     ncpt = HTMLTableMaker()
@@ -72,7 +74,7 @@ class ColorStructures:
     max_colors = 0
 
     def __init__(self):
-        cs = vtk.vtkColorSeries()
+        cs = vtkColorSeries()
         sizes = list()
         for i in range(0, cs.GetNumberOfColorSchemes()):
             cs.SetColorScheme(i)
@@ -92,7 +94,7 @@ class HTMLTableMaker:
 
     def __init__(self):
         self.cs = ColorStructures()
-        self.nc = vtk.vtkNamedColors()
+        self.nc = vtkNamedColors()
         self.htmlRGBA = HTMLToFromRGBAColor()
 
     @staticmethod
