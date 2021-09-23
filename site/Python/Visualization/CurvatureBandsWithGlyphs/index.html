@@ -60,8 +60,7 @@ function registerListener(event, func) {
 <span class=kn>import</span> <span class=nn>math</span>
 
 <span class=kn>import</span> <span class=nn>numpy</span> <span class=k>as</span> <span class=nn>np</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtk.util</span> <span class=kn>import</span> <span class=n>numpy_support</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.numpy_interface</span> <span class=kn>import</span> <span class=n>dataset_adapter</span> <span class=k>as</span> <span class=n>dsa</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.numpy_interface</span> <span class=kn>import</span> <span class=n>dataset_adapter</span> <span class=k>as</span> <span class=n>dsa</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=p>(</span>
 </span><span class=hll>    <span class=n>vtkColorSeries</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkNamedColors</span>
@@ -118,7 +117,8 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderer</span>
 </span><span class=p>)</span>
-
+<span class=hll><span class=kn>from</span> <span class=nn>vtk.util</span> <span class=kn>import</span> <span class=n>numpy_support</span>
+</span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=c1># ------------------------------------------------------------</span>

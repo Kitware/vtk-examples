@@ -68,8 +68,10 @@ function registerListener(event, func) {
 
 <span class=sd>&quot;&quot;&quot;</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtk</span>
-</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkColorSeries</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkNamedColors</span>
+</span>    <span class=p>)</span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
     <span class=n>ncpt</span> <span class=o>=</span> <span class=n>HTMLTableMaker</span><span class=p>()</span>
@@ -129,7 +131,7 @@ function registerListener(event, func) {
     <span class=n>max_colors</span> <span class=o>=</span> <span class=mi>0</span>
 
     <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>cs</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkColorSeries</span><span class=p>()</span>
+<span class=hll>        <span class=n>cs</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=p>()</span>
 </span>        <span class=n>sizes</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>cs</span><span class=o>.</span><span class=n>GetNumberOfColorSchemes</span><span class=p>()):</span>
             <span class=n>cs</span><span class=o>.</span><span class=n>SetColorScheme</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
@@ -149,7 +151,7 @@ function registerListener(event, func) {
 
     <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>cs</span> <span class=o>=</span> <span class=n>ColorStructures</span><span class=p>()</span>
-<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>nc</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>nc</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>        <span class=bp>self</span><span class=o>.</span><span class=n>htmlRGBA</span> <span class=o>=</span> <span class=n>HTMLToFromRGBAColor</span><span class=p>()</span>
 
     <span class=nd>@staticmethod</span>

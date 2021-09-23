@@ -87,8 +87,6 @@ function registerListener(event, func) {
 <span class=sd>&quot;&quot;&quot;</span>
 
 <span class=kn>import</span> <span class=nn>numpy</span> <span class=k>as</span> <span class=nn>np</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtk.util</span> <span class=kn>import</span> <span class=n>numpy_support</span>
-</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.numpy_interface</span> <span class=kn>import</span> <span class=n>dataset_adapter</span> <span class=k>as</span> <span class=n>dsa</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonComputationalGeometry</span> <span class=kn>import</span> <span class=n>vtkParametricRandomHills</span>
@@ -126,7 +124,8 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkTextMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkTextProperty</span>
 </span><span class=p>)</span>
-
+<span class=hll><span class=kn>from</span> <span class=nn>vtk.util</span> <span class=kn>import</span> <span class=n>numpy_support</span>
+</span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
@@ -180,12 +179,12 @@ function registerListener(event, func) {
             <span class=n>cc</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>rh_fn_src</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
         <span class=k>if</span> <span class=n>i</span> <span class=o>%</span> <span class=mi>2</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
             <span class=n>cc</span><span class=o>.</span><span class=n>SetCurvatureTypeToGaussian</span><span class=p>()</span>
-            <span class=n>curvatureName</span> <span class=o>=</span> <span class=s1>&#39;Gauss_Curvature&#39;</span>
+            <span class=n>curvature_name</span> <span class=o>=</span> <span class=s1>&#39;Gauss_Curvature&#39;</span>
         <span class=k>else</span><span class=p>:</span>
             <span class=n>cc</span><span class=o>.</span><span class=n>SetCurvatureTypeToMean</span><span class=p>()</span>
-            <span class=n>curvatureName</span> <span class=o>=</span> <span class=s1>&#39;Mean_Curvature&#39;</span>
+            <span class=n>curvature_name</span> <span class=o>=</span> <span class=s1>&#39;Mean_Curvature&#39;</span>
         <span class=n>cc</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-        <span class=n>adjust_edge_curvatures</span><span class=p>(</span><span class=n>cc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=n>curvatureName</span><span class=p>)</span>
+        <span class=n>adjust_edge_curvatures</span><span class=p>(</span><span class=n>cc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=n>curvature_name</span><span class=p>)</span>
         <span class=n>sources</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>cc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
 
     <span class=n>curvatures</span> <span class=o>=</span> <span class=p>{</span>
