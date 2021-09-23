@@ -2,8 +2,6 @@
 
 import math
 
-# noinspection PyUnresolvedReferences
-import vtkmodules.vtkRenderingOpenGL2
 from vtkmodules.vtkCommonColor import (
     vtkColorSeries,
     vtkNamedColors
@@ -33,9 +31,7 @@ from vtkmodules.vtkFiltersCore import (
     vtkReverseSense,
     vtkTriangleFilter
 )
-from vtkmodules.vtkFiltersGeneral import (
-    vtkTransformPolyDataFilter
-)
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
 from vtkmodules.vtkFiltersModeling import vtkBandedPolyDataContourFilter
 from vtkmodules.vtkFiltersSources import (
     vtkArrowSource,
@@ -55,25 +51,8 @@ from vtkmodules.vtkRenderingCore import (
     vtkRenderWindowInteractor,
     vtkRenderer
 )
-
-
-def vtk_version_ok(major, minor, build):
-    """
-    Check the VTK version.
-
-    :param major: Requested major version.
-    :param minor: Requested minor version.
-    :param build: Requested build version.
-    :return: True if the requested VTK version is >= the actual VTK version.
-    """
-    requested_version = (100 * int(major) + int(minor)) * 100000000 + int(build)
-    ver = vtkVersion()
-    actual_version = (100 * ver.GetVTKMajorVersion() + ver.GetVTKMinorVersion()) \
-                     * 100000000 + ver.GetVTKBuildVersion()
-    if actual_version >= requested_version:
-        return True
-    else:
-        return False
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
 
 
 def main(argv):
@@ -268,6 +247,25 @@ def main(argv):
         ren_win.Render()
 
     iren.Start()
+
+
+def vtk_version_ok(major, minor, build):
+    """
+    Check the VTK version.
+
+    :param major: Requested major version.
+    :param minor: Requested minor version.
+    :param build: Requested build version.
+    :return: True if the requested VTK version is >= the actual VTK version.
+    """
+    requested_version = (100 * int(major) + int(minor)) * 100000000 + int(build)
+    ver = vtkVersion()
+    actual_version = (100 * ver.GetVTKMajorVersion() + ver.GetVTKMinorVersion()) \
+                     * 100000000 + ver.GetVTKBuildVersion()
+    if actual_version >= requested_version:
+        return True
+    else:
+        return False
 
 
 def get_elevations(src):

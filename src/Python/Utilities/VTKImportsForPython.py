@@ -125,21 +125,27 @@ def main(json_path, src_paths, ofn):
     else:
         jpath = None
 
-    classes_constants = collections.defaultdict(set)
+    paths = list()
     for fn in src_paths:
         path = Path(fn)
         if path.is_file() and path.suffix == '.py':
-            classes_constants.update(get_classes_constants(path))
+            paths.append(path)
         elif path.is_dir():
-            paths = list(Path(fn).glob('*.py'))
+            path_list = list(Path(fn).glob('*.py'))
             program_path = Path(__file__)
-            for path in paths:
+            for path in path_list:
                 if path.resolve() != program_path.resolve():
-                    classes_constants.update(get_classes_constants(path))
+                    paths.append(path)
+        else:
+            print(f'Non existent path: {path}')
 
+    classes_constants = collections.defaultdict(set)
+    for path in paths:
+        classes_constants.update(get_classes_constants(path))
     if not classes_constants:
         print('No classes or constants were present.')
         return
+    
     if use_json:
         vtk_modules = get_available_modules(jpath)
     else:

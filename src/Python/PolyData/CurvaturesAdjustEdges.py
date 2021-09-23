@@ -3,7 +3,6 @@
 import math
 
 import numpy as np
-from vtk.util import numpy_support
 from vtkmodules.numpy_interface import dataset_adapter as dsa
 from vtkmodules.vtkCommonColor import vtkNamedColors
 from vtkmodules.vtkCommonComputationalGeometry import (
@@ -58,6 +57,7 @@ from vtkmodules.vtkRenderingCore import (
     vtkTextMapper,
     vtkTextProperty
 )
+from vtk.util import numpy_support
 
 
 def main(argv):

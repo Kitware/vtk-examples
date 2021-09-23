@@ -30,8 +30,6 @@ This example also demonstrates the use of lists and the linking of the elements 
 """
 
 import numpy as np
-from vtk.util import numpy_support
-
 from vtkmodules.numpy_interface import dataset_adapter as dsa
 from vtkmodules.vtkCommonColor import vtkNamedColors
 from vtkmodules.vtkCommonComputationalGeometry import vtkParametricRandomHills
@@ -69,6 +67,7 @@ from vtkmodules.vtkRenderingCore import (
     vtkTextMapper,
     vtkTextProperty
 )
+from vtk.util import numpy_support
 
 
 def main(argv):
@@ -123,12 +122,12 @@ def main(argv):
             cc.SetInputConnection(rh_fn_src.GetOutputPort())
         if i % 2 == 0:
             cc.SetCurvatureTypeToGaussian()
-            curvatureName = 'Gauss_Curvature'
+            curvature_name = 'Gauss_Curvature'
         else:
             cc.SetCurvatureTypeToMean()
-            curvatureName = 'Mean_Curvature'
+            curvature_name = 'Mean_Curvature'
         cc.Update()
-        adjust_edge_curvatures(cc.GetOutput(), curvatureName)
+        adjust_edge_curvatures(cc.GetOutput(), curvature_name)
         sources.append(cc.GetOutput())
 
     curvatures = {

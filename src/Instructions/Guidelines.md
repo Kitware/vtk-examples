@@ -213,7 +213,24 @@ if __name__ == '__main__':
 
 For the Input/Output of filenames and parameters. Use this snippet [GetProgramParameters](__WEB_SITE_URL__/Python/Snippets/GetProgramParameters/).
 
+#### Generating/Editing Import Statements
+
 Finally, when you are happy with everything, make sure only the requisite VTK classes and constants that you are using in your code are loaded when your program runs. To do this, run your code through [VTKImportsForPython](__WEB_SITE_URL__/Python/Utilities/VTKImportsForPython/), it will analyse your code producing a list of import statements for you.
+
+At the end of the list there is a series of commented out statements consisting of imports that you may need to enable. Only enable the ones you really need and include the statement `# noinspection PyUnresolvedReferences` for PyCharm users, as this will prevent the statement from being removed.
+
+e.g The most common ones will be:
+
+``` Python
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+```
+
+Make sure that any of these statements are placed after the last `from ... import ...` statement. Also remove any unused ones.
+
+If you are using an IDE make sure these import statements are **not** sorted when the code is reformatted. For PyCharm go to **`Settings/Preferences | Editor | Code Style | Python | Imports`** and uncheck *`Sort import statements`*.
 
 ### Java
 
