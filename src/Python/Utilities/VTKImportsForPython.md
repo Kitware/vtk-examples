@@ -16,7 +16,6 @@ e.g The most common ones will be:
     # noinspection PyUnresolvedReferences
     import ?vtkmodules?.?vtkRenderingOpenGL2?
 
-
 Make sure that any of these statements are placed after the last `from ... import ...` statement. Also remove any unused ones.
 
 If you are using an IDE make sure these import statements are **not** sorted when the code is reformatted. For PyCharm go to **`Settings/Preferences | Editor | Code Style | Python | Imports`** and uncheck *`Sort import statements`*.
