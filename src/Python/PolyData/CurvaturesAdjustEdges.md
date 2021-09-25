@@ -8,7 +8,7 @@ A histogram of the frequencies is also output to the console. This is useful if 
 
 This example was inspired by these discussions:
 
-- [vtkCurvatures yields unreasonably large values along borders](https://discourse.vtk.org/t/vtkcurvatures-yields-unreasonably-large-values-along-borders/2527)
+- [?vtkCurvatures? yields unreasonably large values along borders](https://discourse.vtk.org/t/?vtkcurvatures?-yields-unreasonably-large-values-along-borders/2527)
 - [How to extract the ids of the boundary points of a surface?](https://discourse.vtk.org/t/2530/3)
 
 Thanks to everyone involved in these discussions.
