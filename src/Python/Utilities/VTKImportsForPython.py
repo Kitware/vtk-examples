@@ -46,29 +46,29 @@ def get_available_modules(jpath):
     return sorted(res)
 
 
-def get_classes_constants(path):
+def get_classes_constants(paths):
     """
     Extract the vtk class names and constants from the path.
 
-    :param path: The path to the Python file.
+    :param paths: The path(s) to the Python file(s).
     :return: The file name, the VTK classes and any VTK constants.
     """
     res = collections.defaultdict(set)
-    content = path.read_text().split('\n')
-    for line in content:
-        vtk_class_pattern = re.compile(r'(vtk[a-zA-Z]+\S+\()')
-        vtk_class_pattern1 = re.compile(r'[^\(]+')
-        vtk_constants_pattern = re.compile(r'(VTK_[A-Z_]+)')
-        m = vtk_class_pattern.search(line)
-        if m:
-            for g in m.groups():
-                m1 = vtk_class_pattern1.match(g)
-                res[path.stem].add(m1.group())
-        m = vtk_constants_pattern.search(line)
-        if m:
-            for g in m.groups():
-                res[path.stem].add(g)
-
+    for path in paths:
+        content = path.read_text().split('\n')
+        for line in content:
+            vtk_class_pattern = re.compile(r'(vtk[a-zA-Z]+\S+\()')
+            vtk_class_pattern1 = re.compile(r'[^\(]+')
+            vtk_constants_pattern = re.compile(r'(VTK_[A-Z_]+)')
+            m = vtk_class_pattern.search(line)
+            if m:
+                for g in m.groups():
+                    m1 = vtk_class_pattern1.match(g)
+                    res[str(path)].add(m1.group())
+            m = vtk_constants_pattern.search(line)
+            if m:
+                for g in m.groups():
+                    res[str(path)].add(g)
     return res
 
 
@@ -107,7 +107,6 @@ def format_imports(imports):
             res.append(preface)
             res.append(f'# import vtkmodules.{module}')
         res.append('')
-
     return res
 
 
@@ -131,7 +130,7 @@ def main(json_path, src_paths, ofn):
         if path.is_file() and path.suffix == '.py':
             paths.append(path)
         elif path.is_dir():
-            path_list = list(Path(fn).glob('*.py'))
+            path_list = list(Path(fn).rglob('*.py'))
             program_path = Path(__file__)
             for path in path_list:
                 if path.resolve() != program_path.resolve():
@@ -139,13 +138,11 @@ def main(json_path, src_paths, ofn):
         else:
             print(f'Non existent path: {path}')
 
-    classes_constants = collections.defaultdict(set)
-    for path in paths:
-        classes_constants.update(get_classes_constants(path))
+    classes_constants = get_classes_constants(paths)
     if not classes_constants:
         print('No classes or constants were present.')
         return
-    
+
     if use_json:
         vtk_modules = get_available_modules(jpath)
     else:
