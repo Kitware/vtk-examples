@@ -447,22 +447,27 @@ def add_vtk_nightly_doc_link(s, stats):
     :param stats: Statistics
     :return:
     """
+    # This is the name of the repository.
+    repo_name = r'(vtk-examples)'
     # ?...? has been used to indicate that no link is to be built.
     no_link = r'[\?{1}](vtk[0-9a-zA-Z\-]+)[\?{1}]'
-    link = r'(vtk[^ &:\.][0-9a-zA-Z]+)'
+    link = r'(vtk[^ &:\.\-][0-9a-zA-Z]+)'
 
-    reg1 = re.compile(no_link)
-    reg2 = re.compile(link)
+    reg1 = re.compile(repo_name)
+    reg2 = re.compile(no_link)
+    reg3 = re.compile(link)
+
     if reg1.findall(s):
+        s = re.sub(repo_name, '_ktv' + r'\1', s)
+    if reg2.findall(s):
         s = re.sub(no_link, '_ktv' + r'\1', s)
-    s = s.replace('_ktvvtk','_ktv_')
-    n = len(reg2.findall(s))
+    s = s.replace('_ktvvtk', '_ktv_')
+    n = len(reg3.findall(s))
     if n > 0:
         stats['doxy_count'] += n
         s = re.sub(link,
-                    r'[\1](' + r'https://www.vtk.org/doc/nightly/html/class' + r'\1.html#details)', s)
+                   r'[\1](' + r'https://www.vtk.org/doc/nightly/html/class' + r'\1.html#details)', s)
     s = s.replace('_ktv_', 'vtk')
-
     return s
 
 
