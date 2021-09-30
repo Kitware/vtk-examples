@@ -20,8 +20,6 @@ e.g The most common ones will be:
 
 Make sure that any of these statements are placed after the last `from ... import ...` statement. Also remove any unused ones.
 
-If you are using an IDE make sure these import statements are **not** sorted when the code is reformatted. For PyCharm go to **`Settings/Preferences | Editor | Code Style | Python | Imports`** and uncheck *`Sort import statements`*.
-
 As an example, if you have used `import vtk`, you can replace it with with these statements. This means that only the relevant VTK modules are loaded when the Python program runs.
 
 Of course after adding these statements you may need to edit your code e.g. changing `x = vtk.?vtkSomeClass?()` to `x = ?vtkSomeClass?()`.
