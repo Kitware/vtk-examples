@@ -1117,11 +1117,14 @@ def main():
         add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_src_path, test_images_dict, p, p,
                                  stats)
 
-    snippets = ['Cxx/Snippets.md', 'Python/Snippets.md', 'Java/Snippets.md']
+    snippets = ['Cxx/Snippets', 'Python/Snippets', 'Java/Snippets']
     for snippet in snippets:
         src = src_path / snippet
         dest = doc_path / snippet
-        shutil.copy(src, dest)
+        p = src.glob('*.md')
+        files = [x for x in p if x.is_file()]
+        for f in files:
+            shutil.copy(f, dest)
 
     # Copy favicon.png
     dest = doc_path / 'assets/images'
