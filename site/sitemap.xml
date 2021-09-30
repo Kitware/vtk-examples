@@ -3464,6 +3464,46 @@
      <lastmod>2021-09-30</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/Snippets/CameraPosition/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/Snippets/ChooseContrastingColor/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/Snippets/PointToGlyph/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/Snippets/ReadPolyData/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/Snippets/RestoreSceneFromFieldData/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/Snippets/RestoreSceneFromFile/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/Snippets/SaveSceneToFieldData/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/Snippets/SaveSceneToFile/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/Snippets/ViewportBorders/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Cxx/Snippets/WriteImage/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://kitware.github.io/vtk-examples/site/Cxx/StructuredGrid/BlankPoint/</loc>
      <lastmod>2021-09-30</lastmod>
      <changefreq>daily</changefreq>
@@ -5416,6 +5456,10 @@
      <lastmod>2021-09-30</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Java/Snippets/WriteImage/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://kitware.github.io/vtk-examples/site/Java/StructuredGrid/BlankPoint/</loc>
      <lastmod>2021-09-30</lastmod>
      <changefreq>daily</changefreq>
@@ -6721,6 +6765,30 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kitware.github.io/vtk-examples/site/Python/SimpleOperations/DistanceBetweenPoints/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Python/Snippets/CameraPosition/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Python/Snippets/GetProgramParameters/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Python/Snippets/PointToGlyph/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Python/Snippets/ReadPolyData/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Python/Snippets/VTKVersion/</loc>
+     <lastmod>2021-09-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kitware.github.io/vtk-examples/site/Python/Snippets/WriteImage/</loc>
      <lastmod>2021-09-30</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
