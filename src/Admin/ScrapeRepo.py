@@ -3,6 +3,7 @@
 import concurrent.futures
 import contextlib
 import hashlib
+import multiprocessing
 import os
 import re
 import shutil
@@ -11,7 +12,8 @@ import sys
 import tarfile
 import tempfile
 import time
-from collections import Counter
+from collections import Counter, defaultdict
+from pathlib import Path, PurePath
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
@@ -21,6 +23,10 @@ except ModuleNotFoundError:
     print("ScrapeRepo: " + "markdown package is required but not found.")
     print("ScrapeRepo: " + "install with `pip|conda install markdown`")
     exit(0)
+
+#  Locks
+vtk_modules_cache_lock = multiprocessing.Lock()
+stats_lock = multiprocessing.Lock()
 
 
 def get_program_parameters():
@@ -117,66 +123,66 @@ def load_vtk_modules_cache(cache_path):
     :return: The VTK module cache as a dictionary.
     """
     cache_dict = dict()
-    if os.path.isfile(cache_path):
-        with open(cache_path, 'r') as cf:
-            for line in cf:
-                words = line.split()
-                cache_dict[words[0]] = ""
-                for word in words[1:]:
-                    cache_dict[words[0]] += " " + word
-    else:
-        f = open(cache_path, 'x')
-        f.close()
+    if cache_path.is_file():
+        lines = cache_path.read_text().split('\n')
+        for line in lines:
+            words = line.split(' ')
+            if words:
+                # Filter out any empty strings in the list.
+                cache_dict[Path(words[0])] = list(filter(None, words[1:]))
     return cache_dict
 
 
-def get_vtk_modules(repo_path, vtk_modules_cache, vtk_src_dir, src_file, src, stats):
+def update_vtk_modules_cache(src_file, cmd_path, vtk_src_path, vtk_modules_cache, stats):
     """
-    If the source code VTK modules are not in the cache, get them.
-    :param repo_path:
-    :param vtk_modules_cache:
-    :param vtk_src_dir:
-    :param src_file:
-    :param src:
+    If the source code VTK modules are not in the cache, then get them.
+    :param src_file: The source file path.
+    :param cmd_path: The command to run.
+    :param vtk_src_path: The path to the VTK source repository.
+    :param vtk_modules_cache: The VTK modules cache.
     :param stats: Statistics
     :return:
     """
-    # compute sha of src
-    sha = hashlib.sha256(str.encode(src)).hexdigest()
-    if src_file in list(vtk_modules_cache.keys()):
-        words = vtk_modules_cache[src_file].split()
-        if str(sha) == words[0]:
-            stats['vtk_modules_hits'] += 1
-            return words[1:]
-    stats['vtk_modules_misses'] += 1
-    path = make_path(repo_path, 'Admin', 'WhatModulesVTK.py')
-    if os.path.exists(path):
-        try:
-            cmd = path + ' -p ' + vtk_src_dir + ' -s ' + src_file
-            process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, )
-        except subprocess.CalledProcessError as err:
-            print('ERROR:', err)
-            if process.returncode != 0:
-                print('returncode:', process.returncode)
-                print('Have {} bytes in stdout:\n{}'.format(
-                    len(process.stdout),
-                    process.stdout.decode('utf-8'))
-                )
-                print('Have {} bytes in stderr:\n{}'.format(
-                    len(process.stderr),
-                    process.stderr.decode('utf-8'))
-                )
-        result = process.stdout.decode('utf-8')
-        vtk_modules = parse_WhatModulesVTKOutput(result)
 
-        vtk_modules_cache[str(src_file)] = sha
-        for vtk_module in vtk_modules:
-            vtk_modules_cache[str(src_file)] += " " + vtk_module
-        print("VTK Modules: cache miss: ", str(src_file))
-        return vtk_modules_cache
+    # compute sha of src
+    if src_file.exists() and src_file.is_file():
+        with open(src_file, 'r') as ifh:
+            src = ifh.read()
     else:
-        s = 'Unable to continue, the path: {} \nDoes not exist.'.format(path)
-        sys.exit(s)
+        print('The path: {} \nDoes not exist.'.format(src_file))
+        return
+    sha = hashlib.sha256(str.encode(src)).hexdigest()
+    if src_file in vtk_modules_cache:
+        if str(sha) == vtk_modules_cache[src_file][0]:
+            with stats_lock:
+                stats['vtk_modules_hits'] += 1
+    else:
+        with stats_lock:
+            stats['vtk_modules_misses'] += 1
+        if cmd_path.exists():
+            try:
+                cmd = str(cmd_path) + ' -p ' + str(vtk_src_path) + ' -s ' + str(src_file)
+                process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, )
+            except subprocess.CalledProcessError as err:
+                print('ERROR:', err)
+                if process.returncode != 0:
+                    print('returncode:', process.returncode)
+                    print('Have {} bytes in stdout:\n{}'.format(
+                        len(process.stdout),
+                        process.stdout.decode('utf-8'))
+                    )
+                    print('Have {} bytes in stderr:\n{}'.format(
+                        len(process.stderr),
+                        process.stderr.decode('utf-8'))
+                    )
+            result = process.stdout.decode('utf-8')
+            vtk_modules = parse_WhatModulesVTKOutput(result)
+            with vtk_modules_cache_lock:
+                vtk_modules_cache[src_file] = [sha] + vtk_modules
+                print("VTK Modules: cache miss: ", str(src_file))
+        else:
+            s = 'Unable to continue, the path: {} \nDoes not exist.'.format(cmd_path)
+            sys.exit(s)
 
 
 def parse_WhatModulesVTKOutput(str_to_parse):
@@ -204,19 +210,17 @@ def parse_WhatModulesVTKOutput(str_to_parse):
 
 def load_test_image_cache(cache_path):
     """
-    Load the  into a dictionary.
+    Load the cache into a dictionary.
     :param cache_path: The path to the test image cache.
     :return: The tiny URL cache dictionary
     """
     cache_dict = dict()
-    if os.path.isfile(cache_path):
-        with open(cache_path, 'r') as cf:
-            for line in cf:
-                words = line.split()
+    if cache_path.is_file():
+        lines = cache_path.read_text().split('\n')
+        for line in lines:
+            words = line.split(' ')
+            if len(words) == 2:
                 cache_dict[words[0]] = words[1]
-    else:
-        f = open(cache_path, 'x')
-        f.close()
     return cache_dict
 
 
@@ -378,53 +382,10 @@ def lines_with_VTK_classes(src_file_name):
     return hl_lines
 
 
-def split_path(filepath, maxdepth=20):
-    """
-    Split a path into its constituent elements.
-
-    Note:
-       It is probably best to use os.path.normpath(path) before splitting the path.
-       You can reconstruct the path after splitting as follows:
-          os.path.join(*splitpath(os.path.normpath(filepath)))
-
-    :param filepath: The path
-    :param maxdepth: The maximum recursion depth - increase for a very long path
-    :return:
-    """
-    (head, tail) = os.path.split(filepath)
-    return split_path(head, maxdepth - 1) + [tail] if maxdepth and head and head != filepath else [head or tail]
-
-
-def make_path(*args, relative=False):
-    """
-    Return a path name
-    :param args: One of more arguments to make a path from.
-    :param relative: If true make the path relative, i.e. no leading /
-    :return: The path.
-    """
-    path_elements = []
-    for a in args:
-        path_elements.append(a.split('/'))
-    flattened_list = [item for sublist in path_elements for item in sublist]
-    if flattened_list[0] == '' and not relative:
-        flattened_list[0] = '/'
-    # Strip out remaining ''s
-    list1 = [elem for elem in flattened_list if elem]
-    path = os.path.join(*list1)
-    if 'https:' in path or 'http:' in path:
-        path = path.split('/')
-        for i in range(path.count('https:')):
-            path[i] = path[i] + '/'
-        for i in range(path.count('http:')):
-            path[i] = path[i] + '/'
-        path = '/'.join(path)
-    return path
-
-
 def find_other_given_lang(example, example_lang, other_lang, other_ext):
     """
     Given a language example return a link to another example if it exists.
-    :param example: The example name.
+    :param example: The example path.
     :param example_lang: The example language.
     :param other_lang: The other language.
     :param other_ext: The other extension.
@@ -432,11 +393,18 @@ def find_other_given_lang(example, example_lang, other_lang, other_ext):
     """
     if other_lang == example_lang:
         return ''
-    other_link = re.sub(r'/' + example_lang + r'/', r'/' + other_lang + '/', example)
-    other_path = other_link + other_ext
-    if os.path.exists(other_path):
-        path_elements = split_path(other_link)[-3:]
-        return '([' + other_lang + '](' + make_path('..', '..', '..', *path_elements) + '))'
+    other_path = example
+    parts = list(other_path.parts)
+    for i, v in enumerate(reversed(parts)):
+        if v == example_lang:
+            idx = len(parts) - i - 1
+            parts[idx] = other_lang
+            break
+    other_path = Path('/'.join(parts)).with_suffix(other_ext)
+    if other_path.is_file():
+        #  Now make a link to the path
+        link_path = Path('/'.join(other_path.parts[-3:]))
+        return f'([{other_lang}](../../../{link_path.parent}/{link_path.stem}))'
     return ''
 
 
@@ -483,14 +451,13 @@ def get_example_line(s):
     return ['']
 
 
-def add_thumbnails_and_links(web_repo_url, root_path, repo_dir, doc_dir, baseline_path, test_images, from_file, to_file,
+def add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_path, test_images, from_file, to_file,
                              stats):
     """
     Add thumbnails, and language links, then copy to the doc_dir.
     :param web_repo_url: The repository URL.
-    :param root_path: Path to the top-level folder e.g. VTKExamples.
-    :param repo_dir: Usually 'src'.
-    :param doc_dir: Usually 'docs'.
+    :param src_path: Path to the source folder e.g. vtk-examples/src.
+    :param doc_path: Path to the docs folder e.g. vtk-examples-doc/docs.
     :param baseline_path: The baseline directories relative to root_path/repo_dir.
     :param test_images: The cache containing the rest images.
     :param from_file: The file to copy/edit
@@ -498,9 +465,8 @@ def add_thumbnails_and_links(web_repo_url, root_path, repo_dir, doc_dir, baselin
     :param stats: Statistics.
     :return:
     """
-    from_path = make_path(root_path, repo_dir, from_file)
-    to_path = make_path(doc_dir, to_file)
-    # baseline_path = make_path(root_path, repo_dir, baseline_dir)
+    from_path = src_path / from_file
+    to_path = doc_path / to_file
     # We need to treat [Lang]HowTo.md files, e.g. CxxHowTo.md, in a special way
     has_how_to = False
     if 'HowTo' in from_file:
@@ -517,12 +483,12 @@ def add_thumbnails_and_links(web_repo_url, root_path, repo_dir, doc_dir, baselin
             x.append(with_doxy.rstrip())
             if example_line != '':
                 stats['thumb_count'] += 1
-                example_name = os.path.split(example_line)[1]
-                example_dir = os.path.split(example_line)[0]
-                baseline = make_path(baseline_path, example_dir, "Test" + example_name + ".png")
-                if os.path.exists(baseline):
-                    baseline_url = make_path(web_repo_url, "blob/gh-pages", "src/Testing/Baseline", example_dir,
-                                             "Test" + example_name + ".png")
+                example_path = PurePath(example_line)
+                example_path = example_path.with_name('Test' + example_path.stem + '.png')
+                baseline = baseline_path.joinpath(example_path.relative_to('/'))
+                if baseline.is_file():
+                    baseline_url = '/'.join([web_repo_url, 'blob/gh-pages', 'src/Testing/Baseline',
+                                             str(example_path.relative_to('/').parent), example_path.name])
                     x[0] = True
                     x.append(baseline_url)
             lines[line_count] = x
@@ -586,7 +552,7 @@ def fill_CMake_lists(cmake_contents, example_name, extra_names, vtk_modules, web
     :return: A CMakeLists.txt file.
     """
     r1 = re.sub(r'WWW', web_repo_url, cmake_contents)
-    r2 = re.sub(r'XXX', example_name, r1)
+    r2 = re.sub(r'XXX', example_name.stem, r1)
     r3 = re.sub(r'YYY', extra_names, r2)
     r4 = re.sub(r'ZZZ', vtk_modules, r3)
     return r4
@@ -603,186 +569,208 @@ def fill_Qt_CMake_lists(cmake_contents, example_name, vtk_modules, web_repo_url)
     :return: A CMakeLists.txt file
     """
     r1 = re.sub(r'WWW', web_repo_url, cmake_contents)
-    r2 = re.sub(r'XXX', example_name, r1)
+    r2 = re.sub(r'XXX', example_name.stem, r1)
     r3 = re.sub(r'ZZZ', vtk_modules, r2)
     return r3
 
 
-def make_markdown_example_page(f, lang, lang_ext, root, available_languages, repo_path, doc_path,
-                               kit_name, repo_name, web_repo_url, user_name, vtk_modules_dict, vtk_src_dir,
-                               example_to_file_names, example_to_CMake, code_to_page, stats):
+def get_example_paths(src_path, available_languages, example_paths):
     """
-    Here we make the markdown page for a given example.
-    :param f: The example.
-    :param lang: The language.
-    :param lang_ext: The language extension.
-    :param root: The root name of the example.
-    :param available_languages: A dictionary of available languages.
-    :param repo_path: Repository path.
+    Get the examples paths and any supplementary files.
+    :param src_path:
+    :param available_languages:
+    :param example_paths:
+    :return:
+    """
+    excluded_paths = ['Boneyard', 'Broken', 'Deprecated', 'Untested', 'Databases', 'Problems', 'Wishlist']
+    # Scan all Cxx directories and look for extras.
+    # This holds any extra files needed for an example,
+    # key is the extra file path and the set holds the additional paths needed by an example.
+    all_extras = defaultdict(set)
+    for path in (src_path / 'Cxx').iterdir():
+        if path.is_dir() and path.parts[-1] not in excluded_paths:
+            files = path.glob('*.extras')
+            for f in files:
+                with open(f, 'r') as ifn:
+                    for line in ifn:
+                        line = line.strip()
+                        all_extras[f.with_suffix(available_languages['Cxx'])].add(f.parent / line)
+    # Now get all the examples.
+    for lang, lang_ext in available_languages.items():
+        for path in (src_path / lang).iterdir():
+            if path.is_dir() and path.parts[-1] not in excluded_paths:
+                files = path.glob('*' + lang_ext)
+                for f in files:
+                    if f in all_extras:
+                        example_paths[lang][f] = all_extras[f]
+                    else:
+                        example_paths[lang][f] = set()
+    for lang in available_languages:
+        # Remove the files in all_extras that have been picked up.
+        for k, v in all_extras.items():
+            for vv in v:
+                if vv in example_paths[lang]:
+                    example_paths[lang].pop(vv)
+
+
+def make_markdown_example_page(example_paths, available_languages, src_path, doc_path,
+                               repo_name, web_repo_url, vtk_modules_cache,
+                               example_to_CMake, stats):
+    """
+
+    :param example_paths: Example paths
+    :param available_languages: Available languages
+    :param src_path: The path to the sources.
     :param doc_path: The path to the docs.
-    :param kit_name: The kit name.
     :param repo_name: The repository name.
     :param web_repo_url: The web repository URL.
-    :param user_name: The user name.
-    :param vtk_modules_dict: The VTK modules dictionary.
-    :param vtk_src_dir: The VTK source directory.
-    :param example_to_file_names: A dictionary to hold the file names for each example.
-    :param example_to_CMake: A dictionary to hold CMakeLists.txt file.
-    :param code_to_page: A dictionary to hold code name and page name.
+    :param vtk_modules_cache: The VTK modules cache.
+    :param example_to_CMake: A dictionary to hold CMakeLists.txt files.
     :param stats: Statistics
     :return:
     """
-    other_languages = list()
-    example_name = os.path.splitext(f)[0]
-    example_ext = os.path.splitext(f)[1]
-    if example_ext != lang_ext:
-        return
-    # Find examples in other available_languages
-    fp = root + '/' + f
-    for lLang, lExt in list(available_languages.items()):
-        other_link = find_other_given_lang(os.path.splitext(fp)[0], lang, lLang, lExt)
-        if other_link != '':
-            other_languages.append(other_link)
-    baseline_path = os.path.join(repo_path, 'Testing', 'Baseline', lang, kit_name, 'Test' +
-                                 example_name + '.png')
-    path_name = os.path.join(doc_path, lang, kit_name)
-    if not os.path.exists(path_name):
-        if path_name != '':
-            os.makedirs(path_name)
-    dest = os.path.join(doc_path, lang, kit_name, example_name + '.md')
-    # Generate markdown for the example web page
-    with open(dest, 'w') as md_file:
-        md_file.write(
-            '[' + repo_name + '](/)/[' + lang + '](/' + lang + ')/' + kit_name + '/' + example_name + '\n\n')
-
-        if os.path.isfile(baseline_path):
-            image_url = web_repo_url + '/blob/gh-pages/src/Testing/Baseline/' + lang + '/' + kit_name + '/Test' \
-                        + example_name + '.png?raw=true'
-            # href to open image in new tab
-            md_file.write('<a href="' + image_url + ' target="_blank">' + '\n')
-            md_file.write(
-                '<img style="border:2px solid beige;float:center" src="' + image_url + '" width="256" />' + '\n')
-            md_file.write('</a>' + '\n')
-            md_file.write('<hr>\n')
-            md_file.write('\n')
-        description_path = os.path.join(repo_path, lang, kit_name, example_name + ".md")
-        # Add a description if a .md file exists for the example
-        if os.path.isfile(description_path):
-            with open(description_path, 'r') as description_file:
-                description = description_file.read()
-            description = add_vtk_nightly_doc_link(description, stats)
-            md_file.write(description)
-        # Add examples from other available languages if they exist
-        if len(other_languages) > 0:
-            see_also = '\n!!! Tip "Other languages"\n'
-            see = '    See '
-            for other in other_languages:
-                see_also += see + other
-                see = ', '
-            see_also += '\n'
-            md_file.write(see_also)
-            md_file.write('\n')
-
-        # Add email contact for questions
-        # question = \
-        #     '\n!!! question\n    ' \
-        #     'If you have a simple question about this example contact us at <a href=mailto:' \
-        #     + repo_name + 'ExProject@gmail.com?subject=' + example_name + lang_ext + '&body=' + 'https://' \
-        #     + user_name + '.github.io/' + repo_name + '/site/' + lang + '/' + kit_name + '/' + example_name \
-        #     + '>' + repo_name + \
-        #     'Project</a>\n    If your question is more complex and may require extended discussion,' \
-        #     ' please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
-        question = \
-            '\n!!! question\n    ' \
-            'If you have a question about this example,' \
-            ' please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n'
-
-        md_file.write(question)
-        md_file.write('\n')
-
-        source_file_name = os.path.join(repo_path, lang, kit_name, example_name + lang_ext)
-        with open(source_file_name, 'r') as ifh:
-            src = ifh.read()
-        hilite_lines = lines_with_VTK_classes(source_file_name)
-        md_file.write('###Code\n')
-        md_file.write('**' + example_name + lang_ext + '**' + '\n')
-        vtk_modules = None
-        if lang_ext == '.cxx':
-            md_file.write('``` c++ ' + hilite_lines + '\n')
-            # Get the vtk_modules used in this example
-            vtk_modules = get_vtk_modules(repo_path, vtk_modules_dict, vtk_src_dir, source_file_name, src, stats)
-            stats['cxx_count'] += 1
-        elif lang_ext == '.cs':
-            md_file.write('``` csharp ' + hilite_lines + '\n')
-            stats['cs_count'] += 1
-        elif lang_ext == '.py':
-            md_file.write('``` python ' + hilite_lines + '\n')
-            stats['py_count'] += 1
-        elif lang_ext == '.java':
-            md_file.write('``` java ' + hilite_lines + '\n')
-            stats['java_count'] += 1
-        md_file.write(src)
-        md_file.write('```' + '\n')
-
-        # Store the full file names for the example
-        if example_name not in example_to_file_names:
-            example_to_file_names[example_name] = set()
-        source_file = os.path.join(repo_path, lang, kit_name, example_name + example_ext)
-        example_to_file_names[example_name].add(source_file)
-
-        extras_path = os.path.join(repo_path, lang, kit_name, example_name + '.extras')
-        extra_names = ''
-        if os.path.isfile(extras_path):
-            with open(extras_path, 'r') as extras_file:
-                for line in extras_file:
-                    line = line.strip()
-                    if line == '':
-                        continue
-                    extra_path = os.path.join(repo_path, lang, kit_name, line)
-                    source_file = os.path.join(repo_path, lang, kit_name, line)
-
-                    example_to_file_names[example_name].add(source_file)
-                    with open(extra_path, 'r') as extra_fh:
-                        extra_code = extra_fh.read()
-                    write_extra_Cxx_code(md_file, line, extra_code)
-                    extent = os.path.splitext(line)
-                    if extent[1] == '.cxx':
-                        extra_names += ' ' + line
-        custom_CMake_path = os.path.join(repo_path, lang, kit_name, example_name + '.cmake')
-        if os.path.isfile(custom_CMake_path):
-            with open(custom_CMake_path, 'r') as ifh:
-                cmake = ifh.read()
+    suffix_lang = dict()
+    for key, value in available_languages.items():
+        if value in suffix_lang:
+            suffix_lang[value].append(key)
         else:
-            if lang_ext == '.cxx':
-                if is_qt_example(src):
-                    with open(os.path.join(repo_path, 'Admin', 'VTKQtCMakeLists'), 'r') as CMakeFile:
-                        CMake_contents = CMakeFile.read()
-                    # Create component lines for the VTK modules
-                    needed_modules = ''
-                    for vtk_module in vtk_modules:
-                        if 'vtk' in vtk_module:
-                            needed_modules += '\n  ' + vtk_module
-                        else:
-                            needed_modules += '\n  ' + 'vtk' + vtk_module
-                    cmake = fill_Qt_CMake_lists(CMake_contents, example_name, needed_modules, web_repo_url)
+            suffix_lang[value] = [key]
+    cmake_qt_template = src_path / '/'.join(['Admin', 'VTKQtCMakeLists'])
+    cmake_template = src_path / '/'.join(['Admin', 'VTKCMakeLists'])
+    for lang in example_paths:
+        for source_path in example_paths[lang]:
+            other_languages = list()
+            for a_lang, a_ext in list(available_languages.items()):
+                if lang != a_lang:
+                    other_link = find_other_given_lang(source_path, lang, a_lang, a_ext)
+                    if other_link != '':
+                        other_languages.append(other_link)
+            parts = source_path.parts
+            baseline_path = src_path / '/'.join(
+                ['Testing', 'Baseline', parts[-3], parts[-2], 'Test' + source_path.stem + '.png'])
+            dest = doc_path / '/'.join([parts[-3], parts[-2], source_path.stem + '.md'])
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            # Generate markdown for the example web page
+            with open(dest, 'w') as md_file:
+                md_file.write(
+                    '[' + repo_name + '](/)/[' + lang + '](/' + lang + ')/' + parts[
+                        -2] + '/' + source_path.stem + '\n\n')
+                if baseline_path.is_file():
+                    image_url = '/'.join([web_repo_url, 'blob/gh-pages/src/Testing/Baseline', parts[-3], parts[-2],
+                                          'Test' + source_path.stem + '.png?raw=true'])
+                    # href to open image in new tab
+                    md_file.write('<a href="' + image_url + ' target="_blank">' + '\n')
+                    md_file.write(
+                        '<img style="border:2px solid beige;float:center" src="' + image_url + '" width="256" />' + '\n')
+                    md_file.write('</a>' + '\n')
+                    md_file.write('<hr>\n')
+                    md_file.write('\n')
+
+                description_path = src_path / '/'.join([parts[-3], parts[-2], source_path.stem + ".md"])
+                # Add a description if a .md file exists for the example
+                if description_path.exists() and description_path.is_file():
+                    with open(description_path, 'r') as description_file:
+                        description = description_file.read()
+                    description = add_vtk_nightly_doc_link(description, stats)
+                    md_file.write(description)
+                # Add examples from other available languages if they exist
+                if len(other_languages) > 0:
+                    see_also = '\n!!! Tip "Other languages"\n'
+                    see = '    See '
+                    for other in other_languages:
+                        see_also += see + other
+                        see = ', '
+                    see_also += '\n'
+                    md_file.write(see_also)
+                    md_file.write('\n')
+
+                question = [
+                    '!!! question\n    ',
+                    'If you have a question about this example,',
+                    ' please use the [VTK Discourse Forum](https://discourse.vtk.org/)\n\n'
+                ]
+                md_file.write(''.join(question))
+
+                # Get the source code and highlight it.
+                with open(source_path, 'r') as ifh:
+                    src = ifh.read()
+                hilite_lines = lines_with_VTK_classes(source_path)
+                md_file.write('###Code\n')
+                md_file.write('**' + source_path.name + '**' + '\n')
+                vtk_modules = None
+                if source_path.suffix == '.cxx':
+                    md_file.write('``` c++ ' + hilite_lines + '\n')
+                    # Get the vtk_modules used in this example
+                    vtk_modules = vtk_modules_cache[source_path][1:]
+                    stats['cxx_count'] += 1
+                elif source_path.suffix == '.cs':
+                    md_file.write('``` csharp ' + hilite_lines + '\n')
+                    stats['cs_count'] += 1
+                elif source_path.suffix == '.py':
+                    md_file.write('``` python ' + hilite_lines + '\n')
+                    stats['py_count'] += 1
+                elif source_path.suffix == '.java':
+                    md_file.write('``` java ' + hilite_lines + '\n')
+                    stats['java_count'] += 1
+                md_file.write(src)
+                md_file.write('```' + '\n')
+
+                # Check for extras.
+                extra_names = ''
+                if example_paths[lang][source_path]:
+                    for path in example_paths[lang][source_path]:
+                        if path.suffix == available_languages['Cxx']:
+                            extra_names += ' ' + path.name
+                        with open(path, 'r') as extra_fh:
+                            extra_code = extra_fh.read()
+                        hilite_lines = lines_with_VTK_classes(path)
+                        md_file.write('**' + path.name + '**' + '\n')
+                        md_file.write('``` c++ ' + hilite_lines + '\n')
+                        md_file.write(extra_code)
+                        md_file.write("```" + "\n")
                 else:
-                    with open(os.path.join(repo_path, 'Admin', 'VTKCMakeLists'), 'r') as CMakeFile:
-                        CMake_contents = CMakeFile.read()
-                    # Create component lines for the VTK modules
-                    needed_modules = ''
-                    for vtk_module in vtk_modules:
-                        if 'vtk' in vtk_module:
-                            needed_modules += '\n  ' + vtk_module
+                    pass
+
+                # Check for a CMake file.
+                custom_CMake_path = source_path.with_suffix('.cmake')
+                if os.path.isfile(custom_CMake_path):
+                    with open(custom_CMake_path, 'r') as ifh:
+                        cmake = ifh.read()
+                else:
+                    if parts[-3] == 'Cxx':
+                        # Use the templates to generate the CMake file.
+                        if is_qt_example(src):
+                            with open(cmake_qt_template, 'r') as CMakeFile:
+                                CMake_contents = CMakeFile.read()
+                            # Create component lines for the VTK modules
+                            needed_modules = ''
+                            for vtk_module in vtk_modules:
+                                if 'vtk' in vtk_module:
+                                    needed_modules += '\n  ' + vtk_module
+                                else:
+                                    needed_modules += '\n  ' + 'vtk' + vtk_module
+                            if needed_modules == '':
+                                pass
+                            cmake = fill_Qt_CMake_lists(CMake_contents, source_path, needed_modules, web_repo_url)
                         else:
-                            needed_modules += '\n  ' + 'vtk' + vtk_module
-                    cmake = fill_CMake_lists(CMake_contents, example_name, extra_names, needed_modules, web_repo_url)
-        if lang == 'Cxx':
-            example_to_CMake[example_name] = get_VTK_CMake_file(cmake)
-            md_file.write(cmake)
-    code_to_page[example_name + lang_ext] = '/' + lang + '/' + kit_name + '/' + example_name
+                            with open(cmake_template, 'r') as CMakeFile:
+                                CMake_contents = CMakeFile.read()
+                            # Create component lines for the VTK modules
+                            needed_modules = ''
+                            for vtk_module in vtk_modules:
+                                if 'vtk' in vtk_module:
+                                    needed_modules += '\n  ' + vtk_module
+                                else:
+                                    needed_modules += '\n  ' + 'vtk' + vtk_module
+                            cmake = fill_CMake_lists(CMake_contents, source_path, extra_names, needed_modules,
+                                                     web_repo_url)
+
+                if parts[-3] == 'Cxx':
+                    example_to_CMake[source_path] = get_VTK_CMake_file(cmake)
+                    md_file.write(cmake)
 
 
-def make_instruction_pages(web_repo_url, web_site_url, site_repo_url, root_path, repo_dir, doc_path, from_file,
+def make_instruction_pages(web_repo_url, web_site_url, site_repo_url, src_path, doc_path, from_file,
                            to_file):
     """
     Make the instruction pages. The keys in the dictionary patterns are used to replace the
@@ -791,15 +779,15 @@ def make_instruction_pages(web_repo_url, web_site_url, site_repo_url, root_path,
     :param web_repo_url: The web repository URL.
     :param web_site_url: The web site URL.
     :param site_repo_url: The URL corresponding to the source files repository.
-    :param root_path: Path to the top-level folder e.g. VTKExamples.
-    :param repo_dir: Usually 'src'.
+    :param src_path: Path to the src folder e.g. vtk-examples/src.
     :param doc_path: Usually 'docs'.
     :param from_file: The file to copy/edit
     :param to_file: The save file name.
     :return:
     """
-    src = make_path(root_path, repo_dir, 'Instructions', from_file)
-    dest = make_path(doc_path, 'Instructions', to_file)
+    src = src_path / '/'.join(['Instructions', from_file])
+    dest = doc_path / '/'.join(['Instructions', to_file])
+
     patterns = {'__BLOB__': site_repo_url + '/blob/master',
                 '__TREE__': site_repo_url + '/tree/master',
                 '__SITE_REPOSITORY__': site_repo_url,
@@ -829,26 +817,135 @@ def make_instruction_pages(web_repo_url, web_site_url, site_repo_url, root_path,
             ofh.write(line)
 
 
-def make_tarballs(web_repo_dir, example_to_file_names, example_to_CMake, ref_mtime):
+def make_examples_sources_html(example_paths, src_path, doc_path, web_repo_url, web_site_url):
+    """
+    Make HTML pages of examples, images and sources.
+
+    :param example_paths: The examples.
+    :param src_path: Path to the src folder e.g. vtk-examples/src.
+    :param doc_path: The path to the docs.
+    :param web_repo_url: The web repository URL.
+    :param web_site_url: The web site URL.
+    :return:
+    """
+    doctype = '<!doctype html>'
+    style = '\n'.join([
+        '  <style>',
+        '  h1 {text-align:center;}',
+        '  h2 {text-align:left;}',
+        '  h3 {text-align:left;}',
+        '  h4 {text-align:left;}',
+        '  h5 {text-align:left;}',
+        '  h6 {text-align:left;}',
+        '  p {text-align:left;}',
+        '  table {font-family: arial, sans-serif;border-collapse: collapse;}',
+        '  th {border: 1px solid #dddddd;text-align: center;padding: 8px;}',
+        '  td {border: 1px solid #dddddd;text-align: left;padding: 8px;}',
+        '  tr {font-family: monospace;}',
+        '  tr:nth-child(even) {background-color: #eeeeee;}',
+        '  table.time_header td.time_fmt {text-align: left;}',
+        '  .cour {font-family: Courier;}',
+        '  html, body {height: 100%;}',
+        '  html {display: table;margin: auto;}',
+        '  body {display: table-cell;vertical-align: middle;}',
+        '  thead {color: DarkGreen;}',
+        '  tbody {color: MidnightBlue;}',
+        '  tfoot {color: SaddleBrown;',
+        '  </style>',
+    ])
+    counters = dict()
+    langs = list()
+    for lang in example_paths:
+        counters[lang] = 0
+        langs.append(example_paths[lang])
+    for lang in example_paths:
+        title = f'Examples_Sources_{lang}'
+        ret = f'{doctype}\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <title>{title}</title>{style}</head>\n'
+
+        contents = ['<h1>Examples and their source</h1>',
+                    '<table style="margin: auto;">',
+                    '  <caption>',
+                    f'    <b>{lang}</b>',
+                    '  </caption>',
+                    '<thead>',
+                    '  <tr>',
+                    '    <th>Example</th>',
+                    '    <th>Figure</th>',
+                    '    <th>Source</th>',
+                    '  </tr>',
+                    '</thead>',
+                    ]
+        source_paths = list()
+        for p in example_paths[lang].keys():
+            source_paths.append(str(p))
+        source_paths = sorted(source_paths)
+        for p in source_paths:
+            source_path = Path(p)
+            parts = source_path.parts
+            p = '/'.join(list(source_path.parts[-3:-1]) + [source_path.stem])
+            eg = f'<A HREF={web_site_url}/{p}/>{source_path.stem}</A>'
+            p = '/'.join(['blob/master'] + list(source_path.parts[-4:-1]) + [source_path.name])
+            src = f'<A HREF={web_repo_url}/{p}/>{source_path.name}</A>'
+            baseline_path = src_path / '/'.join(
+                ['Testing', 'Baseline', parts[-3], parts[-2], 'Test' + source_path.stem + '.png'])
+            if baseline_path.exists() and baseline_path.is_file():
+                image_url = '/'.join([web_repo_url, 'blob/gh-pages/src/Testing/Baseline', parts[-3], parts[-2],
+                                      'Test' + source_path.stem + '.png?raw=true'])
+                # This opens the target in a new tab.
+                image_link = '<a href="' + image_url + ' target="_blank">' + '\n'
+                # This displays the image on the page.
+                image_link += '<img style="border:2px solid beige;float:center" src="' + image_url + '" width="256" />'
+            else:
+                image_link = ''
+            contents += [f'      <td>{eg}</td>\n    <td>{image_link}</td>\n    <td>{src}</td>\n  </tr>\n']
+            counters[lang] += 1
+        contents += ['  </table>']
+        footer = [
+            '  <footer class="cour">',
+            '    Number of examples<br>',
+        ]
+        d = 6
+        sk = f'{lang:6s}'.replace(' ', '&nbsp;')
+        sv = f'{counters[lang]:{d}d}'.replace(' ', '&nbsp;')
+        footer.append(f'    {sk}: {sv}<br>')
+        footer.append('  </footer>')
+        ret += '\n'.join(contents)
+        ret += '\n'.join(footer)
+
+        with open(doc_path / f'Examples_Sources_{lang}.html', 'w') as index_file:
+            index_file.write(ret)
+
+
+def make_tarball(src, dest):
+    """
+    Create the tar file for the example.
+    The tarballs are stored in the tree docs/Tarballs.
+
+    :param src: The source folder.
+    :param dest: The destination file name.
+    :return:
+    """
+    tar = tarfile.open(dest, 'w')
+    tar.add(src, arcname=dest.stem)
+    tar.close()
+
+
+def make_tarballs(web_repo_dir, example_paths, example_to_CMake, ref_mtime, stats):
     """
     Create tarballs for each example.
     :param web_repo_dir: Repository path.
-    :param example_to_file_names: A dictionary to holding the file names for each example.
+    :param example_paths:  The examples.
     :param example_to_CMake: A dictionary to holding the CMakeLists.txt file.
     :param ref_mtime: The reference reference mtime.
+    :param stats: Statistics.
     :return:
     """
 
-    tmp_dir = tempfile.mkdtemp(prefix='VTKTarballs') + '/'
+    tmp_dir = Path(tempfile.mkdtemp(prefix='VTKTarballs') + '/')
 
     # Create the Tarballs directory in the source tree if not present
-    # If it does not exist, assume the tarball repo has not been cloned
-    # and we need to ignore tar files
-    tar_dir = make_path(web_repo_dir, 'Tarballs')
-    if not os.path.exists(tar_dir):
-        os.makedirs(tar_dir)
-        # with open(make_path(tar_dir, '.gitignore'), 'w') as ofh:
-        #     ofh.write('*,tar\n')
+    tar_dir = Path(web_repo_dir) / 'Tarballs'
+    tar_dir.mkdir(parents=True, exist_ok=True)
 
     # Create tarballs
     # For each example page, create a directory and copy that example's files
@@ -856,44 +953,52 @@ def make_tarballs(web_repo_dir, example_to_file_names, example_to_CMake, ref_mti
     # If the example has a CMakeLists.txt file, copy that.
     # Also, create a subdir called build. This directory is handy when you want to
     # configure with CMake and build the example.
-    for example in example_to_file_names:
+    tarball_args = list()
+    for example in example_paths['Cxx']:
         if example not in example_to_CMake:
             continue
         # Make the temporary directories for the example
-        src_dir = make_path(tmp_dir, example)
-        # codeFileName = srcDir + '/' + example + '.cxx'
-        if not os.path.exists(src_dir):
-            os.makedirs(src_dir)
+        tar_tmp_path = tmp_dir / example.stem
+        tar_tmp_path.mkdir(parents=True, exist_ok=True)
+        tar_fn = tar_tmp_path / example.name
+        # Copy the code for the example
+        shutil.copy(example, tar_fn)
+        os.utime(tar_fn, (ref_mtime, ref_mtime))
 
-            # An example may have multiple source files
-            for exampleFileName in example_to_file_names[example]:
-                # Get the file name
-                tar_fn = make_path(src_dir, os.path.split(exampleFileName)[1])
-                # Copy the code for the example
-                shutil.copy(exampleFileName, tar_fn)
-                os.utime(tar_fn, (ref_mtime, ref_mtime))
+        # An example may have multiple source files
+        for example_extras in example_paths['Cxx'][example]:
+            # Get the file name
+            tar_fn = tar_tmp_path / example_extras.name
+            # Copy the code for the example
+            shutil.copy(example_extras, tar_fn)
+            os.utime(tar_fn, (ref_mtime, ref_mtime))
 
         # Some examples do not have a CMakeLists.txt file
         if example in example_to_CMake:
-            os.makedirs(make_path(src_dir, 'build'))
-            cmake_fn = make_path(src_dir, 'CMakeLists.txt')
+            (tar_tmp_path / 'build').mkdir(parents=True, exist_ok=True)
+            cmake_fn = tar_tmp_path / 'CMakeLists.txt'
             with open(cmake_fn, 'w') as cmake_fh:
                 cmake_fh.write(example_to_CMake[example][0])
             os.utime(cmake_fn, (ref_mtime, ref_mtime))
+            os.utime(tar_tmp_path / 'build', (ref_mtime, ref_mtime))
 
         # Set the mtimes for the directories containing the example
         # Since the mtime is stored in the tar header for each file and directory,
         # we need a consistent time so that a tar of an unchanged example will be equal
         # to the one in the repo
-        os.utime(src_dir, (ref_mtime, ref_mtime))
-        os.utime(make_path(src_dir, 'build'), (ref_mtime, ref_mtime))
+        os.utime(tar_tmp_path, (ref_mtime, ref_mtime))
 
-        # Now create the tar file for the example
-        # The tarballs are stored in the source tree
-        tar = tarfile.open(make_path(web_repo_dir, 'Tarballs', example + '.tar'), 'w')
-        tar.add(src_dir, arcname=example)
-        tar.close()
+        tarball_args.append((tar_tmp_path, tar_dir / (example.stem + '.tar')))
 
+    # The default value of max_workers is min(32, os.cpu_count() + 4) for Python 3.8 or greater
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_results = [executor.submit(make_tarball, *k) for k in tarball_args]
+        # Block execution until all the tasks are completed
+        concurrent.futures.wait(future_results)
+        # for future in future_results:
+        #     yield future.result()
+
+    stats['tar_count'] = len(tarball_args)
     os.utime(tmp_dir, (0, ref_mtime))
     # Cleanup the temporary directories
     shutil.rmtree(tmp_dir)
@@ -901,6 +1006,7 @@ def make_tarballs(web_repo_dir, example_to_file_names, example_to_CMake, ref_mti
 
 def get_statistics(stats):
     """
+    Extract the statistics.
 
     :param stats: The statistics.
     :return: A list of statistics.
@@ -916,6 +1022,7 @@ def get_statistics(stats):
     res.append('  Python examples:          ' + str(stats['py_count']))
     res.append('  Java examples:            ' + str(stats['java_count']))
     res.append('  Total examples:           ' + str(sum(totals)))
+    res.append('  Tarballs:                 ' + str(stats['tar_count']))
     res.append('  Doxygen added:            ' + str(stats['doxy_count']))
     res.append('  Thumbnails added:         ' + str(stats['thumb_count']))
     res.append('  Test Image Cache hits:    ' + str(stats['test_image_hits']))
@@ -936,6 +1043,7 @@ def main():
     stats['cs_count'] = 0
     stats['py_count'] = 0
     stats['java_count'] = 0
+    stats['tar_count'] = 0
     stats['thumb_count'] = 0
     stats['doxy_count'] = 0
 
@@ -949,64 +1057,53 @@ def main():
     print('VTK_SOURCE_DIR:', vtk_src_dir)
     print()
 
-    sub_str = './'
-    if repo_dir.startswith(sub_str):
-        repo_dir = re.sub(sub_str, '', repo_dir)
-    # Find the root path, this program resides in the Admin folder so go up two levels.
-    root_path = os.path.dirname(os.path.abspath(__file__))
-    for i in range(2):
-        root_path = os.path.dirname(root_path)
+    web_repo_path = Path(web_repo_dir)
+    vtk_src_path = Path(vtk_src_dir)
+    # Find the repository path, this program resides in the Admin folder
+    # so go up two levels and append the repo_dir.
+    root_path = Path(__file__).parent / ".." / ".."
+    root_path = root_path.resolve()
+    src_path = root_path / repo_dir
+    doc_path = web_repo_path / "docs"
+    doc_path.mkdir(parents=True, exist_ok=True)
+    cache_path = (web_repo_path / 'src/Cache')
+    cache_path.mkdir(parents=True, exist_ok=True)
+    # Load the caches, create the caches if they don't exist.
+    test_images_cache_path = cache_path / 'TestImages.cache'
+    Path(test_images_cache_path.stem).mkdir(parents=True, exist_ok=True)
+    vtk_modules_cache_path = cache_path / 'VTKModules.cache'
+    Path(vtk_modules_cache_path.stem).mkdir(parents=True, exist_ok=True)
+    test_images_dict = load_test_image_cache(test_images_cache_path)
+    vtk_modules_cache = load_vtk_modules_cache(vtk_modules_cache_path)
+    #  Baseline images path (assumed to exist)
+    baseline_src_path = web_repo_path / 'src/Testing/Baseline/'
+
     # The name of the repository on the server.
     repo_name = list(filter(None, web_repo_url.split('/')))[-1]
     # The user name for the repository.
-    user_name = list(filter(None, web_repo_url.split('/')))[-2]
+    # user_name = list(filter(None, web_repo_url.split('/')))[-2]
 
-    repo_path = make_path(root_path, repo_dir)
-    doc_path = make_path(web_repo_dir, 'docs')
-
-    # Make sure the wiki docs folder exists
-    if not os.path.exists(doc_path):
-        os.makedirs(doc_path)
-
-    # The cache
-    cache_path = make_path(web_repo_dir, 'src/Cache')
-    if not os.path.exists(cache_path):
-        os.makedirs(cache_path)
-
-    # Load the caches, create the caches if they don't exist.
-    test_images_cache_path = make_path(cache_path, 'TestImages.cache')
-    test_images_dict = load_test_image_cache(test_images_cache_path)
-    vtk_modules_cache_path = make_path(cache_path, 'VTKModules.cache')
-    vtk_modules_dict = load_vtk_modules_cache(vtk_modules_cache_path)
-
-    #  Baseline images path (assumed to exist)
-    baseline_src_path = make_path(web_repo_dir, 'src/Testing/Baseline/')
-
-    # Make the reference mtime to be the most recent of the two CMakeLists templates
-    ref_stat1 = os.stat(make_path(repo_path, 'Admin/VTKQtCMakeLists'))
-    ref_stat2 = os.stat(make_path(repo_path, 'Admin/VTKCMakeLists'))
+    ref_stat1 = os.stat(src_path / 'Admin/VTKQtCMakeLists')
+    ref_stat2 = os.stat(src_path / 'Admin/VTKCMakeLists')
     ref_mtime = ref_stat1.st_mtime
     if ref_stat2.st_mtime > ref_stat1.st_mtime:
         ref_mtime = ref_stat2.st_mtime
 
-    # Create a dict to hold code name and page name
-    code_to_page = dict()
-
+    # Create a dict to hold the example paths grouped by language.
+    # Data format
+    # [k1][k2]v
+    # Where:
+    # k1 = Language
+    # k2 = Example path
+    # v  = A set holding any additional paths needed by the example.
+    example_paths = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
     # Create a dict to hold CMakeLists.txt file
     example_to_CMake = dict()
 
-    # Create a dict to hold the file names for each example
-    example_to_file_names = dict()
-
     # Create Snippets directories for Cxx, Python and Java
-    if not os.path.exists(make_path(doc_path, 'Cxx/Snippets')):
-        os.makedirs(make_path(doc_path, 'Cxx/Snippets'))
-
-    if not os.path.exists(make_path(doc_path, 'Python/Snippets')):
-        os.makedirs(make_path(doc_path, 'Python/Snippets'))
-
-    if not os.path.exists(make_path(doc_path, 'Java/Snippets')):
-        os.makedirs(make_path(doc_path, 'Java/Snippets'))
+    (doc_path / 'Cxx/Snippets').mkdir(parents=True, exist_ok=True)
+    (doc_path / 'Python/Snippets').mkdir(parents=True, exist_ok=True)
+    (doc_path / 'Java/Snippets').mkdir(parents=True, exist_ok=True)
 
     # Add thumbnails and language links to each of the language summary pages, Snippets and Book figures
     pages = ['Cxx.md', 'CxxHowTo.md',
@@ -1017,39 +1114,23 @@ def main():
              'Cxx/Snippets.md', 'Python/Snippets.md', 'Java/Snippets.md',
              'VTKBookFigures.md', 'VTKFileFormats.md']
     for p in pages:
-        add_thumbnails_and_links(web_repo_url, root_path, repo_dir, doc_path, baseline_src_path, test_images_dict, p, p,
+        add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_src_path, test_images_dict, p, p,
                                  stats)
 
-    # C++ Snippets
-    src = make_path(repo_path, 'Cxx/Snippets')
-    dest = make_path(doc_path, 'Cxx/Snippets')
-    for f in os.listdir(src):
-        snippet = os.path.splitext(f)[0]
-        shutil.copy(make_path(src, snippet + '.md'), dest)
-
-    # Python Snippets
-    src = make_path(repo_path, 'Python/Snippets')
-    dest = make_path(doc_path, 'Python/Snippets')
-    for f in os.listdir(src):
-        snippet = os.path.splitext(f)[0]
-        shutil.copy(make_path(src, snippet + '.md'), dest)
-
-    # Java Snippets
-    src = make_path(repo_path, 'Java/Snippets')
-    dest = make_path(doc_path, 'Java/Snippets')
-    for f in os.listdir(src):
-        snippet = os.path.splitext(f)[0]
-        shutil.copy(make_path(src, snippet + '.md'), dest)
+    snippets = ['Cxx/Snippets.md', 'Python/Snippets.md', 'Java/Snippets.md']
+    for snippet in snippets:
+        src = src_path / snippet
+        dest = doc_path / snippet
+        shutil.copy(src, dest)
 
     # Copy favicon.png
-    dest = make_path(make_path(doc_path, 'assets/images'))
-    if not os.path.exists(dest):
-        os.makedirs(dest)
-    shutil.copy(make_path(repo_path, 'Images/favicon.png'), dest)
+    dest = doc_path / 'assets/images'
+    dest.mkdir(parents=True, exist_ok=True)
+    shutil.copy(src_path / 'Images/favicon.png', dest)
 
     # Copy repo .md files
-    shutil.copy(make_path(repo_path, 'index.md'), doc_path)
-    shutil.copy(make_path(repo_path, 'VTKBook.md'), doc_path)
+    shutil.copy(src_path / 'index.md', doc_path)
+    shutil.copy(src_path / 'VTKBook.md', doc_path)
 
     # Get a list of all  examples
     # A dictionary of available languages and extensions
@@ -1057,14 +1138,14 @@ def main():
 
     # Copy coverage files
     for k in available_languages.keys():
-        dest = make_path(doc_path, k, 'Coverage')
-        if not os.path.exists(dest):
-            os.makedirs(dest)
-        shutil.copy(make_path(web_repo_dir, 'src/Coverage', k + 'VTKClassesNotUsed.md'), dest)
-        src = make_path(web_repo_dir, 'src/Coverage', k + 'VTKClassesUsed.md')
+        dest = doc_path / k / 'Coverage'
+        dest.mkdir(parents=True, exist_ok=True)
+        src = web_repo_path / '/'.join(['src/Coverage', k + 'VTKClassesNotUsed.md'])
+        shutil.copy(src, dest)
+        src = web_repo_path / '/'.join(['src/Coverage', k + 'VTKClassesUsed.md'])
         with open(src, 'r') as ifh:
             lines = ifh.readlines()
-        dest = make_path(doc_path, k, 'Coverage', k + 'VTKClassesUsed.md')
+        dest = doc_path / '/'.join([k, 'Coverage', k + 'VTKClassesUsed.md'])
         with open(dest, 'w') as ofh:
             for line in lines:
                 # Make the link to the example relative.
@@ -1072,118 +1153,69 @@ def main():
                 ofh.write(line)
 
     # Copy Instructions files
-    dest = make_path(doc_path, 'Instructions')
-    if not os.path.exists(dest):
-        os.makedirs(dest)
+    dest = doc_path / 'Instructions'
+    dest.mkdir(parents=True, exist_ok=True)
     instruction_files = ['ForUsers.md', 'ForDevelopers.md', 'ForAdministrators.md', 'Guidelines.md',
                          'ConvertingFiguresToExamples.md', 'WebSiteMaintenance.md']
     for f in instruction_files:
-        make_instruction_pages(web_repo_url, web_site_url, site_url, root_path, repo_dir, doc_path, f, f)
+        make_instruction_pages(web_repo_url, web_site_url, site_url, src_path, doc_path, f, f)
 
     # Copy VTKBook files
-    if not os.path.exists(make_path(doc_path, 'VTKBook')):
-        os.makedirs(make_path(doc_path, 'VTKBook'))
+    dest = doc_path / 'VTKBook'
+    dest.mkdir(parents=True, exist_ok=True)
     html_id_set = set()
     chapters = ['00Preface', '01Chapter1', '02Chapter2', '03Chapter3', '04Chapter4', '05Chapter5', '06Chapter6',
                 '07Chapter7', '08Chapter8', '09Chapter9', '10Chapter10', '11Chapter11', '12Chapter12', '13Glossary']
-    ch_src = [make_path(repo_path, 'VTKBook', ch + '.md') for ch in chapters]
+    ch_src = [src_path / '/'.join(['VTKBook', ch + '.md']) for ch in chapters]
     for ch in ch_src:
         create_html_ids(ch, html_id_set)
-    ch_dest = [make_path(doc_path, 'VTKBook', ch + '.md') for ch in chapters]
+    ch_dest = [doc_path / '/'.join(['VTKBook', ch + '.md']) for ch in chapters]
     ch_src_dest = list(zip(ch_src, ch_dest))
-    print('Found', len(html_id_set), 'figures with html ids')
+    print('Found', len(html_id_set), ' VTK Book figures with html ids')
     for ch in ch_src_dest:
         copy_chapter_add_links(ch, html_id_set, stats)
 
     # Copy VTKBookLaTeX files
-    dest = make_path(doc_path, 'VTKBookLaTeX')
-    if not os.path.exists(dest):
-        os.makedirs(dest)
-    shutil.copy(make_path(repo_path, 'VTKBookLaTeX/VTKTextBook.md'), dest)
+    dest = doc_path / 'VTKBookLaTeX'
+    dest.mkdir(parents=True, exist_ok=True)
+    shutil.copy(src_path / 'VTKBookLaTeX/VTKTextBook.md', dest)
 
-    # Scan all Cxx directories and look for extras
-    all_extras = set()
-    for root, dirs, files in os.walk(repo_path):
-        to_find = make_path(repo_path, 'Cxx')
-        start = root.find(to_find)
-        if start < 0:
-            continue
-        for f in files:
-            file_name = os.path.splitext(f)
-            if file_name[1] == '.extras':
-                extras_path = make_path(root, f)
-                with open(extras_path, 'r') as ifn:
-                    for line in ifn:
-                        line = line.strip()
-                        all_extras.add(line)
+    # Get a list of all the examples.
+    get_example_paths(src_path, available_languages, example_paths)
 
-    for lang, lang_ext in list(available_languages.items()):
-        to_find = os.path.join(repo_dir, lang)
-        for root, dirs, files in os.walk(repo_path):
-            start = root.find(to_find)
-            if start < 0:
-                continue
-            # Get the part of the file name that comes after repo_dir
-            # e.g. if the file name is VTKExamples/src/Cxx/GeometricObjects/Line,
-            # Path will be GeometricObjects/Line
-            kit_name = root[start + 1 + len(to_find):]
+    # Update any VTK modules.
+    srcs = example_paths['Cxx']
+    cmd_path = src_path / '/'.join(['Admin', 'WhatModulesVTK.py'])
+    parameters = list()
+    for src in srcs:
+        parameters.append((src, cmd_path, vtk_src_path, vtk_modules_cache, stats))
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_results = [executor.submit(update_vtk_modules_cache, *p) for p in parameters]
+        concurrent.futures.wait(future_results)
 
-            if kit_name == '':
-                continue
-            if kit_name.find('Boneyard') >= 0:
-                continue
-            if kit_name.find('Broken') >= 0:
-                continue
-            if kit_name.find('Deprecated') >= 0:
-                continue
-            if kit_name.find('Untested') >= 0:
-                continue
-            if kit_name.find('Databases') >= 0:
-                continue
-            if kit_name.find('Wishlist') >= 0:
-                continue
-            for f in files:
-                # skip files that are listed as extras
-                if f in all_extras:
-                    continue
-                if f == 'CMakeLists.txt':
-                    continue
-                example_ext = os.path.splitext(f)[1]
-                if example_ext != lang_ext:
-                    continue
-                # Make the markdown page for each example
-                make_markdown_example_page(f, lang, lang_ext, root, available_languages, repo_path, doc_path,
-                                           kit_name, repo_name, web_repo_url, user_name, vtk_modules_dict, vtk_src_dir,
-                                           example_to_file_names, example_to_CMake, code_to_page, stats)
+    # Rewrite the VTK modules cache file if necessary
+    if stats['vtk_modules_misses'] > 0:
+        with open(vtk_modules_cache_path, 'w') as cf:
+            for key, contents in vtk_modules_cache.items():
+                if key.exists() and key.is_file():
+                    cf.write(str(key) + ' ' + ' '.join(contents) + '\n')
 
-    # Generate an html page that links each example code file to its Wiki Example page
-    with open(os.path.join(doc_path, 'ExampleCodeToWikiPage.html'), 'w') as index_file:
-        index_file.write('Navigate to the page that contains the source code of an example<br>')
-        index_file.write('\n')
-        sorted_by_code = sorted(code_to_page.items())
-        for item in sorted_by_code:
-            index_file.write("<A HREF=" + web_repo_url + "/wikis" + re.sub(" ", "_", item[1]) + ">" + item[0] + "</A>")
-            index_file.write(
-                "<A HREF=" + web_repo_url + "/blob/gh-pages" + re.sub(" ", "_",
-                                                                      item[1]) + ".md" + ">" + "(md)" + "</A>")
-            index_file.write("<br>\n")
+    make_markdown_example_page(example_paths, available_languages, src_path, doc_path,
+                               repo_name, web_repo_url, vtk_modules_cache,
+                               example_to_CMake, stats)
+
+    # This is not added to the web pages but can be useful for debugging.
+    # Only enable if you need it.
+    # make_examples_sources_html(example_paths, src_path, doc_path, web_repo_url, web_site_url)
 
     # Create tarballs for each example
-    make_tarballs(web_repo_dir, example_to_file_names, example_to_CMake, ref_mtime)
+    make_tarballs(web_repo_dir, example_paths, example_to_CMake, ref_mtime, stats)
 
     # Update the test image cache file if necessary
     if stats['test_image_misses'] > 0:
         with open(test_images_cache_path, 'w') as cf:
             for key in test_images_dict.keys():
                 cf.write(key + ' ' + test_images_dict[key] + '\n')
-
-    # Rewrite the VTK modules cache file if necessary
-    if stats['vtk_modules_misses'] > 0:
-        with open(vtk_modules_cache_path, 'w') as cf:
-            for key, contents in list(vtk_modules_dict.items()):
-                if os.path.exists(key):
-                    # add the vtk prefix to the module name to support older versions of vtk
-                    cf.write(key + ' ' + contents + '\n')
 
     # Report stats
     print('\n'.join(get_statistics(stats)))

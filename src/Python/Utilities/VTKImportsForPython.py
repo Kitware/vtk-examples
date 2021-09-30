@@ -11,7 +11,7 @@ from vtkmodules.vtkCommonCore import vtkVersion
 
 def get_program_parameters(argv):
     import argparse
-    description = 'Generate Python import statements from a Python script.'
+    description = 'Generate import statements for the VTK classes in your Python code.'
     epilogue = '''
 The output will contain program name(s) followed by the import statements.
 You can specify a folder for the Python sources or paths to several sources.
@@ -53,7 +53,7 @@ def get_classes_constants(paths):
     :param paths: The path(s) to the Python file(s).
     :return: The file name, the VTK classes and any VTK constants.
     """
-    
+
     vtk_class_pattern = re.compile(r'(vtk[a-zA-Z]+\S+\()')
     vtk_class_pattern1 = re.compile(r'[^\(]+')
     vtk_constants_pattern = re.compile(r'(VTK_[A-Z_]+)')

@@ -30,9 +30,10 @@ You will need to manually add any third-party modules
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('json', default=['modules.json'], help='The path to the VTK JSON file (modules.json).')
-    parser.add_argument('sources', nargs='+', help='The path to the source files or to source files.')
+    parser.add_argument('sources', nargs='+', help='The path to the source files.')
+    parser.add_argument('-f', '--file', help='The file name to write the output too.')
     args = parser.parse_args()
-    return args.json, args.sources
+    return args.json, args.sources, args.file
 
 
 def get_headers_modules(json_data):
@@ -176,7 +177,7 @@ def disp_missing_components(inc_no_mod, inc_no_mod_headers):
         return None
 
 
-def main(json_path, src_paths):
+def main(json_path, src_paths, ofn):
     jpath = Path(json_path)
     if jpath.is_dir():
         jpath = jpath / 'modules.json'
@@ -203,13 +204,21 @@ def main(json_path, src_paths):
 
     modules, mod_implements, inc_no_mod, inc_no_mod_headers = get_vtk_components(jpath, paths)
 
-    print('\n'.join(disp_components(modules, mod_implements)))
+    res = '\n'.join(disp_components(modules, mod_implements))
     if inc_no_mod:
-        print('\n'.join(disp_missing_components(inc_no_mod, inc_no_mod_headers)))
+        res += '\n'.join(disp_missing_components(inc_no_mod, inc_no_mod_headers))
+
+    if ofn:
+        path = Path(ofn)
+        if path.suffix == '':
+            path = Path(ofn).with_suffix('.txt')
+        path.write_text(res)
+    else:
+        print(res)
 
 
 if __name__ == '__main__':
     import sys
 
-    json_paths, src_paths = get_program_parameters(sys.argv)
-    main(json_paths, src_paths)
+    json_paths, src_paths, ofn = get_program_parameters(sys.argv)
+    main(json_paths, src_paths, ofn)
