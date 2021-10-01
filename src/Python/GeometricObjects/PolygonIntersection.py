@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
-import vtk
+import vtkmodules.all as vtk
 
 def main():
     # Create a square in the x-y plane.

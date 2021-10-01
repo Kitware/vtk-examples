@@ -6,7 +6,7 @@
 
 import collections
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def get_program_parameters():

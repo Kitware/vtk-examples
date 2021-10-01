@@ -3,7 +3,7 @@
 # import os
 # os.chdir("VTKData/Data")
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def get_program_parameters():

@@ -1,6 +1,6 @@
 # Contributed by Eric E Monson
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

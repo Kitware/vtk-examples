@@ -12,7 +12,7 @@ If your VTK version is 5.x then remove the line: colors = vtk.vtkNamedColors()
 
 """
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def mkVtkIdList(it):

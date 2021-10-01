@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def Sphere():

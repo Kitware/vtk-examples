@@ -1,5 +1,5 @@
 import numpy as np
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

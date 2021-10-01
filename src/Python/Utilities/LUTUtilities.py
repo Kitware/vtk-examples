@@ -5,7 +5,7 @@ from __future__ import print_function
 
 import sys
 
-import vtk
+import vtkmodules.all as vtk
 
 
 class LUTUtilities(object):

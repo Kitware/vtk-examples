@@ -2,7 +2,7 @@
 
 # Modified from VTK/Filters/Texture/Testing/Python/textureThreshold.py.
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

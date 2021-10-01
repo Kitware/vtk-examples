@@ -3,7 +3,7 @@
 
 import sys
 
-import vtk
+import vtkmodules.all as vtk
 from PyQt4 import QtGui
 from PyQt4.QtGui import QApplication
 from vtk.qt4.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor

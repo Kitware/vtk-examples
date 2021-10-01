@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from math import pi, cos, sin, sqrt
 
-import vtk
+import vtkmodules.all as vtk
 
 LEVEL = 6
 

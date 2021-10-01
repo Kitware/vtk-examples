@@ -2,7 +2,7 @@
 
 #  Translated from Hanoi.cxx.
 
-import vtk
+import vtkmodules.all as vtk
 
 
 class GV(object):

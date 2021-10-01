@@ -4,7 +4,7 @@
 # which shows how to use a vtkAnnotationLink to view the contents
 # of a selection from a vtkGraphLayoutView
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

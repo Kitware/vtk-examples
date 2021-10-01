@@ -3,7 +3,7 @@
 # Python example translated directly from Tcl test
 # [vtk_source]/Graphics/Testing/Tcl/progGlyphs.tcl
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

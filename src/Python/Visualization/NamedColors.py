@@ -5,7 +5,7 @@
     This example demonstrates the usage of the vtNamedColor class.
 """
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

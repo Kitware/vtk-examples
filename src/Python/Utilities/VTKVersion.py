@@ -1,5 +1,5 @@
 from __future__ import print_function
 
-import vtk
+import vtkmodules.all as vtk
 
 print(vtk.vtkVersion.GetVTKSourceVersion())

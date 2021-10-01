@@ -8,7 +8,7 @@
 # Note that no points will show up inside of the 3d box outline until you
 # select some lines/curves in the parallel coordinates view
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

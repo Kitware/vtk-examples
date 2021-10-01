@@ -2,7 +2,7 @@
 
 # This example creates a tree and labels the vertices and edges.
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

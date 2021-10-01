@@ -7,7 +7,7 @@ The human data file is taken from:
   Thanks to the Slicer people for providing this.
 """
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import vtk
+import vtkmodules.all as vtk
 
 
 # ImageSets = List of Image sets

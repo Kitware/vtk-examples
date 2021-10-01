@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import sys
 
-import vtk
+import vtkmodules.all as vtk
 
 # Unicode string for demonstration (etre with circumflex)
 if sys.hexversion >= 0x03000000:

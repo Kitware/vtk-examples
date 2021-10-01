@@ -1,4 +1,4 @@
-import vtk
+import vtkmodules.all as vtk
 
 
 # This example uses a "glyph table" to change the shape of the 3d glyphs

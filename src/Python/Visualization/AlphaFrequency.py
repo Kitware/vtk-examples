@@ -3,7 +3,7 @@
 import re
 from collections import Counter
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

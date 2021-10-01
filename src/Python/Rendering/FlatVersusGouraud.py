@@ -3,7 +3,7 @@
 
 from collections import OrderedDict
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

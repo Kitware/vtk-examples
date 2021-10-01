@@ -2,7 +2,7 @@
 
 # This code is based on the VTK file: /IO/Geometry/Testing/Python/motor.py.
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

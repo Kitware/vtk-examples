@@ -3,7 +3,7 @@
 #
 # by Panos Mavrogiorgos, email : pmav99 >a< gmail
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def get_program_parameters():

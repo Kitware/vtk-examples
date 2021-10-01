@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import numpy as np
-import vtk
+import vtkmodules.all as vtk
 
 
 def create_explicit_structured_grid(dimensions, spacing=(1, 1, 1)):
