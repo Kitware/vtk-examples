@@ -16,7 +16,7 @@
 """
 
 # First access the VTK module (and any other needed modules) by importing them.
-import vtk
+import vtkmodules.all as vtk
 
 
 def main(argv):

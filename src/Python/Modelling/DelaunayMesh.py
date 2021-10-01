@@ -8,7 +8,7 @@ We create a fancy image of a 2D Delaunay triangulation. Points are
  randomly generated.
 """
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

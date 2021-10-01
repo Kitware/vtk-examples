@@ -2,7 +2,7 @@
 
 # A simple script to demonstrate the vtkCutter function
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

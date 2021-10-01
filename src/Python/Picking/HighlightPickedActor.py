@@ -1,4 +1,4 @@
-import vtk
+import vtkmodules.all as vtk
 
 colors = vtk.vtkNamedColors()
 NUMBER_OF_SPHERES = 10

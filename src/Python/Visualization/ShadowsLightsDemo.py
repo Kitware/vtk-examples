@@ -7,7 +7,7 @@ The scene consists of
 
 """
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

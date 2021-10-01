@@ -14,7 +14,7 @@
 # minimum size to your glyphs, then you can set the Range as something like [-0.5, 1]
 
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

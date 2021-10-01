@@ -10,7 +10,7 @@ The number of integration steps is 10 million, in a volume of dimensions 200 x 2
 The surface roughness is caused by the discrete nature of the evaluation function.
 
 '''
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

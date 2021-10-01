@@ -6,7 +6,7 @@
 # coordinates view (i.e. between selecting data and manipulating axes).
 # Lines which are commented out show alternative options.
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

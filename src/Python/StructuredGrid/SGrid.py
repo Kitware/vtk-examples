@@ -11,7 +11,7 @@ The basic idea is to instantiate vtkStructuredGrid, set its dimensions,
 
 import math
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

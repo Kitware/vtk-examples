@@ -2,7 +2,7 @@
 
 #  Translated from walkCow.tcl
 
-import vtk
+import vtkmodules.all as vtk
 
 def walk_cow(file_name, figure):
     figure = abs(figure)

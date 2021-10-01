@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():
@@ -46,7 +46,7 @@ def main():
 if __name__ == '__main__':
     main()
 
-# import vtk
+# import vtkmodules.all as vtk
 #
 # # create a rendering window and renderer
 # ren = vtk.vtkRenderer()

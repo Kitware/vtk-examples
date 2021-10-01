@@ -3,7 +3,7 @@
 from pathlib import Path
 from pathlib import PurePath
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def get_program_parameters():

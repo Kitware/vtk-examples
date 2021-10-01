@@ -9,7 +9,7 @@
     6. Pressing '1' on the keyboard will let you manipulate the objects in layer 1.
 """
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def GenerateAndDisplayCubeAndSphere():

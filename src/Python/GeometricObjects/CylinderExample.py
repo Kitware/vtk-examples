@@ -3,7 +3,7 @@
 # This simple example shows how to do basic rendering and pipeline
 # creation.
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

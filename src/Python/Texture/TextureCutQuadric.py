@@ -3,7 +3,7 @@
 '''
 '''
 
-import vtk
+import vtkmodules.all as vtk
 
 positions = [
     [-4, 4, 0], [-2, 4, 0], [0, 4, 0], [2, 4, 0],

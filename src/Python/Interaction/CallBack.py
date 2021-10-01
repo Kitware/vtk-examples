@@ -6,7 +6,7 @@ Demonstrate the use of a callback.
 We also add call data.
 '''
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

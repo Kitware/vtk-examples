@@ -5,7 +5,7 @@ This example demonstrates how to use boolean combinations of implicit
  functions to create a model of an ice cream cone.
 
 """
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

@@ -3,7 +3,7 @@ converted from:
  - http://www.vtk.org/Wiki/VTK/Examples/Cxx/PolyData/ExtractSelectionCells
 '''
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

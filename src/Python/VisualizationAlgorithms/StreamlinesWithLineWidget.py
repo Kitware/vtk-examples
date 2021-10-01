@@ -6,7 +6,7 @@ This program encompasses the functionality of
   StreamlinesWithLineWidget.tcl and LineWidget.tcl.
 """
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

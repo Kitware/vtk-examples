@@ -19,7 +19,7 @@ The top row of the display uses the color transfer function to create a
 The bottom row of the display uses a lookup table of predefined colors.
 """
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def MakeLUT(tableSize):

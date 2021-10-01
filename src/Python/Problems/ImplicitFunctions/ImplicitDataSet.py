@@ -1,7 +1,7 @@
 # Example in which a cube is used to define an implicit function (through vtkImplicitDataSet)
 # which is then used to clip a sphere
 
-import vtk
+import vtkmodules.all as vtk
 
 sphere = vtk.vtkSphereSource()
 sphere.SetCenter(1, 1, 1)

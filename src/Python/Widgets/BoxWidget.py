@@ -1,4 +1,4 @@
-import vtk
+import vtkmodules.all as vtk
 
 
 # Call back function to resize the cone

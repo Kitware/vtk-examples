@@ -4,7 +4,7 @@
 This example shows how to create an unstructured grid.
 '''
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main():

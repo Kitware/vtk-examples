@@ -1,4 +1,4 @@
-import vtk
+import vtkmodules.all as vtk
 import vtk.util.numpy_support as VN
 
 # Callback for when selection is changed
