@@ -54,23 +54,24 @@ def get_classes_constants(paths):
     :return: The file name, the VTK classes and any VTK constants.
     """
 
-    vtk_class_pattern = re.compile(r'(vtk[a-zA-Z]+\S+\()')
-    vtk_class_pattern1 = re.compile(r'[^\(]+')
-    vtk_constants_pattern = re.compile(r'(VTK_[A-Z_]+)')
+    vtk_patterns = [
+        # class pattern
+        re.compile(r'(vtk[a-zA-Z]+\S+)\({1}'),
+        # constants pattern
+        re.compile(r'(VTK_[A-Z_]+)'),
+        # special patterns
+        re.compile(r'(mutable)\({1}'),
+    ]
 
     res = collections.defaultdict(set)
     for path in paths:
         content = path.read_text().split('\n')
         for line in content:
-            m = vtk_class_pattern.search(line)
-            if m:
-                for g in m.groups():
-                    m1 = vtk_class_pattern1.match(g)
-                    res[str(path)].add(m1.group())
-            m = vtk_constants_pattern.search(line)
-            if m:
-                for g in m.groups():
-                    res[str(path)].add(g)
+            for pattern in vtk_patterns:
+                m = pattern.search(line)
+                if m:
+                    for g in m.groups():
+                        res[str(path)].add(g)
     return res
 
 
