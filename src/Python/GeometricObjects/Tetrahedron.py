@@ -1,12 +1,30 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    VTK_TETRA,
+    vtkCellArray,
+    vtkTetra,
+    vtkUnstructuredGrid
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(1, 0, 0)
     points.InsertNextPoint(1, 1, 0)
@@ -18,57 +36,57 @@ def main():
     points.InsertNextPoint(2, 3, 3)
 
     # The first tetrahedron
-    unstructuredGrid1 = vtk.vtkUnstructuredGrid()
+    unstructuredGrid1 = vtkUnstructuredGrid()
     unstructuredGrid1.SetPoints(points)
 
-    tetra = vtk.vtkTetra()
+    tetra = vtkTetra()
 
     tetra.GetPointIds().SetId(0, 0)
     tetra.GetPointIds().SetId(1, 1)
     tetra.GetPointIds().SetId(2, 2)
     tetra.GetPointIds().SetId(3, 3)
 
-    cellArray = vtk.vtkCellArray()
+    cellArray = vtkCellArray()
     cellArray.InsertNextCell(tetra)
-    unstructuredGrid1.SetCells(vtk.VTK_TETRA, cellArray)
+    unstructuredGrid1.SetCells(VTK_TETRA, cellArray)
 
     # The second tetrahedron
-    unstructuredGrid2 = vtk.vtkUnstructuredGrid()
+    unstructuredGrid2 = vtkUnstructuredGrid()
     unstructuredGrid2.SetPoints(points)
 
-    tetra = vtk.vtkTetra()
+    tetra = vtkTetra()
 
     tetra.GetPointIds().SetId(0, 4)
     tetra.GetPointIds().SetId(1, 5)
     tetra.GetPointIds().SetId(2, 6)
     tetra.GetPointIds().SetId(3, 7)
 
-    cellArray = vtk.vtkCellArray()
+    cellArray = vtkCellArray()
     cellArray.InsertNextCell(tetra)
-    unstructuredGrid2.SetCells(vtk.VTK_TETRA, cellArray)
+    unstructuredGrid2.SetCells(VTK_TETRA, cellArray)
 
     # Create a mapper and actor
-    mapper1 = vtk.vtkDataSetMapper()
+    mapper1 = vtkDataSetMapper()
     mapper1.SetInputData(unstructuredGrid1)
 
-    actor1 = vtk.vtkActor()
+    actor1 = vtkActor()
     actor1.SetMapper(mapper1)
     actor1.GetProperty().SetColor(colors.GetColor3d("Cyan"))
 
     # Create a mapper and actor
-    mapper2 = vtk.vtkDataSetMapper()
+    mapper2 = vtkDataSetMapper()
     mapper2.SetInputData(unstructuredGrid2)
 
-    actor2 = vtk.vtkActor()
+    actor2 = vtkActor()
     actor2.SetMapper(mapper2)
     actor2.GetProperty().SetColor(colors.GetColor3d("Yellow"))
 
     # Create a renderer, render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName("Tetrahedron")
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actor to the scene

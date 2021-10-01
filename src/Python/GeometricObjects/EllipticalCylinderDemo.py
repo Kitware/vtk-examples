@@ -3,12 +3,41 @@
 
 import math
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkMath,
+    vtkMinimalStandardRandomSequence,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData,
+    vtkPolyLine
+)
+from vtkmodules.vtkCommonMath import vtkMatrix4x4
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import vtkTubeFilter
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
+from vtkmodules.vtkFiltersModeling import vtkLinearExtrusionFilter
+from vtkmodules.vtkFiltersSources import vtkArrowSource
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     nx, ny, nz = get_program_parameters()
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     angle = 0
     r1 = 50
@@ -16,28 +45,28 @@ def main():
     centerX = 10.0
     centerY = 5.0
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     idx = 0
-    while angle <= 2.0 * vtk.vtkMath.Pi() + (vtk.vtkMath.Pi() / 60.0):
+    while angle <= 2.0 * vtkMath.Pi() + (vtkMath.Pi() / 60.0):
         points.InsertNextPoint(r1 * math.cos(angle) + centerX,
                                r2 * math.sin(angle) + centerY,
                                0.0)
-        angle = angle + (vtk.vtkMath.Pi() / 60.0)
+        angle = angle + (vtkMath.Pi() / 60.0)
         idx += 1
 
-    line = vtk.vtkPolyLine()
+    line = vtkPolyLine()
     line.GetPointIds().SetNumberOfIds(idx)
     for i in range(0, idx):
         line.GetPointIds().SetId(i, i)
 
-    lines = vtk.vtkCellArray()
+    lines = vtkCellArray()
     lines.InsertNextCell(line)
 
-    polyData = vtk.vtkPolyData()
+    polyData = vtkPolyData()
     polyData.SetPoints(points)
     polyData.SetLines(lines)
 
-    extrude = vtk.vtkLinearExtrusionFilter()
+    extrude = vtkLinearExtrusionFilter()
     extrude.SetInputData(polyData)
     extrude.SetExtrusionTypeToNormalExtrusion()
     extrude.SetVector(nx, ny, nz)
@@ -58,11 +87,11 @@ def main():
     normalizedZ = [0.0] * 3
 
     # The X axis is a vector from start to end
-    vtk.vtkMath.Subtract(endPoint, startPoint, normalizedX)
-    length = vtk.vtkMath.Norm(normalizedX)
-    vtk.vtkMath.Normalize(normalizedX)
+    vtkMath.Subtract(endPoint, startPoint, normalizedX)
+    length = vtkMath.Norm(normalizedX)
+    vtkMath.Normalize(normalizedX)
 
-    rng = vtk.vtkMinimalStandardRandomSequence()
+    rng = vtkMinimalStandardRandomSequence()
     rng.SetSeed(8775070)
     max_r = 10.0
 
@@ -71,12 +100,12 @@ def main():
     for i in range(0, 3):
         arbitrary[i] = rng.GetRangeValue(-max_r, max_r)
         rng.Next()
-    vtk.vtkMath.Cross(normalizedX, arbitrary, normalizedZ)
-    vtk.vtkMath.Normalize(normalizedZ)
+    vtkMath.Cross(normalizedX, arbitrary, normalizedZ)
+    vtkMath.Normalize(normalizedZ)
 
     # The Y axis is Z cross X
-    vtk.vtkMath.Cross(normalizedZ, normalizedX, normalizedY)
-    matrix = vtk.vtkMatrix4x4()
+    vtkMath.Cross(normalizedZ, normalizedX, normalizedY)
+    matrix = vtkMatrix4x4()
 
     # Create the direction cosine matrix
     matrix.Identity()
@@ -86,66 +115,66 @@ def main():
         matrix.SetElement(i, 2, normalizedZ[i])
 
     # Apply the transforms
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.Translate(startPoint)
     transform.Concatenate(matrix)
     transform.Scale(length, length, length)
 
-    arrowSource = vtk.vtkArrowSource()
+    arrowSource = vtkArrowSource()
     arrowSource.SetTipResolution(31)
     arrowSource.SetShaftResolution(21)
 
     # Transform the polydata
-    transformPD = vtk.vtkTransformPolyDataFilter()
+    transformPD = vtkTransformPolyDataFilter()
     transformPD.SetTransform(transform)
     transformPD.SetInputConnection(arrowSource.GetOutputPort())
 
     # Create a mapper and actor for the arrow
-    arrowMapper = vtk.vtkPolyDataMapper()
+    arrowMapper = vtkPolyDataMapper()
     arrowMapper.SetInputConnection(transformPD.GetOutputPort())
 
-    arrowActor = vtk.vtkActor()
+    arrowActor = vtkActor()
     arrowActor.SetMapper(arrowMapper)
     arrowActor.GetProperty().SetColor(colors.GetColor3d("Tomato"))
 
-    tubes = vtk.vtkTubeFilter()
+    tubes = vtkTubeFilter()
     tubes.SetInputData(polyData)
     tubes.SetRadius(2.0)
     tubes.SetNumberOfSides(21)
 
-    lineMapper = vtk.vtkPolyDataMapper()
+    lineMapper = vtkPolyDataMapper()
     lineMapper.SetInputConnection(tubes.GetOutputPort())
 
-    lineActor = vtk.vtkActor()
+    lineActor = vtkActor()
     lineActor.SetMapper(lineMapper)
     lineActor.GetProperty().SetColor(colors.GetColor3d("Peacock"))
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(extrude.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d("Banana"))
     actor.GetProperty().SetOpacity(.7)
 
-    ren = vtk.vtkRenderer()
+    ren = vtkRenderer()
     ren.SetBackground(colors.GetColor3d("SlateGray"))
     ren.AddActor(actor)
     ren.AddActor(lineActor)
     ren.AddActor(arrowActor)
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.SetWindowName("Elliptical Cylinder Demo")
     renWin.AddRenderer(ren)
     renWin.SetSize(600, 600)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    style = vtk.vtkInteractorStyleTrackballCamera()
+    style = vtkInteractorStyleTrackballCamera()
     iren.SetInteractorStyle(style)
 
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetPosition(0, 1, 0)
     camera.SetFocalPoint(0, 0, 0)
     camera.SetViewUp(0, 0, 1)

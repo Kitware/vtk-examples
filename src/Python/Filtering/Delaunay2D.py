@@ -1,14 +1,29 @@
 #!/usr/bin/python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkFiltersCore import vtkDelaunay2D
+from vtkmodules.vtkFiltersGeneral import vtkVertexGlyphFilter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a set of heights on a grid.
     # This is often called a "terrain map".
-    points = vtk.vtkPoints()
+    points = vtkPoints()
 
     gridSize = 10
     for x in range(gridSize):
@@ -16,36 +31,36 @@ def main():
             points.InsertNextPoint(x, y, int((x + y) / (y + 1)))
 
     # Add the grid points to a polydata object
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(points)
 
-    delaunay = vtk.vtkDelaunay2D()
+    delaunay = vtkDelaunay2D()
     delaunay.SetInputData(polydata)
 
     # Visualize
-    meshMapper = vtk.vtkPolyDataMapper()
+    meshMapper = vtkPolyDataMapper()
     meshMapper.SetInputConnection(delaunay.GetOutputPort())
 
-    meshActor = vtk.vtkActor()
+    meshActor = vtkActor()
     meshActor.SetMapper(meshMapper)
     meshActor.GetProperty().SetColor(colors.GetColor3d('Banana'))
     meshActor.GetProperty().EdgeVisibilityOn()
 
-    glyphFilter = vtk.vtkVertexGlyphFilter()
+    glyphFilter = vtkVertexGlyphFilter()
     glyphFilter.SetInputData(polydata)
 
-    pointMapper = vtk.vtkPolyDataMapper()
+    pointMapper = vtkPolyDataMapper()
     pointMapper.SetInputConnection(glyphFilter.GetOutputPort())
 
-    pointActor = vtk.vtkActor()
+    pointActor = vtkActor()
     pointActor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
     pointActor.GetProperty().SetPointSize(5)
     pointActor.SetMapper(pointMapper)
 
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(meshActor)

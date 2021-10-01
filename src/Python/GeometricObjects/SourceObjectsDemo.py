@@ -1,39 +1,67 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingFreeType
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import (
+    vtkConeSource,
+    vtkCubeSource,
+    vtkCylinderSource,
+    vtkDiskSource,
+    vtkLineSource,
+    vtkPlaneSource,
+    vtkPointSource,
+    vtkSphereSource,
+    vtkTextSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkActor2D,
+    vtkPolyDataMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextMapper,
+    vtkTextProperty
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('BkgColor', [51, 77, 102, 255])
 
     sourceObjects = list()
-    sourceObjects.append(vtk.vtkSphereSource())
+    sourceObjects.append(vtkSphereSource())
     sourceObjects[-1].SetPhiResolution(21)
     sourceObjects[-1].SetThetaResolution(21)
 
-    sourceObjects.append(vtk.vtkConeSource())
+    sourceObjects.append(vtkConeSource())
     sourceObjects[-1].SetResolution(51)
 
-    sourceObjects.append(vtk.vtkCylinderSource())
+    sourceObjects.append(vtkCylinderSource())
     sourceObjects[-1].SetResolution(51)
 
-    sourceObjects.append(vtk.vtkCubeSource())
-    sourceObjects.append(vtk.vtkPlaneSource())
-    sourceObjects.append(vtk.vtkTextSource())
+    sourceObjects.append(vtkCubeSource())
+    sourceObjects.append(vtkPlaneSource())
+    sourceObjects.append(vtkTextSource())
     sourceObjects[-1].SetText('Hello')
     sourceObjects[-1].BackingOff()
 
-    sourceObjects.append(vtk.vtkPointSource())
+    sourceObjects.append(vtkPointSource())
     sourceObjects[-1].SetNumberOfPoints(500)
 
-    sourceObjects.append(vtk.vtkDiskSource())
+    sourceObjects.append(vtkDiskSource())
     sourceObjects[-1].SetCircumferentialResolution(51)
 
-    sourceObjects.append(vtk.vtkLineSource())
+    sourceObjects.append(vtkLineSource())
 
     renderers = list()
     mappers = list()
@@ -42,41 +70,41 @@ def main():
     textactors = list()
 
     # Create one text property for all.
-    textProperty = vtk.vtkTextProperty()
+    textProperty = vtkTextProperty()
     textProperty.SetFontSize(16)
     textProperty.SetJustificationToCentered()
     textProperty.SetColor(colors.GetColor3d('LightGoldenrodYellow'))
 
-    backProperty = vtk.vtkProperty()
+    backProperty = vtkProperty()
     backProperty.SetColor(colors.GetColor3d('Tomato'))
 
     # Create a source, renderer, mapper, and actor
     # for each object.
     for i in range(0, len(sourceObjects)):
-        mappers.append(vtk.vtkPolyDataMapper())
+        mappers.append(vtkPolyDataMapper())
         mappers[i].SetInputConnection(sourceObjects[i].GetOutputPort())
 
-        actors.append(vtk.vtkActor())
+        actors.append(vtkActor())
         actors[i].SetMapper(mappers[i])
         actors[i].GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
         actors[i].SetBackfaceProperty(backProperty)
 
-        textmappers.append(vtk.vtkTextMapper())
+        textmappers.append(vtkTextMapper())
         textmappers[i].SetInput(sourceObjects[i].GetClassName())
         textmappers[i].SetTextProperty(textProperty)
 
-        textactors.append(vtk.vtkActor2D())
+        textactors.append(vtkActor2D())
         textactors[i].SetMapper(textmappers[i])
         textactors[i].SetPosition(120, 16)
-        renderers.append(vtk.vtkRenderer())
+        renderers.append(vtkRenderer())
 
     gridDimensions = 3
 
     # We need a renderer even if there is no actor.
     for i in range(len(sourceObjects), gridDimensions ** 2):
-        renderers.append(vtk.vtkRenderer())
+        renderers.append(vtkRenderer())
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('SourceObjectsDemo')
     rendererSize = 300
     renderWindow.SetSize(rendererSize * gridDimensions, rendererSize * gridDimensions)
@@ -103,7 +131,7 @@ def main():
             renderers[index].GetActiveCamera().Zoom(0.8)
             renderers[index].ResetCameraClippingRange()
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     renderWindow.Render()

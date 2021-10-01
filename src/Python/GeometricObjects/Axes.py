@@ -1,42 +1,56 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingAnnotation import vtkAxesActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # create a Sphere
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
     sphereSource.SetCenter(0.0, 0.0, 0.0)
     sphereSource.SetRadius(0.5)
 
     # create a mapper
-    sphereMapper = vtk.vtkPolyDataMapper()
+    sphereMapper = vtkPolyDataMapper()
     sphereMapper.SetInputConnection(sphereSource.GetOutputPort())
 
     # create an actor
-    sphereActor = vtk.vtkActor()
+    sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
 
     # a renderer and render window
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('Axes')
     renderWindow.AddRenderer(renderer)
 
     # an interactor
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # add the actors to the scene
     renderer.AddActor(sphereActor)
     renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.Translate(1.0, 0.0, 0.0)
 
-    axes = vtk.vtkAxesActor()
+    axes = vtkAxesActor()
     #  The axes are positioned with a user transform
     axes.SetUserTransform(transform)
 

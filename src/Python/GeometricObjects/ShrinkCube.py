@@ -1,37 +1,51 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersGeneral import vtkShrinkFilter
+from vtkmodules.vtkFiltersSources import vtkCubeSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a cube.
-    cubeSource = vtk.vtkCubeSource()
+    cubeSource = vtkCubeSource()
 
-    shrink = vtk.vtkShrinkFilter()
+    shrink = vtkShrinkFilter()
     shrink.SetInputConnection(cubeSource.GetOutputPort())
     shrink.SetShrinkFactor(0.9)
 
     # Create a mapper and actor.
 
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputConnection(shrink.GetOutputPort())
 
-    back = vtk.vtkProperty()
+    back = vtkProperty()
     back.SetColor(colors.GetColor3d('Tomato'))
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
     actor.GetProperty().SetColor(colors.GetColor3d('Banana'))
     actor.SetBackfaceProperty(back)
 
     # Create a renderer, render window, and interactor.
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actors to the scene

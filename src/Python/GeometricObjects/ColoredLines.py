@@ -1,12 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkPoints,
+    vtkUnsignedCharArray
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkLine,
+    vtkPolyData
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     # Create the polydata where we will store all the geometric data
-    linesPolyData = vtk.vtkPolyData()
+    linesPolyData = vtkPolyData()
 
     # Create three points
     origin = [0.0, 0.0, 0.0]
@@ -14,7 +34,7 @@ def main():
     p1 = [0.0, 1.0, 0.0]
 
     # Create a vtkPoints container and store the points in it
-    pts = vtk.vtkPoints()
+    pts = vtkPoints()
     pts.InsertNextPoint(origin)
     pts.InsertNextPoint(p0)
     pts.InsertNextPoint(p1)
@@ -23,27 +43,27 @@ def main():
     linesPolyData.SetPoints(pts)
 
     # Create the first line (between Origin and P0)
-    line0 = vtk.vtkLine()
+    line0 = vtkLine()
     line0.GetPointIds().SetId(0, 0)  # the second 0 is the index of the Origin in linesPolyData's points
     line0.GetPointIds().SetId(1, 1)  # the second 1 is the index of P0 in linesPolyData's points
 
     # Create the second line (between Origin and P1)
-    line1 = vtk.vtkLine()
+    line1 = vtkLine()
     line1.GetPointIds().SetId(0, 0)  # the second 0 is the index of the Origin in linesPolyData's points
     line1.GetPointIds().SetId(1, 2)  # 2 is the index of P1 in linesPolyData's points
 
     # Create a vtkCellArray container and store the lines in it
-    lines = vtk.vtkCellArray()
+    lines = vtkCellArray()
     lines.InsertNextCell(line0)
     lines.InsertNextCell(line1)
 
     # Add the lines to the polydata container
     linesPolyData.SetLines(lines)
 
-    namedColors = vtk.vtkNamedColors()
+    namedColors = vtkNamedColors()
 
     # Create a vtkUnsignedCharArray container and store the colors in it
-    colors = vtk.vtkUnsignedCharArray()
+    colors = vtkUnsignedCharArray()
     colors.SetNumberOfComponents(3)
     try:
         colors.InsertNextTupleValue(namedColors.GetColor3ub("Tomato"))
@@ -63,22 +83,22 @@ def main():
     linesPolyData.GetCellData().SetScalars(colors)
 
     # Setup the visualization pipeline
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputData(linesPolyData)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetLineWidth(4)
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(actor)
     renderer.SetBackground(namedColors.GetColor3d("SlateGray"))
 
-    window = vtk.vtkRenderWindow()
+    window = vtkRenderWindow()
     window.SetWindowName("ColoredLines")
     window.AddRenderer(renderer)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(window)
 
     # Visualize

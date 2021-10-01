@@ -1,6 +1,18 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkUnstructuredGridToExplicitStructuredGrid
+from vtkmodules.vtkIOXML import vtkXMLUnstructuredGridReader
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleRubberBandPick
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters(argv):
@@ -16,11 +28,11 @@ def get_program_parameters(argv):
 
 
 def main(fn):
-    reader = vtk.vtkXMLUnstructuredGridReader()
+    reader = vtkXMLUnstructuredGridReader()
     reader.SetFileName(fn)
     reader.Update()
 
-    converter = vtk.vtkUnstructuredGridToExplicitStructuredGrid()
+    converter = vtkUnstructuredGridToExplicitStructuredGrid()
     converter.GlobalWarningDisplayOff()  # hide VTK errors
     converter.SetInputConnection(reader.GetOutputPort())
     converter.SetInputArrayToProcess(0, 0, 0, 1, 'BLOCK_I')
@@ -34,22 +46,22 @@ def main(fn):
 
     scalars = grid.GetCellData().GetArray('ConnectivityFlags')
 
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputData(grid)
     mapper.SetColorModeToMapScalars()
     mapper.SetScalarRange(scalars.GetRange())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d('DimGray'))
 
-    window = vtk.vtkRenderWindow()
+    window = vtkRenderWindow()
     window.AddRenderer(renderer)
     window.SetWindowName('LoadESGrid')
     window.SetSize(1024, 768)
@@ -62,9 +74,9 @@ def main(fn):
     camera.SetDistance(9111.926908)
     camera.SetClippingRange(595.217338, 19595.429475)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(window)
-    interactor.SetInteractorStyle(vtk.vtkInteractorStyleRubberBandPick())
+    interactor.SetInteractorStyle(vtkInteractorStyleRubberBandPick())
     window.Render()
     interactor.Start()
 

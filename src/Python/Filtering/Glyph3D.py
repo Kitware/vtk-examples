@@ -1,39 +1,54 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkFiltersCore import vtkGlyph3D
+from vtkmodules.vtkFiltersSources import vtkCubeSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(1, 1, 1)
     points.InsertNextPoint(2, 2, 2)
 
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(points)
 
     # Create anything you want here, we will use a cube for the demo.
-    cubeSource = vtk.vtkCubeSource()
+    cubeSource = vtkCubeSource()
 
-    glyph3D = vtk.vtkGlyph3D()
+    glyph3D = vtkGlyph3D()
     glyph3D.SetSourceConnection(cubeSource.GetOutputPort())
     glyph3D.SetInputData(polydata)
     glyph3D.Update()
 
     # Visualize
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(glyph3D.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('Salmon'))
 
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)

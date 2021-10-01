@@ -1,41 +1,56 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonExecutionModel import vtkAlgorithm
+from vtkmodules.vtkFiltersGeneral import vtkShrinkFilter
+from vtkmodules.vtkFiltersSources import vtkTessellatedBoxSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     bounds = [-10.0, 10.0, 10.0, 20.0, -5.0, 5.0]
 
-    boxSource = vtk.vtkTessellatedBoxSource()
+    boxSource = vtkTessellatedBoxSource()
     boxSource.SetLevel(3)
     boxSource.QuadsOn()
     boxSource.SetBounds(bounds)
-    boxSource.SetOutputPointsPrecision(vtk.vtkAlgorithm.SINGLE_PRECISION)
+    boxSource.SetOutputPointsPrecision(vtkAlgorithm.SINGLE_PRECISION)
 
-    shrink = vtk.vtkShrinkFilter()
+    shrink = vtkShrinkFilter()
     shrink.SetInputConnection(boxSource.GetOutputPort())
     shrink.SetShrinkFactor(.8)
 
     # Create a mapper and actor.
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputConnection(shrink.GetOutputPort())
 
-    back = vtk.vtkProperty()
+    back = vtkProperty()
     back.SetColor(colors.GetColor3d('Tomato'))
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
     actor.GetProperty().SetColor(colors.GetColor3d('Banana'))
     actor.SetBackfaceProperty(back)
 
     # Create a renderer, render window, and interactor.
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actors to the scene.

@@ -34,7 +34,8 @@ def main():
     selector.SetInputArrayToProcess(0, 0, 0, vtk.vtkDataObject().FIELD_ASSOCIATION_CELLS,
                                     vtk.vtkDataSetAttributes().SCALARS)
     selector.SetInputConnection(pad.GetOutputPort())
-    selector.ThresholdBetween(start_label, end_label)
+    selector.SetLowerThreshold(start_label)
+    selector.SetUpperThreshold(end_label)
     selector.Update()
 
     # Shift the geometry by 1/2

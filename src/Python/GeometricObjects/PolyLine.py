@@ -1,11 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData,
+    vtkPolyLine
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create five points.
     origin = [0.0, 0.0, 0.0]
@@ -15,24 +32,24 @@ def main():
     p3 = [1.0, 2.0, 3.0]
 
     # Create a vtkPoints object and store the points in it
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(origin)
     points.InsertNextPoint(p0)
     points.InsertNextPoint(p1)
     points.InsertNextPoint(p2)
     points.InsertNextPoint(p3)
 
-    polyLine = vtk.vtkPolyLine()
+    polyLine = vtkPolyLine()
     polyLine.GetPointIds().SetNumberOfIds(5)
     for i in range(0, 5):
         polyLine.GetPointIds().SetId(i, i)
 
     # Create a cell array to store the lines in and add the lines to it
-    cells = vtk.vtkCellArray()
+    cells = vtkCellArray()
     cells.InsertNextCell(polyLine)
 
     # Create a polydata to store everything in
-    polyData = vtk.vtkPolyData()
+    polyData = vtkPolyData()
 
     # Add the points to the dataset
     polyData.SetPoints(points)
@@ -41,19 +58,19 @@ def main():
     polyData.SetLines(cells)
 
     # Setup actor and mapper
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputData(polyData)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
 
     # Setup render window, renderer, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('PolyLine')
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d('DarkOliveGreen'))

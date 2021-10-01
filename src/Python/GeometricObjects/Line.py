@@ -1,7 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkLineSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
@@ -9,25 +21,25 @@ def main():
     p0 = [1.0, 0.0, 0.0]
     p1 = [0.0, 1.0, 0.0]
 
-    lineSource = vtk.vtkLineSource()
+    lineSource = vtkLineSource()
     lineSource.SetPoint1(p0)
     lineSource.SetPoint2(p1)
 
     # Visualize
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(lineSource.GetOutputPort())
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetLineWidth(4)
     actor.GetProperty().SetColor(colors.GetColor3d("Peacock"))
 
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName("Line")
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.SetBackground(colors.GetColor3d("Silver"))

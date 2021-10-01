@@ -1,23 +1,45 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonComputationalGeometry import vtkParametricSuperEllipsoid
+from vtkmodules.vtkCommonCore import (
+    vtkCommand,
+    vtkMath
+)
+from vtkmodules.vtkFiltersSources import vtkParametricFunctionSource
+from vtkmodules.vtkInteractionWidgets import (
+    vtkSliderRepresentation2D,
+    vtkSliderWidget
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('BkgColor', [26, 51, 102, 255])
 
-    surface = vtk.vtkParametricSuperEllipsoid()
-    source = vtk.vtkParametricFunctionSource()
+    surface = vtkParametricSuperEllipsoid()
+    source = vtkParametricFunctionSource()
 
-    renderer = vtk.vtkRenderer()
-    mapper = vtk.vtkPolyDataMapper()
-    actor = vtk.vtkActor()
+    renderer = vtkRenderer()
+    mapper = vtkPolyDataMapper()
+    actor = vtkActor()
 
-    backProperty = vtk.vtkProperty()
+    backProperty = vtkProperty()
     backProperty.SetColor(colors.GetColor3d('Tomato'))
 
     # Create a parametric function source, renderer, mapper, and actor
@@ -31,7 +53,7 @@ def main():
     actor.GetProperty().SetSpecular(.5)
     actor.GetProperty().SetSpecularPower(20)
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('ParametricSuperEllipsoidDemo')
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
@@ -43,7 +65,7 @@ def main():
     renderer.GetActiveCamera().Zoom(0.9)
     renderer.ResetCameraClippingRange()
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     # Setup a slider widget for each varying parameter
@@ -52,7 +74,7 @@ def main():
     titleHeight = 0.04
     labelHeight = 0.04
 
-    sliderRepN1 = vtk.vtkSliderRepresentation2D()
+    sliderRepN1 = vtkSliderRepresentation2D()
 
     sliderRepN1.SetMinimumValue(0.0)
     sliderRepN1.SetMaximumValue(4.0)
@@ -69,15 +91,15 @@ def main():
     sliderRepN1.SetTitleHeight(titleHeight)
     sliderRepN1.SetLabelHeight(labelHeight)
 
-    sliderWidgetN1 = vtk.vtkSliderWidget()
+    sliderWidgetN1 = vtkSliderWidget()
     sliderWidgetN1.SetInteractor(interactor)
     sliderWidgetN1.SetRepresentation(sliderRepN1)
     sliderWidgetN1.SetAnimationModeToAnimate()
     sliderWidgetN1.EnabledOn()
 
-    sliderWidgetN1.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackN1(surface))
+    sliderWidgetN1.AddObserver(vtkCommand.InteractionEvent, SliderCallbackN1(surface))
 
-    sliderRepN2 = vtk.vtkSliderRepresentation2D()
+    sliderRepN2 = vtkSliderRepresentation2D()
 
     sliderRepN2.SetMinimumValue(0.0001)
     sliderRepN2.SetMaximumValue(4.0)
@@ -94,18 +116,18 @@ def main():
     sliderRepN2.SetTitleHeight(titleHeight)
     sliderRepN2.SetLabelHeight(labelHeight)
 
-    sliderWidgetN2 = vtk.vtkSliderWidget()
+    sliderWidgetN2 = vtkSliderWidget()
     sliderWidgetN2.SetInteractor(interactor)
     sliderWidgetN2.SetRepresentation(sliderRepN2)
     sliderWidgetN2.SetAnimationModeToAnimate()
     sliderWidgetN2.EnabledOn()
 
-    sliderWidgetN2.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackN2(surface))
+    sliderWidgetN2.AddObserver(vtkCommand.InteractionEvent, SliderCallbackN2(surface))
 
-    sliderRepMinimumV = vtk.vtkSliderRepresentation2D()
+    sliderRepMinimumV = vtkSliderRepresentation2D()
 
     sliderRepN1.SetMinimumValue(.0001)
-    sliderRepMinimumV.SetMaximumValue(.9999 * vtk.vtkMath.Pi())
+    sliderRepMinimumV.SetMaximumValue(.9999 * vtkMath.Pi())
     sliderRepMinimumV.SetValue(.0001)
     sliderRepMinimumV.SetTitleText('V min')
 

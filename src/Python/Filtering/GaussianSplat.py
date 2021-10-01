@@ -1,40 +1,55 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkImagingHybrid import vtkGaussianSplatter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     # Create points on a sphere
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
     sphereSource.Update()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(sphereSource.GetOutput().GetPoints())
 
-    splatter = vtk.vtkGaussianSplatter()
+    splatter = vtkGaussianSplatter()
     splatter.SetInputData(polydata)
     splatter.SetSampleDimensions(50, 50, 50)
     splatter.SetRadius(0.5)
     splatter.ScalarWarpingOff()
 
-    surface = vtk.vtkContourFilter()
+    surface = vtkContourFilter()
     surface.SetInputConnection(splatter.GetOutputPort())
     surface.SetValue(0, 0.01)
 
     # Create a mapper and actor
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(surface.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     # Visualize
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)

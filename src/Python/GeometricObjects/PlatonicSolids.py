@@ -1,16 +1,34 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingFreeType
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkFiltersSources import vtkPlatonicSolidSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkActor2D,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextMapper,
+    vtkTextProperty
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Each face has a different cell scalar
     # Here we create a lookup table with a different colour
     # for each face. The colors have been carefully
     # chosen so that adjacent cells are colored distinctly.
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetNumberOfTableValues(20)
     lut.SetTableRange(0.0, 19.0)
     lut.Build()
@@ -42,15 +60,15 @@ def main():
     renderers = list()
 
     # Create a common text property.
-    textProperty = vtk.vtkTextProperty()
+    textProperty = vtkTextProperty()
     textProperty.SetFontSize(16)
     textProperty.SetJustificationToCentered()
 
     # Create the render window and interactor.
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.SetWindowName('PlatonicSolids')
 
-    iRen = vtk.vtkRenderWindowInteractor()
+    iRen = vtkRenderWindowInteractor()
     iRen.SetRenderWindow(renWin)
 
     # Create the source, renderer, mapper
@@ -59,26 +77,26 @@ def main():
     # There are five Platonic solids.
     names = ['Tetrahedron', 'Cube', 'Octahedron', 'Icosahedron', 'Dodecahedron']
     for i in range(0, len(names)):
-        PlatonicSolids.append(vtk.vtkPlatonicSolidSource())
+        PlatonicSolids.append(vtkPlatonicSolidSource())
         PlatonicSolids[i].SetSolidType(i)
 
-        mappers.append(vtk.vtkPolyDataMapper())
+        mappers.append(vtkPolyDataMapper())
         mappers[i].SetInputConnection(PlatonicSolids[i].GetOutputPort())
         mappers[i].SetLookupTable(lut)
         mappers[i].SetScalarRange(0, 19)
 
-        actors.append(vtk.vtkActor())
+        actors.append(vtkActor())
         actors[i].SetMapper(mappers[i])
 
-        textMappers.append(vtk.vtkTextMapper())
+        textMappers.append(vtkTextMapper())
         textMappers[i].SetInput(names[i])
         textMappers[i].SetTextProperty(textProperty)
 
-        textActors.append(vtk.vtkActor2D())
+        textActors.append(vtkActor2D())
         textActors[i].SetMapper(textMappers[i])
         textActors[i].SetPosition(120, 16)
 
-        renderers.append(vtk.vtkRenderer())
+        renderers.append(vtkRenderer())
         renderers[i].AddActor(actors[i])
         renderers[i].AddViewProp(textActors[i])
 
@@ -102,7 +120,7 @@ def main():
             if index > (len(actors) - 1):
                 # Add a renderer even if there is no actor.
                 # This makes the render window background all the same color.
-                ren = vtk.vtkRenderer()
+                ren = vtkRenderer()
                 ren.SetBackground(colors.GetColor3d('SlateGray'))
                 ren.SetViewport(viewport)
                 renWin.AddRenderer(ren)

@@ -161,7 +161,7 @@ Python code is tested in a similar manner to C++ code, so it must follow this la
 ``` Python
 #!/usr/bin/env python
 
-import vtk
+import vtkmodules.all as vtk
 
 def main(argv):
     """
@@ -182,7 +182,7 @@ Use `argparse` where needed:
 
 #!/usr/bin/env python
 
-import vtk
+import vtkmodules.all as vtk
 
 
 def main(argv):
@@ -213,11 +213,23 @@ if __name__ == '__main__':
 
 For the Input/Output of filenames and parameters. Use this snippet [GetProgramParameters](__WEB_SITE_URL__/Python/Snippets/GetProgramParameters/).
 
+It you do not know what vtk modules and classes you need use:
+
+``` Python
+import vtkmodules.all as vtk
+```
+
+instead of:
+
+``` Python
+from vtkmodules.<SomeVTKModule> import <SomeVTKClass>
+```
+
 #### Generating/Editing Import Statements
 
 Finally, when you are happy with everything, make sure only the requisite VTK classes and constants that you are using in your code are loaded when your program runs. To do this, run your code through [VTKImportsForPython](__WEB_SITE_URL__/Python/Utilities/VTKImportsForPython/), it will analyse your code producing a list of import statements for you.
 
-At the end of the list there is a series of commented out statements consisting of imports that you may need to enable. Only enable the ones you really need and include the statement `# noinspection PyUnresolvedReferences` for PyCharm users, as this will prevent the statement from being removed.
+At the end of the list that is produced, there are a series of commented out statements consisting of imports that you may need to enable. Only enable the ones you really need and include the statement `# noinspection PyUnresolvedReferences` for PyCharm users, as this will prevent the statement from being removed.
 
 e.g The most common ones will be:
 
@@ -228,7 +240,7 @@ import vtkmodules.vtkInteractionStyle
 import vtkmodules.vtkRenderingOpenGL2
 ```
 
-Make sure that any of these statements are placed after the last `from ... import ...` statement. Also remove any unused ones.
+Remove any unused ones.
 
 ### Java
 
