@@ -1,12 +1,15 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkFiltersSources import vtkSphereSource
 
 
 def main():
     # setup sphere
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
     sphereSource.Update()
 
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.ShallowCopy(sphereSource.GetOutput())
 
     normals = polydata.GetPointData().GetNormals()

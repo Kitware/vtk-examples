@@ -1,40 +1,53 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersGeneral import vtkAxes
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkFollower,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkRenderingFreeType import vtkVectorText
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the axes and the associated mapper and actor.
-    axes = vtk.vtkAxes()
+    axes = vtkAxes()
     axes.SetOrigin(0, 0, 0)
-    axesMapper = vtk.vtkPolyDataMapper()
+    axesMapper = vtkPolyDataMapper()
     axesMapper.SetInputConnection(axes.GetOutputPort())
-    axesActor = vtk.vtkActor()
+    axesActor = vtkActor()
     axesActor.SetMapper(axesMapper)
 
     # Create the 3D text and the associated mapper and follower (a type of actor).  Position the text so it is displayed over the origin of the axes.
-    atext = vtk.vtkVectorText()
+    atext = vtkVectorText()
     atext.SetText('Origin')
-    textMapper = vtk.vtkPolyDataMapper()
+    textMapper = vtkPolyDataMapper()
     textMapper.SetInputConnection(atext.GetOutputPort())
-    textActor = vtk.vtkFollower()
+    textActor = vtkFollower()
     textActor.SetMapper(textMapper)
     textActor.SetScale(0.2, 0.2, 0.2)
     textActor.AddPosition(0, -0.1, 0)
     textActor.GetProperty().SetColor(colors.GetColor3d('Peacock'))
 
     # Create the Renderer, RenderWindow, and RenderWindowInteractor.
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
-    style = vtk.vtkInteractorStyleTrackballCamera()
+    style = vtkInteractorStyleTrackballCamera()
     interactor.SetInteractorStyle(style)
 
     # Add the actors to the renderer.

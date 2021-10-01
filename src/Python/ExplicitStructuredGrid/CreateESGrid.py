@@ -1,7 +1,26 @@
 #!/usr/bin/env python
 
 import numpy as np
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkExplicitStructuredGrid
+)
+from vtkmodules.vtkFiltersCore import (
+    vtkExplicitStructuredGridToUnstructuredGrid,
+    vtkUnstructuredGridToExplicitStructuredGrid
+)
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleRubberBandPick
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def create_explicit_structured_grid(dimensions, spacing=(1, 1, 1)):
@@ -16,20 +35,20 @@ def create_explicit_structured_grid(dimensions, spacing=(1, 1, 1)):
 
     Returns
     -------
-    grid : vtk.vtkExplicitStructuredGrid
+    grid : vtkExplicitStructuredGrid
         An explicit structured grid.
 
     """
     ni, nj, nk = dimensions
     si, sj, sk = spacing
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     for z in range(0, nk * sk, sk):
         for y in range(0, nj * sj, sj):
             for x in range(0, ni * si, si):
                 points.InsertNextPoint((x, y, z))
 
-    cells = vtk.vtkCellArray()
+    cells = vtkCellArray()
     for k in range(0, nk - 1):
         for j in range(0, nj - 1):
             for i in range(0, ni - 1):
@@ -39,7 +58,7 @@ def create_explicit_structured_grid(dimensions, spacing=(1, 1, 1)):
                 pts = np.ravel_multi_index(multi_index, dimensions, order='F')
                 cells.InsertNextCell(8, pts)
 
-    grid = vtk.vtkExplicitStructuredGrid()
+    grid = vtkExplicitStructuredGrid()
     grid.SetDimensions(ni, nj, nk)
     grid.SetPoints(points)
     grid.SetCells(cells)
@@ -51,16 +70,16 @@ def convert_to_unstructured_grid(grid):
 
     Parameters
     ----------
-    grid : vtk.vtkExplicitStructuredGrid
+    grid : vtkExplicitStructuredGrid
         An explicit structured grid.
 
     Returns
     -------
-    vtk.vtkUnstructuredGrid
+    vtkUnstructuredGrid
         An unstructured grid.
 
     """
-    converter = vtk.vtkExplicitStructuredGridToUnstructuredGrid()
+    converter = vtkExplicitStructuredGridToUnstructuredGrid()
     converter.SetInputData(grid)
     converter.Update()
     return converter.GetOutput()
@@ -71,17 +90,17 @@ def convert_to_explicit_structured_grid(grid):
 
     Parameters
     ----------
-    grid : vtk.UnstructuredGrid
+    grid : UnstructuredGrid
         An unstructured grid.
 
     Returns
     -------
-    vtk.vtkExplicitStructuredGrid
+    vtkExplicitStructuredGrid
         An explicit structured grid. The ``'BLOCK_I'``, ``'BLOCK_J'`` and
         ``'BLOCK_K'`` cell arrays are required.
 
     """
-    converter = vtk.vtkUnstructuredGridToExplicitStructuredGrid()
+    converter = vtkUnstructuredGridToExplicitStructuredGrid()
     converter.SetInputData(grid)
     converter.SetInputArrayToProcess(0, 0, 0, 1, 'BLOCK_I')
     converter.SetInputArrayToProcess(1, 0, 0, 1, 'BLOCK_J')
@@ -95,22 +114,22 @@ def main():
     grid = convert_to_unstructured_grid(grid)
     grid = convert_to_explicit_structured_grid(grid)
 
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputData(grid)
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
     actor.GetProperty().LightingOff()
     actor.GetProperty().SetColor(colors.GetColor3d('Seashell'))
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d('DarkSlateGray'))
 
-    window = vtk.vtkRenderWindow()
+    window = vtkRenderWindow()
     window.AddRenderer(renderer)
     window.SetWindowName('CreateESGrid')
     window.SetSize(1024, 768)
@@ -123,9 +142,9 @@ def main():
     camera.SetDistance(137.681759)
     camera.SetClippingRange(78.173985, 211.583658)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(window)
-    interactor.SetInteractorStyle(vtk.vtkInteractorStyleRubberBandPick())
+    interactor.SetInteractorStyle(vtkInteractorStyleRubberBandPick())
     window.Render()
     interactor.Start()
 

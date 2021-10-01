@@ -1,10 +1,32 @@
 #!/usr/bin/env python
-import vtkmodules.all as vtk
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkFloatArray
+from vtkmodules.vtkCommonDataModel import (
+    vtkAMRBox,
+    vtkOverlappingAMR,
+    vtkSphere,
+    vtkUniformGrid
+)
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkFiltersGeometry import vtkCompositeDataGeometryFilter
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def MakeScalars(dims, origin, spacing, scalars):
     # Implicit function used to compute scalars
-    sphere = vtk.vtkSphere()
+    sphere = vtkSphere()
     sphere.SetRadius(3)
     sphere.SetCenter(5, 5, 5)
     scalars.SetNumberOfTuples(dims[0] * dims[1] * dims[2])
@@ -18,7 +40,7 @@ def MakeScalars(dims, origin, spacing, scalars):
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create and populate the AMR dataset
     # The dataset should look like
@@ -29,7 +51,7 @@ def main():
     #   uniform grid, dimensions 11, 11, 11, AMR box (10, 10, 10) - (19, 19, 19)
     # Use MakeScalars() above to fill the scalar arrays
 
-    amr = vtk.vtkOverlappingAMR()
+    amr = vtkOverlappingAMR()
     blocksPerLevel = [1, 2]
     amr.Initialize(2, blocksPerLevel)
 
@@ -37,43 +59,43 @@ def main():
     spacing = [1.0, 1.0, 1.0]
     dims = [11, 11, 11]
 
-    ug1 = vtk.vtkUniformGrid()
+    ug1 = vtkUniformGrid()
     # Geometry
     ug1.SetOrigin(origin)
     ug1.SetSpacing(spacing)
     ug1.SetDimensions(dims)
 
     # Data
-    scalars = vtk.vtkFloatArray()
+    scalars = vtkFloatArray()
     ug1.GetPointData().SetScalars(scalars)
     MakeScalars(dims, origin, spacing, scalars)
 
     lo = [0, 0, 0]
     hi = [9, 9, 9]
-    box1 = vtk.vtkAMRBox()
+    box1 = vtkAMRBox()
     amr.SetAMRBox(0, 0, box1)
     amr.SetDataSet(0, 0, ug1)
 
     spacing2 = [0.5, 0.5, 0.5]
-    ug2 = vtk.vtkUniformGrid()
+    ug2 = vtkUniformGrid()
     # Geometry
     ug2.SetOrigin(origin)
     ug2.SetSpacing(spacing2)
     ug2.SetDimensions(dims)
 
     # Data
-    scalars2 = vtk.vtkFloatArray()
+    scalars2 = vtkFloatArray()
     ug2.GetPointData().SetScalars(scalars2)
     MakeScalars(dims, origin, spacing2, scalars2)
 
     lo2 = [0, 0, 0]
     hi2 = [9, 9, 9]
-    box2 = vtk.vtkAMRBox()
+    box2 = vtkAMRBox()
     amr.SetAMRBox(1, 0, box2)
     amr.SetDataSet(1, 0, ug2)
 
     origin3 = [5, 5, 5]
-    ug3 = vtk.vtkUniformGrid()
+    ug3 = vtkUniformGrid()
 
     # Geometry
     ug3.SetOrigin(origin3)
@@ -81,52 +103,52 @@ def main():
     ug3.SetDimensions(dims)
 
     # Data
-    scalars3 = vtk.vtkFloatArray()
+    scalars3 = vtkFloatArray()
     ug3.GetPointData().SetScalars(scalars3)
     MakeScalars(dims, origin3, spacing2, scalars3)
 
     lo3 = [10, 10, 10]
     hi3 = [19, 19, 19]
-    box3 = vtk.vtkAMRBox()
+    box3 = vtkAMRBox()
     amr.SetAMRBox(1, 1, box3)
     amr.SetDataSet(1, 1, ug3)
     amr.SetRefinementRatio(0, 2)
 
     # Render the amr data here.
-    of = vtk.vtkOutlineFilter()
+    of = vtkOutlineFilter()
     of.SetInputData(amr)
 
-    geomFilter = vtk.vtkCompositeDataGeometryFilter()
+    geomFilter = vtkCompositeDataGeometryFilter()
     geomFilter.SetInputConnection(of.GetOutputPort())
 
     # Create an iso-surface - at 10.
-    cf = vtk.vtkContourFilter()
+    cf = vtkContourFilter()
     cf.SetInputData(amr)
     cf.SetNumberOfContours(1)
     cf.SetValue(0, 10.0)
 
-    geomFilter2 = vtk.vtkCompositeDataGeometryFilter()
+    geomFilter2 = vtkCompositeDataGeometryFilter()
     geomFilter2.SetInputConnection(cf.GetOutputPort())
 
     # Create the render window, renderer, and interactor.
-    aren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    aren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(aren)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Associate the geometry with a mapper and the mapper to an actor.
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(of.GetOutputPort())
-    actor1 = vtk.vtkActor()
+    actor1 = vtkActor()
     actor1.GetProperty().SetColor(colors.GetColor3d('Yellow'))
     actor1.SetMapper(mapper)
 
     # Associate the geometry with a mapper and the mapper to an actor.
-    mapper2 = vtk.vtkPolyDataMapper()
+    mapper2 = vtkPolyDataMapper()
     mapper2.SetInputConnection(geomFilter2.GetOutputPort())
-    actor2 = vtk.vtkActor()
+    actor2 = vtkActor()
     actor2.SetMapper(mapper2)
 
     # Add the actor to the renderer and start handling events.

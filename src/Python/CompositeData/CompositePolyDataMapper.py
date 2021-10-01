@@ -1,24 +1,36 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkMultiBlockDataSet
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCompositeDataDisplayAttributes,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkRenderingOpenGL2 import vtkCompositePolyDataMapper2
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create Sphere 1.
-    sphere1 = vtk.vtkSphereSource()
+    sphere1 = vtkSphereSource()
     sphere1.SetRadius(3)
     sphere1.SetCenter(0, 0, 0)
     sphere1.Update()
 
     # Create Sphere 2.
-    sphere2 = vtk.vtkSphereSource()
+    sphere2 = vtkSphereSource()
     sphere2.SetRadius(2)
     sphere2.SetCenter(2, 0, 0)
     sphere2.Update()
 
-    mbds = vtk.vtkMultiBlockDataSet()
+    mbds = vtkMultiBlockDataSet()
     mbds.SetNumberOfBlocks(3)
     mbds.SetBlock(0, sphere1.GetOutput())
     # Leave block 1 NULL.  NULL blocks are valid and should be handled by
@@ -27,9 +39,9 @@ def main():
     # NULL in this process.
     mbds.SetBlock(2, sphere2.GetOutput())
 
-    mapper = vtk.vtkCompositePolyDataMapper2()
+    mapper = vtkCompositePolyDataMapper2()
     mapper.SetInputDataObject(mbds)
-    cdsa = vtk.vtkCompositeDataDisplayAttributes()
+    cdsa = vtkCompositeDataDisplayAttributes()
     mapper.SetCompositeDataDisplayAttributes(cdsa)
 
     # You can use the vtkCompositeDataDisplayAttributes to set the color,
@@ -49,14 +61,14 @@ def main():
     mapper.SetBlockColor(1, colors.GetColor3d('LavenderBlush'))
     mapper.SetBlockColor(2, colors.GetColor3d('Lavender'))
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     # Create the Renderer, RenderWindow, and RenderWindowInteractor.
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Enable user interface interactor.
