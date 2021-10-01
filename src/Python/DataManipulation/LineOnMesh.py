@@ -1,11 +1,33 @@
 #!/usr/bin/env python
 
 import numpy as np
-import vtkmodules.all as vtk
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonComputationalGeometry import vtkParametricSpline
+from vtkmodules.vtkCommonCore import (
+    mutable,
+    vtkPoints,
+    vtkUnsignedCharArray
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkCellLocator,
+    vtkPolyData,
+    vtkTriangle
+)
+from vtkmodules.vtkFiltersCore import vtkCleanPolyData
+from vtkmodules.vtkFiltersModeling import vtkLoopSubdivisionFilter
+from vtkmodules.vtkFiltersSources import vtkParametricFunctionSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    named_colors = vtk.vtkNamedColors()
+    named_colors = vtkNamedColors()
 
     # Make a 32 x 32 grid.
     size = 32
@@ -17,10 +39,10 @@ def main():
     topography = np.random.randint(0, 5, (size, size))
 
     # Define points, triangles and colors
-    colors = vtk.vtkUnsignedCharArray()
+    colors = vtkUnsignedCharArray()
     colors.SetNumberOfComponents(3)
-    points = vtk.vtkPoints()
-    triangles = vtk.vtkCellArray()
+    points = vtkPoints()
+    triangles = vtkCellArray()
 
     # Build the meshgrid manually.
     count = 0
@@ -35,7 +57,7 @@ def main():
             points.InsertNextPoint(i, (j + 1), z2)
             points.InsertNextPoint((i + 1), j, z3)
 
-            triangle = vtk.vtkTriangle()
+            triangle = vtkTriangle()
             triangle.GetPointIds().SetId(0, count)
             triangle.GetPointIds().SetId(1, count + 1)
             triangle.GetPointIds().SetId(2, count + 2)
@@ -51,7 +73,7 @@ def main():
             points.InsertNextPoint((i + 1), (j + 1), z2)
             points.InsertNextPoint((i + 1), j, z3)
 
-            triangle = vtk.vtkTriangle()
+            triangle = vtkTriangle()
             triangle.GetPointIds().SetId(0, count + 3)
             triangle.GetPointIds().SetId(1, count + 4)
             triangle.GetPointIds().SetId(2, count + 5)
@@ -70,7 +92,7 @@ def main():
             colors.InsertNextTypedTuple(r)
 
     # Create a polydata object.
-    trianglePolyData = vtk.vtkPolyData()
+    trianglePolyData = vtkPolyData()
 
     # Add the geometry and topology to the polydata.
     trianglePolyData.SetPoints(points)
@@ -78,18 +100,18 @@ def main():
     trianglePolyData.SetPolys(triangles)
 
     # Clean the polydata so that the edges are shared!
-    cleanPolyData = vtk.vtkCleanPolyData()
+    cleanPolyData = vtkCleanPolyData()
     cleanPolyData.SetInputData(trianglePolyData)
 
     # Use a filter to smooth the data (will add triangles and smooth).
-    smooth_loop = vtk.vtkLoopSubdivisionFilter()
+    smooth_loop = vtkLoopSubdivisionFilter()
     smooth_loop.SetNumberOfSubdivisions(3)
     smooth_loop.SetInputConnection(cleanPolyData.GetOutputPort())
 
     # Create a mapper and actor for smoothed dataset.
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(smooth_loop.GetOutputPort())
-    actor_loop = vtk.vtkActor()
+    actor_loop = vtkActor()
     actor_loop.SetMapper(mapper)
     actor_loop.GetProperty().SetInterpolationToFlat()
 
@@ -98,7 +120,7 @@ def main():
 
     # Define a cellLocator to be able to compute intersections between lines.
     # and the surface
-    locator = vtk.vtkCellLocator()
+    locator = vtkCellLocator()
     locator.SetDataSet(smooth_loop.GetOutput())
     locator.BuildLocator()
 
@@ -108,17 +130,17 @@ def main():
 
     # Make a list of points. Each point is the intersection of a vertical line
     # defined by p1 and p2 and the surface.
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     for i in range(maxloop):
         p1 = [2 + i * dist, 16, -1]
         p2 = [2 + i * dist, 16, 6]
 
         # Outputs (we need only pos which is the x, y, z position
         # of the intersection)
-        t = vtk.mutable(0)
+        t = mutable(0)
         pos = [0.0, 0.0, 0.0]
         pcoords = [0.0, 0.0, 0.0]
-        subId = vtk.mutable(0)
+        subId = mutable(0)
         locator.IntersectWithLine(p1, p2, tolerance, t, pos, pcoords, subId)
 
         # Add a slight offset in z.
@@ -127,27 +149,27 @@ def main():
         points.InsertNextPoint(pos)
 
     # Create a spline and add the points
-    spline = vtk.vtkParametricSpline()
+    spline = vtkParametricSpline()
     spline.SetPoints(points)
-    functionSource = vtk.vtkParametricFunctionSource()
+    functionSource = vtkParametricFunctionSource()
     functionSource.SetUResolution(maxloop)
     functionSource.SetParametricFunction(spline)
 
     # Map the spline
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(functionSource.GetOutputPort())
 
     # Define the line actor
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(named_colors.GetColor3d('Red'))
     actor.GetProperty().SetLineWidth(3)
 
     # Visualize
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add actors and render

@@ -1,20 +1,48 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    VTK_VERSION_NUMBER,
+    vtkLookupTable,
+    vtkVersion
+)
+from vtkmodules.vtkFiltersCore import (
+    vtkPolyDataNormals,
+    vtkWindowedSincPolyDataFilter
+)
+from vtkmodules.vtkFiltersGeneral import (
+    vtkDiscreteFlyingEdges3D,
+    vtkDiscreteMarchingCubes
+)
+from vtkmodules.vtkIOImage import vtkMetaImageReader
+from vtkmodules.vtkImagingCore import vtkExtractVOI
+from vtkmodules.vtkRenderingCore import (
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkRenderingLOD import vtkLODActor
 
 
 def main():
     # vtkFlyingEdges3D was introduced in VTK >= 8.2
     use_flying_edges = vtk_version_ok(8, 2, 0)
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     ifn, index = get_program_parameters()
 
     # Prepare to read the file.
-    reader_volume = vtk.vtkMetaImageReader()
+    reader_volume = vtkMetaImageReader()
     reader_volume.SetFileName(ifn)
     reader_volume.Update()
 
     # Extract the region of interest.
-    voi = vtk.vtkExtractVOI()
+    voi = vtkExtractVOI()
     voi.SetInputConnection(reader_volume.GetOutputPort())
     voi.SetVOI(0, 517, 0, 228, 0, 392)
     voi.SetSampleRate(1, 1, 1)
@@ -26,11 +54,11 @@ def main():
     # For label images.
     if use_flying_edges:
         try:
-            contour = vtk.vtkDiscreteFlyingEdges3D()
+            contour = vtkDiscreteFlyingEdges3D()
         except AttributeError:
-            contour = vtk.vtkDiscreteMarchingCubes()
+            contour = vtkDiscreteMarchingCubes()
     else:
-        contour = vtk.vtkDiscreteMarchingCubes()
+        contour = vtkDiscreteMarchingCubes()
     contour.SetInputConnection(voi.GetOutputPort())
     # contour.ComputeNormalsOn()
 
@@ -39,7 +67,7 @@ def main():
     contour.SetValue(0, index)
     contour.Update()  # Needed for GetNumberOfPolys()!!!
 
-    smoother = vtk.vtkWindowedSincPolyDataFilter()
+    smoother = vtkWindowedSincPolyDataFilter()
     smoother.SetInputConnection(contour.GetOutputPort())
     smoother.SetNumberOfIterations(30)  # This has little effect on the error!
     # smoother.BoundarySmoothingOff()
@@ -70,7 +98,7 @@ def main():
     maxz = 3.85
 
     # Create the color map.
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetTableRange(minz, maxz)  # This does nothing, use mapper.SetScalarRange(minz, maxz).
     lut.SetHueRange(2 / 3.0, 1)
     # lut.SetSaturationRange(0, 0)
@@ -79,7 +107,7 @@ def main():
     lut.Build()
 
     # Calculate cell normals.
-    triangle_cell_normals = vtk.vtkPolyDataNormals()
+    triangle_cell_normals = vtkPolyDataNormals()
     triangle_cell_normals.SetInputData(smoothed_polys)
     triangle_cell_normals.ComputeCellNormalsOn()
     triangle_cell_normals.ComputePointNormalsOff()
@@ -87,7 +115,7 @@ def main():
     triangle_cell_normals.AutoOrientNormalsOn()
     triangle_cell_normals.Update()  # Creates vtkPolyData.
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     # mapper.SetInput(smoothed_polys) # This has no normals.
     mapper.SetInputConnection(triangle_cell_normals.GetOutputPort())  # this is better for vis;-)
     mapper.ScalarVisibilityOn()  # Show colour.
@@ -97,22 +125,22 @@ def main():
     mapper.SetLookupTable(lut)
 
     # Take the isosurface data and create geometry.
-    actor = vtk.vtkLODActor()
+    actor = vtkLODActor()
     actor.SetNumberOfCloudPoints(100000)
     actor.SetMapper(mapper)
 
     # Create the renderer.
-    ren = vtk.vtkRenderer()
+    ren = vtkRenderer()
     ren.SetBackground(colors.GetColor3d('DimGray'))
     ren.AddActor(actor)
 
     # Create a window for the renderer of size 600X600
-    ren_win = vtk.vtkRenderWindow()
+    ren_win = vtkRenderWindow()
     ren_win.AddRenderer(ren)
     ren_win.SetSize(600, 600)
 
     # Set a user interface interactor for the render window.
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(ren_win)
 
     # Start the initialization and rendering.
@@ -153,9 +181,9 @@ def vtk_version_ok(major, minor, build):
     """
     needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
     try:
-        vtk_version_number = vtk.VTK_VERSION_NUMBER
+        vtk_version_number = VTK_VERSION_NUMBER
     except AttributeError:  # as error:
-        ver = vtk.vtkVersion()
+        ver = vtkVersion()
         vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
                              + ver.GetVTKBuildVersion()
     if vtk_version_number >= needed_version:

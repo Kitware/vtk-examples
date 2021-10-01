@@ -1,6 +1,27 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingFreeType
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor2D,
+    vtkCoordinate,
+    vtkPolyDataMapper2D,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextMapper,
+    vtkTextProperty
+)
 
 
 def main():
@@ -9,7 +30,7 @@ def main():
     # Create the text mappers and the associated Actor2Ds.
     # The font and text properties (except justification) are the same for
     # each single line mapper. Let's create a common text property object
-    singleLineTextProp = vtk.vtkTextProperty()
+    singleLineTextProp = vtkTextProperty()
     singleLineTextProp.SetFontSize(font_size)
     singleLineTextProp.SetFontFamilyToArial()
     singleLineTextProp.BoldOff()
@@ -18,56 +39,56 @@ def main():
 
     # The font and text properties (except justification) are the same for
     # each multi line mapper. Let's create a common text property object
-    multiLineTextProp = vtk.vtkTextProperty()
+    multiLineTextProp = vtkTextProperty()
     multiLineTextProp.ShallowCopy(singleLineTextProp)
     multiLineTextProp.BoldOn()
     multiLineTextProp.ItalicOn()
     multiLineTextProp.ShadowOn()
     multiLineTextProp.SetLineSpacing(0.8)
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # The text is on a single line and bottom-justified.
-    singleLineTextB = vtk.vtkTextMapper()
+    singleLineTextB = vtkTextMapper()
     singleLineTextB.SetInput('Single line (bottom)')
     tprop = singleLineTextB.GetTextProperty()
     tprop.ShallowCopy(singleLineTextProp)
     tprop.SetVerticalJustificationToBottom()
     tprop.SetColor(colors.GetColor3d('Tomato'))
 
-    singleLineTextActorB = vtk.vtkActor2D()
+    singleLineTextActorB = vtkActor2D()
     singleLineTextActorB.SetMapper(singleLineTextB)
     singleLineTextActorB.GetPositionCoordinate().SetCoordinateSystemToNormalizedDisplay()
     singleLineTextActorB.GetPositionCoordinate().SetValue(0.05, 0.85)
 
     # The text is on a single line and center-justified (vertical justification).
-    singleLineTextC = vtk.vtkTextMapper()
+    singleLineTextC = vtkTextMapper()
     singleLineTextC.SetInput('Single line (centered)')
     tprop = singleLineTextC.GetTextProperty()
     tprop.ShallowCopy(singleLineTextProp)
     tprop.SetVerticalJustificationToCentered()
     tprop.SetColor(colors.GetColor3d('DarkGreen'))
-    singleLineTextActorC = vtk.vtkActor2D()
+    singleLineTextActorC = vtkActor2D()
 
     singleLineTextActorC.SetMapper(singleLineTextC)
     singleLineTextActorC.GetPositionCoordinate().SetCoordinateSystemToNormalizedDisplay()
     singleLineTextActorC.GetPositionCoordinate().SetValue(0.05, 0.75)
 
     # The text is on a single line and top-justified.
-    singleLineTextT = vtk.vtkTextMapper()
+    singleLineTextT = vtkTextMapper()
     singleLineTextT.SetInput('Single line (top)')
     tprop = singleLineTextT.GetTextProperty()
     tprop.ShallowCopy(singleLineTextProp)
     tprop.SetVerticalJustificationToTop()
     tprop.SetColor(colors.GetColor3d('Peacock'))
 
-    singleLineTextActorT = vtk.vtkActor2D()
+    singleLineTextActorT = vtkActor2D()
     singleLineTextActorT.SetMapper(singleLineTextT)
     singleLineTextActorT.GetPositionCoordinate().SetCoordinateSystemToNormalizedDisplay()
     singleLineTextActorT.GetPositionCoordinate().SetValue(0.05, 0.65)
 
     # The text is on multiple lines and left- and top-justified.
-    textMapperL = vtk.vtkTextMapper()
+    textMapperL = vtkTextMapper()
     textMapperL.SetInput('This is\nmulti-line\ntext output\n(left-top)')
     tprop = textMapperL.GetTextProperty()
     tprop.ShallowCopy(multiLineTextProp)
@@ -75,13 +96,13 @@ def main():
     tprop.SetVerticalJustificationToTop()
     tprop.SetColor(colors.GetColor3d('Tomato'))
 
-    textActorL = vtk.vtkActor2D()
+    textActorL = vtkActor2D()
     textActorL.SetMapper(textMapperL)
     textActorL.GetPositionCoordinate().SetCoordinateSystemToNormalizedDisplay()
     textActorL.GetPositionCoordinate().SetValue(0.05, 0.5)
 
     # The text is on multiple lines and center-justified (both horizontal and vertical).
-    textMapperC = vtk.vtkTextMapper()
+    textMapperC = vtkTextMapper()
     textMapperC.SetInput('This is\nmulti-line\ntext output\n(centered)')
     tprop = textMapperC.GetTextProperty()
     tprop.ShallowCopy(multiLineTextProp)
@@ -89,13 +110,13 @@ def main():
     tprop.SetVerticalJustificationToCentered()
     tprop.SetColor(colors.GetColor3d('DarkGreen'))
 
-    textActorC = vtk.vtkActor2D()
+    textActorC = vtkActor2D()
     textActorC.SetMapper(textMapperC)
     textActorC.GetPositionCoordinate().SetCoordinateSystemToNormalizedDisplay()
     textActorC.GetPositionCoordinate().SetValue(0.5, 0.5)
 
     # The text is on multiple lines and right- and bottom-justified.
-    textMapperR = vtk.vtkTextMapper()
+    textMapperR = vtkTextMapper()
     textMapperR.SetInput('This is\nmulti-line\ntext output\n(right-bottom)')
     tprop = textMapperR.GetTextProperty()
     tprop.ShallowCopy(multiLineTextProp)
@@ -103,7 +124,7 @@ def main():
     tprop.SetVerticalJustificationToBottom()
     tprop.SetColor(colors.GetColor3d('Peacock'))
 
-    textActorR = vtk.vtkActor2D()
+    textActorR = vtkActor2D()
     textActorR.SetMapper(textMapperR)
     textActorR.GetPositionCoordinate().SetCoordinateSystemToNormalizedDisplay()
     textActorR.GetPositionCoordinate().SetValue(0.95, 0.5)
@@ -111,7 +132,7 @@ def main():
     # Draw the grid to demonstrate the placement of the text.
 
     # Set up the necessary points.
-    Pts = vtk.vtkPoints()
+    Pts = vtkPoints()
     Pts.InsertNextPoint(0.05, 0.0, 0.0)
     Pts.InsertNextPoint(0.05, 1.0, 0.0)
     Pts.InsertNextPoint(0.5, 0.0, 0.0)
@@ -128,7 +149,7 @@ def main():
     Pts.InsertNextPoint(0.50, 0.65, 0.0)
 
     # Set up the lines that use these points.
-    Lines = vtk.vtkCellArray()
+    Lines = vtkCellArray()
     Lines.InsertNextCell(2)
     Lines.InsertCellPoint(0)
     Lines.InsertCellPoint(1)
@@ -152,27 +173,27 @@ def main():
     Lines.InsertCellPoint(13)
 
     # Create a grid that uses these points and lines.
-    Grid = vtk.vtkPolyData()
+    Grid = vtkPolyData()
     Grid.SetPoints(Pts)
     Grid.SetLines(Lines)
     # Set up the coordinate system.
-    normCoords = vtk.vtkCoordinate()
+    normCoords = vtkCoordinate()
     normCoords.SetCoordinateSystemToNormalizedViewport()
 
     # Set up the mapper and actor (2D) for the grid.
-    mapper = vtk.vtkPolyDataMapper2D()
+    mapper = vtkPolyDataMapper2D()
     mapper.SetInputData(Grid)
     mapper.SetTransformCoordinate(normCoords)
-    gridActor = vtk.vtkActor2D()
+    gridActor = vtkActor2D()
     gridActor.SetMapper(mapper)
     gridActor.GetProperty().SetColor(colors.GetColor3d('DimGray'))
 
     # Create the Renderer, RenderWindow, and RenderWindowInteractor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
 
     renderWindow.AddRenderer(renderer)
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     # Add the actors to the renderer set the background and size zoom in closer to the image render
