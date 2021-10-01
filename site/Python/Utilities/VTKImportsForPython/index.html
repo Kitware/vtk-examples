@@ -115,23 +115,24 @@ function registerListener(event, func) {
 <span class=sd>    :return: The file name, the VTK classes and any VTK constants.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
 
-<span class=hll>    <span class=n>vtk_class_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(vtk[a-zA-Z]+\S+\()&#39;</span><span class=p>)</span>
-</span><span class=hll>    <span class=n>vtk_class_pattern1</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;[^\(]+&#39;</span><span class=p>)</span>
-</span><span class=hll>    <span class=n>vtk_constants_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(VTK_[A-Z_]+)&#39;</span><span class=p>)</span>
-</span>
+<span class=hll>    <span class=n>vtk_patterns</span> <span class=o>=</span> <span class=p>[</span>
+</span>        <span class=c1># class pattern</span>
+<span class=hll>        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(vtk[a-zA-Z]+\S+)\(</span><span class=si>{1}</span><span class=s1>&#39;</span><span class=p>),</span>
+</span>        <span class=c1># constants pattern</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(VTK_[A-Z_]+)&#39;</span><span class=p>),</span>
+        <span class=c1># special patterns</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(mutable)\(</span><span class=si>{1}</span><span class=s1>&#39;</span><span class=p>),</span>
+    <span class=p>]</span>
+
     <span class=n>res</span> <span class=o>=</span> <span class=n>collections</span><span class=o>.</span><span class=n>defaultdict</span><span class=p>(</span><span class=nb>set</span><span class=p>)</span>
     <span class=k>for</span> <span class=n>path</span> <span class=ow>in</span> <span class=n>paths</span><span class=p>:</span>
         <span class=n>content</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>read_text</span><span class=p>()</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
         <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>content</span><span class=p>:</span>
-<span class=hll>            <span class=n>m</span> <span class=o>=</span> <span class=n>vtk_class_pattern</span><span class=o>.</span><span class=n>search</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
-</span>            <span class=k>if</span> <span class=n>m</span><span class=p>:</span>
-                <span class=k>for</span> <span class=n>g</span> <span class=ow>in</span> <span class=n>m</span><span class=o>.</span><span class=n>groups</span><span class=p>():</span>
-<span class=hll>                    <span class=n>m1</span> <span class=o>=</span> <span class=n>vtk_class_pattern1</span><span class=o>.</span><span class=n>match</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
-</span>                    <span class=n>res</span><span class=p>[</span><span class=nb>str</span><span class=p>(</span><span class=n>path</span><span class=p>)]</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>m1</span><span class=o>.</span><span class=n>group</span><span class=p>())</span>
-<span class=hll>            <span class=n>m</span> <span class=o>=</span> <span class=n>vtk_constants_pattern</span><span class=o>.</span><span class=n>search</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
-</span>            <span class=k>if</span> <span class=n>m</span><span class=p>:</span>
-                <span class=k>for</span> <span class=n>g</span> <span class=ow>in</span> <span class=n>m</span><span class=o>.</span><span class=n>groups</span><span class=p>():</span>
-                    <span class=n>res</span><span class=p>[</span><span class=nb>str</span><span class=p>(</span><span class=n>path</span><span class=p>)]</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
+<span class=hll>            <span class=k>for</span> <span class=n>pattern</span> <span class=ow>in</span> <span class=n>vtk_patterns</span><span class=p>:</span>
+</span>                <span class=n>m</span> <span class=o>=</span> <span class=n>pattern</span><span class=o>.</span><span class=n>search</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
+                <span class=k>if</span> <span class=n>m</span><span class=p>:</span>
+                    <span class=k>for</span> <span class=n>g</span> <span class=ow>in</span> <span class=n>m</span><span class=o>.</span><span class=n>groups</span><span class=p>():</span>
+                        <span class=n>res</span><span class=p>[</span><span class=nb>str</span><span class=p>(</span><span class=n>path</span><span class=p>)]</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>res</span>
 
 
