@@ -4,4 +4,4 @@ This example shows how to position an vtkAxesActor in 3D. Notice that position a
 done with a user transform.
 
 !!! seealso
-[DisplayCoordinateAxes](../../Visualization/DisplayCoordinateAxes).
+    [DisplayCoordinateAxes](../../Visualization/DisplayCoordinateAxes).

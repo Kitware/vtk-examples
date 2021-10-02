@@ -4,4 +4,4 @@ Generates a box(cube) using vtkTessellatedBoxSource with 6 sides. The faces of t
 triangles or quads.
 
 !!! seealso
-[Cube](../Cube) generates multiple quads or triangles per side.
+    [Cube](../Cube) generates multiple quads or triangles per side.

@@ -11,6 +11,6 @@ It demonstrates two different ways to apply the transform:
 
 Switch between the two methods by #defining USER_MATRIX or leaving out the #define.
 
-!!! info "See also"
-Compare this example with [OrientedCylinder](../OrientedCylinder). The transform is different because the cylinder
+!!! seealso
+    Compare this example with [OrientedCylinder](../OrientedCylinder). The transform is different because the cylinder
 height direction is along the y-axis and the arrow height is along the x axis.
