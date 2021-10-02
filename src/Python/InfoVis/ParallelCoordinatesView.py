@@ -6,31 +6,43 @@
 # coordinates view (i.e. between selecting data and manipulating axes).
 # Lines which are commented out show alternative options.
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkElevationFilter
+from vtkmodules.vtkFiltersGeneral import vtkBrownianPoints
+from vtkmodules.vtkImagingCore import vtkRTAnalyticSource
+from vtkmodules.vtkImagingGeneral import vtkImageGradient
+from vtkmodules.vtkViewsInfovis import (
+    vtkParallelCoordinatesRepresentation,
+    vtkParallelCoordinatesView
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Generate an example image data set with multiple attribute arrays to probe
     # and view.
     # This is where you would put your reader instead of this rt->elev pipeline...
-    rt = vtk.vtkRTAnalyticSource()
+    rt = vtkRTAnalyticSource()
     rt.SetWholeExtent(-3, 3, -3, 3, -3, 3)
-    grad = vtk.vtkImageGradient()
+    grad = vtkImageGradient()
     grad.SetDimensionality(3)
     grad.SetInputConnection(rt.GetOutputPort())
-    brown = vtk.vtkBrownianPoints()
+    brown = vtkBrownianPoints()
     brown.SetMinimumSpeed(0.5)
     brown.SetMaximumSpeed(1.0)
     brown.SetInputConnection(grad.GetOutputPort())
-    elev = vtk.vtkElevationFilter()
+    elev = vtkElevationFilter()
     elev.SetLowPoint(-3, -3, -3)
     elev.SetHighPoint(3, 3, 3)
     elev.SetInputConnection(brown.GetOutputPort())
 
     # Set up the parallel coordinates Representation to be used in the View
-    rep = vtk.vtkParallelCoordinatesRepresentation()
+    rep = vtkParallelCoordinatesRepresentation()
 
     # Plug your reader in here for your own data
     rep.SetInputConnection(elev.GetOutputPort())
@@ -47,7 +59,7 @@ def main():
     rep.SetLineColor(colors.GetColor3d('MistyRose'))
 
     # Set up the Parallel Coordinates View and hook in the Representation
-    view = vtk.vtkParallelCoordinatesView()
+    view = vtkParallelCoordinatesView()
     view.SetRepresentation(rep)
 
     # Inspect Mode determines whether your interactions manipulate the axes or

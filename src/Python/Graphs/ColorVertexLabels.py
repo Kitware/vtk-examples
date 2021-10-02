@@ -1,20 +1,30 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkIntArray
+from vtkmodules.vtkCommonDataModel import vtkMutableDirectedGraph
+from vtkmodules.vtkViewsInfovis import (
+    vtkGraphLayoutView,
+    vtkRenderedGraphRepresentation
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a graph
-    graph = vtk.vtkMutableDirectedGraph()
+    graph = vtkMutableDirectedGraph()
 
     v1 = graph.AddVertex()
     v2 = graph.AddVertex()
     graph.AddEdge(v1, v2)
 
     # Create an array for the vertex labels
-    vertexIDs = vtk.vtkIntArray()
+    vertexIDs = vtkIntArray()
     vertexIDs.SetNumberOfComponents(1)
     vertexIDs.SetName('VertexIDs')
 
@@ -25,11 +35,11 @@ def main():
     # Add the array to the graph
     graph.GetVertexData().AddArray(vertexIDs)
 
-    graphLayoutView = vtk.vtkGraphLayoutView()
+    graphLayoutView = vtkGraphLayoutView()
     graphLayoutView.AddRepresentationFromInput(graph)
     graphLayoutView.SetVertexLabelVisibility(1)
 
-    rGraph = vtk.vtkRenderedGraphRepresentation()
+    rGraph = vtkRenderedGraphRepresentation()
     rGraph.SafeDownCast(graphLayoutView.GetRepresentation()).GetVertexLabelTextProperty().SetColor(
         colors.GetColor3d('Red'))
     graphLayoutView.SetLayoutStrategyToSimple2D()

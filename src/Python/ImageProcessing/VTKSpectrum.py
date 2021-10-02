@@ -1,42 +1,59 @@
 #!/usr/bin/env python
 
-"""
-"""
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkIOImage import vtkImageReader2Factory
+from vtkmodules.vtkImagingCore import vtkImageMapToColors
+from vtkmodules.vtkImagingFourier import (
+    vtkImageFFT,
+    vtkImageFourierCenter
+)
+from vtkmodules.vtkImagingMath import (
+    vtkImageLogarithmicScale,
+    vtkImageMagnitude
+)
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleImage
+from vtkmodules.vtkRenderingCore import (
+    vtkImageActor,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkWindowLevelLookupTable
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
     # Read the image.
-    readerFactory = vtk.vtkImageReader2Factory()
+    readerFactory = vtkImageReader2Factory()
     reader = readerFactory.CreateImageReader2(fileName)
     reader.SetFileName(fileName)
     reader.Update()
 
-    fft = vtk.vtkImageFFT()
+    fft = vtkImageFFT()
     fft.SetInputConnection(reader.GetOutputPort())
 
-    mag = vtk.vtkImageMagnitude()
+    mag = vtkImageMagnitude()
     mag.SetInputConnection(fft.GetOutputPort())
 
-    center = vtk.vtkImageFourierCenter()
+    center = vtkImageFourierCenter()
     center.SetInputConnection(mag.GetOutputPort())
 
-    compress = vtk.vtkImageLogarithmicScale()
+    compress = vtkImageLogarithmicScale()
     compress.SetInputConnection(center.GetOutputPort())
     compress.SetConstant(15)
     compress.Update()
 
     # Create the actors.
-    originalActor = vtk.vtkImageActor()
+    originalActor = vtkImageActor()
     originalActor.GetMapper().SetInputConnection(reader.GetOutputPort())
     originalActor.GetProperty().SetInterpolationTypeToNearest()
 
-    compressedActor = vtk.vtkImageActor()
+    compressedActor = vtkImageActor()
     compressedActor.GetMapper().SetInputConnection(compress.GetOutputPort())
     compressedActor.GetProperty().SetInterpolationTypeToNearest()
     CreateImageActor(compressedActor, 160, 120)
@@ -47,26 +64,26 @@ def main():
     compressedViewport = [0.5, 0.0, 1.0, 1.0]
 
     # Setup the renderers.
-    originalRenderer = vtk.vtkRenderer()
+    originalRenderer = vtkRenderer()
     originalRenderer.SetViewport(originalViewport)
     originalRenderer.AddActor(originalActor)
     originalRenderer.ResetCamera()
     originalRenderer.SetBackground(colors.GetColor3d("SlateGray"))
 
-    compressedRenderer = vtk.vtkRenderer()
+    compressedRenderer = vtkRenderer()
     compressedRenderer.SetViewport(compressedViewport)
     compressedRenderer.AddActor(compressedActor)
     compressedRenderer.ResetCamera()
     compressedRenderer.SetBackground(colors.GetColor3d("LightSlateGray"))
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(600, 300)
     renderWindow.SetWindowName('VTKSpectrum')
     renderWindow.AddRenderer(originalRenderer)
     renderWindow.AddRenderer(compressedRenderer)
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
-    style = vtk.vtkInteractorStyleImage()
+    renderWindowInteractor = vtkRenderWindowInteractor()
+    style = vtkInteractorStyleImage()
 
     renderWindowInteractor.SetInteractorStyle(style)
 
@@ -92,13 +109,13 @@ def get_program_parameters():
 
 
 def CreateImageActor(actor, colorWindow, colorLevel):
-    wlut = vtk.vtkWindowLevelLookupTable()
+    wlut = vtkWindowLevelLookupTable()
     wlut.SetWindow(colorWindow)
     wlut.SetLevel(colorLevel)
     wlut.Build()
 
     # Map the image through the lookup table.
-    color = vtk.vtkImageMapToColors()
+    color = vtkImageMapToColors()
     color.SetLookupTable(wlut)
     color.SetInputData(actor.GetMapper().GetInput())
 

@@ -6,24 +6,40 @@ Demonstrate the use of a callback.
 We also add call data.
 '''
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkInteractionWidgets import vtkOrientationMarkerWidget
+from vtkmodules.vtkRenderingAnnotation import vtkAxesActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     #  Decide what approach to use.
     use_function_callback = True
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the Renderer, RenderWindow and RenderWindowInteractor.
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Use a cone as a source.
-    source = vtk.vtkConeSource()
+    source = vtkConeSource()
     source.SetCenter(0, 0, 0)
     source.SetRadius(1)
     # Use the golden ratio for the height. Because we can!
@@ -32,9 +48,9 @@ def main():
     source.Update()
 
     # Pipeline
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(source.GetOutputPort())
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('peacock'))
     # Lighting
@@ -44,11 +60,11 @@ def main():
     actor.GetProperty().SetSpecularPower(20.0)
 
     # Get an outline of the data set for context.
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputData(source.GetOutput())
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
     outlineActor.SetMapper(outlineMapper)
 
@@ -59,7 +75,7 @@ def main():
     renWin.SetSize(512, 512)
 
     # Set up a nice camera position.
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetPosition(4.6, -2.0, 3.8)
     camera.SetFocalPoint(0.0, 0.0, 0.0)
     camera.SetClippingRange(3.2, 10.2)
@@ -70,7 +86,7 @@ def main():
     renWin.SetWindowName('CallBack')
 
     axes1 = MakeAxesActor()
-    om1 = vtk.vtkOrientationMarkerWidget()
+    om1 = vtkOrientationMarkerWidget()
     om1.SetOrientationMarker(axes1)
     # Position lower left in the viewport.
     om1.SetViewport(0, 0, 0.2, 0.2)
@@ -134,7 +150,7 @@ def CameraOrientation(cam):
 
 
 def MakeAxesActor():
-    axes = vtk.vtkAxesActor()
+    axes = vtkAxesActor()
     axes.SetShaftTypeToCylinder()
     axes.SetXAxisLabelText('X')
     axes.SetYAxisLabelText('Y')

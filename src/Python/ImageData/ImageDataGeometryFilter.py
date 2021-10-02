@@ -1,13 +1,26 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersGeometry import vtkImageDataGeometryFilter
+from vtkmodules.vtkImagingSources import vtkImageCanvasSource2D
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create an image
-    source1 = vtk.vtkImageCanvasSource2D()
+    source1 = vtkImageCanvasSource2D()
     source1.SetScalarTypeToUnsignedChar()
     source1.SetNumberOfScalarComponents(3)
     source1.SetExtent(0, 100, 0, 100, 0, 0)
@@ -19,22 +32,22 @@ def main():
     source1.Update()
 
     # Convert the image to a polydata
-    imageDataGeometryFilter = vtk.vtkImageDataGeometryFilter()
+    imageDataGeometryFilter = vtkImageDataGeometryFilter()
     imageDataGeometryFilter.SetInputConnection(source1.GetOutputPort())
     imageDataGeometryFilter.Update()
 
     # Create a mapper and actor
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(imageDataGeometryFilter.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     # Visualization
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)

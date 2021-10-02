@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonDataModel import vtkMutableDirectedGraph
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
 
 def main():
-    g = vtk.vtkMutableDirectedGraph()
+    g = vtkMutableDirectedGraph()
 
     v1 = g.AddVertex()
     v2 = g.AddVertex()
@@ -12,7 +17,7 @@ def main():
     g.AddGraphEdge(v1, v2)
     g.AddGraphEdge(v1, v2)
 
-    graphLayoutView = vtk.vtkGraphLayoutView()
+    graphLayoutView = vtkGraphLayoutView()
     graphLayoutView.AddRepresentationFromInput(g)
     graphLayoutView.SetLayoutStrategy('Simple 2D')
     graphLayoutView.ResetCamera()

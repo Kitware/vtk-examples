@@ -1,11 +1,23 @@
 #!/usr/bin/env python
-import vtkmodules.all as vtk
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkIntArray,
+    vtkLookupTable
+)
+from vtkmodules.vtkCommonDataModel import vtkMutableDirectedGraph
+from vtkmodules.vtkViewsCore import vtkViewTheme
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    graph = vtk.vtkMutableDirectedGraph()
+    graph = vtkMutableDirectedGraph()
     # Create a graph
     v1 = graph.AddVertex()
     v2 = graph.AddVertex()
@@ -15,11 +27,11 @@ def main():
     graph.AddGraphEdge(v2, v3)
 
     # Create the color array
-    edgeColors = vtk.vtkIntArray()
+    edgeColors = vtkIntArray()
     edgeColors.SetNumberOfComponents(1)
     edgeColors.SetName('Color')
 
-    lookupTable = vtk.vtkLookupTable()
+    lookupTable = vtkLookupTable()
     lookupTable.SetNumberOfTableValues(2)
     lookupTable.SetTableValue(0, colors.GetColor4d('Red'))
     lookupTable.SetTableValue(1, colors.GetColor4d('Lime'))
@@ -31,7 +43,7 @@ def main():
     # Add the color array to the graph
     graph.GetEdgeData().AddArray(edgeColors)
 
-    graphLayoutView = vtk.vtkGraphLayoutView()
+    graphLayoutView = vtkGraphLayoutView()
     graphLayoutView.AddRepresentationFromInput(graph)
     graphLayoutView.SetLayoutStrategy('Simple 2D')
     graphLayoutView.GetLayoutStrategy().SetEdgeWeightField('Graphs')
@@ -40,7 +52,7 @@ def main():
     graphLayoutView.SetEdgeLabelVisibility(1)
     graphLayoutView.ColorEdgesOn()
 
-    theme = vtk.vtkViewTheme()
+    theme = vtkViewTheme()
     theme.SetCellLookupTable(lookupTable)
 
     graphLayoutView.ApplyViewTheme(theme)

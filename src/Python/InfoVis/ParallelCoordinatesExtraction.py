@@ -8,23 +8,49 @@
 # Note that no points will show up inside of the 3d box outline until you
 # select some lines/curves in the parallel coordinates view
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkFiltersCore import vtkElevationFilter
+from vtkmodules.vtkFiltersExtraction import vtkExtractSelection
+from vtkmodules.vtkFiltersGeneral import (
+    vtkAnnotationLink,
+    vtkBrownianPoints
+)
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkImagingCore import vtkRTAnalyticSource
+from vtkmodules.vtkImagingGeneral import vtkImageGradient
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkViewsInfovis import (
+    vtkParallelCoordinatesRepresentation,
+    vtkParallelCoordinatesView
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Generate an image data set with multiple attribute arrays to probe and view
-    rt = vtk.vtkRTAnalyticSource()
+    rt = vtkRTAnalyticSource()
     rt.SetWholeExtent(-3, 3, -3, 3, -3, 3)
-    grad = vtk.vtkImageGradient()
+    grad = vtkImageGradient()
     grad.SetDimensionality(3)
     grad.SetInputConnection(rt.GetOutputPort())
-    brown = vtk.vtkBrownianPoints()
+    brown = vtkBrownianPoints()
     brown.SetMinimumSpeed(0.5)
     brown.SetMaximumSpeed(1.0)
     brown.SetInputConnection(grad.GetOutputPort())
-    elev = vtk.vtkElevationFilter()
+    elev = vtkElevationFilter()
     elev.SetLowPoint(-3, -3, -3)
     elev.SetHighPoint(3, 3, 3)
     elev.SetInputConnection(brown.GetOutputPort())
@@ -34,7 +60,7 @@ def main():
     elev.Update()
 
     # Set up parallel coordinates representation to be used in View
-    rep = vtk.vtkParallelCoordinatesRepresentation()
+    rep = vtkParallelCoordinatesRepresentation()
     rep.SetInputConnection(elev.GetOutputPort())
     rep.SetInputArrayToProcess(0, 0, 0, 0, 'RTDataGradient')
     rep.SetInputArrayToProcess(1, 0, 0, 0, 'RTData')
@@ -46,14 +72,14 @@ def main():
     rep.SetLineColor(colors.GetColor3d('MistyRose'))
 
     # Set up the Parallel Coordinates View and hook in representation
-    view = vtk.vtkParallelCoordinatesView()
+    view = vtkParallelCoordinatesView()
     view.SetRepresentation(rep)
     view.SetInspectMode(view.VTK_INSPECT_SELECT_DATA)
     view.SetBrushOperatorToReplace()
     view.SetBrushModeToLasso()
 
     # Create a annotation link to access selection in parallel coordinates view
-    annotationLink = vtk.vtkAnnotationLink()
+    annotationLink = vtkAnnotationLink()
     # If you don't set the FieldType explicitly it ends up as UNKNOWN
     # (as of 21 Feb 2010)
     # See vtkSelectionNode doc for field and content type enum values
@@ -65,7 +91,7 @@ def main():
     rep.SetAnnotationLink(annotationLink)
 
     # Extract portion of data corresponding to parallel coordinates selection
-    extract = vtk.vtkExtractSelection()
+    extract = vtkExtractSelection()
     extract.SetInputConnection(0, elev.GetOutputPort())
     extract.SetInputConnection(1, annotationLink.GetOutputPort(2))
 
@@ -96,15 +122,15 @@ def main():
     view.GetInteractor().AddObserver('UserEvent', toggle_inspectors)
 
     # 3D outline of image data bounds
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(elev.GetOutputPort())
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
 
     # Build the lookup table for the 3d data scalar colors (brown to white)
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetTableRange(0, 256)
     lut.SetHueRange(0.1, 0.1)
     lut.SetSaturationRange(1.0, 0.1)
@@ -114,7 +140,7 @@ def main():
     # Set up the 3d rendering parameters
     # of the image data which is selected in parallel coordinates
     coloring_by = 'Elevation'
-    dataMapper = vtk.vtkDataSetMapper()
+    dataMapper = vtkDataSetMapper()
     dataMapper.SetInputConnection(extract.GetOutputPort())
     dataMapper.SetScalarModeToUsePointFieldData()
     dataMapper.SetColorModeToMapScalars()
@@ -123,21 +149,21 @@ def main():
     dataMapper.SetScalarRange(data.GetArray(coloring_by).GetRange())
     dataMapper.SetLookupTable(lut)
     dataMapper.SelectColorArray(coloring_by)
-    dataActor = vtk.vtkActor()
+    dataActor = vtkActor()
     dataActor.SetMapper(dataMapper)
     dataActor.GetProperty().SetRepresentationToPoints()
     dataActor.GetProperty().SetPointSize(10)
 
     # Set up the 3d render window and add both actors
-    ren = vtk.vtkRenderer()
+    ren = vtkRenderer()
     ren.AddActor(outlineActor)
     ren.AddActor(dataActor)
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetWindowName('ParallelCoordinatesExtraction')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     ren.ResetCamera()
     renWin.Render()

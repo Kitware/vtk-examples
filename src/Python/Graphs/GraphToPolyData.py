@@ -1,12 +1,26 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import vtkMutableUndirectedGraph
+from vtkmodules.vtkFiltersSources import vtkGraphToPolyData
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     # Create a graph
-    g = vtk.vtkMutableUndirectedGraph()
+    g = vtkMutableUndirectedGraph()
 
     # Add 4 vertices to the graph
     v1 = g.AddVertex()
@@ -20,7 +34,7 @@ def main():
     g.AddEdge(v1, v4)
 
     # Create 4 points - one for each vertex
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0.0, 0.0, 0.0)
     points.InsertNextPoint(1.0, 0.0, 0.0)
     points.InsertNextPoint(0.0, 1.0, 0.0)
@@ -30,22 +44,22 @@ def main():
     g.SetPoints(points)
 
     # Convert the graph to a polydata
-    graphToPolyData = vtk.vtkGraphToPolyData()
+    graphToPolyData = vtkGraphToPolyData()
     graphToPolyData.SetInputData(g)
     graphToPolyData.Update()
 
     # Create a mapper and actor
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(graphToPolyData.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     # Create a renderer, render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actor to the scene

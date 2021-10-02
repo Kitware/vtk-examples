@@ -1,39 +1,48 @@
 #!/usr/bin/env python
 
-"""
-"""
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkIOImage import vtkImageReader2Factory
+from vtkmodules.vtkImagingCore import vtkImageCast
+from vtkmodules.vtkImagingGeneral import vtkImageGaussianSmooth
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleImage
+from vtkmodules.vtkRenderingCore import (
+    vtkImageActor,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
     # Read the image.
-    readerFactory = vtk.vtkImageReader2Factory()
+    readerFactory = vtkImageReader2Factory()
     reader = readerFactory.CreateImageReader2(fileName)
     reader.SetFileName(fileName)
     reader.Update()
 
     # Process the image.
-    cast = vtk.vtkImageCast()
+    cast = vtkImageCast()
     cast.SetInputConnection(reader.GetOutputPort())
     cast.SetOutputScalarTypeToFloat()
 
-    smoothing_filter = vtk.vtkImageGaussianSmooth()
+    smoothing_filter = vtkImageGaussianSmooth()
     smoothing_filter.SetDimensionality(2)
     smoothing_filter.SetInputConnection(cast.GetOutputPort())
     smoothing_filter.SetStandardDeviations(4.0, 4.0)
     smoothing_filter.SetRadiusFactors(2.0, 2.0)
 
     # Create the actors.
-    originalActor = vtk.vtkImageActor()
+    originalActor = vtkImageActor()
     originalActor.GetMapper().SetInputConnection(
         reader.GetOutputPort())
 
-    filteredActor = vtk.vtkImageActor()
+    filteredActor = vtkImageActor()
     filteredActor.GetMapper().SetInputConnection(
         smoothing_filter.GetOutputPort())
 
@@ -43,26 +52,26 @@ def main():
     filteredViewport = [0.5, 0.0, 1.0, 1.0]
 
     # Setup the renderers.
-    originalRenderer = vtk.vtkRenderer()
+    originalRenderer = vtkRenderer()
     originalRenderer.SetViewport(originalViewport)
     originalRenderer.AddActor(originalActor)
     originalRenderer.ResetCamera()
     originalRenderer.SetBackground(colors.GetColor3d("SlateGray"))
 
-    filteredRenderer = vtk.vtkRenderer()
+    filteredRenderer = vtkRenderer()
     filteredRenderer.SetViewport(filteredViewport)
     filteredRenderer.AddActor(filteredActor)
     filteredRenderer.ResetCamera()
     filteredRenderer.SetBackground(colors.GetColor3d("LightSlateGray"))
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(600, 300)
     renderWindow.SetWindowName('GaussianSmooth')
     renderWindow.AddRenderer(originalRenderer)
     renderWindow.AddRenderer(filteredRenderer)
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
-    style = vtk.vtkInteractorStyleImage()
+    renderWindowInteractor = vtkRenderWindowInteractor()
+    style = vtkInteractorStyleImage()
 
     renderWindowInteractor.SetInteractorStyle(style)
 

@@ -1,10 +1,18 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonDataModel import (
+    vtkMutableDirectedGraph,
+    vtkTree
+)
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
 
 def main():
-    graph = vtk.vtkMutableDirectedGraph()
+    graph = vtkMutableDirectedGraph()
 
     v1 = graph.AddVertex()
     v2 = graph.AddChild(v1)
@@ -21,12 +29,12 @@ def main():
     # g.AddEdge ( V1, V3 )
     # g.AddEdge ( V2, V4 )
 
-    tree = vtk.vtkTree()
+    tree = vtkTree()
     success = tree.CheckedShallowCopy(graph)
     print('Success?', success)
     # std::cout << 'Success? ' << success << std::endl
 
-    treeLayoutView = vtk.vtkGraphLayoutView()
+    treeLayoutView = vtkGraphLayoutView()
     treeLayoutView.AddRepresentationFromInput(tree)
     treeLayoutView.SetLayoutStrategyToTree()
     treeLayoutView.ResetCamera()

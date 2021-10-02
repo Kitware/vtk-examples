@@ -1,12 +1,19 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkMutableUndirectedGraph
+from vtkmodules.vtkInfovisLayout import vtkForceDirectedLayoutStrategy
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    g = vtk.vtkMutableUndirectedGraph()
+    g = vtkMutableUndirectedGraph()
 
     v1 = g.AddVertex()
     v2 = g.AddVertex()
@@ -19,9 +26,9 @@ def main():
     print('Number of vertices:', g.GetNumberOfVertices())
     print('Number of edges:', g.GetNumberOfEdges())
 
-    force_directed = vtk.vtkForceDirectedLayoutStrategy()
+    force_directed = vtkForceDirectedLayoutStrategy()
 
-    graph_layout_view = vtk.vtkGraphLayoutView()
+    graph_layout_view = vtkGraphLayoutView()
     graph_layout_view.AddRepresentationFromInput(g)
     # If we create a layout object directly, just set the pointer through this method.
     # graph_layout_view.SetLayoutStrategy(force_directed)

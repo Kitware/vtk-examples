@@ -1,18 +1,35 @@
 #!/usr/bin/env python
 
-"""
-"""
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonDataModel import vtkImageData
+from vtkmodules.vtkIOImage import vtkImageReader2Factory
+from vtkmodules.vtkImagingCore import (
+    vtkImageCast,
+    vtkImageThreshold
+)
+from vtkmodules.vtkImagingGeneral import (
+    vtkImageGaussianSmooth,
+    vtkImageMedian3D
+)
+from vtkmodules.vtkImagingMath import vtkImageMathematics
+from vtkmodules.vtkImagingSources import vtkImageNoiseSource
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleImage
+from vtkmodules.vtkRenderingCore import (
+    vtkImageActor,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    # colors = vtk.vtkNamedColors()
+    # colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
     # Read the image.
-    readerFactory = vtk.vtkImageReader2Factory()
+    readerFactory = vtkImageReader2Factory()
     reader = readerFactory.CreateImageReader2(fileName)
     reader.SetFileName(fileName)
     reader.Update()
@@ -24,22 +41,22 @@ def main():
     middleSlice = (reader.GetOutput().GetExtent()[5] - reader.GetOutput().GetExtent()[4]) // 2
 
     # Work with double images
-    cast = vtk.vtkImageCast()
+    cast = vtkImageCast()
     cast.SetInputConnection(reader.GetOutputPort())
     cast.SetOutputScalarTypeToDouble()
     cast.Update()
 
-    originalData = vtk.vtkImageData()
+    originalData = vtkImageData()
     originalData.DeepCopy(cast.GetOutput())
 
-    noisyData = vtk.vtkImageData()
+    noisyData = vtkImageData()
 
     AddShotNoise(originalData, noisyData, 2000.0, 0.1, reader.GetOutput().GetExtent())
-    median = vtk.vtkImageMedian3D()
+    median = vtkImageMedian3D()
     median.SetInputData(noisyData)
     median.SetKernelSize(5, 5, 1)
 
-    gaussian = vtk.vtkImageGaussianSmooth()
+    gaussian = vtkImageGaussianSmooth()
     gaussian.SetDimensionality(2)
     gaussian.SetInputData(noisyData)
     gaussian.SetStandardDeviations(2.0, 2.0)
@@ -47,28 +64,28 @@ def main():
 
     colorWindow = (scalarRange[1] - scalarRange[0]) * 0.8
     colorLevel = colorWindow / 2
-    originalActor = vtk.vtkImageActor()
+    originalActor = vtkImageActor()
     originalActor.GetMapper().SetInputData(originalData)
     originalActor.GetProperty().SetColorWindow(colorWindow)
     originalActor.GetProperty().SetColorLevel(colorLevel)
     originalActor.GetProperty().SetInterpolationTypeToNearest()
     originalActor.SetZSlice(middleSlice)
 
-    noisyActor = vtk.vtkImageActor()
+    noisyActor = vtkImageActor()
     noisyActor.GetMapper().SetInputData(noisyData)
     noisyActor.GetProperty().SetColorWindow(colorWindow)
     noisyActor.GetProperty().SetColorLevel(colorLevel)
     noisyActor.GetProperty().SetInterpolationTypeToNearest()
     noisyActor.SetZSlice(middleSlice)
 
-    gaussianActor = vtk.vtkImageActor()
+    gaussianActor = vtkImageActor()
     gaussianActor.GetMapper().SetInputConnection(gaussian.GetOutputPort())
     gaussianActor.GetProperty().SetColorWindow(colorWindow)
     gaussianActor.GetProperty().SetColorLevel(colorLevel)
     gaussianActor.GetProperty().SetInterpolationTypeToNearest()
     gaussianActor.SetZSlice(middleSlice)
 
-    medianActor = vtk.vtkImageActor()
+    medianActor = vtkImageActor()
     medianActor.GetMapper().SetInputConnection(median.GetOutputPort())
     medianActor.GetProperty().SetColorWindow(colorWindow)
     medianActor.GetProperty().SetColorLevel(colorLevel)
@@ -76,13 +93,13 @@ def main():
     medianActor.SetZSlice(middleSlice)
 
     # Setup the renderers.
-    originalRenderer = vtk.vtkRenderer()
+    originalRenderer = vtkRenderer()
     originalRenderer.AddActor(originalActor)
-    noisyRenderer = vtk.vtkRenderer()
+    noisyRenderer = vtkRenderer()
     noisyRenderer.AddActor(noisyActor)
-    gaussRenderer = vtk.vtkRenderer()
+    gaussRenderer = vtkRenderer()
     gaussRenderer.AddActor(gaussianActor)
-    medianRenderer = vtk.vtkRenderer()
+    medianRenderer = vtkRenderer()
     medianRenderer.AddActor(medianActor)
 
     renderers = list()
@@ -96,7 +113,7 @@ def main():
     xGridDimensions = 2
     yGridDimensions = 2
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(
         rendererSize * xGridDimensions, rendererSize * yGridDimensions)
     for row in range(0, yGridDimensions):
@@ -109,8 +126,8 @@ def main():
             renderWindow.AddRenderer(renderers[index])
     renderWindow.SetWindowName('MedianComparison')
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
-    style = vtk.vtkInteractorStyleImage()
+    renderWindowInteractor = vtkRenderWindowInteractor()
+    style = vtkInteractorStyleImage()
 
     renderWindowInteractor.SetInteractorStyle(style)
     renderWindowInteractor.SetRenderWindow(renderWindow)
@@ -138,28 +155,28 @@ def get_program_parameters():
 
 
 def AddShotNoise(inputImage, outputImage, noiseAmplitude, noiseFraction, extent):
-    shotNoiseSource = vtk.vtkImageNoiseSource()
+    shotNoiseSource = vtkImageNoiseSource()
     shotNoiseSource.SetWholeExtent(extent)
     shotNoiseSource.SetMinimum(0.0)
     shotNoiseSource.SetMaximum(1.0)
 
-    shotNoiseThresh1 = vtk.vtkImageThreshold()
+    shotNoiseThresh1 = vtkImageThreshold()
     shotNoiseThresh1.SetInputConnection(shotNoiseSource.GetOutputPort())
     shotNoiseThresh1.ThresholdByLower(1.0 - noiseFraction)
     shotNoiseThresh1.SetInValue(0)
     shotNoiseThresh1.SetOutValue(noiseAmplitude)
-    shotNoiseThresh2 = vtk.vtkImageThreshold()
+    shotNoiseThresh2 = vtkImageThreshold()
     shotNoiseThresh2.SetInputConnection(shotNoiseSource.GetOutputPort())
     shotNoiseThresh2.ThresholdByLower(noiseFraction)
     shotNoiseThresh2.SetInValue(1.0 - noiseAmplitude)
     shotNoiseThresh2.SetOutValue(0.0)
 
-    shotNoise = vtk.vtkImageMathematics()
+    shotNoise = vtkImageMathematics()
     shotNoise.SetInputConnection(0, shotNoiseThresh1.GetOutputPort())
     shotNoise.SetInputConnection(1, shotNoiseThresh2.GetOutputPort())
     shotNoise.SetOperationToAdd()
 
-    add = vtk.vtkImageMathematics()
+    add = vtkImageMathematics()
     add.SetInputData(0, inputImage)
     add.SetInputConnection(1, shotNoise.GetOutputPort())
     add.SetOperationToAdd()

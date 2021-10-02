@@ -1,20 +1,27 @@
 #!/usr/bin/env python
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkInfovisCore import vtkRandomGraphSource
+from vtkmodules.vtkInfovisLayout import vtkForceDirectedLayoutStrategy
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    random_graph_source = vtk.vtkRandomGraphSource()
+    random_graph_source = vtkRandomGraphSource()
     random_graph_source.SetNumberOfVertices(5)
     random_graph_source.SetNumberOfEdges(4)
     # This ensures repeatable results for testing. Turn this off for real use.
     random_graph_source.SetSeed(123)
     random_graph_source.Update()
 
-    force_directed = vtk.vtkForceDirectedLayoutStrategy()
+    force_directed = vtkForceDirectedLayoutStrategy()
 
-    graph_layout_view = vtk.vtkGraphLayoutView()
+    graph_layout_view = vtkGraphLayoutView()
     graph_layout_view.AddRepresentationFromInput(random_graph_source.GetOutput())
     # If we create a layout object directly, just set the pointer through this method.
     # graph_layout_view.SetLayoutStrategy(force_directed)

@@ -1,9 +1,24 @@
 #!/usr/bin/env python
-import vtkmodules.all as vtk
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersGeneral import vtkShrinkFilter
+from vtkmodules.vtkFiltersHyperTree import vtkHyperTreeGridToUnstructuredGrid
+from vtkmodules.vtkFiltersSources import vtkHyperTreeGridSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     # Create hyper tree grid source
 
     descriptor = 'RRR .R. .RR ..R ..R .R.|R.......................... ' \
@@ -27,7 +42,7 @@ def main():
                  '...........................|........................... ' \
                  '...........................'
 
-    source = vtk.vtkHyperTreeGridSource()
+    source = vtkHyperTreeGridSource()
     source.SetMaximumLevel(6)
     source.SetDimensions(4, 4, 3)  # GridCell 3, 3, 2
     source.SetGridScale(1.5, 1.0, 0.7)
@@ -36,27 +51,27 @@ def main():
     source.Update()
 
     # Hyper tree grid to unstructured grid filter
-    htg2ug = vtk.vtkHyperTreeGridToUnstructuredGrid()
+    htg2ug = vtkHyperTreeGridToUnstructuredGrid()
     htg2ug.SetInputConnection(source.GetOutputPort())
     htg2ug.Update()
 
-    shrink = vtk.vtkShrinkFilter()
+    shrink = vtkShrinkFilter()
     shrink.SetInputConnection(htg2ug.GetOutputPort())
     shrink.SetShrinkFactor(.8)
 
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputConnection(shrink.GetOutputPort())
     mapper.ScalarVisibilityOff()
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetDiffuseColor(colors.GetColor3d('Burlywood'))
 
     # Create the RenderWindow, Renderer and Interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     renderer.SetBackground(colors.GetColor3d('SlateGray'))

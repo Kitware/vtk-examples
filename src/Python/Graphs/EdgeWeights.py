@@ -1,12 +1,20 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkDoubleArray
+from vtkmodules.vtkCommonDataModel import vtkMutableDirectedGraph
+from vtkmodules.vtkInfovisLayout import vtkForceDirectedLayoutStrategy
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    g = vtk.vtkMutableDirectedGraph()
+    g = vtkMutableDirectedGraph()
 
     # Create 3 vertices
     v1 = g.AddVertex()
@@ -19,7 +27,7 @@ def main():
     g.AddGraphEdge(v1, v3)
 
     # Create the edge weight array
-    weights = vtk.vtkDoubleArray()
+    weights = vtkDoubleArray()
     weights.SetNumberOfComponents(1)
     weights.SetName('Weights')
 
@@ -33,9 +41,9 @@ def main():
 
     print('Number of edges:', g.GetNumberOfEdges())
 
-    force_directed = vtk.vtkForceDirectedLayoutStrategy()
+    force_directed = vtkForceDirectedLayoutStrategy()
 
-    graph_layout_view = vtk.vtkGraphLayoutView()
+    graph_layout_view = vtkGraphLayoutView()
     graph_layout_view.AddRepresentationFromInput(g)
     # If we create a layout object directly, just set the pointer through this method.
     # graph_layout_view.SetLayoutStrategy(force_directed)

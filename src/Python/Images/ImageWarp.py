@@ -1,12 +1,28 @@
-##!/usr/bin/env python
+#!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkMergeFilter
+from vtkmodules.vtkFiltersGeneral import vtkWarpScalar
+from vtkmodules.vtkFiltersGeometry import vtkImageDataGeometryFilter
+from vtkmodules.vtkIOImage import vtkBMPReader
+from vtkmodules.vtkImagingColor import vtkImageLuminance
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     fileName = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('BkgColor', [60, 93, 144, 255])
@@ -15,34 +31,34 @@ def main():
     # as a set of polygons (vtkImageDataGeometryFilter). We then will
     # warp the plane using the scalar (luminance) values.
     #
-    reader = vtk.vtkBMPReader()
+    reader = vtkBMPReader()
     reader.SetFileName(fileName)
     # Convert the image to a grey scale.
-    luminance = vtk.vtkImageLuminance()
+    luminance = vtkImageLuminance()
     luminance.SetInputConnection(reader.GetOutputPort())
     # Pass the data to the pipeline as polygons.
-    geometry = vtk.vtkImageDataGeometryFilter()
+    geometry = vtkImageDataGeometryFilter()
     geometry.SetInputConnection(luminance.GetOutputPort())
     # Warp the data in a direction perpendicular to the image plane.
-    warp = vtk.vtkWarpScalar()
+    warp = vtkWarpScalar()
     warp.SetInputConnection(geometry.GetOutputPort())
     warp.SetScaleFactor(-0.1)
 
     # Use vtkMergeFilter to combine the original image with the warped geometry.
-    merge = vtk.vtkMergeFilter()
+    merge = vtkMergeFilter()
     merge.SetGeometryConnection(warp.GetOutputPort())
     merge.SetScalarsConnection(reader.GetOutputPort())
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputConnection(merge.GetOutputPort())
     mapper.SetScalarRange(0, 255)
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     # Create the rendering window, renderer, and interactive renderer.
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size.
