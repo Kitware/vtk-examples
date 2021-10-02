@@ -1,13 +1,25 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkIntArray,
+    vtkLookupTable,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import vtkMutableDirectedGraph
+from vtkmodules.vtkViewsCore import vtkViewTheme
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a graph
-    graph = vtk.vtkMutableDirectedGraph()
+    graph = vtkMutableDirectedGraph()
 
     v1 = graph.AddVertex()
     v2 = graph.AddVertex()
@@ -16,7 +28,7 @@ def main():
     graph.AddEdge(v2, v3)
 
     # Manually set the position of the vertices
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(1, 0, 0)
     points.InsertNextPoint(2, 0, 0)
@@ -24,11 +36,11 @@ def main():
     graph.SetPoints(points)
 
     # Create the color array
-    vertexColors = vtk.vtkIntArray()
+    vertexColors = vtkIntArray()
     vertexColors.SetNumberOfComponents(1)
     vertexColors.SetName('Color')
 
-    lookupTable = vtk.vtkLookupTable()
+    lookupTable = vtkLookupTable()
     lookupTable.SetNumberOfTableValues(3)
     lookupTable.SetTableValue(0, colors.GetColor4d('Red'))
     lookupTable.SetTableValue(1, colors.GetColor4d('White'))
@@ -43,13 +55,13 @@ def main():
     graph.GetVertexData().AddArray(vertexColors)
 
     # Visualize
-    graphLayoutView = vtk.vtkGraphLayoutView()
+    graphLayoutView = vtkGraphLayoutView()
     graphLayoutView.AddRepresentationFromInput(graph)
     graphLayoutView.SetLayoutStrategyToPassThrough()
     graphLayoutView.SetVertexColorArrayName('Color')
     graphLayoutView.ColorVerticesOn()
 
-    theme = vtk.vtkViewTheme()
+    theme = vtkViewTheme()
     theme.SetPointLookupTable(lookupTable)
 
     graphLayoutView.ApplyViewTheme(theme)

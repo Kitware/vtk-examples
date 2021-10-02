@@ -1,6 +1,20 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonCore import (
+    vtkIntArray,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import (
+    VTK_LINE,
+    vtkCellArray,
+    vtkUnstructuredGrid
+)
+from vtkmodules.vtkFiltersSources import vtkPointSource
+from vtkmodules.vtkIOXML import vtkXMLUnstructuredGridWriter
 
 
 def get_program_parameters():
@@ -21,11 +35,11 @@ def get_program_parameters():
 def main():
     fn = get_program_parameters()
 
-    pointSource = vtk.vtkPointSource()
+    pointSource = vtkPointSource()
     pointSource.Update()
 
     # Create an integer array to store vertex id data & link it with its degree value as a scalar.
-    degree = vtk.vtkIntArray()
+    degree = vtkIntArray()
     degree.SetNumberOfComponents(1)
     degree.SetName('degree')
     degree.SetNumberOfTuples(7)
@@ -40,7 +54,7 @@ def main():
     pointSource.GetOutput().GetPointData().AddArray(degree)
 
     # Assign co-ordinates for vertices
-    Points = vtk.vtkPoints()
+    Points = vtkPoints()
     Points.InsertNextPoint(0, 1, 0)
     Points.InsertNextPoint(0, 0, 0)
     Points.InsertNextPoint(1, 1, 0)
@@ -50,7 +64,7 @@ def main():
     Points.InsertNextPoint(3, 0, 0)
 
     # Establish the specified edges using CellArray
-    line = vtk.vtkCellArray()
+    line = vtkCellArray()
     line.Allocate(8)
     line.InsertNextCell(2)
     line.InsertCellPoint(0)
@@ -78,13 +92,13 @@ def main():
     line.InsertCellPoint(6)
 
     # Add the vertices and edges to unstructured Grid
-    G = vtk.vtkUnstructuredGrid()
+    G = vtkUnstructuredGrid()
     G.GetPointData().SetScalars(degree)
     G.SetPoints(Points)
-    G.SetCells(vtk.VTK_LINE, line)
+    G.SetCells(VTK_LINE, line)
 
     # Dump the graph in VTK unstructured format (.vtu)
-    gw = vtk.vtkXMLUnstructuredGridWriter()
+    gw = vtkXMLUnstructuredGridWriter()
     gw.SetFileName(fn)
     gw.SetInputData(G)
     gw.Write()

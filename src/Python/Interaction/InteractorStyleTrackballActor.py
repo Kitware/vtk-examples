@@ -1,31 +1,44 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # create a rendering window and renderer
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetWindowName('InteractorStyleTrackballActor')
 
     # create a renderwindowinteractor
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    style = vtk.vtkInteractorStyleTrackballActor()
+    style = vtkInteractorStyleTrackballActor()
     iren.SetInteractorStyle(style)
 
     # create source
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
 
     # mapper
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(sphereSource.GetOutputPort())
 
     # actor
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('Chartreuse'))
 

@@ -1,18 +1,28 @@
 #!/usr/bin/env python
 
-"""
-"""
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkIOImage import vtkImageReader2Factory
+from vtkmodules.vtkImagingColor import vtkImageMapToWindowLevelColors
+from vtkmodules.vtkImagingCore import vtkImageCast
+from vtkmodules.vtkImagingGeneral import vtkImageLaplacian
+from vtkmodules.vtkImagingMath import vtkImageMathematics
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleImage
+from vtkmodules.vtkRenderingCore import (
+    vtkImageActor,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    # colors = vtk.vtkNamedColors()
+    # colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
     # Read the image.
-    readerFactory = vtk.vtkImageReader2Factory()
+    readerFactory = vtkImageReader2Factory()
     reader = readerFactory.CreateImageReader2(fileName)
     reader.SetFileName(fileName)
     reader.Update()
@@ -24,16 +34,16 @@ def main():
     middleSlice = 22
 
     # Work with triple images.
-    cast = vtk.vtkImageCast()
+    cast = vtkImageCast()
     cast.SetInputConnection(reader.GetOutputPort())
     cast.SetOutputScalarTypeToDouble()
     cast.Update()
 
-    laplacian = vtk.vtkImageLaplacian()
+    laplacian = vtkImageLaplacian()
     laplacian.SetInputConnection(cast.GetOutputPort())
     laplacian.SetDimensionality(3)
 
-    enhance = vtk.vtkImageMathematics()
+    enhance = vtkImageMathematics()
     enhance.SetInputConnection(0, cast.GetOutputPort())
     enhance.SetInputConnection(1, laplacian.GetOutputPort())
     enhance.SetOperationToSubtract()
@@ -42,12 +52,12 @@ def main():
     colorLevel = colorWindow / 2
 
     # Map the image through the lookup table.
-    originalColor = vtk.vtkImageMapToWindowLevelColors()
+    originalColor = vtkImageMapToWindowLevelColors()
     originalColor.SetWindow(colorWindow)
     originalColor.SetLevel(colorLevel)
     originalColor.SetInputConnection(reader.GetOutputPort())
 
-    originalActor = vtk.vtkImageActor()
+    originalActor = vtkImageActor()
     originalActor.GetMapper().SetInputConnection(originalColor.GetOutputPort())
     originalActor.GetProperty().SetInterpolationTypeToNearest()
     originalActor.SetDisplayExtent(
@@ -55,32 +65,32 @@ def main():
         reader.GetDataExtent()[2], reader.GetDataExtent()[3],
         middleSlice, middleSlice)
 
-    laplacianColor = vtk.vtkImageMapToWindowLevelColors()
+    laplacianColor = vtkImageMapToWindowLevelColors()
     laplacianColor.SetWindow(1000)
     laplacianColor.SetLevel(0)
     laplacianColor.SetInputConnection(laplacian.GetOutputPort())
 
-    laplacianActor = vtk.vtkImageActor()
+    laplacianActor = vtkImageActor()
     laplacianActor.GetMapper().SetInputConnection(laplacianColor.GetOutputPort())
     laplacianActor.GetProperty().SetInterpolationTypeToNearest()
     laplacianActor.SetDisplayExtent(originalActor.GetDisplayExtent())
 
-    enhancedColor = vtk.vtkImageMapToWindowLevelColors()
+    enhancedColor = vtkImageMapToWindowLevelColors()
     enhancedColor.SetWindow(colorWindow)
     enhancedColor.SetLevel(colorLevel)
     enhancedColor.SetInputConnection(enhance.GetOutputPort())
 
-    enhancedActor = vtk.vtkImageActor()
+    enhancedActor = vtkImageActor()
     enhancedActor.GetMapper().SetInputConnection(enhancedColor.GetOutputPort())
     enhancedActor.GetProperty().SetInterpolationTypeToNearest()
     enhancedActor.SetDisplayExtent(originalActor.GetDisplayExtent())
 
     # Setup the renderers.
-    originalRenderer = vtk.vtkRenderer()
+    originalRenderer = vtkRenderer()
     originalRenderer.AddActor(originalActor)
-    laplacianRenderer = vtk.vtkRenderer()
+    laplacianRenderer = vtkRenderer()
     laplacianRenderer.AddActor(laplacianActor)
-    enhancedRenderer = vtk.vtkRenderer()
+    enhancedRenderer = vtkRenderer()
     enhancedRenderer.AddActor(enhancedActor)
 
     renderers = list()
@@ -93,7 +103,7 @@ def main():
     xGridDimensions = 3
     yGridDimensions = 1
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(rendererSize * xGridDimensions, rendererSize * yGridDimensions)
     for row in range(0, yGridDimensions):
         for col in range(xGridDimensions):
@@ -105,8 +115,8 @@ def main():
             renderWindow.AddRenderer(renderers[index])
     renderWindow.SetWindowName('EnhanceEdges')
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
-    style = vtk.vtkInteractorStyleImage()
+    renderWindowInteractor = vtkRenderWindowInteractor()
+    style = vtkInteractorStyleImage()
 
     renderWindowInteractor.SetInteractorStyle(style)
     renderWindowInteractor.SetRenderWindow(renderWindow)

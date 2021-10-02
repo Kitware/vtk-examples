@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkInfovisCore import vtkRandomGraphSource
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
-source = vtk.vtkRandomGraphSource()
+source = vtkRandomGraphSource()
 source.Update()
 
-view = vtk.vtkGraphLayoutView()
+view = vtkGraphLayoutView()
 view.AddRepresentationFromInputConnection(source.GetOutputPort())
 
 

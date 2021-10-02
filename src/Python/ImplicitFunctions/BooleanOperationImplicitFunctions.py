@@ -1,20 +1,40 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import (
+    vtkBox,
+    vtkImplicitBoolean,
+    vtkSphere
+)
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkImagingHybrid import vtkSampleFunction
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # create a sphere
-    sphere = vtk.vtkSphere()
+    sphere = vtkSphere()
     sphere.SetRadius(1)
     sphere.SetCenter(1, 0, 0)
 
     # create a box
-    box = vtk.vtkBox()
+    box = vtkBox()
     box.SetBounds(-1, 1, -1, 1, -1, 1)
 
     # combine the two implicit functions
-    boolean = vtk.vtkImplicitBoolean()
+    boolean = vtkImplicitBoolean()
     boolean.SetOperationTypeToDifference()
     # boolean.SetOperationTypeToUnion()
     # boolean.SetOperationTypeToIntersection()
@@ -23,41 +43,41 @@ def main():
 
     # The sample function generates a distance function from the implicit
     # function. This is then contoured to get a polygonal surface.
-    sample = vtk.vtkSampleFunction()
+    sample = vtkSampleFunction()
     sample.SetImplicitFunction(boolean)
     sample.SetModelBounds(-1, 2, -1, 1, -1, 1)
     sample.SetSampleDimensions(40, 40, 40)
     sample.ComputeNormalsOff()
 
     # contour
-    surface = vtk.vtkContourFilter()
+    surface = vtkContourFilter()
     surface.SetInputConnection(sample.GetOutputPort())
     surface.SetValue(0, 0.0)
 
     # mapper
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(surface.GetOutputPort())
     mapper.ScalarVisibilityOff()
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
     actor.GetProperty().SetColor(colors.GetColor3d('AliceBlue'))
     actor.GetProperty().SetEdgeColor(colors.GetColor3d('SteelBlue'))
 
     # A renderer and render window
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('Silver'))
 
     # add the actor
     renderer.AddActor(actor)
 
     # render window
-    renwin = vtk.vtkRenderWindow()
+    renwin = vtkRenderWindow()
     renwin.AddRenderer(renderer)
     renwin.SetWindowName('BooleanOperationImplicitFunctions')
 
     # An interactor
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renwin)
 
     # Start

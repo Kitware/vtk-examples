@@ -1,11 +1,22 @@
 #!/usr/bin/env python
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkDoubleArray,
+    vtkIntArray
+)
+from vtkmodules.vtkCommonDataModel import vtkMutableUndirectedGraph
+from vtkmodules.vtkInfovisLayout import vtkCircularLayoutStrategy
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    g = vtk.vtkMutableUndirectedGraph()
+    g = vtkMutableUndirectedGraph()
 
     # Create 3 vertices
     v1 = g.AddVertex()
@@ -18,7 +29,7 @@ def main():
     g.AddEdge(v1, v3)
 
     # Create the edge weight array
-    weights = vtk.vtkDoubleArray()
+    weights = vtkDoubleArray()
     weights.SetNumberOfComponents(1)
     weights.SetName('Weights')
 
@@ -28,7 +39,7 @@ def main():
     weights.InsertNextValue(2.0)
 
     # Create an array for the vertex labels
-    vertexIDs = vtk.vtkIntArray()
+    vertexIDs = vtkIntArray()
     vertexIDs.SetNumberOfComponents(1)
     vertexIDs.SetName('VertexIDs')
 
@@ -41,9 +52,9 @@ def main():
     g.GetEdgeData().AddArray(weights)
     g.GetVertexData().AddArray(vertexIDs)
 
-    circularLayoutStrategy = vtk.vtkCircularLayoutStrategy()
+    circularLayoutStrategy = vtkCircularLayoutStrategy()
 
-    graphLayoutView = vtk.vtkGraphLayoutView()
+    graphLayoutView = vtkGraphLayoutView()
     graphLayoutView.AddRepresentationFromInput(g)
 
     graphLayoutView.SetLayoutStrategy(circularLayoutStrategy)
@@ -52,9 +63,9 @@ def main():
     graphLayoutView.SetEdgeLabelArrayName('Weights')  # default is 'labels'
     graphLayoutView.SetVertexLabelArrayName('VertexIDs')  # default is 'labels'
     graphLayoutView.GetRepresentation().GetVertexLabelTextProperty().SetColor(
-    colors.GetColor3d('Yellow'))
+        colors.GetColor3d('Yellow'))
     graphLayoutView.GetRepresentation().GetEdgeLabelTextProperty().SetColor(
-    colors.GetColor3d('Lime'))
+        colors.GetColor3d('Lime'))
     graphLayoutView.ResetCamera()
     graphLayoutView.Render()
     graphLayoutView.GetInteractor().Start()

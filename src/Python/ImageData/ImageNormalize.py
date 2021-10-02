@@ -1,43 +1,56 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkImagingCore import vtkImageCast
+from vtkmodules.vtkImagingGeneral import vtkImageNormalize
+from vtkmodules.vtkImagingSources import vtkImageSinusoidSource
+from vtkmodules.vtkRenderingCore import (
+    vtkImageActor,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create an image
-    source = vtk.vtkImageSinusoidSource()
+    source = vtkImageSinusoidSource()
     source.Update()
 
-    normalizeFilter = vtk.vtkImageNormalize()
+    normalizeFilter = vtkImageNormalize()
 
     normalizeFilter.SetInputConnection(source.GetOutputPort())
     normalizeFilter.Update()
 
-    inputCastFilter = vtk.vtkImageCast()
+    inputCastFilter = vtkImageCast()
     inputCastFilter.SetInputConnection(source.GetOutputPort())
     inputCastFilter.SetOutputScalarTypeToUnsignedChar()
     inputCastFilter.Update()
 
-    normalizeCastFilter = vtk.vtkImageCast()
+    normalizeCastFilter = vtkImageCast()
     normalizeCastFilter.SetInputConnection(normalizeFilter.GetOutputPort())
     normalizeCastFilter.SetOutputScalarTypeToUnsignedChar()
     normalizeCastFilter.Update()
 
     # Create actors
-    inputActor = vtk.vtkImageActor()
+    inputActor = vtkImageActor()
     inputActor.GetMapper().SetInputConnection(inputCastFilter.GetOutputPort())
 
-    normalizedActor = vtk.vtkImageActor()
+    normalizedActor = vtkImageActor()
     normalizedActor.GetMapper().SetInputConnection(normalizeCastFilter.GetOutputPort())
 
     # There will be one render window
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(600, 300)
 
     # And one interactor
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     # Define viewport ranges
@@ -46,12 +59,12 @@ def main():
     rightViewport = [0.5, 0.0, 1.0, 1.0]
 
     # Setup both renderers
-    leftRenderer = vtk.vtkRenderer()
+    leftRenderer = vtkRenderer()
     renderWindow.AddRenderer(leftRenderer)
     leftRenderer.SetViewport(leftViewport)
     leftRenderer.SetBackground(colors.GetColor3d('Sienna'))
 
-    rightRenderer = vtk.vtkRenderer()
+    rightRenderer = vtkRenderer()
     renderWindow.AddRenderer(rightRenderer)
     rightRenderer.SetViewport(rightViewport)
     rightRenderer.SetBackground(colors.GetColor3d('SteelBlue'))

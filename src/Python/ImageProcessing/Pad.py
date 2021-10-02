@@ -1,74 +1,86 @@
 #!/usr/bin/env python
 
-"""
-"""
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkIOImage import vtkImageReader2Factory
+from vtkmodules.vtkImagingColor import vtkImageMapToWindowLevelColors
+from vtkmodules.vtkImagingCore import (
+    vtkImageConstantPad,
+    vtkImageMirrorPad
+)
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleImage
+from vtkmodules.vtkRenderingCore import (
+    vtkImageActor,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
     # Read the image.
-    readerFactory = vtk.vtkImageReader2Factory()
+    readerFactory = vtkImageReader2Factory()
     reader = readerFactory.CreateImageReader2(fileName)
     reader.SetFileName(fileName)
     reader.Update()
 
     # Pipelines
-    constantPad = vtk.vtkImageConstantPad()
+    constantPad = vtkImageConstantPad()
     constantPad.SetInputConnection(reader.GetOutputPort())
     constantPad.SetConstant(800)
     constantPad.SetOutputWholeExtent(-127, 383, -127, 383, 22, 22)
 
-    mirrorPad = vtk.vtkImageMirrorPad()
+    mirrorPad = vtkImageMirrorPad()
     mirrorPad.SetInputConnection(reader.GetOutputPort())
     mirrorPad.SetOutputWholeExtent(constantPad.GetOutputWholeExtent())
 
     # Create actors
-    constantPadColor = vtk.vtkImageMapToWindowLevelColors()
+    constantPadColor = vtkImageMapToWindowLevelColors()
     constantPadColor.SetWindow(2000)
     constantPadColor.SetLevel(1000)
     constantPadColor.SetInputConnection(constantPad.GetOutputPort())
 
-    constantPadActor = vtk.vtkImageActor()
+    constantPadActor = vtkImageActor()
     constantPadActor.GetMapper().SetInputConnection(
         constantPadColor.GetOutputPort())
     constantPadActor.GetProperty().SetInterpolationTypeToNearest()
 
-    mirrorPadColor = vtk.vtkImageMapToWindowLevelColors()
+    mirrorPadColor = vtkImageMapToWindowLevelColors()
     mirrorPadColor.SetWindow(2000)
     mirrorPadColor.SetLevel(1000)
     mirrorPadColor.SetInputConnection(mirrorPad.GetOutputPort())
 
-    mirrorPadActor = vtk.vtkImageActor()
+    mirrorPadActor = vtkImageActor()
     mirrorPadActor.GetMapper().SetInputConnection(
         mirrorPadColor.GetOutputPort())
     mirrorPadActor.GetProperty().SetInterpolationTypeToNearest()
 
     # Setup the renderers.
-    constantPadRenderer = vtk.vtkRenderer()
+    constantPadRenderer = vtkRenderer()
     constantPadRenderer.SetViewport(0.0, 0.0, 0.5, 1.0)
     constantPadRenderer.AddActor(constantPadActor)
     constantPadRenderer.ResetCamera()
     constantPadRenderer.SetBackground(colors.GetColor3d("SlateGray"))
 
-    mirrorPadRenderer = vtk.vtkRenderer()
+    mirrorPadRenderer = vtkRenderer()
     mirrorPadRenderer.SetViewport(0.5, 0.0, 1.0, 1.0)
     mirrorPadRenderer.AddActor(mirrorPadActor)
     mirrorPadRenderer.SetActiveCamera(constantPadRenderer.GetActiveCamera())
     mirrorPadRenderer.SetBackground(colors.GetColor3d("LightSlateGray"))
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(600, 300)
     renderWindow.SetWindowName('Pad')
     renderWindow.AddRenderer(constantPadRenderer)
     renderWindow.AddRenderer(mirrorPadRenderer)
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
-    style = vtk.vtkInteractorStyleImage()
+    renderWindowInteractor = vtkRenderWindowInteractor()
+    style = vtkInteractorStyleImage()
 
     renderWindowInteractor.SetInteractorStyle(style)
 

@@ -1,36 +1,50 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkFiltersGeneral import vtkVertexGlyphFilter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor2D,
+    vtkPolyDataMapper2D,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
-    points = vtk.vtkPoints()
+    colors = vtkNamedColors()
+    points = vtkPoints()
     points.InsertNextPoint(10, 10, 0)
     points.InsertNextPoint(100, 100, 0)
     points.InsertNextPoint(200, 200, 0)
 
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(points)
 
-    glyphFilter = vtk.vtkVertexGlyphFilter()
+    glyphFilter = vtkVertexGlyphFilter()
     glyphFilter.SetInputData(polydata)
     glyphFilter.Update()
 
-    mapper = vtk.vtkPolyDataMapper2D()
+    mapper = vtkPolyDataMapper2D()
     mapper.SetInputConnection(glyphFilter.GetOutputPort())
     mapper.Update()
 
-    actor = vtk.vtkActor2D()
+    actor = vtkActor2D()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('Gold'))
     actor.GetProperty().SetPointSize(8)
 
     # Create a renderer, render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actor to the scene
@@ -42,11 +56,11 @@ def main():
 
     # Render and interact
     renderWindow.Render()
-    # w2if = vtk.vtkWindowToImageFilter()
+    # w2if = vtkWindowToImageFilter()
     # w2if.SetInput(renderWindow)
     # w2if.Update()
     #
-    # writer = vtk.vtkPNGWriter()
+    # writer = vtkPNGWriter()
     # writer.SetFileName('TestActor2D.png')
     # writer.SetInputConnection(w2if.GetOutputPort())
     # writer.Write()

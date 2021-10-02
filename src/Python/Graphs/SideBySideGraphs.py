@@ -1,12 +1,23 @@
 #!/usr/bin/env python
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import vtkMutableUndirectedGraph
+from vtkmodules.vtkRenderingCore import (
+    vtkRenderWindow,
+    vtkRenderWindowInteractor
+)
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the first graph
-    g0 = vtk.vtkMutableUndirectedGraph()
+    g0 = vtkMutableUndirectedGraph()
 
     v1 = g0.AddVertex()
     v2 = g0.AddVertex()
@@ -17,7 +28,7 @@ def main():
     g0.AddEdge(v1, v3)
 
     # Create points
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0.0, 0.0, 0.0)
     points.InsertNextPoint(1.0, 0.0, 0.0)
     points.InsertNextPoint(0.0, 1.0, 0.0)
@@ -26,7 +37,7 @@ def main():
     g0.SetPoints(points)
 
     # Create the second graph
-    g1 = vtk.vtkMutableUndirectedGraph()
+    g1 = vtkMutableUndirectedGraph()
 
     v1 = g1.AddVertex()
     v2 = g1.AddVertex()
@@ -34,7 +45,7 @@ def main():
     g1.AddEdge(v1, v2)
 
     # Create points
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0.0, 0.0, 0.0)
     points.InsertNextPoint(1.0, 0.0, 0.0)
 
@@ -42,18 +53,18 @@ def main():
     g1.SetPoints(points)
 
     # There will be one render window
-    ren_win = vtk.vtkRenderWindow()
+    ren_win = vtkRenderWindow()
     ren_win.SetSize(600, 300)
     ren_win.SetWindowName('SideBySideGraphs')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
 
     # Define viewport ranges
     # (xmin, ymin, xmax, ymax)
     left_viewport = [0.0, 0.0, 0.5, 1.0]
     right_viewport = [0.5, 0.0, 1.0, 1.0]
 
-    graph_layout_view0 = vtk.vtkGraphLayoutView()
+    graph_layout_view0 = vtkGraphLayoutView()
     graph_layout_view0.SetRenderWindow(ren_win)
     graph_layout_view0.SetInteractor(iren)
     graph_layout_view0.GetRenderer().SetViewport(left_viewport)
@@ -66,7 +77,7 @@ def main():
     graph_layout_view0.Render()
     graph_layout_view0.ResetCamera()
 
-    graph_layout_view1 = vtk.vtkGraphLayoutView()
+    graph_layout_view1 = vtkGraphLayoutView()
     graph_layout_view1.SetRenderWindow(ren_win)
     graph_layout_view1.SetInteractor(iren)
     graph_layout_view1.GetRenderer().SetViewport(right_viewport)

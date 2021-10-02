@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+from vtkmodules.vtkImagingMath import vtkImageWeightedSum
 
 
 # ImageSets = List of Image sets
@@ -8,7 +8,7 @@ import vtkmodules.all as vtk
 
 def SumVTKImages(ImageSets, Weights):
     NumOfImages = len(ImageSets)
-    SumFilter = vtk.vtkImageWeightedSum()
+    SumFilter = vtkImageWeightedSum()
     for x in range(0, NumOfImages, 1):
         SumFilter.AddInputConnection(ImageSets[x])
         SumFilter.SetWeight(x, Weights[x])

@@ -4,13 +4,22 @@
 # which shows how to use a vtkAnnotationLink to view the contents
 # of a selection from a vtkGraphLayoutView
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersGeneral import vtkAnnotationLink
+from vtkmodules.vtkInfovisCore import vtkRandomGraphSource
+from vtkmodules.vtkInfovisLayout import vtkSimple2DLayoutStrategy
+from vtkmodules.vtkViewsCore import vtkViewTheme
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    source = vtk.vtkRandomGraphSource()
+    source = vtkRandomGraphSource()
     source.DirectedOff()
     source.SetNumberOfVertices(100)
     source.SetEdgeProbability(0)  # Basically generates a tree
@@ -19,11 +28,11 @@ def main():
     source.IncludeEdgeWeightsOn()
 
     # Create force directed layout
-    strategy = vtk.vtkSimple2DLayoutStrategy()
+    strategy = vtkSimple2DLayoutStrategy()
     strategy.SetInitialTemperature(5)
 
     # Create a graph layout view
-    view = vtk.vtkGraphLayoutView()
+    view = vtkGraphLayoutView()
     view.AddRepresentationFromInputConnection(source.GetOutputPort())
     view.SetVertexLabelArrayName('vertex id')
     view.SetVertexLabelVisibility(True)
@@ -37,7 +46,7 @@ def main():
     view.GetRepresentation(0).SetSelectionType(2)
 
     # Create a selection link and set both view to use it
-    annotationLink = vtk.vtkAnnotationLink()
+    annotationLink = vtkAnnotationLink()
     view.GetRepresentation(0).SetAnnotationLink(annotationLink)
 
     def select_callback(caller, event):
@@ -73,7 +82,7 @@ def main():
     annotationLink.AddObserver('AnnotationChangedEvent', select_callback)
 
     # Set the theme on the view
-    theme = vtk.vtkViewTheme.CreateMellowTheme()
+    theme = vtkViewTheme.CreateMellowTheme()
     theme.SetLineWidth(5)
     theme.SetPointSize(10)
     theme.SetCellOpacity(0.99)

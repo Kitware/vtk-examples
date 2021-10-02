@@ -1,8 +1,22 @@
 #!/usr/bin/env python
-import vtkmodules.all as vtk
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
-class MyInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
+class MyInteractorStyle(vtkInteractorStyleTrackballCamera):
 
     def __init__(self, parent=None):
         self.AddObserver('MiddleButtonPressEvent', self.middle_button_press_event)
@@ -20,29 +34,29 @@ class MyInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    source = vtk.vtkSphereSource()
+    source = vtkSphereSource()
     source.SetCenter(0, 0, 0)
     source.SetRadius(1)
     source.Update()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(source.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('SlateGray'))
     renderer.AddActor(actor)
 
-    renwin = vtk.vtkRenderWindow()
+    renwin = vtkRenderWindow()
     renwin.AddRenderer(renderer)
     renwin.SetWindowName('MouseEvents')
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetInteractorStyle(MyInteractorStyle())
     interactor.SetRenderWindow(renwin)
 

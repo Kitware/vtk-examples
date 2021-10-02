@@ -1,6 +1,21 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSuperquadricSource
+from vtkmodules.vtkIOImage import vtkJPEGReader
+from vtkmodules.vtkImagingSources import vtkImageCanvasSource2D
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkImageActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -16,13 +31,13 @@ def get_program_parameters():
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     #  Verify input arguments
     fn = get_program_parameters()
     if fn:
         # Read the image
-        jpeg_reader = vtk.vtkJPEGReader()
+        jpeg_reader = vtkJPEGReader()
         if not jpeg_reader.CanReadFile(fn):
             print('Error reading file:', fn)
             return
@@ -31,7 +46,7 @@ def main():
         jpeg_reader.Update()
         image_data = jpeg_reader.GetOutput()
     else:
-        canvas_source = vtk.vtkImageCanvasSource2D()
+        canvas_source = vtkImageCanvasSource2D()
         canvas_source.SetExtent(0, 100, 0, 100, 0, 0)
         canvas_source.SetScalarTypeToUnsignedChar()
         canvas_source.SetNumberOfScalarComponents(3)
@@ -45,27 +60,27 @@ def main():
         image_data = canvas_source.GetOutput()
 
     # Create an image actor to display the image
-    image_actor = vtk.vtkImageActor()
+    image_actor = vtkImageActor()
     image_actor.SetInputData(image_data)
 
     # Create a renderer to display the image in the background
-    background_renderer = vtk.vtkRenderer()
+    background_renderer = vtkRenderer()
 
     # Create a superquadric
-    superquadric_source = vtk.vtkSuperquadricSource()
+    superquadric_source = vtkSuperquadricSource()
     superquadric_source.SetPhiRoundness(1.1)
     superquadric_source.SetThetaRoundness(.2)
 
     # Create a mapper and actor
-    superquadric_mapper = vtk.vtkPolyDataMapper()
+    superquadric_mapper = vtkPolyDataMapper()
     superquadric_mapper.SetInputConnection(superquadric_source.GetOutputPort())
 
-    superquadric_actor = vtk.vtkActor()
+    superquadric_actor = vtkActor()
     superquadric_actor.SetMapper(superquadric_mapper)
     superquadric_actor.GetProperty().SetColor(colors.GetColor3d('NavajoWhite'))
 
-    scene_renderer = vtk.vtkRenderer()
-    render_window = vtk.vtkRenderWindow()
+    scene_renderer = vtkRenderer()
+    render_window = vtkRenderWindow()
 
     # Set up the render window and renderers such that there is
     # a background layer and a foreground layer
@@ -77,7 +92,7 @@ def main():
     render_window.AddRenderer(scene_renderer)
     render_window.SetWindowName('BackgroundImage')
 
-    render_window_interactor = vtk.vtkRenderWindowInteractor()
+    render_window_interactor = vtkRenderWindowInteractor()
     render_window_interactor.SetRenderWindow(render_window)
 
     # Add actors to the renderers

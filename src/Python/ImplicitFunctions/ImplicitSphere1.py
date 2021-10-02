@@ -1,50 +1,66 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkSphere
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkImagingHybrid import vtkSampleFunction
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    sphere = vtk.vtkSphere()
+    sphere = vtkSphere()
     sphere.SetCenter(0, 0, 0)
     sphere.SetRadius(0.5)
 
     # The sample function generates a distance function from the implicit
     # function. This is then contoured to get a polygonal surface.
-    sample = vtk.vtkSampleFunction()
+    sample = vtkSampleFunction()
     sample.SetImplicitFunction(sphere)
     sample.SetModelBounds(-.5, .5, -.5, .5, -.5, .5)
     sample.SetSampleDimensions(20, 20, 20)
     sample.ComputeNormalsOff()
 
     # contour
-    surface = vtk.vtkContourFilter()
+    surface = vtkContourFilter()
     surface.SetInputConnection(sample.GetOutputPort())
     surface.SetValue(0, 0.0)
 
     # mapper
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(surface.GetOutputPort())
     mapper.ScalarVisibilityOff()
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
     actor.GetProperty().SetColor(colors.GetColor3d('AliceBlue'))
     actor.GetProperty().SetEdgeColor(colors.GetColor3d('SteelBlue'))
 
     # A renderer and render window
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('Silver'))
 
     # add the actor
     renderer.AddActor(actor)
 
     # render window
-    renwin = vtk.vtkRenderWindow()
+    renwin = vtkRenderWindow()
     renwin.AddRenderer(renderer)
     renwin.SetWindowName('ImplicitSphere1')
 
     # An interactor
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renwin)
 
     # Start

@@ -1,27 +1,43 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkImagingCore import vtkImageCast
+from vtkmodules.vtkImagingMath import vtkImageWeightedSum
+from vtkmodules.vtkImagingSources import (
+    vtkImageMandelbrotSource,
+    vtkImageSinusoidSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkImageActor,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create image 1
-    source1 = vtk.vtkImageMandelbrotSource()
+    source1 = vtkImageMandelbrotSource()
     source1.SetWholeExtent(0, 255, 0, 255, 0, 0)
     source1.Update()
 
-    source1Double = vtk.vtkImageCast()
+    source1Double = vtkImageCast()
     source1Double.SetInputConnection(0, source1.GetOutputPort())
     source1Double.SetOutputScalarTypeToDouble()
 
     # Create image 2
-    source2 = vtk.vtkImageSinusoidSource()
+    source2 = vtkImageSinusoidSource()
     source2.SetWholeExtent(0, 255, 0, 255, 0, 0)
     source2.Update()
 
     # Do the sum
-    sumFilter = vtk.vtkImageWeightedSum()
+    sumFilter = vtkImageWeightedSum()
     sumFilter.SetWeight(0, 0.8)
     sumFilter.SetWeight(1, 0.2)
     sumFilter.AddInputConnection(source1Double.GetOutputPort())
@@ -29,37 +45,37 @@ def main():
     sumFilter.Update()
 
     # Display the images
-    source1CastFilter = vtk.vtkImageCast()
+    source1CastFilter = vtkImageCast()
     source1CastFilter.SetInputConnection(source1.GetOutputPort())
     source1CastFilter.SetOutputScalarTypeToUnsignedChar()
     source1CastFilter.Update()
 
-    source2CastFilter = vtk.vtkImageCast()
+    source2CastFilter = vtkImageCast()
     source2CastFilter.SetInputConnection(source2.GetOutputPort())
     source2CastFilter.SetOutputScalarTypeToUnsignedChar()
     source2CastFilter.Update()
 
-    summedCastFilter = vtk.vtkImageCast()
+    summedCastFilter = vtkImageCast()
     summedCastFilter.SetInputConnection(sumFilter.GetOutputPort())
     summedCastFilter.SetOutputScalarTypeToUnsignedChar()
     summedCastFilter.Update()
 
     # Create actors
-    source1Actor = vtk.vtkImageActor()
+    source1Actor = vtkImageActor()
     source1Actor.GetMapper().SetInputConnection(source1CastFilter.GetOutputPort())
 
-    source2Actor = vtk.vtkImageActor()
+    source2Actor = vtkImageActor()
     source2Actor.GetMapper().SetInputConnection(source2CastFilter.GetOutputPort())
 
-    summedActor = vtk.vtkImageActor()
+    summedActor = vtkImageActor()
     summedActor.GetMapper().SetInputConnection(summedCastFilter.GetOutputPort())
 
     # There will be one render window
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(600, 300)
 
     # And one interactor
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     # Define viewport ranges
@@ -69,17 +85,17 @@ def main():
     rightViewport = [0.66, 0.0, 1.0, 1.0]
 
     # Setup renderers
-    leftRenderer = vtk.vtkRenderer()
+    leftRenderer = vtkRenderer()
     renderWindow.AddRenderer(leftRenderer)
     leftRenderer.SetViewport(leftViewport)
     leftRenderer.SetBackground(colors.GetColor3d('Peru'))
 
-    centerRenderer = vtk.vtkRenderer()
+    centerRenderer = vtkRenderer()
     renderWindow.AddRenderer(centerRenderer)
     centerRenderer.SetViewport(centerViewport)
     centerRenderer.SetBackground(colors.GetColor3d('DarkTurquoise'))
 
-    rightRenderer = vtk.vtkRenderer()
+    rightRenderer = vtkRenderer()
     renderWindow.AddRenderer(rightRenderer)
     rightRenderer.SetViewport(rightViewport)
     rightRenderer.SetBackground(colors.GetColor3d('SteelBlue'))

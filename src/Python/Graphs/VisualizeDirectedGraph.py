@@ -1,9 +1,27 @@
 #!/usr/bin/env python
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonDataModel import vtkMutableDirectedGraph
+from vtkmodules.vtkFiltersCore import vtkGlyph3D
+from vtkmodules.vtkFiltersSources import (
+    vtkGlyphSource2D,
+    vtkGraphToPolyData
+)
+from vtkmodules.vtkInfovisLayout import (
+    vtkGraphLayout,
+    vtkSimple2DLayoutStrategy
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper
+)
+from vtkmodules.vtkViewsInfovis import vtkGraphLayoutView
 
 
 def main():
-    g = vtk.vtkMutableDirectedGraph()
+    g = vtkMutableDirectedGraph()
 
     v1 = g.AddVertex()
     v2 = g.AddVertex()
@@ -15,10 +33,10 @@ def main():
 
     # Do layout manually before handing graph to the view.
     # This allows us to know the positions of edge arrows.
-    graphLayoutView = vtk.vtkGraphLayoutView()
+    graphLayoutView = vtkGraphLayoutView()
 
-    layout = vtk.vtkGraphLayout()
-    strategy = vtk.vtkSimple2DLayoutStrategy()
+    layout = vtkGraphLayout()
+    strategy = vtkSimple2DLayoutStrategy()
     layout.SetInputData(g)
     layout.SetLayoutStrategy(strategy)
 
@@ -33,7 +51,7 @@ def main():
     graphLayoutView.AddRepresentationFromInputConnection(layout.GetOutputPort())
 
     # Manually create an actor containing the glyphed arrows.
-    graphToPoly = vtk.vtkGraphToPolyData()
+    graphToPoly = vtkGraphToPolyData()
     graphToPoly.SetInputConnection(layout.GetOutputPort())
     graphToPoly.EdgeGlyphOutputOn()
 
@@ -42,20 +60,20 @@ def main():
     graphToPoly.SetEdgeGlyphPosition(0.98)
 
     # Make a simple edge arrow for glyphing.
-    arrowSource = vtk.vtkGlyphSource2D()
+    arrowSource = vtkGlyphSource2D()
     arrowSource.SetGlyphTypeToEdgeArrow()
     arrowSource.SetScale(0.1)
     arrowSource.Update()
 
     # Use Glyph3D to repeat the glyph on all edges.
-    arrowGlyph = vtk.vtkGlyph3D()
+    arrowGlyph = vtkGlyph3D()
     arrowGlyph.SetInputConnection(0, graphToPoly.GetOutputPort(1))
     arrowGlyph.SetInputConnection(1, arrowSource.GetOutputPort())
 
     # Add the edge arrow actor to the view.
-    arrowMapper = vtk.vtkPolyDataMapper()
+    arrowMapper = vtkPolyDataMapper()
     arrowMapper.SetInputConnection(arrowGlyph.GetOutputPort())
-    arrowActor = vtk.vtkActor()
+    arrowActor = vtkActor()
     arrowActor.SetMapper(arrowMapper)
     graphLayoutView.GetRenderer().AddActor(arrowActor)
 

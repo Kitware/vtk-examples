@@ -1,57 +1,72 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersGeneral import vtkImageMarchingCubes
+from vtkmodules.vtkIOImage import vtkImageReader2Factory
+from vtkmodules.vtkImagingCore import vtkImageShrink3D
+from vtkmodules.vtkImagingGeneral import vtkImageGaussianSmooth
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     file_name = get_program_parameters()
 
     # Read the image.
-    reader_factory = vtk.vtkImageReader2Factory()
+    reader_factory = vtkImageReader2Factory()
     reader = reader_factory.CreateImageReader2(file_name)
     reader.SetFileName(file_name)
     reader.Update()
 
     # Smoothed pipeline.
-    smooth = vtk.vtkImageGaussianSmooth()
+    smooth = vtkImageGaussianSmooth()
     smooth.SetDimensionality(3)
     smooth.SetInputConnection(reader.GetOutputPort())
     smooth.SetStandardDeviations(1.75, 1.75, 0.0)
     smooth.SetRadiusFactor(2)
 
-    subsample_smoothed = vtk.vtkImageShrink3D()
+    subsample_smoothed = vtkImageShrink3D()
     subsample_smoothed.SetInputConnection(smooth.GetOutputPort())
     subsample_smoothed.SetShrinkFactors(4, 4, 1)
 
-    iso_smoothed = vtk.vtkImageMarchingCubes()
+    iso_smoothed = vtkImageMarchingCubes()
     iso_smoothed.SetInputConnection(smooth.GetOutputPort())
     iso_smoothed.SetValue(0, 1150)
 
-    iso_smoothed_mapper = vtk.vtkPolyDataMapper()
+    iso_smoothed_mapper = vtkPolyDataMapper()
     iso_smoothed_mapper.SetInputConnection(iso_smoothed.GetOutputPort())
     iso_smoothed_mapper.ScalarVisibilityOff()
 
-    iso_smoothed_actor = vtk.vtkActor()
+    iso_smoothed_actor = vtkActor()
     iso_smoothed_actor.SetMapper(iso_smoothed_mapper)
     iso_smoothed_actor.GetProperty().SetColor(colors.GetColor3d("Ivory"))
 
     # Unsmoothed pipeline.
     # Sub sample the data.
-    subsample = vtk.vtkImageShrink3D()
+    subsample = vtkImageShrink3D()
     subsample.SetInputConnection(reader.GetOutputPort())
     subsample.SetShrinkFactors(4, 4, 1)
 
-    iso = vtk.vtkImageMarchingCubes()
+    iso = vtkImageMarchingCubes()
     iso.SetInputConnection(subsample.GetOutputPort())
     iso.SetValue(0, 1150)
 
-    iso_mapper = vtk.vtkPolyDataMapper()
+    iso_mapper = vtkPolyDataMapper()
     iso_mapper.SetInputConnection(iso.GetOutputPort())
     iso_mapper.ScalarVisibilityOff()
 
-    iso_actor = vtk.vtkActor()
+    iso_actor = vtkActor()
     iso_actor.SetMapper(iso_mapper)
     iso_actor.GetProperty().SetColor(colors.GetColor3d("Ivory"))
 
@@ -61,17 +76,17 @@ def main():
     left_viewport = [0.0, 0.0, 0.5, 1.0]
     right_viewport = [0.5, 0.0, 1.0, 1.0]
 
-    renderer_left = vtk.vtkRenderer()
+    renderer_left = vtkRenderer()
     renderer_left.SetViewport(left_viewport)
 
-    renderer_right = vtk.vtkRenderer()
+    renderer_right = vtkRenderer()
     renderer_right.SetViewport(right_viewport)
 
-    render_window = vtk.vtkRenderWindow()
+    render_window = vtkRenderWindow()
     render_window.AddRenderer(renderer_left)
     render_window.AddRenderer(renderer_right)
 
-    render_window_interactor = vtk.vtkRenderWindowInteractor()
+    render_window_interactor = vtkRenderWindowInteractor()
     render_window_interactor.SetRenderWindow(render_window)
 
     renderer_left.AddActor(iso_actor)

@@ -1,50 +1,64 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkSphere
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkImagingHybrid import vtkSampleFunction
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor("BkgColor", [51, 77, 102, 255])
 
-    sphere = vtk.vtkSphere()
+    sphere = vtkSphere()
 
     # Sample the function
-    sample = vtk.vtkSampleFunction()
+    sample = vtkSampleFunction()
     sample.SetSampleDimensions(50, 50, 50)
     sample.SetImplicitFunction(sphere)
     value = 2.0
-    xmin = -value;
+    xmin = -value
     xmax = value
-    ymin = -value;
+    ymin = -value
     ymax = value
-    zmin = -value;
+    zmin = -value
     zmax = value
     sample.SetModelBounds(xmin, xmax, ymin, ymax, zmin, zmax)
 
     # Create the 0 isosurface
-    contours = vtk.vtkContourFilter()
+    contours = vtkContourFilter()
     contours.SetInputConnection(sample.GetOutputPort())
     contours.GenerateValues(1, 1, 1)
 
     # Map the contours to graphical primitives
-    contourMapper = vtk.vtkPolyDataMapper()
+    contourMapper = vtkPolyDataMapper()
     contourMapper.SetInputConnection(contours.GetOutputPort())
     contourMapper.ScalarVisibilityOff()
 
     # Create an actor for the contours
-    contourActor = vtk.vtkActor()
+    contourActor = vtkActor()
     contourActor.SetMapper(contourMapper)
 
     # Visualize
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetWindowName('ImplicitSphere')
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(contourActor)
