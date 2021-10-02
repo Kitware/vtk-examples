@@ -1,34 +1,55 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkIOImage import (
+    vtkBMPWriter,
+    vtkJPEGWriter,
+    vtkPNGWriter,
+    vtkPNMWriter,
+    vtkPostScriptWriter,
+    vtkTIFFWriter
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkWindowToImageFilter
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('BkgColor', [26, 51, 102, 255])
 
     # create a rendering window and renderer
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
 
     # create a renderwindowinteractor
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # create source
-    source = vtk.vtkSphereSource()
+    source = vtkSphereSource()
     source.SetCenter(0, 0, 0)
     source.SetRadius(5.0)
 
     # mapper
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(source.GetOutputPort())
 
     # actor
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     # color the actor
@@ -75,21 +96,21 @@ def WriteImage(fileName, renWin, rgba=True):
             ext = '.png'
             fileName = fileName + ext
         if ext == '.bmp':
-            writer = vtk.vtkBMPWriter()
+            writer = vtkBMPWriter()
         elif ext == '.jpg':
-            writer = vtk.vtkJPEGWriter()
+            writer = vtkJPEGWriter()
         elif ext == '.pnm':
-            writer = vtk.vtkPNMWriter()
+            writer = vtkPNMWriter()
         elif ext == '.ps':
             if rgba:
                 rgba = False
-            writer = vtk.vtkPostScriptWriter()
+            writer = vtkPostScriptWriter()
         elif ext == '.tiff':
-            writer = vtk.vtkTIFFWriter()
+            writer = vtkTIFFWriter()
         else:
-            writer = vtk.vtkPNGWriter()
+            writer = vtkPNGWriter()
 
-        windowto_image_filter = vtk.vtkWindowToImageFilter()
+        windowto_image_filter = vtkWindowToImageFilter()
         windowto_image_filter.SetInput(renWin)
         windowto_image_filter.SetScale(1)  # image quality
         if rgba:

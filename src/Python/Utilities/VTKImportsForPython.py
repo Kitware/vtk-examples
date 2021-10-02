@@ -56,12 +56,12 @@ def get_classes_constants(paths):
 
     vtk_patterns = [
         # class pattern
-        re.compile(r'(vtk[a-zA-Z]+\S+)\({1}'),
+        re.compile(r'(vtk[a-zA-Z0-9]+)\('),
         # constants pattern
         re.compile(r'(VTK_[A-Z_]+)'),
         # special patterns
-        re.compile(r'(mutable)\({1}'),
-        re.compile(r'(vtk[a-zA-Z]+\S+)\.{1}\S'),
+        re.compile(r'(mutable)\('),
+        re.compile(r'(vtk[a-zA-Z0-9]+)\.'),
     ]
 
     res = collections.defaultdict(set)
@@ -94,14 +94,15 @@ def format_imports(imports):
                 s += ',\n'.join(c_list)
                 s += '\n    )'
                 res.append(f'from vtkmodules.{module} import {s}')
-        additional_modules = ['vtkInteractionStyle', 'vtkRenderingFreeType', 'vtkRenderingOpenGL2', 'vtkRenderingUI']
+        additional_modules = ['vtkInteractionStyle', 'vtkRenderingFreeType', 'vtkRenderingOpenGL2',
+                              'vtkRenderingContextOpenGL2', 'vtkRenderingUI']
         comments = [
             '',
             '# You may need to uncomment one or more of the following imports.',
             '# If vtkRenderWindow is used and you want to use OpenGL,',
             '#   you also need the vtkRenderingOpenGL2 module.',
             '# If vtkRenderWindowInteractor is used,',
-            '#    uncomment vtkRenderingUI and possibly vtkInteractionStyl',
+            '#    uncomment vtkRenderingUI and possibly vtkInteractionStyle',
             '# If text rendering is used, uncomment vtkRenderingFreeType.',
             ''
         ]

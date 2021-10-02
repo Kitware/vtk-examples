@@ -1,6 +1,22 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkIOGeometry import (
+    vtkSTLReader,
+    vtkSTLWriter
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -17,38 +33,38 @@ def get_program_parameters():
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     filename = get_program_parameters()
 
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
     sphereSource.Update()
 
     # Write the stl file to disk
-    stlWriter = vtk.vtkSTLWriter()
+    stlWriter = vtkSTLWriter()
     stlWriter.SetFileName(filename)
     stlWriter.SetInputConnection(sphereSource.GetOutputPort())
     stlWriter.Write()
 
     # Read and display for verification
-    reader = vtk.vtkSTLReader()
+    reader = vtkSTLReader()
     reader.SetFileName(filename)
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(reader.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     # Create a rendering window and renderer
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetWindowName('WriteSTL')
 
     # Create a renderwindowinteractor
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Assign actor to the renderer

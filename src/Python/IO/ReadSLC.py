@@ -1,39 +1,53 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkIOImage import vtkSLCReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     InputFilename, iso_value = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # vtkSLCReader to read.
-    reader = vtk.vtkSLCReader()
+    reader = vtkSLCReader()
     reader.SetFileName(InputFilename)
     reader.Update()
 
     # Create a mapper.
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(reader.GetOutputPort())
 
     # Implementing Marching Cubes Algorithm to create the surface using vtkContourFilter object.
-    contourFilter = vtk.vtkContourFilter()
+    contourFilter = vtkContourFilter()
     contourFilter.SetInputConnection(reader.GetOutputPort())
     # Change the range(2nd and 3rd Paramater) based on your
     # requirement. recomended value for 1st parameter is above 1
     # contourFilter.GenerateValues(5, 80.0, 100.0)
     contourFilter.SetValue(0, iso_value)
 
-    outliner = vtk.vtkOutlineFilter()
+    outliner = vtkOutlineFilter()
     outliner.SetInputConnection(reader.GetOutputPort())
     outliner.Update()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(contourFilter.GetOutputPort())
     mapper.SetScalarVisibility(0)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetDiffuse(0.8)
     actor.GetProperty().SetDiffuseColor(colors.GetColor3d('Ivory'))
@@ -41,13 +55,13 @@ def main():
     actor.GetProperty().SetSpecularPower(120.0)
 
     # Create a rendering window and renderer.
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(500, 500)
 
     # Create a renderwindowinteractor.
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Assign actor to the renderer.

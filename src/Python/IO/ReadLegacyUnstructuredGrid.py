@@ -1,62 +1,94 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingContextOpenGL2
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkChartsCore import vtkCategoryLegend
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkLookupTable,
+    vtkVariantArray
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellTypes,
+    vtkGenericCell
+)
+from vtkmodules.vtkFiltersCore import vtkTubeFilter
+from vtkmodules.vtkFiltersExtraction import vtkExtractEdges
+from vtkmodules.vtkFiltersGeneral import vtkShrinkFilter
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkIOLegacy import vtkUnstructuredGridReader
+from vtkmodules.vtkRenderingContext2D import vtkContextTransform
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkActor2D,
+    vtkCamera,
+    vtkDataSetMapper,
+    vtkGlyph3DMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindowInteractor
+)
+from vtkmodules.vtkRenderingLabel import vtkLabeledDataMapper
+from vtkmodules.vtkViewsContext2D import vtkContextView
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     filename = get_program_parameters()
 
     # Create the reader for the data.
     print('Loading ', filename)
-    reader = vtk.vtkUnstructuredGridReader()
+    reader = vtkUnstructuredGridReader()
     reader.SetFileName(filename)
     reader.Update()
 
-    extractEdges = vtk.vtkExtractEdges()
+    extractEdges = vtkExtractEdges()
     extractEdges.SetInputConnection(reader.GetOutputPort())
 
-    legendValues = vtk.vtkVariantArray()
+    legendValues = vtkVariantArray()
     it = reader.GetOutput().NewCellIterator()
     it.InitTraversal()
     while not it.IsDoneWithTraversal():
-        cell = vtk.vtkGenericCell()
+        cell = vtkGenericCell()
         it.GetCell(cell)
-        cellName = vtk.vtkCellTypes.GetClassNameFromTypeId(cell.GetCellType())
+        cellName = vtkCellTypes.GetClassNameFromTypeId(cell.GetCellType())
         print(cellName, 'NumberOfPoints:', cell.GetNumberOfPoints(), 'CellDimension:', cell.GetCellDimension())
         legendValues.InsertNextValue(cellName)
         it.GoToNextCell()
 
     # Tube the edges
-    tubes = vtk.vtkTubeFilter()
+    tubes = vtkTubeFilter()
     tubes.SetInputConnection(extractEdges.GetOutputPort())
     tubes.SetRadius(.05)
     tubes.SetNumberOfSides(21)
 
-    edgeMapper = vtk.vtkPolyDataMapper()
+    edgeMapper = vtkPolyDataMapper()
     edgeMapper.SetInputConnection(tubes.GetOutputPort())
     edgeMapper.SetScalarRange(0, 26)
 
-    edgeActor = vtk.vtkActor()
+    edgeActor = vtkActor()
     edgeActor.SetMapper(edgeMapper)
     edgeActor.GetProperty().SetSpecular(0.6)
     edgeActor.GetProperty().SetSpecularPower(30)
 
     # Glyph the points
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetPhiResolution(21)
     sphere.SetThetaResolution(21)
     sphere.SetRadius(0.08)
 
-    pointMapper = vtk.vtkGlyph3DMapper()
+    pointMapper = vtkGlyph3DMapper()
     pointMapper.SetInputConnection(reader.GetOutputPort())
     pointMapper.SetSourceConnection(sphere.GetOutputPort())
     pointMapper.ScalingOff()
     pointMapper.ScalarVisibilityOff()
 
-    pointActor = vtk.vtkActor()
+    pointActor = vtkActor()
     pointActor.SetMapper(pointMapper)
     pointActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Banana'))
     pointActor.GetProperty().SetSpecular(0.6)
@@ -64,31 +96,31 @@ def main():
     pointActor.GetProperty().SetSpecularPower(100)
 
     # Label the points
-    labelMapper = vtk.vtkLabeledDataMapper()
+    labelMapper = vtkLabeledDataMapper()
     labelMapper.SetInputConnection(reader.GetOutputPort())
-    labelActor = vtk.vtkActor2D()
+    labelActor = vtkActor2D()
     labelActor.SetMapper(labelMapper)
 
     # The geometry
-    geometryShrink = vtk.vtkShrinkFilter()
+    geometryShrink = vtkShrinkFilter()
     geometryShrink.SetInputConnection(reader.GetOutputPort())
     geometryShrink.SetShrinkFactor(0.8)
 
     # NOTE: We must copy the originalLut because the CategoricalLegend
     # needs an indexed lookup table, but the geometryMapper uses a
     # non-index lookup table
-    categoricalLut = vtk.vtkLookupTable()
+    categoricalLut = vtkLookupTable()
     originalLut = reader.GetOutput().GetCellData().GetScalars().GetLookupTable()
 
     categoricalLut.DeepCopy(originalLut)
     categoricalLut.IndexedLookupOn()
 
-    geometryMapper = vtk.vtkDataSetMapper()
+    geometryMapper = vtkDataSetMapper()
     geometryMapper.SetInputConnection(geometryShrink.GetOutputPort())
     geometryMapper.SetScalarModeToUseCellData()
     geometryMapper.SetScalarRange(0, 11)
 
-    geometryActor = vtk.vtkActor()
+    geometryActor = vtkActor()
     geometryActor.SetMapper(geometryMapper)
     geometryActor.GetProperty().SetLineWidth(3)
     geometryActor.GetProperty().EdgeVisibilityOn()
@@ -97,24 +129,24 @@ def main():
     # Legend
     for v in range(0, legendValues.GetNumberOfTuples()):
         categoricalLut.SetAnnotation(legendValues.GetValue(v), legendValues.GetValue(v).ToString())
-    legend = vtk.vtkCategoryLegend()
+    legend = vtkCategoryLegend()
     legend.SetScalarsToColors(categoricalLut)
     legend.SetValues(legendValues)
     legend.SetTitle('Cell Type')
     legend.GetBrush().SetColor(colors.GetColor4ub('Silver'))
 
-    placeLegend = vtk.vtkContextTransform()
+    placeLegend = vtkContextTransform()
     placeLegend.AddItem(legend)
     placeLegend.Translate(640 - 20, 480 - 12 * 16)
 
-    contextView = vtk.vtkContextView()
+    contextView = vtkContextView()
     contextView.GetScene().AddItem(placeLegend)
 
     renderer = contextView.GetRenderer()
 
     renderWindow = contextView.GetRenderWindow()
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(geometryActor)
@@ -123,7 +155,7 @@ def main():
     renderer.AddActor(pointActor)
     renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
-    aCamera = vtk.vtkCamera()
+    aCamera = vtkCamera()
     aCamera.Azimuth(-40.0)
     aCamera.Elevation(50.0)
 
@@ -145,7 +177,7 @@ def get_program_parameters():
    '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename', help='VTKCellTypes.vtk.')
+    parser.add_argument('filename', help='VTKCellTypes.')
     args = parser.parse_args()
     return args.filename
 

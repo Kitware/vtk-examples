@@ -1,4 +1,20 @@
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkIOPLY import (
+    vtkPLYReader,
+    vtkPLYWriter
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -15,36 +31,36 @@ def get_program_parameters():
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     filename = get_program_parameters()
 
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
     sphereSource.Update()
 
-    plyWriter = vtk.vtkPLYWriter()
+    plyWriter = vtkPLYWriter()
     plyWriter.SetFileName(filename)
     plyWriter.SetInputConnection(sphereSource.GetOutputPort())
     plyWriter.Write()
 
     # Read and display for verification
-    reader = vtk.vtkPLYReader()
+    reader = vtkPLYReader()
     reader.SetFileName(filename)
     reader.Update()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(reader.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetWindowName('WritePLY')
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)

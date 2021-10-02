@@ -1,20 +1,31 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkIOImport import vtk3DSImporter
+from vtkmodules.vtkRenderingCore import (
+    vtkCamera,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     fileName = get_program_parameters()
 
-    importer = vtk.vtk3DSImporter()
+    importer = vtk3DSImporter()
     importer.SetFileName(fileName)
     importer.ComputeNormalsOn()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    renderer = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
-    iren = vtk.vtkRenderWindowInteractor()
+    renderer = vtkRenderer()
+    renWin = vtkRenderWindow()
+    iren = vtkRenderWindowInteractor()
 
     renWin.AddRenderer(renderer)
     renderer.SetBackground2(colors.GetColor3d('Gold'))
@@ -25,13 +36,13 @@ def main():
     importer.SetRenderWindow(renWin)
     importer.Update()
 
-    # actors = vtk.vtkActorCollection()
+    # actors = vtkActorCollection()
     actors = renderer.GetActors()
     print('There are', actors.GetNumberOfItems(), 'actors.')
 
     renWin.SetWindowName('3DSImporter')
     renWin.Render()
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetPosition(0, -1, 0)
     camera.SetFocalPoint(0, 0, 0)
     camera.SetViewUp(0, 0, 1)
