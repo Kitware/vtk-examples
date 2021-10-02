@@ -61,13 +61,22 @@ function registerListener(event, func) {
 <span class=hll><span class=c1># which shows how to use a vtkAnnotationLink to view the contents</span>
 </span><span class=hll><span class=c1># of a selection from a vtkGraphLayoutView</span>
 </span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkAnnotationLink</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInfovisCore</span> <span class=kn>import</span> <span class=n>vtkRandomGraphSource</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInfovisLayout</span> <span class=kn>import</span> <span class=n>vtkSimple2DLayoutStrategy</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkViewsCore</span> <span class=kn>import</span> <span class=n>vtkViewTheme</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkViewsInfovis</span> <span class=kn>import</span> <span class=n>vtkGraphLayoutView</span>
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRandomGraphSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtkRandomGraphSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>DirectedOff</span><span class=p>()</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetNumberOfVertices</span><span class=p>(</span><span class=mi>100</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetEdgeProbability</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>  <span class=c1># Basically generates a tree</span>
@@ -76,11 +85,11 @@ function registerListener(event, func) {
     <span class=n>source</span><span class=o>.</span><span class=n>IncludeEdgeWeightsOn</span><span class=p>()</span>
 
     <span class=c1># Create force directed layout</span>
-<span class=hll>    <span class=n>strategy</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSimple2DLayoutStrategy</span><span class=p>()</span>
+<span class=hll>    <span class=n>strategy</span> <span class=o>=</span> <span class=n>vtkSimple2DLayoutStrategy</span><span class=p>()</span>
 </span>    <span class=n>strategy</span><span class=o>.</span><span class=n>SetInitialTemperature</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
 
     <span class=c1># Create a graph layout view</span>
-<span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
+<span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtkGraphLayoutView</span><span class=p>()</span>
 </span>    <span class=n>view</span><span class=o>.</span><span class=n>AddRepresentationFromInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>view</span><span class=o>.</span><span class=n>SetVertexLabelArrayName</span><span class=p>(</span><span class=s1>&#39;vertex id&#39;</span><span class=p>)</span>
     <span class=n>view</span><span class=o>.</span><span class=n>SetVertexLabelVisibility</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
@@ -94,7 +103,7 @@ function registerListener(event, func) {
     <span class=n>view</span><span class=o>.</span><span class=n>GetRepresentation</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>SetSelectionType</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
 
     <span class=c1># Create a selection link and set both view to use it</span>
-<span class=hll>    <span class=n>annotationLink</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkAnnotationLink</span><span class=p>()</span>
+<span class=hll>    <span class=n>annotationLink</span> <span class=o>=</span> <span class=n>vtkAnnotationLink</span><span class=p>()</span>
 </span>    <span class=n>view</span><span class=o>.</span><span class=n>GetRepresentation</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>SetAnnotationLink</span><span class=p>(</span><span class=n>annotationLink</span><span class=p>)</span>
 
     <span class=k>def</span> <span class=nf>select_callback</span><span class=p>(</span><span class=n>caller</span><span class=p>,</span> <span class=n>event</span><span class=p>):</span>
@@ -130,7 +139,7 @@ function registerListener(event, func) {
     <span class=n>annotationLink</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;AnnotationChangedEvent&#39;</span><span class=p>,</span> <span class=n>select_callback</span><span class=p>)</span>
 
     <span class=c1># Set the theme on the view</span>
-<span class=hll>    <span class=n>theme</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkViewTheme</span><span class=o>.</span><span class=n>CreateMellowTheme</span><span class=p>()</span>
+<span class=hll>    <span class=n>theme</span> <span class=o>=</span> <span class=n>vtkViewTheme</span><span class=o>.</span><span class=n>CreateMellowTheme</span><span class=p>()</span>
 </span>    <span class=n>theme</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
     <span class=n>theme</span><span class=o>.</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
     <span class=n>theme</span><span class=o>.</span><span class=n>SetCellOpacity</span><span class=p>(</span><span class=mf>0.99</span><span class=p>)</span>

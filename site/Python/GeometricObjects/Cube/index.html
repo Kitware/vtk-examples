@@ -64,13 +64,34 @@ function registerListener(event, func) {
 </span>
 <span class=sd>A convenience function, mkVtkIdList(), has been added and one if/else</span>
 <span class=sd> so the example also works in version 6 or later.</span>
-<span class=hll><span class=sd>If your VTK version is 5.x then remove the line: colors = vtk.vtkNamedColors()</span>
+<span class=hll><span class=sd>If your VTK version is 5.x then remove the line: colors = vtkNamedColors()</span>
 </span><span class=sd> and replace the set background parameters with (1.0, 0.9688, 0.8594)</span>
 
 <span class=sd>&quot;&quot;&quot;</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkFloatArray</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkIdList</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPoints</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkCellArray</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyData</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkCamera</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>mkVtkIdList</span><span class=p>(</span><span class=n>it</span><span class=p>):</span>
     <span class=sd>&quot;&quot;&quot;</span>
@@ -82,14 +103,14 @@ function registerListener(event, func) {
 <span class=sd>    :param it: A python iterable.</span>
 <span class=hll><span class=sd>    :return: A vtkIdList</span>
 </span><span class=sd>    &quot;&quot;&quot;</span>
-<span class=hll>    <span class=n>vil</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkIdList</span><span class=p>()</span>
+<span class=hll>    <span class=n>vil</span> <span class=o>=</span> <span class=n>vtkIdList</span><span class=p>()</span>
 </span>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=n>it</span><span class=p>:</span>
         <span class=n>vil</span><span class=o>.</span><span class=n>InsertNextId</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>i</span><span class=p>))</span>
     <span class=k>return</span> <span class=n>vil</span>
 
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># x = array of 8 3-tuples of float representing the vertices of a cube:</span>
     <span class=n>x</span> <span class=o>=</span> <span class=p>[(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>),</span> <span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>),</span> <span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>),</span> <span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>),</span>
@@ -101,10 +122,10 @@ function registerListener(event, func) {
            <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>6</span><span class=p>,</span> <span class=mi>5</span><span class=p>),</span> <span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>7</span><span class=p>,</span> <span class=mi>6</span><span class=p>),</span> <span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>7</span><span class=p>)]</span>
 
     <span class=c1># We&#39;ll create the building blocks of polydata including data attributes.</span>
-<span class=hll>    <span class=n>cube</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyData</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPoints</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>polys</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCellArray</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>scalars</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFloatArray</span><span class=p>()</span>
+<span class=hll>    <span class=n>cube</span> <span class=o>=</span> <span class=n>vtkPolyData</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>polys</span> <span class=o>=</span> <span class=n>vtkCellArray</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>scalars</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>()</span>
 </span>
     <span class=c1># Load the point, cell, and data attributes.</span>
     <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>xi</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>x</span><span class=p>):</span>
@@ -120,22 +141,22 @@ function registerListener(event, func) {
     <span class=n>cube</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>SetScalars</span><span class=p>(</span><span class=n>scalars</span><span class=p>)</span>
 
     <span class=c1># Now we&#39;ll look at it.</span>
-<span class=hll>    <span class=n>cubeMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>cubeMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>cubeMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>cube</span><span class=p>)</span>
     <span class=n>cubeMapper</span><span class=o>.</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=n>cube</span><span class=o>.</span><span class=n>GetScalarRange</span><span class=p>())</span>
-<span class=hll>    <span class=n>cubeActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>cubeActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>cubeActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>cubeMapper</span><span class=p>)</span>
 
     <span class=c1># The usual rendering stuff.</span>
-<span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
+<span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtkCamera</span><span class=p>()</span>
 </span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cubeActor</span><span class=p>)</span>

@@ -63,31 +63,43 @@ function registerListener(event, func) {
 <span class=c1># coordinates view (i.e. between selecting data and manipulating axes).</span>
 <span class=c1># Lines which are commented out show alternative options.</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkElevationFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkBrownianPoints</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingCore</span> <span class=kn>import</span> <span class=n>vtkRTAnalyticSource</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingGeneral</span> <span class=kn>import</span> <span class=n>vtkImageGradient</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkViewsInfovis</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkParallelCoordinatesRepresentation</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkParallelCoordinatesView</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Generate an example image data set with multiple attribute arrays to probe</span>
     <span class=c1># and view.</span>
     <span class=c1># This is where you would put your reader instead of this rt-&gt;elev pipeline...</span>
-<span class=hll>    <span class=n>rt</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRTAnalyticSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>rt</span> <span class=o>=</span> <span class=n>vtkRTAnalyticSource</span><span class=p>()</span>
 </span>    <span class=n>rt</span><span class=o>.</span><span class=n>SetWholeExtent</span><span class=p>(</span><span class=o>-</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=o>-</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=o>-</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
-<span class=hll>    <span class=n>grad</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageGradient</span><span class=p>()</span>
+<span class=hll>    <span class=n>grad</span> <span class=o>=</span> <span class=n>vtkImageGradient</span><span class=p>()</span>
 </span>    <span class=n>grad</span><span class=o>.</span><span class=n>SetDimensionality</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
     <span class=n>grad</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>rt</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>brown</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkBrownianPoints</span><span class=p>()</span>
+<span class=hll>    <span class=n>brown</span> <span class=o>=</span> <span class=n>vtkBrownianPoints</span><span class=p>()</span>
 </span>    <span class=n>brown</span><span class=o>.</span><span class=n>SetMinimumSpeed</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
     <span class=n>brown</span><span class=o>.</span><span class=n>SetMaximumSpeed</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
     <span class=n>brown</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>grad</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>elev</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkElevationFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>elev</span> <span class=o>=</span> <span class=n>vtkElevationFilter</span><span class=p>()</span>
 </span>    <span class=n>elev</span><span class=o>.</span><span class=n>SetLowPoint</span><span class=p>(</span><span class=o>-</span><span class=mi>3</span><span class=p>,</span> <span class=o>-</span><span class=mi>3</span><span class=p>,</span> <span class=o>-</span><span class=mi>3</span><span class=p>)</span>
     <span class=n>elev</span><span class=o>.</span><span class=n>SetHighPoint</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
     <span class=n>elev</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>brown</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
     <span class=c1># Set up the parallel coordinates Representation to be used in the View</span>
-<span class=hll>    <span class=n>rep</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParallelCoordinatesRepresentation</span><span class=p>()</span>
+<span class=hll>    <span class=n>rep</span> <span class=o>=</span> <span class=n>vtkParallelCoordinatesRepresentation</span><span class=p>()</span>
 </span>
     <span class=c1># Plug your reader in here for your own data</span>
     <span class=n>rep</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>elev</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -104,7 +116,7 @@ function registerListener(event, func) {
     <span class=n>rep</span><span class=o>.</span><span class=n>SetLineColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
 
     <span class=c1># Set up the Parallel Coordinates View and hook in the Representation</span>
-<span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParallelCoordinatesView</span><span class=p>()</span>
+<span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtkParallelCoordinatesView</span><span class=p>()</span>
 </span>    <span class=n>view</span><span class=o>.</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>rep</span><span class=p>)</span>
 
     <span class=c1># Inspect Mode determines whether your interactions manipulate the axes or</span>

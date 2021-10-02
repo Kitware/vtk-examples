@@ -122,7 +122,8 @@ function registerListener(event, func) {
         <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(VTK_[A-Z_]+)&#39;</span><span class=p>),</span>
         <span class=c1># special patterns</span>
         <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(mutable)\(</span><span class=si>{1}</span><span class=s1>&#39;</span><span class=p>),</span>
-    <span class=p>]</span>
+<span class=hll>        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(vtk[a-zA-Z]+\S+)\.</span><span class=si>{1}</span><span class=s1>\S&#39;</span><span class=p>),</span>
+</span>    <span class=p>]</span>
 
     <span class=n>res</span> <span class=o>=</span> <span class=n>collections</span><span class=o>.</span><span class=n>defaultdict</span><span class=p>(</span><span class=nb>set</span><span class=p>)</span>
     <span class=k>for</span> <span class=n>path</span> <span class=ow>in</span> <span class=n>paths</span><span class=p>:</span>
