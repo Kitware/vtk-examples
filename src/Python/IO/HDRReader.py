@@ -1,6 +1,10 @@
 ##!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkIOImage import vtkHDRReader
+from vtkmodules.vtkInteractionImage import vtkImageViewer
+from vtkmodules.vtkRenderingCore import vtkRenderWindowInteractor
 
 
 def get_program_parameters():
@@ -22,7 +26,7 @@ A callback is used to print out the color window (move the mouse horizontally ov
 def main():
     file_name = get_program_parameters()
 
-    reader = vtk.vtkHDRReader()
+    reader = vtkHDRReader()
 
     # Check the image can be read
     if not reader.CanReadFile(file_name):
@@ -37,14 +41,14 @@ def main():
     extents = [we[0], we[1], we[2], we[3], 0, 0]
     reader.UpdateExtent(extents)
     # Visualize
-    image_viewer = vtk.vtkImageViewer()
+    image_viewer = vtkImageViewer()
     image_viewer.SetInputData(reader.GetOutput())
 
     image_viewer.SetColorWindow(1)
     image_viewer.SetColorLevel(1)
     image_viewer.SetPosition(0, 100)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     image_viewer.SetupInteractor(iren)
     image_viewer.GetRenderWindow().SetWindowName('HDRReader')
     image_viewer.Render()

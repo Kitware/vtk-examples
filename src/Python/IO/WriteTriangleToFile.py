@@ -1,4 +1,14 @@
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData,
+    vtkTriangle
+)
+from vtkmodules.vtkIOXML import vtkXMLPolyDataWriter
 
 
 def get_program_parameters():
@@ -17,9 +27,9 @@ def get_program_parameters():
 def main():
     filename = get_program_parameters()
 
-    Points = vtk.vtkPoints()
-    Triangles = vtk.vtkCellArray()
-    Triangle = vtk.vtkTriangle()
+    Points = vtkPoints()
+    Triangles = vtkCellArray()
+    Triangle = vtkTriangle()
 
     Points.InsertNextPoint(1.0, 0.0, 0.0)
     Points.InsertNextPoint(0.0, 0.0, 0.0)
@@ -30,12 +40,12 @@ def main():
     Triangle.GetPointIds().SetId(2, 2)
     Triangles.InsertNextCell(Triangle)
 
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(Points)
     polydata.SetPolys(Triangles)
     polydata.Modified()
 
-    writer = vtk.vtkXMLPolyDataWriter()
+    writer = vtkXMLPolyDataWriter()
     writer.SetFileName(filename)
     writer.SetInputData(polydata)
     writer.Write()

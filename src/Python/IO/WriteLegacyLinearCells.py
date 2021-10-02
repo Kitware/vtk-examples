@@ -1,26 +1,50 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkHexagonalPrism,
+    vtkHexahedron,
+    vtkLine,
+    vtkPentagonalPrism,
+    vtkPixel,
+    vtkPolyLine,
+    vtkPolyVertex,
+    vtkPolygon,
+    vtkPyramid,
+    vtkQuad,
+    vtkTetra,
+    vtkTriangle,
+    vtkTriangleStrip,
+    vtkUnstructuredGrid,
+    vtkVertex,
+    vtkVoxel,
+    vtkWedge
+)
+from vtkmodules.vtkIOLegacy import vtkUnstructuredGridWriter
 
 
 def main():
     filenames = list()
     uGrids = list()
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkVertex()))
+    uGrids.append(MakeUnstructuredGrid(vtkVertex()))
     filenames.append('Vertex.vtk')
 
     uGrids.append(MakePolyVertex())
     filenames.append('PolyVertex.vtk')
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkLine()))
+    uGrids.append(MakeUnstructuredGrid(vtkLine()))
     filenames.append('Line.vtk')
 
     uGrids.append(MakePolyLine())
     filenames.append('PolyLine.vtk')
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkTriangle()))
+    uGrids.append(MakeUnstructuredGrid(vtkTriangle()))
     filenames.append('Triangle.vtk')
 
     uGrids.append(MakeTriangleStrip())
@@ -29,37 +53,37 @@ def main():
     uGrids.append(MakePolygon())
     filenames.append('Polygon.vtk')
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkPixel()))
+    uGrids.append(MakeUnstructuredGrid(vtkPixel()))
     filenames.append('Pixel.vtk')
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkQuad()))
+    uGrids.append(MakeUnstructuredGrid(vtkQuad()))
     filenames.append('Quad.vtk')
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkTetra()))
+    uGrids.append(MakeUnstructuredGrid(vtkTetra()))
     filenames.append('Tetra.vtk')
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkVoxel()))
+    uGrids.append(MakeUnstructuredGrid(vtkVoxel()))
     filenames.append('Voxel.vtk')
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkHexahedron()))
+    uGrids.append(MakeUnstructuredGrid(vtkHexahedron()))
     filenames.append('Hexahedron.vtk')
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkWedge()))
+    uGrids.append(MakeUnstructuredGrid(vtkWedge()))
     filenames.append('Wedge.vtk')
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkPyramid()))
+    uGrids.append(MakeUnstructuredGrid(vtkPyramid()))
     filenames.append('Pyramid.vtk')
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkPentagonalPrism()))
+    uGrids.append(MakeUnstructuredGrid(vtkPentagonalPrism()))
     filenames.append('PentagonalPrism.vtk')
 
-    uGrids.append(MakeUnstructuredGrid(vtk.vtkHexagonalPrism()))
+    uGrids.append(MakeUnstructuredGrid(vtkHexagonalPrism()))
     filenames.append('HexagonalPrism.vtk')
 
     # Write each grid into  a file
     for i in range(0, len(uGrids)):
         print('Writing: ', filenames[i])
-        writer = vtk.vtkUnstructuredGridWriter()
+        writer = vtkUnstructuredGridWriter()
         writer.SetFileName(filenames[i])
         writer.SetInputData(uGrids[i])
         writer.Write()
@@ -71,7 +95,7 @@ def MakeUnstructuredGrid(aCell):
         aCell.GetPointIds().SetId(i, i)
         aCell.GetPoints().SetPoint(i, (pcoords[3 * i]), (pcoords[3 * i + 1]), (pcoords[3 * i + 2]))
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(aCell.GetPoints())
     ug.InsertNextCell(aCell.GetCellType(), aCell.GetPointIds())
     return ug
@@ -81,7 +105,7 @@ def MakePolyVertex():
     # A polyvertex is a cell represents a set of 0D vertices
     numberOfVertices = 6
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(1, 0, 0)
     points.InsertNextPoint(0, 1, 0)
@@ -89,13 +113,13 @@ def MakePolyVertex():
     points.InsertNextPoint(1, 0, .4)
     points.InsertNextPoint(0, 1, .6)
 
-    polyVertex = vtk.vtkPolyVertex()
+    polyVertex = vtkPolyVertex()
     polyVertex.GetPointIds().SetNumberOfIds(numberOfVertices)
 
     for i in range(0, numberOfVertices):
         polyVertex.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(polyVertex.GetCellType(), polyVertex.GetPointIds())
 
@@ -106,20 +130,20 @@ def MakePolyLine():
     # A polyline is a cell that represents a set of 1D lines
     numberOfVertices = 5
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, .5, 0)
     points.InsertNextPoint(.5, 0, 0)
     points.InsertNextPoint(1, .3, 0)
     points.InsertNextPoint(1.5, .4, 0)
     points.InsertNextPoint(2.0, .4, 0)
 
-    polyline = vtk.vtkPolyLine()
+    polyline = vtkPolyLine()
     polyline.GetPointIds().SetNumberOfIds(numberOfVertices)
 
     for i in range(0, numberOfVertices):
         polyline.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(polyline.GetCellType(), polyline.GetPointIds())
 
@@ -130,7 +154,7 @@ def MakeTriangleStrip():
     # A triangle is a cell that represents a triangle strip
     numberOfVertices = 10
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(.5, 1, 0)
     points.InsertNextPoint(1, -.1, 0)
@@ -142,12 +166,12 @@ def MakeTriangleStrip():
     points.InsertNextPoint(4.0, -.2, 0)
     points.InsertNextPoint(4.5, 1.1, 0)
 
-    trianglestrip = vtk.vtkTriangleStrip()
+    trianglestrip = vtkTriangleStrip()
     trianglestrip.GetPointIds().SetNumberOfIds(numberOfVertices)
     for i in range(0, numberOfVertices):
         trianglestrip.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(trianglestrip.GetCellType(), trianglestrip.GetPointIds())
 
@@ -158,7 +182,7 @@ def MakePolygon():
     # A polygon is a cell that represents a polygon
     numberOfVertices = 6
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(1, -.1, 0)
     points.InsertNextPoint(.8, .5, 0)
@@ -166,12 +190,12 @@ def MakePolygon():
     points.InsertNextPoint(.6, 1.2, 0)
     points.InsertNextPoint(0, .8, 0)
 
-    polygon = vtk.vtkPolygon()
+    polygon = vtkPolygon()
     polygon.GetPointIds().SetNumberOfIds(numberOfVertices)
     for i in range(0, numberOfVertices):
         polygon.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(polygon.GetCellType(), polygon.GetPointIds())
 

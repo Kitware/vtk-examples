@@ -1,6 +1,19 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersGeometry import vtkCompositeDataGeometryFilter
+from vtkmodules.vtkIOExodus import vtkExodusIIReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -16,38 +29,38 @@ def get_program_parameters():
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Input file and variable
     filename, nodal_var = get_program_parameters()
 
     # Read Exodus Data
-    reader = vtk.vtkExodusIIReader()
+    reader = vtkExodusIIReader()
     reader.SetFileName(filename)
     reader.UpdateInformation()
     reader.SetTimeStep(10)
-    reader.SetAllArrayStatus(vtk.vtkExodusIIReader.NODAL, 1)  # enables all NODAL variables
+    reader.SetAllArrayStatus(vtkExodusIIReader.NODAL, 1)  # enables all NODAL variables
     reader.Update()
     # print(reader)  # uncomment this to show the file information
 
     # Create Geometry
-    geometry = vtk.vtkCompositeDataGeometryFilter()
+    geometry = vtkCompositeDataGeometryFilter()
     geometry.SetInputConnection(0, reader.GetOutputPort(0))
     geometry.Update()
 
     # Mapper
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(geometry.GetOutputPort())
     mapper.SelectColorArray(nodal_var)
     mapper.SetScalarModeToUsePointFieldData()
     mapper.InterpolateScalarsBeforeMappingOn()
 
     # Actor
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     # Renderer
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddViewProp(actor)
     renderer.SetBackground(colors.GetColor3d('DimGray'))
 
@@ -57,12 +70,12 @@ def main():
     renderer.GetActiveCamera().SetDistance(14.5)
 
     # Window and Interactor
-    window = vtk.vtkRenderWindow()
+    window = vtkRenderWindow()
     window.AddRenderer(renderer)
     window.SetSize(600, 600)
     window.SetWindowName('ReadExodusData')
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(window)
     interactor.Initialize()
 
