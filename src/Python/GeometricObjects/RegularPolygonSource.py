@@ -1,40 +1,54 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersGeneral import vtkShrinkPolyData
+from vtkmodules.vtkFiltersSources import vtkRegularPolygonSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a pentagon
-    polygonSource = vtk.vtkRegularPolygonSource()
+    polygonSource = vtkRegularPolygonSource()
     polygonSource.SetNumberOfSides(5)
     polygonSource.SetRadius(5)
     polygonSource.SetCenter(0, 0, 0)
 
-    shrink = vtk.vtkShrinkPolyData()
+    shrink = vtkShrinkPolyData()
     shrink.SetInputConnection(polygonSource.GetOutputPort())
     shrink.SetShrinkFactor(0.9)
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(shrink.GetOutputPort())
 
-    back = vtk.vtkProperty()
+    back = vtkProperty()
     back.SetColor(colors.GetColor3d('Tomato'))
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
     actor.GetProperty().SetLineWidth(5)
     actor.GetProperty().SetColor(colors.GetColor3d('Banana'))
     actor.SetBackfaceProperty(back)
 
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('RegularPolygonSource')
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)

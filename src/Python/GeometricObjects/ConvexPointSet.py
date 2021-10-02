@@ -1,12 +1,31 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkConvexPointSet,
+    vtkPolyData,
+    vtkUnstructuredGrid
+)
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkGlyph3DMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    cps = vtk.vtkConvexPointSet()
-    points = vtk.vtkPoints()
+    cps = vtkConvexPointSet()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(1, 0, 0)
     points.InsertNextPoint(1, 1, 0)
@@ -24,46 +43,46 @@ def main():
     for i in range(0, 13):
         cps.GetPointIds().InsertId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.Allocate(1, 1)
     ug.InsertNextCell(cps.GetCellType(), cps.GetPointIds())
     ug.SetPoints(points)
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputData(ug)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d("Tomato"))
     actor.GetProperty().SetLineWidth(3)
     actor.GetProperty().EdgeVisibilityOn()
 
     # Glyph the points
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetPhiResolution(21)
     sphere.SetThetaResolution(21)
     sphere.SetRadius(.03)
 
     # Create a polydata to store everything in
-    polyData = vtk.vtkPolyData()
+    polyData = vtkPolyData()
     polyData.SetPoints(points)
 
-    pointMapper = vtk.vtkGlyph3DMapper()
+    pointMapper = vtkGlyph3DMapper()
     pointMapper.SetInputData(polyData)
     pointMapper.SetSourceConnection(sphere.GetOutputPort())
 
-    pointActor = vtk.vtkActor()
+    pointActor = vtkActor()
     pointActor.SetMapper(pointMapper)
     pointActor.GetProperty().SetColor(colors.GetColor3d("Peacock"))
 
     # Create a renderer, render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName("ConvexPointSet")
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actors to the scene

@@ -1,35 +1,49 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkPerlinNoise
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkImagingHybrid import vtkSampleFunction
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
-    perlinNoise = vtk.vtkPerlinNoise()
+    colors = vtkNamedColors()
+    perlinNoise = vtkPerlinNoise()
     perlinNoise.SetFrequency(2, 1.25, 1.5)
     perlinNoise.SetPhase(0, 0, 0)
 
-    sample = vtk.vtkSampleFunction()
+    sample = vtkSampleFunction()
     sample.SetImplicitFunction(perlinNoise)
     sample.SetSampleDimensions(65, 65, 20)
     sample.ComputeNormalsOff()
 
-    surface = vtk.vtkContourFilter()
+    surface = vtkContourFilter()
     surface.SetInputConnection(sample.GetOutputPort())
     surface.SetValue(0, 0.0)
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(surface.GetOutputPort())
     mapper.ScalarVisibilityOff()
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('SteelBlue'))
 
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     # Add the actors to the renderer, set the background and size

@@ -1,7 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import (
+    vtkBiQuadraticQuad,
+    vtkBiQuadraticQuadraticHexahedron,
+    vtkBiQuadraticQuadraticWedge,
+    vtkBiQuadraticTriangle,
+    vtkCubicLine,
+    vtkQuadraticEdge,
+    vtkQuadraticHexahedron,
+    vtkQuadraticLinearQuad,
+    vtkQuadraticLinearWedge,
+    vtkQuadraticPolygon,
+    vtkQuadraticPyramid,
+    vtkQuadraticQuad,
+    vtkQuadraticTetra,
+    vtkQuadraticTriangle,
+    vtkQuadraticWedge,
+    vtkTriQuadraticHexahedron,
+    vtkUnstructuredGrid
+)
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkActor2D,
+    vtkDataSetMapper,
+    vtkGlyph3DMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextMapper,
+    vtkTextProperty
+)
+from vtkmodules.vtkRenderingLabel import vtkLabeledDataMapper
 
 
 def main():
@@ -15,99 +51,99 @@ def main():
     renderers = list()
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkQuadraticEdge()))
+        vtkQuadraticEdge()))
     titles.append('VTK_QUADRATIC_EDGE (= 21)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkQuadraticTriangle()))
+        vtkQuadraticTriangle()))
     titles.append('VTK_QUADRATIC_TRIANGLE (= 22)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkQuadraticQuad()))
+        vtkQuadraticQuad()))
     titles.append('VTK_QUADRATIC_QUAD (= 23)')
 
     uGrids.append(MakeQuadraticPolygon())
     titles.append('VTK_QUADRATIC_POLYGON (= 36)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkQuadraticTetra()))
+        vtkQuadraticTetra()))
     titles.append('VTK_QUADRATIC_TETRA (= 24)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkQuadraticHexahedron()))
+        vtkQuadraticHexahedron()))
     titles.append('VTK_QUADRATIC_HEXAHEDRON (= 25)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkQuadraticWedge()))
+        vtkQuadraticWedge()))
     titles.append('VTK_QUADRATIC_WEDGE (= 26)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkQuadraticPyramid()))
+        vtkQuadraticPyramid()))
     titles.append('VTK_QUADRATIC_PYRAMID (= 27)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkBiQuadraticQuad()))
+        vtkBiQuadraticQuad()))
     titles.append('VTK_BIQUADRATIC_QUAD (= 28)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkTriQuadraticHexahedron()))
+        vtkTriQuadraticHexahedron()))
     titles.append('VTK_TRIQUADRATIC_HEXAHEDRON (= 29)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkQuadraticLinearQuad()))
+        vtkQuadraticLinearQuad()))
     titles.append('VTK_QUADRATIC_LINEAR_QUAD (= 30)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkQuadraticLinearWedge()))
+        vtkQuadraticLinearWedge()))
     titles.append('VTK_QUADRATIC_LINEAR_WEDGE (= 31)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkBiQuadraticQuadraticWedge()))
+        vtkBiQuadraticQuadraticWedge()))
     titles.append('VTK_BIQUADRATIC_QUADRATIC_WEDGE (= 32)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkBiQuadraticQuadraticHexahedron()))
+        vtkBiQuadraticQuadraticHexahedron()))
     titles.append('VTK_BIQUADRATIC_QUADRATIC_HEXAHEDRON (= 33)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkBiQuadraticTriangle()))
+        vtkBiQuadraticTriangle()))
     titles.append('VTK_BIQUADRATIC_TRIANGLE (= 34)')
 
     uGrids.append(MakeUnstructuredGrid(
-        vtk.vtkCubicLine()))
+        vtkCubicLine()))
     titles.append('VTK_CUBIC_LINE (= 35)')
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.SetSize(600, 600)
     renWin.SetWindowName('Isoparametric Cell')
 
-    iRen = vtk.vtkRenderWindowInteractor()
+    iRen = vtkRenderWindowInteractor()
     iRen.SetRenderWindow(renWin)
 
     # Create one sphere for all
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetPhiResolution(21)
     sphere.SetThetaResolution(21)
     sphere.SetRadius(.08)
 
     # Create one text property for all
-    textProperty = vtk.vtkTextProperty()
+    textProperty = vtkTextProperty()
     textProperty.SetFontSize(10)
     textProperty.SetJustificationToCentered()
 
     # Create and link the mappers actors and renderers together.
     for i in range(0, len(uGrids)):
         print('Creating:', titles[i])
-        textMappers.append(vtk.vtkTextMapper())
-        textActors.append(vtk.vtkActor2D())
+        textMappers.append(vtkTextMapper())
+        textActors.append(vtkActor2D())
 
         textMappers[i].GetTextProperty().SetFontSize(10)
         textMappers[i].GetTextProperty().ShadowOn()
-        mappers.append(vtk.vtkDataSetMapper())
-        actors.append(vtk.vtkActor())
-        renderers.append(vtk.vtkRenderer())
+        mappers.append(vtkDataSetMapper())
+        actors.append(vtkActor())
+        renderers.append(vtkRenderer())
         mappers[i].SetInputData(uGrids[i])
         actors[i].SetMapper(mappers[i])
         actors[i].GetProperty().SetColor(colors.GetColor3d('Tomato'))
@@ -122,20 +158,20 @@ def main():
         renderers[i].AddViewProp(textActors[i])
 
         # Label the points
-        labelMapper = vtk.vtkLabeledDataMapper()
+        labelMapper = vtkLabeledDataMapper()
         labelMapper.SetInputData(uGrids[i])
-        labelActor = vtk.vtkActor2D()
+        labelActor = vtkActor2D()
         labelActor.SetMapper(labelMapper)
         renderers[i].AddViewProp(labelActor)
 
         # Glyph the points
-        pointMapper = vtk.vtkGlyph3DMapper()
+        pointMapper = vtkGlyph3DMapper()
         pointMapper.SetInputData(uGrids[i])
         pointMapper.SetSourceConnection(sphere.GetOutputPort())
         pointMapper.ScalingOff()
         pointMapper.ScalarVisibilityOff()
 
-        pointActor = vtk.vtkActor()
+        pointActor = vtkActor()
         pointActor.SetMapper(pointMapper)
         pointActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Banana'))
         pointActor.GetProperty().SetSpecular(.6)
@@ -163,7 +199,7 @@ def main():
             if index > (len(actors) - 1):
                 # Add a renderer even if there is no actor.
                 # This makes the render window background all the same color.
-                ren = vtk.vtkRenderer()
+                ren = vtkRenderer()
                 ren.SetBackground(colors.GetColor3d('SlateGray'))
                 ren.SetViewport(viewport)
                 renWin.AddRenderer(ren)
@@ -189,14 +225,14 @@ def MakeUnstructuredGrid(aCell):
         aCell.GetPointIds().SetId(i, i)
         aCell.GetPoints().SetPoint(i, (pcoords[3 * i]), (pcoords[3 * i + 1]), (pcoords[3 * i + 2]))
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(aCell.GetPoints())
     ug.InsertNextCell(aCell.GetCellType(), aCell.GetPointIds())
     return ug
 
 
 def MakeQuadraticPolygon():
-    quadraticPolygon = vtk.vtkQuadraticPolygon()
+    quadraticPolygon = vtkQuadraticPolygon()
 
     quadraticPolygon.GetPointIds().SetNumberOfIds(8)
     quadraticPolygon.GetPointIds().SetId(0, 0)
@@ -219,7 +255,7 @@ def MakeQuadraticPolygon():
     quadraticPolygon.GetPoints().SetPoint(7, 0.0, 1.0, 0.0)
     quadraticPolygon.GetPoints().SetPoint(5, 3.0, 1.0, 0.0)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(quadraticPolygon.GetPoints())
     ug.InsertNextCell(quadraticPolygon.GetCellType(), quadraticPolygon.GetPointIds())
     return ug

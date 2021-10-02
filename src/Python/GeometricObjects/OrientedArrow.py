@@ -1,7 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkMath,
+    vtkMinimalStandardRandomSequence
+)
+from vtkmodules.vtkCommonMath import vtkMatrix4x4
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
+from vtkmodules.vtkFiltersSources import (
+    vtkArrowSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 """
 There are two alternative ways to apply the transform.
@@ -17,18 +39,18 @@ USER_MATRIX = True
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('BkgColor', [26, 51, 77, 255])
 
     # Create an arrow.
-    arrowSource = vtk.vtkArrowSource()
+    arrowSource = vtkArrowSource()
 
     # Generate a random start and end point
     startPoint = [0] * 3
     endPoint = [0] * 3
-    rng = vtk.vtkMinimalStandardRandomSequence()
+    rng = vtkMinimalStandardRandomSequence()
     rng.SetSeed(8775070)  # For testing.
     for i in range(0, 3):
         rng.Next()
@@ -42,21 +64,21 @@ def main():
     normalizedZ = [0] * 3
 
     # The X axis is a vector from start to end
-    vtk.vtkMath.Subtract(endPoint, startPoint, normalizedX)
-    length = vtk.vtkMath.Norm(normalizedX)
-    vtk.vtkMath.Normalize(normalizedX)
+    vtkMath.Subtract(endPoint, startPoint, normalizedX)
+    length = vtkMath.Norm(normalizedX)
+    vtkMath.Normalize(normalizedX)
 
     # The Z axis is an arbitrary vector cross X
     arbitrary = [0] * 3
     for i in range(0, 3):
         rng.Next()
         arbitrary[i] = rng.GetRangeValue(-10, 10)
-    vtk.vtkMath.Cross(normalizedX, arbitrary, normalizedZ)
-    vtk.vtkMath.Normalize(normalizedZ)
+    vtkMath.Cross(normalizedX, arbitrary, normalizedZ)
+    vtkMath.Normalize(normalizedZ)
 
     # The Y axis is Z cross X
-    vtk.vtkMath.Cross(normalizedZ, normalizedX, normalizedY)
-    matrix = vtk.vtkMatrix4x4()
+    vtkMath.Cross(normalizedZ, normalizedX, normalizedY)
+    matrix = vtkMatrix4x4()
 
     # Create the direction cosine matrix
     matrix.Identity()
@@ -66,19 +88,19 @@ def main():
         matrix.SetElement(i, 2, normalizedZ[i])
 
     # Apply the transforms
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.Translate(startPoint)
     transform.Concatenate(matrix)
     transform.Scale(length, length, length)
 
     # Transform the polydata
-    transformPD = vtk.vtkTransformPolyDataFilter()
+    transformPD = vtkTransformPolyDataFilter()
     transformPD.SetTransform(transform)
     transformPD.SetInputConnection(arrowSource.GetOutputPort())
 
     # Create a mapper and actor for the arrow
-    mapper = vtk.vtkPolyDataMapper()
-    actor = vtk.vtkActor()
+    mapper = vtkPolyDataMapper()
+    actor = vtkActor()
     if USER_MATRIX:
         mapper.SetInputConnection(arrowSource.GetOutputPort())
         actor.SetUserMatrix(transform.GetMatrix())
@@ -88,30 +110,30 @@ def main():
     actor.GetProperty().SetColor(colors.GetColor3d('Cyan'))
 
     # Create spheres for start and end point
-    sphereStartSource = vtk.vtkSphereSource()
+    sphereStartSource = vtkSphereSource()
     sphereStartSource.SetCenter(startPoint)
     sphereStartSource.SetRadius(0.8)
-    sphereStartMapper = vtk.vtkPolyDataMapper()
+    sphereStartMapper = vtkPolyDataMapper()
     sphereStartMapper.SetInputConnection(sphereStartSource.GetOutputPort())
-    sphereStart = vtk.vtkActor()
+    sphereStart = vtkActor()
     sphereStart.SetMapper(sphereStartMapper)
     sphereStart.GetProperty().SetColor(colors.GetColor3d('Yellow'))
 
-    sphereEndSource = vtk.vtkSphereSource()
+    sphereEndSource = vtkSphereSource()
     sphereEndSource.SetCenter(endPoint)
     sphereEndSource.SetRadius(0.8)
-    sphereEndMapper = vtk.vtkPolyDataMapper()
+    sphereEndMapper = vtkPolyDataMapper()
     sphereEndMapper.SetInputConnection(sphereEndSource.GetOutputPort())
-    sphereEnd = vtk.vtkActor()
+    sphereEnd = vtkActor()
     sphereEnd.SetMapper(sphereEndMapper)
     sphereEnd.GetProperty().SetColor(colors.GetColor3d('Magenta'))
 
     # Create a renderer, render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('OrientedArrow')
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actor to the scene

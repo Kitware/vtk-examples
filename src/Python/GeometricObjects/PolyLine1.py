@@ -5,18 +5,36 @@
 
 import math
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('BkgColor', [26, 51, 102, 255])
 
     # vtkPoints represents 3D points. The data model for vtkPoints is an array of
     # vx-vy-vz triplets accessible by (point or cell) id.
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.SetNumberOfPoints(6)
     c = math.cos(math.pi / 6)  # helper variable
     points.SetPoint(0, 0.0, -1.0, 0.0)
@@ -30,7 +48,7 @@ def main():
     # The cell array structure is a raw integer list of the form:
     # (n,id1,id2,...,idn, n,id1,id2,...,idn, ...) where n is the number of points in
     # the cell, and id is a zero-offset index into an associated point list.
-    lines = vtk.vtkCellArray()
+    lines = vtkCellArray()
     lines.InsertNextCell(7)
     lines.InsertCellPoint(0)
     lines.InsertCellPoint(1)
@@ -43,13 +61,13 @@ def main():
     # vtkPolyData is a data object that is a concrete implementation of vtkDataSet.
     # vtkPolyData represents a geometric structure consisting of vertices, lines,
     # polygons, and/or triangle strips
-    polygon = vtk.vtkPolyData()
+    polygon = vtkPolyData()
     polygon.SetPoints(points)
     polygon.SetLines(lines)
 
     # vtkPolyDataMapper is a class that maps polygonal data (i.e., vtkPolyData)
     # to graphics primitives
-    polygonMapper = vtk.vtkPolyDataMapper()
+    polygonMapper = vtkPolyDataMapper()
     polygonMapper.SetInputData(polygon)
     polygonMapper.Update()
 
@@ -57,7 +75,7 @@ def main():
     # the mapper's graphics primitives. An actor also refers to properties via a
     # vtkProperty instance, and includes an internal transformation matrix. We
     # set this actor's mapper to be polygonMapper which we created above.
-    polygonActor = vtk.vtkActor()
+    polygonActor = vtkActor()
     polygonActor.SetMapper(polygonMapper)
     polygonActor.GetProperty().SetColor(colors.GetColor3d('AliceBlue'))
 
@@ -65,7 +83,7 @@ def main():
     # viewport. It is part or all of a window on the screen and it is
     # responsible for drawing the actors it has.  We also set the
     # background color here.
-    ren = vtk.vtkRenderer()
+    ren = vtkRenderer()
     ren.AddActor(polygonActor)
     ren.SetBackground(colors.GetColor3d('BkgColor'))
 
@@ -79,7 +97,7 @@ def main():
     # Finally we create the render window which will show up on the screen
     # We put our renderer into the render window using AddRenderer. We
     # also set the size to be 300 pixels by 300.
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.SetWindowName('PolyLine1')
     renWin.AddRenderer(ren)
     renWin.SetSize(300, 300)
@@ -89,7 +107,7 @@ def main():
     # event invocations that VTK understands (see VTK/Common/vtkCommand.h
     # for all events that VTK processes). Then observers of these VTK
     # events can process them as appropriate.
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     iren.Initialize()
     iren.Start()

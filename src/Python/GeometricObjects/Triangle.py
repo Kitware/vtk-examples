@@ -1,46 +1,63 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData,
+    vtkTriangle
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a triangle
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(1.0, 0.0, 0.0)
     points.InsertNextPoint(0.0, 0.0, 0.0)
     points.InsertNextPoint(0.0, 1.0, 0.0)
 
-    triangle = vtk.vtkTriangle()
+    triangle = vtkTriangle()
     triangle.GetPointIds().SetId(0, 0)
     triangle.GetPointIds().SetId(1, 1)
     triangle.GetPointIds().SetId(2, 2)
 
-    triangles = vtk.vtkCellArray()
+    triangles = vtkCellArray()
     triangles.InsertNextCell(triangle)
 
     # Create a polydata object
-    trianglePolyData = vtk.vtkPolyData()
+    trianglePolyData = vtkPolyData()
 
     # Add the geometry and topology to the polydata
     trianglePolyData.SetPoints(points)
     trianglePolyData.SetPolys(triangles)
 
     # Create mapper and actor
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputData(trianglePolyData)
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
     actor.SetMapper(mapper)
 
     # Create a renderer, render window, and an interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('Triangle')
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actors to the scene

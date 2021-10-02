@@ -1,13 +1,35 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkPolyData,
+    vtkUnstructuredGrid
+)
+from vtkmodules.vtkFiltersCore import vtkAppendFilter
+from vtkmodules.vtkFiltersSources import (
+    vtkPointSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkGlyph3DMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create 5 points (vtkPolyData)
-    pointSource = vtk.vtkPointSource()
+    pointSource = vtkPointSource()
     pointSource.SetNumberOfPoints(5)
     pointSource.Update()
 
@@ -16,31 +38,31 @@ def main():
     print('There are', polydata.GetNumberOfPoints(), 'points in the polydata.')
 
     # Create 2 points in a vtkUnstructuredGrid
-    points = vtk.vtkPoints()
-    points = vtk.vtkPoints()
+    points = vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(0, 0, 1)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     print('There are', ug.GetNumberOfPoints(), 'points in the unstructured.')
 
     # Combine the two data sets
-    appendFilter = vtk.vtkAppendFilter()
+    appendFilter = vtkAppendFilter()
     appendFilter.AddInputData(polydata)
     appendFilter.AddInputData(ug)
     appendFilter.Update()
 
-    combined = vtk.vtkUnstructuredGrid()
+    combined = vtkUnstructuredGrid()
 
     combined = appendFilter.GetOutput()
     print('There are', combined.GetNumberOfPoints(), 'points combined.')
 
     # Create a mapper and actor
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputConnection(appendFilter.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetPointSize(5)
 
@@ -49,10 +71,10 @@ def main():
     sphereActor.GetProperty().SetColor(colors.GetColor3d("Gold"))
 
     # Create a renderer, render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actor to the scene
@@ -82,19 +104,19 @@ def point_to_glyph(points, scale):
     for i in range(0, 3):
         max_len = max(bounds[i + 1] - bounds[i], max_len)
 
-    sphere_source = vtk.vtkSphereSource()
+    sphere_source = vtkSphereSource()
     sphere_source.SetRadius(scale * max_len)
 
-    pd = vtk.vtkPolyData()
+    pd = vtkPolyData()
     pd.SetPoints(points)
 
-    mapper = vtk.vtkGlyph3DMapper()
+    mapper = vtkGlyph3DMapper()
     mapper.SetInputData(pd)
     mapper.SetSourceConnection(sphere_source.GetOutputPort())
     mapper.ScalarVisibilityOff()
     mapper.ScalingOff()
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     return actor

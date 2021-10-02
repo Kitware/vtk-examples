@@ -1,15 +1,33 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkMinimalStandardRandomSequence,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkFiltersCore import vtkDelaunay2D
+from vtkmodules.vtkFiltersGeneral import vtkVertexGlyphFilter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     # Create points on an XY grid with random Z coordinate
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     gridSize = 10
     seed = 0
-    randomSequence = vtk.vtkMinimalStandardRandomSequence()
+    randomSequence = vtkMinimalStandardRandomSequence()
     randomSequence.Initialize(seed)
     for x in range(0, gridSize):
         for y in range(0, gridSize):
@@ -18,39 +36,39 @@ def main():
             points.InsertNextPoint(x, y, d * 3)
 
     # Add the grid points to a polydata object
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(points)
 
-    glyphFilter = vtk.vtkVertexGlyphFilter()
+    glyphFilter = vtkVertexGlyphFilter()
     glyphFilter.SetInputData(polydata)
     glyphFilter.Update()
 
     # Create a mapper and actor
-    pointsMapper = vtk.vtkPolyDataMapper()
+    pointsMapper = vtkPolyDataMapper()
     pointsMapper.SetInputConnection(glyphFilter.GetOutputPort())
 
-    pointsActor = vtk.vtkActor()
+    pointsActor = vtkActor()
     pointsActor.SetMapper(pointsMapper)
     pointsActor.GetProperty().SetPointSize(3)
     pointsActor.GetProperty().SetColor(colors.GetColor3d("Red"))
 
     # Triangulate the grid points
-    delaunay = vtk.vtkDelaunay2D()
+    delaunay = vtkDelaunay2D()
     delaunay.SetInputData(polydata)
     delaunay.Update()
 
     # Create a mapper and actor
-    triangulatedMapper = vtk.vtkPolyDataMapper()
+    triangulatedMapper = vtkPolyDataMapper()
     triangulatedMapper.SetInputConnection(delaunay.GetOutputPort())
 
-    triangulatedActor = vtk.vtkActor()
+    triangulatedActor = vtkActor()
     triangulatedActor.SetMapper(triangulatedMapper)
 
     # Create a renderer, render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actor to the scene

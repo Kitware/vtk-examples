@@ -1,11 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkHexahedron,
+    vtkUnstructuredGrid
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor("BkgColor", [51, 77, 102, 255])
@@ -24,37 +41,37 @@ def main():
     pointCoordinates.append([0.0, 1.0, 1.0])
 
     # Create the points.
-    points = vtk.vtkPoints()
+    points = vtkPoints()
 
     # Create a hexahedron from the points.
-    hexahedron = vtk.vtkHexahedron()
+    hexahedron = vtkHexahedron()
 
     for i in range(0, len(pointCoordinates)):
         points.InsertNextPoint(pointCoordinates[i])
         hexahedron.GetPointIds().SetId(i, i)
 
     # Add the hexahedron to a cell array.
-    hexs = vtk.vtkCellArray()
+    hexs = vtkCellArray()
     hexs.InsertNextCell(hexahedron)
 
     # Add the points and hexahedron to an unstructured grid.
-    uGrid = vtk.vtkUnstructuredGrid()
+    uGrid = vtkUnstructuredGrid()
     uGrid.SetPoints(points)
     uGrid.InsertNextCell(hexahedron.GetCellType(), hexahedron.GetPointIds())
 
     # Visualize.
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputData(uGrid)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.GetProperty().SetColor(colors.GetColor3d("PeachPuff"))
     actor.SetMapper(mapper)
 
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName("Hexahedron")
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)

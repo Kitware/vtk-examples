@@ -2,7 +2,8 @@
 
 Display all five Platonic solids in a grid.
 
-Platonic solids are regular, convex polyhedrons. They are constructed by congruent (identical in shape and size) regular (all angles equal and all sides equal) polygonal faces with the same number of faces meeting at each vertex.
+Platonic solids are regular, convex polyhedrons. They are constructed by congruent (identical in shape and size)
+regular (all angles equal and all sides equal) polygonal faces with the same number of faces meeting at each vertex.
 
 Five solids satisfy the above criteria:
 

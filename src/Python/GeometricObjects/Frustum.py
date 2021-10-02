@@ -1,49 +1,65 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkPlanes
+from vtkmodules.vtkFiltersGeneral import vtkShrinkPolyData
+from vtkmodules.vtkFiltersSources import vtkFrustumSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetClippingRange(0.1, 0.4)
     planesArray = [0] * 24
 
     camera.GetFrustumPlanes(1.0, planesArray)
 
-    planes = vtk.vtkPlanes()
+    planes = vtkPlanes()
     planes.SetFrustumPlanes(planesArray)
 
-    frustumSource = vtk.vtkFrustumSource()
+    frustumSource = vtkFrustumSource()
     frustumSource.ShowLinesOff()
     frustumSource.SetPlanes(planes)
 
-    shrink = vtk.vtkShrinkPolyData()
+    shrink = vtkShrinkPolyData()
     shrink.SetInputConnection(frustumSource.GetOutputPort())
     shrink.SetShrinkFactor(.9)
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(shrink.GetOutputPort())
 
-    back = vtk.vtkProperty()
+    back = vtkProperty()
     back.SetColor(colors.GetColor3d("Tomato"))
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
     actor.GetProperty().SetColor(colors.GetColor3d("Banana"))
     actor.SetBackfaceProperty(back)
 
     # a renderer and render window
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName("Frustum")
     renderWindow.AddRenderer(renderer)
 
     # an interactor
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # add the actors to the scene

@@ -61,6 +61,7 @@ def get_classes_constants(paths):
         re.compile(r'(VTK_[A-Z_]+)'),
         # special patterns
         re.compile(r'(mutable)\({1}'),
+        re.compile(r'(vtk[a-zA-Z]+\S+)\.{1}\S'),
     ]
 
     res = collections.defaultdict(set)

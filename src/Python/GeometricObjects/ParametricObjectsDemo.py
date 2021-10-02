@@ -6,7 +6,69 @@
 
 import collections
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingFreeType
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonComputationalGeometry import (
+    vtkParametricBohemianDome,
+    vtkParametricBour,
+    vtkParametricBoy,
+    vtkParametricCatalanMinimal,
+    vtkParametricConicSpiral,
+    vtkParametricCrossCap,
+    vtkParametricDini,
+    vtkParametricEllipsoid,
+    vtkParametricEnneper,
+    vtkParametricFigure8Klein,
+    vtkParametricHenneberg,
+    vtkParametricKlein,
+    vtkParametricKuen,
+    vtkParametricMobius,
+    vtkParametricPluckerConoid,
+    vtkParametricPseudosphere,
+    vtkParametricRandomHills,
+    vtkParametricRoman,
+    vtkParametricSpline,
+    vtkParametricSuperEllipsoid,
+    vtkParametricSuperToroid,
+    vtkParametricTorus
+)
+from vtkmodules.vtkCommonCore import (
+    vtkMinimalStandardRandomSequence,
+    vtkPoints
+)
+from vtkmodules.vtkFiltersCore import (
+    vtkGlyph3D,
+    vtkMaskPoints
+)
+from vtkmodules.vtkFiltersSources import (
+    vtkArrowSource,
+    vtkParametricFunctionSource
+)
+from vtkmodules.vtkIOImage import (
+    vtkBMPWriter,
+    vtkJPEGWriter,
+    vtkPNGWriter,
+    vtkPNMWriter,
+    vtkPostScriptWriter,
+    vtkTIFFWriter
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkActor2D,
+    vtkPolyDataMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextMapper,
+    vtkTextProperty,
+    vtkWindowToImageFilter
+)
 
 
 def get_program_parameters():
@@ -27,7 +89,7 @@ def get_program_parameters():
 def main():
     back_face, normals, surface_name, write_out_image = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     if surface_name:
         rendererSize = 800
@@ -39,7 +101,7 @@ def main():
         gridRowDimensions = 5
 
     # Create one text property for all
-    textProperty = vtk.vtkTextProperty()
+    textProperty = vtkTextProperty()
     textProperty.SetJustificationToCentered()
     textProperty.SetFontSize(int(rendererSize / 12))
     textProperty.SetColor(colors.GetColor3d("LavenderBlush"))
@@ -60,7 +122,7 @@ def main():
     glyphMapper = []
     glyphActor = []
 
-    backProperty = vtk.vtkProperty()
+    backProperty = vtkProperty()
     if back_face:
         backProperty.SetColor(colors.GetColor3d("Peru"))
 
@@ -91,31 +153,31 @@ def main():
             if surface_name:
                 if obj == surface_name:
                     single_surface = [surface_name, obj_count]
-            pfnSrcs.append(vtk.vtkParametricFunctionSource())
+            pfnSrcs.append(vtkParametricFunctionSource())
             pfnSrcs[obj_count].SetParametricFunction(pfn[t][obj])
             pfnSrcs[obj_count].SetUResolution(51)
             pfnSrcs[obj_count].SetVResolution(51)
             pfnSrcs[obj_count].SetWResolution(51)
             pfnSrcs[obj_count].Update()
 
-            mappers.append(vtk.vtkPolyDataMapper())
+            mappers.append(vtkPolyDataMapper())
             mappers[obj_count].SetInputConnection(pfnSrcs[obj_count].GetOutputPort())
 
-            actors.append(vtk.vtkActor())
+            actors.append(vtkActor())
             actors[obj_count].SetMapper(mappers[obj_count])
             actors[obj_count].GetProperty().SetColor(colors.GetColor3d("NavajoWhite"))
             if back_face:
                 actors[obj_count].SetBackfaceProperty(backProperty)
 
-            textmappers.append(vtk.vtkTextMapper())
+            textmappers.append(vtkTextMapper())
             textmappers[obj_count].SetInput(obj)
             textmappers[obj_count].SetTextProperty(textProperty)
 
-            textactors.append(vtk.vtkActor2D())
+            textactors.append(vtkActor2D())
             textactors[obj_count].SetMapper(textmappers[obj_count])
             textactors[obj_count].SetPosition(rendererSize / 2.0, 8)
 
-            renderers.append(vtk.vtkRenderer())
+            renderers.append(vtkRenderer())
 
             bounds = pfnSrcs[obj_count].GetOutput().GetBounds()
             boundingBox.append(bounds)
@@ -123,19 +185,19 @@ def main():
 
             if normals:
                 # Glyphing
-                maskPts.append(vtk.vtkMaskPoints())
+                maskPts.append(vtkMaskPoints())
                 maskPts[obj_count].RandomModeOn()
                 maskPts[obj_count].SetMaximumNumberOfPoints(150)
                 maskPts[obj_count].SetInputConnection(pfnSrcs[obj_count].GetOutputPort())
 
-                arrow.append(vtk.vtkArrowSource())
+                arrow.append(vtkArrowSource())
                 arrow[obj_count].SetTipResolution(16)
                 arrow[obj_count].SetTipLength(0.3)
                 arrow[obj_count].SetTipRadius(0.1)
 
                 glyphScale = get_maximum_length(boundingBox[obj_count])
 
-                glyph.append(vtk.vtkGlyph3D())
+                glyph.append(vtkGlyph3D())
                 glyph[obj_count].SetSourceConnection(arrow[obj_count].GetOutputPort())
                 glyph[obj_count].SetInputConnection(maskPts[obj_count].GetOutputPort())
                 glyph[obj_count].SetVectorModeToUseNormal()
@@ -143,22 +205,22 @@ def main():
                 glyph[obj_count].OrientOn()
                 glyph[obj_count].Update()
 
-                glyphMapper.append(vtk.vtkPolyDataMapper())
+                glyphMapper.append(vtkPolyDataMapper())
                 glyphMapper[obj_count].SetInputConnection(
                     glyph[obj_count].GetOutputPort())
 
-                glyphActor.append(vtk.vtkActor())
+                glyphActor.append(vtkActor())
                 glyphActor[obj_count].SetMapper(glyphMapper[obj_count])
                 glyphActor[obj_count].GetProperty().SetColor(colors.GetColor3d("GreenYellow"))
 
             obj_count += 1
     # Need a renderer even if there is no actor
     for i in range(obj_count, gridColumnDimensions * gridRowDimensions):
-        renderers.append(vtk.vtkRenderer())
+        renderers.append(vtkRenderer())
         renderers[i].SetBackground(colors.GetColor3d("MidnightBlue"))
         sorted_names.append(None)
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(rendererSize * gridColumnDimensions, rendererSize * gridRowDimensions)
 
     for row in range(0, gridRowDimensions):
@@ -206,7 +268,7 @@ def main():
                     renderers[index].GetActiveCamera().Zoom(0.9)
                     renderers[index].ResetCameraClippingRange()
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     renderWindow.Render()
@@ -236,29 +298,29 @@ def get_parametric_functions():
     """
     # We could use OrderedDict if Python version >= 3.2
     pfn = collections.defaultdict(collections.defaultdict)
-    pfn[0]['Boy'] = vtk.vtkParametricBoy()
-    pfn[0]['ConicSpiral'] = vtk.vtkParametricConicSpiral()
-    pfn[0]['CrossCap'] = vtk.vtkParametricCrossCap()
-    pfn[0]['Dini'] = vtk.vtkParametricDini()
-    pfn[0]['Ellipsoid'] = vtk.vtkParametricEllipsoid()
-    pfn[0]['Enneper'] = vtk.vtkParametricEnneper()
-    pfn[0]['Figure8Klein'] = vtk.vtkParametricFigure8Klein()
-    pfn[0]['Klein'] = vtk.vtkParametricKlein()
-    pfn[0]['Mobius'] = vtk.vtkParametricMobius()
-    pfn[0]['RandomHills'] = vtk.vtkParametricRandomHills()
-    pfn[0]['Roman'] = vtk.vtkParametricRoman()
-    pfn[0]['SuperEllipsoid'] = vtk.vtkParametricSuperEllipsoid()
-    pfn[0]['SuperToroid'] = vtk.vtkParametricSuperToroid()
-    pfn[0]['Torus'] = vtk.vtkParametricTorus()
-    pfn[0]['Spline'] = vtk.vtkParametricSpline()
+    pfn[0]['Boy'] = vtkParametricBoy()
+    pfn[0]['ConicSpiral'] = vtkParametricConicSpiral()
+    pfn[0]['CrossCap'] = vtkParametricCrossCap()
+    pfn[0]['Dini'] = vtkParametricDini()
+    pfn[0]['Ellipsoid'] = vtkParametricEllipsoid()
+    pfn[0]['Enneper'] = vtkParametricEnneper()
+    pfn[0]['Figure8Klein'] = vtkParametricFigure8Klein()
+    pfn[0]['Klein'] = vtkParametricKlein()
+    pfn[0]['Mobius'] = vtkParametricMobius()
+    pfn[0]['RandomHills'] = vtkParametricRandomHills()
+    pfn[0]['Roman'] = vtkParametricRoman()
+    pfn[0]['SuperEllipsoid'] = vtkParametricSuperEllipsoid()
+    pfn[0]['SuperToroid'] = vtkParametricSuperToroid()
+    pfn[0]['Torus'] = vtkParametricTorus()
+    pfn[0]['Spline'] = vtkParametricSpline()
     # Extra parametric surfaces.
-    pfn[1]['BohemianDome'] = vtk.vtkParametricBohemianDome()
-    pfn[1]['Bour'] = vtk.vtkParametricBour()
-    pfn[1]['CatalanMinimal'] = vtk.vtkParametricCatalanMinimal()
-    pfn[1]['Henneberg'] = vtk.vtkParametricHenneberg()
-    pfn[1]['Kuen'] = vtk.vtkParametricKuen()
-    pfn[1]['PluckerConoid'] = vtk.vtkParametricPluckerConoid()
-    pfn[1]['Pseudosphere'] = vtk.vtkParametricPseudosphere()
+    pfn[1]['BohemianDome'] = vtkParametricBohemianDome()
+    pfn[1]['Bour'] = vtkParametricBour()
+    pfn[1]['CatalanMinimal'] = vtkParametricCatalanMinimal()
+    pfn[1]['Henneberg'] = vtkParametricHenneberg()
+    pfn[1]['Kuen'] = vtkParametricKuen()
+    pfn[1]['PluckerConoid'] = vtkParametricPluckerConoid()
+    pfn[1]['Pseudosphere'] = vtkParametricPseudosphere()
     # Now set some parameters.
     pfn[0]["Ellipsoid"].SetXRadius(0.5)
     pfn[0]["Ellipsoid"].SetYRadius(2.0)
@@ -273,8 +335,8 @@ def get_parametric_functions():
     pfn[0]["SuperToroid"].SetN1(0.5)
     pfn[0]["SuperToroid"].SetN2(3.0)
     # The spline needs points
-    inputPoints = vtk.vtkPoints()
-    rng = vtk.vtkMinimalStandardRandomSequence()
+    inputPoints = vtkPoints()
+    rng = vtkMinimalStandardRandomSequence()
     rng.SetSeed(8775070)
     for p in range(0, 10):
         xyz = [None] * 3
@@ -350,21 +412,21 @@ def write_image(fileName, renWin, rgba=True):
             ext = '.png'
             fileName = fileName + ext
         if ext == '.bmp':
-            writer = vtk.vtkBMPWriter()
+            writer = vtkBMPWriter()
         elif ext == '.jpg':
-            writer = vtk.vtkJPEGWriter()
+            writer = vtkJPEGWriter()
         elif ext == '.pnm':
-            writer = vtk.vtkPNMWriter()
+            writer = vtkPNMWriter()
         elif ext == '.ps':
             if rgba:
                 rgba = False
-            writer = vtk.vtkPostScriptWriter()
+            writer = vtkPostScriptWriter()
         elif ext == '.tiff':
-            writer = vtk.vtkTIFFWriter()
+            writer = vtkTIFFWriter()
         else:
-            writer = vtk.vtkPNGWriter()
+            writer = vtkPNGWriter()
 
-        windowto_image_filter = vtk.vtkWindowToImageFilter()
+        windowto_image_filter = vtkWindowToImageFilter()
         windowto_image_filter.SetInput(renWin)
         windowto_image_filter.SetScale(1)  # image quality
         if rgba:

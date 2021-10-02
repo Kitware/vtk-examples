@@ -1,49 +1,63 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the polydata geometry
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
     sphereSource.Update()
 
     # Set up the actor to display the untransformed polydata
-    originalMapper = vtk.vtkPolyDataMapper()
+    originalMapper = vtkPolyDataMapper()
     originalMapper.SetInputConnection(sphereSource.GetOutputPort())
 
-    originalActor = vtk.vtkActor()
+    originalActor = vtkActor()
     originalActor.SetMapper(originalMapper)
     originalActor.GetProperty().SetColor(colors.GetColor3d('Blue'))
 
     # Set up the transform filter
-    translation = vtk.vtkTransform()
+    translation = vtkTransform()
     translation.Translate(1.0, 2.0, 3.0)
 
-    transformFilter = vtk.vtkTransformPolyDataFilter()
+    transformFilter = vtkTransformPolyDataFilter()
     transformFilter.SetInputConnection(sphereSource.GetOutputPort())
     transformFilter.SetTransform(translation)
     transformFilter.Update()
 
     # Set up the actor to display the transformed polydata
-    transformedMapper = vtk.vtkPolyDataMapper()
+    transformedMapper = vtkPolyDataMapper()
     transformedMapper.SetInputConnection(transformFilter.GetOutputPort())
 
-    transformedActor = vtk.vtkActor()
+    transformedActor = vtkActor()
     transformedActor.SetMapper(transformedMapper)
     transformedActor.GetProperty().SetColor(colors.GetColor3d('Red'))
 
     # Set up the rest of the visualization pipeline
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(originalActor)
     renderer.AddActor(transformedActor)
     renderer.SetBackground(colors.GetColor3d('Green'))
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderWindow.SetWindowName('TransformPolyData')

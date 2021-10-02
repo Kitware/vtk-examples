@@ -1,17 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkPlaneSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('BkgColor', [26, 51, 77, 255])
 
     # Create a plane
-    planeSource = vtk.vtkPlaneSource()
+    planeSource = vtkPlaneSource()
     planeSource.SetCenter(1.0, 0.0, 0.0)
     planeSource.SetNormal(1.0, 0.0, 1.0)
     planeSource.Update()
@@ -19,19 +31,19 @@ def main():
     plane = planeSource.GetOutput()
 
     # Create a mapper and actor
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputData(plane)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('Banana'))
 
     # Create a renderer, render window and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('Plane')
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actors to the scene
@@ -45,35 +57,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# import vtkmodules.all as vtk
-#
-# # create a rendering window and renderer
-# ren = vtk.vtkRenderer()
-# renWin = vtk.vtkRenderWindow()
-# renWin.AddRenderer(ren)
-#
-# # create a renderwindowinteractor
-# iren = vtk.vtkRenderWindowInteractor()
-# iren.SetRenderWindow(renWin)
-#
-# # create source
-# source = vtk.vtkPlaneSource()
-# source.SetCenter(1, 0, 0)
-# source.SetNormal(1, 0, 1)
-#
-# # mapper
-# mapper = vtk.vtkPolyDataMapper()
-# mapper.SetInputConnection(source.GetOutputPort())
-#
-# # actor
-# actor = vtk.vtkActor()
-# actor.SetMapper(mapper)
-#
-# # assign actor to the renderer
-# ren.AddActor(actor)
-#
-# # enable user interface interactor
-# iren.Initialize()
-# renWin.Render()
-# iren.Start()

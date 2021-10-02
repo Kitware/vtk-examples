@@ -1,13 +1,19 @@
-from __future__ import print_function
+#!/usr/bin/env python
 
-import vtkmodules.all as vtk
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkIterativeClosestPointTransform,
+    vtkPolyData
+)
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
 
 
 def main():
     # ============ create source points ==============
     print("Creating source points...")
-    sourcePoints = vtk.vtkPoints()
-    sourceVertices = vtk.vtkCellArray()
+    sourcePoints = vtkPoints()
+    sourceVertices = vtkCellArray()
 
     sp_id = sourcePoints.InsertNextPoint(1.0, 0.1, 0.0)
     sourceVertices.InsertNextCell(1)
@@ -21,7 +27,7 @@ def main():
     sourceVertices.InsertNextCell(1)
     sourceVertices.InsertCellPoint(sp_id)
 
-    source = vtk.vtkPolyData()
+    source = vtkPolyData()
     source.SetPoints(sourcePoints)
     source.SetVerts(sourceVertices)
 
@@ -35,8 +41,8 @@ def main():
 
     # ============ create target points ==============
     print("Creating target points...")
-    targetPoints = vtk.vtkPoints()
-    targetVertices = vtk.vtkCellArray()
+    targetPoints = vtkPoints()
+    targetVertices = vtkCellArray()
 
     tp_id = targetPoints.InsertNextPoint(1.0, 0.0, 0.0)
     targetVertices.InsertNextCell(1)
@@ -50,7 +56,7 @@ def main():
     targetVertices.InsertNextCell(1)
     targetVertices.InsertCellPoint(tp_id)
 
-    target = vtk.vtkPolyData()
+    target = vtkPolyData()
     target.SetPoints(targetPoints)
     target.SetVerts(targetVertices)
 
@@ -64,7 +70,7 @@ def main():
 
     print("Running ICP ----------------")
     # ============ run ICP ==============
-    icp = vtk.vtkIterativeClosestPointTransform()
+    icp = vtkIterativeClosestPointTransform()
     icp.SetSource(source)
     icp.SetTarget(target)
     icp.GetLandmarkTransform().SetModeToRigidBody()
@@ -74,7 +80,7 @@ def main():
     icp.Modified()
     icp.Update()
 
-    icpTransformFilter = vtk.vtkTransformPolyDataFilter()
+    icpTransformFilter = vtkTransformPolyDataFilter()
     icpTransformFilter.SetInputData(source)
 
     icpTransformFilter.SetTransform(icp)

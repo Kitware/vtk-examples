@@ -7,12 +7,33 @@ This is (almost) a direct C++ to Python transliteration of
 
 A convenience function, mkVtkIdList(), has been added and one if/else
  so the example also works in version 6 or later.
-If your VTK version is 5.x then remove the line: colors = vtk.vtkNamedColors()
+If your VTK version is 5.x then remove the line: colors = vtkNamedColors()
  and replace the set background parameters with (1.0, 0.9688, 0.8594)
 
 """
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkFloatArray,
+    vtkIdList,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def mkVtkIdList(it):
@@ -25,14 +46,14 @@ def mkVtkIdList(it):
     :param it: A python iterable.
     :return: A vtkIdList
     """
-    vil = vtk.vtkIdList()
+    vil = vtkIdList()
     for i in it:
         vil.InsertNextId(int(i))
     return vil
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # x = array of 8 3-tuples of float representing the vertices of a cube:
     x = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (1.0, 1.0, 0.0), (0.0, 1.0, 0.0),
@@ -44,10 +65,10 @@ def main():
            (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)]
 
     # We'll create the building blocks of polydata including data attributes.
-    cube = vtk.vtkPolyData()
-    points = vtk.vtkPoints()
-    polys = vtk.vtkCellArray()
-    scalars = vtk.vtkFloatArray()
+    cube = vtkPolyData()
+    points = vtkPoints()
+    polys = vtkCellArray()
+    scalars = vtkFloatArray()
 
     # Load the point, cell, and data attributes.
     for i, xi in enumerate(x):
@@ -63,22 +84,22 @@ def main():
     cube.GetPointData().SetScalars(scalars)
 
     # Now we'll look at it.
-    cubeMapper = vtk.vtkPolyDataMapper()
+    cubeMapper = vtkPolyDataMapper()
     cubeMapper.SetInputData(cube)
     cubeMapper.SetScalarRange(cube.GetScalarRange())
-    cubeActor = vtk.vtkActor()
+    cubeActor = vtkActor()
     cubeActor.SetMapper(cubeMapper)
 
     # The usual rendering stuff.
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetPosition(1, 1, 1)
     camera.SetFocalPoint(0, 0, 0)
 
-    renderer = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     renderer.AddActor(cubeActor)

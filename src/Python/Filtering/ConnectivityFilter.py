@@ -1,57 +1,74 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import (
+    vtkAppendFilter,
+    vtkConnectivityFilter,
+    vtkDelaunay3D
+)
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    sphereSource1 = vtk.vtkSphereSource()
+    sphereSource1 = vtkSphereSource()
     sphereSource1.Update()
 
-    delaunay1 = vtk.vtkDelaunay3D()
+    delaunay1 = vtkDelaunay3D()
     delaunay1.SetInputConnection(sphereSource1.GetOutputPort())
     delaunay1.Update()
 
-    sphereSource2 = vtk.vtkSphereSource()
+    sphereSource2 = vtkSphereSource()
     sphereSource2.SetCenter(5, 0, 0)
     sphereSource2.Update()
 
-    delaunay2 = vtk.vtkDelaunay3D()
+    delaunay2 = vtkDelaunay3D()
     delaunay2.SetInputConnection(sphereSource2.GetOutputPort())
     delaunay2.Update()
 
-    appendFilter = vtk.vtkAppendFilter()
+    appendFilter = vtkAppendFilter()
     appendFilter.AddInputConnection(delaunay1.GetOutputPort())
     appendFilter.AddInputConnection(delaunay2.GetOutputPort())
     appendFilter.Update()
 
-    connectivityFilter = vtk.vtkConnectivityFilter()
+    connectivityFilter = vtkConnectivityFilter()
     connectivityFilter.SetInputConnection(appendFilter.GetOutputPort())
     connectivityFilter.SetExtractionModeToAllRegions()
     connectivityFilter.ColorRegionsOn()
     connectivityFilter.Update()
 
     # Visualize
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputConnection(connectivityFilter.GetOutputPort())
     mapper.Update()
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(actor)
 
-    # renWindow = vtk.vtkRenderWindow()
+    # renWindow = vtkRenderWindow()
     # renWindow.AddRenderer(renderer)
-    # iren = vtk.vtkRenderWindowInteractor()
+    # iren = vtkRenderWindowInteractor()
     # iren.SetRenderWindow(renWindow)
     # iren.Initialize()
     # iren.Start()
-    renWindow = vtk.vtkRenderWindow()
+    renWindow = vtkRenderWindow()
     renWindow.AddRenderer(renderer)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWindow)
 
     iren.Initialize()

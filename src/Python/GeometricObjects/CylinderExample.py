@@ -3,30 +3,42 @@
 # This simple example shows how to do basic rendering and pipeline
 # creation.
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkCylinderSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     # Set the background color.
     bkg = map(lambda x: x / 255.0, [26, 51, 102, 255])
     colors.SetColor("BkgColor", *bkg)
 
     # This creates a polygonal cylinder model with eight circumferential
     # facets.
-    cylinder = vtk.vtkCylinderSource()
+    cylinder = vtkCylinderSource()
     cylinder.SetResolution(8)
 
     # The mapper is responsible for pushing the geometry into the graphics
     # library. It may also do color mapping, if scalars or other
     # attributes are defined.
-    cylinderMapper = vtk.vtkPolyDataMapper()
+    cylinderMapper = vtkPolyDataMapper()
     cylinderMapper.SetInputConnection(cylinder.GetOutputPort())
 
     # The actor is a grouping mechanism: besides the geometry (mapper), it
     # also has a property, transformation matrix, and/or texture map.
     # Here we set its color and rotate it -22.5 degrees.
-    cylinderActor = vtk.vtkActor()
+    cylinderActor = vtkActor()
     cylinderActor.SetMapper(cylinderMapper)
     cylinderActor.GetProperty().SetColor(colors.GetColor3d("Tomato"))
     cylinderActor.RotateX(30.0)
@@ -36,10 +48,10 @@ def main():
     # window. The render window interactor captures mouse events and will
     # perform appropriate camera or actor manipulation depending on the
     # nature of the events.
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size

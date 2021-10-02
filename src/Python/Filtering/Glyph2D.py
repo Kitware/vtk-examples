@@ -1,46 +1,61 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkFiltersCore import vtkGlyph2D
+from vtkmodules.vtkFiltersSources import vtkRegularPolygonSource
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleImage
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(1, 1, 0)
     points.InsertNextPoint(2, 2, 0)
 
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(points)
 
     # Create anything you want here, we will use a polygon for the demo.
-    polygonSource = vtk.vtkRegularPolygonSource()  # default is 6 sides
+    polygonSource = vtkRegularPolygonSource()  # default is 6 sides
 
-    glyph2D = vtk.vtkGlyph2D()
+    glyph2D = vtkGlyph2D()
     glyph2D.SetSourceConnection(polygonSource.GetOutputPort())
     glyph2D.SetInputData(polydata)
     glyph2D.Update()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(glyph2D.GetOutputPort())
     mapper.Update()
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('Salmon'))
 
     # Visualize
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
-    style = vtk.vtkInteractorStyleImage()
+    style = vtkInteractorStyleImage()
     renderWindowInteractor.SetInteractorStyle(style)
 
     renderWindow.SetWindowName('Glyph2D');

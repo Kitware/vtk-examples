@@ -1,46 +1,63 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData,
+    vtkTriangleStrip
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(0, 1, 0)
     points.InsertNextPoint(1, 0, 0)
     points.InsertNextPoint(1.5, 1, 0)
 
-    triangleStrip = vtk.vtkTriangleStrip()
+    triangleStrip = vtkTriangleStrip()
     triangleStrip.GetPointIds().SetNumberOfIds(4)
     triangleStrip.GetPointIds().SetId(0, 0)
     triangleStrip.GetPointIds().SetId(1, 1)
     triangleStrip.GetPointIds().SetId(2, 2)
     triangleStrip.GetPointIds().SetId(3, 3)
 
-    cells = vtk.vtkCellArray()
+    cells = vtkCellArray()
     cells.InsertNextCell(triangleStrip)
 
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(points)
     polydata.SetStrips(cells)
 
     # Create an actor and mapper
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputData(polydata)
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
     actor.GetProperty().SetRepresentationToWireframe()
 
     # Create a renderer, render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('TriangleStrip')
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)

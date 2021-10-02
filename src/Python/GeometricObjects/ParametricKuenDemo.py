@@ -1,22 +1,44 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonComputationalGeometry import vtkParametricKuen
+from vtkmodules.vtkCommonCore import (
+    vtkCommand,
+    vtkMath
+)
+from vtkmodules.vtkFiltersSources import vtkParametricFunctionSource
+from vtkmodules.vtkInteractionWidgets import (
+    vtkSliderRepresentation2D,
+    vtkSliderWidget
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     colors.SetColor('BkgColor', [26, 51, 102, 255])
 
-    surface = vtk.vtkParametricKuen()
-    source = vtk.vtkParametricFunctionSource()
+    surface = vtkParametricKuen()
+    source = vtkParametricFunctionSource()
 
-    renderer = vtk.vtkRenderer()
-    mapper = vtk.vtkPolyDataMapper()
-    actor = vtk.vtkActor()
+    renderer = vtkRenderer()
+    mapper = vtkPolyDataMapper()
+    actor = vtkActor()
 
-    backProperty = vtk.vtkProperty()
+    backProperty = vtkProperty()
     backProperty.SetColor(colors.GetColor3d('Tomato'))
 
     # Create a parametric function source, renderer, mapper, and actor
@@ -30,7 +52,7 @@ def main():
     actor.GetProperty().SetSpecular(.5)
     actor.GetProperty().SetSpecularPower(20)
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('ParametricKuenDemo')
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
@@ -43,7 +65,7 @@ def main():
     renderer.GetActiveCamera().Zoom(0.9)
     renderer.ResetCameraClippingRange()
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     # Setup a slider widget for each varying parameter
@@ -52,7 +74,7 @@ def main():
     titleHeight = 0.02
     labelHeight = 0.02
 
-    sliderRepMinimumU = vtk.vtkSliderRepresentation2D()
+    sliderRepMinimumU = vtkSliderRepresentation2D()
 
     sliderRepMinimumU.SetMinimumValue(-4.5)
     sliderRepMinimumU.SetMaximumValue(4.5)
@@ -69,7 +91,7 @@ def main():
     sliderRepMinimumU.SetTitleHeight(titleHeight)
     sliderRepMinimumU.SetLabelHeight(labelHeight)
 
-    sliderWidgetMinimumU = vtk.vtkSliderWidget()
+    sliderWidgetMinimumU = vtkSliderWidget()
     sliderWidgetMinimumU.SetInteractor(interactor)
     sliderWidgetMinimumU.SetRepresentation(sliderRepMinimumU)
     sliderWidgetMinimumU.SetAnimationModeToAnimate()
@@ -77,7 +99,7 @@ def main():
 
     sliderWidgetMinimumU.AddObserver('InteractionEvent', SliderCallbackMinimumU(surface))
 
-    sliderRepMaximumU = vtk.vtkSliderRepresentation2D()
+    sliderRepMaximumU = vtkSliderRepresentation2D()
 
     sliderRepMaximumU.SetMinimumValue(-4.5)
     sliderRepMaximumU.SetMaximumValue(4.5)
@@ -94,7 +116,7 @@ def main():
     sliderRepMaximumU.SetTitleHeight(titleHeight)
     sliderRepMaximumU.SetLabelHeight(labelHeight)
 
-    sliderWidgetMaximumU = vtk.vtkSliderWidget()
+    sliderWidgetMaximumU = vtkSliderWidget()
     sliderWidgetMaximumU.SetInteractor(interactor)
     sliderWidgetMaximumU.SetRepresentation(sliderRepMaximumU)
     sliderWidgetMaximumU.SetAnimationModeToAnimate()
@@ -102,10 +124,10 @@ def main():
 
     sliderWidgetMaximumU.AddObserver('InteractionEvent', SliderCallbackMaximumU(surface))
 
-    sliderRepMinimumV = vtk.vtkSliderRepresentation2D()
+    sliderRepMinimumV = vtkSliderRepresentation2D()
 
     sliderRepMinimumV.SetMinimumValue(0.05)
-    sliderRepMinimumV.SetMaximumValue(vtk.vtkMath.Pi())
+    sliderRepMinimumV.SetMaximumValue(vtkMath.Pi())
     sliderRepMinimumV.SetValue(0.0)
     sliderRepMinimumV.SetTitleText('V min')
 
@@ -119,19 +141,19 @@ def main():
     sliderRepMinimumV.SetTitleHeight(titleHeight)
     sliderRepMinimumV.SetLabelHeight(labelHeight)
 
-    sliderWidgetMinimumV = vtk.vtkSliderWidget()
+    sliderWidgetMinimumV = vtkSliderWidget()
     sliderWidgetMinimumV.SetInteractor(interactor)
     sliderWidgetMinimumV.SetRepresentation(sliderRepMinimumV)
     sliderWidgetMinimumV.SetAnimationModeToAnimate()
     sliderWidgetMinimumV.EnabledOn()
 
-    sliderWidgetMinimumV.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMinimumV(surface))
+    sliderWidgetMinimumV.AddObserver(vtkCommand.InteractionEvent, SliderCallbackMinimumV(surface))
 
-    sliderRepMaximumV = vtk.vtkSliderRepresentation2D()
+    sliderRepMaximumV = vtkSliderRepresentation2D()
 
     sliderRepMaximumV.SetMinimumValue(0.05)
-    sliderRepMaximumV.SetMaximumValue(vtk.vtkMath.Pi() - .05)
-    sliderRepMaximumV.SetValue(vtk.vtkMath.Pi())
+    sliderRepMaximumV.SetMaximumValue(vtkMath.Pi() - .05)
+    sliderRepMaximumV.SetValue(vtkMath.Pi())
     sliderRepMaximumV.SetTitleText('V max')
 
     sliderRepMaximumV.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
@@ -143,18 +165,18 @@ def main():
     sliderRepMaximumV.SetTitleHeight(titleHeight)
     sliderRepMaximumV.SetLabelHeight(labelHeight)
 
-    sliderWidgetMaximumV = vtk.vtkSliderWidget()
+    sliderWidgetMaximumV = vtkSliderWidget()
     sliderWidgetMaximumV.SetInteractor(interactor)
     sliderWidgetMaximumV.SetRepresentation(sliderRepMaximumV)
     sliderWidgetMaximumV.SetAnimationModeToAnimate()
     sliderWidgetMaximumV.EnabledOn()
 
-    sliderWidgetMaximumV.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMaximumV(surface))
+    sliderWidgetMaximumV.AddObserver(vtkCommand.InteractionEvent, SliderCallbackMaximumV(surface))
 
     surface.SetMinimumU(-4.5)
     surface.SetMaximumU(4.5)
     surface.SetMinimumV(0.05)
-    surface.SetMaximumV(vtk.vtkMath.Pi() - .05)
+    surface.SetMaximumV(vtkMath.Pi() - .05)
 
     renderer.ResetCamera()
     renderer.GetActiveCamera().Azimuth(30)

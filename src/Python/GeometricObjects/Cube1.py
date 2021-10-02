@@ -1,31 +1,43 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkCubeSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a rendering window and renderer.
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.SetWindowName('Cube1')
     renWin.AddRenderer(ren)
 
     # Create a renderwindowinteractor.
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create cube.
-    cube = vtk.vtkCubeSource()
+    cube = vtkCubeSource()
     cube.Update()
 
     # mapper
-    cubeMapper = vtk.vtkPolyDataMapper()
+    cubeMapper = vtkPolyDataMapper()
     cubeMapper.SetInputData(cube.GetOutput())
 
     # Actor.
-    cubeActor = vtk.vtkActor()
+    cubeActor = vtkActor()
     cubeActor.SetMapper(cubeMapper)
     cubeActor.GetProperty().SetColor(colors.GetColor3d('Banana'))
 

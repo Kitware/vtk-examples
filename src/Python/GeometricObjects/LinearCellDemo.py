@@ -1,7 +1,61 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    # VTK_HEXAGONAL_PRISM,
+    # VTK_HEXAHEDRON,
+    # VTK_LINE,
+    # VTK_PENTAGONAL_PRISM,
+    # VTK_PIXEL,
+    # VTK_POLY_LINE,
+    # VTK_POLY_VERTEX,
+    # VTK_POLYGON,
+    # VTK_PYRAMID,
+    # VTK_QUAD,
+    VTK_TETRA,
+    # VTK_TRIANGLE,
+    # VTK_TRIANGLE_STRIP,
+    # VTK_VERTEX,
+    # VTK_VOXEL,
+    # VTK_WEDGE,
+    vtkCellArray,
+    vtkHexagonalPrism,
+    vtkHexahedron,
+    vtkLine,
+    vtkPentagonalPrism,
+    vtkPixel,
+    vtkPolyLine,
+    vtkPolyVertex,
+    vtkPolygon,
+    vtkPyramid,
+    vtkQuad,
+    vtkTetra,
+    vtkTriangle,
+    vtkTriangleStrip,
+    vtkUnstructuredGrid,
+    vtkVertex,
+    vtkVoxel,
+    vtkWedge
+)
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkActor2D,
+    vtkDataSetMapper,
+    vtkGlyph3DMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextMapper,
+    vtkTextProperty
+)
+from vtkmodules.vtkRenderingLabel import vtkLabeledDataMapper
 
 
 def main():
@@ -47,36 +101,35 @@ def main():
     uGrids.append(MakeHexagonalPrism())
     titles.append('VTK_HEXAGONAL_PRISM (=16)')
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.SetSize(600, 600)
     renWin.SetWindowName('LinearCellDemo')
 
-    iRen = vtk.vtkRenderWindowInteractor()
+    iRen = vtkRenderWindowInteractor()
     iRen.SetRenderWindow(renWin)
 
     # Create one sphere for all
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetPhiResolution(21)
     sphere.SetThetaResolution(21)
     sphere.SetRadius(.08)
 
     # Create one text property for all
-    textProperty = vtk.vtkTextProperty()
+    textProperty = vtkTextProperty()
     textProperty.SetFontSize(10)
     textProperty.SetJustificationToCentered()
-
 
     # Create and link the mappers actors and renderers together.
     for i in range(0, len(uGrids)):
         print('Creating:', titles[i])
-        textMappers.append(vtk.vtkTextMapper())
-        textActors.append(vtk.vtkActor2D())
+        textMappers.append(vtkTextMapper())
+        textActors.append(vtkActor2D())
 
-        mappers.append(vtk.vtkDataSetMapper())
-        actors.append(vtk.vtkActor())
-        renderers.append(vtk.vtkRenderer())
+        mappers.append(vtkDataSetMapper())
+        actors.append(vtkActor())
+        renderers.append(vtkRenderer())
         mappers[i].SetInputData(uGrids[i])
         actors[i].SetMapper(mappers[i])
         actors[i].GetProperty().SetColor(colors.GetColor3d('Tomato'))
@@ -91,20 +144,20 @@ def main():
         renderers[i].AddViewProp(textActors[i])
 
         # Label the points
-        labelMapper = vtk.vtkLabeledDataMapper()
+        labelMapper = vtkLabeledDataMapper()
         labelMapper.SetInputData(uGrids[i])
-        labelActor = vtk.vtkActor2D()
+        labelActor = vtkActor2D()
         labelActor.SetMapper(labelMapper)
         renderers[i].AddViewProp(labelActor)
 
         # Glyph the points
-        pointMapper = vtk.vtkGlyph3DMapper()
+        pointMapper = vtkGlyph3DMapper()
         pointMapper.SetInputData(uGrids[i])
         pointMapper.SetSourceConnection(sphere.GetOutputPort())
         pointMapper.ScalingOff()
         pointMapper.ScalarVisibilityOff()
 
-        pointActor = vtk.vtkActor()
+        pointActor = vtkActor()
         pointActor.SetMapper(pointMapper)
         pointActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Banana'))
         pointActor.GetProperty().SetSpecular(.6)
@@ -132,7 +185,7 @@ def main():
             if index > (len(actors) - 1):
                 # Add a renderer even if there is no actor.
                 # This makes the render window background all the same color.
-                ren = vtk.vtkRenderer()
+                ren = vtkRenderer()
                 ren.SetBackground(colors.GetColor3d('SlateGray'))
                 ren.SetViewport(viewport)
                 renWin.AddRenderer(ren)
@@ -162,14 +215,14 @@ def MakeVertex():
     # A vertex is a cell that represents a 3D point
     numberOfVertices = 1
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
 
-    vertex = vtk.vtkVertex()
+    vertex = vtkVertex()
     for i in range(0, numberOfVertices):
         vertex.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(vertex.GetCellType(), vertex.GetPointIds())
 
@@ -180,7 +233,7 @@ def MakePolyVertex():
     # A polyvertex is a cell represents a set of 0D vertices
     numberOfVertices = 6
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(1, 0, 0)
     points.InsertNextPoint(0, 1, 0)
@@ -188,13 +241,13 @@ def MakePolyVertex():
     points.InsertNextPoint(1, 0, .4)
     points.InsertNextPoint(0, 1, .6)
 
-    polyVertex = vtk.vtkPolyVertex()
+    polyVertex = vtkPolyVertex()
     polyVertex.GetPointIds().SetNumberOfIds(numberOfVertices)
 
     for i in range(0, numberOfVertices):
         polyVertex.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(polyVertex.GetCellType(), polyVertex.GetPointIds())
 
@@ -205,15 +258,15 @@ def MakeLine():
     # A line is a cell that represents a 1D point
     numberOfVertices = 2
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(.5, .5, 0)
 
-    line = vtk.vtkLine()
+    line = vtkLine()
     for i in range(0, numberOfVertices):
         line.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(line.GetCellType(), line.GetPointIds())
 
@@ -224,20 +277,20 @@ def MakePolyLine():
     # A polyline is a cell that represents a set of 1D lines
     numberOfVertices = 5
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, .5, 0)
     points.InsertNextPoint(.5, 0, 0)
     points.InsertNextPoint(1, .3, 0)
     points.InsertNextPoint(1.5, .4, 0)
     points.InsertNextPoint(2.0, .4, 0)
 
-    polyline = vtk.vtkPolyLine()
+    polyline = vtkPolyLine()
     polyline.GetPointIds().SetNumberOfIds(numberOfVertices)
 
     for i in range(0, numberOfVertices):
         polyline.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(polyline.GetCellType(), polyline.GetPointIds())
 
@@ -248,16 +301,16 @@ def MakeTriangle():
     # A triangle is a cell that represents a 1D point
     numberOfVertices = 3
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(.5, .5, 0)
     points.InsertNextPoint(.2, 1, 0)
 
-    triangle = vtk.vtkTriangle()
+    triangle = vtkTriangle()
     for i in range(0, numberOfVertices):
         triangle.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(triangle.GetCellType(), triangle.GetPointIds())
 
@@ -268,7 +321,7 @@ def MakeTriangleStrip():
     # A triangle is a cell that represents a triangle strip
     numberOfVertices = 10
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(.5, 1, 0)
     points.InsertNextPoint(1, -.1, 0)
@@ -280,12 +333,12 @@ def MakeTriangleStrip():
     points.InsertNextPoint(4.0, -.2, 0)
     points.InsertNextPoint(4.5, 1.1, 0)
 
-    trianglestrip = vtk.vtkTriangleStrip()
+    trianglestrip = vtkTriangleStrip()
     trianglestrip.GetPointIds().SetNumberOfIds(numberOfVertices)
     for i in range(0, numberOfVertices):
         trianglestrip.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(trianglestrip.GetCellType(), trianglestrip.GetPointIds())
 
@@ -296,7 +349,7 @@ def MakePolygon():
     # A polygon is a cell that represents a polygon
     numberOfVertices = 6
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(1, -.1, 0)
     points.InsertNextPoint(.8, .5, 0)
@@ -304,12 +357,12 @@ def MakePolygon():
     points.InsertNextPoint(.6, 1.2, 0)
     points.InsertNextPoint(0, .8, 0)
 
-    polygon = vtk.vtkPolygon()
+    polygon = vtkPolygon()
     polygon.GetPointIds().SetNumberOfIds(numberOfVertices)
     for i in range(0, numberOfVertices):
         polygon.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(polygon.GetCellType(), polygon.GetPointIds())
 
@@ -318,7 +371,7 @@ def MakePolygon():
 
 def MakePixel():
     # A pixel is a cell that represents a pixel
-    pixel = vtk.vtkPixel()
+    pixel = vtkPixel()
     pixel.GetPoints().SetPoint(0, 0, 0, 0)
     pixel.GetPoints().SetPoint(1, 1, 0, 0)
     pixel.GetPoints().SetPoint(2, 0, 1, 0)
@@ -329,7 +382,7 @@ def MakePixel():
     pixel.GetPointIds().SetId(2, 2)
     pixel.GetPointIds().SetId(3, 3)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(pixel.GetPoints())
     ug.InsertNextCell(pixel.GetCellType(), pixel.GetPointIds())
 
@@ -338,7 +391,7 @@ def MakePixel():
 
 def MakeQuad():
     # A quad is a cell that represents a quad
-    quad = vtk.vtkQuad()
+    quad = vtkQuad()
     quad.GetPoints().SetPoint(0, 0, 0, 0)
     quad.GetPoints().SetPoint(1, 1, 0, 0)
     quad.GetPoints().SetPoint(2, 1, 1, 0)
@@ -349,7 +402,7 @@ def MakeQuad():
     quad.GetPointIds().SetId(2, 2)
     quad.GetPointIds().SetId(3, 3)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(quad.GetPoints())
     ug.InsertNextCell(quad.GetCellType(), quad.GetPointIds())
 
@@ -360,22 +413,22 @@ def MakeTetra():
     # Make a tetrahedron.
     numberOfVertices = 4
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(1, 0, 0)
     points.InsertNextPoint(1, 1, 0)
     points.InsertNextPoint(0, 1, 1)
 
-    tetra = vtk.vtkTetra()
+    tetra = vtkTetra()
     for i in range(0, numberOfVertices):
         tetra.GetPointIds().SetId(i, i)
 
-    cellArray = vtk.vtkCellArray()
+    cellArray = vtkCellArray()
     cellArray.InsertNextCell(tetra)
 
-    unstructuredGrid = vtk.vtkUnstructuredGrid()
+    unstructuredGrid = vtkUnstructuredGrid()
     unstructuredGrid.SetPoints(points)
-    unstructuredGrid.SetCells(vtk.VTK_TETRA, cellArray)
+    unstructuredGrid.SetCells(VTK_TETRA, cellArray)
 
     return unstructuredGrid
 
@@ -384,7 +437,7 @@ def MakeVoxel():
     # A voxel is a representation of a regular grid in 3-D space.
     numberOfVertices = 8
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0, 0, 0)
     points.InsertNextPoint(1, 0, 0)
     points.InsertNextPoint(0, 1, 0)
@@ -394,11 +447,11 @@ def MakeVoxel():
     points.InsertNextPoint(0, 1, 1)
     points.InsertNextPoint(1, 1, 1)
 
-    voxel = vtk.vtkVoxel()
+    voxel = vtkVoxel()
     for i in range(0, numberOfVertices):
         voxel.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(voxel.GetCellType(), voxel.GetPointIds())
 
@@ -416,7 +469,7 @@ def MakeHexahedron():
     numberOfVertices = 8
 
     # Create the points
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0.0, 0.0, 0.0)
     points.InsertNextPoint(1.0, 0.0, 0.0)
     points.InsertNextPoint(1.0, 1.0, 0.0)
@@ -427,12 +480,12 @@ def MakeHexahedron():
     points.InsertNextPoint(0.0, 1.0, 1.0)
 
     # Create a hexahedron from the points
-    hexhedr = vtk.vtkHexahedron()
+    hexhedr = vtkHexahedron()
     for i in range(0, numberOfVertices):
         hexhedr.GetPointIds().SetId(i, i)
 
     # Add the points and hexahedron to an unstructured grid
-    uGrid = vtk.vtkUnstructuredGrid()
+    uGrid = vtkUnstructuredGrid()
     uGrid.SetPoints(points)
     uGrid.InsertNextCell(hexhedr.GetCellType(), hexhedr.GetPointIds())
 
@@ -444,7 +497,7 @@ def MakeWedge():
 
     numberOfVertices = 6
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
 
     points.InsertNextPoint(0, 1, 0)
     points.InsertNextPoint(0, 0, 0)
@@ -453,11 +506,11 @@ def MakeWedge():
     points.InsertNextPoint(1, 0.0, 0.0)
     points.InsertNextPoint(1, .5, .5)
 
-    wedge = vtk.vtkWedge()
+    wedge = vtkWedge()
     for i in range(0, numberOfVertices):
         wedge.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(wedge.GetCellType(), wedge.GetPointIds())
 
@@ -468,7 +521,7 @@ def MakePyramid():
     # Make a regular square pyramid.
     numberOfVertices = 5
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
 
     p0 = [1.0, 1.0, 0.0]
     p1 = [-1.0, 1.0, 0.0]
@@ -482,11 +535,11 @@ def MakePyramid():
     points.InsertNextPoint(p3)
     points.InsertNextPoint(p4)
 
-    pyramid = vtk.vtkPyramid()
+    pyramid = vtkPyramid()
     for i in range(0, numberOfVertices):
         pyramid.GetPointIds().SetId(i, i)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(points)
     ug.InsertNextCell(pyramid.GetCellType(), pyramid.GetPointIds())
 
@@ -494,7 +547,7 @@ def MakePyramid():
 
 
 def MakePentagonalPrism():
-    pentagonalPrism = vtk.vtkPentagonalPrism()
+    pentagonalPrism = vtkPentagonalPrism()
 
     pentagonalPrism.GetPointIds().SetId(0, 0)
     pentagonalPrism.GetPointIds().SetId(1, 1)
@@ -519,7 +572,7 @@ def MakePentagonalPrism():
     pentagonalPrism.GetPoints().SetPoint(8, 12 / scale, 14 / scale, 14 / scale)
     pentagonalPrism.GetPoints().SetPoint(9, 10 / scale, 12 / scale, 14 / scale)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(pentagonalPrism.GetPoints())
     ug.InsertNextCell(pentagonalPrism.GetCellType(), pentagonalPrism.GetPointIds())
 
@@ -527,7 +580,7 @@ def MakePentagonalPrism():
 
 
 def MakeHexagonalPrism():
-    hexagonalPrism = vtk.vtkHexagonalPrism()
+    hexagonalPrism = vtkHexagonalPrism()
     hexagonalPrism.GetPointIds().SetId(0, 0)
     hexagonalPrism.GetPointIds().SetId(1, 1)
     hexagonalPrism.GetPointIds().SetId(2, 2)
@@ -555,7 +608,7 @@ def MakeHexagonalPrism():
     hexagonalPrism.GetPoints().SetPoint(10, 11 / scale, 14 / scale, 14 / scale)
     hexagonalPrism.GetPoints().SetPoint(11, 10 / scale, 12 / scale, 14 / scale)
 
-    ug = vtk.vtkUnstructuredGrid()
+    ug = vtkUnstructuredGrid()
     ug.SetPoints(hexagonalPrism.GetPoints())
     ug.InsertNextCell(hexagonalPrism.GetCellType(), hexagonalPrism.GetPointIds())
 

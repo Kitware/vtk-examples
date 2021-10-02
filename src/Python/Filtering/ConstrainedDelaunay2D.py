@@ -1,16 +1,37 @@
 #!/usr/bin/python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkMinimalStandardRandomSequence,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData,
+    vtkPolygon
+)
+from vtkmodules.vtkFiltersCore import vtkDelaunay2D
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Generate a 10 x 10 grid of points
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     gridSize = 10
     seed = 0
-    randomSequence = vtk.vtkMinimalStandardRandomSequence()
+    randomSequence = vtkMinimalStandardRandomSequence()
     randomSequence.Initialize(seed)
     for x in range(gridSize):
         for y in range(gridSize):
@@ -20,14 +41,14 @@ def main():
             randomSequence.Next()
             points.InsertNextPoint(x + d1, y + d2, 0)
 
-    aPolyData = vtk.vtkPolyData()
+    aPolyData = vtkPolyData()
     aPolyData.SetPoints(points)
 
     # Create a cell array to store the polygon in
-    aCellArray = vtk.vtkCellArray()
+    aCellArray = vtkCellArray()
 
     # Define a polygonal hole with a clockwise polygon
-    aPolygon = vtk.vtkPolygon()
+    aPolygon = vtkPolygon()
 
     aPolygon.GetPointIds().InsertNextId(22)
     aPolygon.GetPointIds().InsertNextId(23)
@@ -44,29 +65,29 @@ def main():
 
     # Create a polydata to store the boundary. The points must be the
     # same as the points we will triangulate.
-    boundary = vtk.vtkPolyData()
+    boundary = vtkPolyData()
     boundary.SetPoints(aPolyData.GetPoints())
     boundary.SetPolys(aCellArray)
 
     # Triangulate the grid points
-    delaunay = vtk.vtkDelaunay2D()
+    delaunay = vtkDelaunay2D()
     delaunay.SetInputData(aPolyData)
     delaunay.SetSourceData(boundary)
 
     # Visualize
-    meshMapper = vtk.vtkPolyDataMapper()
+    meshMapper = vtkPolyDataMapper()
     meshMapper.SetInputConnection(delaunay.GetOutputPort())
 
-    meshActor = vtk.vtkActor()
+    meshActor = vtkActor()
     meshActor.SetMapper(meshMapper)
     meshActor.GetProperty().EdgeVisibilityOn()
     meshActor.GetProperty().SetEdgeColor(colors.GetColor3d('Peacock'))
     meshActor.GetProperty().SetInterpolationToFlat()
 
-    boundaryMapper = vtk.vtkPolyDataMapper()
+    boundaryMapper = vtkPolyDataMapper()
     boundaryMapper.SetInputData(boundary)
 
-    boundaryActor = vtk.vtkActor()
+    boundaryActor = vtkActor()
     boundaryActor.SetMapper(boundaryMapper)
     boundaryActor.GetProperty().SetColor(colors.GetColor3d('Raspberry'))
     boundaryActor.GetProperty().SetLineWidth(3)
@@ -75,10 +96,10 @@ def main():
     boundaryActor.GetProperty().SetRepresentationToWireframe()
 
     # Create a renderer, render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actor to the scene

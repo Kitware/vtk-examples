@@ -1,11 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingFreeType
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import (
+    vtkArrowSource,
+    vtkConeSource,
+    vtkCubeSource,
+    vtkCylinderSource,
+    vtkDiskSource,
+    vtkLineSource,
+    vtkRegularPolygonSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkActor2D,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextMapper,
+    vtkTextProperty
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor("BkgColor", [51, 77, 102, 255])
@@ -14,14 +40,14 @@ def main():
     geometricObjectSources = list()
 
     # Populate the container with the various object sources to be demonstrated
-    geometricObjectSources.append(vtk.vtkArrowSource())
-    geometricObjectSources.append(vtk.vtkConeSource())
-    geometricObjectSources.append(vtk.vtkCubeSource())
-    geometricObjectSources.append(vtk.vtkCylinderSource())
-    geometricObjectSources.append(vtk.vtkDiskSource())
-    geometricObjectSources.append(vtk.vtkLineSource())
-    geometricObjectSources.append(vtk.vtkRegularPolygonSource())
-    geometricObjectSources.append(vtk.vtkSphereSource())
+    geometricObjectSources.append(vtkArrowSource())
+    geometricObjectSources.append(vtkConeSource())
+    geometricObjectSources.append(vtkCubeSource())
+    geometricObjectSources.append(vtkCylinderSource())
+    geometricObjectSources.append(vtkDiskSource())
+    geometricObjectSources.append(vtkLineSource())
+    geometricObjectSources.append(vtkRegularPolygonSource())
+    geometricObjectSources.append(vtkSphereSource())
 
     # Create containers for the remaining nodes of each pipeline
     mappers = list()
@@ -30,7 +56,7 @@ def main():
     textactors = list()
 
     # Create a common text property.
-    textProperty = vtk.vtkTextProperty()
+    textProperty = vtkTextProperty()
     textProperty.SetFontSize(16)
     textProperty.SetJustificationToCentered()
     textProperty.SetColor(colors.GetColor3d('LightGoldenrodYellow'))
@@ -39,19 +65,19 @@ def main():
     for i in range(0, len(geometricObjectSources)):
         geometricObjectSources[i].Update()
 
-        mappers.append(vtk.vtkPolyDataMapper())
+        mappers.append(vtkPolyDataMapper())
         mappers[i].SetInputConnection(geometricObjectSources[i].GetOutputPort())
 
-        actors.append(vtk.vtkActor())
+        actors.append(vtkActor())
         actors[i].SetMapper(mappers[i])
         actors[i].GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
 
-        textmappers.append(vtk.vtkTextMapper())
+        textmappers.append(vtkTextMapper())
         textmappers[i].SetInput(
             geometricObjectSources[i].GetClassName())  # set text label to the name of the object source
         textmappers[i].SetTextProperty(textProperty)
 
-        textactors.append(vtk.vtkActor2D())
+        textactors.append(vtkActor2D())
         textactors[i].SetMapper(textmappers[i])
         textactors[i].SetPosition(120, 16)  # Note: the position of an Actor2D is specified in display coordinates
 
@@ -61,7 +87,7 @@ def main():
     # Define side length (in pixels) of each renderer square
     rendererSize = 300
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('GeometricObjectsDemo')
     renderWindow.SetSize(rendererSize * gridCols, rendererSize * gridRows)
 
@@ -71,7 +97,7 @@ def main():
             index = row * gridCols + col
 
             # Create a renderer for this grid cell
-            renderer = vtk.vtkRenderer()
+            renderer = vtkRenderer()
             renderer.SetBackground(colors.GetColor3d('BkgColor'))
 
             # Set the renderer's viewport dimensions (xmin, ymin, xmax, ymax) within the render window.
@@ -93,7 +119,7 @@ def main():
 
             renderWindow.AddRenderer(renderer)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     renderWindow.Render()
