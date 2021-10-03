@@ -60,11 +60,30 @@ function registerListener(event, func) {
 
 <span class=kn>from</span> <span class=nn>collections</span> <span class=kn>import</span> <span class=n>OrderedDict</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkQuadric</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkContourFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkCylinderSource</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkSphereSource</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOGeometry</span> <span class=kn>import</span> <span class=n>vtkOBJReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingHybrid</span> <span class=kn>import</span> <span class=n>vtkSampleFunction</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>fileName</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
@@ -83,7 +102,7 @@ function registerListener(event, func) {
     <span class=c1># Get the keys</span>
     <span class=n>keys</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>renderers</span><span class=o>.</span><span class=n>keys</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>
     <span class=c1># Setup the viewports for the renderers.</span>
     <span class=n>rendererSize</span> <span class=o>=</span> <span class=mi>256</span>
@@ -114,7 +133,7 @@ function registerListener(event, func) {
 
         <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderers</span><span class=p>[</span><span class=n>keys</span><span class=p>[</span><span class=n>r</span><span class=p>]])</span>
 
-<span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>interactor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>)</span>
 
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
@@ -140,18 +159,18 @@ function registerListener(event, func) {
 <span class=sd>    :param flat: The interpolation to use (flat or Gouraud).</span>
 <span class=sd>    :return: the renderer</span>
 <span class=sd>    &#39;&#39;&#39;</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSphereSource</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphere</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
     <span class=k>if</span> <span class=n>flat</span><span class=p>:</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToFlat</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToGouraud</span><span class=p>()</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>renderer</span>
 
@@ -162,18 +181,18 @@ function registerListener(event, func) {
 <span class=sd>    :param flat: The interpolation to use (flat or Gouraud).</span>
 <span class=sd>    :return: the renderer</span>
 <span class=sd>    &#39;&#39;&#39;</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>cylinder</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCylinderSource</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>cylinder</span> <span class=o>=</span> <span class=n>vtkCylinderSource</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cylinder</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
     <span class=k>if</span> <span class=n>flat</span><span class=p>:</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToFlat</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToGouraud</span><span class=p>()</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>renderer</span>
 
@@ -184,27 +203,27 @@ function registerListener(event, func) {
 <span class=sd>    :param flat: The interpolation to use (flat or Gouraud).</span>
 <span class=sd>    :return: the renderer</span>
 <span class=sd>    &#39;&#39;&#39;</span>
-<span class=hll>    <span class=n>quadric</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkQuadric</span><span class=p>()</span>
+<span class=hll>    <span class=n>quadric</span> <span class=o>=</span> <span class=n>vtkQuadric</span><span class=p>()</span>
 </span>    <span class=n>quadric</span><span class=o>.</span><span class=n>SetCoefficients</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-<span class=hll>    <span class=n>sample</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSampleFunction</span><span class=p>()</span>
+<span class=hll>    <span class=n>sample</span> <span class=o>=</span> <span class=n>vtkSampleFunction</span><span class=p>()</span>
 </span>    <span class=n>sample</span><span class=o>.</span><span class=n>SetSampleDimensions</span><span class=p>(</span><span class=mi>25</span><span class=p>,</span> <span class=mi>25</span><span class=p>,</span> <span class=mi>25</span><span class=p>)</span>
     <span class=n>sample</span><span class=o>.</span><span class=n>SetImplicitFunction</span><span class=p>(</span><span class=n>quadric</span><span class=p>)</span>
     <span class=c1># Generate the implicit surface.</span>
-<span class=hll>    <span class=n>contour</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkContourFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>contour</span> <span class=o>=</span> <span class=n>vtkContourFilter</span><span class=p>()</span>
 </span>    <span class=n>contour</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sample</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=nb>range</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>6.0</span><span class=p>]</span>
     <span class=n>contour</span><span class=o>.</span><span class=n>GenerateValues</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=nb>range</span><span class=p>)</span>
     <span class=c1># Map the contour.</span>
-<span class=hll>    <span class=n>contourMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>contourMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>contourMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>contour</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>contourMapper</span><span class=o>.</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>7</span><span class=p>)</span>
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>contourMapper</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>flat</span><span class=p>:</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToFlat</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToGouraud</span><span class=p>()</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>renderer</span>
 
@@ -216,19 +235,19 @@ function registerListener(event, func) {
 <span class=sd>    :param fileName: The file name.</span>
 <span class=sd>    :return: the renderer</span>
 <span class=sd>    &#39;&#39;&#39;</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOBJReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkOBJReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>)</span>
-<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tan&#39;</span><span class=p>))</span>
     <span class=k>if</span> <span class=n>flat</span><span class=p>:</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToFlat</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToGouraud</span><span class=p>()</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>renderer</span>
 

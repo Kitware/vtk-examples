@@ -63,11 +63,32 @@ function registerListener(event, func) {
         NOTE: There can be gaps in the labeling. If a label does not exist in the volume, it will be skipped.
 </code></pre></div> <div class="admonition note"> <p class=admonition-title>Note</p> <p>This original source code for this example is <a href=https://gitlab.kitware.com/[vtk/vtk](https://www.vtk.org/doc/nightly/html/classvtk/vtk.html#details)/blob/395857190c8453508d283958383bc38c9c2999bf/Examples/Medical/Cxx/GenerateCubesFromLabels.cxx>here</a>.</p> </div> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Cxx/Medical/GenerateCubesFromLabels>Cxx</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>GenerateCubesFromLabels.py</strong></p> <div class=codehilite><pre><span></span><code><span class=ch>#!/usr/bin/env python</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkDataObject</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkDataSetAttributes</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonTransforms</span> <span class=kn>import</span> <span class=n>vtkTransform</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkThreshold</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkTransformFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeometry</span> <span class=kn>import</span> <span class=n>vtkGeometryFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOImage</span> <span class=kn>import</span> <span class=n>vtkMetaImageReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingCore</span> <span class=kn>import</span> <span class=n>vtkImageWrapPad</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>file_name</span><span class=p>,</span> <span class=n>start_label</span><span class=p>,</span> <span class=n>end_label</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>start_label</span> <span class=o>&gt;</span> <span class=n>end_label</span><span class=p>:</span>
@@ -78,14 +99,14 @@ function registerListener(event, func) {
     <span class=c1># 2) Convert point data to cell data</span>
     <span class=c1># 3) Convert to geometry and display</span>
 
-<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMetaImageReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkMetaImageReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=c1># Pad the volume so that we can change the point data into cell</span>
     <span class=c1># data.</span>
     <span class=n>extent</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetExtent</span><span class=p>()</span>
-<span class=hll>    <span class=n>pad</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageWrapPad</span><span class=p>()</span>
+<span class=hll>    <span class=n>pad</span> <span class=o>=</span> <span class=n>vtkImageWrapPad</span><span class=p>()</span>
 </span>    <span class=n>pad</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>pad</span><span class=o>.</span><span class=n>SetOutputWholeExtent</span><span class=p>(</span><span class=n>extent</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>extent</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>+</span> <span class=mi>1</span><span class=p>,</span> <span class=n>extent</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span> <span class=n>extent</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>+</span> <span class=mi>1</span><span class=p>,</span> <span class=n>extent</span><span class=p>[</span><span class=mi>4</span><span class=p>],</span> <span class=n>extent</span><span class=p>[</span><span class=mi>5</span><span class=p>]</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
     <span class=n>pad</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
@@ -93,41 +114,41 @@ function registerListener(event, func) {
     <span class=c1># Copy the scalar point data of the volume into the scalar cell data</span>
     <span class=n>pad</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellData</span><span class=p>()</span><span class=o>.</span><span class=n>SetScalars</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>selector</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkThreshold</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>selector</span><span class=o>.</span><span class=n>SetInputArrayToProcess</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataObject</span><span class=p>()</span><span class=o>.</span><span class=n>FIELD_ASSOCIATION_CELLS</span><span class=p>,</span>
-</span><span class=hll>                                    <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetAttributes</span><span class=p>()</span><span class=o>.</span><span class=n>SCALARS</span><span class=p>)</span>
+<span class=hll>    <span class=n>selector</span> <span class=o>=</span> <span class=n>vtkThreshold</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>selector</span><span class=o>.</span><span class=n>SetInputArrayToProcess</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>vtkDataObject</span><span class=p>()</span><span class=o>.</span><span class=n>FIELD_ASSOCIATION_CELLS</span><span class=p>,</span>
+</span><span class=hll>                                    <span class=n>vtkDataSetAttributes</span><span class=p>()</span><span class=o>.</span><span class=n>SCALARS</span><span class=p>)</span>
 </span>    <span class=n>selector</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>pad</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>selector</span><span class=o>.</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>start_label</span><span class=p>)</span>
     <span class=n>selector</span><span class=o>.</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>end_label</span><span class=p>)</span>
     <span class=n>selector</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=c1># Shift the geometry by 1/2</span>
-<span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>transform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=mf>0.5</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.5</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.5</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>transform_model</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>transform_model</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>()</span>
 </span>    <span class=n>transform_model</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>)</span>
     <span class=n>transform_model</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>selector</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>geometry</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGeometryFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>geometry</span> <span class=o>=</span> <span class=n>vtkGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>geometry</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>transform_model</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>geometry</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>mapper</span><span class=o>.</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=n>start_label</span><span class=p>,</span> <span class=n>end_label</span><span class=p>)</span>
     <span class=n>mapper</span><span class=o>.</span><span class=n>SetScalarModeToUseCellData</span><span class=p>()</span>
     <span class=n>mapper</span><span class=o>.</span><span class=n>SetColorModeToMapScalars</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;GenerateCubesFromLabels&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>render_window_interactor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>render_window_interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>render_window</span><span class=p>)</span>
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>

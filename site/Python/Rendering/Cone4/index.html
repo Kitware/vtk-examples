@@ -61,11 +61,24 @@ function registerListener(event, func) {
 
 <span class=kn>import</span> <span class=nn>time</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkConeSource</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkProperty</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1>#</span>
 <span class=hll>    <span class=c1># Next we create an instance of vtkConeSource and set some of its</span>
@@ -73,7 +86,7 @@ function registerListener(event, func) {
 </span>    <span class=c1># pipeline (it is a source process object); it produces data (output type is</span>
 <span class=hll>    <span class=c1># vtkPolyData) which other filters may process.</span>
 </span>    <span class=c1>#</span>
-<span class=hll>    <span class=n>cone</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkConeSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>cone</span> <span class=o>=</span> <span class=n>vtkConeSource</span><span class=p>()</span>
 </span>    <span class=n>cone</span><span class=o>.</span><span class=n>SetHeight</span><span class=p>(</span><span class=mf>3.0</span><span class=p>)</span>
     <span class=n>cone</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
     <span class=n>cone</span><span class=o>.</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
@@ -85,7 +98,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=c1># vtkPolyDataMapper to map the polygonal data into graphics primitives. We</span>
 </span>    <span class=c1># connect the output of the cone source to the input of this mapper.</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>coneMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>coneMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>coneMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cone</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
     <span class=c1>#</span>
@@ -93,7 +106,7 @@ function registerListener(event, func) {
     <span class=c1># modified to give it different surface properties. By default, an actor</span>
     <span class=c1># is create with a property so the GetProperty() method can be used.</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>coneActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>coneActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>coneActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMapper</span><span class=p>)</span>
     <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Peacock&#39;</span><span class=p>))</span>
     <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>0.7</span><span class=p>)</span>
@@ -104,7 +117,7 @@ function registerListener(event, func) {
     <span class=c1># Create a property and directly manipulate it. Assign it to the</span>
     <span class=c1># second actor.</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=nb>property</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkProperty</span><span class=p>()</span>
+<span class=hll>    <span class=nb>property</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>()</span>
 </span>    <span class=nb>property</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
     <span class=nb>property</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>0.7</span><span class=p>)</span>
     <span class=nb>property</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.4</span><span class=p>)</span>
@@ -116,7 +129,7 @@ function registerListener(event, func) {
     <span class=c1># property can be shared among many actors. Note also that we use the</span>
     <span class=c1># same mapper as the first actor did. This way we avoid duplicating</span>
     <span class=c1># geometry, which may save lots of memory if the geometry is large.</span>
-<span class=hll>    <span class=n>coneActor2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>coneActor2</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>coneActor2</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMapper</span><span class=p>)</span>
     <span class=c1># coneActor2.GetProperty().SetColor(colors.GetColor3d(&#39;Peacock&#39;))</span>
     <span class=n>coneActor2</span><span class=o>.</span><span class=n>SetProperty</span><span class=p>(</span><span class=nb>property</span><span class=p>)</span>
@@ -127,7 +140,7 @@ function registerListener(event, func) {
     <span class=c1># viewport. It is part or all of a window on the screen and it is responsible</span>
     <span class=c1># for drawing the actors it has.  We also set the background color here.</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>ren1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren1</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>coneActor</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>coneActor2</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightSlateGray&#39;</span><span class=p>))</span>
@@ -137,12 +150,12 @@ function registerListener(event, func) {
     <span class=c1># We put our renderer into the render window using AddRenderer. We also</span>
     <span class=c1># set the size to be 300 pixels by 300.</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren1</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Cone4&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=c1>#</span>

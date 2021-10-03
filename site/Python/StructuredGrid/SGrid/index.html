@@ -68,26 +68,44 @@ function registerListener(event, func) {
 
 <span class=kn>import</span> <span class=nn>math</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkDoubleArray</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkMath</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPoints</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkStructuredGrid</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkHedgeHog</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>rMin</span> <span class=o>=</span> <span class=mf>0.5</span>
     <span class=n>rMax</span> <span class=o>=</span> <span class=mf>1.0</span>
     <span class=n>dims</span> <span class=o>=</span> <span class=p>[</span><span class=mi>13</span><span class=p>,</span> <span class=mi>11</span><span class=p>,</span> <span class=mi>11</span><span class=p>]</span>
 
     <span class=c1># Create the structured grid.</span>
-<span class=hll>    <span class=n>sgrid</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStructuredGrid</span><span class=p>()</span>
+<span class=hll>    <span class=n>sgrid</span> <span class=o>=</span> <span class=n>vtkStructuredGrid</span><span class=p>()</span>
 </span>    <span class=n>sgrid</span><span class=o>.</span><span class=n>SetDimensions</span><span class=p>(</span><span class=n>dims</span><span class=p>)</span>
 
     <span class=c1># We also create the points and vectors. The points</span>
     <span class=c1># form a hemi-cylinder of data.</span>
-<span class=hll>    <span class=n>vectors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDoubleArray</span><span class=p>()</span>
+<span class=hll>    <span class=n>vectors</span> <span class=o>=</span> <span class=n>vtkDoubleArray</span><span class=p>()</span>
 </span>    <span class=n>vectors</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
     <span class=n>vectors</span><span class=o>.</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=n>dims</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>*</span> <span class=n>dims</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>*</span> <span class=n>dims</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
-<span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPoints</span><span class=p>()</span>
+<span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
 </span>    <span class=n>points</span><span class=o>.</span><span class=n>Allocate</span><span class=p>(</span><span class=n>dims</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>*</span> <span class=n>dims</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>*</span> <span class=n>dims</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
 
     <span class=n>deltaZ</span> <span class=o>=</span> <span class=mf>2.0</span> <span class=o>/</span> <span class=p>(</span><span class=n>dims</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
@@ -101,7 +119,7 @@ function registerListener(event, func) {
             <span class=n>radius</span> <span class=o>=</span> <span class=n>rMin</span> <span class=o>+</span> <span class=n>j</span> <span class=o>*</span> <span class=n>deltaRad</span>
             <span class=n>jOffset</span> <span class=o>=</span> <span class=n>j</span> <span class=o>*</span> <span class=n>dims</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
             <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>dims</span><span class=p>[</span><span class=mi>0</span><span class=p>]):</span>
-<span class=hll>                <span class=n>theta</span> <span class=o>=</span> <span class=n>i</span> <span class=o>*</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMath</span><span class=o>.</span><span class=n>RadiansFromDegrees</span><span class=p>(</span><span class=mf>15.0</span><span class=p>)</span>
+<span class=hll>                <span class=n>theta</span> <span class=o>=</span> <span class=n>i</span> <span class=o>*</span> <span class=n>vtkMath</span><span class=o>.</span><span class=n>RadiansFromDegrees</span><span class=p>(</span><span class=mf>15.0</span><span class=p>)</span>
 </span>                <span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>radius</span> <span class=o>*</span> <span class=n>math</span><span class=o>.</span><span class=n>cos</span><span class=p>(</span><span class=n>theta</span><span class=p>)</span>
                 <span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>radius</span> <span class=o>*</span> <span class=n>math</span><span class=o>.</span><span class=n>sin</span><span class=p>(</span><span class=n>theta</span><span class=p>)</span>
                 <span class=n>v</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=o>-</span><span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
@@ -113,23 +131,23 @@ function registerListener(event, func) {
     <span class=n>sgrid</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>SetVectors</span><span class=p>(</span><span class=n>vectors</span><span class=p>)</span>
 
     <span class=c1># We create a simple pipeline to display the data.</span>
-<span class=hll>    <span class=n>hedgehog</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkHedgeHog</span><span class=p>()</span>
+<span class=hll>    <span class=n>hedgehog</span> <span class=o>=</span> <span class=n>vtkHedgeHog</span><span class=p>()</span>
 </span>    <span class=n>hedgehog</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>sgrid</span><span class=p>)</span>
     <span class=n>hedgehog</span><span class=o>.</span><span class=n>SetScaleFactor</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>sgridMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>sgridMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>sgridMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>hedgehog</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>sgridActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>sgridActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>sgridActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>sgridMapper</span><span class=p>)</span>
     <span class=n>sgridActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>))</span>
 
     <span class=c1># Create the usual rendering stuff</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;SGrid&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sgridActor</span><span class=p>)</span>

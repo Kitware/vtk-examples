@@ -61,11 +61,25 @@ function registerListener(event, func) {
 <span class=sd>This example shows how to create a rectilinear grid.</span>
 <span class=sd>&quot;&quot;&quot;</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkDoubleArray</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkRectilinearGrid</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeometry</span> <span class=kn>import</span> <span class=n>vtkRectilinearGridGeometryFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>x</span> <span class=o>=</span> <span class=p>[</span><span class=o>-</span><span class=mf>1.22396</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.17188</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.11979</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.06771</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.01562</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.963542</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.911458</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.859375</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.807292</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.755208</span><span class=p>,</span>
          <span class=o>-</span><span class=mf>0.703125</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.651042</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.598958</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.546875</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.494792</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.442708</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.390625</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.338542</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.286458</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.234375</span><span class=p>,</span>
@@ -81,13 +95,13 @@ function registerListener(event, func) {
 
     <span class=c1># Create a rectilinear grid by defining three arrays specifying the</span>
     <span class=c1># coordinates in the x-y-z directions.</span>
-<span class=hll>    <span class=n>xCoords</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDoubleArray</span><span class=p>()</span>
+<span class=hll>    <span class=n>xCoords</span> <span class=o>=</span> <span class=n>vtkDoubleArray</span><span class=p>()</span>
 </span>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>x</span><span class=p>)):</span>
         <span class=n>xCoords</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
-<span class=hll>    <span class=n>yCoords</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDoubleArray</span><span class=p>()</span>
+<span class=hll>    <span class=n>yCoords</span> <span class=o>=</span> <span class=n>vtkDoubleArray</span><span class=p>()</span>
 </span>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>y</span><span class=p>)):</span>
         <span class=n>yCoords</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>y</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
-<span class=hll>    <span class=n>zCoords</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDoubleArray</span><span class=p>()</span>
+<span class=hll>    <span class=n>zCoords</span> <span class=o>=</span> <span class=n>vtkDoubleArray</span><span class=p>()</span>
 </span>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>z</span><span class=p>)):</span>
         <span class=n>zCoords</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>z</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
 
@@ -95,30 +109,30 @@ function registerListener(event, func) {
     <span class=c1># the number of values in each of the XCoordinates, YCoordinates,</span>
     <span class=c1># and ZCoordinates is equal to what is defined in SetDimensions().</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>rgrid</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRectilinearGrid</span><span class=p>()</span>
+<span class=hll>    <span class=n>rgrid</span> <span class=o>=</span> <span class=n>vtkRectilinearGrid</span><span class=p>()</span>
 </span>    <span class=n>rgrid</span><span class=o>.</span><span class=n>SetDimensions</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>x</span><span class=p>),</span> <span class=nb>len</span><span class=p>(</span><span class=n>y</span><span class=p>),</span> <span class=nb>len</span><span class=p>(</span><span class=n>z</span><span class=p>))</span>
     <span class=n>rgrid</span><span class=o>.</span><span class=n>SetXCoordinates</span><span class=p>(</span><span class=n>xCoords</span><span class=p>)</span>
     <span class=n>rgrid</span><span class=o>.</span><span class=n>SetYCoordinates</span><span class=p>(</span><span class=n>yCoords</span><span class=p>)</span>
     <span class=n>rgrid</span><span class=o>.</span><span class=n>SetZCoordinates</span><span class=p>(</span><span class=n>zCoords</span><span class=p>)</span>
 
     <span class=c1># Extract a plane from the grid to see what we&#39;ve got.</span>
-<span class=hll>    <span class=n>plane</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRectilinearGridGeometryFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>plane</span> <span class=o>=</span> <span class=n>vtkRectilinearGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>plane</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>rgrid</span><span class=p>)</span>
     <span class=n>plane</span><span class=o>.</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>16</span><span class=p>,</span> <span class=mi>16</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>z</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>rgridMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>rgridMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>rgridMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>plane</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>wireActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>wireActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>wireActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>rgridMapper</span><span class=p>)</span>
     <span class=n>wireActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Banana&quot;</span><span class=p>))</span>
     <span class=n>wireActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
 
     <span class=c1># Create the usual rendering stuff.</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>wireActor</span><span class=p>)</span>

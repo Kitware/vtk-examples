@@ -59,32 +59,46 @@ function registerListener(event, func) {
 
 <span class=kn>import</span> <span class=nn>math</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingContextOpenGL2</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkChartsCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkChart</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkChartXY</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPlotPoints</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkFloatArray</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkTable</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkViewsContext2D</span> <span class=kn>import</span> <span class=n>vtkContextView</span>
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkContextView</span><span class=p>()</span>
+<span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtkContextView</span><span class=p>()</span>
 </span>    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>400</span><span class=p>,</span> <span class=mi>300</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>chart</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkChartXY</span><span class=p>()</span>
+<span class=hll>    <span class=n>chart</span> <span class=o>=</span> <span class=n>vtkChartXY</span><span class=p>()</span>
 </span>    <span class=n>view</span><span class=o>.</span><span class=n>GetScene</span><span class=p>()</span><span class=o>.</span><span class=n>AddItem</span><span class=p>(</span><span class=n>chart</span><span class=p>)</span>
     <span class=n>chart</span><span class=o>.</span><span class=n>SetShowLegend</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>table</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTable</span><span class=p>()</span>
+<span class=hll>    <span class=n>table</span> <span class=o>=</span> <span class=n>vtkTable</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>arrX</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFloatArray</span><span class=p>()</span>
+<span class=hll>    <span class=n>arrX</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>()</span>
 </span>    <span class=n>arrX</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;X Axis&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>arrC</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFloatArray</span><span class=p>()</span>
+<span class=hll>    <span class=n>arrC</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>()</span>
 </span>    <span class=n>arrC</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;Cosine&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>arrS</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFloatArray</span><span class=p>()</span>
+<span class=hll>    <span class=n>arrS</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>()</span>
 </span>    <span class=n>arrS</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;Sine&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>arrT</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFloatArray</span><span class=p>()</span>
+<span class=hll>    <span class=n>arrT</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>()</span>
 </span>    <span class=n>arrT</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;Sine-Cosine&#39;</span><span class=p>)</span>
 
     <span class=n>table</span><span class=o>.</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrC</span><span class=p>)</span>
@@ -102,23 +116,23 @@ function registerListener(event, func) {
         <span class=n>table</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=n>math</span><span class=o>.</span><span class=n>sin</span><span class=p>(</span><span class=n>i</span> <span class=o>*</span> <span class=n>inc</span><span class=p>))</span>
         <span class=n>table</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=n>math</span><span class=o>.</span><span class=n>sin</span><span class=p>(</span><span class=n>i</span> <span class=o>*</span> <span class=n>inc</span><span class=p>)</span> <span class=o>-</span> <span class=n>math</span><span class=o>.</span><span class=n>cos</span><span class=p>(</span><span class=n>i</span> <span class=o>*</span> <span class=n>inc</span><span class=p>))</span>
 
-<span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>chart</span><span class=o>.</span><span class=n>AddPlot</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkChart</span><span class=o>.</span><span class=n>POINTS</span><span class=p>)</span>
+<span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>chart</span><span class=o>.</span><span class=n>AddPlot</span><span class=p>(</span><span class=n>vtkChart</span><span class=o>.</span><span class=n>POINTS</span><span class=p>)</span>
 </span>    <span class=n>points</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>table</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
     <span class=n>points</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
     <span class=n>points</span><span class=o>.</span><span class=n>SetWidth</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
-<span class=hll>    <span class=n>points</span><span class=o>.</span><span class=n>SetMarkerStyle</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlotPoints</span><span class=o>.</span><span class=n>CROSS</span><span class=p>)</span>
+<span class=hll>    <span class=n>points</span><span class=o>.</span><span class=n>SetMarkerStyle</span><span class=p>(</span><span class=n>vtkPlotPoints</span><span class=o>.</span><span class=n>CROSS</span><span class=p>)</span>
 </span>
-<span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>chart</span><span class=o>.</span><span class=n>AddPlot</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkChart</span><span class=o>.</span><span class=n>POINTS</span><span class=p>)</span>
+<span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>chart</span><span class=o>.</span><span class=n>AddPlot</span><span class=p>(</span><span class=n>vtkChart</span><span class=o>.</span><span class=n>POINTS</span><span class=p>)</span>
 </span>    <span class=n>points</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>table</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
     <span class=n>points</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
     <span class=n>points</span><span class=o>.</span><span class=n>SetWidth</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
-<span class=hll>    <span class=n>points</span><span class=o>.</span><span class=n>SetMarkerStyle</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlotPoints</span><span class=o>.</span><span class=n>PLUS</span><span class=p>)</span>
+<span class=hll>    <span class=n>points</span><span class=o>.</span><span class=n>SetMarkerStyle</span><span class=p>(</span><span class=n>vtkPlotPoints</span><span class=o>.</span><span class=n>PLUS</span><span class=p>)</span>
 </span>
-<span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>chart</span><span class=o>.</span><span class=n>AddPlot</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkChart</span><span class=o>.</span><span class=n>POINTS</span><span class=p>)</span>
+<span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>chart</span><span class=o>.</span><span class=n>AddPlot</span><span class=p>(</span><span class=n>vtkChart</span><span class=o>.</span><span class=n>POINTS</span><span class=p>)</span>
 </span>    <span class=n>points</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>table</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
     <span class=n>points</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>255</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
     <span class=n>points</span><span class=o>.</span><span class=n>SetWidth</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
-<span class=hll>    <span class=n>points</span><span class=o>.</span><span class=n>SetMarkerStyle</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlotPoints</span><span class=o>.</span><span class=n>CIRCLE</span><span class=p>)</span>
+<span class=hll>    <span class=n>points</span><span class=o>.</span><span class=n>SetMarkerStyle</span><span class=p>(</span><span class=n>vtkPlotPoints</span><span class=o>.</span><span class=n>CIRCLE</span><span class=p>)</span>
 </span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetMultiSamples</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ScatterPlot&#39;</span><span class=p>)</span>

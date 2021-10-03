@@ -62,8 +62,67 @@ function registerListener(event, func) {
 <span class=kn>from</span> <span class=nn>pathlib</span> <span class=kn>import</span> <span class=n>Path</span>
 <span class=kn>from</span> <span class=nn>pathlib</span> <span class=kn>import</span> <span class=n>PurePath</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonComputationalGeometry</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkParametricBoy</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkParametricMobius</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkParametricRandomHills</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkParametricTorus</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span>    <span class=n>VTK_VERSION_NUMBER</span><span class=p>,</span>
+<span class=hll>    <span class=n>vtkCommand</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkFloatArray</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkVersion</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonTransforms</span> <span class=kn>import</span> <span class=n>vtkTransform</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkPolyDataTangents</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkTriangleFilter</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=n>vtkLinearSubdivisionFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkCubeSource</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkParametricFunctionSource</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkTexturedSphereSource</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOImage</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkHDRReader</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkImageReader2Factory</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingCore</span> <span class=kn>import</span> <span class=n>vtkImageFlip</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInteractionWidgets</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkCameraOrientationWidget</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkOrientationMarkerWidget</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkSliderRepresentation2D</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkSliderWidget</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingAnnotation</span> <span class=kn>import</span> <span class=n>vtkAxesActor</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkSkybox</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkTexture</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkCameraPass</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkEquirectangularToCubeMapTexture</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkLightsPass</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkOpaquePass</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkOpenGLRenderer</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkOverlayPass</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderPassCollection</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkSequencePass</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkToneMappingPass</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span> <span class=nn>argparse</span>
@@ -131,15 +190,15 @@ function registerListener(event, func) {
     <span class=k>else</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_boy</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Set the background color.</span>
     <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>,</span> <span class=p>[</span><span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOpenGLRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkOpenGLRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
-<span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>interactor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>render_window</span><span class=p>)</span>
 
     <span class=c1># Turn off the default lighting and use image based lighting.</span>
@@ -152,21 +211,21 @@ function registerListener(event, func) {
     <span class=c1># Set up tone mapping so we can vary the exposure.</span>
     <span class=c1>#</span>
     <span class=c1># Custom Passes.</span>
-<span class=hll>    <span class=n>camera_p</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCameraPass</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>seq</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSequencePass</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>opaque</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOpaquePass</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>lights</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLightsPass</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>overlay</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOverlayPass</span><span class=p>()</span>
+<span class=hll>    <span class=n>camera_p</span> <span class=o>=</span> <span class=n>vtkCameraPass</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>seq</span> <span class=o>=</span> <span class=n>vtkSequencePass</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>opaque</span> <span class=o>=</span> <span class=n>vtkOpaquePass</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>lights</span> <span class=o>=</span> <span class=n>vtkLightsPass</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>overlay</span> <span class=o>=</span> <span class=n>vtkOverlayPass</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>passes</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderPassCollection</span><span class=p>()</span>
+<span class=hll>    <span class=n>passes</span> <span class=o>=</span> <span class=n>vtkRenderPassCollection</span><span class=p>()</span>
 </span>    <span class=n>passes</span><span class=o>.</span><span class=n>AddItem</span><span class=p>(</span><span class=n>lights</span><span class=p>)</span>
     <span class=n>passes</span><span class=o>.</span><span class=n>AddItem</span><span class=p>(</span><span class=n>opaque</span><span class=p>)</span>
     <span class=n>passes</span><span class=o>.</span><span class=n>AddItem</span><span class=p>(</span><span class=n>overlay</span><span class=p>)</span>
     <span class=n>seq</span><span class=o>.</span><span class=n>SetPasses</span><span class=p>(</span><span class=n>passes</span><span class=p>)</span>
     <span class=n>camera_p</span><span class=o>.</span><span class=n>SetDelegatePass</span><span class=p>(</span><span class=n>seq</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>tone_mapping_p</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkToneMappingPass</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>tone_mapping_p</span><span class=o>.</span><span class=n>SetToneMappingType</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkToneMappingPass</span><span class=p>()</span><span class=o>.</span><span class=n>GenericFilmic</span><span class=p>)</span>
+<span class=hll>    <span class=n>tone_mapping_p</span> <span class=o>=</span> <span class=n>vtkToneMappingPass</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>tone_mapping_p</span><span class=o>.</span><span class=n>SetToneMappingType</span><span class=p>(</span><span class=n>vtkToneMappingPass</span><span class=p>()</span><span class=o>.</span><span class=n>GenericFilmic</span><span class=p>)</span>
 </span>    <span class=n>tone_mapping_p</span><span class=o>.</span><span class=n>SetGenericFilmicDefaultPresets</span><span class=p>()</span>
     <span class=n>tone_mapping_p</span><span class=o>.</span><span class=n>SetUseACES</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
 
@@ -211,10 +270,10 @@ function registerListener(event, func) {
     <span class=n>slider_widget_roughnesss</span><span class=o>.</span><span class=n>EnabledOn</span><span class=p>()</span>
 
     <span class=c1># Build the pipeline.</span>
-<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>source</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
     <span class=c1># Enable PBR on the model.</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToPBR</span><span class=p>()</span>
@@ -225,7 +284,7 @@ function registerListener(event, func) {
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetRoughness</span><span class=p>(</span><span class=n>roughness_coefficient</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetMetallic</span><span class=p>(</span><span class=n>metallic_coefficient</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>skybox_actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSkybox</span><span class=p>()</span>
+<span class=hll>    <span class=n>skybox_actor</span> <span class=o>=</span> <span class=n>vtkSkybox</span><span class=p>()</span>
 </span>    <span class=n>skybox_actor</span><span class=o>.</span><span class=n>SetTexture</span><span class=p>(</span><span class=n>skybox</span><span class=p>)</span>
     <span class=n>skybox_actor</span><span class=o>.</span><span class=n>GammaCorrectOn</span><span class=p>()</span>
 
@@ -237,9 +296,9 @@ function registerListener(event, func) {
     <span class=n>render_window</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s2>&quot;PBR_Skybox&quot;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>axes</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkAxesActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>axes</span> <span class=o>=</span> <span class=n>vtkAxesActor</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
+<span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
 </span>    <span class=n>rgba</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>]</span>
     <span class=n>colors</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=s2>&quot;Carrot&quot;</span><span class=p>,</span> <span class=n>rgba</span><span class=p>)</span>
     <span class=n>widget</span><span class=o>.</span><span class=n>SetOutlineColor</span><span class=p>(</span><span class=n>rgba</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>rgba</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>rgba</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
@@ -250,16 +309,16 @@ function registerListener(event, func) {
     <span class=n>widget</span><span class=o>.</span><span class=n>InteractiveOn</span><span class=p>()</span>
 
     <span class=c1># Create the slider callback to manipulate exposure.</span>
-<span class=hll>    <span class=n>slider_widget_exposure</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>SliderCallbackExposure</span><span class=p>(</span><span class=n>tone_mapping_p</span><span class=p>))</span>
+<span class=hll>    <span class=n>slider_widget_exposure</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>SliderCallbackExposure</span><span class=p>(</span><span class=n>tone_mapping_p</span><span class=p>))</span>
 </span>    <span class=c1># Create the slider callbacks to manipulate metallicity and roughness.</span>
-<span class=hll>    <span class=n>slider_widget_metallic</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>SliderCallbackMetallic</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>slider_widget_roughnesss</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>SliderCallbackRoughness</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()))</span>
+<span class=hll>    <span class=n>slider_widget_metallic</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>SliderCallbackMetallic</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()))</span>
+</span><span class=hll>    <span class=n>slider_widget_roughnesss</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>SliderCallbackRoughness</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()))</span>
 </span>
     <span class=n>interactor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>render_window</span><span class=p>)</span>
 
 <span class=hll>    <span class=k>if</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>20210718</span><span class=p>):</span>
 </span>        <span class=k>try</span><span class=p>:</span>
-<span class=hll>            <span class=n>cam_orient_manipulator</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCameraOrientationWidget</span><span class=p>()</span>
+<span class=hll>            <span class=n>cam_orient_manipulator</span> <span class=o>=</span> <span class=n>vtkCameraOrientationWidget</span><span class=p>()</span>
 </span>            <span class=n>cam_orient_manipulator</span><span class=o>.</span><span class=n>SetParentRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
             <span class=c1># Enable the widget.</span>
             <span class=n>cam_orient_manipulator</span><span class=o>.</span><span class=n>On</span><span class=p>()</span>
@@ -281,9 +340,9 @@ function registerListener(event, func) {
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=n>needed_version</span> <span class=o>=</span> <span class=mi>10000000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>major</span><span class=p>)</span> <span class=o>+</span> <span class=mi>100000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>minor</span><span class=p>)</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>build</span><span class=p>)</span>
     <span class=k>try</span><span class=p>:</span>
-<span class=hll>        <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>VTK_VERSION_NUMBER</span>
+<span class=hll>        <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=n>VTK_VERSION_NUMBER</span>
 </span>    <span class=k>except</span> <span class=ne>AttributeError</span><span class=p>:</span>  <span class=c1># as error:</span>
-<span class=hll>        <span class=n>ver</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkVersion</span><span class=p>()</span>
+<span class=hll>        <span class=n>ver</span> <span class=o>=</span> <span class=n>vtkVersion</span><span class=p>()</span>
 </span><span class=hll>        <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=mi>10000000000</span> <span class=o>*</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMajorVersion</span><span class=p>()</span> <span class=o>+</span> <span class=mi>100000000</span> <span class=o>*</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMinorVersion</span><span class=p>()</span> \
 </span>                             <span class=o>+</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKBuildVersion</span><span class=p>()</span>
 <span class=hll>    <span class=k>if</span> <span class=n>vtk_version_number</span> <span class=o>&gt;=</span> <span class=n>needed_version</span><span class=p>:</span>
@@ -300,7 +359,7 @@ function registerListener(event, func) {
 <span class=sd>    :param file_names: The names of the cubemap files.</span>
 <span class=sd>    :return: The cubemap texture.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
-<span class=hll>    <span class=n>texture</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTexture</span><span class=p>()</span>
+<span class=hll>    <span class=n>texture</span> <span class=o>=</span> <span class=n>vtkTexture</span><span class=p>()</span>
 </span>    <span class=n>texture</span><span class=o>.</span><span class=n>CubeMapOn</span><span class=p>()</span>
     <span class=c1># Build the file names.</span>
     <span class=n>fns</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
@@ -312,11 +371,11 @@ function registerListener(event, func) {
     <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=k>for</span> <span class=n>fn</span> <span class=ow>in</span> <span class=n>fns</span><span class=p>:</span>
         <span class=c1># Read the images.</span>
-<span class=hll>        <span class=n>reader_factory</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageReader2Factory</span><span class=p>()</span>
+<span class=hll>        <span class=n>reader_factory</span> <span class=o>=</span> <span class=n>vtkImageReader2Factory</span><span class=p>()</span>
 </span>        <span class=n>img_reader</span> <span class=o>=</span> <span class=n>reader_factory</span><span class=o>.</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn</span><span class=p>))</span>
         <span class=n>img_reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn</span><span class=p>))</span>
 
-<span class=hll>        <span class=n>flip</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageFlip</span><span class=p>()</span>
+<span class=hll>        <span class=n>flip</span> <span class=o>=</span> <span class=n>vtkImageFlip</span><span class=p>()</span>
 </span>        <span class=n>flip</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>img_reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
         <span class=n>flip</span><span class=o>.</span><span class=n>SetFilteredAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>  <span class=c1># flip y axis</span>
         <span class=n>texture</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>flip</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>(</span><span class=mi>0</span><span class=p>))</span>
@@ -339,14 +398,14 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=kc>None</span>
     <span class=n>suffix</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span><span class=o>.</span><span class=n>suffix</span>
     <span class=k>if</span> <span class=n>suffix</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;.jpg&#39;</span><span class=p>,</span> <span class=s1>&#39;.png&#39;</span><span class=p>]:</span>
-<span class=hll>        <span class=n>reader_factory</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageReader2Factory</span><span class=p>()</span>
+<span class=hll>        <span class=n>reader_factory</span> <span class=o>=</span> <span class=n>vtkImageReader2Factory</span><span class=p>()</span>
 </span>        <span class=n>img_reader</span> <span class=o>=</span> <span class=n>reader_factory</span><span class=o>.</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn</span><span class=p>))</span>
         <span class=n>img_reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn</span><span class=p>))</span>
 
-<span class=hll>        <span class=n>texture</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTexture</span><span class=p>()</span>
+<span class=hll>        <span class=n>texture</span> <span class=o>=</span> <span class=n>vtkTexture</span><span class=p>()</span>
 </span>        <span class=n>texture</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>img_reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=k>else</span><span class=p>:</span>
-<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkHDRReader</span><span class=p>()</span>
+<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkHDRReader</span><span class=p>()</span>
 </span>        <span class=n>extensions</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetFileExtensions</span><span class=p>()</span>
         <span class=c1># Check the image can be read.</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>reader</span><span class=o>.</span><span class=n>CanReadFile</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn</span><span class=p>)):</span>
@@ -358,12 +417,12 @@ function registerListener(event, func) {
         <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn</span><span class=p>))</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-<span class=hll>        <span class=n>texture</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTexture</span><span class=p>()</span>
+<span class=hll>        <span class=n>texture</span> <span class=o>=</span> <span class=n>vtkTexture</span><span class=p>()</span>
 </span>        <span class=n>texture</span><span class=o>.</span><span class=n>SetColorModeToDirectScalars</span><span class=p>()</span>
         <span class=n>texture</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
     <span class=c1># Convert to a cube map.</span>
-<span class=hll>    <span class=n>tcm</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkEquirectangularToCubeMapTexture</span><span class=p>()</span>
+<span class=hll>    <span class=n>tcm</span> <span class=o>=</span> <span class=n>vtkEquirectangularToCubeMapTexture</span><span class=p>()</span>
 </span>    <span class=n>tcm</span><span class=o>.</span><span class=n>SetInputTexture</span><span class=p>(</span><span class=n>texture</span><span class=p>)</span>
     <span class=c1># Enable mipmapping to handle HDR image.</span>
     <span class=n>tcm</span><span class=o>.</span><span class=n>MipmapOn</span><span class=p>()</span>
@@ -375,9 +434,9 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>get_boy</span><span class=p>():</span>
     <span class=n>u_resolution</span> <span class=o>=</span> <span class=mi>51</span>
     <span class=n>v_resolution</span> <span class=o>=</span> <span class=mi>51</span>
-<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricBoy</span><span class=p>()</span>
+<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtkParametricBoy</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>SetUResolution</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetVResolution</span><span class=p>(</span><span class=n>v_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>GenerateTextureCoordinatesOn</span><span class=p>()</span>
@@ -385,7 +444,7 @@ function registerListener(event, func) {
     <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=c1># Build the tangents.</span>
-<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataTangents</span><span class=p>()</span>
+<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
 </span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>tangents</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
@@ -394,11 +453,11 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>get_mobius</span><span class=p>():</span>
     <span class=n>u_resolution</span> <span class=o>=</span> <span class=mi>51</span>
     <span class=n>v_resolution</span> <span class=o>=</span> <span class=mi>51</span>
-<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricMobius</span><span class=p>()</span>
+<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtkParametricMobius</span><span class=p>()</span>
 </span>    <span class=n>surface</span><span class=o>.</span><span class=n>SetMinimumV</span><span class=p>(</span><span class=o>-</span><span class=mf>0.25</span><span class=p>)</span>
     <span class=n>surface</span><span class=o>.</span><span class=n>SetMaximumV</span><span class=p>(</span><span class=mf>0.25</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>SetUResolution</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetVResolution</span><span class=p>(</span><span class=n>v_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>GenerateTextureCoordinatesOn</span><span class=p>()</span>
@@ -406,13 +465,13 @@ function registerListener(event, func) {
     <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=c1># Build the tangents.</span>
-<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataTangents</span><span class=p>()</span>
+<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
 </span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>transform</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mf>90.0</span><span class=p>)</span>
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>transform_filter</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tangents</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>transform_filter</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>)</span>
     <span class=n>transform_filter</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
@@ -423,13 +482,13 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>get_random_hills</span><span class=p>():</span>
     <span class=n>u_resolution</span> <span class=o>=</span> <span class=mi>51</span>
     <span class=n>v_resolution</span> <span class=o>=</span> <span class=mi>51</span>
-<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricRandomHills</span><span class=p>()</span>
+<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtkParametricRandomHills</span><span class=p>()</span>
 </span>    <span class=n>surface</span><span class=o>.</span><span class=n>SetRandomSeed</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
     <span class=n>surface</span><span class=o>.</span><span class=n>SetNumberOfHills</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
     <span class=c1># If you want a plane</span>
     <span class=c1># surface.SetHillAmplitude(0)</span>
 
-<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>SetUResolution</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetVResolution</span><span class=p>(</span><span class=n>v_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>GenerateTextureCoordinatesOn</span><span class=p>()</span>
@@ -437,14 +496,14 @@ function registerListener(event, func) {
     <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=c1># Build the tangents.</span>
-<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataTangents</span><span class=p>()</span>
+<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
 </span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>transform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>5.0</span><span class=p>,</span> <span class=mf>15.0</span><span class=p>)</span>
     <span class=n>transform</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mf>90.0</span><span class=p>)</span>
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>transform_filter</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tangents</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>transform_filter</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>)</span>
     <span class=n>transform_filter</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
@@ -455,9 +514,9 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>get_torus</span><span class=p>():</span>
     <span class=n>u_resolution</span> <span class=o>=</span> <span class=mi>51</span>
     <span class=n>v_resolution</span> <span class=o>=</span> <span class=mi>51</span>
-<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricTorus</span><span class=p>()</span>
+<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtkParametricTorus</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>SetUResolution</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetVResolution</span><span class=p>(</span><span class=n>v_resolution</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>GenerateTextureCoordinatesOn</span><span class=p>()</span>
@@ -465,13 +524,13 @@ function registerListener(event, func) {
     <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=c1># Build the tangents.</span>
-<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataTangents</span><span class=p>()</span>
+<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
 </span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>transform</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mf>90.0</span><span class=p>)</span>
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>transform_filter</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tangents</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>transform_filter</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>)</span>
     <span class=n>transform_filter</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
@@ -482,29 +541,29 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>get_sphere</span><span class=p>():</span>
     <span class=n>theta_resolution</span> <span class=o>=</span> <span class=mi>32</span>
     <span class=n>phi_resolution</span> <span class=o>=</span> <span class=mi>32</span>
-<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTexturedSphereSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtkTexturedSphereSource</span><span class=p>()</span>
 </span>    <span class=n>surface</span><span class=o>.</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=n>theta_resolution</span><span class=p>)</span>
     <span class=n>surface</span><span class=o>.</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=n>phi_resolution</span><span class=p>)</span>
 
     <span class=c1># Now the tangents.</span>
-<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataTangents</span><span class=p>()</span>
+<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
 </span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>surface</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>tangents</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
 
 
 <span class=k>def</span> <span class=nf>get_cube</span><span class=p>():</span>
-<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCubeSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtkCubeSource</span><span class=p>()</span>
 </span>
     <span class=c1># Triangulate.</span>
-<span class=hll>    <span class=n>triangulation</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTriangleFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>triangulation</span> <span class=o>=</span> <span class=n>vtkTriangleFilter</span><span class=p>()</span>
 </span>    <span class=n>triangulation</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>surface</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=c1># Subdivide the triangles</span>
-<span class=hll>    <span class=n>subdivide</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLinearSubdivisionFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>subdivide</span> <span class=o>=</span> <span class=n>vtkLinearSubdivisionFilter</span><span class=p>()</span>
 </span>    <span class=n>subdivide</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>triangulation</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>subdivide</span><span class=o>.</span><span class=n>SetNumberOfSubdivisions</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
     <span class=c1># Now the tangents.</span>
-<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataTangents</span><span class=p>()</span>
+<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
 </span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>subdivide</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>tangents</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
@@ -523,7 +582,7 @@ function registerListener(event, func) {
     <span class=n>du</span> <span class=o>=</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=p>(</span><span class=n>u_resolution</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
     <span class=n>dv</span> <span class=o>=</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=p>(</span><span class=n>v_resolution</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
     <span class=n>num_pts</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>()</span>
-<span class=hll>    <span class=n>t_coords</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFloatArray</span><span class=p>()</span>
+<span class=hll>    <span class=n>t_coords</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>()</span>
 </span>    <span class=n>t_coords</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
     <span class=n>t_coords</span><span class=o>.</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=n>num_pts</span><span class=p>)</span>
     <span class=n>t_coords</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;Texture Coordinates&#39;</span><span class=p>)</span>
@@ -565,9 +624,9 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span> <span class=nf>make_slider_widget</span><span class=p>(</span><span class=n>properties</span><span class=p>):</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>slider</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSliderRepresentation2D</span><span class=p>()</span>
+<span class=hll>    <span class=n>slider</span> <span class=o>=</span> <span class=n>vtkSliderRepresentation2D</span><span class=p>()</span>
 </span>
     <span class=n>slider</span><span class=o>.</span><span class=n>SetMinimumValue</span><span class=p>(</span><span class=n>properties</span><span class=o>.</span><span class=n>minimum_value</span><span class=p>)</span>
     <span class=n>slider</span><span class=o>.</span><span class=n>SetMaximumValue</span><span class=p>(</span><span class=n>properties</span><span class=o>.</span><span class=n>maximum_value</span><span class=p>)</span>
@@ -596,7 +655,7 @@ function registerListener(event, func) {
     <span class=c1># Change the color of the text displaying the value.</span>
     <span class=n>slider</span><span class=o>.</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=o>.</span><span class=n>value_color</span><span class=p>))</span>
 
-<span class=hll>    <span class=n>slider_widget</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSliderWidget</span><span class=p>()</span>
+<span class=hll>    <span class=n>slider_widget</span> <span class=o>=</span> <span class=n>vtkSliderWidget</span><span class=p>()</span>
 </span>    <span class=n>slider_widget</span><span class=o>.</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>slider</span><span class=p>)</span>
 
     <span class=k>return</span> <span class=n>slider_widget</span>
