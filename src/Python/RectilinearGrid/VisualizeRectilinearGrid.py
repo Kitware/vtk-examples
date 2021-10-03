@@ -1,26 +1,40 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkDoubleArray
+from vtkmodules.vtkCommonDataModel import vtkRectilinearGrid
+from vtkmodules.vtkFiltersGeneral import vtkShrinkFilter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a grid    
-    grid = vtk.vtkRectilinearGrid()
+    grid = vtkRectilinearGrid()
 
     grid.SetDimensions(2, 3, 2)
 
-    xArray = vtk.vtkDoubleArray()
+    xArray = vtkDoubleArray()
     xArray.InsertNextValue(0.0)
     xArray.InsertNextValue(2.0)
 
-    yArray = vtk.vtkDoubleArray()
+    yArray = vtkDoubleArray()
     yArray.InsertNextValue(0.0)
     yArray.InsertNextValue(1.0)
     yArray.InsertNextValue(2.0)
 
-    zArray = vtk.vtkDoubleArray()
+    zArray = vtkDoubleArray()
     zArray.InsertNextValue(0.0)
     zArray.InsertNextValue(5.0)
 
@@ -28,25 +42,25 @@ def main():
     grid.SetYCoordinates(yArray)
     grid.SetZCoordinates(zArray)
 
-    shrinkFilter = vtk.vtkShrinkFilter()
+    shrinkFilter = vtkShrinkFilter()
     shrinkFilter.SetInputData(grid)
     shrinkFilter.SetShrinkFactor(.8)
 
     # Create a mapper and actor
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputConnection(shrinkFilter.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
 
     # Visualize
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetWindowName('VisualizeRectilinearGrid')
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)

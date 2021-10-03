@@ -4,11 +4,25 @@
 This example shows how to create a rectilinear grid.
 """
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkDoubleArray
+from vtkmodules.vtkCommonDataModel import vtkRectilinearGrid
+from vtkmodules.vtkFiltersGeometry import vtkRectilinearGridGeometryFilter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     x = [-1.22396, -1.17188, -1.11979, -1.06771, -1.01562, -0.963542, -0.911458, -0.859375, -0.807292, -0.755208,
          -0.703125, -0.651042, -0.598958, -0.546875, -0.494792, -0.442708, -0.390625, -0.338542, -0.286458, -0.234375,
@@ -24,13 +38,13 @@ def main():
 
     # Create a rectilinear grid by defining three arrays specifying the
     # coordinates in the x-y-z directions.
-    xCoords = vtk.vtkDoubleArray()
+    xCoords = vtkDoubleArray()
     for i in range(0, len(x)):
         xCoords.InsertNextValue(x[i])
-    yCoords = vtk.vtkDoubleArray()
+    yCoords = vtkDoubleArray()
     for i in range(0, len(y)):
         yCoords.InsertNextValue(y[i])
-    zCoords = vtk.vtkDoubleArray()
+    zCoords = vtkDoubleArray()
     for i in range(0, len(z)):
         zCoords.InsertNextValue(z[i])
 
@@ -38,30 +52,30 @@ def main():
     # the number of values in each of the XCoordinates, YCoordinates,
     # and ZCoordinates is equal to what is defined in SetDimensions().
     #
-    rgrid = vtk.vtkRectilinearGrid()
+    rgrid = vtkRectilinearGrid()
     rgrid.SetDimensions(len(x), len(y), len(z))
     rgrid.SetXCoordinates(xCoords)
     rgrid.SetYCoordinates(yCoords)
     rgrid.SetZCoordinates(zCoords)
 
     # Extract a plane from the grid to see what we've got.
-    plane = vtk.vtkRectilinearGridGeometryFilter()
+    plane = vtkRectilinearGridGeometryFilter()
     plane.SetInputData(rgrid)
     plane.SetExtent(0, len(x) - 1, 16, 16, 0, len(z) - 1)
 
-    rgridMapper = vtk.vtkPolyDataMapper()
+    rgridMapper = vtkPolyDataMapper()
     rgridMapper.SetInputConnection(plane.GetOutputPort())
 
-    wireActor = vtk.vtkActor()
+    wireActor = vtkActor()
     wireActor.SetMapper(rgridMapper)
     wireActor.GetProperty().SetColor(colors.GetColor3d("Banana"))
     wireActor.GetProperty().EdgeVisibilityOn()
 
     # Create the usual rendering stuff.
-    renderer = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     renderer.AddActor(wireActor)

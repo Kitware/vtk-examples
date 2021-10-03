@@ -1,25 +1,38 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkDoubleArray
+from vtkmodules.vtkCommonDataModel import vtkRectilinearGrid
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a grid
-    grid = vtk.vtkRectilinearGrid()
+    grid = vtkRectilinearGrid()
     grid.SetDimensions(2, 3, 1)
 
-    xArray = vtk.vtkDoubleArray()
+    xArray = vtkDoubleArray()
     xArray.InsertNextValue(0.0)
     xArray.InsertNextValue(2.0)
 
-    yArray = vtk.vtkDoubleArray()
+    yArray = vtkDoubleArray()
     yArray.InsertNextValue(0.0)
     yArray.InsertNextValue(1.0)
     yArray.InsertNextValue(2.0)
 
-    zArray = vtk.vtkDoubleArray()
+    zArray = vtkDoubleArray()
     zArray.InsertNextValue(0.0)
 
     grid.SetXCoordinates(xArray)
@@ -35,20 +48,20 @@ def main():
         print('Point', id, ':(', p[0], ',', p[1], ',', p[2], ')')
 
     # Create a mapper and actor
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputData(grid)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
 
     # Visualize
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetWindowName('RectilinearGrid')
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)
