@@ -3,7 +3,31 @@
 import os
 import sys
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonCore import (
+    VTK_VERSION_NUMBER,
+    vtkVersion
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkDataObject,
+    vtkDataSetAttributes
+)
+from vtkmodules.vtkFiltersCore import (
+    vtkMaskFields,
+    vtkThreshold,
+    vtkWindowedSincPolyDataFilter
+)
+from vtkmodules.vtkFiltersGeneral import (
+    vtkDiscreteFlyingEdges3D,
+    vtkDiscreteMarchingCubes
+)
+from vtkmodules.vtkFiltersGeometry import vtkGeometryFilter
+from vtkmodules.vtkIOImage import vtkMetaImageReader
+from vtkmodules.vtkIOXML import vtkXMLPolyDataWriter
+from vtkmodules.vtkImagingStatistics import vtkImageAccumulate
 
 
 def main():
@@ -15,23 +39,23 @@ def main():
         end_label, start_label = start_label, end_label
 
     # Create all of the classes we will need
-    reader = vtk.vtkMetaImageReader()
-    histogram = vtk.vtkImageAccumulate()
+    reader = vtkMetaImageReader()
+    histogram = vtkImageAccumulate()
     if use_flying_edges:
         try:
             using_marching_cubes = False
-            discrete_cubes = vtk.vtkDiscreteFlyingEdges3D()
+            discrete_cubes = vtkDiscreteFlyingEdges3D()
         except AttributeError:
             using_marching_cubes = True
-            discrete_cubes = vtk.vtkDiscreteMarchingCubes()
+            discrete_cubes = vtkDiscreteMarchingCubes()
     else:
         using_marching_cubes = True
-        discrete_cubes = vtk.vtkDiscreteMarchingCubes()
-    smoother = vtk.vtkWindowedSincPolyDataFilter()
-    selector = vtk.vtkThreshold()
-    scalars_off = vtk.vtkMaskFields()
-    geometry = vtk.vtkGeometryFilter()
-    writer = vtk.vtkXMLPolyDataWriter()
+        discrete_cubes = vtkDiscreteMarchingCubes()
+    smoother = vtkWindowedSincPolyDataFilter()
+    selector = vtkThreshold()
+    scalars_off = vtkMaskFields()
+    geometry = vtkGeometryFilter()
+    writer = vtkXMLPolyDataWriter()
 
     # Define all of the variables
     file_prefix = 'Label'
@@ -70,21 +94,21 @@ def main():
     selector.SetInputConnection(smoother.GetOutputPort())
     if use_flying_edges:
         if using_marching_cubes:
-            selector.SetInputArrayToProcess(0, 0, 0, vtk.vtkDataObject().FIELD_ASSOCIATION_CELLS,
-                                            vtk.vtkDataSetAttributes().SCALARS)
+            selector.SetInputArrayToProcess(0, 0, 0, vtkDataObject().FIELD_ASSOCIATION_CELLS,
+                                            vtkDataSetAttributes().SCALARS)
         else:
-            selector.SetInputArrayToProcess(0, 0, 0, vtk.vtkDataObject().FIELD_ASSOCIATION_POINTS,
-                                            vtk.vtkDataSetAttributes().SCALARS)
+            selector.SetInputArrayToProcess(0, 0, 0, vtkDataObject().FIELD_ASSOCIATION_POINTS,
+                                            vtkDataSetAttributes().SCALARS)
     else:
-        selector.SetInputArrayToProcess(0, 0, 0, vtk.vtkDataObject().FIELD_ASSOCIATION_CELLS,
-                                        vtk.vtkDataSetAttributes().SCALARS)
+        selector.SetInputArrayToProcess(0, 0, 0, vtkDataObject().FIELD_ASSOCIATION_CELLS,
+                                        vtkDataSetAttributes().SCALARS)
 
     # Strip the scalars from the output
     scalars_off.SetInputConnection(selector.GetOutputPort())
-    scalars_off.CopyAttributeOff(vtk.vtkMaskFields().POINT_DATA,
-                                 vtk.vtkDataSetAttributes().SCALARS)
-    scalars_off.CopyAttributeOff(vtk.vtkMaskFields().CELL_DATA,
-                                 vtk.vtkDataSetAttributes().SCALARS)
+    scalars_off.CopyAttributeOff(vtkMaskFields().POINT_DATA,
+                                 vtkDataSetAttributes().SCALARS)
+    scalars_off.CopyAttributeOff(vtkMaskFields().CELL_DATA,
+                                 vtkDataSetAttributes().SCALARS)
 
     geometry.SetInputConnection(scalars_off.GetOutputPort())
 
@@ -97,7 +121,8 @@ def main():
             continue
 
         # select the cells for a given label
-        selector.ThresholdBetween(i, i)
+        selector.SetLowerThreshold(i)
+        selector.SetUpperThreshold(i)
 
         # output the polydata
         output_fn = '{:s}{:d}.vtp'.format(file_prefix, i)
@@ -134,9 +159,9 @@ def vtk_version_ok(major, minor, build):
     """
     needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
     try:
-        vtk_version_number = vtk.VTK_VERSION_NUMBER
+        vtk_version_number = VTK_VERSION_NUMBER
     except AttributeError:  # as error:
-        ver = vtk.vtkVersion()
+        ver = vtkVersion()
         vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
                              + ver.GetVTKBuildVersion()
     if vtk_version_number >= needed_version:
