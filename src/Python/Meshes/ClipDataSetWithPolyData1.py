@@ -1,44 +1,64 @@
+#!/usr/bin/env python
+
 import numpy as np
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkFloatArray
+from vtkmodules.vtkCommonDataModel import vtkRectilinearGrid
+from vtkmodules.vtkFiltersCore import vtkImplicitPolyDataDistance
+from vtkmodules.vtkFiltersGeneral import vtkClipDataSet
+from vtkmodules.vtkFiltersGeometry import vtkRectilinearGridGeometryFilter
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create polydata to slice the grid with. In this case, use a cone. This could
     # be any polydata including a stl file.
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetResolution(20)
     cone.Update()
 
     # implicit function that will be used to slice the mesh
-    implicitPolyDataDistance = vtk.vtkImplicitPolyDataDistance()
+    implicitPolyDataDistance = vtkImplicitPolyDataDistance()
     implicitPolyDataDistance.SetInput(cone.GetOutput())
 
     # create a grid
-    xCoords = vtk.vtkFloatArray()
+    xCoords = vtkFloatArray()
     for x, i in enumerate(np.linspace(-1.0, 1.0, 15)):
         xCoords.InsertNextValue(i)
 
-    yCoords = vtk.vtkFloatArray()
+    yCoords = vtkFloatArray()
     for y, i in enumerate(np.linspace(-1.0, 1.0, 15)):
         yCoords.InsertNextValue(i)
 
-    zCoords = vtk.vtkFloatArray()
+    zCoords = vtkFloatArray()
     for z, i in enumerate(np.linspace(-1.0, 1.0, 15)):
         zCoords.InsertNextValue(i)
 
     # The coordinates are assigned to the rectilinear grid. Make sure that
     # the number of values in each of the XCoordinates, YCoordinates,
     # and ZCoordinates is equal to what is defined in SetDimensions().
-    rgrid = vtk.vtkRectilinearGrid()
+    rgrid = vtkRectilinearGrid()
     rgrid.SetDimensions(x + 1, y + 1, z + 1)
     rgrid.SetXCoordinates(xCoords)
     rgrid.SetYCoordinates(yCoords)
     rgrid.SetZCoordinates(zCoords)
 
     # Create an array to hold distance information
-    signedDistances = vtk.vtkFloatArray()
+    signedDistances = vtkFloatArray()
     signedDistances.SetNumberOfComponents(1)
     signedDistances.SetName('SignedDistances')
 
@@ -52,7 +72,7 @@ def main():
     rgrid.GetPointData().SetScalars(signedDistances)
 
     # use vtkClipDataSet to slice the grid with the polydata
-    clipper = vtk.vtkClipDataSet()
+    clipper = vtkClipDataSet()
     clipper.SetInputData(rgrid)
     clipper.InsideOutOn()
     clipper.SetValue(0.0)
@@ -60,36 +80,36 @@ def main():
 
     # --- mappers, actors, render, etc. ---
     # mapper and actor to view the cone
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(cone.GetOutputPort())
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
 
     # geometry filter to view the background grid
-    geometryFilter = vtk.vtkRectilinearGridGeometryFilter()
+    geometryFilter = vtkRectilinearGridGeometryFilter()
     geometryFilter.SetInputData(rgrid)
     geometryFilter.SetExtent(0, x + 1, 0, y + 1, (z + 1) // 2, (z + 1) // 2)
     geometryFilter.Update()
 
-    rgridMapper = vtk.vtkPolyDataMapper()
+    rgridMapper = vtkPolyDataMapper()
     rgridMapper.SetInputConnection(geometryFilter.GetOutputPort())
 
-    wireActor = vtk.vtkActor()
+    wireActor = vtkActor()
     wireActor.SetMapper(rgridMapper)
     wireActor.GetProperty().SetRepresentationToWireframe()
     wireActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # mapper and actor to view the clipped mesh
-    clipperMapper = vtk.vtkDataSetMapper()
+    clipperMapper = vtkDataSetMapper()
     clipperMapper.SetInputConnection(clipper.GetOutputPort())
 
-    clipperActor = vtk.vtkActor()
+    clipperActor = vtkActor()
     clipperActor.SetMapper(clipperMapper)
     clipperActor.GetProperty().SetRepresentationToWireframe()
     clipperActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # A renderer and render window
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('Snow'))
 
     # add the actors
@@ -97,12 +117,12 @@ def main():
     renderer.AddActor(wireActor)
     renderer.AddActor(clipperActor)
 
-    renwin = vtk.vtkRenderWindow()
+    renwin = vtkRenderWindow()
     renwin.AddRenderer(renderer)
     renwin.SetWindowName('ClipDataSetWithPolyData')
 
     # An interactor
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renwin)
 
     # Start

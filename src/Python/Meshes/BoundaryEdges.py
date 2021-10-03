@@ -1,14 +1,27 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkFeatureEdges
+from vtkmodules.vtkFiltersSources import vtkDiskSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
-    diskSource = vtk.vtkDiskSource()
+    colors = vtkNamedColors()
+    diskSource = vtkDiskSource()
     diskSource.Update()
 
-    featureEdges = vtk.vtkFeatureEdges()
+    featureEdges = vtkFeatureEdges()
     featureEdges.SetInputConnection(diskSource.GetOutputPort())
     featureEdges.BoundaryEdgesOn()
     featureEdges.FeatureEdgesOff()
@@ -18,24 +31,24 @@ def main():
     featureEdges.Update()
 
     # Visualize
-    edgeMapper = vtk.vtkPolyDataMapper()
+    edgeMapper = vtkPolyDataMapper()
     edgeMapper.SetInputConnection(featureEdges.GetOutputPort())
-    edgeActor = vtk.vtkActor()
+    edgeActor = vtkActor()
     edgeActor.SetMapper(edgeMapper)
 
-    diskMapper = vtk.vtkPolyDataMapper()
+    diskMapper = vtkPolyDataMapper()
     diskMapper.SetInputConnection(diskSource.GetOutputPort())
-    diskActor = vtk.vtkActor()
+    diskActor = vtkActor()
     diskActor.SetMapper(diskMapper)
     diskActor.GetProperty().SetColor(colors.GetColor3d('Gray'))
 
     # Create a renderer, render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('BoundaryEdges')
 
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(edgeActor)

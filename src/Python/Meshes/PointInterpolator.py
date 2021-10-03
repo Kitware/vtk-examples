@@ -1,8 +1,28 @@
 #!/usr/bin/env python
 
 import numpy as np
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkImageData
+from vtkmodules.vtkFiltersCore import vtkResampleWithDataSet
+from vtkmodules.vtkFiltersGeneral import vtkTableToPolyData
+from vtkmodules.vtkFiltersPoints import (
+    vtkGaussianKernel,
+    vtkPointInterpolator
+)
+from vtkmodules.vtkIOGeometry import vtkSTLReader
+from vtkmodules.vtkIOInfovis import vtkDelimitedTextReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPointGaussianMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -24,15 +44,15 @@ This example uses vtkPointInterpolator with a Gaussian Kernel (or other kernel)
 def main():
     points_fn, probe_fn = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    points_reader = vtk.vtkDelimitedTextReader()
+    points_reader = vtkDelimitedTextReader()
     points_reader.SetFileName(points_fn)
     points_reader.DetectNumericColumnsOn()
     points_reader.SetFieldDelimiterCharacters('\t')
     points_reader.SetHaveHeaders(True)
 
-    table_points = vtk.vtkTableToPolyData()
+    table_points = vtkTableToPolyData()
     table_points.SetInputConnection(points_reader.GetOutputPort())
     table_points.SetXColumn('x')
     table_points.SetYColumn('y')
@@ -44,7 +64,7 @@ def main():
     range = points.GetPointData().GetScalars().GetRange()
 
     # Read a probe surface
-    stl_reader = vtk.vtkSTLReader()
+    stl_reader = vtkSTLReader()
     stl_reader.SetFileName(probe_fn)
     stl_reader.Update()
 
@@ -52,33 +72,33 @@ def main():
     bounds = np.array(surface.GetBounds())
 
     dims = np.array([101, 101, 101])
-    box = vtk.vtkImageData()
+    box = vtkImageData()
     box.SetDimensions(dims)
     box.SetSpacing((bounds[1::2] - bounds[:-1:2]) / (dims - 1))
     box.SetOrigin(bounds[::2])
 
     # Gaussian kernel
-    gaussian_kernel = vtk.vtkGaussianKernel()
+    gaussian_kernel = vtkGaussianKernel()
     gaussian_kernel.SetSharpness(2)
     gaussian_kernel.SetRadius(12)
 
-    interpolator = vtk.vtkPointInterpolator()
+    interpolator = vtkPointInterpolator()
     interpolator.SetInputData(box)
     interpolator.SetSourceData(points)
     interpolator.SetKernel(gaussian_kernel)
 
-    resample = vtk.vtkResampleWithDataSet()
+    resample = vtkResampleWithDataSet()
     resample.SetInputData(surface)
     resample.SetSourceConnection(interpolator.GetOutputPort())
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(resample.GetOutputPort())
     mapper.SetScalarRange(range)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
-    point_mapper = vtk.vtkPointGaussianMapper()
+    point_mapper = vtkPointGaussianMapper()
     point_mapper.SetInputData(points)
     point_mapper.SetScalarRange(range)
     point_mapper.SetScaleFactor(0.6)
@@ -95,13 +115,13 @@ def main():
         "}\n"
     )
 
-    point_actor = vtk.vtkActor()
+    point_actor = vtkActor()
     point_actor.SetMapper(point_mapper)
 
-    renderer = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     renderer.AddActor(actor)
