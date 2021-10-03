@@ -1,45 +1,61 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
+from vtkmodules.vtkFiltersSources import vtkArrowSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a rendering window and renderer
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetSize(640, 480)
     renWin.SetWindowName('RotationAroundLine')
 
     # Create a renderwindowinteractor
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create arrow
-    source = vtk.vtkArrowSource()
+    source = vtkArrowSource()
 
     # Create a transform that rotates the arrow 45° around the z-axis
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.RotateWXYZ(45, 0, 0, 1)
-    transformFilter = vtk.vtkTransformPolyDataFilter()
+    transformFilter = vtkTransformPolyDataFilter()
     transformFilter.SetTransform(transform)
     transformFilter.SetInputConnection(source.GetOutputPort())
     transformFilter.Update()
 
     # Mapper for the original arrow
-    coneMapper1 = vtk.vtkPolyDataMapper()
+    coneMapper1 = vtkPolyDataMapper()
     coneMapper1.SetInputConnection(source.GetOutputPort())
 
     # Another mapper for the rotated arrow
-    coneMapper2 = vtk.vtkPolyDataMapper()
+    coneMapper2 = vtkPolyDataMapper()
     coneMapper2.SetInputConnection(transformFilter.GetOutputPort())
 
     # Actor for original arrow
-    actor1 = vtk.vtkActor()
+    actor1 = vtkActor()
     actor1.SetMapper(coneMapper1)
 
     # Actor for rotated arrow
-    actor2 = vtk.vtkActor()
+    actor2 = vtkActor()
     actor2.SetMapper(coneMapper2)
 
     # Color the original arrow

@@ -1,29 +1,50 @@
+#!/usr/bin/env python
+
 import numpy as np
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkFloatArray,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkFiltersCore import vtkImplicitPolyDataDistance
+from vtkmodules.vtkFiltersGeneral import vtkVertexGlyphFilter
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
     sphereSource.SetCenter(0.0, 0.0, 0.0)
     sphereSource.SetRadius(1.0)
     sphereSource.Update()
 
-    sphereMapper = vtk.vtkPolyDataMapper()
+    sphereMapper = vtkPolyDataMapper()
     sphereMapper.SetInputConnection(sphereSource.GetOutputPort())
     sphereMapper.ScalarVisibilityOff()
 
-    sphereActor = vtk.vtkActor()
+    sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
     sphereActor.GetProperty().SetOpacity(0.3)
     sphereActor.GetProperty().SetColor(1, 0, 0)
 
-    implicitPolyDataDistance = vtk.vtkImplicitPolyDataDistance()
+    implicitPolyDataDistance = vtkImplicitPolyDataDistance()
     implicitPolyDataDistance.SetInput(sphereSource.GetOutput())
 
     # Setup a grid
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     step = 0.1
     for x in np.arange(-2, 2, step):
         for y in np.arange(-2, 2, step):
@@ -31,7 +52,7 @@ def main():
                 points.InsertNextPoint(x, y, z)
 
     # Add distances to each point
-    signedDistances = vtk.vtkFloatArray()
+    signedDistances = vtkFloatArray()
     signedDistances.SetNumberOfComponents(1)
     signedDistances.SetName('SignedDistances')
 
@@ -41,31 +62,31 @@ def main():
         signedDistance = implicitPolyDataDistance.EvaluateFunction(p)
         signedDistances.InsertNextValue(signedDistance)
 
-    polyData = vtk.vtkPolyData()
+    polyData = vtkPolyData()
     polyData.SetPoints(points)
     polyData.GetPointData().SetScalars(signedDistances)
 
-    vertexGlyphFilter = vtk.vtkVertexGlyphFilter()
+    vertexGlyphFilter = vtkVertexGlyphFilter()
     vertexGlyphFilter.SetInputData(polyData)
     vertexGlyphFilter.Update()
 
-    signedDistanceMapper = vtk.vtkPolyDataMapper()
+    signedDistanceMapper = vtkPolyDataMapper()
     signedDistanceMapper.SetInputConnection(vertexGlyphFilter.GetOutputPort())
     signedDistanceMapper.ScalarVisibilityOn()
 
-    signedDistanceActor = vtk.vtkActor()
+    signedDistanceActor = vtkActor()
     signedDistanceActor.SetMapper(signedDistanceMapper)
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddViewProp(sphereActor)
     renderer.AddViewProp(signedDistanceActor)
     renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetWindowName('ImplicitPolyDataDistance')
 
-    renWinInteractor = vtk.vtkRenderWindowInteractor()
+    renWinInteractor = vtkRenderWindowInteractor()
     renWinInteractor.SetRenderWindow(renderWindow)
 
     renderWindow.Render()

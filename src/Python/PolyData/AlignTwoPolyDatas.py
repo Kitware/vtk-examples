@@ -1,7 +1,41 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    VTK_DOUBLE_MAX,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkIterativeClosestPointTransform,
+    vtkPolyData
+)
+from vtkmodules.vtkCommonTransforms import (
+    vtkLandmarkTransform,
+    vtkTransform
+)
+from vtkmodules.vtkFiltersGeneral import (
+    vtkOBBTree,
+    vtkTransformPolyDataFilter
+)
+from vtkmodules.vtkFiltersModeling import vtkHausdorffDistancePointSetFilter
+from vtkmodules.vtkIOGeometry import (
+    vtkBYUReader,
+    vtkOBJReader,
+    vtkSTLReader
+)
+from vtkmodules.vtkIOPLY import vtkPLYReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -12,7 +46,7 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('src_fn', help='The polydata source file name,e.g. Grey_Nurse_Shark.stl.')
+    parser.add_argument('src_fn', help='The polydata source file name,e.g. thingiverse/Grey_Nurse_Shark.stl.')
     parser.add_argument('tgt_fn', help='The polydata target file name, e.g. shark.ply.')
 
     args = parser.parse_args()
@@ -21,14 +55,14 @@ def get_program_parameters():
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     src_fn, tgt_fn = get_program_parameters()
     print('Loading source:', src_fn)
     sourcePolyData = ReadPolyData(src_fn)
     # Save the source polydata in case the align does not improve
     # segmentation
-    originalSourcePolyData = vtk.vtkPolyData()
+    originalSourcePolyData = vtkPolyData()
     originalSourcePolyData.DeepCopy(sourcePolyData)
 
     print('Loading target:', tgt_fn)
@@ -40,21 +74,21 @@ def main():
     # For example, when using Grey_Nurse_Shark.stl as the source and
     # greatWhite.stl as the target, you need to uncomment the following
     # two rotations.
-    trnf = vtk.vtkTransform()
+    trnf = vtkTransform()
     # trnf.RotateX(90)
     # trnf.RotateY(-90)
-    tpd = vtk.vtkTransformPolyDataFilter()
+    tpd = vtkTransformPolyDataFilter()
     tpd.SetTransform(trnf)
     tpd.SetInputData(targetPolyData)
     tpd.Update()
 
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
-    distance = vtk.vtkHausdorffDistancePointSetFilter()
+    distance = vtkHausdorffDistancePointSetFilter()
     distance.SetInputData(0, tpd.GetOutput())
     distance.SetInputData(1, sourcePolyData)
     distance.Update()
@@ -76,7 +110,7 @@ def main():
         sourcePolyData.DeepCopy(originalSourcePolyData)
 
     # Refine the alignment using IterativeClosestPoint
-    icp = vtk.vtkIterativeClosestPointTransform()
+    icp = vtkIterativeClosestPointTransform()
     icp.SetSource(sourcePolyData)
     icp.SetTarget(tpd.GetOutput())
     icp.GetLandmarkTransform().SetModeToRigidBody()
@@ -90,7 +124,7 @@ def main():
     #  print(icp)
 
     lmTransform = icp.GetLandmarkTransform()
-    transform = vtk.vtkTransformPolyDataFilter()
+    transform = vtkTransformPolyDataFilter()
     transform.SetInputData(sourcePolyData)
     transform.SetTransform(lmTransform)
     transform.SetTransform(icp)
@@ -111,7 +145,7 @@ def main():
                                                                                                   distanceAfterICP,
                                                                                                   bestDistance))
     # Select
-    sourceMapper = vtk.vtkDataSetMapper()
+    sourceMapper = vtkDataSetMapper()
     if bestDistance == distanceBeforeAlign:
         sourceMapper.SetInputData(originalSourcePolyData)
         print('Using original alignment')
@@ -123,18 +157,18 @@ def main():
         print('Using alignment by ICP')
     sourceMapper.ScalarVisibilityOff()
 
-    sourceActor = vtk.vtkActor()
+    sourceActor = vtkActor()
     sourceActor.SetMapper(sourceMapper)
     sourceActor.GetProperty().SetOpacity(0.6)
     sourceActor.GetProperty().SetDiffuseColor(
         colors.GetColor3d('White'))
     renderer.AddActor(sourceActor)
 
-    targetMapper = vtk.vtkDataSetMapper()
+    targetMapper = vtkDataSetMapper()
     targetMapper.SetInputData(tpd.GetOutput())
     targetMapper.ScalarVisibilityOff()
 
-    targetActor = vtk.vtkActor()
+    targetActor = vtkActor()
     targetActor.SetMapper(targetMapper)
     targetActor.GetProperty().SetDiffuseColor(
         colors.GetColor3d('Tomato'))
@@ -156,32 +190,32 @@ def ReadPolyData(file_name):
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
     if extension == ".ply":
-        reader = vtk.vtkPLYReader()
+        reader = vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".vtp":
-        reader = vtk.vtkXMLpoly_dataReader()
+        reader = vtkXMLpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".obj":
-        reader = vtk.vtkOBJReader()
+        reader = vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".stl":
-        reader = vtk.vtkSTLReader()
+        reader = vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".vtk":
-        reader = vtk.vtkpoly_dataReader()
+        reader = vtkpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".g":
-        reader = vtk.vtkBYUReader()
+        reader = vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
@@ -193,28 +227,28 @@ def ReadPolyData(file_name):
 
 def AlignBoundingBoxes(source, target):
     # Use OBBTree to create an oriented bounding box for target and source
-    sourceOBBTree = vtk.vtkOBBTree()
+    sourceOBBTree = vtkOBBTree()
     sourceOBBTree.SetDataSet(source)
     sourceOBBTree.SetMaxLevel(1)
     sourceOBBTree.BuildLocator()
 
-    targetOBBTree = vtk.vtkOBBTree()
+    targetOBBTree = vtkOBBTree()
     targetOBBTree.SetDataSet(target)
     targetOBBTree.SetMaxLevel(1)
     targetOBBTree.BuildLocator()
 
-    sourceLandmarks = vtk.vtkPolyData()
+    sourceLandmarks = vtkPolyData()
     sourceOBBTree.GenerateRepresentation(0, sourceLandmarks)
 
-    targetLandmarks = vtk.vtkPolyData()
+    targetLandmarks = vtkPolyData()
     targetOBBTree.GenerateRepresentation(0, targetLandmarks)
 
-    lmTransform = vtk.vtkLandmarkTransform()
+    lmTransform = vtkLandmarkTransform()
     lmTransform.SetModeToSimilarity()
     lmTransform.SetTargetLandmarks(targetLandmarks.GetPoints())
-    # lmTransformPD = vtk.vtkTransformPolyDataFilter()
-    bestDistance = vtk.VTK_DOUBLE_MAX
-    bestPoints = vtk.vtkPoints()
+    # lmTransformPD = vtkTransformPolyDataFilter()
+    bestDistance = VTK_DOUBLE_MAX
+    bestPoints = vtkPoints()
     bestDistance = BestBoundingBox(
         "X",
         target,
@@ -243,7 +277,7 @@ def AlignBoundingBoxes(source, target):
     lmTransform.SetSourceLandmarks(bestPoints)
     lmTransform.Modified()
 
-    transformPD = vtk.vtkTransformPolyDataFilter()
+    transformPD = vtkTransformPolyDataFilter()
     transformPD.SetInputData(source)
     transformPD.SetTransform(lmTransform)
     transformPD.Update()
@@ -254,11 +288,11 @@ def AlignBoundingBoxes(source, target):
 
 
 def BestBoundingBox(axis, target, source, targetLandmarks, sourceLandmarks, bestDistance, bestPoints):
-    distance = vtk.vtkHausdorffDistancePointSetFilter()
-    testTransform = vtk.vtkTransform()
-    testTransformPD = vtk.vtkTransformPolyDataFilter()
-    lmTransform = vtk.vtkLandmarkTransform()
-    lmTransformPD = vtk.vtkTransformPolyDataFilter()
+    distance = vtkHausdorffDistancePointSetFilter()
+    testTransform = vtkTransform()
+    testTransformPD = vtkTransformPolyDataFilter()
+    lmTransform = vtkLandmarkTransform()
+    lmTransformPD = vtkTransformPolyDataFilter()
 
     lmTransform.SetModeToSimilarity()
     lmTransform.SetTargetLandmarks(targetLandmarks.GetPoints())

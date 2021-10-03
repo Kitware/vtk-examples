@@ -1,52 +1,70 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkIdList
+from vtkmodules.vtkCommonDataModel import vtkPlane
+from vtkmodules.vtkFiltersCore import (
+    vtkCutter,
+    vtkStripper
+)
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     lineColor = colors.GetColor3d('peacock')
     modelColor = colors.GetColor3d('silver')
     backgroundColor = colors.GetColor3d('wheat')
 
-    modelSource = vtk.vtkSphereSource()
+    modelSource = vtkSphereSource()
 
-    plane = vtk.vtkPlane()
+    plane = vtkPlane()
 
-    cutter = vtk.vtkCutter()
+    cutter = vtkCutter()
     cutter.SetInputConnection(modelSource.GetOutputPort())
     cutter.SetCutFunction(plane)
     cutter.GenerateValues(10, -0.5, 0.5)
 
-    modelMapper = vtk.vtkPolyDataMapper()
+    modelMapper = vtkPolyDataMapper()
     modelMapper.SetInputConnection(modelSource.GetOutputPort())
 
-    model = vtk.vtkActor()
+    model = vtkActor()
     model.SetMapper(modelMapper)
     model.GetProperty().SetDiffuseColor(modelColor)
     model.GetProperty().SetInterpolationToFlat()
 
-    stripper = vtk.vtkStripper()
+    stripper = vtkStripper()
     stripper.SetInputConnection(cutter.GetOutputPort())
     stripper.JoinContiguousSegmentsOn()
 
-    linesMapper = vtk.vtkPolyDataMapper()
+    linesMapper = vtkPolyDataMapper()
     linesMapper.SetInputConnection(stripper.GetOutputPort())
 
-    lines = vtk.vtkActor()
+    lines = vtkActor()
     lines.SetMapper(linesMapper)
     lines.GetProperty().SetDiffuseColor(lineColor)
     lines.GetProperty().SetLineWidth(3.)
 
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
 
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
     renderWindow.SetWindowName('ExtractPolyLinesFromPolyData')
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     # Add the actors to the renderer.
@@ -76,7 +94,7 @@ def main():
     print('-----------Lines using vtkStripper')
     print('There are {0} lines in the polydata'.format(numberOfLines))
 
-    indices = vtk.vtkIdList()
+    indices = vtkIdList()
     lineCount = 0
 
     while cells.GetNextCell(indices):

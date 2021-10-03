@@ -1,20 +1,41 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkDoubleArray,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkLine,
+    vtkPolyData
+)
+from vtkmodules.vtkFiltersGeneral import vtkWarpVector
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertNextPoint(0.0, 0.0, 0.0)
     points.InsertNextPoint(1.0, 0.0, 0.0)
     points.InsertNextPoint(2.0, 0.0, 0.0)
     points.InsertNextPoint(3.0, 0.0, 0.0)
     points.InsertNextPoint(4.0, 0.0, 0.0)
 
-    lines = vtk.vtkCellArray()
-    line = vtk.vtkLine()
+    lines = vtkCellArray()
+    line = vtkLine()
     line.GetPointIds().SetId(0, 0)
     line.GetPointIds().SetId(1, 1)
     lines.InsertNextCell(line)
@@ -28,7 +49,7 @@ def main():
     line.GetPointIds().SetId(1, 4)
     lines.InsertNextCell(line)
 
-    warpData = vtk.vtkDoubleArray()
+    warpData = vtkDoubleArray()
     warpData.SetNumberOfComponents(3)
     warpData.SetName("warpData")
     warp = [0.0, 0.0, 0.0]
@@ -43,7 +64,7 @@ def main():
     warp[1] = 0.1
     warpData.InsertNextTuple(warp)
 
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(points)
     polydata.SetLines(lines)
     polydata.GetPointData().AddArray(warpData)
@@ -52,25 +73,25 @@ def main():
     # WarpVector will use the array marked as active vector in polydata
     # it has to be a 3 component array
     # with the same number of tuples as points in polydata
-    warpVector = vtk.vtkWarpVector()
+    warpVector = vtkWarpVector()
     warpVector.SetInputData(polydata)
     warpVector.Update()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputData(warpVector.GetPolyDataOutput())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d('cobalt_green'))
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetWindowName('WarpVector')
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
     renderWindow.Render()
     renderWindowInteractor.Start()

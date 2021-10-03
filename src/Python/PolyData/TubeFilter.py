@@ -6,48 +6,61 @@
 # while the thickness of a tube varies.
 
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkTubeFilter
+from vtkmodules.vtkFiltersSources import vtkLineSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a line
-    lineSource = vtk.vtkLineSource()
+    lineSource = vtkLineSource()
     lineSource.SetPoint1(1.0, 0.0, 0.0)
     lineSource.SetPoint2(.0, 1.0, 0.0)
 
     # Setup actor and mapper
-    lineMapper = vtk.vtkPolyDataMapper()
+    lineMapper = vtkPolyDataMapper()
     lineMapper.SetInputConnection(lineSource.GetOutputPort())
 
-    lineActor = vtk.vtkActor()
+    lineActor = vtkActor()
     lineActor.SetMapper(lineMapper)
     lineActor.GetProperty().SetColor(colors.GetColor3d('Red'))
 
     # Create tube filter
-    tubeFilter = vtk.vtkTubeFilter()
+    tubeFilter = vtkTubeFilter()
     tubeFilter.SetInputConnection(lineSource.GetOutputPort())
     tubeFilter.SetRadius(0.025)
     tubeFilter.SetNumberOfSides(50)
     tubeFilter.Update()
 
     # Setup actor and mapper
-    tubeMapper = vtk.vtkPolyDataMapper()
+    tubeMapper = vtkPolyDataMapper()
     tubeMapper.SetInputConnection(tubeFilter.GetOutputPort())
 
-    tubeActor = vtk.vtkActor()
+    tubeActor = vtkActor()
     tubeActor.SetMapper(tubeMapper)
     # Make the tube have some transparency.
     tubeActor.GetProperty().SetOpacity(0.5)
 
     # Setup render window, renderer, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('TubeFilter')
     renderWindow.AddRenderer(renderer)
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
     # Visualise the arrow
     renderer.AddActor(lineActor)
