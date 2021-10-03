@@ -1,17 +1,30 @@
 # !/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkLight,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('bkg', [26, 51, 102, 255])
 
     # The following lines create a sphere represented by polygons.
     #
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetThetaResolution(100)
     sphere.SetPhiResolution(50)
 
@@ -19,7 +32,7 @@ def main():
     # library. It may also do color mapping, if scalars or other attributes
     # are defined.
     #
-    sphereMapper = vtk.vtkPolyDataMapper()
+    sphereMapper = vtkPolyDataMapper()
     sphereMapper.SetInputConnection(sphere.GetOutputPort())
 
     # The actor is a grouping mechanism: besides the geometry (mapper), it
@@ -35,7 +48,7 @@ def main():
     specular = 0.0
     position = [0, 0, 0]
     for i in range(0, numberOfSpheres):
-        spheres.append(vtk.vtkActor())
+        spheres.append(vtkActor())
         spheres[i].SetMapper(sphereMapper)
         spheres[i].GetProperty().SetColor(colors.GetColor3d('Red'))
         spheres[i].GetProperty().SetAmbient(ambient)
@@ -53,10 +66,10 @@ def main():
     # and will perform appropriate camera or actor manipulation
     # depending on the nature of the events.
     #
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size.
@@ -70,7 +83,7 @@ def main():
 
     # Set up the lighting.
     #
-    light = vtk.vtkLight()
+    light = vtkLight()
     light.SetFocalPoint(1.875, 0.6125, 0)
     light.SetPosition(0.875, 1.6125, 1)
     ren.AddLight(light)

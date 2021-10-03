@@ -1,13 +1,35 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    VTK_VERSION_NUMBER,
+    vtkVersion
+)
+from vtkmodules.vtkFiltersCore import (
+    vtkFlyingEdges3D,
+    vtkMarchingCubes,
+    vtkPolyDataConnectivityFilter
+)
+from vtkmodules.vtkIOLegacy import vtkStructuredPointsReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     # vtkFlyingEdges3D was introduced in VTK >= 8.2
     use_flying_edges = vtk_version_ok(8, 2, 0)
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     colors.SetColor('SkinColor', [240, 184, 160, 255])
     colors.SetColor('BackfaceColor', [255, 229, 200, 255])
@@ -16,17 +38,17 @@ def main():
     file_name, threshold, largest_surface = get_program_parameters()
 
     # Load data
-    reader = vtk.vtkStructuredPointsReader()
+    reader = vtkStructuredPointsReader()
     reader.SetFileName(file_name)
 
     # Create a 3D model using flying edges or marching cubes
     if use_flying_edges:
         try:
-            mc = vtk.vtkFlyingEdges3D()
+            mc = vtkFlyingEdges3D()
         except AttributeError:
-            mc = vtk.vtkMarchingCubes()
+            mc = vtkMarchingCubes()
     else:
-        mc = vtk.vtkMarchingCubes()
+        mc = vtkMarchingCubes()
 
     mc.SetInputConnection(reader.GetOutputPort())
     mc.ComputeNormalsOn()
@@ -34,12 +56,12 @@ def main():
     mc.SetValue(0, threshold)  # second value acts as threshold
 
     # To remain largest region
-    confilter = vtk.vtkPolyDataConnectivityFilter()
+    confilter = vtkPolyDataConnectivityFilter()
     confilter.SetInputConnection(mc.GetOutputPort())
     confilter.SetExtractionModeToLargestRegion()
 
     # Create a mapper
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     if largest_surface:
         mapper.SetInputConnection(confilter.GetOutputPort())
     else:
@@ -47,14 +69,14 @@ def main():
     mapper.ScalarVisibilityOff()
 
     # Visualize
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.GetProperty().SetColor(colors.GetColor3d('SkinColor'))
-    back_prop = vtk.vtkProperty()
+    back_prop = vtkProperty()
     back_prop.SetDiffuseColor(colors.GetColor3d('BackfaceColor'))
     actor.SetBackfaceProperty(back_prop)
     actor.SetMapper(mapper)
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d('SlateGray'))
     renderer.GetActiveCamera().SetViewUp(0.0, 0.0, 1.0)
@@ -63,12 +85,12 @@ def main():
     renderer.ResetCamera()
     renderer.GetActiveCamera().Azimuth(30.0)
     renderer.GetActiveCamera().Elevation(30.0)
-    ren_win = vtk.vtkRenderWindow()
+    ren_win = vtkRenderWindow()
     ren_win.AddRenderer(renderer)
     ren_win.SetSize(640, 480)
     ren_win.SetWindowName('ExtractLargestIsosurface')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(ren_win)
     ren_win.Render()
     iren.Initialize()
@@ -100,9 +122,9 @@ def vtk_version_ok(major, minor, build):
     """
     needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
     try:
-        vtk_version_number = vtk.VTK_VERSION_NUMBER
+        vtk_version_number = VTK_VERSION_NUMBER
     except AttributeError:  # as error:
-        ver = vtk.vtkVersion()
+        ver = vtkVersion()
         vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
                              + ver.GetVTKBuildVersion()
     if vtk_version_number >= needed_version:

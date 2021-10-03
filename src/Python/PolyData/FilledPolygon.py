@@ -1,30 +1,54 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import (
+    vtkPlane,
+    vtkPolyData
+)
+from vtkmodules.vtkFiltersCore import (
+    vtkCutter,
+    vtkFeatureEdges,
+    vtkStripper
+)
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a cube
-    cube = vtk.vtkSphereSource()
+    cube = vtkSphereSource()
     cube.SetRadius(50)
     cube.SetThetaResolution(100)
     cube.SetPhiResolution(100)
 
-    cubeMapper = vtk.vtkPolyDataMapper()
+    cubeMapper = vtkPolyDataMapper()
     cubeMapper.SetInputConnection(cube.GetOutputPort())
 
     # create a plane to cut,here it cuts in the XZ direction (xz normal=(1,0,0);XY =(0,0,1),YZ =(0,1,0)
-    plane = vtk.vtkPlane()
+    plane = vtkPlane()
     plane.SetOrigin(20, 0, 0)
     plane.SetNormal(1, 0, 0)
 
     # create cutter
-    cutter = vtk.vtkCutter()
+    cutter = vtkCutter()
     cutter.SetCutFunction(plane)
     cutter.SetInputConnection(cube.GetOutputPort())
     cutter.Update()
 
-    FeatureEdges = vtk.vtkFeatureEdges()
+    FeatureEdges = vtkFeatureEdges()
     FeatureEdges.SetInputConnection(cutter.GetOutputPort())
     FeatureEdges.BoundaryEdgesOn()
     FeatureEdges.FeatureEdgesOff()
@@ -32,21 +56,21 @@ def main():
     FeatureEdges.ManifoldEdgesOff()
     FeatureEdges.Update()
 
-    cutStrips = vtk.vtkStripper()  # Forms loops (closed polylines) from cutter
+    cutStrips = vtkStripper()  # Forms loops (closed polylines) from cutter
     cutStrips.SetInputConnection(cutter.GetOutputPort())
     cutStrips.Update()
-    cutPoly = vtk.vtkPolyData()  # This trick defines polygons as polyline loop
+    cutPoly = vtkPolyData()  # This trick defines polygons as polyline loop
     cutPoly.SetPoints((cutStrips.GetOutput()).GetPoints())
     cutPoly.SetPolys((cutStrips.GetOutput()).GetLines())
 
-    cutMapper = vtk.vtkPolyDataMapper()
+    cutMapper = vtkPolyDataMapper()
     # cutMapper.SetInput(FeatureEdges.GetOutput())
     cutMapper.SetInputData(cutPoly)
 
-    backface = vtk.vtkProperty()
+    backface = vtkProperty()
     backface.SetColor(colors.GetColor3d('Gold'))
 
-    cutActor = vtk.vtkActor()
+    cutActor = vtkActor()
     cutActor.SetMapper(cutMapper)
     cutActor.GetProperty().SetColor(colors.GetColor3d('Yellow'))
     cutActor.GetProperty().SetEdgeColor(colors.GetColor3d('Red'))
@@ -56,16 +80,16 @@ def main():
     cutActor.SetBackfaceProperty(backface)
 
     # create renderers and add actors of plane and cube
-    ren = vtk.vtkRenderer()
+    ren = vtkRenderer()
     ren.AddActor(cutActor)
 
     # Add renderer to renderwindow and render
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetSize(600, 400)
     renWin.SetWindowName('FilledPolygon')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     ren.SetBackground(colors.GetColor3d('DarkSlateGray'))
     ren.GetActiveCamera().SetPosition(223, -122, -91)

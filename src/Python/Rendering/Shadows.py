@@ -1,6 +1,34 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import (
+    vtkCubeSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkIOGeometry import (
+    vtkBYUReader,
+    vtkOBJReader,
+    vtkSTLReader
+)
+from vtkmodules.vtkIOPLY import vtkPLYReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkLight,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkRenderingOpenGL2 import (
+    vtkCameraPass,
+    vtkRenderPassCollection,
+    vtkSequencePass,
+    vtkShadowMapPass
+)
 
 
 def get_program_parameters():
@@ -21,32 +49,32 @@ def ReadPolyData(file_name):
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
     if extension == '.ply':
-        reader = vtk.vtkPLYReader()
+        reader = vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtp':
-        reader = vtk.vtkXMLpoly_dataReader()
+        reader = vtkXMLpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.obj':
-        reader = vtk.vtkOBJReader()
+        reader = vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.stl':
-        reader = vtk.vtkSTLReader()
+        reader = vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtk':
-        reader = vtk.vtkpoly_dataReader()
+        reader = vtkpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.g':
-        reader = vtk.vtkBYUReader()
+        reader = vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
@@ -62,44 +90,44 @@ def main():
         polyData = ReadPolyData(fn)
     else:
         # Use a sphere
-        source = vtk.vtkSphereSource()
+        source = vtkSphereSource()
         source.SetThetaResolution(100)
         source.SetPhiResolution(100)
         source.Update()
         polyData = source.GetOutput()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     colors.SetColor('HighNoonSun', [255, 255, 251, 255])  # Color temp. 5400°K
     colors.SetColor('100W Tungsten', [255, 214, 170, 255])  # Color temp. 2850°K
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('Silver'))
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(640, 480)
     renderWindow.AddRenderer(renderer)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
-    light1 = vtk.vtkLight()
+    light1 = vtkLight()
     light1.SetFocalPoint(0, 0, 0)
     light1.SetPosition(0, 1, 0.2)
     light1.SetColor(colors.GetColor3d('HighNoonSun'))
     light1.SetIntensity(0.3)
     renderer.AddLight(light1)
 
-    light2 = vtk.vtkLight()
+    light2 = vtkLight()
     light2.SetFocalPoint(0, 0, 0)
     light2.SetPosition(1.0, 1.0, 1.0)
     light2.SetColor(colors.GetColor3d('100W Tungsten'))
     light2.SetIntensity(0.8)
     renderer.AddLight(light2)
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputData(polyData)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetAmbientColor(colors.GetColor3d('SaddleBrown'))
     actor.GetProperty().SetDiffuseColor(colors.GetColor3d('Sienna'))
@@ -121,7 +149,7 @@ def main():
     print('range: ', ', '.join(['{0:0.6f}'.format(i) for i in rnge]))
     expand = 1.0
     thickness = rnge[2] * 0.1
-    plane = vtk.vtkCubeSource()
+    plane = vtkCubeSource()
     plane.SetCenter((bounds[1] + bounds[0]) / 2.0,
                     bounds[2] - thickness / 2.0,
                     (bounds[5] + bounds[4]) / 2.0)
@@ -129,25 +157,25 @@ def main():
     plane.SetYLength(thickness)
     plane.SetZLength(bounds[5] - bounds[4] + (rnge[2] * expand))
 
-    planeMapper = vtk.vtkPolyDataMapper()
+    planeMapper = vtkPolyDataMapper()
     planeMapper.SetInputConnection(plane.GetOutputPort())
 
-    planeActor = vtk.vtkActor()
+    planeActor = vtkActor()
     planeActor.SetMapper(planeMapper)
     renderer.AddActor(planeActor)
 
     renderWindow.SetMultiSamples(0)
 
-    shadows = vtk.vtkShadowMapPass()
+    shadows = vtkShadowMapPass()
 
-    seq = vtk.vtkSequencePass()
+    seq = vtkSequencePass()
 
-    passes = vtk.vtkRenderPassCollection()
+    passes = vtkRenderPassCollection()
     passes.AddItem(shadows.GetShadowMapBakerPass())
     passes.AddItem(shadows)
     seq.SetPasses(passes)
 
-    cameraP = vtk.vtkCameraPass()
+    cameraP = vtkCameraPass()
     cameraP.SetDelegatePass(seq)
 
     # Tell the renderer to use our render pass pipeline

@@ -2,7 +2,25 @@
 
 import math
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkLine,
+    vtkPolyData
+)
+from vtkmodules.vtkFiltersModeling import vtkRotationalExtrusionFilter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -34,49 +52,49 @@ def main():
     pts = get_line(angle, step, radius, uncapped, start)
 
     # Setup points and lines
-    points = vtk.vtkPoints()
-    lines = vtk.vtkCellArray()
+    points = vtkPoints()
+    lines = vtkCellArray()
     for pt in pts:
         pt_id = points.InsertNextPoint(pt)
         if pt_id < len(pts) - 1:
-            line = vtk.vtkLine()
+            line = vtkLine()
             line.GetPointIds().SetId(0, pt_id)
             line.GetPointIds().SetId(1, pt_id + 1)
             lines.InsertNextCell(line)
 
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(points)
     polydata.SetLines(lines)
 
     # Extrude the profile to make the capped sphere
-    extrude = vtk.vtkRotationalExtrusionFilter()
+    extrude = vtkRotationalExtrusionFilter()
     extrude.SetInputData(polydata)
     extrude.SetResolution(60)
 
     #  Visualize
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # To see the line
-    lineMapper = vtk.vtkPolyDataMapper()
+    lineMapper = vtkPolyDataMapper()
     lineMapper.SetInputData(polydata)
 
-    lineActor = vtk.vtkActor()
+    lineActor = vtkActor()
     lineActor.SetMapper(lineMapper)
     lineActor.GetProperty().SetLineWidth(4)
     lineActor.GetProperty().SetColor(colors.GetColor3d('Red'))
 
     # To see the surface
-    surfaceMapper = vtk.vtkPolyDataMapper()
+    surfaceMapper = vtkPolyDataMapper()
     surfaceMapper.SetInputConnection(extrude.GetOutputPort())
 
-    surfaceActor = vtk.vtkActor()
+    surfaceActor = vtkActor()
     surfaceActor.SetMapper(surfaceMapper)
     surfaceActor.GetProperty().SetColor(colors.GetColor3d('Khaki'))
 
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     ren.AddActor(surfaceActor)

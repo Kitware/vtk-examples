@@ -3,7 +3,66 @@
 from pathlib import Path
 from pathlib import PurePath
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonComputationalGeometry import (
+    vtkParametricBoy,
+    vtkParametricMobius,
+    vtkParametricRandomHills,
+    vtkParametricTorus
+)
+from vtkmodules.vtkCommonCore import (
+    VTK_VERSION_NUMBER,
+    vtkCommand,
+    vtkFloatArray,
+    vtkVersion
+)
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import (
+    vtkPolyDataTangents,
+    vtkTriangleFilter
+)
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
+from vtkmodules.vtkFiltersModeling import vtkLinearSubdivisionFilter
+from vtkmodules.vtkFiltersSources import (
+    vtkCubeSource,
+    vtkParametricFunctionSource,
+    vtkTexturedSphereSource
+)
+from vtkmodules.vtkIOImage import (
+    vtkHDRReader,
+    vtkImageReader2Factory
+)
+from vtkmodules.vtkImagingCore import vtkImageFlip
+from vtkmodules.vtkInteractionWidgets import (
+    vtkCameraOrientationWidget,
+    vtkOrientationMarkerWidget,
+    vtkSliderRepresentation2D,
+    vtkSliderWidget
+)
+from vtkmodules.vtkRenderingAnnotation import vtkAxesActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkSkybox,
+    vtkTexture
+)
+from vtkmodules.vtkRenderingOpenGL2 import (
+    vtkCameraPass,
+    vtkEquirectangularToCubeMapTexture,
+    vtkLightsPass,
+    vtkOpaquePass,
+    vtkOpenGLRenderer,
+    vtkOverlayPass,
+    vtkRenderPassCollection,
+    vtkSequencePass,
+    vtkToneMappingPass
+)
 
 
 def get_program_parameters():
@@ -72,15 +131,15 @@ def main():
     else:
         source = get_boy()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('BkgColor', [26, 51, 102, 255])
 
-    renderer = vtk.vtkOpenGLRenderer()
-    render_window = vtk.vtkRenderWindow()
+    renderer = vtkOpenGLRenderer()
+    render_window = vtkRenderWindow()
     render_window.AddRenderer(renderer)
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)
 
     # Turn off the default lighting and use image based lighting.
@@ -93,21 +152,21 @@ def main():
     # Set up tone mapping so we can vary the exposure.
     #
     # Custom Passes.
-    camera_p = vtk.vtkCameraPass()
-    seq = vtk.vtkSequencePass()
-    opaque = vtk.vtkOpaquePass()
-    lights = vtk.vtkLightsPass()
-    overlay = vtk.vtkOverlayPass()
+    camera_p = vtkCameraPass()
+    seq = vtkSequencePass()
+    opaque = vtkOpaquePass()
+    lights = vtkLightsPass()
+    overlay = vtkOverlayPass()
 
-    passes = vtk.vtkRenderPassCollection()
+    passes = vtkRenderPassCollection()
     passes.AddItem(lights)
     passes.AddItem(opaque)
     passes.AddItem(overlay)
     seq.SetPasses(passes)
     camera_p.SetDelegatePass(seq)
 
-    tone_mapping_p = vtk.vtkToneMappingPass()
-    tone_mapping_p.SetToneMappingType(vtk.vtkToneMappingPass().GenericFilmic)
+    tone_mapping_p = vtkToneMappingPass()
+    tone_mapping_p.SetToneMappingType(vtkToneMappingPass().GenericFilmic)
     tone_mapping_p.SetGenericFilmicDefaultPresets()
     tone_mapping_p.SetUseACES(True)
 
@@ -152,10 +211,10 @@ def main():
     slider_widget_roughnesss.EnabledOn()
 
     # Build the pipeline.
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputData(source)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     # Enable PBR on the model.
     actor.GetProperty().SetInterpolationToPBR()
@@ -166,7 +225,7 @@ def main():
     actor.GetProperty().SetRoughness(roughness_coefficient)
     actor.GetProperty().SetMetallic(metallic_coefficient)
 
-    skybox_actor = vtk.vtkSkybox()
+    skybox_actor = vtkSkybox()
     skybox_actor.SetTexture(skybox)
     skybox_actor.GammaCorrectOn()
 
@@ -178,9 +237,9 @@ def main():
     render_window.Render()
     render_window.SetWindowName("PBR_Skybox")
 
-    axes = vtk.vtkAxesActor()
+    axes = vtkAxesActor()
 
-    widget = vtk.vtkOrientationMarkerWidget()
+    widget = vtkOrientationMarkerWidget()
     rgba = [0.0, 0.0, 0.0, 0.0]
     colors.GetColor("Carrot", rgba)
     widget.SetOutlineColor(rgba[0], rgba[1], rgba[2])
@@ -191,16 +250,16 @@ def main():
     widget.InteractiveOn()
 
     # Create the slider callback to manipulate exposure.
-    slider_widget_exposure.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackExposure(tone_mapping_p))
+    slider_widget_exposure.AddObserver(vtkCommand.InteractionEvent, SliderCallbackExposure(tone_mapping_p))
     # Create the slider callbacks to manipulate metallicity and roughness.
-    slider_widget_metallic.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackMetallic(actor.GetProperty()))
-    slider_widget_roughnesss.AddObserver(vtk.vtkCommand.InteractionEvent, SliderCallbackRoughness(actor.GetProperty()))
+    slider_widget_metallic.AddObserver(vtkCommand.InteractionEvent, SliderCallbackMetallic(actor.GetProperty()))
+    slider_widget_roughnesss.AddObserver(vtkCommand.InteractionEvent, SliderCallbackRoughness(actor.GetProperty()))
 
     interactor.SetRenderWindow(render_window)
 
     if vtk_version_ok(9, 0, 20210718):
         try:
-            cam_orient_manipulator = vtk.vtkCameraOrientationWidget()
+            cam_orient_manipulator = vtkCameraOrientationWidget()
             cam_orient_manipulator.SetParentRenderer(renderer)
             # Enable the widget.
             cam_orient_manipulator.On()
@@ -222,9 +281,9 @@ def vtk_version_ok(major, minor, build):
     """
     needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
     try:
-        vtk_version_number = vtk.VTK_VERSION_NUMBER
+        vtk_version_number = VTK_VERSION_NUMBER
     except AttributeError:  # as error:
-        ver = vtk.vtkVersion()
+        ver = vtkVersion()
         vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
                              + ver.GetVTKBuildVersion()
     if vtk_version_number >= needed_version:
@@ -241,7 +300,7 @@ def read_cubemap(folder_root, file_names):
     :param file_names: The names of the cubemap files.
     :return: The cubemap texture.
     """
-    texture = vtk.vtkTexture()
+    texture = vtkTexture()
     texture.CubeMapOn()
     # Build the file names.
     fns = list()
@@ -253,11 +312,11 @@ def read_cubemap(folder_root, file_names):
     i = 0
     for fn in fns:
         # Read the images.
-        reader_factory = vtk.vtkImageReader2Factory()
+        reader_factory = vtkImageReader2Factory()
         img_reader = reader_factory.CreateImageReader2(str(fn))
         img_reader.SetFileName(str(fn))
 
-        flip = vtk.vtkImageFlip()
+        flip = vtkImageFlip()
         flip.SetInputConnection(img_reader.GetOutputPort())
         flip.SetFilteredAxis(1)  # flip y axis
         texture.SetInputConnection(i, flip.GetOutputPort(0))
@@ -280,14 +339,14 @@ def read_environment_map(fn):
         return None
     suffix = Path(fn).suffix
     if suffix in ['.jpg', '.png']:
-        reader_factory = vtk.vtkImageReader2Factory()
+        reader_factory = vtkImageReader2Factory()
         img_reader = reader_factory.CreateImageReader2(str(fn))
         img_reader.SetFileName(str(fn))
 
-        texture = vtk.vtkTexture()
+        texture = vtkTexture()
         texture.SetInputConnection(img_reader.GetOutputPort())
     else:
-        reader = vtk.vtkHDRReader()
+        reader = vtkHDRReader()
         extensions = reader.GetFileExtensions()
         # Check the image can be read.
         if not reader.CanReadFile(str(fn)):
@@ -299,12 +358,12 @@ def read_environment_map(fn):
         reader.SetFileName(str(fn))
         reader.Update()
 
-        texture = vtk.vtkTexture()
+        texture = vtkTexture()
         texture.SetColorModeToDirectScalars()
         texture.SetInputConnection(reader.GetOutputPort())
 
     # Convert to a cube map.
-    tcm = vtk.vtkEquirectangularToCubeMapTexture()
+    tcm = vtkEquirectangularToCubeMapTexture()
     tcm.SetInputTexture(texture)
     # Enable mipmapping to handle HDR image.
     tcm.MipmapOn()
@@ -316,9 +375,9 @@ def read_environment_map(fn):
 def get_boy():
     u_resolution = 51
     v_resolution = 51
-    surface = vtk.vtkParametricBoy()
+    surface = vtkParametricBoy()
 
-    source = vtk.vtkParametricFunctionSource()
+    source = vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
     source.GenerateTextureCoordinatesOn()
@@ -326,7 +385,7 @@ def get_boy():
     source.Update()
 
     # Build the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
     return tangents.GetOutput()
@@ -335,11 +394,11 @@ def get_boy():
 def get_mobius():
     u_resolution = 51
     v_resolution = 51
-    surface = vtk.vtkParametricMobius()
+    surface = vtkParametricMobius()
     surface.SetMinimumV(-0.25)
     surface.SetMaximumV(0.25)
 
-    source = vtk.vtkParametricFunctionSource()
+    source = vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
     source.GenerateTextureCoordinatesOn()
@@ -347,13 +406,13 @@ def get_mobius():
     source.Update()
 
     # Build the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.RotateX(-90.0)
-    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter = vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
     transform_filter.Update()
@@ -364,13 +423,13 @@ def get_mobius():
 def get_random_hills():
     u_resolution = 51
     v_resolution = 51
-    surface = vtk.vtkParametricRandomHills()
+    surface = vtkParametricRandomHills()
     surface.SetRandomSeed(1)
     surface.SetNumberOfHills(30)
     # If you want a plane
     # surface.SetHillAmplitude(0)
 
-    source = vtk.vtkParametricFunctionSource()
+    source = vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
     source.GenerateTextureCoordinatesOn()
@@ -378,14 +437,14 @@ def get_random_hills():
     source.Update()
 
     # Build the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.Translate(0.0, 5.0, 15.0)
     transform.RotateX(-90.0)
-    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter = vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
     transform_filter.Update()
@@ -396,9 +455,9 @@ def get_random_hills():
 def get_torus():
     u_resolution = 51
     v_resolution = 51
-    surface = vtk.vtkParametricTorus()
+    surface = vtkParametricTorus()
 
-    source = vtk.vtkParametricFunctionSource()
+    source = vtkParametricFunctionSource()
     source.SetUResolution(u_resolution)
     source.SetVResolution(v_resolution)
     source.GenerateTextureCoordinatesOn()
@@ -406,13 +465,13 @@ def get_torus():
     source.Update()
 
     # Build the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(source.GetOutputPort())
     tangents.Update()
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.RotateX(-90.0)
-    transform_filter = vtk.vtkTransformPolyDataFilter()
+    transform_filter = vtkTransformPolyDataFilter()
     transform_filter.SetInputConnection(tangents.GetOutputPort())
     transform_filter.SetTransform(transform)
     transform_filter.Update()
@@ -423,29 +482,29 @@ def get_torus():
 def get_sphere():
     theta_resolution = 32
     phi_resolution = 32
-    surface = vtk.vtkTexturedSphereSource()
+    surface = vtkTexturedSphereSource()
     surface.SetThetaResolution(theta_resolution)
     surface.SetPhiResolution(phi_resolution)
 
     # Now the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(surface.GetOutputPort())
     tangents.Update()
     return tangents.GetOutput()
 
 
 def get_cube():
-    surface = vtk.vtkCubeSource()
+    surface = vtkCubeSource()
 
     # Triangulate.
-    triangulation = vtk.vtkTriangleFilter()
+    triangulation = vtkTriangleFilter()
     triangulation.SetInputConnection(surface.GetOutputPort())
     # Subdivide the triangles
-    subdivide = vtk.vtkLinearSubdivisionFilter()
+    subdivide = vtkLinearSubdivisionFilter()
     subdivide.SetInputConnection(triangulation.GetOutputPort())
     subdivide.SetNumberOfSubdivisions(3)
     # Now the tangents.
-    tangents = vtk.vtkPolyDataTangents()
+    tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(subdivide.GetOutputPort())
     tangents.Update()
     return tangents.GetOutput()
@@ -464,7 +523,7 @@ def uv_tcoords(u_resolution, v_resolution, pd):
     du = 1.0 / (u_resolution - 1)
     dv = 1.0 / (v_resolution - 1)
     num_pts = pd.GetNumberOfPoints()
-    t_coords = vtk.vtkFloatArray()
+    t_coords = vtkFloatArray()
     t_coords.SetNumberOfComponents(2)
     t_coords.SetNumberOfTuples(num_pts)
     t_coords.SetName('Texture Coordinates')
@@ -506,9 +565,9 @@ class SliderProperties:
 
 
 def make_slider_widget(properties):
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    slider = vtk.vtkSliderRepresentation2D()
+    slider = vtkSliderRepresentation2D()
 
     slider.SetMinimumValue(properties.minimum_value)
     slider.SetMaximumValue(properties.maximum_value)
@@ -537,7 +596,7 @@ def make_slider_widget(properties):
     # Change the color of the text displaying the value.
     slider.GetLabelProperty().SetColor(colors.GetColor3d(properties.value_color))
 
-    slider_widget = vtk.vtkSliderWidget()
+    slider_widget = vtkSliderWidget()
     slider_widget.SetRepresentation(slider)
 
     return slider_widget

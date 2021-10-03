@@ -2,14 +2,14 @@
 
 import math
 
-import vtkmodules.all as vtk
+from vtkmodules.vtkCommonCore import vtkMath
 
 
 def main():
     p0 = (0, 0, 0)
     p1 = (1, 1, 1)
 
-    distSquared = vtk.vtkMath.Distance2BetweenPoints(p0, p1)
+    distSquared = vtkMath.Distance2BetweenPoints(p0, p1)
 
     dist = math.sqrt(distSquared)
 

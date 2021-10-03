@@ -1,6 +1,26 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    VTK_VERSION_NUMBER,
+    vtkVersion
+)
+from vtkmodules.vtkFiltersSources import vtkArrowSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkRenderingOpenGL2 import (
+    vtkOutlineGlowPass,
+    vtkRenderStepsPass
+)
 
 
 def get_program_parameters():
@@ -27,34 +47,34 @@ def main():
         return
     get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    iren = vtk.vtkRenderWindowInteractor()
-    renWin = vtk.vtkRenderWindow()
+    iren = vtkRenderWindowInteractor()
+    renWin = vtkRenderWindow()
     renWin.SetMultiSamples(0)
 
     iren.SetRenderWindow(renWin)
 
     # Set up the renderers
     # One for the object and the other for the outline
-    renderer = vtk.vtkRenderer()
-    rendererOutline = vtk.vtkRenderer()
+    renderer = vtkRenderer()
+    rendererOutline = vtkRenderer()
     rendererOutline.SetLayer(1)
     renWin.SetNumberOfLayers(2)
     renWin.AddRenderer(rendererOutline)
     renWin.AddRenderer(renderer)
 
     # Create an arrow.
-    arrowSource = vtk.vtkArrowSource()
+    arrowSource = vtkArrowSource()
     # arrowSource.SetShaftRadius(1.0)
     # arrowSource.SetTipLength(1.0)
     arrowSource.Update()
 
     # Create mapper and actor for the main renderer
-    coneMapperMain = vtk.vtkPolyDataMapper()
+    coneMapperMain = vtkPolyDataMapper()
     coneMapperMain.SetInputConnection(arrowSource.GetOutputPort())
 
-    coneActorMain = vtk.vtkActor()
+    coneActorMain = vtkActor()
     coneActorMain.SetMapper(coneMapperMain)
     coneActorMain.GetProperty().SetDiffuseColor(colors.GetColor3d("LimeGreen"))
 
@@ -62,18 +82,18 @@ def main():
 
     # Lets make the outline glow!
     # Create the render pass
-    basicPasses = vtk.vtkRenderStepsPass()
-    glowPass = vtk.vtkOutlineGlowPass()
+    basicPasses = vtkRenderStepsPass()
+    glowPass = vtkOutlineGlowPass()
     glowPass.SetDelegatePass(basicPasses)
 
     # Apply the render pass to the highlight renderer
     rendererOutline.SetPass(glowPass)
 
     # Create mapper and actor for the outline
-    coneMapperOutline = vtk.vtkPolyDataMapper()
+    coneMapperOutline = vtkPolyDataMapper()
     coneMapperOutline.SetInputConnection(arrowSource.GetOutputPort())
 
-    coneActorOutline = vtk.vtkActor()
+    coneActorOutline = vtkActor()
     coneActorOutline.SetMapper(coneMapperOutline)
     coneActorOutline.GetProperty().SetColor(colors.GetColor3d("Magenta"))
     coneActorOutline.GetProperty().LightingOff()
@@ -113,9 +133,9 @@ def vtk_version_ok(major, minor, build):
     """
     needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
     try:
-        vtk_version_number = vtk.VTK_VERSION_NUMBER
+        vtk_version_number = VTK_VERSION_NUMBER
     except AttributeError:  # as error:
-        ver = vtk.vtkVersion()
+        ver = vtkVersion()
         vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
                              + ver.GetVTKBuildVersion()
     if vtk_version_number >= needed_version:

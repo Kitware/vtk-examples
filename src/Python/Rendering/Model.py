@@ -1,11 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import (
+    vtkConeSource,
+    vtkCubeSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the colors.
     colors.SetColor('CubeColor', [250, 128, 114, 255])
@@ -13,53 +29,53 @@ def main():
 
     # Create the rendering windows and three renderers.
 
-    ren1 = vtk.vtkRenderer()
-    ren2 = vtk.vtkRenderer()
-    renWindow1 = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    ren2 = vtkRenderer()
+    renWindow1 = vtkRenderWindow()
     renWindow1.AddRenderer(ren1)
     renWindow1.AddRenderer(ren2)
     renWindow1.SetWindowName('Model')
 
-    iren1 = vtk.vtkRenderWindowInteractor()
+    iren1 = vtkRenderWindowInteractor()
     iren1.SetRenderWindow(renWindow1)
-    ren3 = vtk.vtkRenderer()
-    renWindow2 = vtk.vtkRenderWindow()
+    ren3 = vtkRenderer()
+    renWindow2 = vtkRenderWindow()
     renWindow2.SetWindowName('Model')
 
     renWindow2.AddRenderer(ren3)
-    iren2 = vtk.vtkRenderWindowInteractor()
+    iren2 = vtkRenderWindowInteractor()
     iren2.SetRenderWindow(renWindow2)
 
     # Create an actor and give it cone geometry.
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetResolution(8)
 
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(cone.GetOutputPort())
 
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
     coneActor.GetProperty().SetColor(colors.GetColor3d('Peacock'))
 
     # Create an actor and give it cube geometry.
-    cube = vtk.vtkCubeSource()
+    cube = vtkCubeSource()
 
-    cubeMapper = vtk.vtkPolyDataMapper()
+    cubeMapper = vtkPolyDataMapper()
     cubeMapper.SetInputConnection(cube.GetOutputPort())
 
-    cubeActor = vtk.vtkActor()
+    cubeActor = vtkActor()
     cubeActor.SetMapper(cubeMapper)
     cubeActor.GetProperty().SetColor(colors.GetColor3d('CubeColor'))
 
     # Create an actor and give it sphere geometry.
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetThetaResolution(16)
     sphere.SetPhiResolution(16)
 
-    sphereMapper = vtk.vtkPolyDataMapper()
+    sphereMapper = vtkPolyDataMapper()
     sphereMapper.SetInputConnection(sphere.GetOutputPort())
 
-    sphereActor = vtk.vtkActor()
+    sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
     sphereActor.GetProperty().SetColor(colors.GetColor3d('Melon'))
 

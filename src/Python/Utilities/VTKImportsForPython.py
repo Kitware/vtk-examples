@@ -94,22 +94,23 @@ def format_imports(imports):
                 s += ',\n'.join(c_list)
                 s += '\n    )'
                 res.append(f'from vtkmodules.{module} import {s}')
-        additional_modules = ['vtkInteractionStyle', 'vtkRenderingFreeType', 'vtkRenderingOpenGL2',
-                              'vtkRenderingContextOpenGL2', 'vtkRenderingUI']
+        additional_modules = ['vtkInteractionStyle', 'vtkRenderingFreeType',
+                              'vtkRenderingContextOpenGL2', 'vtkRenderingOpenGL2', 'vtkRenderingVolumeOpenGL2',
+                              'vtkRenderingUI']
         comments = [
             '',
             '# You may need to uncomment one or more of the following imports.',
             '# If vtkRenderWindow is used and you want to use OpenGL,',
             '#   you also need the vtkRenderingOpenGL2 module.',
-            '# If vtkRenderWindowInteractor is used,',
-            '#    uncomment vtkRenderingUI and possibly vtkInteractionStyle',
+            '# If vtkRenderWindowInteractor is used, uncomment vtkInteractionStyle',
             '# If text rendering is used, uncomment vtkRenderingFreeType.',
-            ''
+            '#',
+            '# If using PyCharm, preface each one you select with this line:',
+            '# noinspection PyUnresolvedReferences',
+            '#',
         ]
         res += comments
-        preface = '# noinspection PyUnresolvedReferences'
-        for module in additional_modules:
-            res.append(preface)
+        for module in sorted(additional_modules):
             res.append(f'# import vtkmodules.{module}')
         res.append('')
     return res

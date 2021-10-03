@@ -1,6 +1,32 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkDataObject
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersGeneral import (
+    vtkMultiThreshold,
+    vtkTransformPolyDataFilter
+)
+from vtkmodules.vtkFiltersModeling import vtkSelectEnclosedPoints
+from vtkmodules.vtkIOGeometry import (
+    vtkBYUReader,
+    vtkOBJReader,
+    vtkSTLReader
+)
+from vtkmodules.vtkIOLegacy import vtkPolyDataReader
+from vtkmodules.vtkIOPLY import vtkPLYReader
+from vtkmodules.vtkIOXML import vtkXMLPolyDataReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -37,40 +63,40 @@ def main():
         # rotating the original about its center.
         print('Generating modified polyData1')
         center = polyData1.GetCenter()
-        transform = vtk.vtkTransform()
+        transform = vtkTransform()
         transform.Translate(center[0], center[1], center[2])
         transform.RotateY(90.0)
         transform.Translate(-center[0], -center[1], -center[2])
-        transformPD = vtk.vtkTransformPolyDataFilter()
+        transformPD = vtkTransformPolyDataFilter()
         transformPD.SetTransform(transform)
         transformPD.SetInputData(polyData1)
         transformPD.Update()
         polyData2 = transformPD.GetOutput()
 
     # Mark points inside with 1 and outside with a 0
-    select = vtk.vtkSelectEnclosedPoints()
+    select = vtkSelectEnclosedPoints()
     select.SetInputData(polyData1)
     select.SetSurfaceData(polyData2)
 
     # Extract three meshes, one completely inside, one completely
     # outside and on the border between the inside and outside.
 
-    threshold = vtk.vtkMultiThreshold()
+    threshold = vtkMultiThreshold()
     # Outside points have a 0 value in ALL points of a cell
     outsideId = threshold.AddBandpassIntervalSet(
         0, 0,
-        vtk.vtkDataObject.FIELD_ASSOCIATION_POINTS, 'SelectedPoints',
+        vtkDataObject.FIELD_ASSOCIATION_POINTS, 'SelectedPoints',
         0, 1)
     # Inside points have a 1 value in ALL points of a cell
     insideId = threshold.AddBandpassIntervalSet(
         1, 1,
-        vtk.vtkDataObject.FIELD_ASSOCIATION_POINTS, 'SelectedPoints',
+        vtkDataObject.FIELD_ASSOCIATION_POINTS, 'SelectedPoints',
         0, 1)
     # Border points have a 0 or a 1 in at least one point of a cell
     borderId = threshold.AddIntervalSet(
         0, 1,
-        vtk.vtkMultiThreshold.OPEN, vtk.vtkMultiThreshold.OPEN,
-        vtk.vtkDataObject.FIELD_ASSOCIATION_POINTS, 'SelectedPoints',
+        vtkMultiThreshold.OPEN, vtkMultiThreshold.OPEN,
+        vtkDataObject.FIELD_ASSOCIATION_POINTS, 'SelectedPoints',
         0, 0)
 
     threshold.SetInputConnection(select.GetOutputPort())
@@ -82,7 +108,7 @@ def main():
     threshold.Update()
 
     # Visualize
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     outsideColor = colors.GetColor3d('Crimson')
     insideColor = colors.GetColor3d('Banana')
     borderColor = colors.GetColor3d('Mint')
@@ -90,22 +116,22 @@ def main():
     backgroundColor = colors.GetColor3d('Silver')
 
     # Outside
-    outsideMapper = vtk.vtkDataSetMapper()
+    outsideMapper = vtkDataSetMapper()
     outsideMapper.SetInputData(threshold.GetOutput().GetBlock(outsideId).GetBlock(0))
     outsideMapper.ScalarVisibilityOff()
 
-    outsideActor = vtk.vtkActor()
+    outsideActor = vtkActor()
     outsideActor.SetMapper(outsideMapper)
     outsideActor.GetProperty().SetDiffuseColor(outsideColor)
     outsideActor.GetProperty().SetSpecular(.6)
     outsideActor.GetProperty().SetSpecularPower(30)
 
     # Inside
-    insideMapper = vtk.vtkDataSetMapper()
+    insideMapper = vtkDataSetMapper()
     insideMapper.SetInputData(threshold.GetOutput().GetBlock(insideId).GetBlock(0))
     insideMapper.ScalarVisibilityOff()
 
-    insideActor = vtk.vtkActor()
+    insideActor = vtkActor()
     insideActor.SetMapper(insideMapper)
     insideActor.GetProperty().SetDiffuseColor(insideColor)
     insideActor.GetProperty().SetSpecular(.6)
@@ -113,33 +139,33 @@ def main():
     insideActor.GetProperty().EdgeVisibilityOn()
 
     # Border
-    borderMapper = vtk.vtkDataSetMapper()
+    borderMapper = vtkDataSetMapper()
     borderMapper.SetInputData(threshold.GetOutput().GetBlock(borderId).GetBlock(0))
     borderMapper.ScalarVisibilityOff()
 
-    borderActor = vtk.vtkActor()
+    borderActor = vtkActor()
     borderActor.SetMapper(borderMapper)
     borderActor.GetProperty().SetDiffuseColor(borderColor)
     borderActor.GetProperty().SetSpecular(.6)
     borderActor.GetProperty().SetSpecularPower(30)
     borderActor.GetProperty().EdgeVisibilityOn()
 
-    surfaceMapper = vtk.vtkDataSetMapper()
+    surfaceMapper = vtkDataSetMapper()
     surfaceMapper.SetInputData(polyData2)
     surfaceMapper.ScalarVisibilityOff()
 
     # Surface of object containing cell
-    surfaceActor = vtk.vtkActor()
+    surfaceActor = vtkActor()
     surfaceActor.SetMapper(surfaceMapper)
     surfaceActor.GetProperty().SetDiffuseColor(surfaceColor)
     surfaceActor.GetProperty().SetOpacity(.1)
 
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.SetBackground(backgroundColor)
@@ -165,32 +191,32 @@ def ReadPolyData(file_name):
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
     if extension == '.ply':
-        reader = vtk.vtkPLYReader()
+        reader = vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtp':
-        reader = vtk.vtkXMLPolyDataReader()
+        reader = vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.obj':
-        reader = vtk.vtkOBJReader()
+        reader = vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.stl':
-        reader = vtk.vtkSTLReader()
+        reader = vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtk':
-        reader = vtk.vtkPolyDataReader()
+        reader = vtkPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.g':
-        reader = vtk.vtkBYUReader()
+        reader = vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()

@@ -1,6 +1,18 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkFiltersCore import vtkFeatureEdges
+from vtkmodules.vtkIOGeometry import (
+    vtkBYUReader,
+    vtkOBJReader,
+    vtkSTLReader
+)
+from vtkmodules.vtkIOLegacy import vtkPolyDataReader
+from vtkmodules.vtkIOPLY import vtkPLYReader
+from vtkmodules.vtkIOXML import vtkXMLPolyDataReader
 
 
 def get_program_parameters():
@@ -18,7 +30,7 @@ def get_program_parameters():
 def main():
     fn = get_program_parameters()
     polyData = ReadPolyData(fn)
-    featureEdges = vtk.vtkFeatureEdges()
+    featureEdges = vtkFeatureEdges()
     featureEdges.FeatureEdgesOff()
     featureEdges.BoundaryEdgesOn()
     featureEdges.NonManifoldEdgesOn()
@@ -38,32 +50,32 @@ def ReadPolyData(file_name):
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
     if extension == '.ply':
-        reader = vtk.vtkPLYReader()
+        reader = vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtp':
-        reader = vtk.vtkXMLPolyDataReader()
+        reader = vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.obj':
-        reader = vtk.vtkOBJReader()
+        reader = vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.stl':
-        reader = vtk.vtkSTLReader()
+        reader = vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtk':
-        reader = vtk.vtkPolyDataReader()
+        reader = vtkPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.g':
-        reader = vtk.vtkBYUReader()
+        reader = vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()

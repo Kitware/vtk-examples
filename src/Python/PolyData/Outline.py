@@ -1,41 +1,56 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # create a rendering window and renderer
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.SetWindowName('Outline')
 
     renWin.AddRenderer(ren)
 
     # create a renderwindowinteractor
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # create source
-    source = vtk.vtkConeSource()
+    source = vtkConeSource()
     source.SetCenter(0, 0, 0)
     source.SetResolution(100)
 
     # mapper
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(source.GetOutputPort())
 
     # actor
-    actor1 = vtk.vtkActor()
+    actor1 = vtkActor()
     actor1.SetMapper(mapper)
     actor1.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     # outline
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(source.GetOutputPort())
-    mapper2 = vtk.vtkPolyDataMapper()
+    mapper2 = vtkPolyDataMapper()
     mapper2.SetInputConnection(outline.GetOutputPort())
 
-    actor2 = vtk.vtkActor()
+    actor2 = vtkActor()
     actor2.SetMapper(mapper2)
     actor2.GetProperty().SetColor(colors.GetColor3d('Gold'))
 

@@ -1,6 +1,26 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersGeneral import vtkAxes
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkIOGeometry import (
+    vtkBYUReader,
+    vtkOBJReader,
+    vtkSTLReader
+)
+from vtkmodules.vtkIOPLY import vtkPLYReader
+from vtkmodules.vtkIOXML import vtkXMLPolyDataReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
@@ -24,40 +44,40 @@ def rotate(file_name, figure, actor_color):
     '''
     # Create renderer stuff
     #
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     # Set the background color.
     colors.SetColor('BkgColor', [26, 51, 102, 255])
     # colors.SetColor('BkgColor', [60, 93, 144, 255])
 
-    ren1 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create the pipeline.
     #
     polyData = ReadPolyData(file_name)
 
-    modelMapper = vtk.vtkPolyDataMapper()
+    modelMapper = vtkPolyDataMapper()
     modelMapper.SetInputData(polyData)
 
-    modelActor = vtk.vtkActor()
+    modelActor = vtkActor()
     modelActor.SetMapper(modelMapper)
     modelActor.GetProperty().SetDiffuseColor(colors.GetColor3d(actor_color))
     if actor_color != 'Wheat':
         modelActor.GetProperty().SetSpecular(0.6)
         modelActor.GetProperty().SetSpecularPower(30)
 
-    modelAxesSource = vtk.vtkAxes()
+    modelAxesSource = vtkAxes()
     modelAxesSource.SetScaleFactor(10)
     modelAxesSource.SetOrigin(0, 0, 0)
 
-    modelAxesMapper = vtk.vtkPolyDataMapper()
+    modelAxesMapper = vtkPolyDataMapper()
     modelAxesMapper.SetInputConnection(modelAxesSource.GetOutputPort())
 
-    modelAxes = vtk.vtkActor()
+    modelAxes = vtkActor()
     modelAxes.SetMapper(modelAxesMapper)
 
     ren1.AddActor(modelAxes)
@@ -167,38 +187,38 @@ def ReadPolyData(file_name):
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
     if extension == '.ply':
-        reader = vtk.vtkPLYReader()
+        reader = vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtp':
-        reader = vtk.vtkXMLpoly_dataReader()
+        reader = vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.obj':
-        reader = vtk.vtkOBJReader()
+        reader = vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.stl':
-        reader = vtk.vtkSTLReader()
+        reader = vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtk':
-        reader = vtk.vtkpoly_dataReader()
+        reader = vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.g':
-        reader = vtk.vtkBYUReader()
+        reader = vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     else:
         # Return a sphere if the extension is unknown.
-        source = vtk.vtkSphereSource()
+        source = vtkSphereSource()
         source.Update()
         poly_data = source.GetOutput()
     return poly_data

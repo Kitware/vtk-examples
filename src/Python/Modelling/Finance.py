@@ -1,13 +1,32 @@
 #!/usr/bin/env python
 
-'''
-'''
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkFloatArray,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import vtkUnstructuredGrid
+from vtkmodules.vtkFiltersCore import (
+    vtkContourFilter,
+    vtkTubeFilter
+)
+from vtkmodules.vtkFiltersGeneral import vtkAxes
+from vtkmodules.vtkImagingHybrid import vtkGaussianSplatter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     colors.SetColor('PopColor', [230, 230, 230, 255])
 
@@ -19,41 +38,41 @@ def main():
     dataSet = make_dataset(fileName, keys)
 
     # Construct the pipeline for the original population.
-    popSplatter = vtk.vtkGaussianSplatter()
+    popSplatter = vtkGaussianSplatter()
     popSplatter.SetInputData(dataSet)
     popSplatter.SetSampleDimensions(100, 100, 100)
     popSplatter.SetRadius(0.05)
     popSplatter.ScalarWarpingOff()
 
-    popSurface = vtk.vtkContourFilter()
+    popSurface = vtkContourFilter()
     popSurface.SetInputConnection(popSplatter.GetOutputPort())
     popSurface.SetValue(0, 0.01)
 
-    popMapper = vtk.vtkPolyDataMapper()
+    popMapper = vtkPolyDataMapper()
     popMapper.SetInputConnection(popSurface.GetOutputPort())
     popMapper.ScalarVisibilityOff()
 
-    popActor = vtk.vtkActor()
+    popActor = vtkActor()
     popActor.SetMapper(popMapper)
     popActor.GetProperty().SetOpacity(0.3)
     popActor.GetProperty().SetColor(colors.GetColor3d('PopColor'))
 
     # Construct the pipeline for the delinquent population.
-    lateSplatter = vtk.vtkGaussianSplatter()
+    lateSplatter = vtkGaussianSplatter()
     lateSplatter.SetInputData(dataSet)
     lateSplatter.SetSampleDimensions(50, 50, 50)
     lateSplatter.SetRadius(0.05)
     lateSplatter.SetScaleFactor(0.005)
 
-    lateSurface = vtk.vtkContourFilter()
+    lateSurface = vtkContourFilter()
     lateSurface.SetInputConnection(lateSplatter.GetOutputPort())
     lateSurface.SetValue(0, 0.01)
 
-    lateMapper = vtk.vtkPolyDataMapper()
+    lateMapper = vtkPolyDataMapper()
     lateMapper.SetInputConnection(lateSurface.GetOutputPort())
     lateMapper.ScalarVisibilityOff()
 
-    lateActor = vtk.vtkActor()
+    lateActor = vtkActor()
     lateActor.SetMapper(lateMapper)
     lateActor.GetProperty().SetColor(colors.GetColor3d('Red'))
 
@@ -61,28 +80,28 @@ def main():
     popSplatter.Update()
     bounds = popSplatter.GetOutput().GetBounds()
 
-    axes = vtk.vtkAxes()
+    axes = vtkAxes()
     axes.SetOrigin(bounds[0], bounds[2], bounds[4])
     axes.SetScaleFactor(popSplatter.GetOutput().GetLength() / 5)
 
-    axesTubes = vtk.vtkTubeFilter()
+    axesTubes = vtkTubeFilter()
     axesTubes.SetInputConnection(axes.GetOutputPort())
     axesTubes.SetRadius(axes.GetScaleFactor() / 25.0)
     axesTubes.SetNumberOfSides(6)
 
-    axesMapper = vtk.vtkPolyDataMapper()
+    axesMapper = vtkPolyDataMapper()
     axesMapper.SetInputConnection(axesTubes.GetOutputPort())
 
-    axesActor = vtk.vtkActor()
+    axesActor = vtkActor()
     axesActor.SetMapper(axesMapper)
 
     # Graphics stuff.
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renWin)
 
     # Set up the renderer.
@@ -165,15 +184,15 @@ def read_file(filename):
 def make_dataset(filename, keys):
     res = read_file(filename)
     if res:
-        newPts = vtk.vtkPoints()
-        newScalars = vtk.vtkFloatArray()
+        newPts = vtkPoints()
+        newScalars = vtkFloatArray()
         xyz = list(zip(res[keys[1]], res[keys[2]], res[keys[3]]))
         for i in range(0, res[keys[0]][0]):
             # print(xyz[i])
             newPts.InsertPoint(i, xyz[i])
             newScalars.InsertValue(i, res[keys[4]][i])
 
-        dataset = vtk.vtkUnstructuredGrid()
+        dataset = vtkUnstructuredGrid()
         dataset.SetPoints(newPts)
         dataset.GetPointData().SetScalars(newScalars)
         return dataset

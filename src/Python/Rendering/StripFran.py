@@ -1,66 +1,81 @@
 #!/usr/bin/env python
 
-'''
-'''
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import (
+    vtkDecimatePro,
+    vtkMaskPolyData,
+    vtkPolyDataNormals,
+    vtkStripper
+)
+from vtkmodules.vtkIOLegacy import vtkPolyDataReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
-    renderer1 = vtk.vtkRenderer()
+    renderer1 = vtkRenderer()
     renderer1.SetViewport(0.0, 0.0, 0.5, 1.0)
 
-    renderer2 = vtk.vtkRenderer()
+    renderer2 = vtkRenderer()
     renderer2.SetViewport(0.5, 0.0, 1.0, 1.0)
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer1)
     renderWindow.AddRenderer(renderer2)
     renderWindow.SetWindowName('StripFran')
-    
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     # Create a cyberware source.
     #
-    cyber = vtk.vtkPolyDataReader()
+    cyber = vtkPolyDataReader()
     cyber.SetFileName(fileName)
 
-    deci = vtk.vtkDecimatePro()
+    deci = vtkDecimatePro()
     deci.SetInputConnection(cyber.GetOutputPort())
     deci.SetTargetReduction(0.7)
     deci.PreserveTopologyOn()
 
-    normals = vtk.vtkPolyDataNormals()
+    normals = vtkPolyDataNormals()
     normals.SetInputConnection(deci.GetOutputPort())
 
-    mask = vtk.vtkMaskPolyData()
+    mask = vtkMaskPolyData()
     mask.SetInputConnection(deci.GetOutputPort())
     mask.SetOnRatio(2)
 
-    cyberMapper = vtk.vtkPolyDataMapper()
+    cyberMapper = vtkPolyDataMapper()
     cyberMapper.SetInputConnection(mask.GetOutputPort())
 
-    cyberActor = vtk.vtkActor()
+    cyberActor = vtkActor()
     cyberActor.SetMapper(cyberMapper)
     cyberActor.GetProperty().SetColor(colors.GetColor3d('Flesh'))
 
-    stripper = vtk.vtkStripper()
+    stripper = vtkStripper()
     stripper.SetInputConnection(cyber.GetOutputPort())
 
-    stripperMask = vtk.vtkMaskPolyData()
+    stripperMask = vtkMaskPolyData()
     stripperMask.SetInputConnection(stripper.GetOutputPort())
     stripperMask.SetOnRatio(2)
 
-    stripperMapper = vtk.vtkPolyDataMapper()
+    stripperMapper = vtkPolyDataMapper()
     stripperMapper.SetInputConnection(stripperMask.GetOutputPort())
 
-    stripperActor = vtk.vtkActor()
+    stripperActor = vtkActor()
     stripperActor.SetMapper(stripperMapper)
     stripperActor.GetProperty().SetColor(colors.GetColor3d('Flesh'))
 
@@ -74,7 +89,7 @@ def main():
 
     # Render the image.
     #
-    cam1 = vtk.vtkCamera()
+    cam1 = vtkCamera()
     cam1.SetFocalPoint(0, 0, 0)
     cam1.SetPosition(1, 0, 0)
     cam1.SetViewUp(0, 1, 0)
@@ -101,9 +116,9 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename1', help='fran_cut.vtk.')
+    parser.add_argument('filename', help='fran_cut.vtk')
     args = parser.parse_args()
-    return args.filename1
+    return args.filename
 
 
 if __name__ == '__main__':

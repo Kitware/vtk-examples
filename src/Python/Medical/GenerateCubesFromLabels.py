@@ -1,10 +1,31 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import (
+    vtkDataObject,
+    vtkDataSetAttributes
+)
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import vtkThreshold
+from vtkmodules.vtkFiltersGeneral import vtkTransformFilter
+from vtkmodules.vtkFiltersGeometry import vtkGeometryFilter
+from vtkmodules.vtkIOImage import vtkMetaImageReader
+from vtkmodules.vtkImagingCore import vtkImageWrapPad
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     file_name, start_label, end_label = get_program_parameters()
     if start_label > end_label:
@@ -15,14 +36,14 @@ def main():
     # 2) Convert point data to cell data
     # 3) Convert to geometry and display
 
-    reader = vtk.vtkMetaImageReader()
+    reader = vtkMetaImageReader()
     reader.SetFileName(file_name)
     reader.Update()
 
     # Pad the volume so that we can change the point data into cell
     # data.
     extent = reader.GetOutput().GetExtent()
-    pad = vtk.vtkImageWrapPad()
+    pad = vtkImageWrapPad()
     pad.SetInputConnection(reader.GetOutputPort())
     pad.SetOutputWholeExtent(extent[0], extent[1] + 1, extent[2], extent[3] + 1, extent[4], extent[5] + 1)
     pad.Update()
@@ -30,41 +51,41 @@ def main():
     # Copy the scalar point data of the volume into the scalar cell data
     pad.GetOutput().GetCellData().SetScalars(reader.GetOutput().GetPointData().GetScalars())
 
-    selector = vtk.vtkThreshold()
-    selector.SetInputArrayToProcess(0, 0, 0, vtk.vtkDataObject().FIELD_ASSOCIATION_CELLS,
-                                    vtk.vtkDataSetAttributes().SCALARS)
+    selector = vtkThreshold()
+    selector.SetInputArrayToProcess(0, 0, 0, vtkDataObject().FIELD_ASSOCIATION_CELLS,
+                                    vtkDataSetAttributes().SCALARS)
     selector.SetInputConnection(pad.GetOutputPort())
     selector.SetLowerThreshold(start_label)
     selector.SetUpperThreshold(end_label)
     selector.Update()
 
     # Shift the geometry by 1/2
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.Translate(-0.5, -0.5, -0.5)
 
-    transform_model = vtk.vtkTransformFilter()
+    transform_model = vtkTransformFilter()
     transform_model.SetTransform(transform)
     transform_model.SetInputConnection(selector.GetOutputPort())
 
-    geometry = vtk.vtkGeometryFilter()
+    geometry = vtkGeometryFilter()
     geometry.SetInputConnection(transform_model.GetOutputPort())
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(geometry.GetOutputPort())
     mapper.SetScalarRange(start_label, end_label)
     mapper.SetScalarModeToUseCellData()
     mapper.SetColorModeToMapScalars()
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
-    renderer = vtk.vtkRenderer()
-    render_window = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    render_window = vtkRenderWindow()
     render_window.AddRenderer(renderer)
     render_window.SetSize(640, 480)
     render_window.SetWindowName('GenerateCubesFromLabels')
 
-    render_window_interactor = vtk.vtkRenderWindowInteractor()
+    render_window_interactor = vtkRenderWindowInteractor()
     render_window_interactor.SetRenderWindow(render_window)
 
     renderer.AddActor(actor)

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from vtkmodules.vtkCommonColor import vtkNamedColors
 from vtkmodules.vtkCommonCore import (
     vtkPoints,

@@ -1,29 +1,42 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkElevationFilter
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
-    renderer = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    colors = vtkNamedColors()
+    renderer = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetPhiResolution(12)
     sphere.SetThetaResolution(12)
 
-    colorIt = vtk.vtkElevationFilter()
+    colorIt = vtkElevationFilter()
     colorIt.SetInputConnection(sphere.GetOutputPort())
     colorIt.SetLowPoint(0, 0, -1)
     colorIt.SetHighPoint(0, 0, 1)
 
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputConnection(colorIt.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     renderer.AddActor(actor)

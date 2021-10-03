@@ -1,27 +1,47 @@
 #!/usr/bin/env python
+
 from math import sin, sqrt
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingContextOpenGL2
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkChartsCore import (
+    vtkChartXYZ,
+    vtkPlotSurface
+)
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkFloatArray
+from vtkmodules.vtkCommonDataModel import (
+    vtkRectf,
+    vtkTable,
+    vtkVector2i
+)
+from vtkmodules.vtkRenderingContext2D import vtkContextMouseEvent
+from vtkmodules.vtkViewsContext2D import vtkContextView
+
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    chart = vtk.vtkChartXYZ()
-    chart.SetGeometry(vtk.vtkRectf(10.0, 10.0, 630, 470))
+    chart = vtkChartXYZ()
+    chart.SetGeometry(vtkRectf(10.0, 10.0, 630, 470))
 
-    plot = vtk.vtkPlotSurface()
+    plot = vtkPlotSurface()
 
-    view = vtk.vtkContextView()
+    view = vtkContextView()
     view.GetRenderer().SetBackground(colors.GetColor3d("Silver"))
     view.GetRenderWindow().SetSize(640, 480)
     view.GetScene().AddItem(chart)
 
     # Create a surface
-    table = vtk.vtkTable()
+    table = vtkTable()
     numPoints = 70
     inc = 9.424778 / (numPoints - 1)
     for i in range(numPoints):
-        arr = vtk.vtkFloatArray()
+        arr = vtkFloatArray()
         table.AddColumn(arr)
 
     table.SetNumberOfRows(numPoints)
@@ -29,7 +49,7 @@ def main():
         x = i * inc
         for j in range(numPoints):
             y = j * inc
-            table.SetValue(i, j, sin(sqrt(x*x + y*y)))
+            table.SetValue(i, j, sin(sqrt(x * x + y * y)))
 
     # Set up the surface plot we wish to visualize and add it to the chart
     plot.SetXRange(0, 10.0)
@@ -44,13 +64,13 @@ def main():
     view.GetRenderWindow().Render()
 
     # Rotate
-    mouseEvent = vtk.vtkContextMouseEvent()
+    mouseEvent = vtkContextMouseEvent()
     mouseEvent.SetInteractor(view.GetInteractor())
 
-    pos = vtk.vtkVector2i()
+    pos = vtkVector2i()
 
-    lastPos = vtk.vtkVector2i()
-    mouseEvent.SetButton(vtk.vtkContextMouseEvent.LEFT_BUTTON)
+    lastPos = vtkVector2i()
+    mouseEvent.SetButton(vtkContextMouseEvent.LEFT_BUTTON)
     lastPos.Set(100, 50)
     mouseEvent.SetLastScreenPos(lastPos)
     pos.Set(150, 100)
@@ -65,5 +85,6 @@ def main():
 
     view.GetInteractor().Start()
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()

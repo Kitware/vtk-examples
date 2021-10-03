@@ -1,21 +1,37 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
 
-colors = vtk.vtkNamedColors()
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkMinimalStandardRandomSequence
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkPropPicker,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+
+colors = vtkNamedColors()
 NUMBER_OF_SPHERES = 10
 
 
-class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
+class MouseInteractorHighLightActor(vtkInteractorStyleTrackballCamera):
 
     def __init__(self, parent=None):
         self.AddObserver("LeftButtonPressEvent", self.leftButtonPressEvent)
 
         self.LastPickedActor = None
-        self.LastPickedProperty = vtk.vtkProperty()
+        self.LastPickedProperty = vtkProperty()
 
     def leftButtonPressEvent(self, obj, event):
         clickPos = self.GetInteractor().GetEventPosition()
 
-        picker = vtk.vtkPropPicker()
+        picker = vtkPropPicker()
         picker.Pick(clickPos[0], clickPos[1], 0, self.GetDefaultRenderer())
 
         # get the new
@@ -45,16 +61,16 @@ class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
 
 def main():
     # A renderer and render window
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('SteelBlue'))
 
-    renwin = vtk.vtkRenderWindow()
+    renwin = vtkRenderWindow()
     renwin.AddRenderer(renderer)
     renwin.SetSize(640, 480)
     renwin.SetWindowName('HighlightPickedActor')
 
     # An interactor
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renwin)
 
     # add the custom style
@@ -62,13 +78,13 @@ def main():
     style.SetDefaultRenderer(renderer)
     interactor.SetInteractorStyle(style)
 
-    randomSequence = vtk.vtkMinimalStandardRandomSequence()
+    randomSequence = vtkMinimalStandardRandomSequence()
     # randomSequence.SetSeed(1043618065)
     # randomSequence.SetSeed(5170)
     randomSequence.SetSeed(8775070)
     # Add spheres to play with
     for i in range(NUMBER_OF_SPHERES):
-        source = vtk.vtkSphereSource()
+        source = vtkSphereSource()
 
         # random position and radius
         x = randomSequence.GetRangeValue(-5.0, 5.0)
@@ -85,9 +101,9 @@ def main():
         source.SetPhiResolution(11)
         source.SetThetaResolution(21)
 
-        mapper = vtk.vtkPolyDataMapper()
+        mapper = vtkPolyDataMapper()
         mapper.SetInputConnection(source.GetOutputPort())
-        actor = vtk.vtkActor()
+        actor = vtkActor()
         actor.SetMapper(mapper)
 
         r = randomSequence.GetRangeValue(0.4, 1.0)

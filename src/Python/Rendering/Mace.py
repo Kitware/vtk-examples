@@ -1,44 +1,60 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkGlyph3D
+from vtkmodules.vtkFiltersSources import (
+    vtkConeSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetThetaResolution(8)
     sphere.SetPhiResolution(8)
 
-    sphereMapper = vtk.vtkPolyDataMapper()
+    sphereMapper = vtkPolyDataMapper()
     sphereMapper.SetInputConnection(sphere.GetOutputPort())
 
-    sphereActor = vtk.vtkActor()
+    sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
     sphereActor.GetProperty().SetColor(colors.GetColor3d('Silver'))
 
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetResolution(6)
 
-    glyph = vtk.vtkGlyph3D()
+    glyph = vtkGlyph3D()
     glyph.SetInputConnection(sphere.GetOutputPort())
     glyph.SetSourceConnection(cone.GetOutputPort())
     glyph.SetVectorModeToUseNormal()
     glyph.SetScaleModeToScaleByVector()
     glyph.SetScaleFactor(0.25)
 
-    spikeMapper = vtk.vtkPolyDataMapper()
+    spikeMapper = vtkPolyDataMapper()
     spikeMapper.SetInputConnection(glyph.GetOutputPort())
 
-    spikeActor = vtk.vtkActor()
+    spikeActor = vtkActor()
     spikeActor.SetMapper(spikeMapper)
     spikeActor.GetProperty().SetColor(colors.GetColor3d('Silver'))
 

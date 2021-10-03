@@ -2,7 +2,35 @@
 
 import os.path
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import (
+    vtkPlane,
+    vtkPolyData
+)
+from vtkmodules.vtkFiltersCore import (
+    vtkClipPolyData,
+    vtkFeatureEdges,
+    vtkStripper
+)
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkIOGeometry import (
+    vtkBYUReader,
+    vtkOBJReader,
+    vtkSTLReader
+)
+from vtkmodules.vtkIOPLY import vtkPLYReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -21,7 +49,7 @@ def main():
     filePath = get_program_parameters()
 
     # Define colors
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     backgroundColor = colors.GetColor3d('steel_blue')
     boundaryColor = colors.GetColor3d('Banana')
     clipColor = colors.GetColor3d('Tomato')
@@ -33,11 +61,11 @@ def main():
     else:
         polyData = GetSpherePD()
 
-    plane = vtk.vtkPlane()
+    plane = vtkPlane()
     plane.SetOrigin(polyData.GetCenter())
     plane.SetNormal(1.0, -1.0, -1.0)
 
-    clipper = vtk.vtkClipPolyData()
+    clipper = vtkClipPolyData()
     clipper.SetInputData(polyData)
     clipper.SetClipFunction(plane)
     clipper.SetValue(0)
@@ -45,44 +73,44 @@ def main():
 
     polyData = clipper.GetOutput()
 
-    clipMapper = vtk.vtkDataSetMapper()
+    clipMapper = vtkDataSetMapper()
     clipMapper.SetInputData(polyData)
 
-    clipActor = vtk.vtkActor()
+    clipActor = vtkActor()
     clipActor.SetMapper(clipMapper)
     clipActor.GetProperty().SetDiffuseColor(clipColor)
     clipActor.GetProperty().SetInterpolationToFlat()
     clipActor.GetProperty().EdgeVisibilityOn()
 
     # Now extract feature edges
-    boundaryEdges = vtk.vtkFeatureEdges()
+    boundaryEdges = vtkFeatureEdges()
     boundaryEdges.SetInputData(polyData)
     boundaryEdges.BoundaryEdgesOn()
     boundaryEdges.FeatureEdgesOff()
     boundaryEdges.NonManifoldEdgesOff()
     boundaryEdges.ManifoldEdgesOff()
 
-    boundaryStrips = vtk.vtkStripper()
+    boundaryStrips = vtkStripper()
     boundaryStrips.SetInputConnection(boundaryEdges.GetOutputPort())
     boundaryStrips.Update()
 
     # Change the polylines into polygons
-    boundaryPoly = vtk.vtkPolyData()
+    boundaryPoly = vtkPolyData()
     boundaryPoly.SetPoints(boundaryStrips.GetOutput().GetPoints())
     boundaryPoly.SetPolys(boundaryStrips.GetOutput().GetLines())
 
-    boundaryMapper = vtk.vtkPolyDataMapper()
+    boundaryMapper = vtkPolyDataMapper()
     boundaryMapper.SetInputData(boundaryPoly)
 
-    boundaryActor = vtk.vtkActor()
+    boundaryActor = vtkActor()
     boundaryActor.SetMapper(boundaryMapper)
     boundaryActor.GetProperty().SetDiffuseColor(boundaryColor)
 
     # create renderer render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     # set background color and size
@@ -112,32 +140,32 @@ def ReadPolyData(file_name):
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
     if extension == '.ply':
-        reader = vtk.vtkPLYReader()
+        reader = vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtp':
-        reader = vtk.vtkXMLpoly_dataReader()
+        reader = vtkXMLpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.obj':
-        reader = vtk.vtkOBJReader()
+        reader = vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.stl':
-        reader = vtk.vtkSTLReader()
+        reader = vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtk':
-        reader = vtk.vtkpoly_dataReader()
+        reader = vtkpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.g':
-        reader = vtk.vtkBYUReader()
+        reader = vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
@@ -151,7 +179,7 @@ def GetSpherePD():
     '''
     :return: The PolyData representation of a sphere.
     '''
-    source = vtk.vtkSphereSource()
+    source = vtkSphereSource()
     source.SetThetaResolution(20)
     source.SetPhiResolution(11)
     source.Update()

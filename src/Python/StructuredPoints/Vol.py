@@ -1,24 +1,38 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkDoubleArray
+from vtkmodules.vtkCommonDataModel import vtkStructuredPoints
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    renderer = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    vol = vtk.vtkStructuredPoints()
+    vol = vtkStructuredPoints()
     vol.SetDimensions(26, 26, 26)
     vol.SetOrigin(-0.5, -0.5, -0.5)
     sp = 1.0 / 25.0
     vol.SetSpacing(sp, sp, sp)
 
-    scalars = vtk.vtkDoubleArray()
+    scalars = vtkDoubleArray()
     scalars.SetNumberOfComponents(1)
     scalars.SetNumberOfTuples(26 * 26 * 26)
     for k in range(0, 26):
@@ -34,14 +48,14 @@ def main():
                 scalars.InsertTuple1(offset, s)
     vol.GetPointData().SetScalars(scalars)
 
-    contour = vtk.vtkContourFilter()
+    contour = vtkContourFilter()
     contour.SetInputData(vol)
     contour.SetValue(0, 0.0)
 
-    volMapper = vtk.vtkPolyDataMapper()
+    volMapper = vtkPolyDataMapper()
     volMapper.SetInputConnection(contour.GetOutputPort())
     volMapper.ScalarVisibilityOff()
-    volActor = vtk.vtkActor()
+    volActor = vtkActor()
     volActor.SetMapper(volMapper)
     volActor.GetProperty().EdgeVisibilityOn()
     volActor.GetProperty().SetColor(colors.GetColor3d('Salmon'))

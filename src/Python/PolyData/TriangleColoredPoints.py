@@ -1,4 +1,19 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkPoints,
+    vtkUnsignedCharArray
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData
+)
+from vtkmodules.vtkIOXML import vtkXMLPolyDataWriter
 
 
 def get_program_parameters():
@@ -15,13 +30,13 @@ def get_program_parameters():
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     filename = get_program_parameters()
 
     # setup points and vertices
-    Points = vtk.vtkPoints()
-    Vertices = vtk.vtkCellArray()
+    Points = vtkPoints()
+    Vertices = vtkCellArray()
 
     id = Points.InsertNextPoint(1.0, 0.0, 0.0)
     Vertices.InsertNextCell(1)
@@ -34,20 +49,20 @@ def main():
     Vertices.InsertCellPoint(id)
 
     # setup colors
-    Colors = vtk.vtkUnsignedCharArray()
+    Colors = vtkUnsignedCharArray()
     Colors.SetNumberOfComponents(3)
     Colors.SetName("Colors")
     Colors.InsertNextTuple3(*colors.GetColor3ub('Red'))
     Colors.InsertNextTuple3(*colors.GetColor3ub('LimeGreen'))
     Colors.InsertNextTuple3(*colors.GetColor3ub('Blue'))
 
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetPoints(Points)
     polydata.SetVerts(Vertices)
     polydata.GetPointData().SetScalars(Colors)
     polydata.Modified()
 
-    writer = vtk.vtkXMLPolyDataWriter()
+    writer = vtkXMLPolyDataWriter()
     writer.SetFileName(filename)
     writer.SetInputData(polydata)
     writer.Write()

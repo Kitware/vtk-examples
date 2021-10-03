@@ -1,15 +1,40 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import (
+    vtkDataObjectToDataSetFilter,
+    vtkFieldDataToAttributeDataFilter,
+    vtkTubeFilter
+)
+from vtkmodules.vtkFiltersGeneral import (
+    vtkAxes,
+    vtkMarchingContourFilter
+)
+from vtkmodules.vtkIOLegacy import vtkDataObjectReader
+from vtkmodules.vtkImagingHybrid import vtkGaussianSplatter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkFollower,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkRenderingFreeType import vtkVectorText
 
 
 def main():
     ifn = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    reader = vtk.vtkDataObjectReader()
+    reader = vtkDataObjectReader()
     reader.SetFileName(ifn)
 
     size = 3187  # maximum number possible
@@ -20,7 +45,7 @@ def main():
     scalar = 'TIME_LATE'
 
     # Extract data from field as a polydata (just points), then extract scalars.
-    do2ds = vtk.vtkDataObjectToDataSetFilter()
+    do2ds = vtkDataObjectToDataSetFilter()
     do2ds.SetInputConnection(reader.GetOutputPort())
     do2ds.SetDataSetTypeToPolyData()
     # format: component#, arrayname, arraycomp, minArrayId, maxArrayId, normalize
@@ -29,7 +54,7 @@ def main():
     do2ds.SetPointComponent(1, yAxis, 0, 0, size, 1)
     do2ds.SetPointComponent(2, zAxis, 0)
     do2ds.Update()
-    fd2ad = vtk.vtkFieldDataToAttributeDataFilter()
+    fd2ad = vtkFieldDataToAttributeDataFilter()
     fd2ad.SetInputConnection(do2ds.GetOutputPort())
     fd2ad.SetInputFieldToDataObjectField()
     fd2ad.SetOutputAttributeDataToPointData()
@@ -37,91 +62,91 @@ def main():
     fd2ad.SetScalarComponent(0, scalar, 0)
 
     # Construct the pipeline for the original population.
-    popSplatter = vtk.vtkGaussianSplatter()
+    popSplatter = vtkGaussianSplatter()
     popSplatter.SetInputConnection(fd2ad.GetOutputPort())
     popSplatter.SetSampleDimensions(150, 150, 150)
     popSplatter.SetRadius(0.05)
     popSplatter.ScalarWarpingOff()
 
-    popSurface = vtk.vtkMarchingContourFilter()
+    popSurface = vtkMarchingContourFilter()
     popSurface.SetInputConnection(popSplatter.GetOutputPort())
     popSurface.SetValue(0, 0.01)
-    popMapper = vtk.vtkPolyDataMapper()
+    popMapper = vtkPolyDataMapper()
     popMapper.SetInputConnection(popSurface.GetOutputPort())
     popMapper.ScalarVisibilityOff()
-    popActor = vtk.vtkActor()
+    popActor = vtkActor()
     popActor.SetMapper(popMapper)
     popActor.GetProperty().SetOpacity(0.3)
     popActor.GetProperty().SetColor(colors.GetColor3d('Gold'))
 
     # Construct the pipeline for the delinquent population.
-    lateSplatter = vtk.vtkGaussianSplatter()
+    lateSplatter = vtkGaussianSplatter()
     lateSplatter.SetInputConnection(fd2ad.GetOutputPort())
     lateSplatter.SetSampleDimensions(150, 150, 150)
     lateSplatter.SetRadius(0.05)
     lateSplatter.SetScaleFactor(0.05)
 
-    lateSurface = vtk.vtkMarchingContourFilter()
+    lateSurface = vtkMarchingContourFilter()
     lateSurface.SetInputConnection(lateSplatter.GetOutputPort())
     lateSurface.SetValue(0, 0.01)
-    lateMapper = vtk.vtkPolyDataMapper()
+    lateMapper = vtkPolyDataMapper()
     lateMapper.SetInputConnection(lateSurface.GetOutputPort())
     lateMapper.ScalarVisibilityOff()
-    lateActor = vtk.vtkActor()
+    lateActor = vtkActor()
     lateActor.SetMapper(lateMapper)
     lateActor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
 
     # Create the axes.
     popSplatter.Update()
     bounds = popSplatter.GetOutput().GetBounds()
-    axes = vtk.vtkAxes()
+    axes = vtkAxes()
     axes.SetOrigin(bounds[0], bounds[2], bounds[4])
     axes.SetScaleFactor(popSplatter.GetOutput().GetLength() / 5.0)
-    axesTubes = vtk.vtkTubeFilter()
+    axesTubes = vtkTubeFilter()
     axesTubes.SetInputConnection(axes.GetOutputPort())
     axesTubes.SetRadius(axes.GetScaleFactor() / 25.0)
     axesTubes.SetNumberOfSides(6)
-    axesMapper = vtk.vtkPolyDataMapper()
+    axesMapper = vtkPolyDataMapper()
     axesMapper.SetInputConnection(axesTubes.GetOutputPort())
-    axesActor = vtk.vtkActor()
+    axesActor = vtkActor()
     axesActor.SetMapper(axesMapper)
 
     # Label the axes.
-    XText = vtk.vtkVectorText()
+    XText = vtkVectorText()
     XText.SetText(xAxis)
-    XTextMapper = vtk.vtkPolyDataMapper()
+    XTextMapper = vtkPolyDataMapper()
     XTextMapper.SetInputConnection(XText.GetOutputPort())
 
-    XActor = vtk.vtkFollower()
+    XActor = vtkFollower()
     XActor.SetMapper(XTextMapper)
     XActor.SetScale(0.02, .02, .02)
     XActor.SetPosition(0.35, -0.05, -0.05)
     XActor.GetProperty().SetColor(0, 0, 0)
 
-    YText = vtk.vtkVectorText()
+    YText = vtkVectorText()
     YText.SetText(yAxis)
 
-    YTextMapper = vtk.vtkPolyDataMapper()
+    YTextMapper = vtkPolyDataMapper()
     YTextMapper.SetInputConnection(YText.GetOutputPort())
-    YActor = vtk.vtkFollower()
+    YActor = vtkFollower()
     YActor.SetMapper(YTextMapper)
     YActor.SetScale(0.02, .02, .02)
     YActor.SetPosition(-0.05, 0.35, -0.05)
     YActor.GetProperty().SetColor(0, 0, 0)
 
-    ZText = vtk.vtkVectorText()
+    ZText = vtkVectorText()
     ZText.SetText(zAxis)
-    ZTextMapper = vtk.vtkPolyDataMapper()
+    ZTextMapper = vtkPolyDataMapper()
     ZTextMapper.SetInputConnection(ZText.GetOutputPort())
-    ZActor = vtk.vtkFollower()
+    ZActor = vtkFollower()
     ZActor.SetMapper(ZTextMapper)
     ZActor.SetScale(0.02, .02, .02)
     ZActor.SetPosition(-0.05, -0.05, 0.35)
     ZActor.GetProperty().SetColor(0, 0, 0)
 
     # Graphics stuff.
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetWindowName('FinanceFieldData')
 
@@ -135,7 +160,7 @@ def main():
     renderer.SetBackground(colors.GetColor3d('SlateGray'))
     renderWindow.SetSize(650, 480)
 
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetClippingRange(.274, 13.72)
     camera.SetFocalPoint(0.433816, 0.333131, 0.449)
     camera.SetPosition(-1.96987, 1.15145, 1.49053)
@@ -147,7 +172,7 @@ def main():
 
     # Render and interact with the data.
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
     renderWindow.Render()
     interactor.Start()
@@ -161,7 +186,7 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('filename', help='financial.vtk.')
+    parser.add_argument('filename', help='financial.')
 
     args = parser.parse_args()
     return args.filename

@@ -1,10 +1,27 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingVolumeOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkPiecewiseFunction
+from vtkmodules.vtkIOImage import vtkMetaImageReader
+from vtkmodules.vtkRenderingCore import (
+    vtkColorTransferFunction,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkVolume,
+    vtkVolumeProperty
+)
+from vtkmodules.vtkRenderingVolume import vtkFixedPointVolumeRayCastMapper
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     file_name = get_program_parameters()
 
@@ -13,10 +30,10 @@ def main():
     # Create the renderer, the render window, and the interactor. The renderer
     # draws into the render window, the interactor enables mouse- and
     # keyboard-based interaction with the scene.
-    ren = vtk.vtkRenderer()
-    ren_win = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    ren_win = vtkRenderWindow()
     ren_win.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(ren_win)
 
     # The following reader is used to read a series of 2D slices (images)
@@ -25,19 +42,19 @@ def main():
     # uses the FilePrefix in combination with the slice number to construct
     # filenames using the format FilePrefix.%d. (In this case the FilePrefix
     # is the root name of the file: quarter.)
-    reader = vtk.vtkMetaImageReader()
+    reader = vtkMetaImageReader()
     reader.SetFileName(file_name)
 
     # The volume will be displayed by ray-cast alpha compositing.
     # A ray-cast mapper is needed to do the ray-casting.
-    volume_mapper = vtk.vtkFixedPointVolumeRayCastMapper()
+    volume_mapper = vtkFixedPointVolumeRayCastMapper()
     volume_mapper.SetInputConnection(reader.GetOutputPort())
 
     # The color transfer function maps voxel intensities to colors.
     # It is modality-specific, and often anatomy-specific as well.
     # The goal is to one color for flesh (between 500 and 1000)
     # and another color for bone (1150 and over).
-    volume_color = vtk.vtkColorTransferFunction()
+    volume_color = vtkColorTransferFunction()
     volume_color.AddRGBPoint(0, 0.0, 0.0, 0.0)
     volume_color.AddRGBPoint(500, 240.0 / 255.0, 184.0 / 255.0, 160.0 / 255.0)
     volume_color.AddRGBPoint(1000, 240.0 / 255.0, 184.0 / 255.0, 160.0 / 255.0)
@@ -45,7 +62,7 @@ def main():
 
     # The opacity transfer function is used to control the opacity
     # of different tissue types.
-    volume_scalar_opacity = vtk.vtkPiecewiseFunction()
+    volume_scalar_opacity = vtkPiecewiseFunction()
     volume_scalar_opacity.AddPoint(0, 0.00)
     volume_scalar_opacity.AddPoint(500, 0.15)
     volume_scalar_opacity.AddPoint(1000, 0.15)
@@ -56,7 +73,7 @@ def main():
     # at the boundaries between tissue types.  The gradient is measured
     # as the amount by which the intensity changes over unit distance.
     # For most medical data, the unit distance is 1mm.
-    volume_gradient_opacity = vtk.vtkPiecewiseFunction()
+    volume_gradient_opacity = vtkPiecewiseFunction()
     volume_gradient_opacity.AddPoint(0, 0.0)
     volume_gradient_opacity.AddPoint(90, 0.5)
     volume_gradient_opacity.AddPoint(100, 1.0)
@@ -72,7 +89,7 @@ def main():
     # decreased by increasing the Ambient coefficient while decreasing
     # the Diffuse and Specular coefficient.  To increase the impact
     # of shading, decrease the Ambient and increase the Diffuse and Specular.
-    volume_property = vtk.vtkVolumeProperty()
+    volume_property = vtkVolumeProperty()
     volume_property.SetColor(volume_color)
     volume_property.SetScalarOpacity(volume_scalar_opacity)
     volume_property.SetGradientOpacity(volume_gradient_opacity)
@@ -84,7 +101,7 @@ def main():
 
     # The vtkVolume is a vtkProp3D (like a vtkActor) and controls the position
     # and orientation of the volume in world coordinates.
-    volume = vtk.vtkVolume()
+    volume = vtkVolume()
     volume.SetMapper(volume_mapper)
     volume.SetProperty(volume_property)
 

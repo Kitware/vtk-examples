@@ -2,7 +2,33 @@
 
 import os.path
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkFiltersCore import (
+    vtkDecimatePro,
+    vtkTriangleFilter
+)
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkIOGeometry import (
+    vtkBYUReader,
+    vtkOBJReader,
+    vtkSTLReader
+)
+from vtkmodules.vtkIOPLY import vtkPLYReader
+from vtkmodules.vtkIOXML import vtkXMLPolyDataReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -23,7 +49,7 @@ def main():
     filePath, reduction = get_program_parameters()
 
     # Define colors
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     backFaceColor = colors.GetColor3d('Gold')
     inputActorColor = colors.GetColor3d('NavajoWhite')
     decimatedActorColor = colors.GetColor3d('NavajoWhite')
@@ -35,7 +61,7 @@ def main():
         if not readerPD:
             inputPolyData = GetSpherePD()
         else:
-            triangles = vtk.vtkTriangleFilter()
+            triangles = vtkTriangleFilter()
             triangles.SetInputData(readerPD)
             triangles.Update()
             inputPolyData = triangles.GetOutput()
@@ -46,13 +72,13 @@ def main():
     print(f'There are {inputPolyData.GetNumberOfPoints()} points.')
     print(f'There are {inputPolyData.GetNumberOfPolys()} polygons.')
 
-    decimate = vtk.vtkDecimatePro()
+    decimate = vtkDecimatePro()
     decimate.SetInputData(inputPolyData)
     decimate.SetTargetReduction(reduction)
     decimate.PreserveTopologyOn()
     decimate.Update()
 
-    decimated = vtk.vtkPolyData()
+    decimated = vtkPolyData()
     decimated.ShallowCopy(decimate.GetOutput())
 
     print('After decimation')
@@ -61,34 +87,34 @@ def main():
     print(
         f'Reduction: {(inputPolyData.GetNumberOfPolys() - decimated.GetNumberOfPolys()) / inputPolyData.GetNumberOfPolys()}')
 
-    inputMapper = vtk.vtkPolyDataMapper()
+    inputMapper = vtkPolyDataMapper()
     inputMapper.SetInputData(inputPolyData)
 
-    backFace = vtk.vtkProperty()
+    backFace = vtkProperty()
     backFace.SetColor(backFaceColor)
 
-    inputActor = vtk.vtkActor()
+    inputActor = vtkActor()
     inputActor.SetMapper(inputMapper)
     inputActor.GetProperty().SetInterpolationToFlat()
     inputActor.GetProperty().SetColor(inputActorColor)
     inputActor.SetBackfaceProperty(backFace)
 
-    decimatedMapper = vtk.vtkPolyDataMapper()
+    decimatedMapper = vtkPolyDataMapper()
     decimatedMapper.SetInputData(decimated)
 
-    decimatedActor = vtk.vtkActor()
+    decimatedActor = vtkActor()
     decimatedActor.SetMapper(decimatedMapper)
     decimatedActor.GetProperty().SetColor(decimatedActorColor)
     decimatedActor.GetProperty().SetInterpolationToFlat()
     decimatedActor.SetBackfaceProperty(backFace)
 
     # There will be one render window
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(600, 300)
     renderWindow.SetWindowName('Decimation');
 
     # And one interactor
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     # Define viewport ranges
@@ -97,13 +123,13 @@ def main():
     rightViewport = [0.5, 0.0, 1.0, 1.0]
 
     # Setup both renderers
-    leftRenderer = vtk.vtkRenderer()
+    leftRenderer = vtkRenderer()
     renderWindow.AddRenderer(leftRenderer)
     leftRenderer.SetViewport(leftViewport)
     # leftRenderer.SetBackground((colors.GetColor3d('leftBkg')))
     leftRenderer.SetBackground((colors.GetColor3d('Peru')))
 
-    rightRenderer = vtk.vtkRenderer()
+    rightRenderer = vtkRenderer()
     renderWindow.AddRenderer(rightRenderer)
     rightRenderer.SetViewport(rightViewport)
     # rightRenderer.SetBackground((colors.GetColor3d('rightBkg')))
@@ -115,7 +141,7 @@ def main():
 
     # Shared camera
     # Shared camera looking down the -y axis
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetPosition(0, -1, 0)
     camera.SetFocalPoint(0, 0, 0)
     camera.SetViewUp(0, 0, 1)
@@ -139,32 +165,32 @@ def ReadPolyData(file_name):
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
     if extension == '.ply':
-        reader = vtk.vtkPLYReader()
+        reader = vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtp':
-        reader = vtk.vtkXMLPolyDataReader()
+        reader = vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.obj':
-        reader = vtk.vtkOBJReader()
+        reader = vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.stl':
-        reader = vtk.vtkSTLReader()
+        reader = vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtk':
-        reader = vtk.vtkpoly_dataReader()
+        reader = vtkpoly_dataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.g':
-        reader = vtk.vtkBYUReader()
+        reader = vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
@@ -178,7 +204,7 @@ def GetSpherePD():
     '''
     :return: The PolyData representation of a sphere.
     '''
-    source = vtk.vtkSphereSource()
+    source = vtkSphereSource()
     source.SetThetaResolution(30)
     source.SetPhiResolution(15)
     source.Update()
