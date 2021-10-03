@@ -1,29 +1,44 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkFloatArray,
+    vtkMinimalStandardRandomSequence
+)
+from vtkmodules.vtkCommonDataModel import vtkDataObject
+from vtkmodules.vtkRenderingAnnotation import vtkSpiderPlotActor
+from vtkmodules.vtkRenderingCore import (
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     numTuples = 12
 
-    bitter = vtk.vtkFloatArray()
+    bitter = vtkFloatArray()
     bitter.SetNumberOfTuples(numTuples)
 
-    crispy = vtk.vtkFloatArray()
+    crispy = vtkFloatArray()
     crispy.SetNumberOfTuples(numTuples)
 
-    crunchy = vtk.vtkFloatArray()
+    crunchy = vtkFloatArray()
     crunchy.SetNumberOfTuples(numTuples)
 
-    salty = vtk.vtkFloatArray()
+    salty = vtkFloatArray()
     salty.SetNumberOfTuples(numTuples)
 
-    oily = vtk.vtkFloatArray()
+    oily = vtkFloatArray()
     oily.SetNumberOfTuples(numTuples)
 
-    rand_seq = vtk.vtkMinimalStandardRandomSequence()
+    rand_seq = vtkMinimalStandardRandomSequence()
     rand_seq.SetSeed(8775070)
 
     for i in range(numTuples):
@@ -38,14 +53,14 @@ def main():
         oily.SetTuple1(i, rand_seq.GetRangeValue(5, 25))
         rand_seq.Next()
 
-    dobj = vtk.vtkDataObject()
+    dobj = vtkDataObject()
     dobj.GetFieldData().AddArray(bitter)
     dobj.GetFieldData().AddArray(crispy)
     dobj.GetFieldData().AddArray(crunchy)
     dobj.GetFieldData().AddArray(salty)
     dobj.GetFieldData().AddArray(oily)
 
-    actor = vtk.vtkSpiderPlotActor()
+    actor = vtkSpiderPlotActor()
     actor.SetInputData(dobj)
     actor.SetTitle("Spider Plot")
     actor.SetIndependentVariablesToColumns()
@@ -83,10 +98,10 @@ def main():
     actor.GetTitleTextProperty().SetColor(colors.GetColor3d('MistyRose'))
     actor.GetLabelTextProperty().SetColor(colors.GetColor3d('MistyRose'))
 
-    ren1 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     ren1.AddActor(actor)
     ren1.SetBackground(colors.GetColor3d('DarkSlateGray'))

@@ -2,32 +2,46 @@
 
 import math
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingContextOpenGL2
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkChartsCore import (
+    vtkChart,
+    vtkChartXY,
+    vtkPlotPoints
+)
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkFloatArray
+from vtkmodules.vtkCommonDataModel import vtkTable
+from vtkmodules.vtkViewsContext2D import vtkContextView
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    view = vtk.vtkContextView()
+    view = vtkContextView()
     view.GetRenderer().SetBackground(colors.GetColor3d('SlateGray'))
     view.GetRenderWindow().SetSize(400, 300)
 
-    chart = vtk.vtkChartXY()
+    chart = vtkChartXY()
     view.GetScene().AddItem(chart)
     chart.SetShowLegend(True)
 
-    table = vtk.vtkTable()
+    table = vtkTable()
 
-    arrX = vtk.vtkFloatArray()
+    arrX = vtkFloatArray()
     arrX.SetName('X Axis')
 
-    arrC = vtk.vtkFloatArray()
+    arrC = vtkFloatArray()
     arrC.SetName('Cosine')
 
-    arrS = vtk.vtkFloatArray()
+    arrS = vtkFloatArray()
     arrS.SetName('Sine')
 
-    arrT = vtk.vtkFloatArray()
+    arrT = vtkFloatArray()
     arrT.SetName('Sine-Cosine')
 
     table.AddColumn(arrC)
@@ -45,23 +59,23 @@ def main():
         table.SetValue(i, 2, math.sin(i * inc))
         table.SetValue(i, 3, math.sin(i * inc) - math.cos(i * inc))
 
-    points = chart.AddPlot(vtk.vtkChart.POINTS)
+    points = chart.AddPlot(vtkChart.POINTS)
     points.SetInputData(table, 0, 1)
     points.SetColor(0, 0, 0, 255)
     points.SetWidth(1.0)
-    points.SetMarkerStyle(vtk.vtkPlotPoints.CROSS)
+    points.SetMarkerStyle(vtkPlotPoints.CROSS)
 
-    points = chart.AddPlot(vtk.vtkChart.POINTS)
+    points = chart.AddPlot(vtkChart.POINTS)
     points.SetInputData(table, 0, 2)
     points.SetColor(0, 0, 0, 255)
     points.SetWidth(1.0)
-    points.SetMarkerStyle(vtk.vtkPlotPoints.PLUS)
+    points.SetMarkerStyle(vtkPlotPoints.PLUS)
 
-    points = chart.AddPlot(vtk.vtkChart.POINTS)
+    points = chart.AddPlot(vtkChart.POINTS)
     points.SetInputData(table, 0, 3)
     points.SetColor(0, 0, 255, 255)
     points.SetWidth(1.0)
-    points.SetMarkerStyle(vtk.vtkPlotPoints.CIRCLE)
+    points.SetMarkerStyle(vtkPlotPoints.CIRCLE)
 
     view.GetRenderWindow().SetMultiSamples(0)
     view.GetRenderWindow().SetWindowName('ScatterPlot')
