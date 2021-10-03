@@ -9,27 +9,42 @@
     6. Pressing '1' on the keyboard will let you manipulate the objects in layer 1.
 """
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import (
+    vtkConeSource,
+    vtkCubeSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def GenerateAndDisplayCubeAndSphere():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    cubeSource = vtk.vtkCubeSource()
+    cubeSource = vtkCubeSource()
     cubeSource.SetXLength(4.0)
     cubeSource.SetYLength(9.0)
     cubeSource.SetZLength(1.0)
     cubeSource.SetCenter(0.0, 0.0, 0.0)
 
     # Render the cube
-    cubeMapper = vtk.vtkPolyDataMapper()
+    cubeMapper = vtkPolyDataMapper()
     cubeMapper.SetInputConnection(cubeSource.GetOutputPort())
 
-    cubeActor = vtk.vtkActor()
+    cubeActor = vtkActor()
     cubeActor.GetProperty().SetDiffuseColor(colors.GetColor3d("DarkGreen"))
     cubeActor.SetMapper(cubeMapper)
 
-    coneSource = vtk.vtkConeSource()
+    coneSource = vtkConeSource()
     coneSource.SetCenter(0.0, 0.0, 0.0)
     coneSource.SetHeight(1.0)
     coneSource.SetRadius(0.25)
@@ -38,10 +53,10 @@ def GenerateAndDisplayCubeAndSphere():
     coneSource.CappingOn()
 
     # Render the cone
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(coneSource.GetOutputPort())
 
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.GetProperty().SetDiffuseColor(colors.GetColor3d("DarkTurquoise"))
     # Make the cone slightly transparent for fun
     coneActor.GetProperty().SetOpacity(0.75)
@@ -49,13 +64,13 @@ def GenerateAndDisplayCubeAndSphere():
 
     # The renderers, render window and interactor
     renderers = list()
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     for i in range(0, 2):
-        renderers.append(vtk.vtkRenderer())
+        renderers.append(vtkRenderer())
         renWin.AddRenderer(renderers[i])
     renWin.SetSize(800, 800)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Layer 0 - background not transparent

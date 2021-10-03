@@ -9,11 +9,23 @@
 
 import time
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     #
     # Next we create an instance of vtkConeSource and set some of its
@@ -21,7 +33,7 @@ def main():
     # pipeline (it is a source process object); it produces data (output type is
     # vtkPolyData) which other filters may process.
     #
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetHeight(3.0)
     cone.SetRadius(1.0)
     cone.SetResolution(10)
@@ -33,7 +45,7 @@ def main():
     # vtkPolyDataMapper to map the polygonal data into graphics primitives. We
     # connect the output of the cone source to the input of this mapper.
     #
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(cone.GetOutputPort())
 
     #
@@ -42,7 +54,7 @@ def main():
     # vtkProperty instance, and includes an internal transformation matrix. We
     # set this actor's mapper to be coneMapper which we created above.
     #
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
 
     #
@@ -53,12 +65,12 @@ def main():
     # to two different renderers; it is okay to add different actors to
     # different renderers as well.
     #
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
     ren1.AddActor(coneActor)
     ren1.SetBackground(colors.GetColor3d('SlateGray'))
     ren1.SetViewport(0.0, 0.0, 0.5, 1.0)
 
-    ren2 = vtk.vtkRenderer()
+    ren2 = vtkRenderer()
     ren2.AddActor(coneActor)
     ren2.SetBackground(colors.GetColor3d('LightSlateGray'))
     ren2.SetViewport(0.5, 0.0, 1.0, 1.0)
@@ -68,13 +80,13 @@ def main():
     # We add our two renderers into the render window using AddRenderer. We also
     # set the size to be 600 pixels by 300.
     #
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
     renWin.AddRenderer(ren2)
     renWin.SetSize(600, 300)
     renWin.SetWindowName('Cone3')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     #

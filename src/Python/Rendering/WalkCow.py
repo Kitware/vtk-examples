@@ -2,50 +2,67 @@
 
 #  Translated from walkCow.tcl
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersGeneral import vtkAxes
+from vtkmodules.vtkIOGeometry import vtkBYUReader
+from vtkmodules.vtkIOImage import vtkPNGWriter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkWindowToImageFilter
+)
+
 
 def walk_cow(file_name, figure):
     figure = abs(figure)
     if figure > 2:
         figure = 0
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     # Set the background color.
     colors.SetColor('BkgColor1', [60, 93, 144, 255])
     colors.SetColor('BkgColor2', [26, 51, 102, 255])
 
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetWindowName('WalkCow');
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # The cow pipeline.
-    cow = vtk.vtkBYUReader()
+    cow = vtkBYUReader()
     cow.SetGeometryFileName(file_name)
     cow.Update()
 
-    cowMapper = vtk.vtkPolyDataMapper()
+    cowMapper = vtkPolyDataMapper()
     cowMapper.SetInputConnection(cow.GetOutputPort())
     cowMapper.ScalarVisibilityOff()
 
-    cowActor = vtk.vtkActor()
+    cowActor = vtkActor()
     cowActor.SetMapper(cowMapper)
     cowActor.GetProperty().SetColor(colors.GetColor3d('Wheat'))
 
     ren.AddActor(cowActor)
 
     # Axes pipeline.
-    cowAxesSource = vtk.vtkAxes()
+    cowAxesSource = vtkAxes()
     cowAxesSource.SetScaleFactor(10.0)
     cowAxesSource.SetOrigin(0, 0, 0)
 
-    cowAxesMapper = vtk.vtkPolyDataMapper()
+    cowAxesMapper = vtkPolyDataMapper()
     cowAxesMapper.SetInputConnection(cowAxesSource.GetOutputPort())
 
-    cowAxes = vtk.vtkActor()
+    cowAxes = vtkActor()
     cowAxes.SetMapper(cowAxesMapper)
     cowAxes.VisibilityOff()
 
@@ -81,6 +98,7 @@ def walk_cow(file_name, figure):
     # Interact with data.
     renWin.EraseOff()
     iren.Start()
+
 
 def main():
     file_name, figure = get_program_parameters()
@@ -254,10 +272,10 @@ def Rotate_V_0(cowActor, ren, renWin):
     fp = [0.0] * 3
     for i in range(0, 3):
         fp[i] = (bounds[i * 2 + 1] + bounds[i * 2]) / 2.0
-    cowPos = vtk.vtkTransform()
+    cowPos = vtkTransform()
     cowPos.Identity()
     cowPos.SetMatrix(cowActor.GetMatrix())
-    cowTransform = vtk.vtkTransform()
+    cowTransform = vtkTransform()
     cowTransform.Identity()
     cowActor.SetUserMatrix(cowTransform.GetMatrix())
     # This closely matches the original illustration.
@@ -295,11 +313,11 @@ def Rotate_V_V(cowActor, ren, renWin):
     fp = [0.0] * 3
     for i in range(0, 3):
         fp[i] = (bounds[i * 2 + 1] + bounds[i * 2]) / 2.0
-    cowPos = vtk.vtkTransform()
+    cowPos = vtkTransform()
     cowPos.Identity()
     cowPos.SetMatrix(cowActor.GetMatrix())
     cowActor.SetOrigin(6.11414, 1.27386, 0.015175)  # The cow's nose
-    cowTransform = vtk.vtkTransform()
+    cowTransform = vtkTransform()
     cowTransform.Identity()
     cowActor.SetUserMatrix(cowTransform.GetMatrix())
     # This closely matches the original illustration.
@@ -323,7 +341,7 @@ def Rotate_V_V(cowActor, ren, renWin):
 
 def Walk(cowActor, ren, renWin):
     # The cow 'walking' around the global origin
-    cowPos = vtk.vtkTransform()
+    cowPos = vtkTransform()
     cowPos.Identity()
     cowPos.SetMatrix(cowActor.GetMatrix())
     cowActor.SetOrientation(0.0, 0.0, 0.0)
@@ -333,7 +351,7 @@ def Walk(cowActor, ren, renWin):
     fp = [0.0] * 3
     for i in range(0, 3):
         fp[i] = (bounds[i * 2 + 1] + bounds[i * 2]) / 2.0
-    cowTransform = vtk.vtkTransform()
+    cowTransform = vtkTransform()
     cowTransform.Identity()
     cowTransform.Translate(0, 0, 5)
     cowActor.SetUserMatrix(cowTransform.GetMatrix())
@@ -383,7 +401,7 @@ def Screenshot(fileName, renWin):
     :param renWin:
     :return:
     '''
-    windowToImageFilter = vtk.vtkWindowToImageFilter()
+    windowToImageFilter = vtkWindowToImageFilter()
     windowToImageFilter.SetInput(renWin)
     windowToImageFilter.SetScale(1)  # image quality
     # We are not recording the alpha (transparency) channel.
@@ -393,7 +411,7 @@ def Screenshot(fileName, renWin):
     windowToImageFilter.ReadFrontBufferOff()
     windowToImageFilter.Update()
 
-    writer = vtk.vtkPNGWriter()
+    writer = vtkPNGWriter()
     writer.SetFileName(fileName)
     writer.SetInputConnection(windowToImageFilter.GetOutputPort())
     writer.Write()

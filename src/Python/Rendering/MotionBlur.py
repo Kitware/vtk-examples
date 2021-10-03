@@ -1,12 +1,28 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkIOPLY import vtkPLYReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkRenderingOpenGL2 import (
+    vtkRenderStepsPass,
+    vtkSimpleMotionBlurPass
+)
 
 
 def main():
     fileName = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     colors.SetColor('A1Diff', [255, 204, 77, 255])
     colors.SetColor('A2Amb', [51, 51, 255, 255])
@@ -14,27 +30,27 @@ def main():
     colors.SetColor('A3Amb', [128, 166, 255, 255])
     colors.SetColor('Bkg', [77, 102, 153, 255])
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('Bkg'))
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(500, 500)
     renderWindow.SetWindowName('MotionBlur')
 
     renderWindow.AddRenderer(renderer)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renderWindow)
 
-    reader = vtk.vtkPLYReader()
+    reader = vtkPLYReader()
     reader.SetFileName(fileName)
     reader.Update()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(reader.GetOutputPort())
 
     # create three models
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetAmbientColor(colors.GetColor3d('Red'))
     actor.GetProperty().SetDiffuseColor(colors.GetColor3d('A1Diff'))
@@ -44,7 +60,7 @@ def main():
     actor.SetPosition(-0.1, 0.0, -0.1)
     renderer.AddActor(actor)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetAmbientColor(colors.GetColor3d('A2Amb'))
     actor.GetProperty().SetDiffuseColor(colors.GetColor3d('A2Diff'))
@@ -55,7 +71,7 @@ def main():
     actor.GetProperty().SetSpecularPower(10.0)
     renderer.AddActor(actor)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetDiffuseColor(colors.GetColor3d('A3Amb'))
     actor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
@@ -68,9 +84,9 @@ def main():
     renderWindow.SetMultiSamples(0)
 
     # create the basic VTK render steps
-    basicPasses = vtk.vtkRenderStepsPass()
+    basicPasses = vtkRenderStepsPass()
 
-    motion = vtk.vtkSimpleMotionBlurPass()
+    motion = vtkSimpleMotionBlurPass()
     motion.SetDelegatePass(basicPasses)
 
     # Tell the renderer to use our render pass pipeline.

@@ -1,12 +1,30 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    VTK_UNSIGNED_CHAR,
+    vtkDoubleArray
+)
+from vtkmodules.vtkCommonDataModel import vtkImageData
+from vtkmodules.vtkFiltersSources import vtkLineSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTexture
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    lines = vtk.vtkLineSource()
+    lines = vtkLineSource()
     # Create two points, P0 and P1
     p0 = [1.0, 0.0, 0.0]
     p1 = [5.0, 0.0, 0.0]
@@ -15,25 +33,24 @@ def main():
     lines.SetPoint1(p0)
     lines.SetPoint2(p1)
     lines.Update()
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(lines.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetLineWidth(5)
     actor.GetProperty().SetColor(colors.GetColor3d("Banana"))
 
     StippledLine(actor, 0xA1A1, 2)
 
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
     ren1.SetBackground(colors.GetColor3d("SlateGray"))
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.SetSize(640, 480)
     renWin.SetWindowName('StippledLine')
 
-
     renWin.AddRenderer(ren1)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     ren1.AddActor(actor)
     renWin.Render()
@@ -41,15 +58,15 @@ def main():
 
 
 def StippledLine(actor, lineStipplePattern, lineStippleRepeat):
-    tcoords = vtk.vtkDoubleArray()
-    image = vtk.vtkImageData()
-    texture = vtk.vtkTexture()
+    tcoords = vtkDoubleArray()
+    image = vtkImageData()
+    texture = vtkTexture()
 
     # Create texture
     dimension = 16 * lineStippleRepeat
 
     image.SetDimensions(dimension, 1, 1)
-    image.AllocateScalars(vtk.VTK_UNSIGNED_CHAR, 4)
+    image.AllocateScalars(VTK_UNSIGNED_CHAR, 4)
     image.SetExtent(0, dimension - 1, 0, 0, 0, 0)
     on = 255
     off = 0

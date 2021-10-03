@@ -11,26 +11,44 @@ The basic idea is to instantiate vtkStructuredGrid, set its dimensions,
 
 import math
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkDoubleArray,
+    vtkMath,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import vtkStructuredGrid
+from vtkmodules.vtkFiltersCore import vtkHedgeHog
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     rMin = 0.5
     rMax = 1.0
     dims = [13, 11, 11]
 
     # Create the structured grid.
-    sgrid = vtk.vtkStructuredGrid()
+    sgrid = vtkStructuredGrid()
     sgrid.SetDimensions(dims)
 
     # We also create the points and vectors. The points
     # form a hemi-cylinder of data.
-    vectors = vtk.vtkDoubleArray()
+    vectors = vtkDoubleArray()
     vectors.SetNumberOfComponents(3)
     vectors.SetNumberOfTuples(dims[0] * dims[1] * dims[2])
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.Allocate(dims[0] * dims[1] * dims[2])
 
     deltaZ = 2.0 / (dims[2] - 1)
@@ -44,7 +62,7 @@ def main():
             radius = rMin + j * deltaRad
             jOffset = j * dims[0]
             for i in range(0, dims[0]):
-                theta = i * vtk.vtkMath.RadiansFromDegrees(15.0)
+                theta = i * vtkMath.RadiansFromDegrees(15.0)
                 x[0] = radius * math.cos(theta)
                 x[1] = radius * math.sin(theta)
                 v[0] = -x[1]
@@ -56,23 +74,23 @@ def main():
     sgrid.GetPointData().SetVectors(vectors)
 
     # We create a simple pipeline to display the data.
-    hedgehog = vtk.vtkHedgeHog()
+    hedgehog = vtkHedgeHog()
     hedgehog.SetInputData(sgrid)
     hedgehog.SetScaleFactor(0.1)
 
-    sgridMapper = vtk.vtkPolyDataMapper()
+    sgridMapper = vtkPolyDataMapper()
     sgridMapper.SetInputConnection(hedgehog.GetOutputPort())
-    sgridActor = vtk.vtkActor()
+    sgridActor = vtkActor()
     sgridActor.SetMapper(sgridMapper)
     sgridActor.GetProperty().SetColor(colors.GetColor3d('Gold'))
 
     # Create the usual rendering stuff
-    renderer = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
     renWin.SetWindowName('SGrid')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     renderer.AddActor(sgridActor)

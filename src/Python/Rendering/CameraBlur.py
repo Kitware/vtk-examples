@@ -1,45 +1,61 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkGlyph3D
+from vtkmodules.vtkFiltersSources import (
+    vtkConeSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('Bkg', [26, 51, 102, 255])
 
     # Create the rendering objects.
-    ren1 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create the pipeline, ball and spikes.
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetPhiResolution(7)
     sphere.SetThetaResolution(7)
-    sphereMapper = vtk.vtkPolyDataMapper()
+    sphereMapper = vtkPolyDataMapper()
     sphereMapper.SetInputConnection(sphere.GetOutputPort())
-    sphereActor = vtk.vtkActor()
+    sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
-    sphereActor2 = vtk.vtkActor()
+    sphereActor2 = vtkActor()
     sphereActor2.SetMapper(sphereMapper)
 
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetResolution(5)
-    glyph = vtk.vtkGlyph3D()
+    glyph = vtkGlyph3D()
     glyph.SetInputConnection(sphere.GetOutputPort())
     glyph.SetSourceConnection(cone.GetOutputPort())
     glyph.SetVectorModeToUseNormal()
     glyph.SetScaleModeToScaleByVector()
     glyph.SetScaleFactor(0.25)
-    spikeMapper = vtk.vtkPolyDataMapper()
+    spikeMapper = vtkPolyDataMapper()
     spikeMapper.SetInputConnection(glyph.GetOutputPort())
-    spikeActor = vtk.vtkActor()
+    spikeActor = vtkActor()
     spikeActor.SetMapper(spikeMapper)
-    spikeActor2 = vtk.vtkActor()
+    spikeActor2 = vtkActor()
     spikeActor2.SetMapper(spikeMapper)
 
     spikeActor.SetPosition(0, 0.7, 0)

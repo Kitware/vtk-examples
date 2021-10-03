@@ -3,11 +3,30 @@
 
 from collections import OrderedDict
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkQuadric
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkFiltersSources import (
+    vtkCylinderSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkIOGeometry import vtkOBJReader
+from vtkmodules.vtkImagingHybrid import vtkSampleFunction
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
@@ -26,7 +45,7 @@ def main():
     # Get the keys
     keys = list(renderers.keys())
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
 
     # Setup the viewports for the renderers.
     rendererSize = 256
@@ -57,7 +76,7 @@ def main():
 
         renderWindow.AddRenderer(renderers[keys[r]])
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     renderWindow.Render()
@@ -83,18 +102,18 @@ def CreateSphere(flat):
     :param flat: The interpolation to use (flat or Gouraud).
     :return: the renderer
     '''
-    colors = vtk.vtkNamedColors()
-    sphere = vtk.vtkSphereSource()
-    mapper = vtk.vtkPolyDataMapper()
+    colors = vtkNamedColors()
+    sphere = vtkSphereSource()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(sphere.GetOutputPort())
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
     if flat:
         actor.GetProperty().SetInterpolationToFlat()
     else:
         actor.GetProperty().SetInterpolationToGouraud()
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(actor)
     return renderer
 
@@ -105,18 +124,18 @@ def CreateCylinder(flat):
     :param flat: The interpolation to use (flat or Gouraud).
     :return: the renderer
     '''
-    colors = vtk.vtkNamedColors()
-    cylinder = vtk.vtkCylinderSource()
-    mapper = vtk.vtkPolyDataMapper()
+    colors = vtkNamedColors()
+    cylinder = vtkCylinderSource()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(cylinder.GetOutputPort())
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
     if flat:
         actor.GetProperty().SetInterpolationToFlat()
     else:
         actor.GetProperty().SetInterpolationToGouraud()
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(actor)
     return renderer
 
@@ -127,27 +146,27 @@ def CreateIsoSurface(flat):
     :param flat: The interpolation to use (flat or Gouraud).
     :return: the renderer
     '''
-    quadric = vtk.vtkQuadric()
+    quadric = vtkQuadric()
     quadric.SetCoefficients(1, 2, 3, 0, 1, 0, 0, 0, 0, 0)
-    sample = vtk.vtkSampleFunction()
+    sample = vtkSampleFunction()
     sample.SetSampleDimensions(25, 25, 25)
     sample.SetImplicitFunction(quadric)
     # Generate the implicit surface.
-    contour = vtk.vtkContourFilter()
+    contour = vtkContourFilter()
     contour.SetInputConnection(sample.GetOutputPort())
     range = [1.0, 6.0]
     contour.GenerateValues(5, range)
     # Map the contour.
-    contourMapper = vtk.vtkPolyDataMapper()
+    contourMapper = vtkPolyDataMapper()
     contourMapper.SetInputConnection(contour.GetOutputPort())
     contourMapper.SetScalarRange(0, 7)
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(contourMapper)
     if flat:
         actor.GetProperty().SetInterpolationToFlat()
     else:
         actor.GetProperty().SetInterpolationToGouraud()
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(actor)
     return renderer
 
@@ -159,19 +178,19 @@ def CreateModel(flat, fileName):
     :param fileName: The file name.
     :return: the renderer
     '''
-    colors = vtk.vtkNamedColors()
-    reader = vtk.vtkOBJReader()
+    colors = vtkNamedColors()
+    reader = vtkOBJReader()
     reader.SetFileName(fileName)
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(reader.GetOutputPort())
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('Tan'))
     if flat:
         actor.GetProperty().SetInterpolationToFlat()
     else:
         actor.GetProperty().SetInterpolationToGouraud()
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(actor)
     return renderer
 

@@ -1,13 +1,28 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkFiltersCore import vtkStructuredGridOutlineFilter
+from vtkmodules.vtkFiltersGeometry import vtkStructuredGridGeometryFilter
+from vtkmodules.vtkIOParallel import vtkMultiBlockPLOT3DReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     xyzFn, qFn = get_program_parameters()
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    pl3d = vtk.vtkMultiBlockPLOT3DReader()
+    pl3d = vtkMultiBlockPLOT3DReader()
     pl3d.SetXYZFileName(xyzFn)
     pl3d.SetQFileName(qFn)
     pl3d.SetScalarFunctionNumber(100)
@@ -16,29 +31,29 @@ def main():
 
     pl3dOutput = pl3d.GetOutput().GetBlock(0)
 
-    plane = vtk.vtkStructuredGridGeometryFilter()
+    plane = vtkStructuredGridGeometryFilter()
     plane.SetInputData(pl3dOutput)
     plane.SetExtent(1, 100, 1, 100, 7, 7)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
 
-    planeMapper = vtk.vtkPolyDataMapper()
+    planeMapper = vtkPolyDataMapper()
     planeMapper.SetLookupTable(lut)
     planeMapper.SetInputConnection(plane.GetOutputPort())
     planeMapper.SetScalarRange(pl3dOutput.GetScalarRange())
 
-    planeActor = vtk.vtkActor()
+    planeActor = vtkActor()
     planeActor.SetMapper(planeMapper)
 
     # This creates an outline around the data.
 
-    outline = vtk.vtkStructuredGridOutlineFilter()
+    outline = vtkStructuredGridOutlineFilter()
     outline.SetInputData(pl3dOutput)
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
 
     # Much of the following is commented out. To try different lookup tables,
@@ -66,10 +81,10 @@ def main():
 
     # Create the RenderWindow, Renderer and both Actors.
     #
-    ren1 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size.
