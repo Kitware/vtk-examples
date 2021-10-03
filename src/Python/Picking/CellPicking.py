@@ -1,23 +1,44 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkIdTypeArray
+from vtkmodules.vtkCommonDataModel import (
+    vtkSelection,
+    vtkSelectionNode,
+    vtkUnstructuredGrid
+)
+from vtkmodules.vtkFiltersCore import vtkTriangleFilter
+from vtkmodules.vtkFiltersExtraction import vtkExtractSelection
+from vtkmodules.vtkFiltersSources import vtkPlaneSource
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCellPicker,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 # Catch mouse events
-class MouseInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
+class MouseInteractorStyle(vtkInteractorStyleTrackballCamera):
     def __init__(self, data):
         self.AddObserver('LeftButtonPressEvent', self.left_button_press_event)
         self.data = data
-        self.selected_mapper = vtk.vtkDataSetMapper()
-        self.selected_actor = vtk.vtkActor()
+        self.selected_mapper = vtkDataSetMapper()
+        self.selected_actor = vtkActor()
 
     def left_button_press_event(self, obj, event):
-        colors = vtk.vtkNamedColors()
+        colors = vtkNamedColors()
 
         # Get the location of the click (in window coordinates)
         pos = self.GetInteractor().GetEventPosition()
 
-        picker = vtk.vtkCellPicker()
+        picker = vtkCellPicker()
         picker.SetTolerance(0.0005)
 
         # Pick from this location.
@@ -29,25 +50,25 @@ class MouseInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
         if picker.GetCellId() != -1:
             print(f'Pick position is: ({world_position[0]:.6g}, {world_position[1]:.6g}, {world_position[2]:.6g})')
 
-            ids = vtk.vtkIdTypeArray()
+            ids = vtkIdTypeArray()
             ids.SetNumberOfComponents(1)
             ids.InsertNextValue(picker.GetCellId())
 
-            selection_node = vtk.vtkSelectionNode()
-            selection_node.SetFieldType(vtk.vtkSelectionNode.CELL)
-            selection_node.SetContentType(vtk.vtkSelectionNode.INDICES)
+            selection_node = vtkSelectionNode()
+            selection_node.SetFieldType(vtkSelectionNode.CELL)
+            selection_node.SetContentType(vtkSelectionNode.INDICES)
             selection_node.SetSelectionList(ids)
 
-            selection = vtk.vtkSelection()
+            selection = vtkSelection()
             selection.AddNode(selection_node)
 
-            extract_selection = vtk.vtkExtractSelection()
+            extract_selection = vtkExtractSelection()
             extract_selection.SetInputData(0, self.data)
             extract_selection.SetInputData(1, selection)
             extract_selection.Update()
 
             # In selection
-            selected = vtk.vtkUnstructuredGrid()
+            selected = vtkUnstructuredGrid()
             selected.ShallowCopy(extract_selection.GetOutput())
 
             print(f'Number of points in the selection: {selected.GetNumberOfPoints()}')
@@ -67,27 +88,27 @@ class MouseInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
 
 
 def main(argv):
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    plane_source = vtk.vtkPlaneSource()
+    plane_source = vtkPlaneSource()
     plane_source.Update()
 
-    triangle_filter = vtk.vtkTriangleFilter()
+    triangle_filter = vtkTriangleFilter()
     triangle_filter.SetInputConnection(plane_source.GetOutputPort())
     triangle_filter.Update()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(triangle_filter.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.GetProperty().SetColor(colors.GetColor3d('SeaGreen'))
     actor.SetMapper(mapper)
 
-    renderer = vtk.vtkRenderer()
-    ren_win = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    ren_win = vtkRenderWindow()
     ren_win.AddRenderer(renderer)
     ren_win.SetWindowName('CellPicking')
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(ren_win)
 
     renderer.AddActor(actor)

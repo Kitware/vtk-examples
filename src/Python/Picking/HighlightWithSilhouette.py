@@ -1,6 +1,20 @@
 # !/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkMinimalStandardRandomSequence
+from vtkmodules.vtkFiltersHybrid import vtkPolyDataSilhouette
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkPropPicker,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -18,7 +32,7 @@ The selected object is highlighted with a silhouette.
     return args.numberOfSpheres
 
 
-class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
+class MouseInteractorHighLightActor(vtkInteractorStyleTrackballCamera):
 
     def __init__(self, silhouette=None, silhouetteActor=None):
         self.AddObserver("LeftButtonPressEvent", self.onLeftButtonDown)
@@ -30,7 +44,7 @@ class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
         clickPos = self.GetInteractor().GetEventPosition()
 
         #  Pick from this location.
-        picker = vtk.vtkPropPicker()
+        picker = vtkPropPicker()
         picker.Pick(clickPos[0], clickPos[1], 0, self.GetDefaultRenderer())
         self.LastPickedActor = picker.GetActor()
 
@@ -56,27 +70,27 @@ class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
 
 def main():
     numberOfSpheres = get_program_parameters()
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # A renderer and render window
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('SteelBlue'))
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(640, 480)
     renderWindow.AddRenderer(renderer)
 
     # An interactor
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
-    randomSequence = vtk.vtkMinimalStandardRandomSequence()
+    randomSequence = vtkMinimalStandardRandomSequence()
     # randomSequence.SetSeed(1043618065)
     # randomSequence.SetSeed(5170)
     randomSequence.SetSeed(8775070)
     # Add spheres to play with
     for i in range(numberOfSpheres):
-        source = vtk.vtkSphereSource()
+        source = vtkSphereSource()
 
         # random position and radius
         x = randomSequence.GetRangeValue(-5.0, 5.0)
@@ -93,9 +107,9 @@ def main():
         source.SetPhiResolution(11)
         source.SetThetaResolution(21)
 
-        mapper = vtk.vtkPolyDataMapper()
+        mapper = vtkPolyDataMapper()
         mapper.SetInputConnection(source.GetOutputPort())
-        actor = vtk.vtkActor()
+        actor = vtkActor()
         actor.SetMapper(mapper)
 
         r = randomSequence.GetRangeValue(0.4, 1.0)
@@ -118,14 +132,14 @@ def main():
 
     # Create the silhouette pipeline, the input data will be set in the
     # interactor
-    silhouette = vtk.vtkPolyDataSilhouette()
+    silhouette = vtkPolyDataSilhouette()
     silhouette.SetCamera(renderer.GetActiveCamera())
 
     # Create mapper and actor for silhouette
-    silhouetteMapper = vtk.vtkPolyDataMapper()
+    silhouetteMapper = vtkPolyDataMapper()
     silhouetteMapper.SetInputConnection(silhouette.GetOutputPort())
 
-    silhouetteActor = vtk.vtkActor()
+    silhouetteActor = vtkActor()
     silhouetteActor.SetMapper(silhouetteMapper)
     silhouetteActor.GetProperty().SetColor(colors.GetColor3d("Tomato"))
     silhouetteActor.GetProperty().SetLineWidth(5)
