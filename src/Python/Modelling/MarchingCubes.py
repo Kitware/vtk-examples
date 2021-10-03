@@ -1,22 +1,45 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    VTK_VERSION_NUMBER,
+    vtkVersion
+)
+from vtkmodules.vtkCommonDataModel import vtkImageData
+from vtkmodules.vtkFiltersCore import (
+    vtkFlyingEdges3D,
+    vtkMarchingCubes
+)
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkIOImage import vtkDICOMImageReader
+from vtkmodules.vtkImagingHybrid import vtkVoxelModeller
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     # vtkFlyingEdges3D was introduced in VTK >= 8.2
     use_flying_edges = vtk_version_ok(8, 2, 0)
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     dicom_dir, iso_value = get_program_parameters()
     if iso_value is None and dicom_dir is not None:
         print('An ISO value is needed.')
         return ()
 
-    volume = vtk.vtkImageData()
+    volume = vtkImageData()
     if dicom_dir is None:
-        sphere_source = vtk.vtkSphereSource()
+        sphere_source = vtkSphereSource()
         sphere_source.SetPhiResolution(20)
         sphere_source.SetThetaResolution(20)
         sphere_source.Update()
@@ -26,7 +49,7 @@ def main():
             dist = bounds[i + 1] - bounds[i]
             bounds[i] = bounds[i] - 0.1 * dist
             bounds[i + 1] = bounds[i + 1] + 0.1 * dist
-        voxel_modeller = vtk.vtkVoxelModeller()
+        voxel_modeller = vtkVoxelModeller()
         voxel_modeller.SetSampleDimensions(50, 50, 50)
         voxel_modeller.SetModelBounds(bounds)
         voxel_modeller.SetScalarTypeToFloat()
@@ -37,37 +60,37 @@ def main():
         iso_value = 0.5
         volume.DeepCopy(voxel_modeller.GetOutput())
     else:
-        reader = vtk.vtkDICOMImageReader()
+        reader = vtkDICOMImageReader()
         reader.SetDirectoryName(dicom_dir)
         reader.Update()
         volume.DeepCopy(reader.GetOutput())
 
     if use_flying_edges:
         try:
-            surface = vtk.vtkFlyingEdges3D()
+            surface = vtkFlyingEdges3D()
         except AttributeError:
-            surface = vtk.vtkMarchingCubes()
+            surface = vtkMarchingCubes()
     else:
-        surface = vtk.vtkMarchingCubes()
+        surface = vtkMarchingCubes()
     surface.SetInputData(volume)
     surface.ComputeNormalsOn()
     surface.SetValue(0, iso_value)
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('DarkSlateGray'))
 
-    render_window = vtk.vtkRenderWindow()
+    render_window = vtkRenderWindow()
     render_window.AddRenderer(renderer)
     render_window.SetWindowName('MarchingCubes')
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(surface.GetOutputPort())
     mapper.ScalarVisibilityOff()
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
@@ -104,9 +127,9 @@ def vtk_version_ok(major, minor, build):
     """
     needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
     try:
-        vtk_version_number = vtk.VTK_VERSION_NUMBER
+        vtk_version_number = VTK_VERSION_NUMBER
     except AttributeError:  # as error:
-        ver = vtk.vtkVersion()
+        ver = vtkVersion()
         vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
                              + ver.GetVTKBuildVersion()
     if vtk_version_number >= needed_version:

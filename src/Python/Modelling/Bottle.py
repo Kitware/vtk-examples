@@ -1,23 +1,44 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData
+)
+from vtkmodules.vtkFiltersCore import (
+    vtkStripper,
+    vtkTubeFilter
+)
+from vtkmodules.vtkFiltersModeling import vtkRotationalExtrusionFilter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the RenderWindow, Renderer and Interactor.
     #
-    renderer = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create the bottle profile.
     #
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.InsertPoint(0, 0.01, 0.0, 0.0)
     points.InsertPoint(1, 1.5, 0.0, 0.0)
     points.InsertPoint(2, 1.5, 0.0, 3.5)
@@ -29,7 +50,7 @@ def main():
     points.InsertPoint(8, 1.0, 0.0, 5.0)
     points.InsertPoint(9, 0.2, 0.0, 5.0)
 
-    lines = vtk.vtkCellArray()
+    lines = vtkCellArray()
     lines.InsertNextCell(10)  # The number of points.
     lines.InsertCellPoint(0)
     lines.InsertCellPoint(1)
@@ -42,36 +63,36 @@ def main():
     lines.InsertCellPoint(8)
     lines.InsertCellPoint(9)
 
-    profile = vtk.vtkPolyData()
+    profile = vtkPolyData()
     profile.SetPoints(points)
     profile.SetLines(lines)
 
     # Extrude the profile to make the bottle.
     #
-    extrude = vtk.vtkRotationalExtrusionFilter()
+    extrude = vtkRotationalExtrusionFilter()
     extrude.SetInputData(profile)
     extrude.SetResolution(60)
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(extrude.GetOutputPort())
 
-    bottle = vtk.vtkActor()
+    bottle = vtkActor()
     bottle.SetMapper(mapper)
     bottle.GetProperty().SetColor(colors.GetColor3d('Mint'))
 
     # Sisplay the profile.
-    stripper = vtk.vtkStripper()
+    stripper = vtkStripper()
     stripper.SetInputData(profile)
 
-    tubes = vtk.vtkTubeFilter()
+    tubes = vtkTubeFilter()
     tubes.SetInputConnection(stripper.GetOutputPort())
     tubes.SetNumberOfSides(11)
     tubes.SetRadius(0.05)
 
-    profileMapper = vtk.vtkPolyDataMapper()
+    profileMapper = vtkPolyDataMapper()
     profileMapper.SetInputConnection(tubes.GetOutputPort())
 
-    profileActor = vtk.vtkActor()
+    profileActor = vtkActor()
     profileActor.SetMapper(profileMapper)
     profileActor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
 

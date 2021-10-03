@@ -1,6 +1,30 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkLookupTable,
+    vtkMinimalStandardRandomSequence
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkImageData,
+    vtkSphere
+)
+from vtkmodules.vtkFiltersCore import vtkWindowedSincPolyDataFilter
+from vtkmodules.vtkFiltersGeneral import vtkDiscreteMarchingCubes
+from vtkmodules.vtkImagingCore import vtkImageThreshold
+from vtkmodules.vtkImagingHybrid import vtkSampleFunction
+from vtkmodules.vtkImagingMath import vtkImageMathematics
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
@@ -8,7 +32,7 @@ def main():
     radius = 8
     blob = make_blob(n, radius)
 
-    discrete = vtk.vtkDiscreteMarchingCubes()
+    discrete = vtkDiscreteMarchingCubes()
     discrete.SetInputData(blob)
     discrete.GenerateValues(n, 1, n)
 
@@ -16,7 +40,7 @@ def main():
     pass_band = 0.001
     feature_angle = 120.0
 
-    smoother = vtk.vtkWindowedSincPolyDataFilter()
+    smoother = vtkWindowedSincPolyDataFilter()
     smoother.SetInputConnection(discrete.GetOutputPort())
     smoother.SetNumberOfIterations(smoothing_iterations)
     smoother.BoundarySmoothingOff()
@@ -29,27 +53,27 @@ def main():
 
     lut = make_colors(n)
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(smoother.GetOutputPort())
     mapper.SetLookupTable(lut)
     mapper.SetScalarRange(0, lut.GetNumberOfColors())
 
     # Create the RenderWindow, Renderer and both Actors
     #
-    ren = vtk.vtkRenderer()
-    ren_win = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    ren_win = vtkRenderWindow()
     ren_win.AddRenderer(ren)
     ren_win.SetWindowName('SmoothDiscreteMarchingCubes')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(ren_win)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     ren.AddActor(actor)
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     ren.SetBackground(colors.GetColor3d('Burlywood'))
 
     ren_win.Render()
@@ -58,14 +82,14 @@ def main():
 
 
 def make_blob(n, radius):
-    blob_image = vtk.vtkImageData()
+    blob_image = vtkImageData()
 
     max_r = 50 - 2.0 * radius
-    random_sequence = vtk.vtkMinimalStandardRandomSequence()
+    random_sequence = vtkMinimalStandardRandomSequence()
     random_sequence.SetSeed(5071)
     for i in range(0, n):
 
-        sphere = vtk.vtkSphere()
+        sphere = vtkSphere()
         sphere.SetRadius(radius)
 
         x = random_sequence.GetRangeValue(-max_r, max_r)
@@ -77,13 +101,13 @@ def make_blob(n, radius):
 
         sphere.SetCenter(int(x), int(y), int(z))
 
-        sampler = vtk.vtkSampleFunction()
+        sampler = vtkSampleFunction()
         sampler.SetImplicitFunction(sphere)
         sampler.SetOutputScalarTypeToFloat()
         sampler.SetSampleDimensions(100, 100, 100)
         sampler.SetModelBounds(-50, 50, -50, 50, -50, 50)
 
-        thres = vtk.vtkImageThreshold()
+        thres = vtkImageThreshold()
         thres.SetInputConnection(sampler.GetOutputPort())
         thres.ThresholdByLower(radius * radius)
         thres.ReplaceInOn()
@@ -94,7 +118,7 @@ def make_blob(n, radius):
         if i == 0:
             blob_image.DeepCopy(thres.GetOutput())
 
-        max_value = vtk.vtkImageMathematics()
+        max_value = vtkImageMathematics()
         max_value.SetInputData(0, blob_image)
         max_value.SetInputData(1, thres.GetOutput())
         max_value.SetOperationToMax()
@@ -113,14 +137,14 @@ def make_colors(n):
     :return: The lookup table.
     """
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetNumberOfColors(n)
     lut.SetTableRange(0, n - 1)
     lut.SetScaleToLinear()
     lut.Build()
     lut.SetTableValue(0, 0, 0, 0, 1)
 
-    random_sequence = vtk.vtkMinimalStandardRandomSequence()
+    random_sequence = vtkMinimalStandardRandomSequence()
     random_sequence.SetSeed(5071)
     for i in range(1, n):
         r = random_sequence.GetRangeValue(0.4, 1)
