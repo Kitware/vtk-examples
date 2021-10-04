@@ -59,7 +59,8 @@ int main(int, char*[])
 
   vtkNew<vtkThreshold> threshold;
   threshold->SetInputData(polydata);
-  threshold->ThresholdByLower(1);
+  threshold->SetLowerThreshold(1);
+  threshold->SetThresholdFunction(vtkThreshold::THRESHOLD_LOWER);
   // doesn't work because the array is not added as SCALARS, i.e. via SetScalars
   // threshold->SetInputArrayToProcess(0, 0, 0,
   // vtkDataObject::FIELD_ASSOCIATION_CELLS, vtkDataSetAttributes::SCALARS); use

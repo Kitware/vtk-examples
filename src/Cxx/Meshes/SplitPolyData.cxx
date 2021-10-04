@@ -83,7 +83,8 @@ int main(int argc, char* argv[])
   // Create an actor for each piece
   for (int i = 0; i < dicer->GetNumberOfActualPieces(); ++i)
   {
-    selector->ThresholdBetween(i, i);
+    selector->SetLowerThreshold(i);
+    selector->SetUpperThreshold(i);
     vtkNew<vtkGeometryFilter> geometry;
     geometry->SetInputConnection(selector->GetOutputPort());
     geometry->Update();
@@ -116,7 +117,8 @@ int main(int argc, char* argv[])
   {
     std::stringstream pieceName;
     pieceName << filename << "_" << i + 1 << extension;
-    selector->ThresholdBetween(i, i);
+    selector->SetLowerThreshold(i);
+    selector->SetUpperThreshold(i);
     writer->SetFileName(pieceName.str().c_str());
     writer->Write();
   }

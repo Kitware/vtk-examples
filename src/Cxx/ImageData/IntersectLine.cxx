@@ -86,8 +86,9 @@ int main(int, char*[])
   // Threshold
   vtkNew<vtkThreshold> threshold;
   threshold->SetInputData(shrinkFilter->GetOutput());
-  threshold->ThresholdByUpper(
-      1); // Criterion is cells whose scalars are greater or equal to threshold.
+  // Criterion is cells whose scalars are greater or equal to threshold.
+  threshold->SetUpperThreshold(1);
+  threshold->SetThresholdFunction(vtkThreshold::THRESHOLD_UPPER);
 
   threshold->SetInputArrayToProcess(
       0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_CELLS, "Visibility");

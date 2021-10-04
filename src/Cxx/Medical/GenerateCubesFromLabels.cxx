@@ -76,7 +76,8 @@ int main(int argc, char* argv[])
                                    vtkDataObject::FIELD_ASSOCIATION_CELLS,
                                    vtkDataSetAttributes::SCALARS);
   selector->SetInputConnection(pad->GetOutputPort());
-  selector->ThresholdBetween(startLabel, endLabel);
+  selector->SetLowerThreshold(startLabel);
+  selector->SetUpperThreshold(endLabel);
   selector->Update();
 
   // Shift the geometry by 1/2

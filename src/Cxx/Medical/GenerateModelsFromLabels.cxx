@@ -134,7 +134,8 @@ int main(int argc, char* argv[])
     }
 
     // select the cells for a given label
-    selector->ThresholdBetween(i, i);
+    selector->SetLowerThreshold(i);
+    selector->SetUpperThreshold(i);
 
     // output the polydata
     std::stringstream ss;
