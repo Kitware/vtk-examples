@@ -43,7 +43,9 @@ int main(int argc, char* argv[])
   // convert from vtkImageData to vtkUnstructuredGrid, remove
   // any cells where all values are below 80
   vtkNew<vtkThreshold> thresh;
-  thresh->ThresholdByUpper(80);
+  thresh->SetUpperThreshold(80);
+  thresh->SetThresholdFunction(vtkThreshold::THRESHOLD_UPPER);
+  //thresh->ThresholdByUpper(80);
   thresh->AllScalarsOff();
   thresh->SetInputConnection(reader->GetOutputPort());
 

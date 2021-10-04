@@ -39,7 +39,8 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkThreshold> threshold;
   threshold->SetInputConnection(occupancy->GetOutputPort());
-  threshold->ThresholdByUpper(255);
+  threshold->SetUpperThreshold(255);
+  threshold->SetThresholdFunction(vtkThreshold::THRESHOLD_UPPER);
   threshold->AllScalarsOff();
 
   vtkNew<vtkDataSetMapper> mapper;

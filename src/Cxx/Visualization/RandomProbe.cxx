@@ -43,7 +43,8 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkThreshold> thresholdCone;
   thresholdCone->SetInputConnection(sampledCone->GetOutputPort());
-  thresholdCone->ThresholdByLower(0);
+  thresholdCone->SetLowerThreshold(0);
+  thresholdCone->SetThresholdFunction(vtkThreshold::THRESHOLD_LOWER);
 
   vtkNew<vtkPointSource> randomPoints;
   randomPoints->SetCenter(0.0, 0.0, 0.0);

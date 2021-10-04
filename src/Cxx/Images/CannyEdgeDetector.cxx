@@ -111,13 +111,14 @@ int main(int argc, char* argv[])
   imgLink->SetGradientThreshold(2);
 
   // Threshold links
-  vtkNew<vtkThreshold> thresholdEdgels;
-  thresholdEdgels->SetInputConnection(imgLink->GetOutputPort());
-  thresholdEdgels->ThresholdByUpper(10);
-  thresholdEdgels->AllScalarsOff();
+  vtkNew<vtkThreshold> thresholdEdges;
+  thresholdEdges->SetInputConnection(imgLink->GetOutputPort());
+  thresholdEdges->SetUpperThreshold(10);
+  thresholdEdges->SetThresholdFunction(vtkThreshold::THRESHOLD_UPPER);
+  thresholdEdges->AllScalarsOff();
 
   vtkNew<vtkGeometryFilter> gf;
-  gf->SetInputConnection(thresholdEdgels->GetOutputPort());
+  gf->SetInputConnection(thresholdEdges->GetOutputPort());
 
   vtkNew<vtkImageToStructuredPoints> i2sp;
   i2sp->SetInputConnection(imgMagnitude->GetOutputPort());
