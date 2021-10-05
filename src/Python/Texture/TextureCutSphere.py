@@ -1,35 +1,53 @@
 #!/usr/bin/env python
 
-'''
-'''
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkDoubleArray,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import vtkPlanes
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkFiltersTexture import vtkImplicitTextureCoords
+from vtkmodules.vtkIOLegacy import vtkStructuredPointsReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTexture
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
     # hidden sphere
-    sphere1 = vtk.vtkSphereSource()
+    sphere1 = vtkSphereSource()
     sphere1.SetRadius(0.5)
 
-    innerMapper = vtk.vtkPolyDataMapper()
+    innerMapper = vtkPolyDataMapper()
     innerMapper.SetInputConnection(sphere1.GetOutputPort())
 
-    innerSphere = vtk.vtkActor()
+    innerSphere = vtkActor()
     innerSphere.SetMapper(innerMapper)
     innerSphere.GetProperty().SetColor(colors.GetColor3d('BlanchedAlmond'))
 
     # sphere to texture
-    sphere2 = vtk.vtkSphereSource()
+    sphere2 = vtkSphereSource()
     sphere2.SetRadius(1.0)
     sphere2.SetPhiResolution(21)
     sphere2.SetThetaResolution(21)
 
     pts = [0.0] * 6
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     points.SetNumberOfPoints(2)
     points.SetPoint(0, pts[:3])
     points.SetPoint(1, pts[3:])
@@ -37,39 +55,39 @@ def main():
     nrms = [0.0] * 6
     nrms[0] = 1.0
     nrms[4] = 1.0
-    normals = vtk.vtkDoubleArray()
+    normals = vtkDoubleArray()
     normals.SetNumberOfComponents(3)
     normals.SetNumberOfTuples(2)
     normals.SetTuple(0, nrms[:3])
     normals.SetTuple(1, nrms[3:])
 
-    planes = vtk.vtkPlanes()
+    planes = vtkPlanes()
     planes.SetPoints(points)
     planes.SetNormals(normals)
 
-    tcoords = vtk.vtkImplicitTextureCoords()
+    tcoords = vtkImplicitTextureCoords()
     tcoords.SetInputConnection(sphere2.GetOutputPort())
     tcoords.SetRFunction(planes)
 
-    outerMapper = vtk.vtkDataSetMapper()
+    outerMapper = vtkDataSetMapper()
     outerMapper.SetInputConnection(tcoords.GetOutputPort())
 
-    tmap = vtk.vtkStructuredPointsReader()
+    tmap = vtkStructuredPointsReader()
     tmap.SetFileName(fileName)
 
-    texture = vtk.vtkTexture()
+    texture = vtkTexture()
     texture.SetInputConnection(tmap.GetOutputPort())
     texture.InterpolateOff()
     texture.RepeatOff()
 
-    outerSphere = vtk.vtkActor()
+    outerSphere = vtkActor()
     outerSphere.SetMapper(outerMapper)
     outerSphere.SetTexture(texture)
     outerSphere.GetProperty().SetColor(colors.GetColor3d('LightSalmon'))
 
-    renWin = vtk.vtkRenderWindow()
-    iren = vtk.vtkRenderWindowInteractor()
-    aren = vtk.vtkRenderer()
+    renWin = vtkRenderWindow()
+    iren = vtkRenderWindowInteractor()
+    aren = vtkRenderer()
     iren.SetRenderWindow(renWin)
     renWin.AddRenderer(aren)
 
