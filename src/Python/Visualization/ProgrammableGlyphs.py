@@ -3,25 +3,42 @@
 # Python example translated directly from Tcl test
 # [vtk_source]/Graphics/Testing/Tcl/progGlyphs.tcl
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkElevationFilter
+from vtkmodules.vtkFiltersProgrammable import vtkProgrammableGlyphFilter
+from vtkmodules.vtkFiltersSources import (
+    vtkPlaneSource,
+    vtkSuperquadricSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     res = 6
-    plane = vtk.vtkPlaneSource()
+    plane = vtkPlaneSource()
     plane.SetResolution(res, res)
-    colors = vtk.vtkElevationFilter()
+    colors = vtkElevationFilter()
     colors.SetInputConnection(plane.GetOutputPort())
     colors.SetLowPoint(-0.25, -0.25, -0.25)
     colors.SetHighPoint(0.25, 0.25, 0.25)
-    planeMapper = vtk.vtkPolyDataMapper()
+    planeMapper = vtkPolyDataMapper()
     planeMapper.SetInputData(colors.GetPolyDataOutput())
-    planeActor = vtk.vtkActor()
+    planeActor = vtkActor()
     planeActor.SetMapper(planeMapper)
     planeActor.GetProperty().SetRepresentationToWireframe()
 
     # create simple poly data so we can apply glyph
-    squad = vtk.vtkSuperquadricSource()
+    squad = vtkSuperquadricSource()
 
     def Glyph():
         """
@@ -39,23 +56,23 @@ def main():
         squad.SetPhiRoundness(abs(x) * 5.0)
         squad.SetThetaRoundness(abs(y) * 5.0)
 
-    glypher = vtk.vtkProgrammableGlyphFilter()
+    glypher = vtkProgrammableGlyphFilter()
     glypher.SetInputConnection(colors.GetOutputPort())
     glypher.SetSourceConnection(squad.GetOutputPort())
     glypher.SetGlyphMethod(Glyph)
-    glyphMapper = vtk.vtkPolyDataMapper()
+    glyphMapper = vtkPolyDataMapper()
     glyphMapper.SetInputConnection(glypher.GetOutputPort())
-    glyphActor = vtk.vtkActor()
+    glyphActor = vtkActor()
     glyphActor.SetMapper(glyphMapper)
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the rendering stuff
-    ren1 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.SetMultiSamples(0)
     renWin.AddRenderer(ren1)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     ren1.AddActor(planeActor)
     ren1.AddActor(glyphActor)

@@ -5,11 +5,26 @@
     This example demonstrates the usage of the vtNamedColor class.
 """
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkFiltersCore import vtkElevationFilter
+from vtkmodules.vtkFiltersModeling import vtkBandedPolyDataContourFilter
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    nc = vtk.vtkNamedColors()
+    nc = vtkNamedColors()
     # We can print out the variables.
     # The color name and RGBA values are displayed.
     print(nc)
@@ -24,7 +39,7 @@ def main():
         color it with the primary additive and subtractive colors.
     """
     # Create a cone
-    coneSource = vtk.vtkConeSource()
+    coneSource = vtkConeSource()
     coneSource.SetCenter(0.0, 0.0, 0.0)
     coneSource.SetRadius(5.0)
     coneSource.SetHeight(10)
@@ -35,12 +50,12 @@ def main():
     bounds = [1.0, -1.0, 1.0, -1.0, 1.0, -1.0]
     coneSource.GetOutput().GetBounds(bounds)
 
-    elevation = vtk.vtkElevationFilter()
+    elevation = vtkElevationFilter()
     elevation.SetInputConnection(coneSource.GetOutputPort())
     elevation.SetLowPoint(0, bounds[2], 0)
     elevation.SetHighPoint(0, bounds[3], 0)
 
-    bcf = vtk.vtkBandedPolyDataContourFilter()
+    bcf = vtkBandedPolyDataContourFilter()
     bcf.SetInputConnection(elevation.GetOutputPort())
     bcf.SetScalarModeToValue()
     bcf.GenerateContourEdgesOn()
@@ -58,7 +73,7 @@ def main():
     print("Matching colors to My Red:", ', '.join(match))
     # Build a simple lookup table of
     # primary additive and subtractive colors.
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetNumberOfTableValues(7)
     lut.SetTableValue(0, nc.GetColor4d("My Red"))
     # Let's make the dark green one partially transparent.
@@ -73,29 +88,29 @@ def main():
     lut.SetTableRange(elevation.GetScalarRange())
     lut.Build()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(bcf.GetOutputPort())
     mapper.SetLookupTable(lut)
     mapper.SetScalarModeToUseCellData()
 
-    contourLineMapper = vtk.vtkPolyDataMapper()
+    contourLineMapper = vtkPolyDataMapper()
     contourLineMapper.SetInputData(bcf.GetContourEdgesOutput())
     contourLineMapper.SetScalarRange(elevation.GetScalarRange())
     contourLineMapper.SetResolveCoincidentTopologyToPolygonOffset()
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
-    contourLineActor = vtk.vtkActor()
+    contourLineActor = vtkActor()
     actor.SetMapper(mapper)
     contourLineActor.SetMapper(contourLineMapper)
     contourLineActor.GetProperty().SetColor(
         nc.GetColor3d("black"))
 
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)

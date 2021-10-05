@@ -1,12 +1,33 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkFiltersCore import (
+    vtkConnectivityFilter,
+    vtkContourFilter,
+    vtkPolyDataNormals
+)
+from vtkmodules.vtkFiltersGeneral import vtkWarpVector
+from vtkmodules.vtkFiltersGeometry import vtkGeometryFilter
+from vtkmodules.vtkIOLegacy import vtkDataSetReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     fileName, dataPoint = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     thickness = list()
     displacement = list()
@@ -30,62 +51,62 @@ def main():
     contours = list()
     ren = list()
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetHueRange(0.0, 0.66667)
 
     for i in range(0, 10):
         # Create the reader and warp the data vith vectors.
-        reader.append(vtk.vtkDataSetReader())
+        reader.append(vtkDataSetReader())
         reader[i].SetFileName(fileName)
         reader[i].SetScalarsName(thickness[i])
         reader[i].SetVectorsName(displacement[i])
         reader[i].Update()
 
-        warp.append(vtk.vtkWarpVector())
+        warp.append(vtkWarpVector())
         warp[i].SetInputData(reader[i].GetUnstructuredGridOutput())
 
         # Extract the mold from the mesh using connectivity.
-        connect.append(vtk.vtkConnectivityFilter())
+        connect.append(vtkConnectivityFilter())
         connect[i].SetInputConnection(warp[i].GetOutputPort())
         connect[i].SetExtractionModeToSpecifiedRegions()
         connect[i].AddSpecifiedRegion(0)
         connect[i].AddSpecifiedRegion(1)
-        mold.append(vtk.vtkGeometryFilter())
+        mold.append(vtkGeometryFilter())
         mold[i].SetInputConnection(connect[i].GetOutputPort())
-        moldMapper.append(vtk.vtkDataSetMapper())
+        moldMapper.append(vtkDataSetMapper())
         moldMapper[i].SetInputConnection(mold[i].GetOutputPort())
         moldMapper[i].ScalarVisibilityOff()
-        moldActor.append(vtk.vtkActor())
+        moldActor.append(vtkActor())
         moldActor[i].SetMapper(moldMapper[i])
         moldActor[i].GetProperty().SetColor(colors.GetColor3d("ivory_black"))
         moldActor[i].GetProperty().SetRepresentationToWireframe()
 
         # Extract the parison from the mesh using connectivity.
-        connect2.append(vtk.vtkConnectivityFilter())
+        connect2.append(vtkConnectivityFilter())
         connect2[i].SetInputConnection(warp[i].GetOutputPort())
         connect2[i].SetExtractionModeToSpecifiedRegions()
         connect2[i].AddSpecifiedRegion(2)
-        parison.append(vtk.vtkGeometryFilter())
+        parison.append(vtkGeometryFilter())
         parison[i].SetInputConnection(connect2[i].GetOutputPort())
-        normals2.append(vtk.vtkPolyDataNormals())
+        normals2.append(vtkPolyDataNormals())
         normals2[i].SetInputConnection(parison[i].GetOutputPort())
         normals2[i].SetFeatureAngle(60)
-        parisonMapper.append(vtk.vtkPolyDataMapper())
+        parisonMapper.append(vtkPolyDataMapper())
         parisonMapper[i].SetInputConnection(normals2[i].GetOutputPort())
         parisonMapper[i].SetLookupTable(lut)
         parisonMapper[i].SetScalarRange(0.12, 1.0)
-        parisonActor.append(vtk.vtkActor())
+        parisonActor.append(vtkActor())
         parisonActor[i].SetMapper(parisonMapper[i])
 
-        cf.append(vtk.vtkContourFilter())
+        cf.append(vtkContourFilter())
         cf[i].SetInputConnection(connect2[i].GetOutputPort())
         cf[i].SetValue(0, 0.5)
-        contourMapper.append(vtk.vtkPolyDataMapper())
+        contourMapper.append(vtkPolyDataMapper())
         contourMapper[i].SetInputConnection(cf[i].GetOutputPort())
-        contours.append(vtk.vtkActor())
+        contours.append(vtkActor())
         contours[i].SetMapper(contourMapper[i])
 
-        ren.append(vtk.vtkRenderer())
+        ren.append(vtkRenderer())
         ren[i].AddActor(moldActor[i])
         ren[i].AddActor(parisonActor[i])
         ren[i].AddActor(contours[i])
@@ -96,8 +117,8 @@ def main():
         ren[i].GetActiveCamera().SetClippingRange(36.640827, 78.614680)
 
     # Create the RenderWindow and RenderWindowInteractor.
-    renWin = vtk.vtkRenderWindow()
-    iren = vtk.vtkRenderWindowInteractor()
+    renWin = vtkRenderWindow()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     rendererSizeX = 750
     rendererSizeY = 400
@@ -144,7 +165,7 @@ def get_program_parameters():
 
    '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue)
-    parser.add_argument('filename', help='blow.vtk.')
+    parser.add_argument('filename', help='blow.vtk')
     parser.add_argument('data_point', default=-1, type=int, nargs='?', help='The particular color scheme to use.')
     args = parser.parse_args()
     return args.filename, args.data_point

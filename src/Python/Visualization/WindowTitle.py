@@ -1,27 +1,41 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
     sphereSource.SetCenter(0.0, 0.0, 0.0)
     sphereSource.SetRadius(5)
 
     # Create a mapper and actor
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(sphereSource.GetOutputPort())
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     # Setup a renderer, render window, and interactor
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     # renderWindow.SetWindowName('Test')
 
     renderWindow.AddRenderer(renderer)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actor to the scene

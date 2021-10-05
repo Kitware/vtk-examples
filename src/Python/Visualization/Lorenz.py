@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-'''
+"""
 Create an iso-surface of the Lorenz attractor.
 
 Here we visualize a Lorenz strange attractor by integrating the Lorenz equations in a volume.
@@ -9,12 +9,29 @@ The surface is extracted via marching cubes using a visit value of 50.
 The number of integration steps is 10 million, in a volume of dimensions 200 x 200 x 200.
 The surface roughness is caused by the discrete nature of the evaluation function.
 
-'''
-import vtkmodules.all as vtk
+"""
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkMinimalStandardRandomSequence,
+    vtkShortArray
+)
+from vtkmodules.vtkCommonDataModel import vtkStructuredPoints
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     Pr = 10.0  # The Lorenz parameters
     b = 2.667
@@ -49,7 +66,7 @@ def main():
     print('     y: {:f}, {:f}'.format(ymin, ymax))
     print('     z: {:f}, {:f}'.format(zmin, zmax))
 
-    randomSequence = vtk.vtkMinimalStandardRandomSequence()
+    randomSequence = vtkMinimalStandardRandomSequence()
     randomSequence.SetSeed(8775070)
     x = randomSequence.GetRangeValue(xmin, xmax)
     randomSequence.Next()
@@ -61,7 +78,7 @@ def main():
     # allocate memory for the slices
     sliceSize = resolution * resolution
     numPts = sliceSize * resolution
-    scalars = vtk.vtkShortArray()
+    scalars = vtkShortArray()
     for i in range(0, numPts):
         scalars.InsertTuple1(i, 0)
     for j in range(0, iterations):
@@ -82,7 +99,7 @@ def main():
             index = xxx + yyy * resolution + zzz * sliceSize
             scalars.SetTuple1(index, scalars.GetTuple1(index) + 1)
 
-    volume = vtk.vtkStructuredPoints()
+    volume = vtkStructuredPoints()
     volume.GetPointData().SetScalars(scalars)
     volume.SetDimensions(resolution, resolution, resolution)
     volume.SetOrigin(xmin, ymin, zmin)
@@ -90,25 +107,25 @@ def main():
 
     print(' contouring...')
     # Do the graphics dance.
-    renderer = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create iso-surface
-    contour = vtk.vtkContourFilter()
+    contour = vtkContourFilter()
     contour.SetInputData(volume)
     contour.SetValue(0, 50)
 
     # Create mapper.
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(contour.GetOutputPort())
     mapper.ScalarVisibilityOff()
 
     # Create actor.
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('DodgerBlue'))
 

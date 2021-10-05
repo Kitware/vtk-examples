@@ -3,13 +3,26 @@
 import re
 from collections import Counter
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersModeling import vtkLinearExtrusionFilter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkRenderingFreeType import vtkVectorText
 
 
 def main():
     fileName = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Here we read the file keeping only the alpha characters
     #  and calculate the frequency of each letter.
@@ -24,10 +37,10 @@ def main():
     #
     # graphics stuff
     #
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     #
     # Setup letters
@@ -38,20 +51,20 @@ def main():
     actors = list()
     i = 0
     for k in keys:
-        letters.append(vtk.vtkVectorText())
+        letters.append(vtkVectorText())
         letters[i].SetText(k.upper())
 
-        extrude.append(vtk.vtkLinearExtrusionFilter())
+        extrude.append(vtkLinearExtrusionFilter())
         extrude[i].SetInputConnection(letters[i].GetOutputPort())
         extrude[i].SetExtrusionTypeToVectorExtrusion()
         extrude[i].SetVector(0, 0, 1.0)
         extrude[i].SetScaleFactor(float(freq[k]) / maxFreq * 2.50)
 
-        mappers.append(vtk.vtkPolyDataMapper())
+        mappers.append(vtkPolyDataMapper())
         mappers[i].SetInputConnection(extrude[i].GetOutputPort())
         mappers[i].ScalarVisibilityOff()
 
-        actors.append(vtk.vtkActor())
+        actors.append(vtkActor())
         actors[i].SetMapper(mappers[i])
         actors[i].GetProperty().SetColor(colors.GetColor3d('Peacock'))
 

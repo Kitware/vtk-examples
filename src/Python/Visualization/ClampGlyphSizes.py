@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # Example of how to use range clamping with vtkGlyph3D filter.
 #
 # Note that the internal algorithm does this to figure out the eventual scale
@@ -14,39 +16,56 @@
 # minimum size to your glyphs, then you can set the Range as something like [-0.5, 1]
 
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import (
+    vtkElevationFilter,
+    vtkGlyph3D
+)
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkImagingCore import vtkRTAnalyticSource
+from vtkmodules.vtkImagingGeneral import vtkImageGradient
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Generate an image data set with multiple attribute arrays to probe and view
     # We will glyph these points with cones and scale/orient/color them with the
     # various attributes
 
     # The Wavelet Source is nice for generating a test vtkImageData set
-    rt = vtk.vtkRTAnalyticSource()
+    rt = vtkRTAnalyticSource()
     rt.SetWholeExtent(-2, 2, -2, 2, 0, 0)
 
     # Take the gradient of the only scalar 'RTData' to get a vector attribute
-    grad = vtk.vtkImageGradient()
+    grad = vtkImageGradient()
     grad.SetDimensionality(3)
     grad.SetInputConnection(rt.GetOutputPort())
 
     # Elevation just to generate another scalar attribute that varies nicely over the data range
-    elev = vtk.vtkElevationFilter()
+    elev = vtkElevationFilter()
     # Elevation values will range from 0 to 1 between the Low and High Points
     elev.SetLowPoint(-2, 0, 0)
     elev.SetHighPoint(2, 0, 0)
     elev.SetInputConnection(grad.GetOutputPort())
 
     # Generate the cone for the glyphs
-    sph = vtk.vtkConeSource()
+    sph = vtkConeSource()
     sph.SetRadius(0.1)
     sph.SetHeight(0.5)
 
     # Set up the glyph filter
-    glyph = vtk.vtkGlyph3D()
+    glyph = vtkGlyph3D()
     glyph.SetInputConnection(elev.GetOutputPort())
     glyph.SetSourceConnection(sph.GetOutputPort())
     glyph.ScalingOn()
@@ -78,25 +97,25 @@ def main():
     glyph.Update()
 
     coloring_by = 'RTData'
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(glyph.GetOutputPort())
     mapper.SetScalarModeToUsePointFieldData()
     mapper.SetColorModeToMapScalars()
     mapper.ScalarVisibilityOn()
     mapper.SetScalarRange(glyph.GetOutputDataObject(0).GetPointData().GetArray(coloring_by).GetRange())
     mapper.SelectColorArray(coloring_by)
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
-    ren = vtk.vtkRenderer()
+    ren = vtkRenderer()
     ren.AddActor(actor)
     ren.SetBackground(colors.GetColor3d('MidnightBlue'))
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetWindowName('ClampGlyphSizes')
 
-    iren = vtk.vtkRenderWindowInteractor()
-    istyle = vtk.vtkInteractorStyleTrackballCamera()
+    iren = vtkRenderWindowInteractor()
+    istyle = vtkInteractorStyleTrackballCamera()
     iren.SetInteractorStyle(istyle)
     iren.SetRenderWindow(renWin)
     ren.ResetCamera()

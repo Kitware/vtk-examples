@@ -1,7 +1,30 @@
 #!/usr/bin/env python
+
 from math import pi, cos, sin, sqrt
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkIntArray,
+    vtkLookupTable,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData,
+    vtkPolyLine,
+    vtkTriangle
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 LEVEL = 6
 
@@ -15,7 +38,7 @@ def as_polyline(points, level):
     # counterclockwise fashion. If the initial triangle above is written to
     # describe clockwise motion, the points will face inward instead of outward.
     for i in range(level):
-        temp = vtk.vtkPoints()
+        temp = vtkPoints()
         # The first point of the previous vtkPoints is the first point of the next vtkPoints.
         temp.InsertNextPoint(*points.GetPoint(0))
 
@@ -36,15 +59,15 @@ def as_polyline(points, level):
         points = temp
 
     # draw the outline
-    lines = vtk.vtkCellArray()
-    pl = vtk.vtkPolyLine()
+    lines = vtkCellArray()
+    pl = vtkPolyLine()
     pl.GetPointIds().SetNumberOfIds(points.GetNumberOfPoints())
     for i in range(points.GetNumberOfPoints()):
         pl.GetPointIds().SetId(i, i)
     lines.InsertNextCell(pl)
 
     # complete the polydata
-    polydata = vtk.vtkPolyData()
+    polydata = vtkPolyData()
     polydata.SetLines(lines)
     polydata.SetPoints(points)
 
@@ -59,7 +82,7 @@ def as_triangles(indices, cellarray, level, data):
         stride = len(indices) // 4
         indices.append(indices[-1] + 1)
 
-        triangle = vtk.vtkTriangle()
+        triangle = vtkTriangle()
         triangle.GetPointIds().SetId(0, indices[stride])
         triangle.GetPointIds().SetId(1, indices[2 * stride])
         triangle.GetPointIds().SetId(2, indices[3 * stride])
@@ -74,12 +97,12 @@ def as_triangles(indices, cellarray, level, data):
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Initially, set up the points to be an equilateral triangle. Note that the
     # first point is the same as the last point to make this a closed curve when
     # I create the vtkPolyLine.
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     for i in range(4):
         points.InsertNextPoint(cos(2.0 * pi * i / 3), sin(2 * pi * i / 3.0), 0.0)
 
@@ -93,19 +116,19 @@ def main():
     # vtkPoints. They're consecutive, so thats pretty straightforward.
 
     indices = [i for i in range(outline_pd.GetPoints().GetNumberOfPoints() + 1)]
-    triangles = vtk.vtkCellArray()
+    triangles = vtkCellArray()
 
     # Set this up for each of the initial sides, then call the recursive function.
     stride = (len(indices) - 1) // 3
 
     # The cell data will allow us to color the triangles based on the level of
     # the iteration of the Koch snowflake.
-    data = vtk.vtkIntArray()
+    data = vtkIntArray()
     data.SetNumberOfComponents(0)
     data.SetName('Iteration Level')
 
     # This is the starting triangle.
-    t = vtk.vtkTriangle()
+    t = vtkTriangle()
     t.GetPointIds().SetId(0, 0)
     t.GetPointIds().SetId(1, stride)
     t.GetPointIds().SetId(2, 2 * stride)
@@ -116,7 +139,7 @@ def main():
     as_triangles(indices[stride: 2 * stride + 1], triangles, 1, data)
     as_triangles(indices[2 * stride: -1], triangles, 1, data)
 
-    triangle_pd = vtk.vtkPolyData()
+    triangle_pd = vtkPolyData()
     triangle_pd.SetPoints(outline_pd.GetPoints())
     triangle_pd.SetPolys(triangles)
     triangle_pd.GetCellData().SetScalars(data)
@@ -124,36 +147,36 @@ def main():
     # ---------------- #
     # rendering stuff  #
     # ---------------- #
-    outline_mapper = vtk.vtkPolyDataMapper()
+    outline_mapper = vtkPolyDataMapper()
     outline_mapper.SetInputData(outline_pd)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetNumberOfTableValues(256)
     lut.SetHueRange(0.6, 0.6)
     lut.SetSaturationRange(0.0, 1.0)
     lut.Build()
 
-    triangle_mapper = vtk.vtkPolyDataMapper()
+    triangle_mapper = vtkPolyDataMapper()
     triangle_mapper.SetInputData(triangle_pd)
     triangle_mapper.SetScalarRange(0.0, LEVEL)
     triangle_mapper.SetLookupTable(lut)
 
-    outline_actor = vtk.vtkActor()
+    outline_actor = vtkActor()
     outline_actor.SetMapper(outline_mapper)
 
-    triangle_actor = vtk.vtkActor()
+    triangle_actor = vtkActor()
     triangle_actor.SetMapper(triangle_mapper)
 
-    outline_ren = vtk.vtkRenderer()
+    outline_ren = vtkRenderer()
     outline_ren.AddActor(outline_actor)
     outline_ren.SetViewport(0.0, 0.0, 0.5, 1.0)
 
-    triangle_ren = vtk.vtkRenderer()
+    triangle_ren = vtkRenderer()
     triangle_ren.AddActor(triangle_actor)
     triangle_ren.SetViewport(0.5, 0.0, 1.0, 1.0)
     triangle_ren.SetActiveCamera(outline_ren.GetActiveCamera())
 
-    renw = vtk.vtkRenderWindow()
+    renw = vtkRenderWindow()
     renw.AddRenderer(outline_ren)
     renw.AddRenderer(triangle_ren)
     renw.SetSize(800, 400)
@@ -162,7 +185,7 @@ def main():
     outline_ren.SetBackground(colors.GetColor3d('CornFlowerBLue'))
     triangle_ren.SetBackground(colors.GetColor3d('MistyRose'))
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renw)
 
     outline_ren.ResetCamera()

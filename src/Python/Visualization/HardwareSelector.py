@@ -1,15 +1,31 @@
-import vtkmodules.all as vtk
-import vtk.util.numpy_support as VN
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkDataObject
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkHardwareSelector,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 # Callback for when selection is changed
 
 # This is global - fix later.
-ren1 = vtk.vtkRenderer()
+ren1 = vtkRenderer()
 
 
 def selectionCallback(caller, eventId):
-    hsel = vtk.vtkHardwareSelector()
-    hsel.SetFieldAssociation(vtk.vtkDataObject.FIELD_ASSOCIATION_CELLS)
+    hsel = vtkHardwareSelector()
+    hsel.SetFieldAssociation(vtkDataObject.FIELD_ASSOCIATION_CELLS)
     hsel.SetRenderer(ren1)
 
     x, y = caller.GetRenderWindow().GetSize()
@@ -27,16 +43,16 @@ def selectionCallback(caller, eventId):
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetCenter(0, 0, 0)
     sphere.SetRadius(5.0)
 
-    sphereMapper = vtk.vtkPolyDataMapper()
+    sphereMapper = vtkPolyDataMapper()
     sphereMapper.SetInputConnection(sphere.GetOutputPort())
 
-    sphereActor = vtk.vtkActor()
+    sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
     sphereActor.GetProperty().SetColor(colors.GetColor3d('Bisque'))
 
@@ -44,16 +60,16 @@ def main():
     ren1.GetActiveCamera().ParallelProjectionOn()
     ren1.SetBackground(colors.GetColor3d('Navy'))
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
     renWin.SetSize(300, 300)
     renWin.SetWindowName('HardwareSelector')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     iren.AddObserver("UserEvent", selectionCallback)
 
-    style = vtk.vtkInteractorStyleTrackballCamera()
+    style = vtkInteractorStyleTrackballCamera()
     iren.SetInteractorStyle(style)
     renWin.GetInteractor().SetInteractorStyle(style)
 

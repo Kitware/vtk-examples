@@ -3,7 +3,41 @@
 import collections
 from pathlib import Path
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkCommonMath import vtkMatrix4x4
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import (
+    vtkContourFilter,
+    vtkDecimatePro,
+    vtkExecutionTimer,
+    vtkFlyingEdges3D,
+    vtkMarchingCubes,
+    vtkPolyDataNormals,
+    vtkStripper,
+    vtkWindowedSincPolyDataFilter
+)
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
+from vtkmodules.vtkIOImage import vtkMetaImageReader
+from vtkmodules.vtkImagingCore import (
+    vtkImageShrink3D,
+    vtkImageThreshold
+)
+from vtkmodules.vtkImagingGeneral import vtkImageGaussianSmooth
+from vtkmodules.vtkImagingMorphological import vtkImageIslandRemoval2D
+from vtkmodules.vtkInteractionWidgets import vtkOrientationMarkerWidget
+from vtkmodules.vtkRenderingAnnotation import vtkAxesActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters(argv):
@@ -48,7 +82,7 @@ Fig12-9c:
 
 
 def main(data_folder, tissues, view, flying_edges, decimate):
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     path = Path(data_folder)
     if path.is_dir():
@@ -85,10 +119,10 @@ def main(data_folder, tissues, view, flying_edges, decimate):
         return
 
     # Setup render window, renderer, and interactor.
-    renderer = vtk.vtkRenderer()
-    render_window = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    render_window = vtkRenderWindow()
     render_window.AddRenderer(renderer)
-    render_window_interactor = vtk.vtkRenderWindowInteractor()
+    render_window_interactor = vtkRenderWindowInteractor()
     render_window_interactor.SetRenderWindow(render_window)
 
     lut = create_frog_lut(colors)
@@ -142,9 +176,9 @@ def main(data_folder, tissues, view, flying_edges, decimate):
     render_window.SetWindowName('FrogReconstruction')
     render_window.Render()
 
-    axes = vtk.vtkAxesActor()
+    axes = vtkAxesActor()
 
-    widget = vtk.vtkOrientationMarkerWidget()
+    widget = vtkOrientationMarkerWidget()
     rgba = [0.0, 0.0, 0.0, 0.0]
     colors.GetColor("Carrot", rgba)
     widget.SetOutlineColor(rgba[0], rgba[1], rgba[2])
@@ -183,7 +217,7 @@ def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, decimate, l
     else:
         fn = frog_tissue_fn
 
-    reader = vtk.vtkMetaImageReader()
+    reader = vtkMetaImageReader()
     reader.SetFileName(str(fn))
     reader.SetDataSpacing(data_spacing)
     reader.SetDataOrigin(data_origin)
@@ -194,7 +228,7 @@ def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, decimate, l
 
     if not tissue['NAME'] == 'skin':
         if tissue['ISLAND_REPLACE'] >= 0:
-            island_remover = vtk.vtkImageIslandRemoval2D()
+            island_remover = vtkImageIslandRemoval2D()
             island_remover.SetAreaThreshold(tissue['ISLAND_AREA'])
             island_remover.SetIslandValue(tissue['ISLAND_REPLACE'])
             island_remover.SetReplaceValue(tissue['TISSUE'])
@@ -202,21 +236,21 @@ def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, decimate, l
             island_remover.Update()
             last_connection = island_remover
 
-        select_tissue = vtk.vtkImageThreshold()
+        select_tissue = vtkImageThreshold()
         select_tissue.ThresholdBetween(tissue['TISSUE'], tissue['TISSUE'])
         select_tissue.SetInValue(255)
         select_tissue.SetOutValue(0)
         select_tissue.SetInputConnection(last_connection.GetOutputPort())
         last_connection = select_tissue
 
-    shrinker = vtk.vtkImageShrink3D()
+    shrinker = vtkImageShrink3D()
     shrinker.SetInputConnection(last_connection.GetOutputPort())
     shrinker.SetShrinkFactors(tissue['SAMPLE_RATE'])
     shrinker.AveragingOn()
     last_connection = shrinker
 
     if not all(v == 0 for v in tissue['GAUSSIAN_STANDARD_DEVIATION']):
-        gaussian = vtk.vtkImageGaussianSmooth()
+        gaussian = vtkImageGaussianSmooth()
         gaussian.SetStandardDeviation(*tissue['GAUSSIAN_STANDARD_DEVIATION'])
         gaussian.SetRadiusFactors(*tissue['GAUSSIAN_RADIUS_FACTORS'])
         gaussian.SetInputConnection(shrinker.GetOutputPort())
@@ -225,24 +259,24 @@ def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, decimate, l
     ict = collections.defaultdict()
     iso_value = tissue['VALUE']
     if flying_edges:
-        iso_surface = vtk.vtkFlyingEdges3D()
+        iso_surface = vtkFlyingEdges3D()
         iso_surface.SetInputConnection(last_connection.GetOutputPort())
         iso_surface.ComputeScalarsOff()
         iso_surface.ComputeGradientsOff()
         iso_surface.ComputeNormalsOff()
         iso_surface.SetValue(0, iso_value)
-        timer = vtk.vtkExecutionTimer()
+        timer = vtkExecutionTimer()
         timer.SetFilter(iso_surface)
         iso_surface.Update()
         ict['Flying Edges'] = timer.GetElapsedWallClockTime()
     else:
-        iso_surface = vtk.vtkMarchingCubes()
+        iso_surface = vtkMarchingCubes()
         iso_surface.SetInputConnection(last_connection.GetOutputPort())
         iso_surface.ComputeScalarsOff()
         iso_surface.ComputeGradientsOff()
         iso_surface.ComputeNormalsOff()
         iso_surface.SetValue(0, iso_value)
-        timer = vtk.vtkExecutionTimer()
+        timer = vtkExecutionTimer()
         timer.SetFilter(iso_surface)
         iso_surface.Update()
         ict['Marching Cubes'] = timer.GetElapsedWallClockTime()
@@ -252,13 +286,13 @@ def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, decimate, l
     # Match Frog.py
     transform = so.get('hfap')
     transform.Scale(1, -1, 1)
-    tf = vtk.vtkTransformPolyDataFilter()
+    tf = vtkTransformPolyDataFilter()
     tf.SetTransform(transform)
     tf.SetInputConnection(iso_surface.GetOutputPort())
     last_connection = tf
 
     if decimate:
-        decimator = vtk.vtkDecimatePro()
+        decimator = vtkDecimatePro()
         decimator.SetInputConnection(last_connection.GetOutputPort())
         decimator.SetFeatureAngle(tissue['DECIMATE_ANGLE'])
         decimator.MaximumIterations = tissue['DECIMATE_ITERATIONS']
@@ -268,7 +302,7 @@ def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, decimate, l
         decimator.SetTargetReduction(tissue['DECIMATE_REDUCTION'])
         last_connection = decimator
 
-    smoother = vtk.vtkWindowedSincPolyDataFilter()
+    smoother = vtkWindowedSincPolyDataFilter()
     smoother.SetInputConnection(last_connection.GetOutputPort())
     smoother.SetNumberOfIterations(tissue['SMOOTH_ITERATIONS'])
     smoother.BoundarySmoothingOff()
@@ -279,22 +313,22 @@ def create_frog_actor(frog_fn, frog_tissue_fn, tissue, flying_edges, decimate, l
     smoother.NormalizeCoordinatesOff()
     smoother.Update()
 
-    normals = vtk.vtkPolyDataNormals()
+    normals = vtkPolyDataNormals()
     normals.SetInputConnection(smoother.GetOutputPort())
     normals.SetFeatureAngle(tissue['FEATURE_ANGLE'])
 
-    stripper = vtk.vtkStripper()
+    stripper = vtkStripper()
     stripper.SetInputConnection(normals.GetOutputPort())
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(stripper.GetOutputPort())
 
     # Create iso-surface
-    contour = vtk.vtkContourFilter()
+    contour = vtkContourFilter()
     contour.SetInputConnection(reader.GetOutputPort())
     contour.SetValue(0, iso_value)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetOpacity(tissue['OPACITY'])
     actor.GetProperty().SetDiffuseColor(lut.GetTableValue(tissue['TISSUE'])[:3])
@@ -324,28 +358,28 @@ class SliceOrder:
     """
 
     def __init__(self):
-        self.si_mat = vtk.vtkMatrix4x4()
+        self.si_mat = vtkMatrix4x4()
         self.si_mat.Zero()
         self.si_mat.SetElement(0, 0, 1)
         self.si_mat.SetElement(1, 2, 1)
         self.si_mat.SetElement(2, 1, -1)
         self.si_mat.SetElement(3, 3, 1)
 
-        self.is_mat = vtk.vtkMatrix4x4()
+        self.is_mat = vtkMatrix4x4()
         self.is_mat.Zero()
         self.is_mat.SetElement(0, 0, 1)
         self.is_mat.SetElement(1, 2, -1)
         self.is_mat.SetElement(2, 1, -1)
         self.is_mat.SetElement(3, 3, 1)
 
-        self.lr_mat = vtk.vtkMatrix4x4()
+        self.lr_mat = vtkMatrix4x4()
         self.lr_mat.Zero()
         self.lr_mat.SetElement(0, 2, -1)
         self.lr_mat.SetElement(1, 1, -1)
         self.lr_mat.SetElement(2, 0, 1)
         self.lr_mat.SetElement(3, 3, 1)
 
-        self.rl_mat = vtk.vtkMatrix4x4()
+        self.rl_mat = vtkMatrix4x4()
         self.rl_mat.Zero()
         self.rl_mat.SetElement(0, 2, 1)
         self.rl_mat.SetElement(1, 1, -1)
@@ -358,7 +392,7 @@ class SliceOrder:
         with a 180° rotation about y
         """
 
-        self.hf_mat = vtk.vtkMatrix4x4()
+        self.hf_mat = vtkMatrix4x4()
         self.hf_mat.Zero()
         self.hf_mat.SetElement(0, 0, -1)
         self.hf_mat.SetElement(1, 1, 1)
@@ -366,73 +400,73 @@ class SliceOrder:
         self.hf_mat.SetElement(3, 3, 1)
 
     def s_i(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.SetMatrix(self.si_mat)
         return t
 
     def i_s(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.SetMatrix(self.is_mat)
         return t
 
     @staticmethod
     def a_p():
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         return t.Scale(1, -1, 1)
 
     @staticmethod
     def p_a():
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         return t.Scale(1, -1, -1)
 
     def l_r(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.SetMatrix(self.lr_mat)
         t.Update()
         return t
 
     def r_l(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.SetMatrix(self.lr_mat)
         return t
 
     def h_f(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.SetMatrix(self.hf_mat)
         return t
 
     def hf_si(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Concatenate(self.si_mat)
         return t
 
     def hf_is(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Concatenate(self.is_mat)
         return t
 
     def hf_ap(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Scale(1, -1, 1)
         return t
 
     def hf_pa(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Scale(1, -1, -1)
         return t
 
     def hf_lr(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Concatenate(self.lr_mat)
         return t
 
     def hf_rl(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Concatenate(self.rl_mat)
         return t
@@ -744,7 +778,7 @@ def tissue_parameters():
 
 
 def create_frog_lut(colors):
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetNumberOfColors(16)
     lut.SetTableRange(0, 15)
     lut.Build()

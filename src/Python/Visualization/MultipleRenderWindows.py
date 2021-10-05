@@ -1,4 +1,22 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import (
+    vtkConeSource,
+    vtkCubeSource,
+    vtkCylinderSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -17,7 +35,7 @@ def get_program_parameters():
 def main():
     simultaneous_update = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     # Have some fun with colors
     ren_bkg = ['AliceBlue', 'GhostWhite', 'WhiteSmoke', 'Seashell']
     actor_color = ['Bisque', 'RosyBrown', 'Goldenrod', 'Chocolate']
@@ -39,10 +57,10 @@ def main():
 
     kpis = list()
     for i in range(0, 4):
-        ren_win = vtk.vtkRenderWindow()
+        ren_win = vtkRenderWindow()
         ren_win.SetSize(width, height)
 
-        renderer = vtk.vtkRenderer()
+        renderer = vtkRenderer()
 
         # Share the camera between viewports.
         if i == 0:
@@ -54,7 +72,7 @@ def main():
 
         ren_win.AddRenderer(renderer)
 
-        iren = vtk.vtkRenderWindowInteractor()
+        iren = vtkRenderWindowInteractor()
 
         interactors.append(iren)
 
@@ -64,10 +82,10 @@ def main():
         ren_win.SetPosition((i % 2) * w, h - (i // 2) * h)
 
         # Create a mapper and actor.
-        mapper = vtk.vtkPolyDataMapper()
+        mapper = vtkPolyDataMapper()
         mapper.SetInputConnection(sources[i].GetOutputPort())
 
-        actor = vtk.vtkActor()
+        actor = vtkActor()
         actor.SetMapper(mapper)
         actor.GetProperty().SetColor(colors.GetColor3d(actor_color[i]))
 
@@ -100,23 +118,23 @@ def get_sources():
     sources = list()
 
     # Create a sphere
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetCenter(0.0, 0.0, 0.0)
     sphere.Update()
     sources.append(sphere)
     # Create a cone
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetCenter(0.0, 0.0, 0.0)
     cone.SetDirection(0, 1, 0)
     cone.Update()
     sources.append(cone)
     # Create a cube
-    cube = vtk.vtkCubeSource()
+    cube = vtkCubeSource()
     cube.SetCenter(0.0, 0.0, 0.0)
     cube.Update()
     sources.append(cube)
     # Create a cylinder
-    cylinder = vtk.vtkCylinderSource()
+    cylinder = vtkCylinderSource()
     cylinder.SetCenter(0.0, 0.0, 0.0)
     cylinder.Update()
     sources.append(cylinder)
@@ -124,10 +142,10 @@ def get_sources():
     return sources
 
 
-class KeyPressInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
+class KeyPressInteractorStyle(vtkInteractorStyleTrackballCamera):
 
     def __init__(self, parent=None, status=True):
-        self.parent = vtk.vtkRenderWindowInteractor()
+        self.parent = vtkRenderWindowInteractor()
         self.status = status
         if parent is not None:
             self.parent = parent

@@ -2,7 +2,24 @@
 
 #  Translated from hawaii.tcl
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import (
+    vtkColorSeries,
+    vtkNamedColors
+)
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkFiltersCore import vtkElevationFilter
+from vtkmodules.vtkIOLegacy import vtkPolyDataReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
@@ -12,20 +29,20 @@ def main():
     if color_scheme > 2:
         color_scheme = 0;
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor("BkgColor", [26, 51, 102, 255])
 
     # Read a vtk file
     #
-    hawaii = vtk.vtkPolyDataReader()
+    hawaii = vtkPolyDataReader()
     hawaii.SetFileName(file_name)
     hawaii.Update()
     bounds = [0.0] * 6
     hawaii.GetOutput().GetBounds(bounds)
 
-    elevation = vtk.vtkElevationFilter()
+    elevation = vtkElevationFilter()
     elevation.SetInputConnection(hawaii.GetOutputPort())
     elevation.SetLowPoint(0, 0, 0)
     elevation.SetHighPoint(0, 0, 1000)
@@ -33,21 +50,21 @@ def main():
 
     lut = MakeLUT(color_scheme)
 
-    hawaiiMapper = vtk.vtkDataSetMapper()
+    hawaiiMapper = vtkDataSetMapper()
     hawaiiMapper.SetInputConnection(elevation.GetOutputPort())
     hawaiiMapper.SetScalarRange(0, 1000)
     hawaiiMapper.ScalarVisibilityOn()
     hawaiiMapper.SetLookupTable(lut)
 
-    hawaiiActor = vtk.vtkActor()
+    hawaiiActor = vtkActor()
     hawaiiActor.SetMapper(hawaiiMapper)
 
     # Create the RenderWindow, Renderer and both Actors
     #
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size
@@ -89,7 +106,7 @@ def get_program_parameters():
 
    '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue)
-    parser.add_argument('filename', help='honolulu.vtk.')
+    parser.add_argument('filename', help='honolulu.vtk')
     parser.add_argument('color_scheme', default=0, type=int, nargs='?', help='The particular color scheme to use.')
     args = parser.parse_args()
     return args.filename, args.color_scheme
@@ -101,18 +118,18 @@ def MakeLUT(color_scheme=0):
     :param color_scheme: Select the type of lookup table.
     :return: The lookup table.
     """
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     if color_scheme == 1:
         # A lookup table of 256 colours ranging from
         #  deep blue (water) to yellow-white (mountain top)
         #  is used to color map this figure.
-        lut = vtk.vtkLookupTable()
+        lut = vtkLookupTable()
         lut.SetHueRange(0.7, 0)
         lut.SetSaturationRange(1.0, 0)
         lut.SetValueRange(0.5, 1.0)
     elif color_scheme == 2:
         # Make the lookup table with a preset number of colours.
-        colorSeries = vtk.vtkColorSeries()
+        colorSeries = vtkColorSeries()
         colorSeries.SetNumberOfColors(8)
         colorSeries.SetColorSchemeName('Hawaii')
         colorSeries.SetColor(0, colors.GetColor3ub("turquoise_blue"))
@@ -123,16 +140,16 @@ def MakeLUT(color_scheme=0):
         colorSeries.SetColor(5, colors.GetColor3ub("beige"))
         colorSeries.SetColor(6, colors.GetColor3ub("light_beige"))
         colorSeries.SetColor(7, colors.GetColor3ub("bisque"))
-        lut = vtk.vtkLookupTable()
+        lut = vtkLookupTable()
         colorSeries.BuildLookupTable(lut, colorSeries.ORDINAL)
         lut.SetNanColor(1, 0, 0, 1)
     else:
         # Make the lookup using a Brewer palette.
-        colorSeries = vtk.vtkColorSeries()
+        colorSeries = vtkColorSeries()
         colorSeries.SetNumberOfColors(8)
         colorSeriesEnum = colorSeries.BREWER_DIVERGING_BROWN_BLUE_GREEN_8
         colorSeries.SetColorScheme(colorSeriesEnum)
-        lut = vtk.vtkLookupTable()
+        lut = vtkLookupTable()
         colorSeries.BuildLookupTable(lut, colorSeries.ORDINAL)
         lut.SetNanColor(1, 0, 0, 1)
     return lut

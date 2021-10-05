@@ -1,46 +1,61 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkFiltersCore import vtkHedgeHog
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkIOLegacy import vtkStructuredPointsReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     fileName = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    reader = vtk.vtkStructuredPointsReader()
+    reader = vtkStructuredPointsReader()
     reader.SetFileName(fileName)
 
-    hhog = vtk.vtkHedgeHog()
+    hhog = vtkHedgeHog()
     hhog.SetInputConnection(reader.GetOutputPort())
     hhog.SetScaleFactor(0.3)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     # lut.SetHueRange(.667, 0.0)
     lut.Build()
 
-    hhogMapper = vtk.vtkPolyDataMapper()
+    hhogMapper = vtkPolyDataMapper()
     hhogMapper.SetInputConnection(hhog.GetOutputPort())
     hhogMapper.SetScalarRange(50, 550)
     hhogMapper.SetLookupTable(lut)
 
-    hhogActor = vtk.vtkActor()
+    hhogActor = vtkActor()
     hhogActor.SetMapper(hhogMapper)
 
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(reader.GetOutputPort())
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
-    aRenderer = vtk.vtkRenderer()
-    aRenderWindow = vtk.vtkRenderWindow()
+    aRenderer = vtkRenderer()
+    aRenderWindow = vtkRenderWindow()
     aRenderWindow.AddRenderer(aRenderer)
-    anInteractor = vtk.vtkRenderWindowInteractor()
+    anInteractor = vtkRenderWindowInteractor()
     anInteractor.SetRenderWindow(aRenderWindow)
     aRenderWindow.SetSize(640, 480)
     aRenderWindow.SetWindowName('ComplexV')
@@ -75,7 +90,7 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename', help='carotid.vtk.')
+    parser.add_argument('filename', help='carotid.vtk')
     args = parser.parse_args()
     return args.filename
 

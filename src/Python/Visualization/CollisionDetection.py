@@ -2,7 +2,25 @@
 
 import time
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingFreeType
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonMath import vtkMatrix4x4
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersModeling import vtkCollisionDetectionFilter
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextActor
+)
 
 
 def get_program_parameters():
@@ -32,23 +50,23 @@ def main():
     contactMode = get_program_parameters()
 
     # Define colors
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    sphere0 = vtk.vtkSphereSource()
+    sphere0 = vtkSphereSource()
     sphere0.SetRadius(0.29)
     sphere0.SetPhiResolution(31)
     sphere0.SetThetaResolution(31)
     sphere0.SetCenter(0.0, 0, 0)
 
-    sphere1 = vtk.vtkSphereSource()
+    sphere1 = vtkSphereSource()
     sphere1.SetPhiResolution(30)
     sphere1.SetThetaResolution(30)
     sphere1.SetRadius(0.3)
 
-    matrix1 = vtk.vtkMatrix4x4()
-    transform0 = vtk.vtkTransform()
+    matrix1 = vtkMatrix4x4()
+    transform0 = vtkTransform()
 
-    collide = vtk.vtkCollisionDetectionFilter()
+    collide = vtkCollisionDetectionFilter()
     collide.SetInputConnection(0, sphere0.GetOutputPort())
     collide.SetTransform(0, transform0)
     collide.SetInputConnection(1, sphere1.GetOutputPort())
@@ -65,37 +83,37 @@ def main():
     collide.GenerateScalarsOn()
 
     # Visualize
-    mapper1 = vtk.vtkPolyDataMapper()
+    mapper1 = vtkPolyDataMapper()
     mapper1.SetInputConnection(collide.GetOutputPort(0))
     mapper1.ScalarVisibilityOff()
-    actor1 = vtk.vtkActor()
+    actor1 = vtkActor()
     actor1.SetMapper(mapper1)
     actor1.GetProperty().BackfaceCullingOn()
     actor1.SetUserTransform(transform0)
     actor1.GetProperty().SetDiffuseColor(colors.GetColor3d("Tomato"))
     actor1.GetProperty().SetRepresentationToWireframe()
 
-    mapper2 = vtk.vtkPolyDataMapper()
+    mapper2 = vtkPolyDataMapper()
     mapper2.SetInputConnection(collide.GetOutputPort(1))
 
-    actor2 = vtk.vtkActor()
+    actor2 = vtkActor()
     actor2.SetMapper(mapper2)
     actor2.GetProperty().BackfaceCullingOn()
     actor2.SetUserMatrix(matrix1)
 
-    mapper3 = vtk.vtkPolyDataMapper()
+    mapper3 = vtkPolyDataMapper()
     mapper3.SetInputConnection(collide.GetContactsOutputPort())
     mapper3.SetResolveCoincidentTopologyToPolygonOffset()
 
-    actor3 = vtk.vtkActor()
+    actor3 = vtkActor()
     actor3.SetMapper(mapper3)
     actor3.GetProperty().SetColor(colors.GetColor3d("Black"))
     actor3.GetProperty().SetLineWidth(3.0)
 
-    txt = vtk.vtkTextActor()
+    txt = vtkTextActor()
     txt.GetTextProperty().SetFontSize(18)
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.UseHiddenLineRemovalOn()
     renderer.AddActor(actor1)
     renderer.AddActor(actor2)
@@ -104,11 +122,11 @@ def main():
     renderer.SetBackground(colors.GetColor3d("Gray"))
     renderer.UseHiddenLineRemovalOn()
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(640, 480)
     renderWindow.AddRenderer(renderer)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     # Move the first object

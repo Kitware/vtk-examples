@@ -2,7 +2,33 @@
 
 from pathlib import Path
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    VTK_VERSION_NUMBER,
+    vtkLookupTable,
+    vtkVersion
+)
+from vtkmodules.vtkFiltersCore import (
+    vtkFlyingEdges3D,
+    vtkMarchingCubes,
+    vtkPolyDataNormals,
+    vtkStripper,
+    vtkWindowedSincPolyDataFilter
+)
+from vtkmodules.vtkIOImage import vtkMetaImageReader
+from vtkmodules.vtkImagingCore import vtkImageThreshold
+from vtkmodules.vtkImagingGeneral import vtkImageGaussianSmooth
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters(argv):
@@ -23,7 +49,7 @@ def main(data_folder, tissue):
     # vtkFlyingEdges3D was introduced in VTK >= 8.2
     use_flying_edges = vtk_version_ok(8, 2, 0)
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     path = Path(data_folder)
     if path.is_dir():
@@ -42,14 +68,14 @@ def main(data_folder, tissue):
     lut = create_frog_lut(colors)
 
     # Setup render window, renderer, and interactor.
-    renderer_left = vtk.vtkRenderer()
+    renderer_left = vtkRenderer()
     renderer_left.SetViewport(0, 0, 0.5, 1)
-    renderer_right = vtk.vtkRenderer()
+    renderer_right = vtkRenderer()
     renderer_right.SetViewport(0.5, 0, 1, 1)
-    render_window = vtk.vtkRenderWindow()
+    render_window = vtkRenderWindow()
     render_window.AddRenderer(renderer_left)
     render_window.AddRenderer(renderer_right)
-    render_window_interactor = vtk.vtkRenderWindowInteractor()
+    render_window_interactor = vtkRenderWindowInteractor()
     render_window_interactor.SetRenderWindow(render_window)
 
     actor = create_frog_actor(file_name, tissue_map[tissue], use_flying_edges)
@@ -81,11 +107,11 @@ def main(data_folder, tissue):
 
 
 def create_smooth_frog_actor(file_name, tissue, use_flying_edges):
-    reader = vtk.vtkMetaImageReader()
+    reader = vtkMetaImageReader()
     reader.SetFileName(str(file_name))
     reader.Update()
 
-    select_tissue = vtk.vtkImageThreshold()
+    select_tissue = vtkImageThreshold()
     select_tissue.ThresholdBetween(tissue, tissue)
     select_tissue.SetInValue(255)
     select_tissue.SetOutValue(0)
@@ -93,7 +119,7 @@ def create_smooth_frog_actor(file_name, tissue, use_flying_edges):
 
     gaussian_radius = 1
     gaussian_standard_deviation = 2.0
-    gaussian = vtk.vtkImageGaussianSmooth()
+    gaussian = vtkImageGaussianSmooth()
     gaussian.SetStandardDeviations(gaussian_standard_deviation, gaussian_standard_deviation,
                                    gaussian_standard_deviation)
     gaussian.SetRadiusFactors(gaussian_radius, gaussian_radius, gaussian_radius)
@@ -103,11 +129,11 @@ def create_smooth_frog_actor(file_name, tissue, use_flying_edges):
     iso_value = 127.5
     if use_flying_edges:
         try:
-            iso_surface = vtk.vtkFlyingEdges3D()
+            iso_surface = vtkFlyingEdges3D()
         except AttributeError:
-            iso_surface = vtk.vtkMarchingCubes()
+            iso_surface = vtkMarchingCubes()
     else:
-        iso_surface = vtk.vtkMarchingCubes()
+        iso_surface = vtkMarchingCubes()
     iso_surface.SetInputConnection(gaussian.GetOutputPort())
     iso_surface.ComputeScalarsOff()
     iso_surface.ComputeGradientsOff()
@@ -117,7 +143,7 @@ def create_smooth_frog_actor(file_name, tissue, use_flying_edges):
     smoothing_iterations = 20
     pass_band = 0.001
     feature_angle = 60.0
-    smoother = vtk.vtkWindowedSincPolyDataFilter()
+    smoother = vtkWindowedSincPolyDataFilter()
     smoother.SetInputConnection(iso_surface.GetOutputPort())
     smoother.SetNumberOfIterations(smoothing_iterations)
     smoother.BoundarySmoothingOff()
@@ -128,28 +154,28 @@ def create_smooth_frog_actor(file_name, tissue, use_flying_edges):
     smoother.NormalizeCoordinatesOff()
     smoother.Update()
 
-    normals = vtk.vtkPolyDataNormals()
+    normals = vtkPolyDataNormals()
     normals.SetInputConnection(smoother.GetOutputPort())
     normals.SetFeatureAngle(feature_angle)
 
-    stripper = vtk.vtkStripper()
+    stripper = vtkStripper()
     stripper.SetInputConnection(normals.GetOutputPort())
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(stripper.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     return actor
 
 
 def create_frog_actor(file_name, tissue, use_flying_edges):
-    reader = vtk.vtkMetaImageReader()
+    reader = vtkMetaImageReader()
     reader.SetFileName(str(file_name))
     reader.Update()
 
-    select_tissue = vtk.vtkImageThreshold()
+    select_tissue = vtkImageThreshold()
     select_tissue.ThresholdBetween(tissue, tissue)
     select_tissue.SetInValue(255)
     select_tissue.SetOutValue(0)
@@ -158,31 +184,31 @@ def create_frog_actor(file_name, tissue, use_flying_edges):
     iso_value = 63.5
     if use_flying_edges:
         try:
-            iso_surface = vtk.vtkFlyingEdges3D()
+            iso_surface = vtkFlyingEdges3D()
         except AttributeError:
-            iso_surface = vtk.vtkMarchingCubes()
+            iso_surface = vtkMarchingCubes()
     else:
-        iso_surface = vtk.vtkMarchingCubes()
+        iso_surface = vtkMarchingCubes()
     iso_surface.SetInputConnection(select_tissue.GetOutputPort())
     iso_surface.ComputeScalarsOff()
     iso_surface.ComputeGradientsOff()
     iso_surface.ComputeNormalsOn()
     iso_surface.SetValue(0, iso_value)
 
-    stripper = vtk.vtkStripper()
+    stripper = vtkStripper()
     stripper.SetInputConnection(iso_surface.GetOutputPort())
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(stripper.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     return actor
 
 
 def create_frog_lut(colors):
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetNumberOfColors(16)
     lut.SetTableRange(0, 15)
     lut.Build()
@@ -239,9 +265,9 @@ def vtk_version_ok(major, minor, build):
     """
     needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
     try:
-        vtk_version_number = vtk.VTK_VERSION_NUMBER
+        vtk_version_number = VTK_VERSION_NUMBER
     except AttributeError:  # as error:
-        ver = vtk.vtkVersion()
+        ver = vtkVersion()
         vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
                              + ver.GetVTKBuildVersion()
     if vtk_version_number >= needed_version:
