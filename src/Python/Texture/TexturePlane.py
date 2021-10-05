@@ -1,43 +1,57 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkPlaneSource
+from vtkmodules.vtkIOImage import vtkImageReader2Factory
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTexture
+)
 
 
 def main():
     fileName = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Load in the texture map. A texture is any unsigned char image. If it
     # is not of this type, you will have to map it through a lookup table
     # or by using vtkImageShiftScale.
     #
-    readerFactory = vtk.vtkImageReader2Factory()
+    readerFactory = vtkImageReader2Factory()
     textureFile = readerFactory.CreateImageReader2(fileName)
     textureFile.SetFileName(fileName)
     textureFile.Update()
 
-    atext = vtk.vtkTexture()
+    atext = vtkTexture()
     atext.SetInputConnection(textureFile.GetOutputPort())
     atext.InterpolateOn()
 
     # Create a plane source and actor. The vtkPlanesSource generates
     # texture coordinates.
     #
-    plane = vtk.vtkPlaneSource()
+    plane = vtkPlaneSource()
 
-    planeMapper = vtk.vtkPolyDataMapper()
+    planeMapper = vtkPolyDataMapper()
     planeMapper.SetInputConnection(plane.GetOutputPort())
 
-    planeActor = vtk.vtkActor()
+    planeActor = vtkActor()
     planeActor.SetMapper(planeMapper)
     planeActor.SetTexture(atext)
 
     # Create the RenderWindow, Renderer and Interactor.
-    renderer = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size.

@@ -1,22 +1,47 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    VTK_VERSION_NUMBER,
+    vtkVersion
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCylinder,
+    vtkSphere
+)
+from vtkmodules.vtkFiltersCore import (
+    vtkFlyingEdges3D,
+    vtkMarchingCubes,
+    vtkProbeFilter
+)
+from vtkmodules.vtkImagingHybrid import vtkSampleFunction
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     # vtkFlyingEdges3D was introduced in VTK >= 8.2
     use_flying_edges = vtk_version_ok(8, 2, 0)
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     sample_resolution = get_program_parameters()
 
     # Create a sampled sphere
-    implicit_sphere = vtk.vtkSphere()
+    implicit_sphere = vtkSphere()
     radius = 1.0
     implicit_sphere.SetRadius(radius)
 
-    sampled_sphere = vtk.vtkSampleFunction()
+    sampled_sphere = vtkSampleFunction()
     sampled_sphere.SetSampleDimensions(sample_resolution, sample_resolution, sample_resolution)
     x_min = -radius * 2.0
     x_max = radius * 2.0
@@ -25,24 +50,24 @@ def main():
 
     if use_flying_edges:
         try:
-            iso_sphere = vtk.vtkFlyingEdges3D()
+            iso_sphere = vtkFlyingEdges3D()
         except AttributeError:
-            iso_sphere = vtk.vtkMarchingCubes()
+            iso_sphere = vtkMarchingCubes()
     else:
-        iso_sphere = vtk.vtkMarchingCubes()
+        iso_sphere = vtkMarchingCubes()
     iso_sphere.SetValue(0, 1.0)
     iso_sphere.SetInputConnection(sampled_sphere.GetOutputPort())
 
     # Create a sampled cylinder
-    implicit_cylinder = vtk.vtkCylinder()
+    implicit_cylinder = vtkCylinder()
     implicit_cylinder.SetRadius(radius / 2.0)
-    sampled_cylinder = vtk.vtkSampleFunction()
+    sampled_cylinder = vtkSampleFunction()
     sampled_cylinder.SetSampleDimensions(sample_resolution, sample_resolution, sample_resolution)
     sampled_cylinder.SetModelBounds(x_min, x_max, x_min, x_max, x_min, x_max)
     sampled_cylinder.SetImplicitFunction(implicit_cylinder)
 
     # Probe cylinder with the sphere isosurface
-    probe_cylinder = vtk.vtkProbeFilter()
+    probe_cylinder = vtkProbeFilter()
     probe_cylinder.SetInputConnection(0, iso_sphere.GetOutputPort())
     probe_cylinder.SetInputConnection(1, sampled_cylinder.GetOutputPort())
     probe_cylinder.Update()
@@ -55,20 +80,20 @@ def main():
                                                   probe_cylinder.GetOutput().GetScalarRange()[1]))
 
     # Create a mapper and actor
-    map_sphere = vtk.vtkPolyDataMapper()
+    map_sphere = vtkPolyDataMapper()
     map_sphere.SetInputConnection(probe_cylinder.GetOutputPort())
     map_sphere.SetScalarRange(probe_cylinder.GetOutput().GetScalarRange())
 
-    sphere = vtk.vtkActor()
+    sphere = vtkActor()
     sphere.SetMapper(map_sphere)
 
     # Visualize
-    renderer = vtk.vtkRenderer()
-    render_window = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    render_window = vtkRenderWindow()
     render_window.AddRenderer(renderer)
     render_window.SetWindowName('IsosurfaceSampling')
 
-    render_window_interactor = vtk.vtkRenderWindowInteractor()
+    render_window_interactor = vtkRenderWindowInteractor()
     render_window_interactor.SetRenderWindow(render_window)
 
     renderer.AddActor(sphere)
@@ -102,9 +127,9 @@ def vtk_version_ok(major, minor, build):
     """
     needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
     try:
-        vtk_version_number = vtk.VTK_VERSION_NUMBER
+        vtk_version_number = VTK_VERSION_NUMBER
     except AttributeError:  # as error:
-        ver = vtk.vtkVersion()
+        ver = vtkVersion()
         vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
                              + ver.GetVTKBuildVersion()
     if vtk_version_number >= needed_version:

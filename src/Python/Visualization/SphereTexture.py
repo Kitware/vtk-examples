@@ -8,7 +8,22 @@
 # @author JBallesteros
 ##
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkFiltersTexture import vtkTextureMapToSphere
+from vtkmodules.vtkIOImage import vtkJPEGReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTexture
+)
 
 
 def get_program_parameters():
@@ -24,44 +39,44 @@ def get_program_parameters():
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     jpegfile = get_program_parameters()
 
     # Create a render window
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetSize(480, 480)
     renWin.SetWindowName('SphereTexture')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Generate an sphere polydata
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetThetaResolution(12)
     sphere.SetPhiResolution(12)
 
     # Read the image data from a file
-    reader = vtk.vtkJPEGReader()
+    reader = vtkJPEGReader()
     reader.SetFileName(jpegfile)
 
     # Create texture object
-    texture = vtk.vtkTexture()
+    texture = vtkTexture()
     texture.SetInputConnection(reader.GetOutputPort())
 
     # Map texture coordinates
-    map_to_sphere = vtk.vtkTextureMapToSphere()
+    map_to_sphere = vtkTextureMapToSphere()
     map_to_sphere.SetInputConnection(sphere.GetOutputPort())
     map_to_sphere.PreventSeamOn()
 
     # Create mapper and set the mapped texture as input
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(map_to_sphere.GetOutputPort())
 
     # Create actor and set the mapper and the texture
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.SetTexture(texture)
 

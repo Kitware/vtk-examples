@@ -1,27 +1,34 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-
 import sys
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkColorSeries
+from vtkmodules.vtkCommonCore import (
+    vtkLookupTable,
+    vtkVariant,
+    vtkVariantArray
+)
 
 
 class LUTUtilities(object):
-    '''
+    """
     Utilities for displaying and comparing lookup tables.
-    '''
+    """
 
     def __init__(self):
         pass
 
     def DisplayLUTAsString(self, lut):
-        '''
+        """
         Display the contents of the lookup table.
         :param: lut - the lookup table.
         :return: a string containing the table data.
-        '''
+        """
         str = ''
         tv = lut.GetNumberOfTableValues()
         dR = lut.GetTableRange()
@@ -58,13 +65,13 @@ class LUTUtilities(object):
         return str
 
     def AssembleRGBAString(self, rgba):
-        '''
+        """
         Display the contents of the rgba as a series of strings:
         decimal [r g b a], integer [r g b a] where r,g ,b a are
         in the range 0..255 and 0xrrggba .
         :param: The rgba string.
         :return: A string in the above format.
-        '''
+        """
         s = '[' + ', '.join(['{:0.6f}'.format(x) for x in rgba]) + ']'
         ucrgb = [int(x * 255) for x in rgba]
         t = '[' + ', '.join(['{:3d}'.format(x) for x in ucrgb]) + ']'
@@ -74,12 +81,12 @@ class LUTUtilities(object):
         return res
 
     def CompareLUTs(self, lut1, lut2):
-        '''
+        """
         Compare two lookup tables.
         :param: lut1 - the lookup table.
         :param: lut2 - the lookup table.
         :return: True if the tables are the same.
-        '''
+        """
         res = [True, '']
         if lut1.GetIndexedLookup() != lut2.GetIndexedLookup():
             res[0] = False
@@ -146,14 +153,14 @@ class LUTUtilities(object):
         return res
 
     def CompareRGBA(self, rgba1, rgba2):
-        '''
+        """
         Compare two rgba lists.
         rgba can be a hexadecimal string, or a
         list of rgb or rgba colors.
         :param: rgba1 - the color.
         :param: rgba2 - the color.
         :return: True if the colors are the same.
-        '''
+        """
         if len(rgba1) != len(rgba2):
             return False
         if isinstance(rgba1, str):
@@ -167,12 +174,12 @@ class LUTUtilities(object):
 
 
 def GetAllColorSchemes():
-    '''
+    """
     Get all the color scheme names.
     :return: a map of the names keyed on their index.
-    '''
+    """
     colorSchemes = dict()
-    colorSeries = vtk.vtkColorSeries()
+    colorSeries = vtkColorSeries()
     for i in range(colorSeries.GetNumberOfColorSchemes()):
         colorSeries.SetColorScheme(i)
         colorSchemes[i] = colorSeries.GetColorSchemeName()
@@ -180,11 +187,11 @@ def GetAllColorSchemes():
 
 
 def AvailableColorSchemes(colorSchemes):
-    '''
+    """
     The available color scheme indexes and names.
     :param: colorSchemes - a map of the names keyed on their index.
     :return:  a string if the indexes and names.
-    '''
+    """
     str = ''
     for k, v in colorSchemes.items():
         str += '{:3d}\t{:s}\n'.format(k, v)
@@ -192,21 +199,21 @@ def AvailableColorSchemes(colorSchemes):
 
 
 def DisplayAvailableColorSchemes():
-    '''
+    """
     Display the available color schemes.
-    '''
+    """
     line = "-----------------------------------------------------------------------------\n"
     colorSchemes = GetAllColorSchemes()
     print(line + AvailableColorSchemes(colorSchemes) + line)
 
 
 def DisplayResults(reason, lut1, lut2):
-    '''
+    """
     Display the lookup tables and reason for failure.
     :param: reason - the reason.
     :param: lut1 - the first lookup table.
     :param: lut2 - the second lookup table.
-    '''
+    """
     lutUtilities = LUTUtilities()
     line = "-----------------------------------------------------------------------------\n"
     print(line + reason + "\n")
@@ -216,13 +223,13 @@ def DisplayResults(reason, lut1, lut2):
 
 
 def TestTables(lut1, lut2, expected=True):
-    '''
+    """
     Test pairs of lookup tables.
     :param: lut1 - the first lookup table.
     :param: lut2 - the second lookup table.
     :param: expected - if False a fail is expected.
     :return: True/False.
-    '''
+    """
     lutUtilities = LUTUtilities()
     comparison = lutUtilities.CompareLUTs(lut1, lut2)
     if comparison[0] != expected:
@@ -233,14 +240,14 @@ def TestTables(lut1, lut2, expected=True):
 
 
 def TestLookupTables(lutMode):
-    '''
+    """
     Test various combinations of lookup tables.
     :param: lutMode - if True the tables are ordinal, categorical otherwise.
     :return: True if all tests passed.
-    '''
-    lut1 = vtk.vtkLookupTable()
-    lut2 = vtk.vtkLookupTable()
-    colorSeries = vtk.vtkColorSeries()
+    """
+    lut1 = vtkLookupTable()
+    lut2 = vtkLookupTable()
+    colorSeries = vtkColorSeries()
     colorSeriesEnum = colorSeries.SPECTRUM
     colorSeries.SetColorScheme(colorSeriesEnum)
 
@@ -253,13 +260,13 @@ def TestLookupTables(lutMode):
     lut2.SetNanColor(1, 0, 0, 1)
     if not lutMode:
         # For the annotation just use a letter of the alphabet.
-        values1 = vtk.vtkVariantArray()
-        values2 = vtk.vtkVariantArray()
+        values1 = vtkVariantArray()
+        values2 = vtkVariantArray()
         str = "abcdefghijklmnopqrstuvwxyz"
         for i in range(lut1.GetNumberOfTableValues()):
-            values1.InsertNextValue(vtk.vtkVariant(str[i]))
+            values1.InsertNextValue(vtkVariant(str[i]))
         for i in range(lut2.GetNumberOfTableValues()):
-            values2.InsertNextValue(vtk.vtkVariant(str[i]))
+            values2.InsertNextValue(vtkVariant(str[i]))
         for i in range(values1.GetNumberOfTuples()):
             lut1.SetAnnotation(i, values1.GetValue(i).ToString())
         for i in range(values2.GetNumberOfTuples()):
@@ -285,7 +292,7 @@ def TestLookupTables(lutMode):
         # Different color
         colorSeriesEnum = colorSeries.COOL
         colorSeries.SetColorScheme(colorSeriesEnum)
-        lut3 = vtk.vtkLookupTable()
+        lut3 = vtkLookupTable()
         colorSeries.BuildLookupTable(lut3)
         lut3.IndexedLookupOff()
         res &= TestTables(lut1, lut3, False)
@@ -298,12 +305,12 @@ def TestLookupTables(lutMode):
         # Different color
         colorSeriesEnum = colorSeries.COOL
         colorSeries.SetColorScheme(colorSeriesEnum)
-        lut3 = vtk.vtkLookupTable()
+        lut3 = vtkLookupTable()
         colorSeries.BuildLookupTable(lut3)
-        values = vtk.vtkVariantArray()
+        values = vtkVariantArray()
         str = "abcdefghijklmnopqrstuvwxyz"
         for i in range(lut3.GetNumberOfTableValues()):
-            values.InsertNextValue(vtk.vtkVariant(str[i]))
+            values.InsertNextValue(vtkVariant(str[i]))
         for i in range(values.GetNumberOfTuples()):
             lut3.SetAnnotation(i, values.GetValue(i).ToString())
         colorSeries.BuildLookupTable(lut3)

@@ -1,9 +1,22 @@
 #!/usr/bin/env python
 
-'''
-'''
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkQuadric
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkFiltersTexture import vtkImplicitTextureCoords
+from vtkmodules.vtkImagingHybrid import vtkBooleanTexture
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTexture
+)
 
 positions = [
     [-4, 4, 0], [-2, 4, 0], [0, 4, 0], [2, 4, 0],
@@ -18,46 +31,46 @@ edge = [0, 255]
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    aren = vtk.vtkRenderer()
+    aren = vtkRenderer()
 
     # define two elliptical cylinders
-    quadric1 = vtk.vtkQuadric()
+    quadric1 = vtkQuadric()
     quadric1.SetCoefficients(1, 2, 0, 0, 0, 0, 0, 0, 0, -.07)
 
-    quadric2 = vtk.vtkQuadric()
+    quadric2 = vtkQuadric()
     quadric2.SetCoefficients(2, 1, 0, 0, 0, 0, 0, 0, 0, -.07)
 
     # Create a sphere for all to use.
-    aSphere = vtk.vtkSphereSource()
+    aSphere = vtkSphereSource()
     aSphere.SetPhiResolution(21)
     aSphere.SetThetaResolution(21)
 
     # Create texture coordinates for all.
-    tcoords = vtk.vtkImplicitTextureCoords()
+    tcoords = vtkImplicitTextureCoords()
     tcoords.SetInputConnection(aSphere.GetOutputPort())
     tcoords.SetRFunction(quadric1)
     tcoords.SetSFunction(quadric2)
 
-    aMapper = vtk.vtkDataSetMapper()
+    aMapper = vtkDataSetMapper()
     aMapper.SetInputConnection(tcoords.GetOutputPort())
 
     # Create a mapper, sphere and texture map for each case.
     for i in range(0, 16):
         aBoolean = MakeBooleanTexture(i, 64, 0)
 
-        aTexture2 = vtk.vtkTexture()
+        aTexture2 = vtkTexture()
         aTexture2.SetInputConnection(aBoolean.GetOutputPort())
         aTexture2.InterpolateOff()
         aTexture2.RepeatOff()
 
-        anActor2 = vtk.vtkActor()
+        anActor2 = vtkActor()
 
         anActor2.SetMapper(aMapper)
         anActor2.SetTexture(aTexture2)
@@ -78,7 +91,7 @@ def main():
 
 
 def MakeBooleanTexture(caseNumber, resolution, thickness):
-    booleanTexture = vtk.vtkBooleanTexture()
+    booleanTexture = vtkBooleanTexture()
 
     booleanTexture.SetXSize(resolution)
     booleanTexture.SetYSize(resolution)

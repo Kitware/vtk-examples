@@ -1,10 +1,23 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSuperquadricSource
+from vtkmodules.vtkRenderingAnnotation import vtkCubeAxesActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     backgroundColor = colors.GetColor3d("DarkSlateGray")
     actorColor = colors.GetColor3d("Tomato")
@@ -13,24 +26,24 @@ def main():
     axis3Color = colors.GetColor3d("LightSkyBlue")
 
     # Create a superquadric
-    superquadricSource = vtk.vtkSuperquadricSource()
+    superquadricSource = vtkSuperquadricSource()
     superquadricSource.SetPhiRoundness(3.1)
     superquadricSource.SetThetaRoundness(1.0)
     superquadricSource.Update()  # needed to GetBounds later
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(superquadricSource.GetOutputPort())
 
-    superquadricActor = vtk.vtkActor()
+    superquadricActor = vtkActor()
     superquadricActor.SetMapper(mapper)
     superquadricActor.GetProperty().SetDiffuseColor(actorColor)
     superquadricActor.GetProperty().SetDiffuse(.7)
     superquadricActor.GetProperty().SetSpecular(.7)
     superquadricActor.GetProperty().SetSpecularPower(50.0)
 
-    cubeAxesActor = vtk.vtkCubeAxesActor()
+    cubeAxesActor = vtkCubeAxesActor()
     cubeAxesActor.SetUseTextActor3D(1)
     cubeAxesActor.SetBounds(superquadricSource.GetOutput().GetBounds())
     cubeAxesActor.SetCamera(renderer.GetActiveCamera())
@@ -62,13 +75,13 @@ def main():
     renderer.ResetCamera()
     renderer.SetBackground(backgroundColor)
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
 
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
     renderWindow.SetWindowName('CubeAxesActor')
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderWindow.Render()

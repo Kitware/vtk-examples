@@ -19,7 +19,29 @@ The top row of the display uses the color transfer function to create a
 The bottom row of the display uses a lookup table of predefined colors.
 """
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkLookupTable,
+    vtkUnsignedCharArray,
+    vtkVersion
+)
+from vtkmodules.vtkFiltersSources import vtkPlaneSource
+from vtkmodules.vtkIOXML import (
+    vtkXMLPolyDataReader,
+    vtkXMLPolyDataWriter
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkColorTransferFunction,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def MakeLUT(tableSize):
@@ -28,9 +50,9 @@ def MakeLUT(tableSize):
     :param: tableSize - The table size
     :return: The lookup table.
     """
-    nc = vtk.vtkNamedColors()
+    nc = vtkNamedColors()
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetNumberOfTableValues(tableSize)
     lut.Build()
 
@@ -52,18 +74,18 @@ def MakeLUT(tableSize):
 def MakeLUTFromCTF(tableSize):
     """
     Use a color transfer Function to generate the colors in the lookup table.
-    See: http://www.vtk.org/doc/nightly/html/classvtkColorTransferFunction.html
+    See: http://www.org/doc/nightly/html/classvtkColorTransferFunction.html
     :param: tableSize - The table size
     :return: The lookup table.
     """
-    ctf = vtk.vtkColorTransferFunction()
+    ctf = vtkColorTransferFunction()
     ctf.SetColorSpaceToDiverging()
     # Green to tan.
     ctf.AddRGBPoint(0.0, 0.085, 0.532, 0.201)
     ctf.AddRGBPoint(0.5, 0.865, 0.865, 0.865)
     ctf.AddRGBPoint(1.0, 0.677, 0.492, 0.093)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetNumberOfTableValues(tableSize)
     lut.Build()
 
@@ -95,16 +117,16 @@ def main():
     :return: The render window interactor.
     """
 
-    nc = vtk.vtkNamedColors()
+    nc = vtkNamedColors()
 
     # Provide some geometry
     resolution = 3
 
-    plane11 = vtk.vtkPlaneSource()
+    plane11 = vtkPlaneSource()
     plane11.SetXResolution(resolution)
     plane11.SetYResolution(resolution)
 
-    plane12 = vtk.vtkPlaneSource()
+    plane12 = vtkPlaneSource()
     plane12.SetXResolution(resolution)
     plane12.SetYResolution(resolution)
 
@@ -118,7 +140,7 @@ def main():
     lut1 = MakeLUT(tableSize)
     lut2 = MakeLUTFromCTF(tableSize)
 
-    colorData1 = vtk.vtkUnsignedCharArray()
+    colorData1 = vtkUnsignedCharArray()
     colorData1.SetName('colors')  # Any name will work here.
     colorData1.SetNumberOfComponents(3)
     print('Using a lookup table from a set of named colors.')
@@ -127,7 +149,7 @@ def main():
     # this will then be interpreted as a color table.
     plane11.GetOutput().GetCellData().SetScalars(colorData1)
 
-    colorData2 = vtk.vtkUnsignedCharArray()
+    colorData2 = vtkUnsignedCharArray()
     colorData2.SetName('colors')  # Any name will work here.
     colorData2.SetNumberOfComponents(3)
     print('Using a lookup table created from a color transfer function.')
@@ -135,7 +157,7 @@ def main():
     plane12.GetOutput().GetCellData().SetScalars(colorData2)
 
     # Set up actor and mapper
-    mapper11 = vtk.vtkPolyDataMapper()
+    mapper11 = vtkPolyDataMapper()
     mapper11.SetInputConnection(plane11.GetOutputPort())
     # Now, instead of doing this:
     # mapper11.SetScalarRange(0, tableSize - 1)
@@ -145,12 +167,12 @@ def main():
     mapper11.SetScalarModeToUseCellData()
     mapper11.Update()
 
-    mapper12 = vtk.vtkPolyDataMapper()
+    mapper12 = vtkPolyDataMapper()
     mapper12.SetInputConnection(plane12.GetOutputPort())
     mapper12.SetScalarModeToUseCellData()
     mapper12.Update()
 
-    writer = vtk.vtkXMLPolyDataWriter()
+    writer = vtkXMLPolyDataWriter()
     writer.SetFileName('pdlut.vtp')
     writer.SetInputData(mapper11.GetInput())
     # This is set so we can see the data in a text editor.
@@ -160,30 +182,30 @@ def main():
     writer.SetInputData(mapper12.GetInput())
     writer.Write()
 
-    actor11 = vtk.vtkActor()
+    actor11 = vtkActor()
     actor11.SetMapper(mapper11)
-    actor12 = vtk.vtkActor()
+    actor12 = vtkActor()
     actor12.SetMapper(mapper12)
 
     # Let's read in the data we wrote out.
-    reader1 = vtk.vtkXMLPolyDataReader()
+    reader1 = vtkXMLPolyDataReader()
     reader1.SetFileName("pdlut.vtp")
 
-    reader2 = vtk.vtkXMLPolyDataReader()
+    reader2 = vtkXMLPolyDataReader()
     reader2.SetFileName("pdctf.vtp")
 
-    mapper21 = vtk.vtkPolyDataMapper()
+    mapper21 = vtkPolyDataMapper()
     mapper21.SetInputConnection(reader1.GetOutputPort())
     mapper21.SetScalarModeToUseCellData()
     mapper21.Update()
-    actor21 = vtk.vtkActor()
+    actor21 = vtkActor()
     actor21.SetMapper(mapper11)
 
-    mapper22 = vtk.vtkPolyDataMapper()
+    mapper22 = vtkPolyDataMapper()
     mapper22.SetInputConnection(reader2.GetOutputPort())
     mapper22.SetScalarModeToUseCellData()
     mapper22.Update()
-    actor22 = vtk.vtkActor()
+    actor22 = vtkActor()
     actor22.SetMapper(mapper22)
 
     # Define viewport ranges.
@@ -194,13 +216,13 @@ def main():
     viewport22 = [0.5, 0.5, 1.0, 1.0]
 
     # Set up the renderers.
-    ren11 = vtk.vtkRenderer()
-    ren12 = vtk.vtkRenderer()
-    ren21 = vtk.vtkRenderer()
-    ren22 = vtk.vtkRenderer()
+    ren11 = vtkRenderer()
+    ren12 = vtkRenderer()
+    ren21 = vtkRenderer()
+    ren22 = vtkRenderer()
 
     # Setup the render windows
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.SetSize(600, 600)
     renWin.SetWindowName('AssignCellColorsFromLUT');
 
@@ -221,7 +243,7 @@ def main():
     ren21.AddActor(actor21)
     ren22.AddActor(actor22)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
     renWin.Render()
 
@@ -230,8 +252,8 @@ def main():
 
 if __name__ == '__main__':
     requiredMajorVersion = 6
-    print(vtk.vtkVersion().GetVTKMajorVersion())
-    if vtk.vtkVersion().GetVTKMajorVersion() < requiredMajorVersion:
+    print(vtkVersion().GetVTKMajorVersion())
+    if vtkVersion().GetVTKMajorVersion() < requiredMajorVersion:
         print("You need VTK Version 6 or greater.")
         print("The class vtkNamedColors is in VTK version 6 or greater.")
         exit(0)

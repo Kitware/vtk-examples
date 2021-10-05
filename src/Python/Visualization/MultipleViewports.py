@@ -1,12 +1,31 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import (
+    vtkConeSource,
+    vtkCubeSource,
+    vtkCylinderSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # One render window, multiple viewports.
-    rw = vtk.vtkRenderWindow()
-    iren = vtk.vtkRenderWindowInteractor()
+    rw = vtkRenderWindow()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(rw)
 
     # Define viewport ranges.
@@ -21,7 +40,7 @@ def main():
 
     sources = get_sources()
     for i in range(4):
-        ren = vtk.vtkRenderer()
+        ren = vtkRenderer()
         rw.AddRenderer(ren)
         ren.SetViewport(xmins[i], ymins[i], xmaxs[i], ymaxs[i])
 
@@ -34,9 +53,9 @@ def main():
             ren.SetActiveCamera(camera)
 
         # Create a mapper and actor
-        mapper = vtk.vtkPolyDataMapper()
+        mapper = vtkPolyDataMapper()
         mapper.SetInputConnection(sources[i].GetOutputPort())
-        actor = vtk.vtkActor()
+        actor = vtkActor()
         actor.GetProperty().SetColor(colors.GetColor3d(actor_color[i]))
         actor.SetMapper(mapper)
         ren.AddActor(actor)
@@ -54,23 +73,23 @@ def get_sources():
     sources = list()
 
     # Create a sphere
-    sphere = vtk.vtkSphereSource()
+    sphere = vtkSphereSource()
     sphere.SetCenter(0.0, 0.0, 0.0)
     sphere.Update()
     sources.append(sphere)
     # Create a cone
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetCenter(0.0, 0.0, 0.0)
     cone.SetDirection(0, 1, 0)
     cone.Update()
     sources.append(cone)
     # Create a cube
-    cube = vtk.vtkCubeSource()
+    cube = vtkCubeSource()
     cube.SetCenter(0.0, 0.0, 0.0)
     cube.Update()
     sources.append(cube)
     # Create a cylinder
-    cylinder = vtk.vtkCylinderSource()
+    cylinder = vtkCylinderSource()
     cylinder.SetCenter(0.0, 0.0, 0.0)
     cylinder.Update()
     sources.append(cylinder)

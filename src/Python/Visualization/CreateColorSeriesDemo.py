@@ -1,6 +1,25 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import (
+    vtkColorSeries,
+    vtkNamedColors
+)
+from vtkmodules.vtkCommonCore import (
+    vtkFloatArray,
+    vtkLookupTable
+)
+from vtkmodules.vtkFiltersSources import vtkPlaneSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -23,8 +42,8 @@ Choose from one of: Blue, Brown, Red, Orange, White, Grey, Magenta, Cyan, Yellow
 
 
 def CreateLookupTableVTKBlue(size):
-    nc = vtk.vtkNamedColors()
-    myColors = vtk.vtkColorSeries()
+    nc = vtkNamedColors()
+    myColors = vtkColorSeries()
     myColors.SetColorSchemeByName('VTKBlueColors')
 
     myColors.AddColor(nc.GetColor3ub('alice_blue'))
@@ -58,7 +77,7 @@ def CreateLookupTableVTKBlue(size):
     numberOfColors = myColors.GetNumberOfColors()
     print('Number of colors:', numberOfColors)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     if size == 0:
         lut.SetNumberOfTableValues(numberOfColors)
     else:
@@ -72,8 +91,8 @@ def CreateLookupTableVTKBlue(size):
 
 
 def CreateLookupTableVTKBrown(size):
-    nc = vtk.vtkNamedColors()
-    myColors = vtk.vtkColorSeries()
+    nc = vtkNamedColors()
+    myColors = vtkColorSeries()
     myColors.SetColorSchemeByName('VTKBrownColors')
 
     myColors.AddColor(nc.GetColor3ub('beige'))
@@ -106,7 +125,7 @@ def CreateLookupTableVTKBrown(size):
     numberOfColors = myColors.GetNumberOfColors()
     print('Number of colors:', numberOfColors)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     if size == 0:
         lut.SetNumberOfTableValues(numberOfColors)
     else:
@@ -120,8 +139,8 @@ def CreateLookupTableVTKBrown(size):
 
 
 def CreateLookupTableVTKRed(size):
-    nc = vtk.vtkNamedColors()
-    myColors = vtk.vtkColorSeries()
+    nc = vtkNamedColors()
+    myColors = vtkColorSeries()
     myColors.SetColorSchemeByName('VTKRedColors')
 
     myColors.AddColor(nc.GetColor3ub('alizarin_crimson'))
@@ -150,7 +169,7 @@ def CreateLookupTableVTKRed(size):
     numberOfColors = myColors.GetNumberOfColors()
     print('Number of colors:', numberOfColors)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     if size == 0:
         lut.SetNumberOfTableValues(numberOfColors)
     else:
@@ -164,8 +183,8 @@ def CreateLookupTableVTKRed(size):
 
 
 def CreateLookupTableVTKOrange(size):
-    nc = vtk.vtkNamedColors()
-    myColors = vtk.vtkColorSeries()
+    nc = vtkNamedColors()
+    myColors = vtkColorSeries()
     myColors.SetColorSchemeByName('VTKOrangeColors')
 
     myColors.AddColor(nc.GetColor3ub('cadmium_orange'))
@@ -181,7 +200,7 @@ def CreateLookupTableVTKOrange(size):
     numberOfColors = myColors.GetNumberOfColors()
     print('Number of colors:', numberOfColors)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     if size == 0:
         lut.SetNumberOfTableValues(numberOfColors)
     else:
@@ -195,8 +214,8 @@ def CreateLookupTableVTKOrange(size):
 
 
 def CreateLookupTableVTKWhite(size):
-    nc = vtk.vtkNamedColors()
-    myColors = vtk.vtkColorSeries()
+    nc = vtkNamedColors()
+    myColors = vtkColorSeries()
     myColors.SetColorSchemeByName('VTKWhiteColors')
 
     myColors.AddColor(nc.GetColor3ub('antique_white'))
@@ -233,7 +252,7 @@ def CreateLookupTableVTKWhite(size):
     numberOfColors = myColors.GetNumberOfColors()
     print('Number of colors:', numberOfColors)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     if size == 0:
         lut.SetNumberOfTableValues(numberOfColors)
     else:
@@ -247,8 +266,8 @@ def CreateLookupTableVTKWhite(size):
 
 
 def CreateLookupTableVTKGrey(size):
-    nc = vtk.vtkNamedColors()
-    myColors = vtk.vtkColorSeries()
+    nc = vtkNamedColors()
+    myColors = vtkColorSeries()
     myColors.SetColorSchemeByName('VTKGreyColors')
 
     myColors.AddColor(nc.GetColor3ub('cold_grey'))
@@ -263,7 +282,7 @@ def CreateLookupTableVTKGrey(size):
     numberOfColors = myColors.GetNumberOfColors()
     print('Number of colors:', numberOfColors)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     if size == 0:
         lut.SetNumberOfTableValues(numberOfColors)
     else:
@@ -277,8 +296,8 @@ def CreateLookupTableVTKGrey(size):
 
 
 def CreateLookupTableVTKMagenta(size):
-    nc = vtk.vtkNamedColors()
-    myColors = vtk.vtkColorSeries()
+    nc = vtkNamedColors()
+    myColors = vtkColorSeries()
     myColors.SetColorSchemeByName('VTKMagentaColors')
 
     myColors.AddColor(nc.GetColor3ub('blue_violet'))
@@ -300,7 +319,7 @@ def CreateLookupTableVTKMagenta(size):
     numberOfColors = myColors.GetNumberOfColors()
     print('Number of colors:', numberOfColors)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     if size == 0:
         lut.SetNumberOfTableValues(numberOfColors)
     else:
@@ -314,8 +333,8 @@ def CreateLookupTableVTKMagenta(size):
 
 
 def CreateLookupTableVTKCyan(size):
-    nc = vtk.vtkNamedColors()
-    myColors = vtk.vtkColorSeries()
+    nc = vtkNamedColors()
+    myColors = vtkColorSeries()
     myColors.SetColorSchemeByName('VTKCyanColors')
 
     myColors.AddColor(nc.GetColor3ub('aquamarine'))
@@ -330,7 +349,7 @@ def CreateLookupTableVTKCyan(size):
     numberOfColors = myColors.GetNumberOfColors()
     print('Number of colors:', numberOfColors)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     if size == 0:
         lut.SetNumberOfTableValues(numberOfColors)
     else:
@@ -344,8 +363,8 @@ def CreateLookupTableVTKCyan(size):
 
 
 def CreateLookupTableVTKYellow(size):
-    nc = vtk.vtkNamedColors()
-    myColors = vtk.vtkColorSeries()
+    nc = vtkNamedColors()
+    myColors = vtkColorSeries()
     myColors.SetColorSchemeByName('VTKYellowColors')
 
     myColors.AddColor(nc.GetColor3ub('aureoline_yellow'))
@@ -367,7 +386,7 @@ def CreateLookupTableVTKYellow(size):
     numberOfColors = myColors.GetNumberOfColors()
     print('Number of colors:', numberOfColors)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     if size == 0:
         lut.SetNumberOfTableValues(numberOfColors)
     else:
@@ -381,8 +400,8 @@ def CreateLookupTableVTKYellow(size):
 
 
 def CreateLookupTableVTKGreen(size):
-    nc = vtk.vtkNamedColors()
-    myColors = vtk.vtkColorSeries()
+    nc = vtkNamedColors()
+    myColors = vtkColorSeries()
     myColors.SetColorSchemeByName('VTKGreenColors')
 
     myColors.AddColor(nc.GetColor3ub('chartreuse'))
@@ -416,7 +435,7 @@ def CreateLookupTableVTKGreen(size):
     numberOfColors = myColors.GetNumberOfColors()
     print('Number of colors:', numberOfColors)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     if size == 0:
         lut.SetNumberOfTableValues(numberOfColors)
     else:
@@ -437,18 +456,18 @@ def main():
         print('Available color maps are:', ", ".join(available_color_series))
         return
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Provide some geometry.
     xResolution = 6
     yResolution = 6
-    aPlane = vtk.vtkPlaneSource()
+    aPlane = vtkPlaneSource()
     aPlane.SetXResolution(xResolution)
     aPlane.SetYResolution(yResolution)
     size = xResolution * yResolution + 1
 
     # Create cell data.
-    cellData = vtk.vtkFloatArray()
+    cellData = vtkFloatArray()
     for i in range(0, xResolution * yResolution):
         cellData.InsertNextValue(i)
     aPlane.Update()  # Force an update so we can set cell data.
@@ -458,23 +477,23 @@ def main():
     lut = eval('CreateLookupTableVTK' + seriesName + '(size)')
 
     # Set up the actor and mapper.
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetLookupTable(lut)
     mapper.SetInputConnection(aPlane.GetOutputPort())
     mapper.SetScalarModeToUseCellData()
     mapper.SetScalarRange(0, size)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().EdgeVisibilityOn()
 
     # Setup render window, renderer, and interactor.
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetWindowName('CreateColorSeriesDemo')
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderer.AddActor(actor)

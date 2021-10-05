@@ -1,13 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkInteractionWidgets import vtkOrientationMarkerWidget
+from vtkmodules.vtkRenderingAnnotation import vtkAxesActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
     sphereSource.SetCenter(0.0, 0.0, 0.0)
     sphereSource.SetRadius(1.0)
     sphereSource.Update()
@@ -15,31 +29,31 @@ def main():
     polydata = sphereSource.GetOutput()
 
     # Create a mapper
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputData(polydata)
 
     # Create an actor
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     # A renderer and render window
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetWindowName('DisplayCoordinateAxes')
     renderWindow.AddRenderer(renderer)
 
     # An interactor
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Add the actors to the scene
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
-    axes = vtk.vtkAxesActor()
+    axes = vtkAxesActor()
 
-    widget = vtk.vtkOrientationMarkerWidget()
+    widget = vtkOrientationMarkerWidget()
     rgba = [0] * 4
     colors.GetColor('Carrot', rgba)
     widget.SetOutlineColor(rgba[0], rgba[1], rgba[2])

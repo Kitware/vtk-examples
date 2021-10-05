@@ -2,7 +2,33 @@
 
 #  Translated from Hanoi.cxx.
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkMinimalStandardRandomSequence
+from vtkmodules.vtkFiltersSources import (
+    vtkCylinderSource,
+    vtkPlaneSource
+)
+from vtkmodules.vtkIOImage import (
+    vtkBMPWriter,
+    vtkJPEGWriter,
+    vtkPNGWriter,
+    vtkPNMWriter,
+    vtkPostScriptWriter,
+    vtkTIFFWriter
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkWindowToImageFilter
+)
 
 
 class GV(object):
@@ -34,7 +60,7 @@ class GV(object):
 
 # Globals
 gv = GV()
-renWin = vtk.vtkRenderWindow()
+renWin = vtkRenderWindow()
 """
    For pegStack we use a list of lists where the sublists correspond to the
       source, target and helper pegs.
@@ -45,18 +71,18 @@ pegStack = [[], [], []]
 
 
 def hanoi():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the renderer and render window interactor.
-    ren = vtk.vtkRenderer()
+    ren = vtkRenderer()
     renWin.AddRenderer(ren)
     renWin.SetSize(1200, 750)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     ren.SetBackground(colors.GetColor3d('PapayaWhip'))
 
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetPosition(41.0433, 27.9637, 30.442)
     camera.SetFocalPoint(11.5603, -1.51931, 0.95899)
     camera.SetClippingRange(18.9599, 91.6042)
@@ -65,24 +91,24 @@ def hanoi():
     ren.SetActiveCamera(camera)
 
     # Create geometry: table, pegs, and pucks.
-    pegGeometry = vtk.vtkCylinderSource()
+    pegGeometry = vtkCylinderSource()
     pegGeometry.SetResolution(8)
-    pegMapper = vtk.vtkPolyDataMapper()
+    pegMapper = vtkPolyDataMapper()
     pegMapper.SetInputConnection(pegGeometry.GetOutputPort())
 
-    puckGeometry = vtk.vtkCylinderSource()
+    puckGeometry = vtkCylinderSource()
     puckGeometry.SetResolution(gv.puckResolution)
-    puckMapper = vtk.vtkPolyDataMapper()
+    puckMapper = vtkPolyDataMapper()
     puckMapper.SetInputConnection(puckGeometry.GetOutputPort())
 
-    tableGeometry = vtk.vtkPlaneSource()
+    tableGeometry = vtkPlaneSource()
     tableGeometry.SetResolution(10, 10)
-    tableMapper = vtk.vtkPolyDataMapper()
+    tableMapper = vtkPolyDataMapper()
     tableMapper.SetInputConnection(tableGeometry.GetOutputPort())
 
     # Create the actors: table top, pegs, and pucks
     # The table
-    table = vtk.vtkActor()
+    table = vtkActor()
     ren.AddActor(table)
     table.SetMapper(tableMapper)
     # table.GetProperty().SetColor(0.9569, 0.6431, 0.3765)
@@ -96,7 +122,7 @@ def hanoi():
     gv.H = 1.1 * gv.numberOfPucks * gv.L
     peg = list()
     for i in range(0, 3):
-        peg.append(vtk.vtkActor())
+        peg.append(vtkActor())
         ren.AddActor(peg[i])
         peg[i].SetMapper(pegMapper)
         # peg[i].GetProperty().SetColor(1, 1, 1)
@@ -106,10 +132,10 @@ def hanoi():
 
     # The pucks (using cylinder geometry). Always loaded on peg# 0.
     puck = list()
-    randomSequence = vtk.vtkMinimalStandardRandomSequence()
+    randomSequence = vtkMinimalStandardRandomSequence()
     randomSequence.SetSeed(1)
     for i in range(0, gv.numberOfPucks):
-        puck.append(vtk.vtkActor())
+        puck.append(vtkActor())
         puck[i].SetMapper(puckMapper)
         color = [0, 0, 0]
         for j in range(0, 3):
@@ -235,7 +261,7 @@ def MovePuck(peg1, peg2):
         if gv.numberOfMoves == 13 and i == 3:  # for making book image
             if gv.configuration == 3 or gv.configuration == 2:
                 cam = renWin.GetRenderers().GetFirstRenderer().GetActiveCamera()
-                camera1 = vtk.vtkCamera()
+                camera1 = vtkCamera()
                 camera1.SetPosition(54.7263, 41.6467, 44.125)
                 camera1.SetFocalPoint(11.5603, -1.51931, 0.95899)
                 camera1.SetClippingRange(42.4226, 115.659)
@@ -329,21 +355,21 @@ def WriteImage(fileName, renWin1, rgba=True):
             ext = '.png'
             fileName = fileName + ext
         if ext == '.bmp':
-            writer = vtk.vtkBMPWriter()
+            writer = vtkBMPWriter()
         elif ext == '.jpg':
-            writer = vtk.vtkJPEGWriter()
+            writer = vtkJPEGWriter()
         elif ext == '.pnm':
-            writer = vtk.vtkPNMWriter()
+            writer = vtkPNMWriter()
         elif ext == '.ps':
             if rgba:
                 rgba = False
-            writer = vtk.vtkPostScriptWriter()
+            writer = vtkPostScriptWriter()
         elif ext == '.tiff':
-            writer = vtk.vtkTIFFWriter()
+            writer = vtkTIFFWriter()
         else:
-            writer = vtk.vtkPNGWriter()
+            writer = vtkPNGWriter()
 
-        windowto_image_filter = vtk.vtkWindowToImageFilter()
+        windowto_image_filter = vtkWindowToImageFilter()
         windowto_image_filter.SetInput(renWin1)
         windowto_image_filter.SetScale(1)  # image quality
         if rgba:

@@ -2,7 +2,26 @@
 
 from pathlib import Path
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkCommonMath import vtkMatrix4x4
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import vtkPolyDataNormals
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
+from vtkmodules.vtkIOLegacy import vtkPolyDataReader
+from vtkmodules.vtkInteractionWidgets import vtkOrientationMarkerWidget
+from vtkmodules.vtkRenderingAnnotation import vtkAxesActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters(argv):
@@ -43,13 +62,13 @@ Fig12-9c:
 
 
 def main(data_folder, tissues, view):
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Setup render window, renderer, and interactor.
-    renderer = vtk.vtkRenderer()
-    render_window = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    render_window = vtkRenderWindow()
     render_window.AddRenderer(renderer)
-    render_window_interactor = vtk.vtkRenderWindowInteractor()
+    render_window_interactor = vtkRenderWindowInteractor()
     render_window_interactor.SetRenderWindow(render_window)
 
     tm = create_tissue_map()
@@ -113,9 +132,9 @@ def main(data_folder, tissues, view):
 
     render_window.Render()
 
-    axes = vtk.vtkAxesActor()
+    axes = vtkAxesActor()
 
-    widget = vtk.vtkOrientationMarkerWidget()
+    widget = vtkOrientationMarkerWidget()
     rgba = [0.0, 0.0, 0.0, 0.0]
     colors.GetColor("Carrot", rgba)
     widget.SetOutlineColor(rgba[0], rgba[1], rgba[2])
@@ -131,7 +150,7 @@ def main(data_folder, tissues, view):
 def create_frog_actor(file_name, tissue, transform):
     so = SliceOrder()
 
-    reader = vtk.vtkPolyDataReader()
+    reader = vtkPolyDataReader()
     reader.SetFileName(file_name)
     reader.Update()
 
@@ -139,19 +158,19 @@ def create_frog_actor(file_name, tissue, transform):
     if tissue == 'brainbin':
         trans.Scale(1, -1, 1)
         trans.RotateZ(180)
-    tf = vtk.vtkTransformPolyDataFilter()
+    tf = vtkTransformPolyDataFilter()
     tf.SetInputConnection(reader.GetOutputPort())
     tf.SetTransform(trans)
     tf.SetInputConnection(reader.GetOutputPort())
 
-    normals = vtk.vtkPolyDataNormals()
+    normals = vtkPolyDataNormals()
     normals.SetInputConnection(tf.GetOutputPort())
     normals.SetFeatureAngle(60.0)
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(normals.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
     return actor
@@ -177,28 +196,28 @@ class SliceOrder:
     """
 
     def __init__(self):
-        self.si_mat = vtk.vtkMatrix4x4()
+        self.si_mat = vtkMatrix4x4()
         self.si_mat.Zero()
         self.si_mat.SetElement(0, 0, 1)
         self.si_mat.SetElement(1, 2, 1)
         self.si_mat.SetElement(2, 1, -1)
         self.si_mat.SetElement(3, 3, 1)
 
-        self.is_mat = vtk.vtkMatrix4x4()
+        self.is_mat = vtkMatrix4x4()
         self.is_mat.Zero()
         self.is_mat.SetElement(0, 0, 1)
         self.is_mat.SetElement(1, 2, -1)
         self.is_mat.SetElement(2, 1, -1)
         self.is_mat.SetElement(3, 3, 1)
 
-        self.lr_mat = vtk.vtkMatrix4x4()
+        self.lr_mat = vtkMatrix4x4()
         self.lr_mat.Zero()
         self.lr_mat.SetElement(0, 2, -1)
         self.lr_mat.SetElement(1, 1, -1)
         self.lr_mat.SetElement(2, 0, 1)
         self.lr_mat.SetElement(3, 3, 1)
 
-        self.rl_mat = vtk.vtkMatrix4x4()
+        self.rl_mat = vtkMatrix4x4()
         self.rl_mat.Zero()
         self.rl_mat.SetElement(0, 2, 1)
         self.rl_mat.SetElement(1, 1, -1)
@@ -211,7 +230,7 @@ class SliceOrder:
         with a 180° rotation about y
         """
 
-        self.hf_mat = vtk.vtkMatrix4x4()
+        self.hf_mat = vtkMatrix4x4()
         self.hf_mat.Zero()
         self.hf_mat.SetElement(0, 0, -1)
         self.hf_mat.SetElement(1, 1, 1)
@@ -219,73 +238,73 @@ class SliceOrder:
         self.hf_mat.SetElement(3, 3, 1)
 
     def s_i(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.SetMatrix(self.si_mat)
         return t
 
     def i_s(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.SetMatrix(self.is_mat)
         return t
 
     @staticmethod
     def a_p():
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         return t.Scale(1, -1, 1)
 
     @staticmethod
     def p_a():
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         return t.Scale(1, -1, -1)
 
     def l_r(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.SetMatrix(self.lr_mat)
         t.Update()
         return t
 
     def r_l(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.SetMatrix(self.lr_mat)
         return t
 
     def h_f(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.SetMatrix(self.hf_mat)
         return t
 
     def hf_si(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Concatenate(self.si_mat)
         return t
 
     def hf_is(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Concatenate(self.is_mat)
         return t
 
     def hf_ap(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Scale(1, -1, 1)
         return t
 
     def hf_pa(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Scale(1, -1, -1)
         return t
 
     def hf_lr(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Concatenate(self.lr_mat)
         return t
 
     def hf_rl(self):
-        t = vtk.vtkTransform()
+        t = vtkTransform()
         t.Concatenate(self.hf_mat)
         t.Concatenate(self.rl_mat)
         return t
@@ -329,7 +348,7 @@ class SliceOrder:
 
 
 def create_frog_lut(colors):
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetNumberOfColors(16)
     lut.SetTableRange(0, 15)
     lut.Build()

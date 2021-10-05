@@ -1,11 +1,48 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingFreeType
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData
+)
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import (
+    vtkAppendPolyData,
+    vtkContourFilter
+)
+from vtkmodules.vtkFiltersGeneral import (
+    vtkTransformFilter,
+    vtkTransformPolyDataFilter,
+    vtkWarpTo
+)
+from vtkmodules.vtkFiltersHybrid import vtkImplicitModeller
+from vtkmodules.vtkFiltersModeling import vtkRotationalExtrusionFilter
+from vtkmodules.vtkFiltersSources import (
+    vtkConeSource,
+    vtkCubeSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextActor
+)
+from vtkmodules.vtkRenderingLOD import vtkLODActor
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the colors.
     colors.SetColor("AzimuthArrowColor", [255, 77, 77, 255])
@@ -15,37 +52,37 @@ def main():
     colors.SetColor("UpSpikeColor", [77, 255, 255, 255])
 
     # Create a rendering window, renderer and interactor.
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create a camera model.
-    camCS = vtk.vtkConeSource()
+    camCS = vtkConeSource()
     camCS.SetHeight(1.5)
     camCS.SetResolution(12)
     camCS.SetRadius(0.4)
 
-    camCBS = vtk.vtkCubeSource()
+    camCBS = vtkCubeSource()
     camCBS.SetXLength(1.5)
     camCBS.SetZLength(0.8)
     camCBS.SetCenter(0.4, 0, 0)
 
-    camAPD = vtk.vtkAppendPolyData()
+    camAPD = vtkAppendPolyData()
     camAPD.AddInputConnection(camCBS.GetOutputPort())
     camAPD.AddInputConnection(camCS.GetOutputPort())
 
-    camMapper = vtk.vtkPolyDataMapper()
+    camMapper = vtkPolyDataMapper()
     camMapper.SetInputConnection(camAPD.GetOutputPort())
-    camActor = vtk.vtkLODActor()
+    camActor = vtkLODActor()
     camActor.SetMapper(camMapper)
     camActor.SetScale(2, 2, 2)
 
     # Draw the arrows.
-    pd = vtk.vtkPolyData()
-    ca = vtk.vtkCellArray()
-    pts = vtk.vtkPoints()
+    pd = vtkPolyData()
+    ca = vtkCellArray()
+    pts = vtkPoints()
     pts.InsertNextPoint(0, 1, 0)
     pts.InsertNextPoint(8, 1, 0)
     pts.InsertNextPoint(8, 2, 0)
@@ -64,9 +101,9 @@ def main():
     pd.SetPoints(pts)
     pd.SetPolys(ca)
 
-    pd2 = vtk.vtkPolyData()
-    ca2 = vtk.vtkCellArray()
-    pts2 = vtk.vtkPoints()
+    pd2 = vtkPolyData()
+    ca2 = vtkCellArray()
+    pts2 = vtkPoints()
     pts2.InsertNextPoint(0, 1, 0)
     pts2.InsertNextPoint(8, 1, 0)
     pts2.InsertNextPoint(8, 2, 0)
@@ -79,35 +116,35 @@ def main():
     pd2.SetPoints(pts2)
     pd2.SetLines(ca2)
 
-    arrowIM = vtk.vtkImplicitModeller()
+    arrowIM = vtkImplicitModeller()
     arrowIM.SetInputData(pd)
     arrowIM.SetSampleDimensions(50, 20, 8)
 
-    arrowCF = vtk.vtkContourFilter()
+    arrowCF = vtkContourFilter()
     arrowCF.SetInputConnection(arrowIM.GetOutputPort())
     arrowCF.SetValue(0, 0.2)
 
-    arrowWT = vtk.vtkWarpTo()
+    arrowWT = vtkWarpTo()
     arrowWT.SetInputConnection(arrowCF.GetOutputPort())
     arrowWT.SetPosition(5, 0, 5)
     arrowWT.SetScaleFactor(0.85)
     arrowWT.AbsoluteOn()
 
-    arrowT = vtk.vtkTransform()
+    arrowT = vtkTransform()
     arrowT.RotateY(60)
     arrowT.Translate(-1.33198, 0, -1.479)
     arrowT.Scale(1, 0.5, 1)
 
-    arrowTF = vtk.vtkTransformFilter()
+    arrowTF = vtkTransformFilter()
     arrowTF.SetInputConnection(arrowWT.GetOutputPort())
     arrowTF.SetTransform(arrowT)
 
-    arrowMapper = vtk.vtkDataSetMapper()
+    arrowMapper = vtkDataSetMapper()
     arrowMapper.SetInputConnection(arrowTF.GetOutputPort())
     arrowMapper.ScalarVisibilityOff()
 
     # Draw the azimuth arrows.
-    a1Actor = vtk.vtkLODActor()
+    a1Actor = vtkLODActor()
     a1Actor.SetMapper(arrowMapper)
     a1Actor.SetPosition(-9, 0, -1)
     a1Actor.GetProperty().SetColor(colors.GetColor3d("AzimuthArrowColor"))
@@ -117,7 +154,7 @@ def main():
     a1Actor.GetProperty().SetAmbient(0.2)
     a1Actor.GetProperty().SetDiffuse(0.8)
 
-    a2Actor = vtk.vtkLODActor()
+    a2Actor = vtkLODActor()
     a2Actor.SetMapper(arrowMapper)
     a2Actor.RotateX(180)
     a2Actor.SetPosition(-9, 0, 1)
@@ -129,7 +166,7 @@ def main():
     a2Actor.GetProperty().SetDiffuse(0.8)
 
     # Draw the elevation arrows.
-    a3Actor = vtk.vtkLODActor()
+    a3Actor = vtkLODActor()
     a3Actor.SetMapper(arrowMapper)
     a3Actor.RotateX(-90)
     a3Actor.SetPosition(-9, -1, 0)
@@ -140,7 +177,7 @@ def main():
     a3Actor.GetProperty().SetAmbient(0.2)
     a3Actor.GetProperty().SetDiffuse(0.8)
 
-    a4Actor = vtk.vtkLODActor()
+    a4Actor = vtkLODActor()
     a4Actor.SetMapper(arrowMapper)
     a4Actor.RotateX(90)
     a4Actor.SetPosition(-9, 1, 0)
@@ -152,23 +189,23 @@ def main():
     a4Actor.GetProperty().SetDiffuse(0.8)
 
     # Draw the DOP.
-    arrowT2 = vtk.vtkTransform()
+    arrowT2 = vtkTransform()
     arrowT2.Scale(1, 0.6, 1)
     arrowT2.RotateY(90)
 
-    arrowTF2 = vtk.vtkTransformPolyDataFilter()
+    arrowTF2 = vtkTransformPolyDataFilter()
     arrowTF2.SetInputData(pd2)
     arrowTF2.SetTransform(arrowT2)
 
-    arrowREF = vtk.vtkRotationalExtrusionFilter()
+    arrowREF = vtkRotationalExtrusionFilter()
     arrowREF.SetInputConnection(arrowTF2.GetOutputPort())
     arrowREF.CappingOff()
     arrowREF.SetResolution(30)
 
-    spikeMapper = vtk.vtkPolyDataMapper()
+    spikeMapper = vtkPolyDataMapper()
     spikeMapper.SetInputConnection(arrowREF.GetOutputPort())
 
-    a5Actor = vtk.vtkLODActor()
+    a5Actor = vtkLODActor()
     a5Actor.SetMapper(spikeMapper)
     a5Actor.SetScale(0.3, 0.3, 0.6)
     a5Actor.RotateY(-90)
@@ -180,7 +217,7 @@ def main():
     a5Actor.GetProperty().SetDiffuse(0.8)
     a5Actor.GetProperty().SetSpecularPower(20)
 
-    a7Actor = vtk.vtkLODActor()
+    a7Actor = vtkLODActor()
     a7Actor.SetMapper(spikeMapper)
     a7Actor.SetScale(0.2, 0.2, 0.7)
     a7Actor.RotateZ(90)
@@ -194,11 +231,11 @@ def main():
     a7Actor.GetProperty().SetSpecularPower(20)
 
     # Focal point.
-    ss = vtk.vtkSphereSource()
+    ss = vtkSphereSource()
     ss.SetRadius(0.5)
-    fpMapper = vtk.vtkPolyDataMapper()
+    fpMapper = vtkPolyDataMapper()
     fpMapper.SetInputConnection(ss.GetOutputPort())
-    fpActor = vtk.vtkLODActor()
+    fpActor = vtkLODActor()
     fpActor.SetMapper(fpMapper)
     fpActor.SetPosition(-9, 0, 0)
     fpActor.GetProperty().SetSpecularColor(colors.GetColor3d("White"))
@@ -208,26 +245,26 @@ def main():
     fpActor.GetProperty().SetSpecularPower(20)
 
     # Create the roll arrows.
-    arrowWT2 = vtk.vtkWarpTo()
+    arrowWT2 = vtkWarpTo()
     arrowWT2.SetInputConnection(arrowCF.GetOutputPort())
     arrowWT2.SetPosition(5, 0, 2.5)
     arrowWT2.SetScaleFactor(0.95)
     arrowWT2.AbsoluteOn()
 
-    arrowT3 = vtk.vtkTransform()
+    arrowT3 = vtkTransform()
     arrowT3.Translate(-2.50358, 0, -1.70408)
     arrowT3.Scale(0.5, 0.3, 1)
 
-    arrowTF3 = vtk.vtkTransformFilter()
+    arrowTF3 = vtkTransformFilter()
     arrowTF3.SetInputConnection(arrowWT2.GetOutputPort())
     arrowTF3.SetTransform(arrowT3)
 
-    arrowMapper2 = vtk.vtkDataSetMapper()
+    arrowMapper2 = vtkDataSetMapper()
     arrowMapper2.SetInputConnection(arrowTF3.GetOutputPort())
     arrowMapper2.ScalarVisibilityOff()
 
     # Draw the roll arrows.
-    a6Actor = vtk.vtkLODActor()
+    a6Actor = vtkLODActor()
     a6Actor.SetMapper(arrowMapper2)
     a6Actor.RotateZ(90)
     a6Actor.SetPosition(-4, 0, 0)
@@ -263,7 +300,7 @@ def main():
     ren.ResetCameraClippingRange()
 
     # Create a TextActor for Yaw  (a1 and a2 actor's color).
-    text = vtk.vtkTextActor()
+    text = vtkTextActor()
     text.SetInput("Yaw")
     tprop = text.GetTextProperty()
     tprop.SetFontFamilyToArial()
@@ -275,7 +312,7 @@ def main():
     ren.AddActor2D(text)
 
     # Create a TextActor for Pitch  (a3 and a4 actor's color).
-    text2 = vtk.vtkTextActor()
+    text2 = vtkTextActor()
     text2.SetInput("Pitch")
     tprop = text2.GetTextProperty()
     tprop.SetFontFamilyToArial()
@@ -287,7 +324,7 @@ def main():
     ren.AddActor2D(text2)
 
     # Create a TextActor for roll (a6 actor's color).
-    text3 = vtk.vtkTextActor()
+    text3 = vtkTextActor()
     text3.SetInput("Roll")
     tprop = text3.GetTextProperty()
     tprop.SetFontFamilyToArial()

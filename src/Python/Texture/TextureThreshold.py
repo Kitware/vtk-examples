@@ -2,15 +2,34 @@
 
 # Modified from VTK/Filters/Texture/Testing/Python/textureThreshold.py.
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkStructuredGridOutlineFilter
+from vtkmodules.vtkFiltersGeometry import vtkStructuredGridGeometryFilter
+from vtkmodules.vtkFiltersTexture import vtkThresholdTextureCoords
+from vtkmodules.vtkIOLegacy import vtkStructuredPointsReader
+from vtkmodules.vtkIOParallel import vtkMultiBlockPLOT3DReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTexture
+)
 
 
 def main():
     dataFn1, dataFn2, textureFn = get_program_parameters()
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Read the data.
-    pl3d = vtk.vtkMultiBlockPLOT3DReader()
+    pl3d = vtkMultiBlockPLOT3DReader()
     pl3d.SetXYZFileName(dataFn1)
     pl3d.SetQFileName(dataFn2)
     pl3d.SetScalarFunctionNumber(100)
@@ -19,40 +38,40 @@ def main():
     output = pl3d.GetOutput().GetBlock(0)
 
     # Make the wall (floor).
-    wall = vtk.vtkStructuredGridGeometryFilter()
+    wall = vtkStructuredGridGeometryFilter()
     wall.SetInputData(output)
     wall.SetExtent(0, 100, 0, 0, 0, 100)
-    wallMap = vtk.vtkPolyDataMapper()
+    wallMap = vtkPolyDataMapper()
     wallMap.SetInputConnection(wall.GetOutputPort())
     wallMap.ScalarVisibilityOff()
-    wallActor = vtk.vtkActor()
+    wallActor = vtkActor()
     wallActor.SetMapper(wallMap)
     wallActor.GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
 
     # Make the fin (rear wall)
-    fin = vtk.vtkStructuredGridGeometryFilter()
+    fin = vtkStructuredGridGeometryFilter()
     fin.SetInputData(output)
     fin.SetExtent(0, 100, 0, 100, 0, 0)
-    finMap = vtk.vtkPolyDataMapper()
+    finMap = vtkPolyDataMapper()
     finMap.SetInputConnection(fin.GetOutputPort())
     finMap.ScalarVisibilityOff()
-    finActor = vtk.vtkActor()
+    finActor = vtkActor()
     finActor.SetMapper(finMap)
     finActor.GetProperty().SetColor(colors.GetColor3d('DarkSlateGray'))
 
     # Get the texture.
-    tmap = vtk.vtkStructuredPointsReader()
+    tmap = vtkStructuredPointsReader()
     tmap.SetFileName(textureFn)
-    texture = vtk.vtkTexture()
+    texture = vtkTexture()
     texture.SetInputConnection(tmap.GetOutputPort())
     texture.InterpolateOff()
     texture.RepeatOff()
 
     # Create the rendering window, renderer, and interactive renderer.
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Make the planes to threshold and texture.
@@ -66,10 +85,10 @@ def main():
                     [35, 35, 0, 100, 0, 100]]
     # Now set up the pipeline.
     for i in range(0, len(planeExtents)):
-        plane.append(vtk.vtkStructuredGridGeometryFilter())
+        plane.append(vtkStructuredGridGeometryFilter())
         plane[i].SetInputData(output)
         plane[i].SetExtent(*planeExtents[i])
-        thresh.append(vtk.vtkThresholdTextureCoords())
+        thresh.append(vtkThresholdTextureCoords())
         thresh[i].SetInputConnection(plane[i].GetOutputPort())
         thresh[i].SetInputConnection(plane[i].GetOutputPort())
         # If you want an image similar to Fig 9-43(a) in the VTK textbook,
@@ -80,10 +99,10 @@ def main():
             thresh[i].ThresholdBetween(1.5, 1.8)
         else:
             thresh[i].ThresholdByUpper(1.5)
-        planeMap.append(vtk.vtkDataSetMapper())
+        planeMap.append(vtkDataSetMapper())
         planeMap[i].SetInputConnection(thresh[i].GetOutputPort())
         planeMap[i].SetScalarRange(output.GetScalarRange())
-        planeActor.append(vtk.vtkActor())
+        planeActor.append(vtkActor())
         planeActor[i].SetMapper(planeMap[i])
         planeActor[i].SetTexture(texture)
         #  The slight transparency gives a nice effect.
@@ -91,11 +110,11 @@ def main():
         ren.AddActor(planeActor[i])
 
     # Get an outline of the data set for context.
-    outline = vtk.vtkStructuredGridOutlineFilter()
+    outline = vtkStructuredGridOutlineFilter()
     outline.SetInputData(output)
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineProp = outlineActor.GetProperty()
     outlineProp.SetColor(colors.GetColor3d('Black'))
@@ -108,7 +127,7 @@ def main():
     renWin.SetSize(512, 512)
     renWin.SetWindowName('TextureThreshold')
 
-    cam = vtk.vtkCamera()
+    cam = vtkCamera()
     cam.SetClippingRange(1.51176, 75.5879)
     cam.SetFocalPoint(2.33749, 2.96739, 3.61023)
     cam.SetPosition(10.8787, 5.27346, 15.8687)
@@ -134,7 +153,7 @@ def get_program_parameters():
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('dataFn1', help='bluntfinxyz.bin.')
     parser.add_argument('dataFn2', help='bluntfinq.bin.')
-    parser.add_argument('textureFn', help='texThres2.vtk.')
+    parser.add_argument('textureFn', help='texThres2.bmp')
     args = parser.parse_args()
     return args.dataFn1, args.dataFn2, args.textureFn
 

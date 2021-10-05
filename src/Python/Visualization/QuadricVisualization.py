@@ -1,18 +1,38 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkQuadric
+from vtkmodules.vtkFiltersCore import (
+    vtkAppendFilter,
+    vtkContourFilter
+)
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkImagingCore import vtkExtractVOI
+from vtkmodules.vtkImagingHybrid import vtkSampleFunction
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
     renderWindow.SetSize(640, 480)
 
@@ -21,28 +41,28 @@ def main():
     #
 
     # Sample quadric function.
-    quadric = vtk.vtkQuadric()
+    quadric = vtkQuadric()
     quadric.SetCoefficients(1, 2, 3, 0, 1, 0, 0, 0, 0, 0)
 
-    sample = vtk.vtkSampleFunction()
+    sample = vtkSampleFunction()
     sample.SetSampleDimensions(25, 25, 25)
     sample.SetImplicitFunction(quadric)
 
-    isoActor = vtk.vtkActor()
+    isoActor = vtkActor()
     CreateIsosurface(sample, isoActor)
-    outlineIsoActor = vtk.vtkActor()
+    outlineIsoActor = vtkActor()
     CreateOutline(sample, outlineIsoActor)
 
-    planesActor = vtk.vtkActor()
+    planesActor = vtkActor()
     CreatePlanes(sample, planesActor, 3)
-    outlinePlanesActor = vtk.vtkActor()
+    outlinePlanesActor = vtkActor()
     CreateOutline(sample, outlinePlanesActor)
     planesActor.AddPosition(isoActor.GetBounds()[0] * 2.0, 0, 0)
     outlinePlanesActor.AddPosition(isoActor.GetBounds()[0] * 2.0, 0, 0)
 
-    contourActor = vtk.vtkActor()
+    contourActor = vtkActor()
     CreateContours(sample, contourActor, 3, 15)
-    outlineContourActor = vtk.vtkActor()
+    outlineContourActor = vtkActor()
     CreateOutline(sample, outlineContourActor)
     contourActor.AddPosition(isoActor.GetBounds()[0] * 4.0, 0, 0)
     outlineContourActor.AddPosition(isoActor.GetBounds()[0] * 4.0, 0, 0)
@@ -79,13 +99,13 @@ def main():
 
 def CreateIsosurface(func, actor, numberOfContours=5):
     # Generate implicit surface.
-    contour = vtk.vtkContourFilter()
+    contour = vtkContourFilter()
     contour.SetInputConnection(func.GetOutputPort())
     ranges = [1.0, 6.0]
     contour.GenerateValues(numberOfContours, ranges)
 
     # Map contour
-    contourMapper = vtk.vtkPolyDataMapper()
+    contourMapper = vtkPolyDataMapper()
     contourMapper.SetInputConnection(contour.GetOutputPort())
     contourMapper.SetScalarRange(0, 7)
 
@@ -98,13 +118,13 @@ def CreatePlanes(func, actor, numberOfPlanes):
     # Extract planes from implicit function.
     #
 
-    append = vtk.vtkAppendFilter()
+    append = vtkAppendFilter()
 
     dims = func.GetSampleDimensions()
     sliceIncr = (dims[2] - 1) // (numberOfPlanes + 1)
     sliceNum = -4
     for i in range(0, numberOfPlanes):
-        extract = vtk.vtkExtractVOI()
+        extract = vtkExtractVOI()
         extract.SetInputConnection(func.GetOutputPort())
         extract.SetVOI(0, dims[0] - 1,
                        0, dims[1] - 1,
@@ -114,7 +134,7 @@ def CreatePlanes(func, actor, numberOfPlanes):
     append.Update()
 
     # Map planes
-    planesMapper = vtk.vtkDataSetMapper()
+    planesMapper = vtkDataSetMapper()
     planesMapper.SetInputConnection(append.GetOutputPort())
     planesMapper.SetScalarRange(0, 7)
 
@@ -128,20 +148,20 @@ def CreateContours(func, actor, numberOfPlanes, numberOfContours):
     # Extract planes from implicit function
     #
 
-    append = vtk.vtkAppendFilter()
+    append = vtkAppendFilter()
 
     dims = func.GetSampleDimensions()
     sliceIncr = (dims[2] - 1) // (numberOfPlanes + 1)
 
     sliceNum = -4
     for i in range(0, numberOfPlanes):
-        extract = vtk.vtkExtractVOI()
+        extract = vtkExtractVOI()
         extract.SetInputConnection(func.GetOutputPort())
         extract.SetVOI(0, dims[0] - 1,
                        0, dims[1] - 1,
                        sliceNum + sliceIncr, sliceNum + sliceIncr)
         ranges = [1.0, 6.0]
-        contour = vtk.vtkContourFilter()
+        contour = vtkContourFilter()
         contour.SetInputConnection(extract.GetOutputPort())
         contour.GenerateValues(numberOfContours, ranges)
         append.AddInputConnection(contour.GetOutputPort())
@@ -149,7 +169,7 @@ def CreateContours(func, actor, numberOfPlanes, numberOfContours):
     append.Update()
 
     # Map planes
-    planesMapper = vtk.vtkDataSetMapper()
+    planesMapper = vtkDataSetMapper()
     planesMapper.SetInputConnection(append.GetOutputPort())
     planesMapper.SetScalarRange(0, 7)
 
@@ -159,9 +179,9 @@ def CreateContours(func, actor, numberOfPlanes, numberOfContours):
 
 
 def CreateOutline(source, actor):
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(source.GetOutputPort())
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(outline.GetOutputPort())
     actor.SetMapper(mapper)
     return

@@ -16,11 +16,23 @@
 """
 
 # First access the VTK module (and any other needed modules) by importing them.
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkProperty,
+    vtkRenderWindow,
+    vtkRenderer
+)
 
 
 def main(argv):
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     #
     # Next we create an instance of vtkConeSource and set some of its
@@ -28,7 +40,7 @@ def main(argv):
     # visualization pipeline (it is a source process object) it produces data
     # (output type is vtkPolyData) which other filters may process.
     #
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetHeight(3.0)
     cone.SetRadius(1.0)
     cone.SetResolution(10)
@@ -40,7 +52,7 @@ def main(argv):
     # vtkPolyDataMapper to map the polygonal data into graphics primitives. We
     # connect the output of the cone source to the input of this mapper.
     #
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(cone.GetOutputPort())
 
     #
@@ -48,7 +60,7 @@ def main(argv):
     # modified to give it different surface properties. By default, an actor
     # is create with a property so the GetProperty() method can be used.
     #
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
     coneActor.GetProperty().SetColor(0.2, 0.63, 0.79)
     coneActor.GetProperty().SetDiffuse(0.7)
@@ -59,7 +71,7 @@ def main(argv):
     # Create a property and directly manipulate it. Assign it to the
     # second actor.
     #
-    property = vtk.vtkProperty()
+    property = vtkProperty()
     property.SetColor(colors.GetColor3d("Tomato"))
     property.SetDiffuse(0.7)
     property.SetSpecular(0.4)
@@ -71,7 +83,7 @@ def main(argv):
     # property can be shared among many actors. Note also that we use the
     # same mapper as the first actor did. This way we avoid duplicating
     # geometry, which may save lots of memory if the geometry is large.
-    coneActor2 = vtk.vtkActor()
+    coneActor2 = vtkActor()
     coneActor2.SetMapper(coneMapper)
     coneActor2.GetProperty().SetColor(colors.GetColor3d("LightSeaGreen"))
     coneActor2.SetProperty(property)
@@ -83,7 +95,7 @@ def main(argv):
     # responsible for drawing the actors it has.  We also set the background
     # color here.
     #
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
     ren1.AddActor(coneActor)
     ren1.AddActor(coneActor2)
     ren1.SetBackground(colors.GetColor3d("CornflowerBlue"))
@@ -93,7 +105,7 @@ def main(argv):
     # We put our renderer into the render window using AddRenderer. We also
     # set the size to be 300 pixels by 300.
     #
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
     renWin.SetSize(300, 300)
     renWin.SetWindowName("Tutorial_Step4")

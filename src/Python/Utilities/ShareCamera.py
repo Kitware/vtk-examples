@@ -1,22 +1,44 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import (
+    vtkColorSeries,
+    vtkNamedColors
+)
+from vtkmodules.vtkFiltersSources import (
+    vtkConeSource,
+    vtkCubeSource,
+    vtkCylinderSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # We store background colors in a vector. Then we extract the red, green and
     # blue components later when coloring the reneder background.
     rendererColors = list()
-    colorSeries = vtk.vtkColorSeries()
+    colorSeries = vtkColorSeries()
     colorSeries.SetColorSchemeByName('Brewer Qualitative Pastel2')
     rendererColors.append(colorSeries.GetColor(0))
     rendererColors.append(colorSeries.GetColor(1))
     rendererColors.append(colorSeries.GetColor(2))
     rendererColors.append(colorSeries.GetColor(3))
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
 
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
@@ -32,37 +54,37 @@ def main():
     for i in range(0, 4):
         if i == 0:
             # Create a sphere
-            sphereSource = vtk.vtkSphereSource()
+            sphereSource = vtkSphereSource()
             sphereSource.SetCenter(0.0, 0.0, 0.0)
             sphereSource.Update()
             sources.append(sphereSource)
         elif i == 1:
             # Create a cone
-            coneSource = vtk.vtkConeSource()
+            coneSource = vtkConeSource()
             coneSource.SetCenter(0.0, 0.0, 0.0)
             coneSource.Update()
             sources.append(coneSource)
         elif i == 2:
             # Create a cube
-            cubeSource = vtk.vtkCubeSource()
+            cubeSource = vtkCubeSource()
             cubeSource.SetCenter(0.0, 0.0, 0.0)
             cubeSource.Update()
             sources.append(cubeSource)
         else:
             # Create a cylinder
-            cylinderSource = vtk.vtkCylinderSource()
+            cylinderSource = vtkCylinderSource()
             cylinderSource.SetCenter(0.0, 0.0, 0.0)
             cylinderSource.Update()
             sources.append(cylinderSource)
 
-        mapper = vtk.vtkPolyDataMapper()
+        mapper = vtkPolyDataMapper()
         mapper.SetInputConnection(sources[i].GetOutputPort())
 
-        actor = vtk.vtkActor()
+        actor = vtkActor()
         actor.SetMapper(mapper)
         actor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
 
-        renderer = vtk.vtkRenderer()
+        renderer = vtkRenderer()
         renderer.AddActor(actor)
         r = rendererColors[i].GetRed() / 255.0
         g = rendererColors[i].GetGreen() / 255.0

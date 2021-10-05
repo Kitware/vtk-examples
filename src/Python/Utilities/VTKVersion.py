@@ -1,5 +1,5 @@
-from __future__ import print_function
+#!/usr/bin/env python
 
-import vtkmodules.all as vtk
+from vtkmodules.vtkCommonCore import vtkVersion
 
-print(vtk.vtkVersion.GetVTKSourceVersion())
+print(vtkVersion.GetVTKSourceVersion())

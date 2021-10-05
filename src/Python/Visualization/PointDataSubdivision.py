@@ -1,11 +1,60 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import (
+    vtkColorSeries,
+    vtkNamedColors
+)
+from vtkmodules.vtkCommonComputationalGeometry import (
+    vtkParametricBoy,
+    vtkParametricEllipsoid,
+    vtkParametricMobius,
+    vtkParametricRandomHills,
+    vtkParametricTorus
+)
+from vtkmodules.vtkCommonCore import vtkVersion
+from vtkmodules.vtkCommonDataModel import vtkColor3ub
+from vtkmodules.vtkFiltersCore import (
+    vtkCleanPolyData,
+    vtkElevationFilter,
+    vtkGlyph3D,
+    vtkMaskPoints,
+    vtkPolyDataNormals,
+    vtkTriangleFilter
+)
+from vtkmodules.vtkFiltersHybrid import vtkRenderLargeImage
+from vtkmodules.vtkFiltersModeling import (
+    vtkButterflySubdivisionFilter,
+    vtkLinearSubdivisionFilter
+)
+from vtkmodules.vtkFiltersSources import (
+    vtkArrowSource,
+    vtkConeSource,
+    vtkParametricFunctionSource,
+    vtkSphereSource,
+    vtkSuperquadricSource
+)
+from vtkmodules.vtkIOImage import vtkPNGWriter
+from vtkmodules.vtkInteractionWidgets import vtkOrientationMarkerWidget
+from vtkmodules.vtkRenderingAnnotation import vtkAxesActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkActor2D,
+    vtkColorTransferFunction,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextMapper,
+    vtkTextProperty
+)
 
-import vtkmodules.all as vtk
-
-nc = vtk.vtkNamedColors()
+nc = vtkNamedColors()
 
 
 def GetProgramParameters():
@@ -55,56 +104,56 @@ class Sources(object):
 
     @staticmethod
     def ParametricTorusSource():
-        torus = vtk.vtkParametricTorus()
+        torus = vtkParametricTorus()
         torus.JoinUOff()
         torus.JoinVOff()
-        torusSource = vtk.vtkParametricFunctionSource()
+        torusSource = vtkParametricFunctionSource()
         torusSource.SetParametricFunction(torus)
         torusSource.SetScalarModeToZ()
         return torusSource
 
     @staticmethod
     def EllipsoidSource():
-        ellipsoid = vtk.vtkParametricEllipsoid()
+        ellipsoid = vtkParametricEllipsoid()
         ellipsoid.SetXRadius(0.5)
         ellipsoid.SetYRadius(1.0)
         ellipsoid.SetZRadius(2.0)
         ellipsoid.JoinUOff()
         # ellipsoid.JoinVOff()
-        ellipsoidSource = vtk.vtkParametricFunctionSource()
+        ellipsoidSource = vtkParametricFunctionSource()
         ellipsoidSource.SetParametricFunction(ellipsoid)
         ellipsoidSource.SetScalarModeToZ()
         return ellipsoidSource
 
     @staticmethod
     def BoySource():
-        boy = vtk.vtkParametricBoy()
+        boy = vtkParametricBoy()
         boy.JoinUOff()
         # boy.JoinVOff()
-        boySource = vtk.vtkParametricFunctionSource()
+        boySource = vtkParametricFunctionSource()
         boySource.SetParametricFunction(boy)
         boySource.SetScalarModeToZ()
         return boySource
 
     @staticmethod
     def MobiusSource():
-        mobius = vtk.vtkParametricMobius()
+        mobius = vtkParametricMobius()
         mobius.SetRadius(2)
         mobius.SetMinimumV(-0.5)
         mobius.SetMaximumV(0.5)
         mobius.JoinUOff()
-        mobiusSource = vtk.vtkParametricFunctionSource()
+        mobiusSource = vtkParametricFunctionSource()
         mobiusSource.SetParametricFunction(mobius)
         mobiusSource.SetScalarModeToX()
         return mobiusSource
 
     @staticmethod
     def ParametricRandomHills():
-        randomHills = vtk.vtkParametricRandomHills()
+        randomHills = vtkParametricRandomHills()
         # randomHills.AllowRandomGenerationOff()
         randomHills.SetRandomSeed(1)
         randomHills.SetNumberOfHills(30)
-        randomHillsSource = vtk.vtkParametricFunctionSource()
+        randomHillsSource = vtkParametricFunctionSource()
         randomHillsSource.SetParametricFunction(randomHills)
         randomHillsSource.SetScalarModeToZ()
         randomHillsSource.SetUResolution(10)
@@ -113,13 +162,13 @@ class Sources(object):
 
     @staticmethod
     def SphereSource():
-        sphere = vtk.vtkSphereSource()
+        sphere = vtkSphereSource()
         sphere.SetPhiResolution(11)
         sphere.SetThetaResolution(11)
         sphere.Update()
         sphereBounds = sphere.GetOutput().GetBounds()
 
-        elev = vtk.vtkElevationFilter()
+        elev = vtkElevationFilter()
         elev.SetInputConnection(sphere.GetOutputPort())
         elev.SetLowPoint(0, sphereBounds[2], 0)
         elev.SetHighPoint(0, sphereBounds[3], 0)
@@ -131,7 +180,7 @@ class Sources(object):
         """
         Make a torus as the source.
         """
-        source = vtk.vtkSuperquadricSource()
+        source = vtkSuperquadricSource()
         source.SetCenter(0.0, 0.0, 0.0)
         source.SetScale(1.0, 1.0, 1.0)
         source.SetPhiResolution(64)
@@ -143,19 +192,19 @@ class Sources(object):
 
         # The quadric is made of strips, so pass it through a triangle filter as
         # the curvature filter only operates on polys
-        tri = vtk.vtkTriangleFilter()
+        tri = vtkTriangleFilter()
         tri.SetInputConnection(source.GetOutputPort())
 
         # The quadric has nasty discontinuities from the way the edges are generated
         # so let's pass it though a CleanPolyDataFilter and merge any points which
         # are coincident, or very close
-        cleaner = vtk.vtkCleanPolyData()
+        cleaner = vtkCleanPolyData()
         cleaner.SetInputConnection(tri.GetOutputPort())
         cleaner.SetTolerance(0.005)
         cleaner.Update()
         cleanerBounds = cleaner.GetOutput().GetBounds()
 
-        elev = vtk.vtkElevationFilter()
+        elev = vtkElevationFilter()
         elev.SetInputConnection(cleaner.GetOutputPort())
         elev.SetLowPoint(0, cleanerBounds[2], 0)
         elev.SetHighPoint(0, cleanerBounds[3], 0)
@@ -164,22 +213,22 @@ class Sources(object):
 
     @staticmethod
     def ConeSource():
-        cone = vtk.vtkConeSource()
+        cone = vtkConeSource()
         cone.SetResolution(6)
         cone.CappingOn()
         cone.Update()
         coneBounds = cone.GetOutput().GetBounds()
 
-        coneNormals = vtk.vtkPolyDataNormals()
+        coneNormals = vtkPolyDataNormals()
         coneNormals.SetInputConnection(cone.GetOutputPort())
 
-        elev = vtk.vtkElevationFilter()
+        elev = vtkElevationFilter()
         elev.SetInputConnection(coneNormals.GetOutputPort())
         elev.SetLowPoint(coneBounds[0], 0, 0)
         elev.SetHighPoint(coneBounds[1], 0, 0)
 
         # vtkButterflySubdivisionFilter and vtkLinearSubdivisionFilter operate on triangles.
-        tf = vtk.vtkTriangleFilter()
+        tf = vtkTriangleFilter()
         tf.SetInputConnection(elev.GetOutputPort())
         tf.Update()
         return tf
@@ -192,7 +241,7 @@ def MakeLUT(scalarRange):
     :param scalarRange: The range of the scalars to be coloured.
     :return:  A lookup table.
     """
-    colorSeries = vtk.vtkColorSeries()
+    colorSeries = vtkColorSeries()
     # Select a color scheme.
     # for i in range(0,62):
     #     colorSeries.SetColorScheme(i)
@@ -201,11 +250,11 @@ def MakeLUT(scalarRange):
     # Colour scheme 61: Brewer Qualitative Set3
     colorSeries.SetColorScheme(61)
     # We use this colour series to create the transfer function.
-    lut = vtk.vtkColorTransferFunction()
+    lut = vtkColorTransferFunction()
     lut.SetColorSpaceToHSV()
     numColors = colorSeries.GetNumberOfColors()
     for i in range(0, numColors):
-        color = vtk.vtkColor3ub(colorSeries.GetColor(i))
+        color = vtkColor3ub(colorSeries.GetColor(i))
         c = list()
         for j in range(0, 3):
             c.append(color[j] / 255.0)
@@ -226,14 +275,14 @@ def GlyphActor(source, glyphPoints, scalarRange, scaleFactor, lut):
 
     :return: The glyph actor.
     """
-    arrowSource = vtk.vtkArrowSource()
+    arrowSource = vtkArrowSource()
     # Subsample the dataset.
-    maskPts = vtk.vtkMaskPoints()
+    maskPts = vtkMaskPoints()
     maskPts.SetInputConnection(source.GetOutputPort())
     maskPts.SetOnRatio(source.GetOutput().GetNumberOfPoints() // glyphPoints)
     maskPts.SetRandomMode(1)
 
-    arrowGlyph = vtk.vtkGlyph3D()
+    arrowGlyph = vtkGlyph3D()
     arrowGlyph.SetScaleFactor(scaleFactor)
     arrowGlyph.SetVectorModeToUseNormal()
     arrowGlyph.SetColorModeToColorByScalar()
@@ -243,7 +292,7 @@ def GlyphActor(source, glyphPoints, scalarRange, scaleFactor, lut):
     arrowGlyph.SetInputConnection(maskPts.GetOutputPort())
     arrowGlyph.Update()
 
-    arrowGlyphMapper = vtk.vtkDataSetMapper()
+    arrowGlyphMapper = vtkDataSetMapper()
     # Colour by scalars.
     arrowGlyphMapper.SetScalarRange(scalarRange)
     arrowGlyphMapper.SetColorModeToMapScalars()
@@ -251,7 +300,7 @@ def GlyphActor(source, glyphPoints, scalarRange, scaleFactor, lut):
     arrowGlyphMapper.SetLookupTable(lut)
     arrowGlyphMapper.SetInputConnection(arrowGlyph.GetOutputPort())
 
-    glyphActor = vtk.vtkActor()
+    glyphActor = vtkActor()
     glyphActor.SetMapper(arrowGlyphMapper)
     return glyphActor
 
@@ -266,13 +315,13 @@ def MakeSurfaceActor(surface, scalarRange, lut):
 
     :return: The actor for the surface.
     """
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(surface.GetOutputPort())
     mapper.SetLookupTable(lut)
     mapper.SetScalarRange(scalarRange)
     mapper.SetColorModeToMapScalars()
     mapper.ScalarVisibilityOn()
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     return actor
 
@@ -287,15 +336,15 @@ def MakeLabel(textLabel, renWinSize):
     :return: The actor for the text label.
     """
     # Create one text property for all
-    textProperty = vtk.vtkTextProperty()
+    textProperty = vtkTextProperty()
     textProperty.SetJustificationToCentered()
     textProperty.SetFontSize(int(renWinSize / 20))
 
-    mapper = vtk.vtkTextMapper()
+    mapper = vtkTextMapper()
     mapper.SetInput(textLabel)
     mapper.SetTextProperty(textProperty)
 
-    actor = vtk.vtkActor2D()
+    actor = vtkActor2D()
     actor.SetMapper(mapper)
     actor.SetPosition(renWinSize / 2.0, 16)
     actor.GetProperty().SetColor(nc.GetColor3d("Gold"))
@@ -308,7 +357,7 @@ def MakeAxesActor():
 
     :return: The axis actor.
     """
-    axes = vtk.vtkAxesActor()
+    axes = vtkAxesActor()
     axes.SetShaftTypeToCylinder()
     axes.SetXAxisLabelText('X')
     axes.SetYAxisLabelText('Y')
@@ -335,7 +384,7 @@ def MakeOrientationMarker(renderer, iren):
 
     :return: The orientation marker.
     """
-    om = vtk.vtkOrientationMarkerWidget()
+    om = vtkOrientationMarkerWidget()
     om.SetOrientationMarker(MakeAxesActor())
     # Position lower left in the viewport.
     om.SetViewport(0, 0, 0.2, 0.2)
@@ -354,10 +403,10 @@ def WritePNG(ren, fn, magnification=1):
     :param: fn - the file name.
     :param: magnification - the magnification, usually 1.
     """
-    renLgeIm = vtk.vtkRenderLargeImage()
+    renLgeIm = vtkRenderLargeImage()
     renLgeIm.SetInput(ren)
     renLgeIm.SetMagnification(magnification)
-    imgWriter = vtk.vtkPNGWriter()
+    imgWriter = vtkPNGWriter()
     imgWriter.SetInputConnection(renLgeIm.GetOutputPort())
     imgWriter.SetFileName(fn)
     imgWriter.Write()
@@ -397,12 +446,12 @@ def main():
     src.GetOutput().GetPointData().GetScalars().SetName("Elevation")
     scalarRange = src.GetOutput().GetScalarRange()
 
-    butterfly = vtk.vtkButterflySubdivisionFilter()
+    butterfly = vtkButterflySubdivisionFilter()
     butterfly.SetInputConnection(src.GetOutputPort())
     butterfly.SetNumberOfSubdivisions(3)
     butterfly.Update()
 
-    linear = vtk.vtkLinearSubdivisionFilter()
+    linear = vtkLinearSubdivisionFilter()
     linear.SetInputConnection(src.GetOutputPort())
     linear.SetNumberOfSubdivisions(3)
     linear.Update()
@@ -427,15 +476,15 @@ def main():
     labelActors.append(MakeLabel('Original', minRenWinDim))
 
     ren = list()
-    ren.append(vtk.vtkRenderer())
-    ren.append(vtk.vtkRenderer())
-    ren.append(vtk.vtkRenderer())
+    ren.append(vtkRenderer())
+    ren.append(vtkRenderer())
+    ren.append(vtkRenderer())
     ren[2].SetViewport(0, 0, 1.0 / 3.0, 1)  # Original
     ren[1].SetViewport(1.0 / 3.0, 0, 2.0 / 3.0, 1)  # Linear
     ren[0].SetViewport(2.0 / 3.0, 0, 1, 1)  # Butterfly
 
-    renWin = vtk.vtkRenderWindow()
-    iren = vtk.vtkRenderWindowInteractor()
+    renWin = vtkRenderWindow()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Orientation markers.
@@ -470,8 +519,8 @@ def main():
 
 if __name__ == '__main__':
     requiredMajorVersion = 6
-    # print(vtk.vtkVersion().GetVTKMajorVersion())
-    if vtk.vtkVersion().GetVTKMajorVersion() < requiredMajorVersion:
+    # print(vtkVersion().GetVTKMajorVersion())
+    if vtkVersion().GetVTKMajorVersion() < requiredMajorVersion:
         print("You need VTK Version 6 or greater.")
         print("The class vtkNamedColors is in VTK version 6 or greater.")
         exit(0)

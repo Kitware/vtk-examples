@@ -1,20 +1,38 @@
 #!/usr/bin/env python
 
-"""
-"""
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkFiltersCore import vtkPolyDataNormals
+from vtkmodules.vtkIOGeometry import (
+    vtkBYUReader,
+    vtkOBJReader,
+    vtkSTLReader
+)
+from vtkmodules.vtkIOPLY import vtkPLYReader
+from vtkmodules.vtkIOXML import vtkXMLPolyDataReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
     polyData = ReadPolyData(fileName)
 
     # A renderer.
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d("White"))
 
     # Create background colors for each viewport.
@@ -25,17 +43,17 @@ def main():
 
     # Create a renderer for each view port.
     ren = list()
-    ren.append(vtk.vtkRenderer())
-    ren.append(vtk.vtkRenderer())
-    ren.append(vtk.vtkRenderer())
+    ren.append(vtkRenderer())
+    ren.append(vtkRenderer())
+    ren.append(vtkRenderer())
     ren[0].SetViewport(0, 0, 1.0 / 3.0, 1)  # Input
     ren[1].SetViewport(1.0 / 3.0, 0, 2.0 / 3.0, 1)  # Normals (no split)
     ren[2].SetViewport(2.0 / 3.0, 0, 1, 1)  # Normals (split)
 
     # Shared camera.
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
 
-    normals = vtk.vtkPolyDataNormals()
+    normals = vtkPolyDataNormals()
     normals.SetInputData(polyData)
     normals.SetFeatureAngle(30.0)
     for i in range(0, 3):
@@ -50,15 +68,15 @@ def main():
 
         normals.Update()
 
-        normalsPolyData = vtk.vtkPolyData()
+        normalsPolyData = vtkPolyData()
         normalsPolyData.DeepCopy(normals.GetOutput())
 
         # mapper
-        mapper = vtk.vtkPolyDataMapper()
+        mapper = vtkPolyDataMapper()
         mapper.SetInputData(normalsPolyData)
         mapper.ScalarVisibilityOff()
 
-        actor = vtk.vtkActor()
+        actor = vtkActor()
         actor.SetMapper(mapper)
         actor.GetProperty().SetDiffuseColor(colors.GetColor3d("Peacock"))
         actor.GetProperty().SetDiffuse(.7)
@@ -71,14 +89,14 @@ def main():
         ren[i].AddActor(actor)
 
     # Render window.
-    renwin = vtk.vtkRenderWindow()
+    renwin = vtkRenderWindow()
     renwin.AddRenderer(ren[0])
     renwin.AddRenderer(ren[1])
     renwin.AddRenderer(ren[2])
     renwin.SetWindowName('NormalsDemo')
 
     # An interactor.
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renwin)
 
     renwin.SetSize(900, 300)
@@ -122,32 +140,32 @@ def ReadPolyData(file_name):
     path, extension = os.path.splitext(file_name)
     extension = extension.lower()
     if extension == ".ply":
-        reader = vtk.vtkPLYReader()
+        reader = vtkPLYReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".vtp":
-        reader = vtk.vtkXMLpoly_dataReader()
+        reader = vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".obj":
-        reader = vtk.vtkOBJReader()
+        reader = vtkOBJReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".stl":
-        reader = vtk.vtkSTLReader()
+        reader = vtkSTLReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".vtk":
-        reader = vtk.vtkpoly_dataReader()
+        reader = vtkXMLPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == ".g":
-        reader = vtk.vtkBYUReader()
+        reader = vtkBYUReader()
         reader.SetGeometryFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()

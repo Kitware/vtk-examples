@@ -14,7 +14,8 @@ In this case Digital CCIR601 is used which gives less weight to the
 from vtkmodules.vtkCommonColor import (
     vtkColorSeries,
     vtkNamedColors
-    )
+)
+
 
 def main():
     ncpt = HTMLTableMaker()

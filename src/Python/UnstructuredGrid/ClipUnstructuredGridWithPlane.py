@@ -2,7 +2,25 @@
 
 import collections
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellTypes,
+    vtkPlane
+)
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersGeneral import vtkTableBasedClipDataSet
+from vtkmodules.vtkIOLegacy import vtkUnstructuredGridReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -13,12 +31,12 @@ def get_program_parameters():
  The resulting output and clipped output are presented in yellow and red respectively.
  To illustrate the clipped interfaces, the example uses a vtkTransform to rotate each
     output about their centers.
- Note: This clipping filter doe retain the original cells if they are not clipped.
+ Note: This clipping filter does retain the original cells if they are not clipped.
 
    '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename', help='treemesh.vtk.')
+    parser.add_argument('filename', help='treemesh.vtk')
     args = parser.parse_args()
     return args.filename
 
@@ -27,67 +45,67 @@ def main():
     filename = get_program_parameters()
 
     # Create the reader for the data.
-    reader = vtk.vtkUnstructuredGridReader()
+    reader = vtkUnstructuredGridReader()
     reader.SetFileName(filename)
     reader.Update()
 
     bounds = reader.GetOutput().GetBounds()
     center = reader.GetOutput().GetCenter()
 
-    colors = vtk.vtkNamedColors()
-    renderer = vtk.vtkRenderer()
+    colors = vtkNamedColors()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('Wheat'))
     renderer.UseHiddenLineRemovalOn()
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     xnorm = [-1.0, -1.0, 1.0]
 
-    clipPlane = vtk.vtkPlane()
+    clipPlane = vtkPlane()
     clipPlane.SetOrigin(reader.GetOutput().GetCenter())
     clipPlane.SetNormal(xnorm)
 
-    clipper = vtk.vtkTableBasedClipDataSet()
+    clipper = vtkTableBasedClipDataSet()
     clipper.SetClipFunction(clipPlane)
     clipper.SetInputData(reader.GetOutput())
     clipper.SetValue(0.0)
     clipper.GenerateClippedOutputOn()
     clipper.Update()
 
-    insideMapper = vtk.vtkDataSetMapper()
+    insideMapper = vtkDataSetMapper()
     insideMapper.SetInputData(clipper.GetOutput())
     insideMapper.ScalarVisibilityOff()
 
-    insideActor = vtk.vtkActor()
+    insideActor = vtkActor()
     insideActor.SetMapper(insideMapper)
     insideActor.GetProperty().SetDiffuseColor(colors.GetColor3d('banana'))
     insideActor.GetProperty().SetAmbient(.3)
     insideActor.GetProperty().EdgeVisibilityOn()
 
-    clippedMapper = vtk.vtkDataSetMapper()
+    clippedMapper = vtkDataSetMapper()
     clippedMapper.SetInputData(clipper.GetClippedOutput())
     clippedMapper.ScalarVisibilityOff()
 
-    clippedActor = vtk.vtkActor()
+    clippedActor = vtkActor()
     clippedActor.SetMapper(clippedMapper)
     clippedActor.GetProperty().SetDiffuseColor(colors.GetColor3d('tomato'))
     insideActor.GetProperty().SetAmbient(.3)
     clippedActor.GetProperty().EdgeVisibilityOn()
 
     # Create transforms to make a better visualization
-    insideTransform = vtk.vtkTransform()
+    insideTransform = vtkTransform()
     insideTransform.Translate(-(bounds[1] - bounds[0]) * 0.75, 0, 0)
     insideTransform.Translate(center[0], center[1], center[2])
     insideTransform.RotateY(-120.0)
     insideTransform.Translate(-center[0], -center[1], -center[2])
     insideActor.SetUserTransform(insideTransform)
 
-    clippedTransform = vtk.vtkTransform()
+    clippedTransform = vtkTransform()
     clippedTransform.Translate((bounds[1] - bounds[0]) * 0.75, 0, 0)
     clippedTransform.Translate(center[0], center[1], center[2])
     clippedTransform.RotateY(60.0)
@@ -117,7 +135,7 @@ def main():
     # Sort by key and put into an OrderedDict.
     # An OrderedDict remembers the order in which the keys have been inserted.
     for k, v in collections.OrderedDict(sorted(cellMap.items())).items():
-        print('\tCell type ', vtk.vtkCellTypes.GetClassNameFromTypeId(k), ' occurs ', v, ' times.')
+        print('\tCell type ', vtkCellTypes.GetClassNameFromTypeId(k), ' occurs ', v, ' times.')
 
     numberOfCells = clipper.GetClippedOutput().GetNumberOfCells()
     print('------------------------')
@@ -128,7 +146,7 @@ def main():
         outsideCellMap.setdefault(clipper.GetClippedOutput().GetCellType(i), 0)
         outsideCellMap[clipper.GetClippedOutput().GetCellType(i)] += 1
     for k, v in collections.OrderedDict(sorted(outsideCellMap.items())).items():
-        print('\tCell type ', vtk.vtkCellTypes.GetClassNameFromTypeId(k), ' occurs ', v, ' times.')
+        print('\tCell type ', vtkCellTypes.GetClassNameFromTypeId(k), ' occurs ', v, ' times.')
 
 
 if __name__ == '__main__':

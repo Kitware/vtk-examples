@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 The scene consists of
  * Four actors: a rectangle, a box, a cone and a sphere.
@@ -7,104 +9,130 @@ The scene consists of
 
 """
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkPolyDataNormals
+from vtkmodules.vtkFiltersSources import (
+    vtkConeSource,
+    vtkCubeSource,
+    vtkPlaneSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkLight,
+    vtkLightActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor
+)
+from vtkmodules.vtkRenderingOpenGL2 import (
+    vtkCameraPass,
+    vtkOpenGLRenderer,
+    vtkRenderPassCollection,
+    vtkSequencePass,
+    vtkShadowMapPass
+)
 
 
 def main():
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.SetSize(400, 400)
     renderWindow.SetMultiSamples(0)
 
     renderWindow.SetAlphaBitPlanes(1)
     interactor.SetRenderWindow(renderWindow)
 
-    renderer = vtk.vtkOpenGLRenderer()
+    renderer = vtkOpenGLRenderer()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(640, 480)
 
-    rectangleSource = vtk.vtkPlaneSource()
+    rectangleSource = vtkPlaneSource()
     rectangleSource.SetOrigin(-5.0, 0.0, 5.0)
     rectangleSource.SetPoint1(5.0, 0.0, 5.0)
     rectangleSource.SetPoint2(-5.0, 0.0, -5.0)
     rectangleSource.SetResolution(100, 100)
 
-    rectangleMapper = vtk.vtkPolyDataMapper()
+    rectangleMapper = vtkPolyDataMapper()
     rectangleMapper.SetInputConnection(rectangleSource.GetOutputPort())
 
     rectangleMapper.SetScalarVisibility(0)
 
-    shadows = vtk.vtkShadowMapPass()
+    shadows = vtkShadowMapPass()
 
-    seq = vtk.vtkSequencePass()
+    seq = vtkSequencePass()
 
-    passes = vtk.vtkRenderPassCollection()
+    passes = vtkRenderPassCollection()
     passes.AddItem(shadows.GetShadowMapBakerPass())
     passes.AddItem(shadows)
     seq.SetPasses(passes)
 
-    cameraP = vtk.vtkCameraPass()
+    cameraP = vtkCameraPass()
     cameraP.SetDelegatePass(seq)
 
     # tell the renderer to use our render pass pipeline
     glrenderer = renderer
     glrenderer.SetPass(cameraP)
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
     boxColor = colors.GetColor3d('Tomato')
     rectangleColor = colors.GetColor3d('Beige')
     coneColor = colors.GetColor3d('Peacock')
     sphereColor = colors.GetColor3d('Banana')
 
-    rectangleActor = vtk.vtkActor()
+    rectangleActor = vtkActor()
     rectangleActor.SetMapper(rectangleMapper)
     rectangleActor.VisibilityOn()
     rectangleActor.GetProperty().SetColor(rectangleColor)
 
-    boxSource = vtk.vtkCubeSource()
+    boxSource = vtkCubeSource()
     boxSource.SetXLength(2.0)
 
-    boxNormals = vtk.vtkPolyDataNormals()
+    boxNormals = vtkPolyDataNormals()
     boxNormals.SetInputConnection(boxSource.GetOutputPort())
     boxNormals.ComputePointNormalsOff()
     boxNormals.ComputeCellNormalsOn()
     boxNormals.Update()
     boxNormals.GetOutput().GetPointData().SetNormals(None)
 
-    boxMapper = vtk.vtkPolyDataMapper()
+    boxMapper = vtkPolyDataMapper()
     boxMapper.SetInputConnection(boxNormals.GetOutputPort())
     boxMapper.ScalarVisibilityOff()
 
-    boxActor = vtk.vtkActor()
+    boxActor = vtkActor()
     boxActor.SetMapper(boxMapper)
     boxActor.VisibilityOn()
     boxActor.SetPosition(-2.0, 2.0, 0.0)
     boxActor.GetProperty().SetColor(boxColor)
 
-    coneSource = vtk.vtkConeSource()
+    coneSource = vtkConeSource()
     coneSource.SetResolution(24)
     coneSource.SetDirection(1.0, 1.0, 1.0)
 
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(coneSource.GetOutputPort())
     coneMapper.SetScalarVisibility(0)
 
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
     coneActor.VisibilityOn()
     coneActor.SetPosition(0.0, 1.0, 1.0)
     coneActor.GetProperty().SetColor(coneColor)
 
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
     sphereSource.SetThetaResolution(32)
     sphereSource.SetPhiResolution(32)
 
-    sphereMapper = vtk.vtkPolyDataMapper()
+    sphereMapper = vtkPolyDataMapper()
     sphereMapper.SetInputConnection(sphereSource.GetOutputPort())
     sphereMapper.ScalarVisibilityOff()
 
-    sphereActor = vtk.vtkActor()
+    sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
 
     sphereActor.VisibilityOn()
@@ -119,7 +147,7 @@ def main():
     # Spotlights.
 
     # lighting the box.
-    l1 = vtk.vtkLight()
+    l1 = vtkLight()
     l1.SetPosition(-4.0, 4.0, -1.0)
     l1.SetFocalPoint(boxActor.GetPosition())
     l1.SetColor(colors.GetColor3d('White'))
@@ -128,7 +156,7 @@ def main():
     l1.SwitchOn()
 
     # lighting the sphere
-    l2 = vtk.vtkLight()
+    l2 = vtkLight()
     l2.SetPosition(4.0, 5.0, 1.0)
     l2.SetFocalPoint(sphereActor.GetPosition())
     l2.SetColor(colors.GetColor3d('Magenta'))
@@ -140,12 +168,12 @@ def main():
     # wireframe representation, colored with the light color.
     angle = l1.GetConeAngle()
     if l1.LightTypeIsSceneLight() and l1.GetPositional() and angle < 180.0:  # spotlight
-        la = vtk.vtkLightActor()
+        la = vtkLightActor()
         la.SetLight(l1)
         renderer.AddViewProp(la)
     angle = l2.GetConeAngle()
     if l2.LightTypeIsSceneLight() and l2.GetPositional() and angle < 180.0:  # spotlight
-        la = vtk.vtkLightActor()
+        la = vtkLightActor()
         la.SetLight(l2)
         renderer.AddViewProp(la)
 
