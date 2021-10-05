@@ -1,11 +1,26 @@
 # An example from scipy cookbook demonstrating the use of numpy arrays in vtk
 
 import numpy as np
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkPiecewiseFunction
+from vtkmodules.vtkIOImage import vtkImageImport
+from vtkmodules.vtkRenderingCore import (
+    vtkColorTransferFunction,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkVolume,
+    vtkVolumeProperty
+)
+from vtkmodules.vtkRenderingVolume import vtkFixedPointVolumeRayCastMapper
+# noinspection PyUnresolvedReferences
+from vtkmodules.vtkRenderingVolumeOpenGL2 import vtkOpenGLRayCastImageDisplayHelper
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # We begin by creating the data we want to render.
     # For this tutorial, we create a 3D-image containing three overlaping cubes.
@@ -19,7 +34,7 @@ def main():
     # For VTK to be able to use the data, it must be stored as a VTK-image.
     #  This can be done by the vtkImageImport-class which
     # imports raw data and stores it.
-    dataImporter = vtk.vtkImageImport()
+    dataImporter = vtkImageImport()
     # The previously created array is converted to a string of chars and imported.
     data_string = data_matrix.tobytes()
     dataImporter.CopyImportVoidPointer(data_string, len(data_string))
@@ -39,7 +54,7 @@ def main():
     # The following class is used to store transparency-values for later retrival.
     #  In our case, we want the value 0 to be
     # completely opaque whereas the three different cubes are given different transparency-values to show how it works.
-    alphaChannelFunc = vtk.vtkPiecewiseFunction()
+    alphaChannelFunc = vtkPiecewiseFunction()
     alphaChannelFunc.AddPoint(0, 0.0)
     alphaChannelFunc.AddPoint(50, 0.05)
     alphaChannelFunc.AddPoint(100, 0.1)
@@ -47,7 +62,7 @@ def main():
 
     # This class stores color data and can create color tables from a few color points.
     #  For this demo, we want the three cubes to be of the colors red green and blue.
-    colorFunc = vtk.vtkColorTransferFunction()
+    colorFunc = vtkColorTransferFunction()
     colorFunc.AddRGBPoint(50, 1.0, 0.0, 0.0)
     colorFunc.AddRGBPoint(100, 0.0, 1.0, 0.0)
     colorFunc.AddRGBPoint(150, 0.0, 0.0, 1.0)
@@ -55,25 +70,25 @@ def main():
     # The previous two classes stored properties.
     #  Because we want to apply these properties to the volume we want to render,
     # we have to store them in a class that stores volume properties.
-    volumeProperty = vtk.vtkVolumeProperty()
+    volumeProperty = vtkVolumeProperty()
     volumeProperty.SetColor(colorFunc)
     volumeProperty.SetScalarOpacity(alphaChannelFunc)
 
-    volumeMapper = vtk.vtkFixedPointVolumeRayCastMapper()
+    volumeMapper = vtkFixedPointVolumeRayCastMapper()
     volumeMapper.SetInputConnection(dataImporter.GetOutputPort())
 
     # The class vtkVolume is used to pair the previously declared volume as well as the properties
     #  to be used when rendering that volume.
-    volume = vtk.vtkVolume()
+    volume = vtkVolume()
     volume.SetMapper(volumeMapper)
     volume.SetProperty(volumeProperty)
 
     # With almost everything else ready, its time to initialize the renderer and window, as well as
     #  creating a method for exiting the application
-    renderer = vtk.vtkRenderer()
-    renderWin = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWin = vtkRenderWindow()
     renderWin.AddRenderer(renderer)
-    renderInteractor = vtk.vtkRenderWindowInteractor()
+    renderInteractor = vtkRenderWindowInteractor()
     renderInteractor.SetRenderWindow(renderWin)
 
     # We add the volume to the renderer ...
