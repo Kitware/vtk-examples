@@ -16,32 +16,43 @@
 """
 
 # First access the VTK module (and any other needed modules) by importing them.
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderer
+)
 
 
 def main(argv):
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     #
     # The pipeline creation is documented in Tutorial_Step1.
     #
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetHeight(3.0)
     cone.SetRadius(1.0)
     cone.SetResolution(10)
 
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(cone.GetOutputPort())
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
     coneActor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
     ren1.AddActor(coneActor)
     ren1.SetBackground(colors.GetColor3d('MidnightBlue'))
     ren1.ResetCamera()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
     renWin.SetSize(300, 300)
     renWin.SetWindowName('Tutorial_Step2')

@@ -16,7 +16,18 @@
 """
 
 # First access the VTK module (and any other needed modules) by importing them.
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderer
+)
 
 
 def main(argv):
@@ -24,7 +35,7 @@ def main(argv):
     # Next we create an instance of vtkNamedColors and we will use
     # this to select colors for the object and background.
     #
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     #
     # Now we create an instance of vtkConeSource and set some of its
@@ -32,7 +43,7 @@ def main(argv):
     # visualization pipeline (it is a source process object) it produces data
     # (output type is vtkPolyData) which other filters may process.
     #
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetHeight(3.0)
     cone.SetRadius(1.0)
     cone.SetResolution(10)
@@ -44,7 +55,7 @@ def main(argv):
     # vtkPolyDataMapper to map the polygonal data into graphics primitives. We
     # connect the output of the cone source to the input of this mapper.
     #
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(cone.GetOutputPort())
 
     #
@@ -54,7 +65,7 @@ def main(argv):
     # matrix. We set this actor's mapper to be coneMapper which we created
     # above.
     #
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
     coneActor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
@@ -64,7 +75,7 @@ def main(argv):
     # responsible for drawing the actors it has.  We also set the background
     # color here.
     #
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
     ren1.AddActor(coneActor)
     ren1.SetBackground(colors.GetColor3d('MidnightBlue'))
 
@@ -72,7 +83,7 @@ def main(argv):
     # We put our renderer into the render window using AddRenderer. We also
     # set the size to be 300 pixels by 300.
     #
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
     renWin.SetSize(300, 300)
     renWin.SetWindowName('Tutorial_Step1')
