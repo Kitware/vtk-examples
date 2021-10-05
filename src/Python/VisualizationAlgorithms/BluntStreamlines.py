@@ -1,24 +1,40 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkStructuredGridOutlineFilter
+from vtkmodules.vtkFiltersFlowPaths import vtkStreamTracer
+from vtkmodules.vtkFiltersGeometry import vtkStructuredGridGeometryFilter
+from vtkmodules.vtkFiltersSources import vtkLineSource
+from vtkmodules.vtkIOParallel import vtkMultiBlockPLOT3DReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     xyzFilename, qFilename = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    aren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    aren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(aren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     scalarRange = [0.0] * 2
     c = [0.0] * 3
     maxTime = 0.0
 
-    reader = vtk.vtkMultiBlockPLOT3DReader()
+    reader = vtkMultiBlockPLOT3DReader()
     reader.SetXYZFileName(xyzFilename)
     reader.SetQFileName(qFilename)
     reader.Update()  # Force a read to occur.
@@ -31,13 +47,13 @@ def main():
         maxVelocity = pd.GetPointData().GetVectors().GetMaxNorm()
         maxTime = 20.0 * pd.GetLength() / maxVelocity
 
-    outlineF = vtk.vtkStructuredGridOutlineFilter()
+    outlineF = vtkStructuredGridOutlineFilter()
     outlineF.SetInputData(pd)
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outlineF.GetOutputPort())
 
-    outline = vtk.vtkActor()
+    outline = vtkActor()
     outline.SetMapper(outlineMapper)
     outline.GetProperty().SetColor(colors.GetColor3d('Moccasin'))
     outline.GetProperty().SetLineWidth(2.0)
@@ -45,46 +61,46 @@ def main():
     #
     # Some geometry for context
     #
-    wall = vtk.vtkStructuredGridGeometryFilter()
+    wall = vtkStructuredGridGeometryFilter()
     wall.SetInputData(pd)
     wall.SetExtent(0, 100, 0, 100, 0, 0)
 
-    wallMap = vtk.vtkPolyDataMapper()
+    wallMap = vtkPolyDataMapper()
     wallMap.SetInputConnection(wall.GetOutputPort())
     wallMap.ScalarVisibilityOff()
 
-    wallActor = vtk.vtkActor()
+    wallActor = vtkActor()
     wallActor.SetMapper(wallMap)
     wallActor.GetProperty().SetColor(colors.GetColor3d('Silver'))
 
-    fin = vtk.vtkStructuredGridGeometryFilter()
+    fin = vtkStructuredGridGeometryFilter()
     fin.SetInputData(pd)
     fin.SetExtent(0, 100, 0, 0, 0, 100)
 
-    finMap = vtk.vtkPolyDataMapper()
+    finMap = vtkPolyDataMapper()
     finMap.SetInputConnection(fin.GetOutputPort())
     finMap.ScalarVisibilityOff()
 
-    finActor = vtk.vtkActor()
+    finActor = vtkActor()
     finActor.SetMapper(finMap)
     finActor.GetProperty().SetColor(colors.GetColor3d('Silver'))
     #
     # regular streamlines
     #
-    line1 = vtk.vtkLineSource()
+    line1 = vtkLineSource()
     line1.SetResolution(25)
     line1.SetPoint1(-6.36, 0.25, 0.06)
     line1.SetPoint2(-6.36, 0.25, 5.37)
 
-    rakeMapper = vtk.vtkPolyDataMapper()
+    rakeMapper = vtkPolyDataMapper()
     rakeMapper.SetInputConnection(line1.GetOutputPort())
 
-    rake1 = vtk.vtkActor()
+    rake1 = vtkActor()
     rake1.SetMapper(rakeMapper)
     rake1.GetProperty().SetColor(colors.GetColor3d('Black'))
     rake1.GetProperty().SetLineWidth(5)
 
-    streamers = vtk.vtkStreamTracer()
+    streamers = vtkStreamTracer()
     # streamers.DebugOn()
     streamers.SetInputConnection(reader.GetOutputPort())
     streamers.SetSourceConnection(line1.GetOutputPort())
@@ -94,11 +110,11 @@ def main():
     streamers.SetIntegratorType(2)
     streamers.Update()
 
-    streamersMapper = vtk.vtkPolyDataMapper()
+    streamersMapper = vtkPolyDataMapper()
     streamersMapper.SetInputConnection(streamers.GetOutputPort())
     streamersMapper.SetScalarRange(scalarRange)
 
-    lines = vtk.vtkActor()
+    lines = vtkActor()
     lines.SetMapper(streamersMapper)
 
     aren.AddActor(outline)

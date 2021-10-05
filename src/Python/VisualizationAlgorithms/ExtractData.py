@@ -1,67 +1,89 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import (
+    vtkImplicitBoolean,
+    vtkQuadric,
+    vtkSphere
+)
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersExtraction import vtkExtractGeometry
+from vtkmodules.vtkFiltersGeneral import vtkShrinkFilter
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkImagingHybrid import vtkSampleFunction
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    quadric = vtk.vtkQuadric()
+    quadric = vtkQuadric()
     quadric.SetCoefficients(0.5, 1, 0.2, 0, 0.1, 0, 0, 0.2, 0, 0)
 
-    sample = vtk.vtkSampleFunction()
+    sample = vtkSampleFunction()
     sample.SetSampleDimensions(50, 50, 50)
     sample.SetImplicitFunction(quadric)
     sample.ComputeNormalsOff()
 
-    trans = vtk.vtkTransform()
+    trans = vtkTransform()
     trans.Scale(1, 0.5, 0.333)
 
-    sphere = vtk.vtkSphere()
+    sphere = vtkSphere()
     sphere.SetRadius(0.25)
     sphere.SetTransform(trans)
 
-    trans2 = vtk.vtkTransform()
+    trans2 = vtkTransform()
     trans2.Scale(0.25, 0.5, 1.0)
 
-    sphere2 = vtk.vtkSphere()
+    sphere2 = vtkSphere()
     sphere2.SetRadius(0.25)
     sphere2.SetTransform(trans2)
 
-    booleanUnion = vtk.vtkImplicitBoolean()
+    booleanUnion = vtkImplicitBoolean()
     booleanUnion.AddFunction(sphere)
     booleanUnion.AddFunction(sphere2)
     booleanUnion.SetOperationType(0)  # boolean Union
 
-    extract = vtk.vtkExtractGeometry()
+    extract = vtkExtractGeometry()
     extract.SetInputConnection(sample.GetOutputPort())
     extract.SetImplicitFunction(booleanUnion)
 
-    shrink = vtk.vtkShrinkFilter()
+    shrink = vtkShrinkFilter()
     shrink.SetInputConnection(extract.GetOutputPort())
     shrink.SetShrinkFactor(0.5)
 
-    dataMapper = vtk.vtkDataSetMapper()
+    dataMapper = vtkDataSetMapper()
     dataMapper.SetInputConnection(shrink.GetOutputPort())
-    dataActor = vtk.vtkActor()
+    dataActor = vtkActor()
     dataActor.SetMapper(dataMapper)
 
     # outline
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(sample.GetOutputPort())
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(0, 0, 0)
 

@@ -2,25 +2,47 @@
 
 # This code is based on the VTK file: /IO/Geometry/Testing/Python/motor.py.
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkFloatArray,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import vtkPlanes
+from vtkmodules.vtkFiltersCore import vtkPolyDataNormals
+from vtkmodules.vtkFiltersTexture import vtkImplicitTextureCoords
+from vtkmodules.vtkIOGeometry import vtkBYUReader
+from vtkmodules.vtkIOLegacy import vtkStructuredPointsReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTexture
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     textureFile, motorFile = get_program_parameters()
 
     # Create the Renderer, RenderWindow and RenderWindowInteractor.
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create the cutting planes.
-    planes = vtk.vtkPlanes()
-    points = vtk.vtkPoints()
-    norms = vtk.vtkFloatArray()
+    planes = vtkPlanes()
+    points = vtkPoints()
+    norms = vtkFloatArray()
 
     norms.SetNumberOfComponents(3)
     points.InsertPoint(0, 0.0, 0.0, 0.0)
@@ -31,9 +53,9 @@ def main():
     planes.SetNormals(norms)
 
     # Get the texture.
-    texReader = vtk.vtkStructuredPointsReader()
+    texReader = vtkStructuredPointsReader()
     texReader.SetFileName(textureFile)
-    texture = vtk.vtkTexture()
+    texture = vtkTexture()
     texture.SetInputConnection(texReader.GetOutputPort())
     texture.InterpolateOff()
     texture.RepeatOff()
@@ -53,22 +75,22 @@ def main():
 
     # Build the pipelines.
     for i in range(0, numberOfParts):
-        byu.append(vtk.vtkBYUReader())
+        byu.append(vtkBYUReader())
         byu[i].SetGeometryFileName(motorFile)
         byu[i].SetPartNumber(i + 1)
 
-        normals.append(vtk.vtkPolyDataNormals())
+        normals.append(vtkPolyDataNormals())
         normals[i].SetInputConnection(byu[i].GetOutputPort())
 
-        tex.append(vtk.vtkImplicitTextureCoords())
+        tex.append(vtkImplicitTextureCoords())
         tex[i].SetInputConnection(normals[i].GetOutputPort())
         tex[i].SetRFunction(planes)
         # tex[i].FlipTextureOn()
 
-        byuMapper.append(vtk.vtkDataSetMapper())
+        byuMapper.append(vtkDataSetMapper())
         byuMapper[i].SetInputConnection(tex[i].GetOutputPort())
 
-        byuActor.append(vtk.vtkActor())
+        byuActor.append(vtkActor())
         byuActor[i].SetMapper(byuMapper[i])
         byuActor[i].SetTexture(texture)
         byuActor[i].GetProperty().SetColor(colors.GetColor3d(partColours[i]))
@@ -84,7 +106,7 @@ def main():
     renWin.SetSize(512, 512)
     renWin.SetWindowName('Motor')
 
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetFocalPoint(0.0286334, 0.0362996, 0.0379685)
     camera.SetPosition(1.37067, 1.08629, -1.30349)
     camera.SetViewAngle(17.673)
@@ -105,7 +127,7 @@ def get_program_parameters():
    '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('textureFile', help='The texture file: texThres2.vtk.')
+    parser.add_argument('textureFile', help='The texture file: texThres2.vtk')
     parser.add_argument('motorFile', help='The motor file: motor.g.')
     args = parser.parse_args()
     return args.textureFile, args.motorFile

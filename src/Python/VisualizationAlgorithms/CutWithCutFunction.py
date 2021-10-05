@@ -1,62 +1,76 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkPlane
+from vtkmodules.vtkFiltersCore import vtkCutter
+from vtkmodules.vtkIOXML import vtkXMLPolyDataReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName, numberOfCuts = get_program_parameters()
-    reader = vtk.vtkXMLPolyDataReader()
+    reader = vtkXMLPolyDataReader()
     reader.SetFileName(fileName)
     reader.Update()
 
     bounds = reader.GetOutput().GetBounds()
     print('Bounds:', ', '.join(['{:.3f}'.format(f) for f in bounds]))
 
-    plane = vtk.vtkPlane()
+    plane = vtkPlane()
     plane.SetOrigin((bounds[1] + bounds[0]) / 2.0, (bounds[3] + bounds[2]) / 2.0, bounds[4])
     plane.SetNormal(0, 0, 1)
 
     # Create cutter
     high = plane.EvaluateFunction((bounds[1] + bounds[0]) / 2.0, (bounds[3] + bounds[2]) / 2.0, bounds[5])
 
-    cutter = vtk.vtkCutter()
+    cutter = vtkCutter()
     cutter.SetInputConnection(reader.GetOutputPort())
     cutter.SetCutFunction(plane)
     cutter.GenerateValues(numberOfCuts, 0.99, 0.99 * high)
 
-    cutterMapper = vtk.vtkPolyDataMapper()
+    cutterMapper = vtkPolyDataMapper()
     cutterMapper.SetInputConnection(cutter.GetOutputPort())
     cutterMapper.ScalarVisibilityOff()
 
     # Create cut actor
-    cutterActor = vtk.vtkActor()
+    cutterActor = vtkActor()
     cutterActor.GetProperty().SetColor(colors.GetColor3d('Banana'))
     cutterActor.GetProperty().SetLineWidth(2)
     cutterActor.SetMapper(cutterMapper)
 
     # Create model actor
-    modelMapper = vtk.vtkPolyDataMapper()
+    modelMapper = vtkPolyDataMapper()
     modelMapper.SetInputConnection(reader.GetOutputPort())
     modelMapper.ScalarVisibilityOff()
 
-    modelActor = vtk.vtkActor()
+    modelActor = vtkActor()
     modelActor.GetProperty().SetColor(colors.GetColor3d('Flesh'))
     modelActor.SetMapper(modelMapper)
 
     # Create renderers and add actors of plane and model
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(cutterActor)
     renderer.AddActor(modelActor)
 
     # Add renderer to renderwindow and render
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetSize(600, 600)
     renderWindow.SetWindowName('CutWithCutFunction')
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
     renderer.SetBackground(colors.GetColor3d('Burlywood'))

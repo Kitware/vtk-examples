@@ -1,33 +1,52 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import (
+    vtkCylinder,
+    vtkImplicitBoolean,
+    vtkSphere
+)
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import vtkClipPolyData
+from vtkmodules.vtkFiltersSources import vtkPlaneSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Demonstrate the use of clipping on polygonal data
     #
 
     # create pipeline
     #
-    plane = vtk.vtkPlaneSource()
+    plane = vtkPlaneSource()
     plane.SetXResolution(25)
     plane.SetYResolution(25)
     plane.SetOrigin(-1, -1, 0)
     plane.SetPoint1(1, -1, 0)
     plane.SetPoint2(-1, 1, 0)
 
-    transformSphere = vtk.vtkTransform()
+    transformSphere = vtkTransform()
     transformSphere.Identity()
     transformSphere.Translate(0.4, -0.4, 0)
     transformSphere.Inverse()
 
-    sphere = vtk.vtkSphere()
+    sphere = vtkSphere()
     sphere.SetTransform(transformSphere)
     sphere.SetRadius(.5)
 
-    transformCylinder = vtk.vtkTransform()
+    transformCylinder = vtkTransform()
     transformCylinder.Identity()
     transformCylinder.Translate(-0.4, 0.4, 0)
     transformCylinder.RotateZ(30)
@@ -35,47 +54,47 @@ def main():
     transformCylinder.RotateX(90)
     transformCylinder.Inverse()
 
-    cylinder = vtk.vtkCylinder()
+    cylinder = vtkCylinder()
     cylinder.SetTransform(transformCylinder)
     cylinder.SetRadius(.3)
 
-    boolean = vtk.vtkImplicitBoolean()
+    boolean = vtkImplicitBoolean()
     boolean.AddFunction(cylinder)
     boolean.AddFunction(sphere)
 
-    clipper = vtk.vtkClipPolyData()
+    clipper = vtkClipPolyData()
     clipper.SetInputConnection(plane.GetOutputPort())
     clipper.SetClipFunction(boolean)
     clipper.GenerateClippedOutputOn()
     clipper.GenerateClipScalarsOn()
     clipper.SetValue(0)
 
-    clipMapper = vtk.vtkPolyDataMapper()
+    clipMapper = vtkPolyDataMapper()
     clipMapper.SetInputConnection(clipper.GetOutputPort())
     clipMapper.ScalarVisibilityOff()
 
-    clipActor = vtk.vtkActor()
+    clipActor = vtkActor()
     clipActor.SetMapper(clipMapper)
     clipActor.GetProperty().SetDiffuseColor(colors.GetColor3d('MidnightBlue'))
     clipActor.GetProperty().SetRepresentationToWireframe()
 
-    clipInsideMapper = vtk.vtkPolyDataMapper()
+    clipInsideMapper = vtkPolyDataMapper()
     clipInsideMapper.SetInputData(clipper.GetClippedOutput())
     clipInsideMapper.ScalarVisibilityOff()
 
-    clipInsideActor = vtk.vtkActor()
+    clipInsideActor = vtkActor()
     clipInsideActor.SetMapper(clipInsideMapper)
     clipInsideActor.GetProperty().SetDiffuseColor(colors.GetColor3d('LightBlue'))
 
     # Create graphics stuff
     #
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
     renWin.SetWindowName('ClipSphereCylinder')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size

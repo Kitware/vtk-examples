@@ -1,23 +1,46 @@
 #!/usr/bin/env python
 
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkDoubleArray,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData
+)
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkImagingHybrid import vtkGaussianSplatter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    aren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    aren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(aren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create single splat point
-    pts = vtk.vtkPoints()
-    verts = vtk.vtkCellArray()
-    norms = vtk.vtkDoubleArray()
-    scalars = vtk.vtkDoubleArray()
+    pts = vtkPoints()
+    verts = vtkCellArray()
+    norms = vtkDoubleArray()
+    scalars = vtkDoubleArray()
 
     x = [0.0] * 3
     pts.InsertNextPoint(x)
@@ -35,43 +58,43 @@ def main():
     verts.InsertNextCell(1)
     verts.InsertCellPoint(0)
 
-    pData = vtk.vtkPolyData()
+    pData = vtkPolyData()
     pData.SetPoints(pts)
     pData.SetVerts(verts)
     pData.GetPointData().SetNormals(norms)
     pData.GetPointData().SetScalars(scalars)
 
     # Splat point and generate isosurface.
-    splat = vtk.vtkGaussianSplatter()
+    splat = vtkGaussianSplatter()
     splat.SetInputData(pData)
     splat.SetModelBounds(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0)
     splat.SetSampleDimensions(75, 75, 75)
     splat.SetRadius(0.5)
     splat.SetEccentricity(5.0)
     splat.SetExponentFactor(-3.25)
-    contour = vtk.vtkContourFilter()
+    contour = vtkContourFilter()
     contour.SetInputConnection(splat.GetOutputPort())
     contour.SetValue(0, 0.9)
-    splatMapper = vtk.vtkPolyDataMapper()
+    splatMapper = vtkPolyDataMapper()
     splatMapper.SetInputConnection(contour.GetOutputPort())
-    splatActor = vtk.vtkActor()
+    splatActor = vtkActor()
     splatActor.SetMapper(splatMapper)
 
     # Create outline.
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(splat.GetOutputPort())
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(colors.GetColor3d('Brown'))
 
     # Create cone to indicate direction.
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetResolution(24)
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(cone.GetOutputPort())
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
     coneActor.SetScale(0.75, 0.75, 0.75)
     coneActor.RotateZ(45.0)

@@ -1,48 +1,63 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkQuadric
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkImagingHybrid import vtkSampleFunction
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    aren = vtk.vtkRenderer()
+    aren = vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(aren)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     #
     # Create surfaces F(x,y,z) = constant
     #
     # Sample quadric function
-    quadric = vtk.vtkQuadric()
+    quadric = vtkQuadric()
     quadric.SetCoefficients(.5, 1, .2, 0, .1, 0, 0, .2, 0, 0)
-    sample = vtk.vtkSampleFunction()
+    sample = vtkSampleFunction()
     sample.SetSampleDimensions(50, 50, 50)
     sample.SetImplicitFunction(quadric)
 
-    contour = vtk.vtkContourFilter()
+    contour = vtkContourFilter()
     contour.SetInputConnection(sample.GetOutputPort())
     contour.GenerateValues(5, 0, 1.2)
 
-    contourMapper = vtk.vtkPolyDataMapper()
+    contourMapper = vtkPolyDataMapper()
     contourMapper.SetInputConnection(contour.GetOutputPort())
     contourMapper.SetScalarRange(0, 1.2)
 
-    contourActor = vtk.vtkActor()
+    contourActor = vtkActor()
     contourActor.SetMapper(contourMapper)
 
     # Create outline
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(sample.GetOutputPort())
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(colors.GetColor3d("Brown"))
     outlineActor.GetProperty().SetLineWidth(3.0)

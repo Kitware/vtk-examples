@@ -7,20 +7,42 @@ The human data file is taken from:
   Thanks to the Slicer people for providing this.
 """
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
+from vtkmodules.vtkFiltersSources import vtkPlaneSource
+from vtkmodules.vtkIOXML import vtkXMLPolyDataReader
+from vtkmodules.vtkInteractionWidgets import vtkOrientationMarkerWidget
+from vtkmodules.vtkRenderingAnnotation import (
+    vtkAnnotatedCubeActor,
+    vtkAxesActor
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkPropAssembly,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkRenderingFreeType import vtkVectorText
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
     # Create a rendering window, renderer and interactor.
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.SetSize(780, 780)
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Make an annotated cube actor with axes and then add it into an orientation marker widget.
@@ -30,7 +52,7 @@ def main():
     xyzLabels = ['X', 'Y', 'Z']
     scale = [1.5, -1.5, 1.5]
     axes = MakeCubeActor(scale, xyzLabels, colors)
-    om = vtk.vtkOrientationMarkerWidget()
+    om = vtkOrientationMarkerWidget()
     om.SetOrientationMarker(axes)
     # Position upper left in the viewport.
     om.SetViewport(0.0, 0.8, 0.2, 1.0)
@@ -41,7 +63,7 @@ def main():
     # Right, Anterior, Superior.
     scale = [1.5, 1.5, 1.5]
     axes1 = MakeCubeActor(scale, xyzLabels, colors)
-    om1 = vtk.vtkOrientationMarkerWidget()
+    om1 = vtkOrientationMarkerWidget()
     om1.SetOrientationMarker(axes1)
     # Position lower left in the viewport.
     om1.SetViewport(0, 0, 0.2, 0.2)
@@ -52,7 +74,7 @@ def main():
     # Left, Posterior, Superior.
     scale = (-1.5, -1.5, 1.5)
     axes2 = MakeCubeActor(scale, xyzLabels, colors)
-    om2 = vtk.vtkOrientationMarkerWidget()
+    om2 = vtkOrientationMarkerWidget()
     om2.SetOrientationMarker(axes2)
     # Position lower right in the viewport.
     om2.SetViewport(0.8, 0, 1.0, 0.2)
@@ -62,7 +84,7 @@ def main():
 
     # Finally create an annotated cube actor adding it into an orientation marker widget.
     axes3 = MakeAnnotatedCubeActor(colors)
-    om3 = vtk.vtkOrientationMarkerWidget()
+    om3 = vtkOrientationMarkerWidget()
     om3.SetOrientationMarker(axes3)
     # Position upper right in the viewport.
     om3.SetViewport(0.8, 0.8, 1.0, 1.0)
@@ -71,17 +93,17 @@ def main():
     om3.InteractiveOn()
 
     # Read in the model.
-    reader = vtk.vtkXMLPolyDataReader()
+    reader = vtkXMLPolyDataReader()
     reader.SetFileName(fileName)
     reader.Update()
 
-    humanMapper = vtk.vtkPolyDataMapper()
+    humanMapper = vtkPolyDataMapper()
     humanMapper.SetInputConnection(reader.GetOutputPort())
     humanMapper.SetScalarModeToUsePointFieldData()
     humanMapper.SelectColorArray('Color')
     humanMapper.SetColorModeToDirectScalars()
 
-    humanActor = vtk.vtkActor()
+    humanActor = vtkActor()
     humanActor.SetMapper(humanMapper)
     bounds = humanActor.GetBounds()
     # Scale the actor
@@ -135,7 +157,7 @@ def MakeAxesActor(scale, xyzLabels):
     :param xyzLabels: Labels for the axes.
     :return: The axes actor.
     """
-    axes = vtk.vtkAxesActor()
+    axes = vtkAxesActor()
     axes.SetScale(scale)
     axes.SetShaftTypeToCylinder()
     axes.SetXAxisLabelText(xyzLabels[0])
@@ -160,7 +182,7 @@ def MakeAnnotatedCubeActor(colors):
     :return: The annotated cube actor.
     """
     # A cube with labeled faces.
-    cube = vtk.vtkAnnotatedCubeActor()
+    cube = vtkAnnotatedCubeActor()
     cube.SetXPlusFaceText('R')  # Right
     cube.SetXMinusFaceText('L')  # Left
     cube.SetYPlusFaceText('A')  # Anterior
@@ -189,28 +211,28 @@ def MakeCubeActor(scale, xyzLabels, colors):
     :param colors: Used to set the colors of the cube faces.
     :return: The combined axes and annotated cube prop.
     """
-    # We are combining a vtk.vtkAxesActor and a vtk.vtkAnnotatedCubeActor
-    # into a vtk.vtkPropAssembly
+    # We are combining a vtkAxesActor and a vtkAnnotatedCubeActor
+    # into a vtkPropAssembly
     cube = MakeAnnotatedCubeActor(colors)
     axes = MakeAxesActor(scale, xyzLabels)
 
     # Combine orientation markers into one with an assembly.
-    assembly = vtk.vtkPropAssembly()
+    assembly = vtkPropAssembly()
     assembly.AddPart(axes)
     assembly.AddPart(cube)
     return assembly
 
 
 def MakePlane(resolution, origin, point1, point2, wxyz, translate):
-    plane = vtk.vtkPlaneSource()
+    plane = vtkPlaneSource()
     plane.SetResolution(*resolution)
     plane.SetOrigin(origin)
     plane.SetPoint1(point1)
     plane.SetPoint2(point2)
-    trnf = vtk.vtkTransform()
+    trnf = vtkTransform()
     trnf.RotateWXYZ(*wxyz)
     trnf.Translate(translate)
-    tpdPlane = vtk.vtkTransformPolyDataFilter()
+    tpdPlane = vtkTransformPolyDataFilter()
     tpdPlane.SetTransform(trnf)
     tpdPlane.SetInputConnection(plane.GetOutputPort())
     return tpdPlane
@@ -236,9 +258,9 @@ def MakePlanesActors(colors):
     planes.append(MakePlane(resolution, origin, point1, point2, [-90, 1, 0, 0], [-0.5, -0.5, 0.0]))  # x-z plane
     planes.append(MakePlane(resolution, origin, point1, point2, [-90, 0, 1, 0], [-0.5, -0.5, 0.0]))  # y-z plane
     for plane in planes:
-        mapper = vtk.vtkPolyDataMapper()
+        mapper = vtkPolyDataMapper()
         mapper.SetInputConnection(plane.GetOutputPort())
-        actor = vtk.vtkActor()
+        actor = vtkActor()
         actor.SetMapper(mapper)
         mappers.append(mapper)
         actors.append(actor)
@@ -257,95 +279,95 @@ def AddTextToPlanes():
     textActors = list()
     scale = [0.04, 0.04, 0.04]
 
-    text1 = vtk.vtkVectorText()
+    text1 = vtkVectorText()
     text1.SetText('Transverse\nPlane\n\nSuperior\nCranial')
-    trnf1 = vtk.vtkTransform()
+    trnf1 = vtkTransform()
     trnf1.RotateZ(-90)
-    tpdPlane1 = vtk.vtkTransformPolyDataFilter()
+    tpdPlane1 = vtkTransformPolyDataFilter()
     tpdPlane1.SetTransform(trnf1)
     tpdPlane1.SetInputConnection(text1.GetOutputPort())
-    textMapper1 = vtk.vtkPolyDataMapper()
+    textMapper1 = vtkPolyDataMapper()
     textMapper1.SetInputConnection(tpdPlane1.GetOutputPort())
-    textActor1 = vtk.vtkActor()
+    textActor1 = vtkActor()
     textActor1.SetMapper(textMapper1)
     textActor1.SetScale(scale)
     textActor1.AddPosition(0.4, 0.49, 0.01)
     textActors.append(textActor1)
 
-    text2 = vtk.vtkVectorText()
+    text2 = vtkVectorText()
     text2.SetText('Transverse\nPlane\n\nInferior\n(Caudal)')
-    trnf2 = vtk.vtkTransform()
+    trnf2 = vtkTransform()
     trnf2.RotateZ(270)
     trnf2.RotateWXYZ(*[180, 0, 1, 0])
-    tpdPlane2 = vtk.vtkTransformPolyDataFilter()
+    tpdPlane2 = vtkTransformPolyDataFilter()
     tpdPlane2.SetTransform(trnf2)
     tpdPlane2.SetInputConnection(text2.GetOutputPort())
-    textMapper2 = vtk.vtkPolyDataMapper()
+    textMapper2 = vtkPolyDataMapper()
     textMapper2.SetInputConnection(tpdPlane2.GetOutputPort())
-    textActor2 = vtk.vtkActor()
+    textActor2 = vtkActor()
     textActor2.SetMapper(textMapper2)
     textActor2.SetScale(scale)
     textActor2.AddPosition(0.4, -0.49, -0.01)
     textActors.append(textActor2)
 
-    text3 = vtk.vtkVectorText()
+    text3 = vtkVectorText()
     text3.SetText('Sagittal\nPlane\n\nLeft')
-    trnf3 = vtk.vtkTransform()
+    trnf3 = vtkTransform()
     trnf3.RotateX(90)
     trnf3.RotateWXYZ(*[-90, 0, 1, 0])
-    tpdPlane3 = vtk.vtkTransformPolyDataFilter()
+    tpdPlane3 = vtkTransformPolyDataFilter()
     tpdPlane3.SetTransform(trnf3)
     tpdPlane3.SetInputConnection(text3.GetOutputPort())
-    textMapper3 = vtk.vtkPolyDataMapper()
+    textMapper3 = vtkPolyDataMapper()
     textMapper3.SetInputConnection(tpdPlane3.GetOutputPort())
-    textActor3 = vtk.vtkActor()
+    textActor3 = vtkActor()
     textActor3.SetMapper(textMapper3)
     textActor3.SetScale(scale)
     textActor3.AddPosition(-0.01, 0.49, 0.4)
     textActors.append(textActor3)
 
-    text4 = vtk.vtkVectorText()
+    text4 = vtkVectorText()
     text4.SetText('Sagittal\nPlane\n\nRight')
-    trnf4 = vtk.vtkTransform()
+    trnf4 = vtkTransform()
     trnf4.RotateX(90)
     trnf4.RotateWXYZ(*[-270, 0, 1, 0])
-    tpdPlane4 = vtk.vtkTransformPolyDataFilter()
+    tpdPlane4 = vtkTransformPolyDataFilter()
     tpdPlane4.SetTransform(trnf4)
     tpdPlane4.SetInputConnection(text4.GetOutputPort())
-    textMapper4 = vtk.vtkPolyDataMapper()
+    textMapper4 = vtkPolyDataMapper()
     textMapper4.SetInputConnection(tpdPlane4.GetOutputPort())
-    textActor4 = vtk.vtkActor()
+    textActor4 = vtkActor()
     textActor4.SetMapper(textMapper4)
     textActor4.SetScale(scale)
     textActor4.AddPosition(0.01, -0.49, 0.4)
     textActors.append(textActor4)
 
-    text5 = vtk.vtkVectorText()
+    text5 = vtkVectorText()
     text5.SetText('Coronal\nPlane\n\nAnterior')
-    trnf5 = vtk.vtkTransform()
+    trnf5 = vtkTransform()
     trnf5.RotateY(-180)
     trnf5.RotateWXYZ(*[-90, 1, 0, 0])
-    tpdPlane5 = vtk.vtkTransformPolyDataFilter()
+    tpdPlane5 = vtkTransformPolyDataFilter()
     tpdPlane5.SetTransform(trnf5)
     tpdPlane5.SetInputConnection(text5.GetOutputPort())
-    textMapper5 = vtk.vtkPolyDataMapper()
+    textMapper5 = vtkPolyDataMapper()
     textMapper5.SetInputConnection(tpdPlane5.GetOutputPort())
-    textActor5 = vtk.vtkActor()
+    textActor5 = vtkActor()
     textActor5.SetMapper(textMapper5)
     textActor5.SetScale(scale)
     textActor5.AddPosition(0.49, 0.01, 0.20)
     textActors.append(textActor5)
 
-    text6 = vtk.vtkVectorText()
+    text6 = vtkVectorText()
     text6.SetText('Coronal\nPlane\n\nPosterior')
-    trnf6 = vtk.vtkTransform()
+    trnf6 = vtkTransform()
     trnf6.RotateWXYZ(*[90, 1, 0, 0])
-    tpdPlane6 = vtk.vtkTransformPolyDataFilter()
+    tpdPlane6 = vtkTransformPolyDataFilter()
     tpdPlane6.SetTransform(trnf6)
     tpdPlane6.SetInputConnection(text6.GetOutputPort())
-    textMapper6 = vtk.vtkPolyDataMapper()
+    textMapper6 = vtkPolyDataMapper()
     textMapper6.SetInputConnection(tpdPlane6.GetOutputPort())
-    textActor6 = vtk.vtkActor()
+    textActor6 = vtkActor()
     textActor6.SetMapper(textMapper6)
     textActor6.SetScale(scale)
     textActor6.AddPosition(-0.49, -0.01, 0.3)

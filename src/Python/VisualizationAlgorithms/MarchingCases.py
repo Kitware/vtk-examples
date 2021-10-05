@@ -1,6 +1,40 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkFloatArray,
+    vtkIdList,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import vtkUnstructuredGrid
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import (
+    vtkContourFilter,
+    vtkGlyph3D,
+    vtkThresholdPoints,
+    vtkTubeFilter
+)
+from vtkmodules.vtkFiltersExtraction import vtkExtractEdges
+from vtkmodules.vtkFiltersGeneral import (
+    vtkShrinkPolyData,
+    vtkTransformPolyDataFilter
+)
+from vtkmodules.vtkFiltersSources import (
+    vtkCubeSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkRenderingFreeType import vtkVectorText
 
 
 def main():
@@ -54,7 +88,7 @@ def get_program_parameters():
 
 
 def marching_cubes(mcCases, rotation=0, label=True):
-    color = vtk.vtkNamedColors()
+    color = vtkNamedColors()
 
     # Rotate the final figure 0, 90, 180, 270 degrees.
     rotation = abs(int(rotation))
@@ -67,9 +101,9 @@ def marching_cubes(mcCases, rotation=0, label=True):
         print('Cases', ','.join(map(str, mcCases)))
     print('Rotated', rotation * 90, 'degrees.')
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.SetSize(640, 480)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Always use a grid of four columns unless number of cases < 4.
@@ -79,7 +113,7 @@ def marching_cubes(mcCases, rotation=0, label=True):
         gridSize = len(mcCases)
     for i in range(0, gridSize):
         # Create the Renderer
-        renderer = vtk.vtkRenderer()
+        renderer = vtkRenderer()
         renderers.append(renderer)
         # Set the background color.
         renderers[i].SetBackground(color.GetColor3d('slate_grey'))
@@ -87,7 +121,7 @@ def marching_cubes(mcCases, rotation=0, label=True):
 
     for i in range(0, len(mcCases)):
         # Define a Single Cube
-        Scalars = vtk.vtkFloatArray()
+        Scalars = vtkFloatArray()
         Scalars.InsertNextValue(1.0)
         Scalars.InsertNextValue(0.0)
         Scalars.InsertNextValue(0.0)
@@ -97,7 +131,7 @@ def marching_cubes(mcCases, rotation=0, label=True):
         Scalars.InsertNextValue(0.0)
         Scalars.InsertNextValue(0.0)
 
-        Points = vtk.vtkPoints()
+        Points = vtkPoints()
         Points.InsertNextPoint(0, 0, 0)
         Points.InsertNextPoint(1, 0, 0)
         Points.InsertNextPoint(1, 1, 0)
@@ -107,7 +141,7 @@ def marching_cubes(mcCases, rotation=0, label=True):
         Points.InsertNextPoint(1, 1, 1)
         Points.InsertNextPoint(0, 1, 1)
 
-        Ids = vtk.vtkIdList()
+        Ids = vtkIdList()
         Ids.InsertNextId(0)
         Ids.InsertNextId(1)
         Ids.InsertNextId(2)
@@ -117,36 +151,36 @@ def marching_cubes(mcCases, rotation=0, label=True):
         Ids.InsertNextId(6)
         Ids.InsertNextId(7)
 
-        Grid = vtk.vtkUnstructuredGrid()
+        Grid = vtkUnstructuredGrid()
         Grid.Allocate(10, 10)
         Grid.InsertNextCell(12, Ids)
         Grid.SetPoints(Points)
         Grid.GetPointData().SetScalars(Scalars)
 
         # Find the triangles that lie along the 0.5 contour in this cube.
-        Marching = vtk.vtkContourFilter()
+        Marching = vtkContourFilter()
         Marching.SetInputData(Grid)
         Marching.SetValue(0, 0.5)
         Marching.Update()
 
         # Extract the edges of the triangles just found.
-        triangleEdges = vtk.vtkExtractEdges()
+        triangleEdges = vtkExtractEdges()
         triangleEdges.SetInputConnection(Marching.GetOutputPort())
 
         # Draw the edges as tubes instead of lines.  Also create the associated
         # mapper and actor to display the tubes.
-        triangleEdgeTubes = vtk.vtkTubeFilter()
+        triangleEdgeTubes = vtkTubeFilter()
         triangleEdgeTubes.SetInputConnection(triangleEdges.GetOutputPort())
         triangleEdgeTubes.SetRadius(.005)
         triangleEdgeTubes.SetNumberOfSides(6)
         triangleEdgeTubes.UseDefaultNormalOn()
         triangleEdgeTubes.SetDefaultNormal(.577, .577, .577)
 
-        triangleEdgeMapper = vtk.vtkPolyDataMapper()
+        triangleEdgeMapper = vtkPolyDataMapper()
         triangleEdgeMapper.SetInputConnection(triangleEdgeTubes.GetOutputPort())
         triangleEdgeMapper.ScalarVisibilityOff()
 
-        triangleEdgeActor = vtk.vtkActor()
+        triangleEdgeActor = vtkActor()
         triangleEdgeActor.SetMapper(triangleEdgeMapper)
         triangleEdgeActor.GetProperty().SetDiffuseColor(
             color.GetColor3d('lamp_black'))
@@ -155,15 +189,15 @@ def marching_cubes(mcCases, rotation=0, label=True):
 
         # Shrink the triangles we found earlier.  Create the associated mapper
         # and actor.  Set the opacity of the shrunken triangles.
-        aShrinker = vtk.vtkShrinkPolyData()
+        aShrinker = vtkShrinkPolyData()
         aShrinker.SetShrinkFactor(1)
         aShrinker.SetInputConnection(Marching.GetOutputPort())
 
-        aMapper = vtk.vtkPolyDataMapper()
+        aMapper = vtkPolyDataMapper()
         aMapper.ScalarVisibilityOff()
         aMapper.SetInputConnection(aShrinker.GetOutputPort())
 
-        Triangles = vtk.vtkActor()
+        Triangles = vtkActor()
         Triangles.SetMapper(aMapper)
         Triangles.GetProperty().SetDiffuseColor(
             color.GetColor3d('banana'))
@@ -173,22 +207,22 @@ def marching_cubes(mcCases, rotation=0, label=True):
         # created previously.  Extract the edges because we only want to see
         # the outline of the cube.  Pass the edges through a vtkTubeFilter so
         # they are displayed as tubes rather than lines.
-        CubeModel = vtk.vtkCubeSource()
+        CubeModel = vtkCubeSource()
         CubeModel.SetCenter(.5, .5, .5)
 
-        Edges = vtk.vtkExtractEdges()
+        Edges = vtkExtractEdges()
         Edges.SetInputConnection(CubeModel.GetOutputPort())
 
-        Tubes = vtk.vtkTubeFilter()
+        Tubes = vtkTubeFilter()
         Tubes.SetInputConnection(Edges.GetOutputPort())
         Tubes.SetRadius(.01)
         Tubes.SetNumberOfSides(6)
         Tubes.UseDefaultNormalOn()
         Tubes.SetDefaultNormal(.577, .577, .577)
         # Create the mapper and actor to display the cube edges.
-        TubeMapper = vtk.vtkPolyDataMapper()
+        TubeMapper = vtkPolyDataMapper()
         TubeMapper.SetInputConnection(Tubes.GetOutputPort())
-        CubeEdges = vtk.vtkActor()
+        CubeEdges = vtkActor()
         CubeEdges.SetMapper(TubeMapper)
         CubeEdges.GetProperty().SetDiffuseColor(
             color.GetColor3d('khaki'))
@@ -196,36 +230,36 @@ def marching_cubes(mcCases, rotation=0, label=True):
         CubeEdges.GetProperty().SetSpecularPower(10)
 
         # Create a sphere to use as a glyph source for vtkGlyph3D.
-        Sphere = vtk.vtkSphereSource()
+        Sphere = vtkSphereSource()
         Sphere.SetRadius(0.04)
         Sphere.SetPhiResolution(20)
         Sphere.SetThetaResolution(20)
         # Remove the part of the cube with data values below 0.5.
-        ThresholdIn = vtk.vtkThresholdPoints()
+        ThresholdIn = vtkThresholdPoints()
         ThresholdIn.SetInputData(Grid)
         ThresholdIn.ThresholdByUpper(.5)
         # Display spheres at the vertices remaining in the cube data set after
         # it was passed through vtkThresholdPoints.
-        Vertices = vtk.vtkGlyph3D()
+        Vertices = vtkGlyph3D()
         Vertices.SetInputConnection(ThresholdIn.GetOutputPort())
         Vertices.SetSourceConnection(Sphere.GetOutputPort())
         # Create a mapper and actor to display the glyphs.
-        SphereMapper = vtk.vtkPolyDataMapper()
+        SphereMapper = vtkPolyDataMapper()
         SphereMapper.SetInputConnection(Vertices.GetOutputPort())
         SphereMapper.ScalarVisibilityOff()
 
-        CubeVertices = vtk.vtkActor()
+        CubeVertices = vtkActor()
         CubeVertices.SetMapper(SphereMapper)
         CubeVertices.GetProperty().SetDiffuseColor(
             color.GetColor3d('tomato'))
 
         # Define the text for the label
-        caseLabel = vtk.vtkVectorText()
+        caseLabel = vtkVectorText()
         caseLabel.SetText('Case 1')
 
         if label:
             # Set up a transform to move the label to a new position.
-            aLabelTransform = vtk.vtkTransform()
+            aLabelTransform = vtkTransform()
             aLabelTransform.Identity()
             # Position the label according to the rotation of the figure.
             if rotation == 0:
@@ -245,28 +279,28 @@ def marching_cubes(mcCases, rotation=0, label=True):
                 aLabelTransform.Scale(.05, .05, .05)
 
             # Move the label to a new position.
-            labelTransform = vtk.vtkTransformPolyDataFilter()
+            labelTransform = vtkTransformPolyDataFilter()
             labelTransform.SetTransform(aLabelTransform)
             labelTransform.SetInputConnection(caseLabel.GetOutputPort())
 
             # Create a mapper and actor to display the text.
-            labelMapper = vtk.vtkPolyDataMapper()
+            labelMapper = vtkPolyDataMapper()
             labelMapper.SetInputConnection(labelTransform.GetOutputPort())
 
-            labelActor = vtk.vtkActor()
+            labelActor = vtkActor()
             labelActor.SetMapper(labelMapper)
 
         # Define the base that the cube sits on.  Create its associated mapper
         # and actor.  Set the position of the actor.
-        baseModel = vtk.vtkCubeSource()
+        baseModel = vtkCubeSource()
         baseModel.SetXLength(1.5)
         baseModel.SetYLength(.01)
         baseModel.SetZLength(1.5)
 
-        baseMapper = vtk.vtkPolyDataMapper()
+        baseMapper = vtkPolyDataMapper()
         baseMapper.SetInputConnection(baseModel.GetOutputPort())
 
-        base = vtk.vtkActor()
+        base = vtkActor()
         base.SetMapper(baseMapper)
         base.SetPosition(.5, -0.09, .5)
 

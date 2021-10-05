@@ -1,18 +1,35 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkIdList
+from vtkmodules.vtkFiltersCore import (
+    vtkPolyDataConnectivityFilter
+)
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkIOGeometry import vtkMCubesReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def pine_root_connectivity(fileName, noConnectivity):
     def NumberOfTriangles(pd):
-        '''
+        """
         Count the number of triangles.
         :param pd: vtkPolyData.
         :return: The number of triangles.
-        '''
+        """
         cells = pd.GetPolys()
         numOfTriangles = 0
-        idList = vtk.vtkIdList()
+        idList = vtkIdList()
         for i in range(0, cells.GetNumberOfCells()):
             cells.GetNextCell(idList)
             # If a cell has three points it is a triangle.
@@ -20,17 +37,17 @@ def pine_root_connectivity(fileName, noConnectivity):
                 numOfTriangles += 1
         return numOfTriangles
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the pipeline.
-    reader = vtk.vtkMCubesReader()
+    reader = vtkMCubesReader()
     reader.SetFileName(fileName)
     if not noConnectivity:
         reader.Update()
         print('Before Connectivity.')
         print('There are: ', NumberOfTriangles(reader.GetOutput()), 'triangles')
 
-    connect = vtk.vtkPolyDataConnectivityFilter()
+    connect = vtkPolyDataConnectivityFilter()
     connect.SetInputConnection(reader.GetOutputPort())
     connect.SetExtractionModeToLargestRegion()
     if not noConnectivity:
@@ -38,30 +55,30 @@ def pine_root_connectivity(fileName, noConnectivity):
         print('After Connectivity.')
         print('There are: ', NumberOfTriangles(connect.GetOutput()), 'triangles')
 
-    isoMapper = vtk.vtkPolyDataMapper()
+    isoMapper = vtkPolyDataMapper()
     if noConnectivity:
         isoMapper.SetInputConnection(reader.GetOutputPort())
     else:
         isoMapper.SetInputConnection(connect.GetOutputPort())
     isoMapper.ScalarVisibilityOff()
-    isoActor = vtk.vtkActor()
+    isoActor = vtkActor()
     isoActor.SetMapper(isoMapper)
     isoActor.GetProperty().SetColor(colors.GetColor3d('raw_sienna'))
 
     #  Get an outline of the data set for context.
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(reader.GetOutputPort())
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # Create the Renderer, RenderWindow and RenderWindowInteractor.
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size.

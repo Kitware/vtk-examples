@@ -1,18 +1,37 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkIdList
+from vtkmodules.vtkFiltersCore import (
+    vtkConnectivityFilter,
+    vtkDecimatePro
+)
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkIOGeometry import vtkMCubesReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     def NumberOfTriangles(pd):
-        '''
+        """
         Count the number of triangles.
         :param pd: vtkPolyData.
         :return: The number of triangles.
-        '''
+        """
         cells = pd.GetPolys()
         numOfTriangles = 0
-        idList = vtk.vtkIdList()
+        idList = vtkIdList()
         for i in range(0, cells.GetNumberOfCells()):
             cells.GetNextCell(idList)
             # If a cell has three points it is a triangle.
@@ -20,19 +39,19 @@ def main():
                 numOfTriangles += 1
         return numOfTriangles
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
     # Create the pipeline.
-    reader = vtk.vtkMCubesReader()
+    reader = vtkMCubesReader()
     reader.SetFileName(fileName)
     reader.FlipNormalsOff()
     reader.Update()
     print('Before Decimation.')
     print('There are: ', NumberOfTriangles(reader.GetOutput()), 'triangles')
 
-    deci = vtk.vtkDecimatePro()
+    deci = vtkDecimatePro()
     deci.SetInputConnection(reader.GetOutputPort())
     deci.SetTargetReduction(0.9)
     deci.SetAbsoluteError(0.0005)
@@ -45,34 +64,34 @@ def main():
     print('After Decimation.')
     print('There are: ', NumberOfTriangles(deci.GetOutput()), 'triangles')
 
-    connect = vtk.vtkConnectivityFilter()
+    connect = vtkConnectivityFilter()
     connect.SetInputConnection(deci.GetOutputPort())
     connect.SetExtractionModeToLargestRegion()
     connect.Update()
     print('After Connectivity.')
     print('There are: ', NumberOfTriangles(connect.GetOutput()), 'triangles')
 
-    isoMapper = vtk.vtkDataSetMapper()
+    isoMapper = vtkDataSetMapper()
     isoMapper.SetInputConnection(connect.GetOutputPort())
     isoMapper.ScalarVisibilityOff()
-    isoActor = vtk.vtkActor()
+    isoActor = vtkActor()
     isoActor.SetMapper(isoMapper)
     isoActor.GetProperty().SetColor(colors.GetColor3d('raw_sienna'))
 
     #  Get an outline of the data set for context.
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(reader.GetOutputPort())
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     #  Create the Renderer, RenderWindow and RenderWindowInteractor.
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size.

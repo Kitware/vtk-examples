@@ -1,36 +1,58 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkFiltersCore import (
+    vtkContourFilter,
+    vtkThresholdPoints,
+    vtkTubeFilter
+)
+from vtkmodules.vtkFiltersFlowPaths import vtkStreamTracer
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkFiltersSources import vtkPointSource
+from vtkmodules.vtkIOLegacy import vtkStructuredPointsReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     fileName = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create the pipeline.
     #
-    reader = vtk.vtkStructuredPointsReader()
+    reader = vtkStructuredPointsReader()
     reader.SetFileName(fileName)
 
-    psource = vtk.vtkPointSource()
+    psource = vtkPointSource()
     psource.SetNumberOfPoints(25)
     psource.SetCenter(133.1, 116.3, 5.0)
     psource.SetRadius(2.0)
 
-    threshold = vtk.vtkThresholdPoints()
+    threshold = vtkThresholdPoints()
     threshold.SetInputConnection(reader.GetOutputPort())
     threshold.ThresholdByUpper(275)
 
-    streamers = vtk.vtkStreamTracer()
+    streamers = vtkStreamTracer()
     streamers.SetInputConnection(reader.GetOutputPort())
     streamers.SetSourceConnection(psource.GetOutputPort())
     # streamers.SetMaximumPropagationUnitToTimeUnit()
@@ -44,46 +66,46 @@ def main():
     scalarRange[1] = streamers.GetOutput().GetPointData().GetScalars().GetRange()[1]
     print("range: ", scalarRange[0], ", ", scalarRange[1])
 
-    tubes = vtk.vtkTubeFilter()
+    tubes = vtkTubeFilter()
     tubes.SetInputConnection(streamers.GetOutputPort())
     tubes.SetRadius(0.3)
     tubes.SetNumberOfSides(6)
     tubes.SetVaryRadius(0)
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetHueRange(.667, 0.0)
     lut.Build()
 
-    streamerMapper = vtk.vtkPolyDataMapper()
+    streamerMapper = vtkPolyDataMapper()
     streamerMapper.SetInputConnection(tubes.GetOutputPort())
     streamerMapper.SetScalarRange(scalarRange[0], scalarRange[1])
     streamerMapper.SetLookupTable(lut)
 
-    streamerActor = vtk.vtkActor()
+    streamerActor = vtkActor()
     streamerActor.SetMapper(streamerMapper)
 
     # Speed contours.
-    iso = vtk.vtkContourFilter()
+    iso = vtkContourFilter()
     iso.SetInputConnection(reader.GetOutputPort())
     iso.SetValue(0, 175)
 
-    isoMapper = vtk.vtkPolyDataMapper()
+    isoMapper = vtkPolyDataMapper()
     isoMapper.SetInputConnection(iso.GetOutputPort())
     isoMapper.ScalarVisibilityOff()
 
-    isoActor = vtk.vtkActor()
+    isoActor = vtkActor()
     isoActor.SetMapper(isoMapper)
     isoActor.GetProperty().SetRepresentationToWireframe()
     isoActor.GetProperty().SetOpacity(0.25)
 
     # Outline
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(reader.GetOutputPort())
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(colors.GetColor3d("Black"))
 
@@ -96,7 +118,7 @@ def main():
     renWin.SetSize(640, 480)
     renWin.SetWindowName('CarotidFlow')
 
-    cam1 = vtk.vtkCamera()
+    cam1 = vtkCamera()
     cam1.SetClippingRange(17.4043, 870.216)
     cam1.SetFocalPoint(136.71, 104.025, 23)
     cam1.SetPosition(204.747, 258.939, 63.7925)
@@ -118,7 +140,7 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename', help='carotid.vtk.')
+    parser.add_argument('filename', help='carotid.vtk')
     args = parser.parse_args()
     return args.filename
 

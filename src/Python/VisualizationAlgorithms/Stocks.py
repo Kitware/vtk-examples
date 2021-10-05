@@ -3,19 +3,40 @@
 
 import os
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import vtkTubeFilter
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
+from vtkmodules.vtkFiltersModeling import (
+    vtkLinearExtrusionFilter,
+    vtkRibbonFilter
+)
+from vtkmodules.vtkIOLegacy import vtkPolyDataReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkFollower,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkRenderingFreeType import vtkVectorText
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileNames, useRibbons = get_program_parameters()
     useTubes = not useRibbons
 
     # Set up the stocks
     renderers = list()
-    topRenderer = vtk.vtkRenderer()
-    bottomRenderer = vtk.vtkRenderer()
+    topRenderer = vtkRenderer()
+    bottomRenderer = vtkRenderer()
     renderers.append(topRenderer)
     renderers.append(bottomRenderer)
 
@@ -24,11 +45,11 @@ def main():
         zPosition = AddStock(renderers, fn, os.path.basename((os.path.splitext(fn)[0])), zPosition, useTubes)
 
     # Setup the render window and interactor.
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderers[0])
     renderWindow.AddRenderer(renderers[1])
 
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     renderers[0].SetViewport(0.0, 0.4, 1.0, 1.0)
@@ -75,12 +96,12 @@ def AddStock(renderers, filename, name, zPosition, useTubes):
     print("Adding", name)
 
     # Read the data
-    PolyDataRead = vtk.vtkPolyDataReader()
+    PolyDataRead = vtkPolyDataReader()
     PolyDataRead.SetFileName(filename)
     PolyDataRead.Update()
 
     # Create the labels.
-    TextSrc = vtk.vtkVectorText()
+    TextSrc = vtkVectorText()
     TextSrc.SetText(name)
 
     numberOfPoints = PolyDataRead.GetOutput().GetNumberOfPoints()
@@ -94,30 +115,30 @@ def AddStock(renderers, filename, name, zPosition, useTubes):
     z = zPosition
 
     # Create a tube and ribbpn filter. One or the other will be used
-    TubeFilter = vtk.vtkTubeFilter()
+    TubeFilter = vtkTubeFilter()
     TubeFilter.SetInputConnection(PolyDataRead.GetOutputPort())
     TubeFilter.SetNumberOfSides(8)
     TubeFilter.SetRadius(0.5)
     TubeFilter.SetRadiusFactor(10000)
 
-    RibbonFilter = vtk.vtkRibbonFilter()
+    RibbonFilter = vtkRibbonFilter()
     RibbonFilter.SetInputConnection(PolyDataRead.GetOutputPort())
     RibbonFilter.VaryWidthOn()
     RibbonFilter.SetWidthFactor(5)
     RibbonFilter.SetDefaultNormal(0, 1, 0)
     RibbonFilter.UseDefaultNormalOn()
 
-    Extrude = vtk.vtkLinearExtrusionFilter()
+    Extrude = vtkLinearExtrusionFilter()
     Extrude.SetInputConnection(RibbonFilter.GetOutputPort())
     Extrude.SetVector(0, 1, 0)
     Extrude.SetExtrusionType(1)
     Extrude.SetScaleFactor(0.7)
 
-    Transform = vtk.vtkTransform()
+    Transform = vtkTransform()
     Transform.Translate(0, 0, zPosition)
     Transform.Scale(0.15, 1, 1)
 
-    TransformFilter = vtk.vtkTransformPolyDataFilter()
+    TransformFilter = vtkTransformPolyDataFilter()
     TransformFilter.SetInputConnection(Extrude.GetOutputPort())
     TransformFilter.SetTransform(Transform)
 
@@ -128,10 +149,10 @@ def AddStock(renderers, filename, name, zPosition, useTubes):
         TransformFilter.SetInputConnection(Extrude.GetOutputPort())
 
     for r in range(0, len(renderers)):
-        LabelMapper = vtk.vtkPolyDataMapper()
+        LabelMapper = vtkPolyDataMapper()
         LabelMapper.SetInputConnection(TextSrc.GetOutputPort())
 
-        LabelActor = vtk.vtkFollower()
+        LabelActor = vtkFollower()
         LabelActor.SetMapper(LabelMapper)
         LabelActor.SetPosition(x, y, z)
         LabelActor.SetScale(2, 2, 2)
@@ -140,10 +161,10 @@ def AddStock(renderers, filename, name, zPosition, useTubes):
         # Increment zPosition.
         zPosition += 8.0
 
-        StockMapper = vtk.vtkPolyDataMapper()
+        StockMapper = vtkPolyDataMapper()
         StockMapper.SetInputConnection(TransformFilter.GetOutputPort())
         StockMapper.SetScalarRange(0, 8000)
-        StockActor = vtk.vtkActor()
+        StockActor = vtkActor()
         StockActor.SetMapper(StockMapper)
 
         renderers[r].AddActor(StockActor)

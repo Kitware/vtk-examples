@@ -1,37 +1,49 @@
 #!/usr/bin/env python
 
-"""
-"""
-
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkClipPolyData
+from vtkmodules.vtkFiltersGeometry import vtkImageDataGeometryFilter
+from vtkmodules.vtkIOImage import vtkPNMReader
+from vtkmodules.vtkImagingGeneral import vtkImageGaussianSmooth
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
     # Now create the RenderWindow, Renderer and Interactor.
     #
-    ren1 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    imageIn = vtk.vtkPNMReader()
+    imageIn = vtkPNMReader()
     imageIn.SetFileName(fileName)
 
-    gaussian = vtk.vtkImageGaussianSmooth()
+    gaussian = vtkImageGaussianSmooth()
     gaussian.SetStandardDeviations(2, 2)
     gaussian.SetDimensionality(2)
     gaussian.SetRadiusFactors(1, 1)
     gaussian.SetInputConnection(imageIn.GetOutputPort())
 
-    geometry = vtk.vtkImageDataGeometryFilter()
+    geometry = vtkImageDataGeometryFilter()
     geometry.SetInputConnection(gaussian.GetOutputPort())
 
-    aClipper = vtk.vtkClipPolyData()
+    aClipper = vtkClipPolyData()
     aClipper.SetInputConnection(geometry.GetOutputPort())
     aClipper.SetValue(127.5)
     aClipper.GenerateClipScalarsOff()
@@ -39,11 +51,11 @@ def main():
     aClipper.GetOutput().GetPointData().CopyScalarsOff()
     aClipper.Update()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(aClipper.GetOutputPort())
     mapper.ScalarVisibilityOff()
 
-    letter = vtk.vtkActor()
+    letter = vtkActor()
     letter.SetMapper(mapper)
 
     ren1.AddActor(letter)

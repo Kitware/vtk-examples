@@ -1,16 +1,38 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import (
+    vtkAppendPolyData,
+    vtkContourFilter,
+    vtkProbeFilter,
+    vtkStructuredGridOutlineFilter
+)
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkFiltersSources import vtkPlaneSource
+from vtkmodules.vtkIOParallel import vtkMultiBlockPLOT3DReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName1, fileName2 = get_program_parameters()
 
     # Create the pipeline.
     #
-    pl3d = vtk.vtkMultiBlockPLOT3DReader()
+    pl3d = vtkMultiBlockPLOT3DReader()
     pl3d.SetXYZFileName(fileName1)
     pl3d.SetQFileName(fileName2)
     pl3d.SetScalarFunctionNumber(100)
@@ -22,70 +44,70 @@ def main():
     # We create three planes and position them in the correct position
     # using transform filters. They are then appended together and used as
     # a probe.
-    plane = vtk.vtkPlaneSource()
+    plane = vtkPlaneSource()
     plane.SetResolution(50, 50)
 
-    transP1 = vtk.vtkTransform()
+    transP1 = vtkTransform()
     transP1.Translate(3.7, 0.0, 28.37)
     transP1.Scale(5, 5, 5)
     transP1.RotateY(90)
 
-    tpd1 = vtk.vtkTransformPolyDataFilter()
+    tpd1 = vtkTransformPolyDataFilter()
     tpd1.SetInputConnection(plane.GetOutputPort())
     tpd1.SetTransform(transP1)
 
-    outTpd1 = vtk.vtkOutlineFilter()
+    outTpd1 = vtkOutlineFilter()
     outTpd1.SetInputConnection(tpd1.GetOutputPort())
 
-    mapTpd1 = vtk.vtkPolyDataMapper()
+    mapTpd1 = vtkPolyDataMapper()
     mapTpd1.SetInputConnection(outTpd1.GetOutputPort())
 
-    tpd1Actor = vtk.vtkActor()
+    tpd1Actor = vtkActor()
     tpd1Actor.SetMapper(mapTpd1)
     tpd1Actor.GetProperty().SetColor(0, 0, 0)
     tpd1Actor.GetProperty().SetLineWidth(2.0)
 
-    transP2 = vtk.vtkTransform()
+    transP2 = vtkTransform()
     transP2.Translate(9.2, 0.0, 31.20)
     transP2.Scale(5, 5, 5)
     transP2.RotateY(90)
 
-    tpd2 = vtk.vtkTransformPolyDataFilter()
+    tpd2 = vtkTransformPolyDataFilter()
     tpd2.SetInputConnection(plane.GetOutputPort())
     tpd2.SetTransform(transP2)
 
-    outTpd2 = vtk.vtkOutlineFilter()
+    outTpd2 = vtkOutlineFilter()
     outTpd2.SetInputConnection(tpd2.GetOutputPort())
 
-    mapTpd2 = vtk.vtkPolyDataMapper()
+    mapTpd2 = vtkPolyDataMapper()
     mapTpd2.SetInputConnection(outTpd2.GetOutputPort())
 
-    tpd2Actor = vtk.vtkActor()
+    tpd2Actor = vtkActor()
     tpd2Actor.SetMapper(mapTpd2)
     tpd2Actor.GetProperty().SetColor(0, 0, 0)
     tpd2Actor.GetProperty().SetLineWidth(2.0)
 
-    transP3 = vtk.vtkTransform()
+    transP3 = vtkTransform()
     transP3.Translate(13.27, 0.0, 33.30)
     transP3.Scale(5, 5, 5)
     transP3.RotateY(90)
 
-    tpd3 = vtk.vtkTransformPolyDataFilter()
+    tpd3 = vtkTransformPolyDataFilter()
     tpd3.SetInputConnection(plane.GetOutputPort())
     tpd3.SetTransform(transP3)
 
-    outTpd3 = vtk.vtkOutlineFilter()
+    outTpd3 = vtkOutlineFilter()
     outTpd3.SetInputConnection(tpd3.GetOutputPort())
 
-    mapTpd3 = vtk.vtkPolyDataMapper()
+    mapTpd3 = vtkPolyDataMapper()
     mapTpd3.SetInputConnection(outTpd3.GetOutputPort())
 
-    tpd3Actor = vtk.vtkActor()
+    tpd3Actor = vtkActor()
     tpd3Actor.SetMapper(mapTpd3)
     tpd3Actor.GetProperty().SetColor(0, 0, 0)
     tpd3Actor.GetProperty().SetLineWidth(2.0)
 
-    appendF = vtk.vtkAppendPolyData()
+    appendF = vtkAppendPolyData()
     appendF.AddInputConnection(tpd1.GetOutputPort())
     appendF.AddInputConnection(tpd2.GetOutputPort())
     appendF.AddInputConnection(tpd3.GetOutputPort())
@@ -95,38 +117,38 @@ def main():
     # (SetSourceConnection). The output dataset structure (geometry and
     # topology) of the probe is the same as the structure of the input. The
     # probing process generates new data values resampled from the source.
-    probe = vtk.vtkProbeFilter()
+    probe = vtkProbeFilter()
     probe.SetInputConnection(appendF.GetOutputPort())
     probe.SetSourceData(sg)
 
-    contour = vtk.vtkContourFilter()
+    contour = vtkContourFilter()
     contour.SetInputConnection(probe.GetOutputPort())
     contour.GenerateValues(50, sg.GetScalarRange())
 
-    contourMapper = vtk.vtkPolyDataMapper()
+    contourMapper = vtkPolyDataMapper()
     contourMapper.SetInputConnection(contour.GetOutputPort())
     contourMapper.SetScalarRange(sg.GetScalarRange())
 
-    planeActor = vtk.vtkActor()
+    planeActor = vtkActor()
     planeActor.SetMapper(contourMapper)
 
-    outline = vtk.vtkStructuredGridOutlineFilter()
+    outline = vtkStructuredGridOutlineFilter()
     outline.SetInputData(sg)
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(0, 0, 0)
     outlineActor.GetProperty().SetLineWidth(2.0)
 
     # Create the RenderWindow, Renderer and both Actors
     #
-    ren1 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     ren1.AddActor(outlineActor)

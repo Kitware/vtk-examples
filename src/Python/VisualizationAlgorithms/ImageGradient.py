@@ -1,52 +1,73 @@
 #!/usr/bin/env python
 
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkIOImage import vtkMetaImageReader
+from vtkmodules.vtkImagingColor import vtkImageHSVToRGB
+from vtkmodules.vtkImagingCore import (
+    vtkImageCast,
+    vtkImageConstantPad,
+    vtkImageExtractComponents,
+    vtkImageMagnify
+)
+from vtkmodules.vtkImagingGeneral import (
+    vtkImageEuclideanToPolar,
+    vtkImageGaussianSmooth,
+    vtkImageGradient
+)
+from vtkmodules.vtkInteractionImage import vtkImageViewer
+from vtkmodules.vtkRenderingCore import (
+    vtkRenderWindowInteractor
+)
 
 
 def main():
     fileName = get_program_parameters()
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Read the CT data of the human head.
-    reader = vtk.vtkMetaImageReader()
+    reader = vtkMetaImageReader()
     reader.SetFileName(fileName)
     reader.Update()
 
-    cast = vtk.vtkImageCast()
+    cast = vtkImageCast()
     cast.SetInputConnection(reader.GetOutputPort())
     cast.SetOutputScalarTypeToFloat()
 
     # Magnify the image.
-    magnify = vtk.vtkImageMagnify()
+    magnify = vtkImageMagnify()
     magnify.SetInputConnection(cast.GetOutputPort())
     magnify.SetMagnificationFactors(2, 2, 1)
     magnify.InterpolateOn()
 
     # Smooth the data.
     # Remove high frequency artifacts due to linear interpolation.
-    smooth = vtk.vtkImageGaussianSmooth()
+    smooth = vtkImageGaussianSmooth()
     smooth.SetInputConnection(magnify.GetOutputPort())
     smooth.SetDimensionality(2)
     smooth.SetStandardDeviations(1.5, 1.5, 0.0)
     smooth.SetRadiusFactors(2.01, 2.01, 0.0)
 
     # Compute the 2D gradient.
-    gradient = vtk.vtkImageGradient()
+    gradient = vtkImageGradient()
     gradient.SetInputConnection(smooth.GetOutputPort())
     gradient.SetDimensionality(2)
 
     # Convert the data to polar coordinates.
     # The image magnitude is mapped into saturation value,
     # whilst the gradient direction is mapped into hue value.
-    polar = vtk.vtkImageEuclideanToPolar()
+    polar = vtkImageEuclideanToPolar()
     polar.SetInputConnection(gradient.GetOutputPort())
     polar.SetThetaMaximum(255.0)
 
     # Add a third component to the data.
     # This is needed since the gradient filter only generates two components,
     #  and we need three components to represent color.
-    pad = vtk.vtkImageConstantPad()
+    pad = vtkImageConstantPad()
     pad.SetInputConnection(polar.GetOutputPort())
     pad.SetOutputNumberOfScalarComponents(3)
     pad.SetConstant(200.0)
@@ -54,12 +75,12 @@ def main():
     # At this point we have Hue, Value, Saturation.
     # Permute components so saturation will be constant.
     # Re-arrange components into HSV order.
-    permute = vtk.vtkImageExtractComponents()
+    permute = vtkImageExtractComponents()
     permute.SetInputConnection(pad.GetOutputPort())
     permute.SetComponents(0, 2, 1)
 
     # Convert back into RGB values.
-    rgb = vtk.vtkImageHSVToRGB()
+    rgb = vtkImageHSVToRGB()
     rgb.SetInputConnection(permute.GetOutputPort())
     rgb.SetMaximum(255.0)
 
@@ -67,7 +88,7 @@ def main():
     # Note that vtkImageViewer and vtkImageViewer2 are convenience wrappers around
     # vtkActor2D, vtkImageMapper, vtkRenderer, and vtkRenderWindow.
     # So all that needs to be supplied is the interactor.
-    viewer = vtk.vtkImageViewer()
+    viewer = vtkImageViewer()
     viewer.SetInputConnection(rgb.GetOutputPort())
     viewer.SetZSlice(22)
     viewer.SetColorWindow(255.0)
@@ -77,7 +98,7 @@ def main():
     viewer.GetRenderWindow().SetWindowName('ImageGradient')
 
     # Create the RenderWindowInteractor.
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     viewer.SetupInteractor(iren)
     viewer.Render()
 
