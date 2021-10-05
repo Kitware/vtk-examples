@@ -4,11 +4,34 @@
 This example shows how to create an unstructured grid.
 '''
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkPoints
+from vtkmodules.vtkCommonDataModel import (
+    VTK_HEXAHEDRON,
+    VTK_LINE,
+    VTK_POLYGON,
+    VTK_QUAD,
+    VTK_TETRA,
+    VTK_TRIANGLE,
+    VTK_TRIANGLE_STRIP,
+    VTK_VERTEX,
+    vtkUnstructuredGrid
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     x = [[0, 0, 0], [1, 0, 0], [2, 0, 0], [0, 1, 0], [1, 1, 0], [2, 1, 0], [0, 0, 1], [1, 0, 1], [2, 0, 1], [0, 1, 1],
          [1, 1, 1], [2, 1, 1], [0, 1, 2], [1, 1, 2], [2, 1, 2], [0, 1, 3], [1, 1, 3], [2, 1, 3], [0, 1, 4], [1, 1, 4],
@@ -22,38 +45,38 @@ def main():
            [23, 26, 0, 0, 0, 0, 0, 0], [21, 24, 0, 0, 0, 0, 0, 0], [25, 0, 0, 0, 0, 0, 0, 0]]
     print(len(x), len(pts))
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
     for i in range(0, len(x)):
         points.InsertPoint(i, x[i])
 
-    ugrid = vtk.vtkUnstructuredGrid()
+    ugrid = vtkUnstructuredGrid()
     ugrid.Allocate(100)
-    ugrid.InsertNextCell(vtk.VTK_HEXAHEDRON, 8, pts[0])
-    ugrid.InsertNextCell(vtk.VTK_HEXAHEDRON, 8, pts[1])
-    ugrid.InsertNextCell(vtk.VTK_TETRA, 4, pts[2][:4])
-    ugrid.InsertNextCell(vtk.VTK_TETRA, 4, pts[3][:4])
-    ugrid.InsertNextCell(vtk.VTK_POLYGON, 6, pts[4][:6])
-    ugrid.InsertNextCell(vtk.VTK_TRIANGLE_STRIP, 6, pts[5][:6])
-    ugrid.InsertNextCell(vtk.VTK_QUAD, 4, pts[6][:4])
-    ugrid.InsertNextCell(vtk.VTK_TRIANGLE, 3, pts[7][:3])
-    ugrid.InsertNextCell(vtk.VTK_TRIANGLE, 3, pts[8][:3])
-    ugrid.InsertNextCell(vtk.VTK_LINE, 2, pts[9][:2])
-    ugrid.InsertNextCell(vtk.VTK_LINE, 2, pts[10][:2])
-    ugrid.InsertNextCell(vtk.VTK_VERTEX, 1, pts[11][:1])
+    ugrid.InsertNextCell(VTK_HEXAHEDRON, 8, pts[0])
+    ugrid.InsertNextCell(VTK_HEXAHEDRON, 8, pts[1])
+    ugrid.InsertNextCell(VTK_TETRA, 4, pts[2][:4])
+    ugrid.InsertNextCell(VTK_TETRA, 4, pts[3][:4])
+    ugrid.InsertNextCell(VTK_POLYGON, 6, pts[4][:6])
+    ugrid.InsertNextCell(VTK_TRIANGLE_STRIP, 6, pts[5][:6])
+    ugrid.InsertNextCell(VTK_QUAD, 4, pts[6][:4])
+    ugrid.InsertNextCell(VTK_TRIANGLE, 3, pts[7][:3])
+    ugrid.InsertNextCell(VTK_TRIANGLE, 3, pts[8][:3])
+    ugrid.InsertNextCell(VTK_LINE, 2, pts[9][:2])
+    ugrid.InsertNextCell(VTK_LINE, 2, pts[10][:2])
+    ugrid.InsertNextCell(VTK_VERTEX, 1, pts[11][:1])
 
     ugrid.SetPoints(points)
 
-    ugridMapper = vtk.vtkDataSetMapper()
+    ugridMapper = vtkDataSetMapper()
     ugridMapper.SetInputData(ugrid)
 
-    ugridActor = vtk.vtkActor()
+    ugridActor = vtkActor()
     ugridActor.SetMapper(ugridMapper)
     ugridActor.GetProperty().SetColor(colors.GetColor3d('Peacock'))
     ugridActor.GetProperty().EdgeVisibilityOn()
