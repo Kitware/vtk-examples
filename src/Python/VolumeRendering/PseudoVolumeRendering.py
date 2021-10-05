@@ -1,16 +1,39 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkCommonDataModel import vtkPlane
+from vtkmodules.vtkFiltersCore import (
+    vtkContourFilter,
+    vtkCutter,
+    vtkPolyDataNormals,
+    vtkStripper,
+    vtkStructuredGridOutlineFilter,
+    vtkTubeFilter
+)
+from vtkmodules.vtkFiltersExtraction import vtkExtractGrid
+from vtkmodules.vtkIOParallel import vtkMultiBlockPLOT3DReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     xyzFile, qFile = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create pipeline. Read structured grid data.
     #
-    pl3d = vtk.vtkMultiBlockPLOT3DReader()
+    pl3d = vtkMultiBlockPLOT3DReader()
     pl3d.SetXYZFileName(xyzFile)
     pl3d.SetQFileName(qFile)
     pl3d.SetScalarFunctionNumber(100)
@@ -20,50 +43,50 @@ def main():
     pl3dOutput = pl3d.GetOutput().GetBlock(0)
 
     # A convenience, use this filter to limit data for experimentation.
-    extract = vtk.vtkExtractGrid()
+    extract = vtkExtractGrid()
     extract.SetVOI(1, 55, -1000, 1000, -1000, 1000)
     extract.SetInputData(pl3dOutput)
 
     # The (implicit) plane is used to do the cutting
-    plane = vtk.vtkPlane()
+    plane = vtkPlane()
     plane.SetOrigin(0, 4, 2)
     plane.SetNormal(0, 1, 0)
 
     # The cutter is set up to process each contour value over all cells
     # (SetSortByToSortByCell). This results in an ordered output of polygons
     # which is key to the compositing.
-    cutter = vtk.vtkCutter()
+    cutter = vtkCutter()
     cutter.SetInputConnection(extract.GetOutputPort())
     cutter.SetCutFunction(plane)
     cutter.GenerateCutScalarsOff()
     cutter.SetSortByToSortByCell()
 
-    clut = vtk.vtkLookupTable()
+    clut = vtkLookupTable()
     clut.SetHueRange(0, 0.67)
     clut.Build()
 
-    cutterMapper = vtk.vtkPolyDataMapper()
+    cutterMapper = vtkPolyDataMapper()
     cutterMapper.SetInputConnection(cutter.GetOutputPort())
     cutterMapper.SetScalarRange(0.18, 0.7)
     cutterMapper.SetLookupTable(clut)
 
-    cut = vtk.vtkActor()
+    cut = vtkActor()
     cut.SetMapper(cutterMapper)
 
     # Add in some surface geometry for interest.
-    iso = vtk.vtkContourFilter()
+    iso = vtkContourFilter()
     iso.SetInputData(pl3dOutput)
     iso.SetValue(0, .22)
 
-    normals = vtk.vtkPolyDataNormals()
+    normals = vtkPolyDataNormals()
     normals.SetInputConnection(iso.GetOutputPort())
     normals.SetFeatureAngle(60)
 
-    isoMapper = vtk.vtkPolyDataMapper()
+    isoMapper = vtkPolyDataMapper()
     isoMapper.SetInputConnection(normals.GetOutputPort())
     isoMapper.ScalarVisibilityOff()
 
-    isoActor = vtk.vtkActor()
+    isoActor = vtkActor()
     isoActor.SetMapper(isoMapper)
     isoActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Tomato'))
     isoActor.GetProperty().SetSpecularColor(colors.GetColor3d('White'))
@@ -71,29 +94,29 @@ def main():
     isoActor.GetProperty().SetSpecular(0.5)
     isoActor.GetProperty().SetSpecularPower(30)
 
-    outline = vtk.vtkStructuredGridOutlineFilter()
+    outline = vtkStructuredGridOutlineFilter()
     outline.SetInputData(pl3dOutput)
 
-    outlineStrip = vtk.vtkStripper()
+    outlineStrip = vtkStripper()
     outlineStrip.SetInputConnection(outline.GetOutputPort())
 
-    outlineTubes = vtk.vtkTubeFilter()
+    outlineTubes = vtkTubeFilter()
     outlineTubes.SetInputConnection(outline.GetOutputPort())
     outlineTubes.SetInputConnection(outlineStrip.GetOutputPort())
     outlineTubes.SetRadius(0.1)
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outlineTubes.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
 
     # Create the RenderWindow, Renderer and Interactor.
     #
-    ren1 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
 
     iren.SetRenderWindow(renWin)
 
