@@ -60,25 +60,42 @@ function registerListener(event, func) {
 <span class=c1># Python example translated directly from Tcl test</span>
 <span class=hll><span class=c1># [vtk_source]/Graphics/Testing/Tcl/progGlyphs.tcl</span>
 </span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkElevationFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersProgrammable</span> <span class=kn>import</span> <span class=n>vtkProgrammableGlyphFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkPlaneSource</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkSuperquadricSource</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
     <span class=n>res</span> <span class=o>=</span> <span class=mi>6</span>
-<span class=hll>    <span class=n>plane</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlaneSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>plane</span> <span class=o>=</span> <span class=n>vtkPlaneSource</span><span class=p>()</span>
 </span>    <span class=n>plane</span><span class=o>.</span><span class=n>SetResolution</span><span class=p>(</span><span class=n>res</span><span class=p>,</span> <span class=n>res</span><span class=p>)</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkElevationFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkElevationFilter</span><span class=p>()</span>
 </span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>plane</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>colors</span><span class=o>.</span><span class=n>SetLowPoint</span><span class=p>(</span><span class=o>-</span><span class=mf>0.25</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.25</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.25</span><span class=p>)</span>
     <span class=n>colors</span><span class=o>.</span><span class=n>SetHighPoint</span><span class=p>(</span><span class=mf>0.25</span><span class=p>,</span> <span class=mf>0.25</span><span class=p>,</span> <span class=mf>0.25</span><span class=p>)</span>
-<span class=hll>    <span class=n>planeMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>planeMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>planeMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetPolyDataOutput</span><span class=p>())</span>
-<span class=hll>    <span class=n>planeActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>planeActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>planeActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>planeMapper</span><span class=p>)</span>
     <span class=n>planeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetRepresentationToWireframe</span><span class=p>()</span>
 
     <span class=c1># create simple poly data so we can apply glyph</span>
-<span class=hll>    <span class=n>squad</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSuperquadricSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>squad</span> <span class=o>=</span> <span class=n>vtkSuperquadricSource</span><span class=p>()</span>
 </span>
     <span class=k>def</span> <span class=nf>Glyph</span><span class=p>():</span>
         <span class=sd>&quot;&quot;&quot;</span>
@@ -96,23 +113,23 @@ function registerListener(event, func) {
         <span class=n>squad</span><span class=o>.</span><span class=n>SetPhiRoundness</span><span class=p>(</span><span class=nb>abs</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=o>*</span> <span class=mf>5.0</span><span class=p>)</span>
         <span class=n>squad</span><span class=o>.</span><span class=n>SetThetaRoundness</span><span class=p>(</span><span class=nb>abs</span><span class=p>(</span><span class=n>y</span><span class=p>)</span> <span class=o>*</span> <span class=mf>5.0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>glypher</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkProgrammableGlyphFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>glypher</span> <span class=o>=</span> <span class=n>vtkProgrammableGlyphFilter</span><span class=p>()</span>
 </span>    <span class=n>glypher</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>glypher</span><span class=o>.</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>squad</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>glypher</span><span class=o>.</span><span class=n>SetGlyphMethod</span><span class=p>(</span><span class=n>Glyph</span><span class=p>)</span>
-<span class=hll>    <span class=n>glyphMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>glyphMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>glyphMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>glypher</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>glyphActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>glyphActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>glyphActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>glyphMapper</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Create the rendering stuff</span>
-<span class=hll>    <span class=n>ren1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren1</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>SetMultiSamples</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren1</span><span class=p>)</span>
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>planeActor</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>glyphActor</span><span class=p>)</span>

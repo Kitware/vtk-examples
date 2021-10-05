@@ -114,8 +114,10 @@ function registerListener(event, func) {
   <span class=p>}</span>
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThreshold</span><span class=o>&gt;</span> <span class=n>selectCells</span><span class=p>;</span>
-</span>  <span class=n>selectCells</span><span class=o>-&gt;</span><span class=n>ThresholdByLower</span><span class=p>(</span><span class=mf>.02</span><span class=p>);</span>
-  <span class=n>selectCells</span><span class=o>-&gt;</span><span class=n>SetInputArrayToProcess</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span>
+</span>  <span class=c1>//selectCells-&gt;ThresholdByLower(.02);</span>
+  <span class=n>selectCells</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=mf>0.02</span><span class=p>);</span>
+<span class=hll>  <span class=n>selectCells</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkThreshold</span><span class=o>::</span><span class=n>THRESHOLD_LOWER</span><span class=p>);</span>
+</span>  <span class=n>selectCells</span><span class=o>-&gt;</span><span class=n>SetInputArrayToProcess</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span>
 <span class=hll>                                      <span class=n>vtkDataObject</span><span class=o>::</span><span class=n>FIELD_ASSOCIATION_CELLS</span><span class=p>,</span>
 </span><span class=hll>                                      <span class=n>vtkDataSetAttributes</span><span class=o>::</span><span class=n>SCALARS</span><span class=p>);</span>
 </span>  <span class=n>selectCells</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>qualityMesh</span><span class=p>);</span>

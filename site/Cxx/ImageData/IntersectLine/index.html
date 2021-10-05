@@ -143,9 +143,10 @@ function registerListener(event, func) {
   <span class=c1>// Threshold</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThreshold</span><span class=o>&gt;</span> <span class=n>threshold</span><span class=p>;</span>
 </span>  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>shrinkFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
-  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>ThresholdByUpper</span><span class=p>(</span>
-      <span class=mi>1</span><span class=p>);</span> <span class=c1>// Criterion is cells whose scalars are greater or equal to threshold.</span>
-
+  <span class=c1>// Criterion is cells whose scalars are greater or equal to threshold.</span>
+  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+<span class=hll>  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkThreshold</span><span class=o>::</span><span class=n>THRESHOLD_UPPER</span><span class=p>);</span>
+</span>
   <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>SetInputArrayToProcess</span><span class=p>(</span>
 <span class=hll>      <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>vtkDataObject</span><span class=o>::</span><span class=n>FIELD_ASSOCIATION_CELLS</span><span class=p>,</span> <span class=s>&quot;Visibility&quot;</span><span class=p>);</span>
 </span>  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>

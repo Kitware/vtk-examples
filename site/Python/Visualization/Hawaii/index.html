@@ -59,8 +59,25 @@ function registerListener(event, func) {
 
 <span class=c1>#  Translated from hawaii.tcl</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkColorSeries</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkNamedColors</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkLookupTable</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkElevationFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOLegacy</span> <span class=kn>import</span> <span class=n>vtkPolyDataReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
     <span class=n>file_name</span><span class=p>,</span> <span class=n>color_scheme</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
@@ -69,20 +86,20 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=n>color_scheme</span> <span class=o>&gt;</span> <span class=mi>2</span><span class=p>:</span>
         <span class=n>color_scheme</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Set the background color.</span>
     <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>&quot;BkgColor&quot;</span><span class=p>,</span> <span class=p>[</span><span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
 <span class=hll>    <span class=c1># Read a vtk file</span>
 </span>    <span class=c1>#</span>
-<span class=hll>    <span class=n>hawaii</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>hawaii</span> <span class=o>=</span> <span class=n>vtkPolyDataReader</span><span class=p>()</span>
 </span>    <span class=n>hawaii</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=n>hawaii</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
     <span class=n>bounds</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>*</span> <span class=mi>6</span>
     <span class=n>hawaii</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetBounds</span><span class=p>(</span><span class=n>bounds</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>elevation</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkElevationFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>elevation</span> <span class=o>=</span> <span class=n>vtkElevationFilter</span><span class=p>()</span>
 </span>    <span class=n>elevation</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>hawaii</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>elevation</span><span class=o>.</span><span class=n>SetLowPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
     <span class=n>elevation</span><span class=o>.</span><span class=n>SetHighPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1000</span><span class=p>)</span>
@@ -90,21 +107,21 @@ function registerListener(event, func) {
 
     <span class=n>lut</span> <span class=o>=</span> <span class=n>MakeLUT</span><span class=p>(</span><span class=n>color_scheme</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>hawaiiMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>hawaiiMapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>hawaiiMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>elevation</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>hawaiiMapper</span><span class=o>.</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1000</span><span class=p>)</span>
     <span class=n>hawaiiMapper</span><span class=o>.</span><span class=n>ScalarVisibilityOn</span><span class=p>()</span>
     <span class=n>hawaiiMapper</span><span class=o>.</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>lut</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>hawaiiActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>hawaiiActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>hawaiiActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>hawaiiMapper</span><span class=p>)</span>
 
     <span class=c1># Create the RenderWindow, Renderer and both Actors</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=c1># Add the actors to the renderer, set the background and size</span>
@@ -146,7 +163,7 @@ function registerListener(event, func) {
 
 <span class=s1>   &#39;&#39;&#39;</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>)</span>
-<span class=hll>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;honolulu.vtk.&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;honolulu.vtk&#39;</span><span class=p>)</span>
 </span>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;color_scheme&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The particular color scheme to use.&#39;</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>color_scheme</span>
@@ -158,18 +175,18 @@ function registerListener(event, func) {
 <span class=sd>    :param color_scheme: Select the type of lookup table.</span>
 <span class=sd>    :return: The lookup table.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>    <span class=k>if</span> <span class=n>color_scheme</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
         <span class=c1># A lookup table of 256 colours ranging from</span>
         <span class=c1>#  deep blue (water) to yellow-white (mountain top)</span>
         <span class=c1>#  is used to color map this figure.</span>
-<span class=hll>        <span class=n>lut</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLookupTable</span><span class=p>()</span>
+<span class=hll>        <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>        <span class=n>lut</span><span class=o>.</span><span class=n>SetHueRange</span><span class=p>(</span><span class=mf>0.7</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>lut</span><span class=o>.</span><span class=n>SetSaturationRange</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>lut</span><span class=o>.</span><span class=n>SetValueRange</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
     <span class=k>elif</span> <span class=n>color_scheme</span> <span class=o>==</span> <span class=mi>2</span><span class=p>:</span>
         <span class=c1># Make the lookup table with a preset number of colours.</span>
-<span class=hll>        <span class=n>colorSeries</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkColorSeries</span><span class=p>()</span>
+<span class=hll>        <span class=n>colorSeries</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=p>()</span>
 </span>        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetNumberOfColors</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span>
         <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColorSchemeName</span><span class=p>(</span><span class=s1>&#39;Hawaii&#39;</span><span class=p>)</span>
         <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;turquoise_blue&quot;</span><span class=p>))</span>
@@ -180,16 +197,16 @@ function registerListener(event, func) {
         <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;beige&quot;</span><span class=p>))</span>
         <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;light_beige&quot;</span><span class=p>))</span>
         <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;bisque&quot;</span><span class=p>))</span>
-<span class=hll>        <span class=n>lut</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLookupTable</span><span class=p>()</span>
+<span class=hll>        <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>        <span class=n>colorSeries</span><span class=o>.</span><span class=n>BuildLookupTable</span><span class=p>(</span><span class=n>lut</span><span class=p>,</span> <span class=n>colorSeries</span><span class=o>.</span><span class=n>ORDINAL</span><span class=p>)</span>
         <span class=n>lut</span><span class=o>.</span><span class=n>SetNanColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=c1># Make the lookup using a Brewer palette.</span>
-<span class=hll>        <span class=n>colorSeries</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkColorSeries</span><span class=p>()</span>
+<span class=hll>        <span class=n>colorSeries</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=p>()</span>
 </span>        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetNumberOfColors</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span>
         <span class=n>colorSeriesEnum</span> <span class=o>=</span> <span class=n>colorSeries</span><span class=o>.</span><span class=n>BREWER_DIVERGING_BROWN_BLUE_GREEN_8</span>
         <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColorScheme</span><span class=p>(</span><span class=n>colorSeriesEnum</span><span class=p>)</span>
-<span class=hll>        <span class=n>lut</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLookupTable</span><span class=p>()</span>
+<span class=hll>        <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>        <span class=n>colorSeries</span><span class=o>.</span><span class=n>BuildLookupTable</span><span class=p>(</span><span class=n>lut</span><span class=p>,</span> <span class=n>colorSeries</span><span class=o>.</span><span class=n>ORDINAL</span><span class=p>)</span>
         <span class=n>lut</span><span class=o>.</span><span class=n>SetNanColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>lut</span>

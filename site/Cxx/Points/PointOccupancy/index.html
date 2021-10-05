@@ -96,8 +96,9 @@ function registerListener(event, func) {
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThreshold</span><span class=o>&gt;</span> <span class=n>threshold</span><span class=p>;</span>
 </span>  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>occupancy</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mi>255</span><span class=p>);</span>
-  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>AllScalarsOff</span><span class=p>();</span>
+  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=mi>255</span><span class=p>);</span>
+<span class=hll>  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkThreshold</span><span class=o>::</span><span class=n>THRESHOLD_UPPER</span><span class=p>);</span>
+</span>  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>AllScalarsOff</span><span class=p>();</span>
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span> <span class=n>mapper</span><span class=p>;</span>
 </span>  <span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>threshold</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>

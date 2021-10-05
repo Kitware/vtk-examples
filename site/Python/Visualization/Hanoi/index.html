@@ -59,8 +59,34 @@ function registerListener(event, func) {
 
 <span class=c1>#  Translated from Hanoi.cxx.</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkMinimalStandardRandomSequence</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkCylinderSource</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPlaneSource</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOImage</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkBMPWriter</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkJPEGWriter</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPNGWriter</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPNMWriter</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPostScriptWriter</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkTIFFWriter</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkCamera</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkWindowToImageFilter</span>
+</span><span class=p>)</span>
+
 
 <span class=k>class</span> <span class=nc>GV</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
     <span class=sd>&quot;&quot;&quot;</span>
@@ -91,7 +117,7 @@ function registerListener(event, func) {
 
 <span class=c1># Globals</span>
 <span class=n>gv</span> <span class=o>=</span> <span class=n>GV</span><span class=p>()</span>
-<span class=hll><span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll><span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span><span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>   For pegStack we use a list of lists where the sublists correspond to the</span>
 <span class=sd>      source, target and helper pegs.</span>
@@ -102,18 +128,18 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span> <span class=nf>hanoi</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Create the renderer and render window interactor.</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>1200</span><span class=p>,</span> <span class=mi>750</span><span class=p>)</span>
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;PapayaWhip&#39;</span><span class=p>))</span>
 
-<span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
+<span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtkCamera</span><span class=p>()</span>
 </span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>41.0433</span><span class=p>,</span> <span class=mf>27.9637</span><span class=p>,</span> <span class=mf>30.442</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>11.5603</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.51931</span><span class=p>,</span> <span class=mf>0.95899</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>18.9599</span><span class=p>,</span> <span class=mf>91.6042</span><span class=p>)</span>
@@ -122,24 +148,24 @@ function registerListener(event, func) {
     <span class=n>ren</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera</span><span class=p>)</span>
 
     <span class=c1># Create geometry: table, pegs, and pucks.</span>
-<span class=hll>    <span class=n>pegGeometry</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCylinderSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>pegGeometry</span> <span class=o>=</span> <span class=n>vtkCylinderSource</span><span class=p>()</span>
 </span>    <span class=n>pegGeometry</span><span class=o>.</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span>
-<span class=hll>    <span class=n>pegMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>pegMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>pegMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>pegGeometry</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>puckGeometry</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCylinderSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>puckGeometry</span> <span class=o>=</span> <span class=n>vtkCylinderSource</span><span class=p>()</span>
 </span>    <span class=n>puckGeometry</span><span class=o>.</span><span class=n>SetResolution</span><span class=p>(</span><span class=n>gv</span><span class=o>.</span><span class=n>puckResolution</span><span class=p>)</span>
-<span class=hll>    <span class=n>puckMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>puckMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>puckMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>puckGeometry</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>tableGeometry</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlaneSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>tableGeometry</span> <span class=o>=</span> <span class=n>vtkPlaneSource</span><span class=p>()</span>
 </span>    <span class=n>tableGeometry</span><span class=o>.</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>)</span>
-<span class=hll>    <span class=n>tableMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>tableMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>tableMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tableGeometry</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
     <span class=c1># Create the actors: table top, pegs, and pucks</span>
     <span class=c1># The table</span>
-<span class=hll>    <span class=n>table</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>table</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>table</span><span class=p>)</span>
     <span class=n>table</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>tableMapper</span><span class=p>)</span>
     <span class=c1># table.GetProperty().SetColor(0.9569, 0.6431, 0.3765)</span>
@@ -153,7 +179,7 @@ function registerListener(event, func) {
     <span class=n>gv</span><span class=o>.</span><span class=n>H</span> <span class=o>=</span> <span class=mf>1.1</span> <span class=o>*</span> <span class=n>gv</span><span class=o>.</span><span class=n>numberOfPucks</span> <span class=o>*</span> <span class=n>gv</span><span class=o>.</span><span class=n>L</span>
     <span class=n>peg</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>3</span><span class=p>):</span>
-<span class=hll>        <span class=n>peg</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>())</span>
+<span class=hll>        <span class=n>peg</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkActor</span><span class=p>())</span>
 </span>        <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>peg</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
         <span class=n>peg</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>pegMapper</span><span class=p>)</span>
         <span class=c1># peg[i].GetProperty().SetColor(1, 1, 1)</span>
@@ -163,10 +189,10 @@ function registerListener(event, func) {
 
     <span class=c1># The pucks (using cylinder geometry). Always loaded on peg# 0.</span>
     <span class=n>puck</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-<span class=hll>    <span class=n>randomSequence</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMinimalStandardRandomSequence</span><span class=p>()</span>
+<span class=hll>    <span class=n>randomSequence</span> <span class=o>=</span> <span class=n>vtkMinimalStandardRandomSequence</span><span class=p>()</span>
 </span>    <span class=n>randomSequence</span><span class=o>.</span><span class=n>SetSeed</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>gv</span><span class=o>.</span><span class=n>numberOfPucks</span><span class=p>):</span>
-<span class=hll>        <span class=n>puck</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>())</span>
+<span class=hll>        <span class=n>puck</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkActor</span><span class=p>())</span>
 </span>        <span class=n>puck</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>puckMapper</span><span class=p>)</span>
         <span class=n>color</span> <span class=o>=</span> <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>]</span>
         <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>3</span><span class=p>):</span>
@@ -292,7 +318,7 @@ function registerListener(event, func) {
         <span class=k>if</span> <span class=n>gv</span><span class=o>.</span><span class=n>numberOfMoves</span> <span class=o>==</span> <span class=mi>13</span> <span class=ow>and</span> <span class=n>i</span> <span class=o>==</span> <span class=mi>3</span><span class=p>:</span>  <span class=c1># for making book image</span>
             <span class=k>if</span> <span class=n>gv</span><span class=o>.</span><span class=n>configuration</span> <span class=o>==</span> <span class=mi>3</span> <span class=ow>or</span> <span class=n>gv</span><span class=o>.</span><span class=n>configuration</span> <span class=o>==</span> <span class=mi>2</span><span class=p>:</span>
                 <span class=n>cam</span> <span class=o>=</span> <span class=n>renWin</span><span class=o>.</span><span class=n>GetRenderers</span><span class=p>()</span><span class=o>.</span><span class=n>GetFirstRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span>
-<span class=hll>                <span class=n>camera1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
+<span class=hll>                <span class=n>camera1</span> <span class=o>=</span> <span class=n>vtkCamera</span><span class=p>()</span>
 </span>                <span class=n>camera1</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>54.7263</span><span class=p>,</span> <span class=mf>41.6467</span><span class=p>,</span> <span class=mf>44.125</span><span class=p>)</span>
                 <span class=n>camera1</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>11.5603</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.51931</span><span class=p>,</span> <span class=mf>0.95899</span><span class=p>)</span>
                 <span class=n>camera1</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>42.4226</span><span class=p>,</span> <span class=mf>115.659</span><span class=p>)</span>
@@ -386,21 +412,21 @@ function registerListener(event, func) {
             <span class=n>ext</span> <span class=o>=</span> <span class=s1>&#39;.png&#39;</span>
             <span class=n>fileName</span> <span class=o>=</span> <span class=n>fileName</span> <span class=o>+</span> <span class=n>ext</span>
         <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.bmp&#39;</span><span class=p>:</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkBMPWriter</span><span class=p>()</span>
+<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkBMPWriter</span><span class=p>()</span>
 </span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.jpg&#39;</span><span class=p>:</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkJPEGWriter</span><span class=p>()</span>
+<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkJPEGWriter</span><span class=p>()</span>
 </span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.pnm&#39;</span><span class=p>:</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPNMWriter</span><span class=p>()</span>
+<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPNMWriter</span><span class=p>()</span>
 </span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.ps&#39;</span><span class=p>:</span>
             <span class=k>if</span> <span class=n>rgba</span><span class=p>:</span>
                 <span class=n>rgba</span> <span class=o>=</span> <span class=kc>False</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPostScriptWriter</span><span class=p>()</span>
+<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPostScriptWriter</span><span class=p>()</span>
 </span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.tiff&#39;</span><span class=p>:</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTIFFWriter</span><span class=p>()</span>
+<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkTIFFWriter</span><span class=p>()</span>
 </span>        <span class=k>else</span><span class=p>:</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPNGWriter</span><span class=p>()</span>
+<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPNGWriter</span><span class=p>()</span>
 </span>
-<span class=hll>        <span class=n>windowto_image_filter</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkWindowToImageFilter</span><span class=p>()</span>
+<span class=hll>        <span class=n>windowto_image_filter</span> <span class=o>=</span> <span class=n>vtkWindowToImageFilter</span><span class=p>()</span>
 </span>        <span class=n>windowto_image_filter</span><span class=o>.</span><span class=n>SetInput</span><span class=p>(</span><span class=n>renWin1</span><span class=p>)</span>
         <span class=n>windowto_image_filter</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>  <span class=c1># image quality</span>
         <span class=k>if</span> <span class=n>rgba</span><span class=p>:</span>

@@ -62,11 +62,26 @@ function registerListener(event, func) {
 <span class=sd>    This example demonstrates the usage of the vtNamedColor class.</span>
 <span class=sd>&quot;&quot;&quot;</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkLookupTable</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkElevationFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=n>vtkBandedPolyDataContourFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkConeSource</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>nc</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>nc</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>    <span class=c1># We can print out the variables.</span>
     <span class=c1># The color name and RGBA values are displayed.</span>
     <span class=nb>print</span><span class=p>(</span><span class=n>nc</span><span class=p>)</span>
@@ -81,7 +96,7 @@ function registerListener(event, func) {
 <span class=sd>        color it with the primary additive and subtractive colors.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=c1># Create a cone</span>
-<span class=hll>    <span class=n>coneSource</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkConeSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>coneSource</span> <span class=o>=</span> <span class=n>vtkConeSource</span><span class=p>()</span>
 </span>    <span class=n>coneSource</span><span class=o>.</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
     <span class=n>coneSource</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>5.0</span><span class=p>)</span>
     <span class=n>coneSource</span><span class=o>.</span><span class=n>SetHeight</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
@@ -92,12 +107,12 @@ function registerListener(event, func) {
     <span class=n>bounds</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>]</span>
     <span class=n>coneSource</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetBounds</span><span class=p>(</span><span class=n>bounds</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>elevation</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkElevationFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>elevation</span> <span class=o>=</span> <span class=n>vtkElevationFilter</span><span class=p>()</span>
 </span>    <span class=n>elevation</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>coneSource</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>elevation</span><span class=o>.</span><span class=n>SetLowPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span> <span class=mi>0</span><span class=p>)</span>
     <span class=n>elevation</span><span class=o>.</span><span class=n>SetHighPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>3</span><span class=p>],</span> <span class=mi>0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>bcf</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkBandedPolyDataContourFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>bcf</span> <span class=o>=</span> <span class=n>vtkBandedPolyDataContourFilter</span><span class=p>()</span>
 </span>    <span class=n>bcf</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>elevation</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>bcf</span><span class=o>.</span><span class=n>SetScalarModeToValue</span><span class=p>()</span>
     <span class=n>bcf</span><span class=o>.</span><span class=n>GenerateContourEdgesOn</span><span class=p>()</span>
@@ -115,7 +130,7 @@ function registerListener(event, func) {
     <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;Matching colors to My Red:&quot;</span><span class=p>,</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>match</span><span class=p>))</span>
     <span class=c1># Build a simple lookup table of</span>
     <span class=c1># primary additive and subtractive colors.</span>
-<span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLookupTable</span><span class=p>()</span>
+<span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>    <span class=n>lut</span><span class=o>.</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=mi>7</span><span class=p>)</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>nc</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s2>&quot;My Red&quot;</span><span class=p>))</span>
     <span class=c1># Let&#39;s make the dark green one partially transparent.</span>
@@ -130,29 +145,29 @@ function registerListener(event, func) {
     <span class=n>lut</span><span class=o>.</span><span class=n>SetTableRange</span><span class=p>(</span><span class=n>elevation</span><span class=o>.</span><span class=n>GetScalarRange</span><span class=p>())</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>Build</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bcf</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>mapper</span><span class=o>.</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>lut</span><span class=p>)</span>
     <span class=n>mapper</span><span class=o>.</span><span class=n>SetScalarModeToUseCellData</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>contourLineMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>contourLineMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>contourLineMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>bcf</span><span class=o>.</span><span class=n>GetContourEdgesOutput</span><span class=p>())</span>
     <span class=n>contourLineMapper</span><span class=o>.</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=n>elevation</span><span class=o>.</span><span class=n>GetScalarRange</span><span class=p>())</span>
     <span class=n>contourLineMapper</span><span class=o>.</span><span class=n>SetResolveCoincidentTopologyToPolygonOffset</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>contourLineActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>contourLineActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
     <span class=n>contourLineActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>contourLineMapper</span><span class=p>)</span>
     <span class=n>contourLineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span>
         <span class=n>nc</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;black&quot;</span><span class=p>))</span>
 
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
-<span class=hll>    <span class=n>renderWindowInteractor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderWindowInteractor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>renderWindowInteractor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>)</span>
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>

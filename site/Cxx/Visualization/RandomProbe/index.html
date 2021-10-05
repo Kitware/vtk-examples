@@ -100,8 +100,9 @@ function registerListener(event, func) {
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThreshold</span><span class=o>&gt;</span> <span class=n>thresholdCone</span><span class=p>;</span>
 </span>  <span class=n>thresholdCone</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sampledCone</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-  <span class=n>thresholdCone</span><span class=o>-&gt;</span><span class=n>ThresholdByLower</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
-
+  <span class=n>thresholdCone</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+<span class=hll>  <span class=n>thresholdCone</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkThreshold</span><span class=o>::</span><span class=n>THRESHOLD_LOWER</span><span class=p>);</span>
+</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPointSource</span><span class=o>&gt;</span> <span class=n>randomPoints</span><span class=p>;</span>
 </span>  <span class=n>randomPoints</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
   <span class=n>randomPoints</span><span class=o>-&gt;</span><span class=n>SetNumberOfPoints</span><span class=p>(</span><span class=mi>10000</span><span class=p>);</span>

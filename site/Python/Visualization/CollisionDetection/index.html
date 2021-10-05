@@ -59,8 +59,26 @@ function registerListener(event, func) {
 
 <span class=kn>import</span> <span class=nn>time</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingFreeType</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonMath</span> <span class=kn>import</span> <span class=n>vtkMatrix4x4</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonTransforms</span> <span class=kn>import</span> <span class=n>vtkTransform</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=n>vtkCollisionDetectionFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkSphereSource</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkTextActor</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span> <span class=nn>argparse</span>
@@ -89,23 +107,23 @@ function registerListener(event, func) {
     <span class=n>contactMode</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
     <span class=c1># Define colors</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>sphere0</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSphereSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>sphere0</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
 </span>    <span class=n>sphere0</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>0.29</span><span class=p>)</span>
     <span class=n>sphere0</span><span class=o>.</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>31</span><span class=p>)</span>
     <span class=n>sphere0</span><span class=o>.</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=mi>31</span><span class=p>)</span>
     <span class=n>sphere0</span><span class=o>.</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>sphere1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSphereSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>sphere1</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
 </span>    <span class=n>sphere1</span><span class=o>.</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
     <span class=n>sphere1</span><span class=o>.</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
     <span class=n>sphere1</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>0.3</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>matrix1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMatrix4x4</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>transform0</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>matrix1</span> <span class=o>=</span> <span class=n>vtkMatrix4x4</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>transform0</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>collide</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCollisionDetectionFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>collide</span> <span class=o>=</span> <span class=n>vtkCollisionDetectionFilter</span><span class=p>()</span>
 </span>    <span class=n>collide</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>sphere0</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>collide</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>transform0</span><span class=p>)</span>
     <span class=n>collide</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>sphere1</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -122,37 +140,37 @@ function registerListener(event, func) {
     <span class=n>collide</span><span class=o>.</span><span class=n>GenerateScalarsOn</span><span class=p>()</span>
 
     <span class=c1># Visualize</span>
-<span class=hll>    <span class=n>mapper1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>mapper1</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper1</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>collide</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>(</span><span class=mi>0</span><span class=p>))</span>
     <span class=n>mapper1</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
-<span class=hll>    <span class=n>actor1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor1</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor1</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper1</span><span class=p>)</span>
     <span class=n>actor1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>BackfaceCullingOn</span><span class=p>()</span>
     <span class=n>actor1</span><span class=o>.</span><span class=n>SetUserTransform</span><span class=p>(</span><span class=n>transform0</span><span class=p>)</span>
     <span class=n>actor1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Tomato&quot;</span><span class=p>))</span>
     <span class=n>actor1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetRepresentationToWireframe</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>mapper2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>mapper2</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper2</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>collide</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>(</span><span class=mi>1</span><span class=p>))</span>
 
-<span class=hll>    <span class=n>actor2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor2</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor2</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper2</span><span class=p>)</span>
     <span class=n>actor2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>BackfaceCullingOn</span><span class=p>()</span>
     <span class=n>actor2</span><span class=o>.</span><span class=n>SetUserMatrix</span><span class=p>(</span><span class=n>matrix1</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>mapper3</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>mapper3</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper3</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>collide</span><span class=o>.</span><span class=n>GetContactsOutputPort</span><span class=p>())</span>
     <span class=n>mapper3</span><span class=o>.</span><span class=n>SetResolveCoincidentTopologyToPolygonOffset</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>actor3</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor3</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor3</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper3</span><span class=p>)</span>
     <span class=n>actor3</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Black&quot;</span><span class=p>))</span>
     <span class=n>actor3</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mf>3.0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>txt</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTextActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>txt</span> <span class=o>=</span> <span class=n>vtkTextActor</span><span class=p>()</span>
 </span>    <span class=n>txt</span><span class=o>.</span><span class=n>GetTextProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>18</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderer</span><span class=o>.</span><span class=n>UseHiddenLineRemovalOn</span><span class=p>()</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor1</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor2</span><span class=p>)</span>
@@ -161,11 +179,11 @@ function registerListener(event, func) {
     <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Gray&quot;</span><span class=p>))</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>UseHiddenLineRemovalOn</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>interactor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>)</span>
 
     <span class=c1># Move the first object</span>

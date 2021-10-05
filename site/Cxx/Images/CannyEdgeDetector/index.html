@@ -168,13 +168,14 @@ function registerListener(event, func) {
   <span class=n>imgLink</span><span class=o>-&gt;</span><span class=n>SetGradientThreshold</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
 
   <span class=c1>// Threshold links</span>
-<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThreshold</span><span class=o>&gt;</span> <span class=n>thresholdEdgels</span><span class=p>;</span>
-</span>  <span class=n>thresholdEdgels</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>imgLink</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-  <span class=n>thresholdEdgels</span><span class=o>-&gt;</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
-  <span class=n>thresholdEdgels</span><span class=o>-&gt;</span><span class=n>AllScalarsOff</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThreshold</span><span class=o>&gt;</span> <span class=n>thresholdEdges</span><span class=p>;</span>
+</span>  <span class=n>thresholdEdges</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>imgLink</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+  <span class=n>thresholdEdges</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
+<span class=hll>  <span class=n>thresholdEdges</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkThreshold</span><span class=o>::</span><span class=n>THRESHOLD_UPPER</span><span class=p>);</span>
+</span>  <span class=n>thresholdEdges</span><span class=o>-&gt;</span><span class=n>AllScalarsOff</span><span class=p>();</span>
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGeometryFilter</span><span class=o>&gt;</span> <span class=n>gf</span><span class=p>;</span>
-</span>  <span class=n>gf</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>thresholdEdgels</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+</span>  <span class=n>gf</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>thresholdEdges</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageToStructuredPoints</span><span class=o>&gt;</span> <span class=n>i2sp</span><span class=p>;</span>
 </span>  <span class=n>i2sp</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>imgMagnitude</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>

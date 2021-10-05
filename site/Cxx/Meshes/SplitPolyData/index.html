@@ -140,7 +140,8 @@ function registerListener(event, func) {
   <span class=c1>// Create an actor for each piece</span>
   <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>dicer</span><span class=o>-&gt;</span><span class=n>GetNumberOfActualPieces</span><span class=p>();</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
   <span class=p>{</span>
-    <span class=n>selector</span><span class=o>-&gt;</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>i</span><span class=p>);</span>
+    <span class=n>selector</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
+    <span class=n>selector</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
 <span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGeometryFilter</span><span class=o>&gt;</span> <span class=n>geometry</span><span class=p>;</span>
 </span>    <span class=n>geometry</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>selector</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
     <span class=n>geometry</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
@@ -173,7 +174,8 @@ function registerListener(event, func) {
   <span class=p>{</span>
     <span class=n>std</span><span class=o>::</span><span class=n>stringstream</span> <span class=n>pieceName</span><span class=p>;</span>
     <span class=n>pieceName</span> <span class=o>&lt;&lt;</span> <span class=n>filename</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;_&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>i</span> <span class=o>+</span> <span class=mi>1</span> <span class=o>&lt;&lt;</span> <span class=n>extension</span><span class=p>;</span>
-    <span class=n>selector</span><span class=o>-&gt;</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>i</span><span class=p>);</span>
+    <span class=n>selector</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
+    <span class=n>selector</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
     <span class=n>writer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>pieceName</span><span class=p>.</span><span class=n>str</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
     <span class=n>writer</span><span class=o>-&gt;</span><span class=n>Write</span><span class=p>();</span>
   <span class=p>}</span>

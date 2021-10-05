@@ -59,15 +59,34 @@ function registerListener(event, func) {
 
 <span class=c1># Modified from VTK/Filters/Texture/Testing/Python/textureThreshold.py.</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkStructuredGridOutlineFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeometry</span> <span class=kn>import</span> <span class=n>vtkStructuredGridGeometryFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersTexture</span> <span class=kn>import</span> <span class=n>vtkThresholdTextureCoords</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOLegacy</span> <span class=kn>import</span> <span class=n>vtkStructuredPointsReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOParallel</span> <span class=kn>import</span> <span class=n>vtkMultiBlockPLOT3DReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkCamera</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkTexture</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
     <span class=n>dataFn1</span><span class=p>,</span> <span class=n>dataFn2</span><span class=p>,</span> <span class=n>textureFn</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Read the data.</span>
-<span class=hll>    <span class=n>pl3d</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMultiBlockPLOT3DReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>pl3d</span> <span class=o>=</span> <span class=n>vtkMultiBlockPLOT3DReader</span><span class=p>()</span>
 </span>    <span class=n>pl3d</span><span class=o>.</span><span class=n>SetXYZFileName</span><span class=p>(</span><span class=n>dataFn1</span><span class=p>)</span>
     <span class=n>pl3d</span><span class=o>.</span><span class=n>SetQFileName</span><span class=p>(</span><span class=n>dataFn2</span><span class=p>)</span>
     <span class=n>pl3d</span><span class=o>.</span><span class=n>SetScalarFunctionNumber</span><span class=p>(</span><span class=mi>100</span><span class=p>)</span>
@@ -76,40 +95,40 @@ function registerListener(event, func) {
     <span class=n>output</span> <span class=o>=</span> <span class=n>pl3d</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetBlock</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
 
     <span class=c1># Make the wall (floor).</span>
-<span class=hll>    <span class=n>wall</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>wall</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>wall</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>output</span><span class=p>)</span>
     <span class=n>wall</span><span class=o>.</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>100</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>100</span><span class=p>)</span>
-<span class=hll>    <span class=n>wallMap</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>wallMap</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>wallMap</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>wall</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>wallMap</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
-<span class=hll>    <span class=n>wallActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>wallActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>wallActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>wallMap</span><span class=p>)</span>
     <span class=n>wallActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;PeachPuff&#39;</span><span class=p>))</span>
 
     <span class=c1># Make the fin (rear wall)</span>
-<span class=hll>    <span class=n>fin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>fin</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>fin</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>output</span><span class=p>)</span>
     <span class=n>fin</span><span class=o>.</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>100</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>100</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-<span class=hll>    <span class=n>finMap</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>finMap</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>finMap</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>fin</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>finMap</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
-<span class=hll>    <span class=n>finActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>finActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>finActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>finMap</span><span class=p>)</span>
     <span class=n>finActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSlateGray&#39;</span><span class=p>))</span>
 
     <span class=c1># Get the texture.</span>
-<span class=hll>    <span class=n>tmap</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStructuredPointsReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>tmap</span> <span class=o>=</span> <span class=n>vtkStructuredPointsReader</span><span class=p>()</span>
 </span>    <span class=n>tmap</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>textureFn</span><span class=p>)</span>
-<span class=hll>    <span class=n>texture</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTexture</span><span class=p>()</span>
+<span class=hll>    <span class=n>texture</span> <span class=o>=</span> <span class=n>vtkTexture</span><span class=p>()</span>
 </span>    <span class=n>texture</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tmap</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>texture</span><span class=o>.</span><span class=n>InterpolateOff</span><span class=p>()</span>
     <span class=n>texture</span><span class=o>.</span><span class=n>RepeatOff</span><span class=p>()</span>
 
     <span class=c1># Create the rendering window, renderer, and interactive renderer.</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=c1># Make the planes to threshold and texture.</span>
@@ -123,10 +142,10 @@ function registerListener(event, func) {
                     <span class=p>[</span><span class=mi>35</span><span class=p>,</span> <span class=mi>35</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>100</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>100</span><span class=p>]]</span>
     <span class=c1># Now set up the pipeline.</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>planeExtents</span><span class=p>)):</span>
-<span class=hll>        <span class=n>plane</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=p>())</span>
+<span class=hll>        <span class=n>plane</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=p>())</span>
 </span>        <span class=n>plane</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>output</span><span class=p>)</span>
         <span class=n>plane</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetExtent</span><span class=p>(</span><span class=o>*</span><span class=n>planeExtents</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
-<span class=hll>        <span class=n>thresh</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkThresholdTextureCoords</span><span class=p>())</span>
+<span class=hll>        <span class=n>thresh</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkThresholdTextureCoords</span><span class=p>())</span>
 </span>        <span class=n>thresh</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>plane</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
         <span class=n>thresh</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>plane</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
         <span class=c1># If you want an image similar to Fig 9-43(a) in the VTK textbook,</span>
@@ -137,10 +156,10 @@ function registerListener(event, func) {
             <span class=n>thresh</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.8</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
             <span class=n>thresh</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mf>1.5</span><span class=p>)</span>
-<span class=hll>        <span class=n>planeMap</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>())</span>
+<span class=hll>        <span class=n>planeMap</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkDataSetMapper</span><span class=p>())</span>
 </span>        <span class=n>planeMap</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>thresh</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
         <span class=n>planeMap</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=n>output</span><span class=o>.</span><span class=n>GetScalarRange</span><span class=p>())</span>
-<span class=hll>        <span class=n>planeActor</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>())</span>
+<span class=hll>        <span class=n>planeActor</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkActor</span><span class=p>())</span>
 </span>        <span class=n>planeActor</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>planeMap</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
         <span class=n>planeActor</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetTexture</span><span class=p>(</span><span class=n>texture</span><span class=p>)</span>
         <span class=c1>#  The slight transparency gives a nice effect.</span>
@@ -148,11 +167,11 @@ function registerListener(event, func) {
         <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>planeActor</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
 
     <span class=c1># Get an outline of the data set for context.</span>
-<span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStructuredGridOutlineFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtkStructuredGridOutlineFilter</span><span class=p>()</span>
 </span>    <span class=n>outline</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>output</span><span class=p>)</span>
-<span class=hll>    <span class=n>outlineMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>outlineMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>outlineMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>outline</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>outlineActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>outlineActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>outlineActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>outlineMapper</span><span class=p>)</span>
     <span class=n>outlineProp</span> <span class=o>=</span> <span class=n>outlineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span>
     <span class=n>outlineProp</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
@@ -165,7 +184,7 @@ function registerListener(event, func) {
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>512</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;TextureThreshold&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>cam</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
+<span class=hll>    <span class=n>cam</span> <span class=o>=</span> <span class=n>vtkCamera</span><span class=p>()</span>
 </span>    <span class=n>cam</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>1.51176</span><span class=p>,</span> <span class=mf>75.5879</span><span class=p>)</span>
     <span class=n>cam</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>2.33749</span><span class=p>,</span> <span class=mf>2.96739</span><span class=p>,</span> <span class=mf>3.61023</span><span class=p>)</span>
     <span class=n>cam</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>10.8787</span><span class=p>,</span> <span class=mf>5.27346</span><span class=p>,</span> <span class=mf>15.8687</span><span class=p>)</span>
@@ -191,8 +210,8 @@ function registerListener(event, func) {
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;dataFn1&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;bluntfinxyz.bin.&#39;</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;dataFn2&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;bluntfinq.bin.&#39;</span><span class=p>)</span>
-<span class=hll>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;textureFn&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;texThres2.vtk.&#39;</span><span class=p>)</span>
-</span>    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;textureFn&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;texThres2.bmp&#39;</span><span class=p>)</span>
+    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>dataFn1</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>dataFn2</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>textureFn</span>
 
 

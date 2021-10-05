@@ -65,8 +65,23 @@ function registerListener(event, func) {
 <span class=c1># @author JBallesteros</span>
 <span class=c1>##</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkSphereSource</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersTexture</span> <span class=kn>import</span> <span class=n>vtkTextureMapToSphere</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOImage</span> <span class=kn>import</span> <span class=n>vtkJPEGReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkTexture</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span> <span class=nn>argparse</span>
@@ -81,44 +96,44 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>jpegfile</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
     <span class=c1># Create a render window</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>480</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;SphereTexture&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=c1># Generate an sphere polydata</span>
-<span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSphereSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
 </span>    <span class=n>sphere</span><span class=o>.</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=mi>12</span><span class=p>)</span>
     <span class=n>sphere</span><span class=o>.</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>12</span><span class=p>)</span>
 
     <span class=c1># Read the image data from a file</span>
-<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkJPEGReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkJPEGReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>jpegfile</span><span class=p>)</span>
 
     <span class=c1># Create texture object</span>
-<span class=hll>    <span class=n>texture</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTexture</span><span class=p>()</span>
+<span class=hll>    <span class=n>texture</span> <span class=o>=</span> <span class=n>vtkTexture</span><span class=p>()</span>
 </span>    <span class=n>texture</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
     <span class=c1># Map texture coordinates</span>
-<span class=hll>    <span class=n>map_to_sphere</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTextureMapToSphere</span><span class=p>()</span>
+<span class=hll>    <span class=n>map_to_sphere</span> <span class=o>=</span> <span class=n>vtkTextureMapToSphere</span><span class=p>()</span>
 </span>    <span class=n>map_to_sphere</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphere</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>map_to_sphere</span><span class=o>.</span><span class=n>PreventSeamOn</span><span class=p>()</span>
 
     <span class=c1># Create mapper and set the mapped texture as input</span>
-<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>map_to_sphere</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
     <span class=c1># Create actor and set the mapper and the texture</span>
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>SetTexture</span><span class=p>(</span><span class=n>texture</span><span class=p>)</span>
 

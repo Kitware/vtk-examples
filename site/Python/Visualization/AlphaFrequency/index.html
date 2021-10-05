@@ -60,13 +60,26 @@ function registerListener(event, func) {
 <span class=kn>import</span> <span class=nn>re</span>
 <span class=kn>from</span> <span class=nn>collections</span> <span class=kn>import</span> <span class=n>Counter</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=n>vtkLinearExtrusionFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingFreeType</span> <span class=kn>import</span> <span class=n>vtkVectorText</span>
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
     <span class=n>fileName</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Here we read the file keeping only the alpha characters</span>
     <span class=c1>#  and calculate the frequency of each letter.</span>
@@ -81,10 +94,10 @@ function registerListener(event, func) {
     <span class=c1>#</span>
     <span class=c1># graphics stuff</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
     <span class=c1>#</span>
     <span class=c1># Setup letters</span>
@@ -95,20 +108,20 @@ function registerListener(event, func) {
     <span class=n>actors</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>keys</span><span class=p>:</span>
-<span class=hll>        <span class=n>letters</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkVectorText</span><span class=p>())</span>
+<span class=hll>        <span class=n>letters</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkVectorText</span><span class=p>())</span>
 </span>        <span class=n>letters</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=n>k</span><span class=o>.</span><span class=n>upper</span><span class=p>())</span>
 
-<span class=hll>        <span class=n>extrude</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkLinearExtrusionFilter</span><span class=p>())</span>
+<span class=hll>        <span class=n>extrude</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkLinearExtrusionFilter</span><span class=p>())</span>
 </span>        <span class=n>extrude</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>letters</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
         <span class=n>extrude</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetExtrusionTypeToVectorExtrusion</span><span class=p>()</span>
         <span class=n>extrude</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetVector</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
         <span class=n>extrude</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetScaleFactor</span><span class=p>(</span><span class=nb>float</span><span class=p>(</span><span class=n>freq</span><span class=p>[</span><span class=n>k</span><span class=p>])</span> <span class=o>/</span> <span class=n>maxFreq</span> <span class=o>*</span> <span class=mf>2.50</span><span class=p>)</span>
 
-<span class=hll>        <span class=n>mappers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>())</span>
+<span class=hll>        <span class=n>mappers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkPolyDataMapper</span><span class=p>())</span>
 </span>        <span class=n>mappers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>extrude</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
         <span class=n>mappers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 
-<span class=hll>        <span class=n>actors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>())</span>
+<span class=hll>        <span class=n>actors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkActor</span><span class=p>())</span>
 </span>        <span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mappers</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
         <span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Peacock&#39;</span><span class=p>))</span>
 

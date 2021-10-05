@@ -59,8 +59,27 @@ function registerListener(event, func) {
 
 <span class=kn>from</span> <span class=nn>pathlib</span> <span class=kn>import</span> <span class=n>Path</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkLookupTable</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonMath</span> <span class=kn>import</span> <span class=n>vtkMatrix4x4</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonTransforms</span> <span class=kn>import</span> <span class=n>vtkTransform</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkPolyDataNormals</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOLegacy</span> <span class=kn>import</span> <span class=n>vtkPolyDataReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInteractionWidgets</span> <span class=kn>import</span> <span class=n>vtkOrientationMarkerWidget</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingAnnotation</span> <span class=kn>import</span> <span class=n>vtkAxesActor</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=kn>import</span> <span class=nn>argparse</span>
@@ -100,13 +119,13 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>tissues</span><span class=p>,</span> <span class=n>view</span><span class=p>):</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Setup render window, renderer, and interactor.</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
-<span class=hll>    <span class=n>render_window_interactor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>render_window_interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>render_window</span><span class=p>)</span>
 
     <span class=n>tm</span> <span class=o>=</span> <span class=n>create_tissue_map</span><span class=p>()</span>
@@ -170,9 +189,9 @@ function registerListener(event, func) {
 
     <span class=n>render_window</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>axes</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkAxesActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>axes</span> <span class=o>=</span> <span class=n>vtkAxesActor</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
+<span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
 </span>    <span class=n>rgba</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>]</span>
     <span class=n>colors</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=s2>&quot;Carrot&quot;</span><span class=p>,</span> <span class=n>rgba</span><span class=p>)</span>
     <span class=n>widget</span><span class=o>.</span><span class=n>SetOutlineColor</span><span class=p>(</span><span class=n>rgba</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>rgba</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>rgba</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
@@ -188,7 +207,7 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>create_frog_actor</span><span class=p>(</span><span class=n>file_name</span><span class=p>,</span> <span class=n>tissue</span><span class=p>,</span> <span class=n>transform</span><span class=p>):</span>
     <span class=n>so</span> <span class=o>=</span> <span class=n>SliceOrder</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPolyDataReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
@@ -196,19 +215,19 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=n>tissue</span> <span class=o>==</span> <span class=s1>&#39;brainbin&#39;</span><span class=p>:</span>
         <span class=n>trans</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
         <span class=n>trans</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>180</span><span class=p>)</span>
-<span class=hll>    <span class=n>tf</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>tf</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tf</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>trans</span><span class=p>)</span>
     <span class=n>tf</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>normals</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataNormals</span><span class=p>()</span>
+<span class=hll>    <span class=n>normals</span> <span class=o>=</span> <span class=n>vtkPolyDataNormals</span><span class=p>()</span>
 </span>    <span class=n>normals</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>normals</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=mf>60.0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
 
     <span class=k>return</span> <span class=n>actor</span>
@@ -234,28 +253,28 @@ function registerListener(event, func) {
 <span class=sd>    &quot;&quot;&quot;</span>
 
     <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMatrix4x4</span><span class=p>()</span>
+<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span> <span class=o>=</span> <span class=n>vtkMatrix4x4</span><span class=p>()</span>
 </span>        <span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span><span class=o>.</span><span class=n>Zero</span><span class=p>()</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 
-<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>is_mat</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMatrix4x4</span><span class=p>()</span>
+<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>is_mat</span> <span class=o>=</span> <span class=n>vtkMatrix4x4</span><span class=p>()</span>
 </span>        <span class=bp>self</span><span class=o>.</span><span class=n>is_mat</span><span class=o>.</span><span class=n>Zero</span><span class=p>()</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>is_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>is_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>is_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>is_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 
-<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMatrix4x4</span><span class=p>()</span>
+<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span> <span class=o>=</span> <span class=n>vtkMatrix4x4</span><span class=p>()</span>
 </span>        <span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span><span class=o>.</span><span class=n>Zero</span><span class=p>()</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 
-<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>rl_mat</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMatrix4x4</span><span class=p>()</span>
+<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>rl_mat</span> <span class=o>=</span> <span class=n>vtkMatrix4x4</span><span class=p>()</span>
 </span>        <span class=bp>self</span><span class=o>.</span><span class=n>rl_mat</span><span class=o>.</span><span class=n>Zero</span><span class=p>()</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>rl_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>rl_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
@@ -268,7 +287,7 @@ function registerListener(event, func) {
 <span class=sd>        with a 180° rotation about y</span>
 <span class=sd>        &quot;&quot;&quot;</span>
 
-<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMatrix4x4</span><span class=p>()</span>
+<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span> <span class=o>=</span> <span class=n>vtkMatrix4x4</span><span class=p>()</span>
 </span>        <span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=o>.</span><span class=n>Zero</span><span class=p>()</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
@@ -276,73 +295,73 @@ function registerListener(event, func) {
         <span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 
     <span class=k>def</span> <span class=nf>s_i</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>t</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>t</span>
 
     <span class=k>def</span> <span class=nf>i_s</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>t</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>is_mat</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>t</span>
 
     <span class=nd>@staticmethod</span>
     <span class=k>def</span> <span class=nf>a_p</span><span class=p>():</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=k>return</span> <span class=n>t</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 
     <span class=nd>@staticmethod</span>
     <span class=k>def</span> <span class=nf>p_a</span><span class=p>():</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=k>return</span> <span class=n>t</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
 
     <span class=k>def</span> <span class=nf>l_r</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>t</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span><span class=p>)</span>
         <span class=n>t</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=k>return</span> <span class=n>t</span>
 
     <span class=k>def</span> <span class=nf>r_l</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>t</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>t</span>
 
     <span class=k>def</span> <span class=nf>h_f</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>t</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>t</span>
 
     <span class=k>def</span> <span class=nf>hf_si</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>t</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>t</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>t</span>
 
     <span class=k>def</span> <span class=nf>hf_is</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>t</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>t</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>is_mat</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>t</span>
 
     <span class=k>def</span> <span class=nf>hf_ap</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>t</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>t</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>t</span>
 
     <span class=k>def</span> <span class=nf>hf_pa</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>t</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>t</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>t</span>
 
     <span class=k>def</span> <span class=nf>hf_lr</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>t</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>t</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>t</span>
 
     <span class=k>def</span> <span class=nf>hf_rl</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>t</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>t</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>rl_mat</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>t</span>
@@ -386,7 +405,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span> <span class=nf>create_frog_lut</span><span class=p>(</span><span class=n>colors</span><span class=p>):</span>
-<span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLookupTable</span><span class=p>()</span>
+<span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>    <span class=n>lut</span><span class=o>.</span><span class=n>SetNumberOfColors</span><span class=p>(</span><span class=mi>16</span><span class=p>)</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>SetTableRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>15</span><span class=p>)</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>Build</span><span class=p>()</span>

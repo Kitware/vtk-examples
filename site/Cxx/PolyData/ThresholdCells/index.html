@@ -116,8 +116,9 @@ function registerListener(event, func) {
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThreshold</span><span class=o>&gt;</span> <span class=n>threshold</span><span class=p>;</span>
 </span>  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>polydata</span><span class=p>);</span>
-  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>ThresholdByLower</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
-  <span class=c1>// doesn&#39;t work because the array is not added as SCALARS, i.e. via SetScalars</span>
+  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+<span class=hll>  <span class=n>threshold</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkThreshold</span><span class=o>::</span><span class=n>THRESHOLD_LOWER</span><span class=p>);</span>
+</span>  <span class=c1>// doesn&#39;t work because the array is not added as SCALARS, i.e. via SetScalars</span>
   <span class=c1>// threshold-&gt;SetInputArrayToProcess(0, 0, 0,</span>
 <span class=hll>  <span class=c1>// vtkDataObject::FIELD_ASSOCIATION_CELLS, vtkDataSetAttributes::SCALARS); use</span>
 </span>  <span class=c1>// like this:</span>

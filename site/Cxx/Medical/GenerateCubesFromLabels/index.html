@@ -139,7 +139,8 @@ function registerListener(event, func) {
 <span class=hll>                                   <span class=n>vtkDataObject</span><span class=o>::</span><span class=n>FIELD_ASSOCIATION_CELLS</span><span class=p>,</span>
 </span><span class=hll>                                   <span class=n>vtkDataSetAttributes</span><span class=o>::</span><span class=n>SCALARS</span><span class=p>);</span>
 </span>  <span class=n>selector</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>pad</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-  <span class=n>selector</span><span class=o>-&gt;</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>startLabel</span><span class=p>,</span> <span class=n>endLabel</span><span class=p>);</span>
+  <span class=n>selector</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>startLabel</span><span class=p>);</span>
+  <span class=n>selector</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>endLabel</span><span class=p>);</span>
   <span class=n>selector</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
   <span class=c1>// Shift the geometry by 1/2</span>

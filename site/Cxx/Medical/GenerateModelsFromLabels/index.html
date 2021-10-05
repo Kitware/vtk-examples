@@ -191,7 +191,8 @@ function registerListener(event, func) {
     <span class=p>}</span>
 
     <span class=c1>// select the cells for a given label</span>
-    <span class=n>selector</span><span class=o>-&gt;</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>i</span><span class=p>);</span>
+    <span class=n>selector</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
+    <span class=n>selector</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
 
     <span class=c1>// output the polydata</span>
     <span class=n>std</span><span class=o>::</span><span class=n>stringstream</span> <span class=n>ss</span><span class=p>;</span>

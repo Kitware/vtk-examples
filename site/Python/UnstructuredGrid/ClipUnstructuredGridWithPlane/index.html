@@ -71,8 +71,26 @@ The clipped dataset contains a
 
 <span class=kn>import</span> <span class=nn>collections</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkCellTypes</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPlane</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonTransforms</span> <span class=kn>import</span> <span class=n>vtkTransform</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkTableBasedClipDataSet</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOLegacy</span> <span class=kn>import</span> <span class=n>vtkUnstructuredGridReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span> <span class=nn>argparse</span>
@@ -82,12 +100,12 @@ The clipped dataset contains a
 </span><span class=s1> The resulting output and clipped output are presented in yellow and red respectively.</span>
 <span class=hll><span class=s1> To illustrate the clipped interfaces, the example uses a vtkTransform to rotate each</span>
 </span><span class=s1>    output about their centers.</span>
-<span class=s1> Note: This clipping filter doe retain the original cells if they are not clipped.</span>
+<span class=s1> Note: This clipping filter does retain the original cells if they are not clipped.</span>
 
 <span class=s1>   &#39;&#39;&#39;</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-<span class=hll>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;treemesh.vtk.&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;treemesh.vtk&#39;</span><span class=p>)</span>
 </span>    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span>
 
@@ -96,67 +114,67 @@ The clipped dataset contains a
     <span class=n>filename</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
     <span class=c1># Create the reader for the data.</span>
-<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkUnstructuredGridReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkUnstructuredGridReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filename</span><span class=p>)</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=n>bounds</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetBounds</span><span class=p>()</span>
     <span class=n>center</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCenter</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Wheat&#39;</span><span class=p>))</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>UseHiddenLineRemovalOn</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>interactor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>)</span>
 
     <span class=n>xnorm</span> <span class=o>=</span> <span class=p>[</span><span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
 
-<span class=hll>    <span class=n>clipPlane</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlane</span><span class=p>()</span>
+<span class=hll>    <span class=n>clipPlane</span> <span class=o>=</span> <span class=n>vtkPlane</span><span class=p>()</span>
 </span>    <span class=n>clipPlane</span><span class=o>.</span><span class=n>SetOrigin</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCenter</span><span class=p>())</span>
     <span class=n>clipPlane</span><span class=o>.</span><span class=n>SetNormal</span><span class=p>(</span><span class=n>xnorm</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>clipper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTableBasedClipDataSet</span><span class=p>()</span>
+<span class=hll>    <span class=n>clipper</span> <span class=o>=</span> <span class=n>vtkTableBasedClipDataSet</span><span class=p>()</span>
 </span>    <span class=n>clipper</span><span class=o>.</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clipPlane</span><span class=p>)</span>
     <span class=n>clipper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
     <span class=n>clipper</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>)</span>
     <span class=n>clipper</span><span class=o>.</span><span class=n>GenerateClippedOutputOn</span><span class=p>()</span>
     <span class=n>clipper</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>insideMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>insideMapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>insideMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
     <span class=n>insideMapper</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>insideActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>insideActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>insideActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>insideMapper</span><span class=p>)</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;banana&#39;</span><span class=p>))</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>.3</span><span class=p>)</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>clippedMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>clippedMapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>clippedMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>())</span>
     <span class=n>clippedMapper</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>clippedActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>clippedActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>clippedActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>clippedMapper</span><span class=p>)</span>
     <span class=n>clippedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;tomato&#39;</span><span class=p>))</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>.3</span><span class=p>)</span>
     <span class=n>clippedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
 
     <span class=c1># Create transforms to make a better visualization</span>
-<span class=hll>    <span class=n>insideTransform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>insideTransform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>insideTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=p>(</span><span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>*</span> <span class=mf>0.75</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
     <span class=n>insideTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
     <span class=n>insideTransform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=o>-</span><span class=mf>120.0</span><span class=p>)</span>
     <span class=n>insideTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>SetUserTransform</span><span class=p>(</span><span class=n>insideTransform</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>clippedTransform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>clippedTransform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>clippedTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>((</span><span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>*</span> <span class=mf>0.75</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
     <span class=n>clippedTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
     <span class=n>clippedTransform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mf>60.0</span><span class=p>)</span>
@@ -186,7 +204,7 @@ The clipped dataset contains a
     <span class=c1># Sort by key and put into an OrderedDict.</span>
     <span class=c1># An OrderedDict remembers the order in which the keys have been inserted.</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>collections</span><span class=o>.</span><span class=n>OrderedDict</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=n>cellMap</span><span class=o>.</span><span class=n>items</span><span class=p>()))</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\t</span><span class=s1>Cell type &#39;</span><span class=p>,</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39; occurs &#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39; times.&#39;</span><span class=p>)</span>
+<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\t</span><span class=s1>Cell type &#39;</span><span class=p>,</span> <span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39; occurs &#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39; times.&#39;</span><span class=p>)</span>
 </span>
     <span class=n>numberOfCells</span> <span class=o>=</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>()</span>
     <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;------------------------&#39;</span><span class=p>)</span>
@@ -197,7 +215,7 @@ The clipped dataset contains a
         <span class=n>outsideCellMap</span><span class=o>.</span><span class=n>setdefault</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>outsideCellMap</span><span class=p>[</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>)]</span> <span class=o>+=</span> <span class=mi>1</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>collections</span><span class=o>.</span><span class=n>OrderedDict</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=n>outsideCellMap</span><span class=o>.</span><span class=n>items</span><span class=p>()))</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\t</span><span class=s1>Cell type &#39;</span><span class=p>,</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39; occurs &#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39; times.&#39;</span><span class=p>)</span>
+<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\t</span><span class=s1>Cell type &#39;</span><span class=p>,</span> <span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39; occurs &#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39; times.&#39;</span><span class=p>)</span>
 </span>
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
