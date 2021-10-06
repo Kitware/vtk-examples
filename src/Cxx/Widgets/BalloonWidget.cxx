@@ -1,27 +1,21 @@
 #include <vtkActor.h>
 #include <vtkBalloonRepresentation.h>
 #include <vtkBalloonWidget.h>
-#include <vtkCommand.h>
-#include <vtkInteractorStyleTrackball.h>
-#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkNamedColors.h>
 #include <vtkNew.h>
-#include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkRegularPolygonSource.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkNew.h>
 #include <vtkSphereSource.h>
-#include <vtkNamedColors.h>
-#include <vtkNew.h>
-#include <vtkProperty.h>
 
 int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
-  // Sphere
+  // Sphere.
   vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetCenter(-4.0, 0.0, 0.0);
   sphereSource->SetRadius(4.0);
@@ -35,7 +29,7 @@ int main(int, char*[])
   sphereActor->GetProperty()->SetColor(
       colors->GetColor3d("MistyRose").GetData());
 
-  // Regular Polygon
+  // Regular Polygon.
   vtkNew<vtkRegularPolygonSource> regularPolygonSource;
   regularPolygonSource->SetCenter(4.0, 0.0, 0.0);
   regularPolygonSource->SetRadius(4.0);
@@ -50,38 +44,38 @@ int main(int, char*[])
   regularPolygonActor->GetProperty()->SetColor(
       colors->GetColor3d("Cornsilk").GetData());
 
-  // A renderer and render window
-  vtkNew<vtkRenderer> renderer;
-  vtkNew<vtkRenderWindow> renderWindow;
-  renderWindow->AddRenderer(renderer);
-  renderWindow->SetWindowName("BalloonWidget");
+  // A renderer and render window.
+  vtkNew<vtkRenderer> ren;
+  vtkNew<vtkRenderWindow> renWin;
+  renWin->AddRenderer(ren);
+  renWin->SetWindowName("BalloonWidget");
 
-  // An interactor
-  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
-  renderWindowInteractor->SetRenderWindow(renderWindow);
+  // An interactor.
+  vtkNew<vtkRenderWindowInteractor> iren;
+  iren->SetRenderWindow(renWin);
 
-  // Create the widget
+  // Create the widget.
   vtkNew<vtkBalloonRepresentation> balloonRep;
   balloonRep->SetBalloonLayoutToImageRight();
 
   vtkNew<vtkBalloonWidget> balloonWidget;
-  balloonWidget->SetInteractor(renderWindowInteractor);
+  balloonWidget->SetInteractor(iren);
   balloonWidget->SetRepresentation(balloonRep);
   balloonWidget->AddBalloon(sphereActor, "This is a sphere", NULL);
   balloonWidget->AddBalloon(regularPolygonActor, "This is a regular polygon",
                             NULL);
 
-  // Add the actors to the scene
-  renderer->AddActor(sphereActor);
-  renderer->AddActor(regularPolygonActor);
-  renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
+  // Add the actors to the scene.
+  ren->AddActor(sphereActor);
+  ren->AddActor(regularPolygonActor);
+  ren->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
   // Render
-  renderWindow->Render();
+  renWin->Render();
   balloonWidget->EnabledOn();
 
-  // Begin mouse interaction
-  renderWindowInteractor->Start();
+  // Begin mouse interaction.
+  iren->Start();
 
   return EXIT_SUCCESS;
 }
