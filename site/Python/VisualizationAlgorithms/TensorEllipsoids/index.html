@@ -59,84 +59,111 @@ function registerListener(event, func) {
 
 <span class=c1># Translated from TenEllip.tcl</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkColorSeries</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkNamedColors</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkLookupTable</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkPolyDataNormals</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkTensorGlyph</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeometry</span> <span class=kn>import</span> <span class=n>vtkImageDataGeometryFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=n>vtkOutlineFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkConeSource</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkSphereSource</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingHybrid</span> <span class=kn>import</span> <span class=n>vtkPointLoad</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkCamera</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Create the RenderWindow, Renderer and interactive renderer.</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=c1># Generate the tensors.</span>
-<span class=hll>    <span class=n>ptLoad</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPointLoad</span><span class=p>()</span>
+<span class=hll>    <span class=n>ptLoad</span> <span class=o>=</span> <span class=n>vtkPointLoad</span><span class=p>()</span>
 </span>    <span class=n>ptLoad</span><span class=o>.</span><span class=n>SetLoadValue</span><span class=p>(</span><span class=mf>100.0</span><span class=p>)</span>
     <span class=n>ptLoad</span><span class=o>.</span><span class=n>SetSampleDimensions</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=mi>6</span><span class=p>,</span> <span class=mi>6</span><span class=p>)</span>
     <span class=n>ptLoad</span><span class=o>.</span><span class=n>ComputeEffectiveStressOn</span><span class=p>()</span>
     <span class=n>ptLoad</span><span class=o>.</span><span class=n>SetModelBounds</span><span class=p>(</span><span class=o>-</span><span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=o>-</span><span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=o>-</span><span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>)</span>
 
     <span class=c1># Extract a plane of data.</span>
-<span class=hll>    <span class=n>plane</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageDataGeometryFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>plane</span> <span class=o>=</span> <span class=n>vtkImageDataGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>plane</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>ptLoad</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>plane</span><span class=o>.</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>99</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>99</span><span class=p>)</span>
 
     <span class=c1># Generate the ellipsoids.</span>
-<span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSphereSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
 </span>    <span class=n>sphere</span><span class=o>.</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span>
     <span class=n>sphere</span><span class=o>.</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span>
-<span class=hll>    <span class=n>tensorEllipsoids</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTensorGlyph</span><span class=p>()</span>
+<span class=hll>    <span class=n>tensorEllipsoids</span> <span class=o>=</span> <span class=n>vtkTensorGlyph</span><span class=p>()</span>
 </span>    <span class=n>tensorEllipsoids</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>ptLoad</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tensorEllipsoids</span><span class=o>.</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>sphere</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tensorEllipsoids</span><span class=o>.</span><span class=n>SetScaleFactor</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
     <span class=n>tensorEllipsoids</span><span class=o>.</span><span class=n>ClampScalingOn</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>ellipNormals</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataNormals</span><span class=p>()</span>
+<span class=hll>    <span class=n>ellipNormals</span> <span class=o>=</span> <span class=n>vtkPolyDataNormals</span><span class=p>()</span>
 </span>    <span class=n>ellipNormals</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tensorEllipsoids</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
     <span class=c1># Map contour</span>
-<span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLookupTable</span><span class=p>()</span>
+<span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>    <span class=n>MakeLogLUT</span><span class=p>(</span><span class=n>lut</span><span class=p>)</span>
     <span class=c1># lut.SetHueRange(.6667, 0.0)</span>
-<span class=hll>    <span class=n>tensorEllipsoidsMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>tensorEllipsoidsMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>tensorEllipsoidsMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>ellipNormals</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tensorEllipsoidsMapper</span><span class=o>.</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>lut</span><span class=p>)</span>
     <span class=n>plane</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>  <span class=c1># force update for scalar range</span>
     <span class=n>tensorEllipsoidsMapper</span><span class=o>.</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=n>plane</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalarRange</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>tensorActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>tensorActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>tensorActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>tensorEllipsoidsMapper</span><span class=p>)</span>
 
     <span class=c1># Create an outline around the data.</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOutlineFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtkOutlineFilter</span><span class=p>()</span>
 </span>    <span class=n>outline</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>ptLoad</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>outlineMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>outlineMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>outlineMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>outline</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>outlineActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>outlineActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>outlineActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>outlineMapper</span><span class=p>)</span>
     <span class=n>outlineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
 
     <span class=c1># Create a cone whose apex indicates the application of load.</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>coneSrc</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkConeSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>coneSrc</span> <span class=o>=</span> <span class=n>vtkConeSource</span><span class=p>()</span>
 </span>    <span class=n>coneSrc</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>.5</span><span class=p>)</span>
     <span class=n>coneSrc</span><span class=o>.</span><span class=n>SetHeight</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
-<span class=hll>    <span class=n>coneMap</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>coneMap</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>coneMap</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>coneSrc</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>coneActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>coneActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>coneActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMap</span><span class=p>)</span>
     <span class=n>coneActor</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>11</span><span class=p>)</span>
     <span class=n>coneActor</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
     <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>))</span>
 
-<span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
+<span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtkCamera</span><span class=p>()</span>
 </span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>0.113766</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.13665</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.01919</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=o>-</span><span class=mf>29.4886</span><span class=p>,</span> <span class=o>-</span><span class=mf>63.1488</span><span class=p>,</span> <span class=mf>26.5807</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>SetViewAngle</span><span class=p>(</span><span class=mf>24.4617</span><span class=p>)</span>
@@ -159,7 +186,7 @@ function registerListener(event, func) {
 
 <span class=k>def</span> <span class=nf>MakeLogLUT</span><span class=p>(</span><span class=n>lut</span><span class=p>):</span>
     <span class=c1># Make the lookup using a Brewer palette.</span>
-<span class=hll>    <span class=n>colorSeries</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkColorSeries</span><span class=p>()</span>
+<span class=hll>    <span class=n>colorSeries</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=p>()</span>
 </span>    <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetNumberOfColors</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span>
     <span class=n>colorSeriesEnum</span> <span class=o>=</span> <span class=n>colorSeries</span><span class=o>.</span><span class=n>BREWER_DIVERGING_SPECTRAL_8</span>
     <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColorScheme</span><span class=p>(</span><span class=n>colorSeriesEnum</span><span class=p>)</span>

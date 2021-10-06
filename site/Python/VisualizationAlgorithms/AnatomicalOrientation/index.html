@@ -64,20 +64,42 @@ function registerListener(event, func) {
 <span class=sd>  Thanks to the Slicer people for providing this.</span>
 <span class=sd>&quot;&quot;&quot;</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonTransforms</span> <span class=kn>import</span> <span class=n>vtkTransform</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkPlaneSource</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOXML</span> <span class=kn>import</span> <span class=n>vtkXMLPolyDataReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInteractionWidgets</span> <span class=kn>import</span> <span class=n>vtkOrientationMarkerWidget</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingAnnotation</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkAnnotatedCubeActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkAxesActor</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPropAssembly</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingFreeType</span> <span class=kn>import</span> <span class=n>vtkVectorText</span>
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>fileName</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
     <span class=c1># Create a rendering window, renderer and interactor.</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>780</span><span class=p>,</span> <span class=mi>780</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=c1># Make an annotated cube actor with axes and then add it into an orientation marker widget.</span>
@@ -87,7 +109,7 @@ function registerListener(event, func) {
     <span class=n>xyzLabels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;X&#39;</span><span class=p>,</span> <span class=s1>&#39;Y&#39;</span><span class=p>,</span> <span class=s1>&#39;Z&#39;</span><span class=p>]</span>
     <span class=n>scale</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.5</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>]</span>
     <span class=n>axes</span> <span class=o>=</span> <span class=n>MakeCubeActor</span><span class=p>(</span><span class=n>scale</span><span class=p>,</span> <span class=n>xyzLabels</span><span class=p>,</span> <span class=n>colors</span><span class=p>)</span>
-<span class=hll>    <span class=n>om</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
+<span class=hll>    <span class=n>om</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
 </span>    <span class=n>om</span><span class=o>.</span><span class=n>SetOrientationMarker</span><span class=p>(</span><span class=n>axes</span><span class=p>)</span>
     <span class=c1># Position upper left in the viewport.</span>
     <span class=n>om</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
@@ -98,7 +120,7 @@ function registerListener(event, func) {
     <span class=c1># Right, Anterior, Superior.</span>
     <span class=n>scale</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>]</span>
     <span class=n>axes1</span> <span class=o>=</span> <span class=n>MakeCubeActor</span><span class=p>(</span><span class=n>scale</span><span class=p>,</span> <span class=n>xyzLabels</span><span class=p>,</span> <span class=n>colors</span><span class=p>)</span>
-<span class=hll>    <span class=n>om1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
+<span class=hll>    <span class=n>om1</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
 </span>    <span class=n>om1</span><span class=o>.</span><span class=n>SetOrientationMarker</span><span class=p>(</span><span class=n>axes1</span><span class=p>)</span>
     <span class=c1># Position lower left in the viewport.</span>
     <span class=n>om1</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>)</span>
@@ -109,7 +131,7 @@ function registerListener(event, func) {
     <span class=c1># Left, Posterior, Superior.</span>
     <span class=n>scale</span> <span class=o>=</span> <span class=p>(</span><span class=o>-</span><span class=mf>1.5</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>)</span>
     <span class=n>axes2</span> <span class=o>=</span> <span class=n>MakeCubeActor</span><span class=p>(</span><span class=n>scale</span><span class=p>,</span> <span class=n>xyzLabels</span><span class=p>,</span> <span class=n>colors</span><span class=p>)</span>
-<span class=hll>    <span class=n>om2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
+<span class=hll>    <span class=n>om2</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
 </span>    <span class=n>om2</span><span class=o>.</span><span class=n>SetOrientationMarker</span><span class=p>(</span><span class=n>axes2</span><span class=p>)</span>
     <span class=c1># Position lower right in the viewport.</span>
     <span class=n>om2</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=mf>0.8</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>)</span>
@@ -119,7 +141,7 @@ function registerListener(event, func) {
 
     <span class=c1># Finally create an annotated cube actor adding it into an orientation marker widget.</span>
     <span class=n>axes3</span> <span class=o>=</span> <span class=n>MakeAnnotatedCubeActor</span><span class=p>(</span><span class=n>colors</span><span class=p>)</span>
-<span class=hll>    <span class=n>om3</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
+<span class=hll>    <span class=n>om3</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
 </span>    <span class=n>om3</span><span class=o>.</span><span class=n>SetOrientationMarker</span><span class=p>(</span><span class=n>axes3</span><span class=p>)</span>
     <span class=c1># Position upper right in the viewport.</span>
     <span class=n>om3</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
@@ -128,17 +150,17 @@ function registerListener(event, func) {
     <span class=n>om3</span><span class=o>.</span><span class=n>InteractiveOn</span><span class=p>()</span>
 
     <span class=c1># Read in the model.</span>
-<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkXMLPolyDataReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>)</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>humanMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>humanMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>humanMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>humanMapper</span><span class=o>.</span><span class=n>SetScalarModeToUsePointFieldData</span><span class=p>()</span>
     <span class=n>humanMapper</span><span class=o>.</span><span class=n>SelectColorArray</span><span class=p>(</span><span class=s1>&#39;Color&#39;</span><span class=p>)</span>
     <span class=n>humanMapper</span><span class=o>.</span><span class=n>SetColorModeToDirectScalars</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>humanActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>humanActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>humanActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>humanMapper</span><span class=p>)</span>
     <span class=n>bounds</span> <span class=o>=</span> <span class=n>humanActor</span><span class=o>.</span><span class=n>GetBounds</span><span class=p>()</span>
     <span class=c1># Scale the actor</span>
@@ -192,7 +214,7 @@ function registerListener(event, func) {
 <span class=sd>    :param xyzLabels: Labels for the axes.</span>
 <span class=sd>    :return: The axes actor.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
-<span class=hll>    <span class=n>axes</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkAxesActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>axes</span> <span class=o>=</span> <span class=n>vtkAxesActor</span><span class=p>()</span>
 </span>    <span class=n>axes</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=n>scale</span><span class=p>)</span>
     <span class=n>axes</span><span class=o>.</span><span class=n>SetShaftTypeToCylinder</span><span class=p>()</span>
     <span class=n>axes</span><span class=o>.</span><span class=n>SetXAxisLabelText</span><span class=p>(</span><span class=n>xyzLabels</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
@@ -217,7 +239,7 @@ function registerListener(event, func) {
 <span class=sd>    :return: The annotated cube actor.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=c1># A cube with labeled faces.</span>
-<span class=hll>    <span class=n>cube</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkAnnotatedCubeActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>cube</span> <span class=o>=</span> <span class=n>vtkAnnotatedCubeActor</span><span class=p>()</span>
 </span>    <span class=n>cube</span><span class=o>.</span><span class=n>SetXPlusFaceText</span><span class=p>(</span><span class=s1>&#39;R&#39;</span><span class=p>)</span>  <span class=c1># Right</span>
     <span class=n>cube</span><span class=o>.</span><span class=n>SetXMinusFaceText</span><span class=p>(</span><span class=s1>&#39;L&#39;</span><span class=p>)</span>  <span class=c1># Left</span>
     <span class=n>cube</span><span class=o>.</span><span class=n>SetYPlusFaceText</span><span class=p>(</span><span class=s1>&#39;A&#39;</span><span class=p>)</span>  <span class=c1># Anterior</span>
@@ -246,28 +268,28 @@ function registerListener(event, func) {
 <span class=sd>    :param colors: Used to set the colors of the cube faces.</span>
 <span class=sd>    :return: The combined axes and annotated cube prop.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
-<span class=hll>    <span class=c1># We are combining a vtk.vtkAxesActor and a vtk.vtkAnnotatedCubeActor</span>
-</span><span class=hll>    <span class=c1># into a vtk.vtkPropAssembly</span>
+<span class=hll>    <span class=c1># We are combining a vtkAxesActor and a vtkAnnotatedCubeActor</span>
+</span><span class=hll>    <span class=c1># into a vtkPropAssembly</span>
 </span>    <span class=n>cube</span> <span class=o>=</span> <span class=n>MakeAnnotatedCubeActor</span><span class=p>(</span><span class=n>colors</span><span class=p>)</span>
     <span class=n>axes</span> <span class=o>=</span> <span class=n>MakeAxesActor</span><span class=p>(</span><span class=n>scale</span><span class=p>,</span> <span class=n>xyzLabels</span><span class=p>)</span>
 
     <span class=c1># Combine orientation markers into one with an assembly.</span>
-<span class=hll>    <span class=n>assembly</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPropAssembly</span><span class=p>()</span>
+<span class=hll>    <span class=n>assembly</span> <span class=o>=</span> <span class=n>vtkPropAssembly</span><span class=p>()</span>
 </span>    <span class=n>assembly</span><span class=o>.</span><span class=n>AddPart</span><span class=p>(</span><span class=n>axes</span><span class=p>)</span>
     <span class=n>assembly</span><span class=o>.</span><span class=n>AddPart</span><span class=p>(</span><span class=n>cube</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>assembly</span>
 
 
 <span class=k>def</span> <span class=nf>MakePlane</span><span class=p>(</span><span class=n>resolution</span><span class=p>,</span> <span class=n>origin</span><span class=p>,</span> <span class=n>point1</span><span class=p>,</span> <span class=n>point2</span><span class=p>,</span> <span class=n>wxyz</span><span class=p>,</span> <span class=n>translate</span><span class=p>):</span>
-<span class=hll>    <span class=n>plane</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlaneSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>plane</span> <span class=o>=</span> <span class=n>vtkPlaneSource</span><span class=p>()</span>
 </span>    <span class=n>plane</span><span class=o>.</span><span class=n>SetResolution</span><span class=p>(</span><span class=o>*</span><span class=n>resolution</span><span class=p>)</span>
     <span class=n>plane</span><span class=o>.</span><span class=n>SetOrigin</span><span class=p>(</span><span class=n>origin</span><span class=p>)</span>
     <span class=n>plane</span><span class=o>.</span><span class=n>SetPoint1</span><span class=p>(</span><span class=n>point1</span><span class=p>)</span>
     <span class=n>plane</span><span class=o>.</span><span class=n>SetPoint2</span><span class=p>(</span><span class=n>point2</span><span class=p>)</span>
-<span class=hll>    <span class=n>trnf</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>trnf</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>trnf</span><span class=o>.</span><span class=n>RotateWXYZ</span><span class=p>(</span><span class=o>*</span><span class=n>wxyz</span><span class=p>)</span>
     <span class=n>trnf</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=n>translate</span><span class=p>)</span>
-<span class=hll>    <span class=n>tpdPlane</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>tpdPlane</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>tpdPlane</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>trnf</span><span class=p>)</span>
     <span class=n>tpdPlane</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>plane</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=k>return</span> <span class=n>tpdPlane</span>
@@ -293,9 +315,9 @@ function registerListener(event, func) {
     <span class=n>planes</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakePlane</span><span class=p>(</span><span class=n>resolution</span><span class=p>,</span> <span class=n>origin</span><span class=p>,</span> <span class=n>point1</span><span class=p>,</span> <span class=n>point2</span><span class=p>,</span> <span class=p>[</span><span class=o>-</span><span class=mi>90</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=p>[</span><span class=o>-</span><span class=mf>0.5</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>]))</span>  <span class=c1># x-z plane</span>
     <span class=n>planes</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakePlane</span><span class=p>(</span><span class=n>resolution</span><span class=p>,</span> <span class=n>origin</span><span class=p>,</span> <span class=n>point1</span><span class=p>,</span> <span class=n>point2</span><span class=p>,</span> <span class=p>[</span><span class=o>-</span><span class=mi>90</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=p>[</span><span class=o>-</span><span class=mf>0.5</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>]))</span>  <span class=c1># y-z plane</span>
     <span class=k>for</span> <span class=n>plane</span> <span class=ow>in</span> <span class=n>planes</span><span class=p>:</span>
-<span class=hll>        <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>        <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>        <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>plane</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>        <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>        <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
         <span class=n>mappers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
         <span class=n>actors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
@@ -314,95 +336,95 @@ function registerListener(event, func) {
     <span class=n>textActors</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>scale</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.04</span><span class=p>,</span> <span class=mf>0.04</span><span class=p>,</span> <span class=mf>0.04</span><span class=p>]</span>
 
-<span class=hll>    <span class=n>text1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkVectorText</span><span class=p>()</span>
+<span class=hll>    <span class=n>text1</span> <span class=o>=</span> <span class=n>vtkVectorText</span><span class=p>()</span>
 </span>    <span class=n>text1</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Transverse</span><span class=se>\n</span><span class=s1>Plane</span><span class=se>\n\n</span><span class=s1>Superior</span><span class=se>\n</span><span class=s1>Cranial&#39;</span><span class=p>)</span>
-<span class=hll>    <span class=n>trnf1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>trnf1</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>trnf1</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=o>-</span><span class=mi>90</span><span class=p>)</span>
-<span class=hll>    <span class=n>tpdPlane1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>tpdPlane1</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>tpdPlane1</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>trnf1</span><span class=p>)</span>
     <span class=n>tpdPlane1</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>text1</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textMapper1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>textMapper1</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>textMapper1</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tpdPlane1</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textActor1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>textActor1</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>textActor1</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapper1</span><span class=p>)</span>
     <span class=n>textActor1</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=n>scale</span><span class=p>)</span>
     <span class=n>textActor1</span><span class=o>.</span><span class=n>AddPosition</span><span class=p>(</span><span class=mf>0.4</span><span class=p>,</span> <span class=mf>0.49</span><span class=p>,</span> <span class=mf>0.01</span><span class=p>)</span>
     <span class=n>textActors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>textActor1</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>text2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkVectorText</span><span class=p>()</span>
+<span class=hll>    <span class=n>text2</span> <span class=o>=</span> <span class=n>vtkVectorText</span><span class=p>()</span>
 </span>    <span class=n>text2</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Transverse</span><span class=se>\n</span><span class=s1>Plane</span><span class=se>\n\n</span><span class=s1>Inferior</span><span class=se>\n</span><span class=s1>(Caudal)&#39;</span><span class=p>)</span>
-<span class=hll>    <span class=n>trnf2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>trnf2</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>trnf2</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>270</span><span class=p>)</span>
     <span class=n>trnf2</span><span class=o>.</span><span class=n>RotateWXYZ</span><span class=p>(</span><span class=o>*</span><span class=p>[</span><span class=mi>180</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>])</span>
-<span class=hll>    <span class=n>tpdPlane2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>tpdPlane2</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>tpdPlane2</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>trnf2</span><span class=p>)</span>
     <span class=n>tpdPlane2</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>text2</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textMapper2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>textMapper2</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>textMapper2</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tpdPlane2</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textActor2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>textActor2</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>textActor2</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapper2</span><span class=p>)</span>
     <span class=n>textActor2</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=n>scale</span><span class=p>)</span>
     <span class=n>textActor2</span><span class=o>.</span><span class=n>AddPosition</span><span class=p>(</span><span class=mf>0.4</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.49</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.01</span><span class=p>)</span>
     <span class=n>textActors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>textActor2</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>text3</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkVectorText</span><span class=p>()</span>
+<span class=hll>    <span class=n>text3</span> <span class=o>=</span> <span class=n>vtkVectorText</span><span class=p>()</span>
 </span>    <span class=n>text3</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Sagittal</span><span class=se>\n</span><span class=s1>Plane</span><span class=se>\n\n</span><span class=s1>Left&#39;</span><span class=p>)</span>
-<span class=hll>    <span class=n>trnf3</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>trnf3</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>trnf3</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
     <span class=n>trnf3</span><span class=o>.</span><span class=n>RotateWXYZ</span><span class=p>(</span><span class=o>*</span><span class=p>[</span><span class=o>-</span><span class=mi>90</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>])</span>
-<span class=hll>    <span class=n>tpdPlane3</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>tpdPlane3</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>tpdPlane3</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>trnf3</span><span class=p>)</span>
     <span class=n>tpdPlane3</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>text3</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textMapper3</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>textMapper3</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>textMapper3</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tpdPlane3</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textActor3</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>textActor3</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>textActor3</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapper3</span><span class=p>)</span>
     <span class=n>textActor3</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=n>scale</span><span class=p>)</span>
     <span class=n>textActor3</span><span class=o>.</span><span class=n>AddPosition</span><span class=p>(</span><span class=o>-</span><span class=mf>0.01</span><span class=p>,</span> <span class=mf>0.49</span><span class=p>,</span> <span class=mf>0.4</span><span class=p>)</span>
     <span class=n>textActors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>textActor3</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>text4</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkVectorText</span><span class=p>()</span>
+<span class=hll>    <span class=n>text4</span> <span class=o>=</span> <span class=n>vtkVectorText</span><span class=p>()</span>
 </span>    <span class=n>text4</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Sagittal</span><span class=se>\n</span><span class=s1>Plane</span><span class=se>\n\n</span><span class=s1>Right&#39;</span><span class=p>)</span>
-<span class=hll>    <span class=n>trnf4</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>trnf4</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>trnf4</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
     <span class=n>trnf4</span><span class=o>.</span><span class=n>RotateWXYZ</span><span class=p>(</span><span class=o>*</span><span class=p>[</span><span class=o>-</span><span class=mi>270</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>])</span>
-<span class=hll>    <span class=n>tpdPlane4</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>tpdPlane4</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>tpdPlane4</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>trnf4</span><span class=p>)</span>
     <span class=n>tpdPlane4</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>text4</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textMapper4</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>textMapper4</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>textMapper4</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tpdPlane4</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textActor4</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>textActor4</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>textActor4</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapper4</span><span class=p>)</span>
     <span class=n>textActor4</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=n>scale</span><span class=p>)</span>
     <span class=n>textActor4</span><span class=o>.</span><span class=n>AddPosition</span><span class=p>(</span><span class=mf>0.01</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.49</span><span class=p>,</span> <span class=mf>0.4</span><span class=p>)</span>
     <span class=n>textActors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>textActor4</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>text5</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkVectorText</span><span class=p>()</span>
+<span class=hll>    <span class=n>text5</span> <span class=o>=</span> <span class=n>vtkVectorText</span><span class=p>()</span>
 </span>    <span class=n>text5</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Coronal</span><span class=se>\n</span><span class=s1>Plane</span><span class=se>\n\n</span><span class=s1>Anterior&#39;</span><span class=p>)</span>
-<span class=hll>    <span class=n>trnf5</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>trnf5</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>trnf5</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=o>-</span><span class=mi>180</span><span class=p>)</span>
     <span class=n>trnf5</span><span class=o>.</span><span class=n>RotateWXYZ</span><span class=p>(</span><span class=o>*</span><span class=p>[</span><span class=o>-</span><span class=mi>90</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>])</span>
-<span class=hll>    <span class=n>tpdPlane5</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>tpdPlane5</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>tpdPlane5</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>trnf5</span><span class=p>)</span>
     <span class=n>tpdPlane5</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>text5</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textMapper5</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>textMapper5</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>textMapper5</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tpdPlane5</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textActor5</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>textActor5</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>textActor5</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapper5</span><span class=p>)</span>
     <span class=n>textActor5</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=n>scale</span><span class=p>)</span>
     <span class=n>textActor5</span><span class=o>.</span><span class=n>AddPosition</span><span class=p>(</span><span class=mf>0.49</span><span class=p>,</span> <span class=mf>0.01</span><span class=p>,</span> <span class=mf>0.20</span><span class=p>)</span>
     <span class=n>textActors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>textActor5</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>text6</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkVectorText</span><span class=p>()</span>
+<span class=hll>    <span class=n>text6</span> <span class=o>=</span> <span class=n>vtkVectorText</span><span class=p>()</span>
 </span>    <span class=n>text6</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Coronal</span><span class=se>\n</span><span class=s1>Plane</span><span class=se>\n\n</span><span class=s1>Posterior&#39;</span><span class=p>)</span>
-<span class=hll>    <span class=n>trnf6</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>trnf6</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>trnf6</span><span class=o>.</span><span class=n>RotateWXYZ</span><span class=p>(</span><span class=o>*</span><span class=p>[</span><span class=mi>90</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>])</span>
-<span class=hll>    <span class=n>tpdPlane6</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>tpdPlane6</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>tpdPlane6</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>trnf6</span><span class=p>)</span>
     <span class=n>tpdPlane6</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>text6</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textMapper6</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>textMapper6</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>textMapper6</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tpdPlane6</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-<span class=hll>    <span class=n>textActor6</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>textActor6</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>textActor6</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapper6</span><span class=p>)</span>
     <span class=n>textActor6</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=n>scale</span><span class=p>)</span>
     <span class=n>textActor6</span><span class=o>.</span><span class=n>AddPosition</span><span class=p>(</span><span class=o>-</span><span class=mf>0.49</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.01</span><span class=p>,</span> <span class=mf>0.3</span><span class=p>)</span>

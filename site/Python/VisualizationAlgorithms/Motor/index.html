@@ -59,25 +59,47 @@ function registerListener(event, func) {
 
 <span class=c1># This code is based on the VTK file: /IO/Geometry/Testing/Python/motor.py.</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkFloatArray</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPoints</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkPlanes</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkPolyDataNormals</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersTexture</span> <span class=kn>import</span> <span class=n>vtkImplicitTextureCoords</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOGeometry</span> <span class=kn>import</span> <span class=n>vtkBYUReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOLegacy</span> <span class=kn>import</span> <span class=n>vtkStructuredPointsReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkCamera</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkTexture</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>textureFile</span><span class=p>,</span> <span class=n>motorFile</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
     <span class=c1># Create the Renderer, RenderWindow and RenderWindowInteractor.</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=c1># Create the cutting planes.</span>
-<span class=hll>    <span class=n>planes</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlanes</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPoints</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>norms</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFloatArray</span><span class=p>()</span>
+<span class=hll>    <span class=n>planes</span> <span class=o>=</span> <span class=n>vtkPlanes</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>norms</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>()</span>
 </span>
     <span class=n>norms</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
     <span class=n>points</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
@@ -88,9 +110,9 @@ function registerListener(event, func) {
     <span class=n>planes</span><span class=o>.</span><span class=n>SetNormals</span><span class=p>(</span><span class=n>norms</span><span class=p>)</span>
 
     <span class=c1># Get the texture.</span>
-<span class=hll>    <span class=n>texReader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkStructuredPointsReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>texReader</span> <span class=o>=</span> <span class=n>vtkStructuredPointsReader</span><span class=p>()</span>
 </span>    <span class=n>texReader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>textureFile</span><span class=p>)</span>
-<span class=hll>    <span class=n>texture</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTexture</span><span class=p>()</span>
+<span class=hll>    <span class=n>texture</span> <span class=o>=</span> <span class=n>vtkTexture</span><span class=p>()</span>
 </span>    <span class=n>texture</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>texReader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>texture</span><span class=o>.</span><span class=n>InterpolateOff</span><span class=p>()</span>
     <span class=n>texture</span><span class=o>.</span><span class=n>RepeatOff</span><span class=p>()</span>
@@ -110,22 +132,22 @@ function registerListener(event, func) {
 
     <span class=c1># Build the pipelines.</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>numberOfParts</span><span class=p>):</span>
-<span class=hll>        <span class=n>byu</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkBYUReader</span><span class=p>())</span>
+<span class=hll>        <span class=n>byu</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkBYUReader</span><span class=p>())</span>
 </span>        <span class=n>byu</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetGeometryFileName</span><span class=p>(</span><span class=n>motorFile</span><span class=p>)</span>
         <span class=n>byu</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetPartNumber</span><span class=p>(</span><span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
 
-<span class=hll>        <span class=n>normals</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataNormals</span><span class=p>())</span>
+<span class=hll>        <span class=n>normals</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkPolyDataNormals</span><span class=p>())</span>
 </span>        <span class=n>normals</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>byu</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>        <span class=n>tex</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkImplicitTextureCoords</span><span class=p>())</span>
+<span class=hll>        <span class=n>tex</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkImplicitTextureCoords</span><span class=p>())</span>
 </span>        <span class=n>tex</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
         <span class=n>tex</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetRFunction</span><span class=p>(</span><span class=n>planes</span><span class=p>)</span>
         <span class=c1># tex[i].FlipTextureOn()</span>
 
-<span class=hll>        <span class=n>byuMapper</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>())</span>
+<span class=hll>        <span class=n>byuMapper</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkDataSetMapper</span><span class=p>())</span>
 </span>        <span class=n>byuMapper</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tex</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>        <span class=n>byuActor</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>())</span>
+<span class=hll>        <span class=n>byuActor</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkActor</span><span class=p>())</span>
 </span>        <span class=n>byuActor</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>byuMapper</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
         <span class=n>byuActor</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetTexture</span><span class=p>(</span><span class=n>texture</span><span class=p>)</span>
         <span class=n>byuActor</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>partColours</span><span class=p>[</span><span class=n>i</span><span class=p>]))</span>
@@ -141,7 +163,7 @@ function registerListener(event, func) {
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>512</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Motor&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
+<span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtkCamera</span><span class=p>()</span>
 </span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>0.0286334</span><span class=p>,</span> <span class=mf>0.0362996</span><span class=p>,</span> <span class=mf>0.0379685</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>1.37067</span><span class=p>,</span> <span class=mf>1.08629</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.30349</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>SetViewAngle</span><span class=p>(</span><span class=mf>17.673</span><span class=p>)</span>
@@ -162,7 +184,7 @@ function registerListener(event, func) {
 <span class=s1>   &#39;&#39;&#39;</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-<span class=hll>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;textureFile&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The texture file: texThres2.vtk.&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;textureFile&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The texture file: texThres2.vtk&#39;</span><span class=p>)</span>
 </span>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;motorFile&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The motor file: motor.g.&#39;</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>textureFile</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>motorFile</span>

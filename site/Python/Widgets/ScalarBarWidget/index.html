@@ -60,8 +60,23 @@ function registerListener(event, func) {
 <span class=c1>#</span>
 <span class=c1># by Panos Mavrogiorgos, email : pmav99 &gt;a&lt; gmail</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkLookupTable</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOLegacy</span> <span class=kn>import</span> <span class=n>vtkUnstructuredGridReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInteractionWidgets</span> <span class=kn>import</span> <span class=n>vtkScalarBarWidget</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingAnnotation</span> <span class=kn>import</span> <span class=n>vtkScalarBarActor</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span> <span class=nn>argparse</span>
@@ -70,13 +85,13 @@ function registerListener(event, func) {
 <span class=s1>    &#39;&#39;&#39;</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-<span class=hll>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;uGridEx.vtk.&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;uGridEx.vtkp&#39;</span><span class=p>)</span>
 </span>    <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span>
 
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># colors.SetColor(&#39;bkg&#39;, [0.1, 0.2, 0.4, 1.0])</span>
 
@@ -85,43 +100,43 @@ function registerListener(event, func) {
 
     <span class=c1># Create a custom lut. The lut is used for both at the mapper and at the</span>
     <span class=c1># scalar_bar</span>
-<span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLookupTable</span><span class=p>()</span>
+<span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>    <span class=n>lut</span><span class=o>.</span><span class=n>Build</span><span class=p>()</span>
 
     <span class=c1># Read the source file.</span>
-<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkUnstructuredGridReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkUnstructuredGridReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>  <span class=c1># Needed because of GetScalarRange</span>
     <span class=n>output</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
     <span class=n>scalar_range</span> <span class=o>=</span> <span class=n>output</span><span class=o>.</span><span class=n>GetScalarRange</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>output</span><span class=p>)</span>
     <span class=n>mapper</span><span class=o>.</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=n>scalar_range</span><span class=p>)</span>
     <span class=n>mapper</span><span class=o>.</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>lut</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBLue&#39;</span><span class=p>))</span>
 
-<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span> <span class=mi>300</span><span class=p>)</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s2>&quot;ScalarBarWidget&quot;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>interactor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>render_window</span><span class=p>)</span>
 
     <span class=c1># create the scalar_bar</span>
-<span class=hll>    <span class=n>scalar_bar</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkScalarBarActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>scalar_bar</span> <span class=o>=</span> <span class=n>vtkScalarBarActor</span><span class=p>()</span>
 </span>    <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetOrientationToHorizontal</span><span class=p>()</span>
     <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>lut</span><span class=p>)</span>
 
     <span class=c1># create the scalar_bar_widget</span>
-<span class=hll>    <span class=n>scalar_bar_widget</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkScalarBarWidget</span><span class=p>()</span>
+<span class=hll>    <span class=n>scalar_bar_widget</span> <span class=o>=</span> <span class=n>vtkScalarBarWidget</span><span class=p>()</span>
 </span>    <span class=n>scalar_bar_widget</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>interactor</span><span class=p>)</span>
     <span class=n>scalar_bar_widget</span><span class=o>.</span><span class=n>SetScalarBarActor</span><span class=p>(</span><span class=n>scalar_bar</span><span class=p>)</span>
     <span class=n>scalar_bar_widget</span><span class=o>.</span><span class=n>On</span><span class=p>()</span>

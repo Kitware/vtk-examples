@@ -60,19 +60,40 @@ function registerListener(event, func) {
 
 <span class=kn>import</span> <span class=nn>os</span>
 
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonTransforms</span> <span class=kn>import</span> <span class=n>vtkTransform</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkTubeFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkLinearExtrusionFilter</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRibbonFilter</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOLegacy</span> <span class=kn>import</span> <span class=n>vtkPolyDataReader</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkFollower</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingFreeType</span> <span class=kn>import</span> <span class=n>vtkVectorText</span>
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>fileNames</span><span class=p>,</span> <span class=n>useRibbons</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
     <span class=n>useTubes</span> <span class=o>=</span> <span class=ow>not</span> <span class=n>useRibbons</span>
 
     <span class=c1># Set up the stocks</span>
     <span class=n>renderers</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-<span class=hll>    <span class=n>topRenderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>bottomRenderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>topRenderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>bottomRenderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>topRenderer</span><span class=p>)</span>
     <span class=n>renderers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>bottomRenderer</span><span class=p>)</span>
 
@@ -81,11 +102,11 @@ function registerListener(event, func) {
         <span class=n>zPosition</span> <span class=o>=</span> <span class=n>AddStock</span><span class=p>(</span><span class=n>renderers</span><span class=p>,</span> <span class=n>fn</span><span class=p>,</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>basename</span><span class=p>((</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>splitext</span><span class=p>(</span><span class=n>fn</span><span class=p>)[</span><span class=mi>0</span><span class=p>])),</span> <span class=n>zPosition</span><span class=p>,</span> <span class=n>useTubes</span><span class=p>)</span>
 
     <span class=c1># Setup the render window and interactor.</span>
-<span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderers</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderers</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
 
-<span class=hll>    <span class=n>renderWindowInteractor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>renderWindowInteractor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>renderWindowInteractor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>)</span>
 
     <span class=n>renderers</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.4</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
@@ -132,12 +153,12 @@ function registerListener(event, func) {
     <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;Adding&quot;</span><span class=p>,</span> <span class=n>name</span><span class=p>)</span>
 
     <span class=c1># Read the data</span>
-<span class=hll>    <span class=n>PolyDataRead</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>PolyDataRead</span> <span class=o>=</span> <span class=n>vtkPolyDataReader</span><span class=p>()</span>
 </span>    <span class=n>PolyDataRead</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filename</span><span class=p>)</span>
     <span class=n>PolyDataRead</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=c1># Create the labels.</span>
-<span class=hll>    <span class=n>TextSrc</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkVectorText</span><span class=p>()</span>
+<span class=hll>    <span class=n>TextSrc</span> <span class=o>=</span> <span class=n>vtkVectorText</span><span class=p>()</span>
 </span>    <span class=n>TextSrc</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=n>name</span><span class=p>)</span>
 
     <span class=n>numberOfPoints</span> <span class=o>=</span> <span class=n>PolyDataRead</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>()</span>
@@ -151,30 +172,30 @@ function registerListener(event, func) {
     <span class=n>z</span> <span class=o>=</span> <span class=n>zPosition</span>
 
     <span class=c1># Create a tube and ribbpn filter. One or the other will be used</span>
-<span class=hll>    <span class=n>TubeFilter</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTubeFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>TubeFilter</span> <span class=o>=</span> <span class=n>vtkTubeFilter</span><span class=p>()</span>
 </span>    <span class=n>TubeFilter</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>PolyDataRead</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>TubeFilter</span><span class=o>.</span><span class=n>SetNumberOfSides</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span>
     <span class=n>TubeFilter</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
     <span class=n>TubeFilter</span><span class=o>.</span><span class=n>SetRadiusFactor</span><span class=p>(</span><span class=mi>10000</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>RibbonFilter</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRibbonFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>RibbonFilter</span> <span class=o>=</span> <span class=n>vtkRibbonFilter</span><span class=p>()</span>
 </span>    <span class=n>RibbonFilter</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>PolyDataRead</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>RibbonFilter</span><span class=o>.</span><span class=n>VaryWidthOn</span><span class=p>()</span>
     <span class=n>RibbonFilter</span><span class=o>.</span><span class=n>SetWidthFactor</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
     <span class=n>RibbonFilter</span><span class=o>.</span><span class=n>SetDefaultNormal</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
     <span class=n>RibbonFilter</span><span class=o>.</span><span class=n>UseDefaultNormalOn</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>Extrude</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLinearExtrusionFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>Extrude</span> <span class=o>=</span> <span class=n>vtkLinearExtrusionFilter</span><span class=p>()</span>
 </span>    <span class=n>Extrude</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>RibbonFilter</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>Extrude</span><span class=o>.</span><span class=n>SetVector</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
     <span class=n>Extrude</span><span class=o>.</span><span class=n>SetExtrusionType</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
     <span class=n>Extrude</span><span class=o>.</span><span class=n>SetScaleFactor</span><span class=p>(</span><span class=mf>0.7</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>Transform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>    <span class=n>Transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>Transform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>zPosition</span><span class=p>)</span>
     <span class=n>Transform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mf>0.15</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>TransformFilter</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>TransformFilter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>TransformFilter</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>Extrude</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>TransformFilter</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>Transform</span><span class=p>)</span>
 
@@ -185,10 +206,10 @@ function registerListener(event, func) {
         <span class=n>TransformFilter</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>Extrude</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
     <span class=k>for</span> <span class=n>r</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>renderers</span><span class=p>)):</span>
-<span class=hll>        <span class=n>LabelMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>        <span class=n>LabelMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>        <span class=n>LabelMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>TextSrc</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>        <span class=n>LabelActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkFollower</span><span class=p>()</span>
+<span class=hll>        <span class=n>LabelActor</span> <span class=o>=</span> <span class=n>vtkFollower</span><span class=p>()</span>
 </span>        <span class=n>LabelActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>LabelMapper</span><span class=p>)</span>
         <span class=n>LabelActor</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>,</span> <span class=n>z</span><span class=p>)</span>
         <span class=n>LabelActor</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
@@ -197,10 +218,10 @@ function registerListener(event, func) {
         <span class=c1># Increment zPosition.</span>
         <span class=n>zPosition</span> <span class=o>+=</span> <span class=mf>8.0</span>
 
-<span class=hll>        <span class=n>StockMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>        <span class=n>StockMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>        <span class=n>StockMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>TransformFilter</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
         <span class=n>StockMapper</span><span class=o>.</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>8000</span><span class=p>)</span>
-<span class=hll>        <span class=n>StockActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>        <span class=n>StockActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>StockActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>StockMapper</span><span class=p>)</span>
 
         <span class=n>renderers</span><span class=p>[</span><span class=n>r</span><span class=p>]</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>StockActor</span><span class=p>)</span>

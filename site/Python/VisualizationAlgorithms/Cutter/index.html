@@ -59,35 +59,49 @@ function registerListener(event, func) {
 
 <span class=hll><span class=c1># A simple script to demonstrate the vtkCutter function</span>
 </span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.all</span> <span class=k>as</span> <span class=nn>vtk</span>
-</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+</span><span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkPlane</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkCutter</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkCubeSource</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span>
+</span><span class=p>)</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Create a cube</span>
-<span class=hll>    <span class=n>cube</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCubeSource</span><span class=p>()</span>
+<span class=hll>    <span class=n>cube</span> <span class=o>=</span> <span class=n>vtkCubeSource</span><span class=p>()</span>
 </span>    <span class=n>cube</span><span class=o>.</span><span class=n>SetXLength</span><span class=p>(</span><span class=mi>40</span><span class=p>)</span>
     <span class=n>cube</span><span class=o>.</span><span class=n>SetYLength</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
     <span class=n>cube</span><span class=o>.</span><span class=n>SetZLength</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
-<span class=hll>    <span class=n>cubeMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>cubeMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>cubeMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cube</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
     <span class=c1># create a plane to cut,here it cuts in the XZ direction (xz normal=(1,0,0);XY =(0,0,1),YZ =(0,1,0)</span>
-<span class=hll>    <span class=n>plane</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPlane</span><span class=p>()</span>
+<span class=hll>    <span class=n>plane</span> <span class=o>=</span> <span class=n>vtkPlane</span><span class=p>()</span>
 </span>    <span class=n>plane</span><span class=o>.</span><span class=n>SetOrigin</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
     <span class=n>plane</span><span class=o>.</span><span class=n>SetNormal</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
     <span class=c1># create cutter</span>
-<span class=hll>    <span class=n>cutter</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCutter</span><span class=p>()</span>
+<span class=hll>    <span class=n>cutter</span> <span class=o>=</span> <span class=n>vtkCutter</span><span class=p>()</span>
 </span>    <span class=n>cutter</span><span class=o>.</span><span class=n>SetCutFunction</span><span class=p>(</span><span class=n>plane</span><span class=p>)</span>
     <span class=n>cutter</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cube</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>cutter</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-<span class=hll>    <span class=n>cutterMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>cutterMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>cutterMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cutter</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
     <span class=c1># create plane actor</span>
-<span class=hll>    <span class=n>planeActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>planeActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>planeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Yellow&#39;</span><span class=p>))</span>
     <span class=n>planeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
     <span class=n>planeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
@@ -95,25 +109,25 @@ function registerListener(event, func) {
     <span class=n>planeActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>cutterMapper</span><span class=p>)</span>
 
     <span class=c1># create cube actor</span>
-<span class=hll>    <span class=n>cubeActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>cubeActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>cubeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Aquamarine&#39;</span><span class=p>))</span>
     <span class=n>cubeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
     <span class=n>cubeActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>cubeMapper</span><span class=p>)</span>
 
     <span class=c1># create renderers and add actors of plane and cube</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>planeActor</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cubeActor</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Silver&#39;</span><span class=p>))</span>
 
     <span class=c1># Add renderer to renderwindow and render</span>
-<span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Cutter&#39;</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=n>camera</span> <span class=o>=</span> <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span>
