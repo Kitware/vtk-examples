@@ -36,6 +36,12 @@ You will need to manually add any third-party modules
     return args.json, args.sources, args.file
 
 
+class Patterns:
+    header_pattern = re.compile(r'^#include *[<\"](\S+)[>\"]')
+    vtk_include_pattern = re.compile(r'^(vtk\S+)')
+    vtk_qt_include_pattern = re.compile(r'^(QVTK\S+)')
+
+
 def get_headers_modules(json_data):
     """
     From the parsed JSON data file make a dictionary whose key is the
@@ -61,10 +67,6 @@ def get_vtk_components(jpath, paths):
     :return:
     """
 
-    header_pattern = re.compile(r'^#include *[<\"](\S+)[>\"]')
-    vtk_include_pattern = re.compile(r'^(vtk\S+)')
-    vtk_qt_include_pattern = re.compile(r'^(QVTK\S+)')
-
     with open(jpath) as data_file:
         json_data = json.load(data_file)
     vtk_headers_modules = get_headers_modules(json_data)
@@ -79,15 +81,15 @@ def get_vtk_components(jpath, paths):
         if path.is_file():
             content = path.read_text().split('\n')
             for line in content:
-                m = header_pattern.match(line.strip())
+                m = Patterns.header_pattern.match(line.strip())
                 if m:
                     # We have a header name, split it from its path (if the path exists).
                     header_parts = os.path.split(m.group(1))
-                    m = vtk_include_pattern.match(header_parts[1])
+                    m = Patterns.vtk_include_pattern.match(header_parts[1])
                     if m:
                         headers[m.group(1)].add(path)
                         continue
-                    m = vtk_qt_include_pattern.match(header_parts[1])
+                    m = Patterns.vtk_qt_include_pattern.match(header_parts[1])
                     if m:
                         headers[m.group(1)].add(path)
     for incl in headers:

@@ -28,6 +28,33 @@ Note: If there are spaces in the paths, enclose the path in quotes.
     return args.json, args.sources, args.file
 
 
+class Patterns:
+    vtk_patterns = [
+        # Class pattern.
+        re.compile(r'(vtk[a-zA-Z0-9]+)\('),
+        # Constants pattern.
+        re.compile(r'(VTK_[A-Z_]+)'),
+        # Special patterns ...
+        re.compile(r'(mutable)\('),
+        # Handle vtkClass.yyy
+        re.compile(r'(vtk[a-zA-Z0-9]+)\.'),
+        # Handle class xx(vtkClass):
+        re.compile(r'\( ?(vtk[a-zA-Z0-9]+) ?\)'),
+    ]
+    skip_patterns = [
+        # Empty lines
+        re.compile(r'^ *$'),
+        # import ...
+        re.compile(r'^ *import'),
+        # from ... import ...
+        re.compile(r'^ *from[ \S]+import'),
+        # Any vtk class on its own
+        re.compile(r'^ *vtk[a-zA-Z0-9]+,*$'),
+        # Single closing bracket
+        re.compile(r'^ *\)+$'),
+    ]
+
+
 def get_available_modules(jpath):
     """
     From the parsed JSON data file make a list of the VTK modules.
@@ -54,24 +81,15 @@ def get_classes_constants(paths):
     :return: The file name, the VTK classes and any VTK constants.
     """
 
-    vtk_patterns = [
-        # Class pattern.
-        re.compile(r'(vtk[a-zA-Z0-9]+)\('),
-        # Constants pattern.
-        re.compile(r'(VTK_[A-Z_]+)'),
-        # Special patterns ...
-        re.compile(r'(mutable)\('),
-        # Handle vtkClass.yyy
-        re.compile(r'(vtk[a-zA-Z0-9]+)\.'),
-        # Handle class xx(vtkClass):
-        re.compile(r'\( ?(vtk[a-zA-Z0-9]+) ?\)'),
-    ]
-
     res = collections.defaultdict(set)
     for path in paths:
         content = path.read_text().split('\n')
         for line in content:
-            for pattern in vtk_patterns:
+            for pattern in Patterns.skip_patterns:
+                m = pattern.search(line)
+                if m:
+                    continue
+            for pattern in Patterns.vtk_patterns:
                 m = pattern.search(line)
                 if m:
                     for g in m.groups():
