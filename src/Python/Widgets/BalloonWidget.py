@@ -1,49 +1,71 @@
 #!/usr/bin/env python
-import vtkmodules.all as vtk
+
+# Needs fixing
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import (
+    vtkRegularPolygonSource,
+    vtkSphereSource
+)
+from vtkmodules.vtkInteractionWidgets import (
+    vtkBalloonRepresentation,
+    vtkBalloonWidget
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Sphere
-    sphereSource = vtk.vtkSphereSource()
+    sphereSource = vtkSphereSource()
     sphereSource.SetCenter(-4.0, 0.0, 0.0)
     sphereSource.SetRadius(4.0)
 
-    sphereMapper = vtk.vtkPolyDataMapper()
+    sphereMapper = vtkPolyDataMapper()
     sphereMapper.SetInputConnection(sphereSource.GetOutputPort())
 
-    sphereActor = vtk.vtkActor()
+    sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
     sphereActor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
     # Regular Polygon
-    regularPolygonSource = vtk.vtkRegularPolygonSource()
+    regularPolygonSource = vtkRegularPolygonSource()
     regularPolygonSource.SetCenter(4.0, 0.0, 0.0)
     regularPolygonSource.SetRadius(4.0)
 
-    regularPolygonMapper = vtk.vtkPolyDataMapper()
+    regularPolygonMapper = vtkPolyDataMapper()
     regularPolygonMapper.SetInputConnection(regularPolygonSource.GetOutputPort())
 
-    regularPolygonActor = vtk.vtkActor()
+    regularPolygonActor = vtkActor()
     regularPolygonActor.SetMapper(regularPolygonMapper)
     regularPolygonActor.GetProperty().SetColor(colors.GetColor3d('Cornsilk'))
 
     # A renderer and render window
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetWindowName('BalloonWidget')
 
     # An interactor
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Create the widget
-    balloonRep = vtk.vtkBalloonRepresentation()
+    balloonRep = vtkBalloonRepresentation()
     balloonRep.SetBalloonLayoutToImageRight()
 
-    balloonWidget = vtk.vtkBalloonWidget()
+    balloonWidget = vtkBalloonWidget()
     balloonWidget.SetInteractor(renderWindowInteractor)
     balloonWidget.SetRepresentation(balloonRep)
     balloonWidget.AddBalloon(sphereActor, 'This is a sphere')

@@ -3,31 +3,53 @@
 import math
 import sys
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkCommand,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkPolyData
+)
+from vtkmodules.vtkInteractionWidgets import (
+    vtkContourWidget,
+    vtkOrientedGlyphContourRepresentation,
+    vtkWidgetEvent
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
 
     # Create the RenderWindow, Renderer and both Actors
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('MidnightBlue'))
 
-    renderWindow = vtk.vtkRenderWindow()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
     renderWindow.SetWindowName('ContourWidget')
     renderWindow.SetSize(600, 600)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renderWindow)
 
-    contourRep = vtk.vtkOrientedGlyphContourRepresentation()
+    contourRep = vtkOrientedGlyphContourRepresentation()
     contourRep.GetLinesProperty().SetColor(colors.GetColor3d('Red'))
 
-    contourWidget = vtk.vtkContourWidget()
+    contourWidget = vtkContourWidget()
     contourWidget.SetInteractor(interactor)
     contourWidget.SetRepresentation(contourRep)
     contourWidget.On()
@@ -35,20 +57,20 @@ def main():
     for arg in sys.argv:
         if '-Shift' == arg:
             contourWidget.GetEventTranslator().RemoveTranslation(
-                vtk.vtkCommand.LeftButtonPressEvent)
+                vtkCommand.LeftButtonPressEvent)
             contourWidget.GetEventTranslator().SetTranslation(
-                vtk.vtkCommand.LeftButtonPressEvent,
-                vtk.vtkWidgetEvent.Translate)
+                vtkCommand.LeftButtonPressEvent,
+                vtkWidgetEvent.Translate)
         elif '-Scale' == arg:
             contourWidget.GetEventTranslator().RemoveTranslation(
-                vtk.vtkCommand.LeftButtonPressEvent)
+                vtkCommand.LeftButtonPressEvent)
             contourWidget.GetEventTranslator().SetTranslation(
-                vtk.vtkCommand.LeftButtonPressEvent,
-                vtk.vtkWidgetEvent.Scale)
+                vtkCommand.LeftButtonPressEvent,
+                vtkWidgetEvent.Scale)
 
-    pd = vtk.vtkPolyData()
+    pd = vtkPolyData()
 
-    points = vtk.vtkPoints()
+    points = vtkPoints()
 
     num_pts = 21
     for i in range(0, num_pts):
@@ -58,7 +80,7 @@ def main():
         # lines.InsertNextCell(i)
     vertex_indices = list(range(0, num_pts))
     vertex_indices.append(0)
-    lines = vtk.vtkCellArray()
+    lines = vtkCellArray()
     lines.InsertNextCell(num_pts + 1, vertex_indices)
 
     pd.SetPoints(points)

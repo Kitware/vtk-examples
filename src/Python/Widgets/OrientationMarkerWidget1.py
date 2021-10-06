@@ -1,38 +1,55 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSuperquadricSource
+from vtkmodules.vtkIOXML import vtkXMLPolyDataReader
+from vtkmodules.vtkInteractionWidgets import vtkOrientationMarkerWidget
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     file_name = get_program_parameters()
 
     # Read the polydata for the icon
-    reader = vtk.vtkXMLPolyDataReader()
+    reader = vtkXMLPolyDataReader()
     reader.SetFileName(file_name)
 
-    icon_mapper = vtk.vtkDataSetMapper()
+    icon_mapper = vtkDataSetMapper()
     icon_mapper.SetInputConnection(reader.GetOutputPort())
 
-    icon_actor = vtk.vtkActor()
+    icon_actor = vtkActor()
     icon_actor.SetMapper(icon_mapper)
     icon_actor.GetProperty().SetColor(colors.GetColor3d('Silver'))
 
     # Set up the renderer, window, and interactor
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('SlateGray'))
 
-    ren_win = vtk.vtkRenderWindow()
+    ren_win = vtkRenderWindow()
     ren_win.AddRenderer(renderer)
     ren_win.SetSize(400, 400)
     ren_win.SetWindowName('OrientationMarkerWidget1')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(ren_win)
 
     rgb = [0.0, 0.0, 0.0]
     colors.GetColorRGB('Wheat', rgb)
     # Set up the widget
-    widget = vtk.vtkOrientationMarkerWidget()
+    widget = vtkOrientationMarkerWidget()
     widget.SetOrientationMarker(icon_actor)
     widget.SetInteractor(iren)
     widget.SetViewport(0.0, 0.0, 0.2, 0.2)
@@ -41,15 +58,15 @@ def main():
     widget.InteractiveOn()
 
     # Create a superquadric
-    superquadric_source = vtk.vtkSuperquadricSource()
+    superquadric_source = vtkSuperquadricSource()
     superquadric_source.SetPhiRoundness(.2)
     superquadric_source.SetThetaRoundness(.8)
 
     # Create a mapper and actor
-    superquadric_mapper = vtk.vtkPolyDataMapper()
+    superquadric_mapper = vtkPolyDataMapper()
     superquadric_mapper.SetInputConnection(superquadric_source.GetOutputPort())
 
-    superquadric_actor = vtk.vtkActor()
+    superquadric_actor = vtkActor()
     superquadric_actor.SetMapper(superquadric_mapper)
     superquadric_actor.GetProperty().SetInterpolationToFlat()
     superquadric_actor.GetProperty().SetDiffuseColor(colors.GetColor3d('Carrot'))

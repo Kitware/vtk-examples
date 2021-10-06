@@ -1,4 +1,14 @@
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkInteractionWidgets import vtkSphereWidget
+from vtkmodules.vtkRenderingCore import (
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 # Call back function
@@ -9,24 +19,24 @@ def sphereCallback(obj, event):
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
 
     # A renderer and render window
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('MidnightBlue'))
 
-    renwin = vtk.vtkRenderWindow()
+    renwin = vtkRenderWindow()
     renwin.AddRenderer(renderer)
     renwin.SetWindowName("SphereWidget")
 
     # An interactor
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renwin)
 
     # A Sphere widget
-    sphereWidget = vtk.vtkSphereWidget()
+    sphereWidget = vtkSphereWidget()
     sphereWidget.SetInteractor(interactor)
     sphereWidget.SetRepresentationToSurface()
     sphereWidget.GetSphereProperty().SetColor(colors.GetColor3d("BurlyWood"))
