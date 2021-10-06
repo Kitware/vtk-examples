@@ -2,29 +2,51 @@
 
 import math
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    vtkDoubleArray,
+    vtkPoints
+)
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersGeneral import (
+    vtkTransformPolyDataFilter,
+    vtkWarpScalar
+)
+from vtkmodules.vtkFiltersSources import vtkPlaneSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the RenderWindow, Renderer and Interactor.
     #
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # create plane to warp
-    plane = vtk.vtkPlaneSource()
+    plane = vtkPlaneSource()
     plane.SetResolution(300, 300)
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.Scale(10.0, 10.0, 1.0)
 
-    transF = vtk.vtkTransformPolyDataFilter()
+    transF = vtkTransformPolyDataFilter()
     transF.SetInputConnection(plane.GetOutputPort())
     transF.SetTransform(transform)
     transF.Update()
@@ -35,13 +57,13 @@ def main():
     inputPd = transF.GetOutput()
     numPts = inputPd.GetNumberOfPoints()
 
-    newPts = vtk.vtkPoints()
+    newPts = vtkPoints()
     newPts.SetNumberOfPoints(numPts)
 
-    derivs = vtk.vtkDoubleArray()
+    derivs = vtkDoubleArray()
     derivs.SetNumberOfTuples(numPts)
 
-    bessel = vtk.vtkPolyData()
+    bessel = vtkPolyData()
     bessel.CopyStructure(inputPd)
     bessel.SetPoints(newPts)
     bessel.GetPointData().SetScalars(derivs)
@@ -56,18 +78,18 @@ def main():
         derivs.SetValue(i, deriv)
 
     # Warp the plane.
-    warp = vtk.vtkWarpScalar()
+    warp = vtkWarpScalar()
     warp.SetInputData(bessel)
     warp.XYPlaneOn()
     warp.SetScaleFactor(0.5)
 
     # Mapper and actor.
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputConnection(warp.GetOutputPort())
     tmp = bessel.GetScalarRange()
     mapper.SetScalarRange(tmp[0], tmp[1])
 
-    carpet = vtk.vtkActor()
+    carpet = vtkActor()
     carpet.SetMapper(mapper)
 
     # Assign our actor to the renderer.

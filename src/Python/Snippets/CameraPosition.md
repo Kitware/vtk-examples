@@ -8,7 +8,7 @@ To use the snippet, click the *Copy to clipboard* at the upper right of the code
 
 ``` Python
 
-def CameraModifiedCallback(caller, event):
+def camera_modified_callback(caller, event):
     """
      Used to estimate positions similar to the book illustrations.
     :param caller:
@@ -31,7 +31,7 @@ def CameraModifiedCallback(caller, event):
 
 ```python
     renWin.Render()
-    ren.GetActiveCamera().AddObserver('ModifiedEvent', CameraModifiedCallback)
+    ren.GetActiveCamera().AddObserver('ModifiedEvent', camera_modified_callback)
 ```
 
 Once you have the output, replace the `ren.GetActiveCamera().AddObserver...` line with the output data.

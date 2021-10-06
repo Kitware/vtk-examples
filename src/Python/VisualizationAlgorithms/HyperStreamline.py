@@ -1,21 +1,39 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersGeneral import vtkHyperStreamline
+from vtkmodules.vtkFiltersGeometry import vtkImageDataGeometryFilter
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkImagingHybrid import vtkPointLoad
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkLogLookupTable,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the RenderWindow, Renderer and Interactor.
     #
-    ren1 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Generate the tensors.
-    ptLoad = vtk.vtkPointLoad()
+    ptLoad = vtkPointLoad()
     ptLoad.SetLoadValue(100.0)
     ptLoad.SetSampleDimensions(20, 20, 20)
     ptLoad.ComputeEffectiveStressOn()
@@ -23,7 +41,7 @@ def main():
     ptLoad.Update()
 
     # Generate the hyperstreamlines.
-    s1 = vtk.vtkHyperStreamline()
+    s1 = vtkHyperStreamline()
     s1.SetInputData(ptLoad.GetOutput())
     s1.SetStartPosition(9, 9, -9)
     s1.IntegrateMinorEigenvector()
@@ -36,18 +54,18 @@ def main():
     s1.Update()
 
     # Map the hyperstreamlines.
-    lut = vtk.vtkLogLookupTable()
+    lut = vtkLogLookupTable()
     lut.SetHueRange(.6667, 0.0)
 
-    s1Mapper = vtk.vtkPolyDataMapper()
+    s1Mapper = vtkPolyDataMapper()
     s1Mapper.SetInputConnection(s1.GetOutputPort())
     s1Mapper.SetLookupTable(lut)
     s1Mapper.SetScalarRange(ptLoad.GetOutput().GetScalarRange())
 
-    s1Actor = vtk.vtkActor()
+    s1Actor = vtkActor()
     s1Actor.SetMapper(s1Mapper)
 
-    s2 = vtk.vtkHyperStreamline()
+    s2 = vtkHyperStreamline()
     s2.SetInputData(ptLoad.GetOutput())
     s2.SetStartPosition(-9, -9, -9)
     s2.IntegrateMinorEigenvector()
@@ -59,15 +77,15 @@ def main():
     s2.SetIntegrationDirectionToIntegrateBothDirections()
     s2.Update()
 
-    s2Mapper = vtk.vtkPolyDataMapper()
+    s2Mapper = vtkPolyDataMapper()
     s2Mapper.SetInputConnection(s2.GetOutputPort())
     s2Mapper.SetLookupTable(lut)
     s2Mapper.SetScalarRange(ptLoad.GetOutput().GetScalarRange())
 
-    s2Actor = vtk.vtkActor()
+    s2Actor = vtkActor()
     s2Actor.SetMapper(s2Mapper)
 
-    s3 = vtk.vtkHyperStreamline()
+    s3 = vtkHyperStreamline()
     s3.SetInputData(ptLoad.GetOutput())
     s3.SetStartPosition(9, -9, -9)
     s3.IntegrateMinorEigenvector()
@@ -79,15 +97,15 @@ def main():
     s3.SetIntegrationDirectionToIntegrateBothDirections()
     s3.Update()
 
-    s3Mapper = vtk.vtkPolyDataMapper()
+    s3Mapper = vtkPolyDataMapper()
     s3Mapper.SetInputConnection(s3.GetOutputPort())
     s3Mapper.SetLookupTable(lut)
     s3Mapper.SetScalarRange(ptLoad.GetOutput().GetScalarRange())
 
-    s3Actor = vtk.vtkActor()
+    s3Actor = vtkActor()
     s3Actor.SetMapper(s3Mapper)
 
-    s4 = vtk.vtkHyperStreamline()
+    s4 = vtkHyperStreamline()
     s4.SetInputData(ptLoad.GetOutput())
     s4.SetStartPosition(-9, 9, -9)
     s4.IntegrateMinorEigenvector()
@@ -99,56 +117,56 @@ def main():
     s4.SetIntegrationDirectionToIntegrateBothDirections()
     s4.Update()
 
-    s4Mapper = vtk.vtkPolyDataMapper()
+    s4Mapper = vtkPolyDataMapper()
     s4Mapper.SetInputConnection(s4.GetOutputPort())
     s4Mapper.SetLookupTable(lut)
     s4Mapper.SetScalarRange(ptLoad.GetOutput().GetScalarRange())
 
-    s4Actor = vtk.vtkActor()
+    s4Actor = vtkActor()
     s4Actor.SetMapper(s4Mapper)
 
     # A plane for context.
     #
-    g = vtk.vtkImageDataGeometryFilter()
+    g = vtkImageDataGeometryFilter()
     g.SetInputData(ptLoad.GetOutput())
     g.SetExtent(0, 100, 0, 100, 0, 0)
     g.Update()  # for scalar range
 
-    gm = vtk.vtkPolyDataMapper()
+    gm = vtkPolyDataMapper()
     gm.SetInputConnection(g.GetOutputPort())
     gm.SetScalarRange(g.GetOutput().GetScalarRange())
 
-    ga = vtk.vtkActor()
+    ga = vtkActor()
     ga.SetMapper(gm)
 
     # Create an outline around the data.
     #
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputData(ptLoad.GetOutput())
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # Create a cone indicating the application of the load.
     #
-    coneSrc = vtk.vtkConeSource()
+    coneSrc = vtkConeSource()
     coneSrc.SetRadius(0.5)
     coneSrc.SetHeight(2)
 
-    coneMap = vtk.vtkPolyDataMapper()
+    coneMap = vtkPolyDataMapper()
     coneMap.SetInputConnection(coneSrc.GetOutputPort())
 
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMap)
     coneActor.SetPosition(0, 0, 11)
     coneActor.RotateY(90)
     coneActor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
 
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetFocalPoint(0.113766, -1.13665, -1.01919)
     camera.SetPosition(-29.4886, -63.1488, 26.5807)
     camera.SetViewAngle(24.4617)

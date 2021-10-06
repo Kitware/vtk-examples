@@ -1,23 +1,38 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkFiltersHybrid import vtkImplicitModeller
+from vtkmodules.vtkIOLegacy import vtkPolyDataReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     fileName = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create lines which serve as the 'seed' geometry. The lines spell the
     # word 'hello'.
     #
-    reader = vtk.vtkPolyDataReader()
+    reader = vtkPolyDataReader()
     reader.SetFileName(fileName)
 
-    lineMapper = vtk.vtkPolyDataMapper()
+    lineMapper = vtkPolyDataMapper()
     lineMapper.SetInputConnection(reader.GetOutputPort())
 
-    lineActor = vtk.vtkActor()
+    lineActor = vtkActor()
     lineActor.SetMapper(lineMapper)
     lineActor.GetProperty().SetColor(colors.GetColor3d('Tomato'))
     lineActor.GetProperty().SetLineWidth(3.0)
@@ -27,21 +42,21 @@ def main():
     # filter then extracts the geometry at the distance value 0.25 from the
     # generating geometry.
     #
-    imp = vtk.vtkImplicitModeller()
+    imp = vtkImplicitModeller()
     imp.SetInputConnection(reader.GetOutputPort())
     imp.SetSampleDimensions(110, 40, 20)
     imp.SetMaximumDistance(0.25)
     imp.SetModelBounds(-1.0, 10.0, -1.0, 3.0, -1.0, 1.0)
 
-    contour = vtk.vtkContourFilter()
+    contour = vtkContourFilter()
     contour.SetInputConnection(imp.GetOutputPort())
     contour.SetValue(0, 0.25)
 
-    impMapper = vtk.vtkPolyDataMapper()
+    impMapper = vtkPolyDataMapper()
     impMapper.SetInputConnection(contour.GetOutputPort())
     impMapper.ScalarVisibilityOff()
 
-    impActor = vtk.vtkActor()
+    impActor = vtkActor()
     impActor.SetMapper(impMapper)
     impActor.GetProperty().SetColor(colors.GetColor3d('Peacock'))
     impActor.GetProperty().SetOpacity(0.5)
@@ -49,13 +64,13 @@ def main():
     # Create the usual graphics stuff.
     # Create the RenderWindow, Renderer and Interactor.
     #
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
     renWin.SetWindowName('Hello')
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size
@@ -65,7 +80,7 @@ def main():
     ren1.SetBackground(colors.GetColor3d('Wheat'))
     renWin.SetSize(640, 480)
 
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetFocalPoint(4.5, 1, 0)
     camera.SetPosition(4.5, 1.0, 6.73257)
     camera.SetViewUp(0, 1, 0)
@@ -88,7 +103,7 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename', help='hello.vtk.')
+    parser.add_argument('filename', help='hello.vtk')
     args = parser.parse_args()
     return args.filename
 

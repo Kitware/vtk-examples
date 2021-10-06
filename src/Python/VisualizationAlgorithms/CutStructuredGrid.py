@@ -1,23 +1,42 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkPlane
+from vtkmodules.vtkFiltersCore import (
+    vtkCutter,
+    vtkStructuredGridOutlineFilter
+)
+from vtkmodules.vtkFiltersGeometry import vtkStructuredGridGeometryFilter
+from vtkmodules.vtkIOParallel import vtkMultiBlockPLOT3DReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     xyzFile, qFile = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # The cut data.
-    pl3d = vtk.vtkMultiBlockPLOT3DReader()
+    pl3d = vtkMultiBlockPLOT3DReader()
     pl3d.SetXYZFileName(xyzFile)
     pl3d.SetQFileName(qFile)
     pl3d.SetScalarFunctionNumber(100)
@@ -26,43 +45,43 @@ def main():
 
     sg = pl3d.GetOutput().GetBlock(0)
 
-    plane = vtk.vtkPlane()
+    plane = vtkPlane()
     plane.SetOrigin(sg.GetCenter())
     plane.SetNormal(-0.287, 0, 0.9579)
 
-    planeCut = vtk.vtkCutter()
+    planeCut = vtkCutter()
     planeCut.SetInputData(pl3d.GetOutput().GetBlock(0))
     planeCut.SetCutFunction(plane)
 
-    cutMapper = vtk.vtkDataSetMapper()
+    cutMapper = vtkDataSetMapper()
     cutMapper.SetInputConnection(planeCut.GetOutputPort())
     cutMapper.SetScalarRange(sg.GetPointData().GetScalars().GetRange())
 
-    cutActor = vtk.vtkActor()
+    cutActor = vtkActor()
     cutActor.SetMapper(cutMapper)
 
     # Extract the plane.
-    compPlane = vtk.vtkStructuredGridGeometryFilter()
+    compPlane = vtkStructuredGridGeometryFilter()
     compPlane.SetInputData(sg)
     compPlane.SetExtent(0, 100, 0, 100, 9, 9)
 
-    planeMapper = vtk.vtkPolyDataMapper()
+    planeMapper = vtkPolyDataMapper()
     planeMapper.SetInputConnection(compPlane.GetOutputPort())
     planeMapper.ScalarVisibilityOff()
 
-    planeActor = vtk.vtkActor()
+    planeActor = vtkActor()
     planeActor.SetMapper(planeMapper)
     planeActor.GetProperty().SetRepresentationToWireframe()
     planeActor.GetProperty().SetColor(colors.GetColor3d('Wheat'))
 
     # Outline.
-    outline = vtk.vtkStructuredGridOutlineFilter()
+    outline = vtkStructuredGridOutlineFilter()
     outline.SetInputData(pl3d.GetOutput().GetBlock(0))
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(colors.GetColor3d('Wheat'))
 

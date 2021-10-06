@@ -55,13 +55,16 @@ def get_classes_constants(paths):
     """
 
     vtk_patterns = [
-        # class pattern
+        # Class pattern.
         re.compile(r'(vtk[a-zA-Z0-9]+)\('),
-        # constants pattern
+        # Constants pattern.
         re.compile(r'(VTK_[A-Z_]+)'),
-        # special patterns
+        # Special patterns ...
         re.compile(r'(mutable)\('),
+        # Handle vtkClass.yyy
         re.compile(r'(vtk[a-zA-Z0-9]+)\.'),
+        # Handle class xx(vtkClass):
+        re.compile(r'\( ?(vtk[a-zA-Z0-9]+) ?\)'),
     ]
 
     res = collections.defaultdict(set)

@@ -1,23 +1,55 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import (
+    vtkColorSeries,
+    vtkNamedColors
+)
+from vtkmodules.vtkCommonCore import (
+    vtkLookupTable,
+    vtkUnsignedCharArray
+)
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersCore import vtkElevationFilter
+from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
+from vtkmodules.vtkFiltersModeling import vtkBandedPolyDataContourFilter
+from vtkmodules.vtkFiltersSources import (
+    vtkConeSource,
+    vtkCubeSource
+)
+from vtkmodules.vtkInteractionWidgets import vtkOrientationMarkerWidget
+from vtkmodules.vtkRenderingAnnotation import (
+    vtkAnnotatedCubeActor,
+    vtkAxesActor
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkPropAssembly,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     # Basic stuff setup
     # Set up the renderer, window, and interactor
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetSize(640, 480)
-    iRen = vtk.vtkRenderWindowInteractor()
+    iRen = vtkRenderWindowInteractor()
     iRen.SetRenderWindow(renWin)
 
     # Create a cone with an elliptical base whose major axis is in the
     # X-direction.
-    coneSource = vtk.vtkConeSource()
+    coneSource = vtkConeSource()
     coneSource.SetCenter(0.0, 0.0, 0.0)
     coneSource.SetRadius(5.0)
     coneSource.SetHeight(15.0)
@@ -25,55 +57,55 @@ def main():
     coneSource.SetResolution(60)
     coneSource.Update()
 
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     transform.Scale(1.0, 1.0, 0.75)
 
-    transF = vtk.vtkTransformPolyDataFilter()
+    transF = vtkTransformPolyDataFilter()
     transF.SetInputConnection(coneSource.GetOutputPort())
     transF.SetTransform(transform)
 
     bounds = transF.GetOutput().GetBounds()
 
-    elevation = vtk.vtkElevationFilter()
+    elevation = vtkElevationFilter()
     elevation.SetInputConnection(transF.GetOutputPort())
     elevation.SetLowPoint(0, bounds[2], 0)
     elevation.SetHighPoint(0, bounds[3], 0)
 
-    bandedContours = vtk.vtkBandedPolyDataContourFilter()
+    bandedContours = vtkBandedPolyDataContourFilter()
     bandedContours.SetInputConnection(elevation.GetOutputPort())
     bandedContours.SetScalarModeToValue()
     bandedContours.GenerateContourEdgesOn()
     bandedContours.GenerateValues(11, elevation.GetScalarRange())
 
     # Make a lookup table using a color series.
-    colorSeries = vtk.vtkColorSeries()
-    colorSeries.SetColorScheme(vtk.vtkColorSeries.BREWER_DIVERGING_SPECTRAL_11)
+    colorSeries = vtkColorSeries()
+    colorSeries.SetColorScheme(vtkColorSeries.BREWER_DIVERGING_SPECTRAL_11)
 
-    lut = vtk.vtkLookupTable()
-    colorSeries.BuildLookupTable(lut, vtk.vtkColorSeries.ORDINAL)
+    lut = vtkLookupTable()
+    colorSeries.BuildLookupTable(lut, vtkColorSeries.ORDINAL)
 
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(bandedContours.GetOutputPort())
     coneMapper.SetScalarRange(elevation.GetScalarRange())
     coneMapper.SetLookupTable(lut)
 
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
 
     # Contouring
-    contourLineMapper = vtk.vtkPolyDataMapper()
+    contourLineMapper = vtkPolyDataMapper()
     contourLineMapper.SetInputData(bandedContours.GetContourEdgesOutput())
     contourLineMapper.SetScalarRange(elevation.GetScalarRange())
     contourLineMapper.SetResolveCoincidentTopologyToPolygonOffset()
 
-    contourLineActor = vtk.vtkActor()
+    contourLineActor = vtkActor()
     contourLineActor.SetMapper(contourLineMapper)
     contourLineActor.GetProperty().SetColor(
         colors.GetColor3d('DimGray'))
 
     # Set up the Orientation Marker Widget.
     prop_assembly = MakeAnnotatedCubeActor(colors)
-    om1 = vtk.vtkOrientationMarkerWidget()
+    om1 = vtkOrientationMarkerWidget()
     om1.SetOrientationMarker(prop_assembly)
     om1.SetInteractor(iRen)
     om1.SetDefaultRenderer(ren)
@@ -84,7 +116,7 @@ def main():
     scale = [1.0, 1.0, 1.0]
     axes = MakeAxesActor(scale, xyzLabels)
 
-    om2 = vtk.vtkOrientationMarkerWidget()
+    om2 = vtkOrientationMarkerWidget()
     om2.SetOrientationMarker(axes)
     # Position lower right in the viewport.
     om2.SetViewport(0.8, 0, 1.0, 0.2)
@@ -110,7 +142,7 @@ def main():
 
 def MakeAnnotatedCubeActor(colors):
     # Annotated Cube setup
-    annotated_cube = vtk.vtkAnnotatedCubeActor()
+    annotated_cube = vtkAnnotatedCubeActor()
     annotated_cube.SetFaceTextScale(0.366667)
 
     # Anatomic labeling
@@ -145,10 +177,10 @@ def MakeAnnotatedCubeActor(colors):
     annotated_cube.GetCubeProperty().SetOpacity(0)
 
     # Colored faces cube setup
-    cube_source = vtk.vtkCubeSource()
+    cube_source = vtkCubeSource()
     cube_source.Update()
 
-    face_colors = vtk.vtkUnsignedCharArray()
+    face_colors = vtkUnsignedCharArray()
     face_colors.SetNumberOfComponents(3)
     face_x_plus = colors.GetColor3ub('Red')
     face_x_minus = colors.GetColor3ub('Green')
@@ -166,22 +198,22 @@ def MakeAnnotatedCubeActor(colors):
     cube_source.GetOutput().GetCellData().SetScalars(face_colors)
     cube_source.Update()
 
-    cube_mapper = vtk.vtkPolyDataMapper()
+    cube_mapper = vtkPolyDataMapper()
     cube_mapper.SetInputData(cube_source.GetOutput())
     cube_mapper.Update()
 
-    cube_actor = vtk.vtkActor()
+    cube_actor = vtkActor()
     cube_actor.SetMapper(cube_mapper)
 
     # Assemble the colored cube and annotated cube texts into a composite prop.
-    prop_assembly = vtk.vtkPropAssembly()
+    prop_assembly = vtkPropAssembly()
     prop_assembly.AddPart(annotated_cube)
     prop_assembly.AddPart(cube_actor)
     return prop_assembly
 
 
 def MakeAxesActor(scale, xyzLabels):
-    axes = vtk.vtkAxesActor()
+    axes = vtkAxesActor()
     axes.SetScale(scale[0], scale[1], scale[2])
     axes.SetShaftTypeToCylinder()
     axes.SetXAxisLabelText(xyzLabels[0])

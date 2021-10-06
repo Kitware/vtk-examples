@@ -2,7 +2,26 @@
 
 # Translated from dispPlot.tcl
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkFiltersCore import (
+    vtkPolyDataNormals,
+    vtkVectorDot
+)
+from vtkmodules.vtkFiltersGeneral import vtkWarpVector
+from vtkmodules.vtkIOLegacy import vtkPolyDataReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkColorTransferFunction,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
@@ -12,43 +31,43 @@ def main():
     if color_scheme > 2:
         color_scheme = 0
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Read a vtk file
     #
-    plate = vtk.vtkPolyDataReader()
+    plate = vtkPolyDataReader()
     plate.SetFileName(file_name)
     plate.SetVectorsName("mode8")
     plate.Update()
 
-    warp = vtk.vtkWarpVector()
+    warp = vtkWarpVector()
     warp.SetInputConnection(plate.GetOutputPort())
     warp.SetScaleFactor(0.5)
 
-    normals = vtk.vtkPolyDataNormals()
+    normals = vtkPolyDataNormals()
     normals.SetInputConnection(warp.GetOutputPort())
 
-    color = vtk.vtkVectorDot()
+    color = vtkVectorDot()
     color.SetInputConnection(normals.GetOutputPort())
 
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     MakeLUT(color_scheme, lut)
 
-    plateMapper = vtk.vtkDataSetMapper()
+    plateMapper = vtkDataSetMapper()
     plateMapper.SetInputConnection(color.GetOutputPort())
     plateMapper.SetLookupTable(lut)
     plateMapper.SetScalarRange(-1, 1)
 
-    plateActor = vtk.vtkActor()
+    plateActor = vtkActor()
     plateActor.SetMapper(plateMapper)
 
     # Create the RenderWindow, Renderer and both Actors
     #
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size
@@ -83,7 +102,7 @@ def get_program_parameters():
 
    '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue)
-    parser.add_argument('filename', help='plate.vtk.')
+    parser.add_argument('filename', help='plate.vtk')
     parser.add_argument('color_scheme', default=0, type=int, nargs='?', help='The particular color scheme to use.')
     args = parser.parse_args()
     return args.filename, args.color_scheme
@@ -93,7 +112,7 @@ def MakeLUT(colorScheme, lut):
     # See: [Diverging Color Maps for Scientific Visualization]
     #      (http:#www.kennethmoreland.com/color-maps/)
     nc = 256
-    ctf = vtk.vtkColorTransferFunction()
+    ctf = vtkColorTransferFunction()
 
     if colorScheme == 1:
         # Green to purple diverging.

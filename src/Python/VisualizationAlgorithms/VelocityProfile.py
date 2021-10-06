@@ -2,20 +2,39 @@
 
 # Translated from velProf.tcl.
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import (
+    vtkAppendPolyData,
+    vtkPolyDataNormals,
+    vtkStructuredGridOutlineFilter
+)
+from vtkmodules.vtkFiltersGeneral import vtkWarpVector
+from vtkmodules.vtkFiltersGeometry import vtkStructuredGridGeometryFilter
+from vtkmodules.vtkIOParallel import vtkMultiBlockPLOT3DReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     fileName1, fileName2 = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the background color.
     colors.SetColor('BkgColor', [65, 99, 149, 255])
 
     # Read a vtk file
     #
-    pl3d = vtk.vtkMultiBlockPLOT3DReader()
+    pl3d = vtkMultiBlockPLOT3DReader()
     pl3d.SetXYZFileName(fileName1)
     pl3d.SetQFileName(fileName2)
     pl3d.SetScalarFunctionNumber(100)  # Density
@@ -33,61 +52,61 @@ def main():
     # specification. Min and max i,j,k values are clamped to 0 and maximum value.
     # See the variable named extent for the values.
     #
-    plane = vtk.vtkStructuredGridGeometryFilter()
+    plane = vtkStructuredGridGeometryFilter()
     plane.SetInputData(pl3dOutput)
     plane.SetExtent(10, 10, 1, extent[3], 1, extent[5])
 
-    plane2 = vtk.vtkStructuredGridGeometryFilter()
+    plane2 = vtkStructuredGridGeometryFilter()
     plane2.SetInputData(pl3dOutput)
     plane2.SetExtent(30, 30, 1, extent[3], 1, extent[5])
 
-    plane3 = vtk.vtkStructuredGridGeometryFilter()
+    plane3 = vtkStructuredGridGeometryFilter()
     plane3.SetInputData(pl3dOutput)
     plane3.SetExtent(45, 45, 1, extent[3], 1, extent[5])
 
     # We use an append filter because that way we can do the warping, etc. just
     # using a single pipeline and actor.
     #
-    appendF = vtk.vtkAppendPolyData()
+    appendF = vtkAppendPolyData()
     appendF.AddInputConnection(plane.GetOutputPort())
     appendF.AddInputConnection(plane2.GetOutputPort())
     appendF.AddInputConnection(plane3.GetOutputPort())
 
     # Warp
-    warp = vtk.vtkWarpVector()
+    warp = vtkWarpVector()
     warp.SetInputConnection(appendF.GetOutputPort())
     warp.SetScaleFactor(0.005)
     warp.Update()
 
-    normals = vtk.vtkPolyDataNormals()
+    normals = vtkPolyDataNormals()
     normals.SetInputData(warp.GetPolyDataOutput())
     normals.SetFeatureAngle(45)
 
-    planeMapper = vtk.vtkPolyDataMapper()
+    planeMapper = vtkPolyDataMapper()
     planeMapper.SetInputConnection(normals.GetOutputPort())
     planeMapper.SetScalarRange(scalarRange)
 
-    planeActor = vtk.vtkActor()
+    planeActor = vtkActor()
     planeActor.SetMapper(planeMapper)
 
     # The outline provides context for the data and the planes.
-    outline = vtk.vtkStructuredGridOutlineFilter()
+    outline = vtkStructuredGridOutlineFilter()
     outline.SetInputData(pl3dOutput)
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(colors.GetColor3d('Black'))
 
     # Create the RenderWindow, Renderer and both Actors
     #
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size

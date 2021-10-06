@@ -1,57 +1,74 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import (
+    vtkContourFilter,
+    vtkPolyDataNormals,
+    vtkStructuredGridOutlineFilter
+)
+from vtkmodules.vtkIOParallel import vtkMultiBlockPLOT3DReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     xyzFile, qFile = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the RenderWindow, Renderer and Interactor.
     #
 
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create the pipeline.
     #
 
-    pl3d = vtk.vtkMultiBlockPLOT3DReader()
+    pl3d = vtkMultiBlockPLOT3DReader()
     pl3d.SetXYZFileName(xyzFile)
     pl3d.SetQFileName(qFile)
     pl3d.SetScalarFunctionNumber(100)
     pl3d.SetVectorFunctionNumber(202)
     pl3d.Update()
 
-    iso = vtk.vtkContourFilter()
+    iso = vtkContourFilter()
     iso.SetInputData(pl3d.GetOutput().GetBlock(0))
     iso.SetValue(0, 0.38)
 
-    normals = vtk.vtkPolyDataNormals()
+    normals = vtkPolyDataNormals()
     normals.SetInputConnection(iso.GetOutputPort())
     normals.SetFeatureAngle(45)
 
-    isoMapper = vtk.vtkPolyDataMapper()
+    isoMapper = vtkPolyDataMapper()
     isoMapper.SetInputConnection(normals.GetOutputPort())
     isoMapper.ScalarVisibilityOff()
 
-    isoActor = vtk.vtkActor()
+    isoActor = vtkActor()
     isoActor.SetMapper(isoMapper)
     isoActor.GetProperty().SetColor(colors.GetColor3d('WhiteSmoke'))
 
-    outline = vtk.vtkStructuredGridOutlineFilter()
+    outline = vtkStructuredGridOutlineFilter()
     outline.SetInputConnection(pl3d.GetOutputPort())
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
 
     # Add the actors to the renderer, set the background and size.

@@ -1,36 +1,55 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import (
+    vtkContourFilter,
+    vtkMaskPoints,
+    vtkPolyDataNormals
+)
+from vtkmodules.vtkIOLegacy import vtkPolyDataReader
+from vtkmodules.vtkImagingHybrid import vtkGaussianSplatter
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName = get_program_parameters()
 
     # Create the RenderWindow, Renderer and Interactor.
     #
-    ren1 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Read cyberware file.
     #
-    cyber = vtk.vtkPolyDataReader()
+    cyber = vtkPolyDataReader()
     cyber.SetFileName(fileName)
 
-    normals = vtk.vtkPolyDataNormals()
+    normals = vtkPolyDataNormals()
     normals.SetInputConnection(cyber.GetOutputPort())
 
-    mask = vtk.vtkMaskPoints()
+    mask = vtkMaskPoints()
     mask.SetInputConnection(normals.GetOutputPort())
     mask.SetOnRatio(8)
     # mask.RandomModeOn()
 
-    splatter = vtk.vtkGaussianSplatter()
+    splatter = vtkGaussianSplatter()
     splatter.SetInputConnection(mask.GetOutputPort())
     splatter.SetSampleDimensions(100, 100, 100)
     splatter.SetEccentricity(2.5)
@@ -38,23 +57,23 @@ def main():
     splatter.SetScaleFactor(1.0)
     splatter.SetRadius(0.025)
 
-    contour = vtk.vtkContourFilter()
+    contour = vtkContourFilter()
     contour.SetInputConnection(splatter.GetOutputPort())
     contour.SetValue(0, 0.25)
 
-    splatMapper = vtk.vtkPolyDataMapper()
+    splatMapper = vtkPolyDataMapper()
     splatMapper.SetInputConnection(contour.GetOutputPort())
     splatMapper.ScalarVisibilityOff()
 
-    splatActor = vtk.vtkActor()
+    splatActor = vtkActor()
     splatActor.SetMapper(splatMapper)
     splatActor.GetProperty().SetColor(colors.GetColor3d('Flesh'))
 
-    cyberMapper = vtk.vtkPolyDataMapper()
+    cyberMapper = vtkPolyDataMapper()
     cyberMapper.SetInputConnection(cyber.GetOutputPort())
     cyberMapper.ScalarVisibilityOff()
 
-    cyberActor = vtk.vtkActor()
+    cyberActor = vtkActor()
     cyberActor.SetMapper(cyberMapper)
     cyberActor.GetProperty().SetRepresentationToWireframe()
     cyberActor.GetProperty().SetColor(colors.GetColor3d('Turquoise'))
@@ -67,7 +86,7 @@ def main():
     renWin.SetSize(640, 480)
     renWin.SetWindowName('SplatFace')
 
-    camera = vtk.vtkCamera()
+    camera = vtkCamera()
     camera.SetClippingRange(0.0332682, 1.66341)
     camera.SetFocalPoint(0.0511519, -0.127555, -0.0554379)
     camera.SetPosition(0.516567, -0.124763, -0.349538)
@@ -90,7 +109,7 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename', help='fran_cut.vtk.')
+    parser.add_argument('filename', help='fran_cut.vtk')
     args = parser.parse_args()
     return args.filename
 

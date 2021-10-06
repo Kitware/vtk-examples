@@ -1,12 +1,31 @@
 # Translated from vib.tcl
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import (
+    vtkPolyDataNormals,
+    vtkVectorDot
+)
+from vtkmodules.vtkFiltersGeneral import vtkWarpVector
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkIOLegacy import vtkPolyDataReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     file_name = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Set the colors.
     colors.SetColor('PlateColor', [255, 160, 140, 255])
@@ -14,23 +33,23 @@ def main():
 
     # Read a vtk file
     #
-    plate = vtk.vtkPolyDataReader()
+    plate = vtkPolyDataReader()
     plate.SetFileName(file_name)
     plate.Update()
     bounds = [0] * 6
     plate.GetOutput().GetBounds(bounds)
     plate.SetVectorsName('mode2')
 
-    normals = vtk.vtkPolyDataNormals()
+    normals = vtkPolyDataNormals()
     normals.SetInputConnection(plate.GetOutputPort())
-    warp = vtk.vtkWarpVector()
+    warp = vtkWarpVector()
     warp.SetInputConnection(normals.GetOutputPort())
     warp.SetScaleFactor(0.5)
-    color = vtk.vtkVectorDot()
+    color = vtkVectorDot()
     color.SetInputConnection(warp.GetOutputPort())
-    plateMapper = vtk.vtkDataSetMapper()
+    plateMapper = vtkDataSetMapper()
     plateMapper.SetInputConnection(warp.GetOutputPort())
-    plateActor = vtk.vtkActor()
+    plateActor = vtkActor()
     plateActor.SetMapper(plateMapper)
     plateActor.GetProperty().SetColor(
         colors.GetColor3d('PlateColor'))
@@ -38,22 +57,22 @@ def main():
 
     # Create the outline.
     #
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(plate.GetOutputPort())
-    spikeMapper = vtk.vtkPolyDataMapper()
+    spikeMapper = vtkPolyDataMapper()
     spikeMapper.SetInputConnection(outline.GetOutputPort())
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(spikeMapper)
     outlineActor.RotateX(-90)
     outlineActor.GetProperty().SetColor(colors.GetColor3d('White'))
 
     # Create the RenderWindow, Renderer and both Actors
     #
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size
@@ -82,7 +101,7 @@ def get_program_parameters():
         Produce figure 6–14(a) Beam displacement from the VTK Textbook..
    '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue)
-    parser.add_argument('filename', help='plate.vtk.')
+    parser.add_argument('filename', help='plate.vtk')
     args = parser.parse_args()
     return args.filename
 

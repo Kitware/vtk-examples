@@ -5,11 +5,30 @@ This example demonstrates how to use boolean combinations of implicit
  functions to create a model of an ice cream cone.
 
 """
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import (
+    vtkCone,
+    vtkImplicitBoolean,
+    vtkPlane,
+    vtkSphere
+)
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkImagingHybrid import vtkSampleFunction
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create implicit function primitives. These have been carefully placed to
     # give the effect that we want. We are going to use various combinations of
@@ -17,34 +36,34 @@ def main():
     # intersected with a cone (which is infinite in extent) to get a finite
     # cone.
     #
-    cone = vtk.vtkCone()
+    cone = vtkCone()
     cone.SetAngle(20)
 
-    vertPlane = vtk.vtkPlane()
+    vertPlane = vtkPlane()
     vertPlane.SetOrigin(.1, 0, 0)
     vertPlane.SetNormal(-1, 0, 0)
 
-    basePlane = vtk.vtkPlane()
+    basePlane = vtkPlane()
     basePlane.SetOrigin(1.2, 0, 0)
     basePlane.SetNormal(1, 0, 0)
 
-    iceCream = vtk.vtkSphere()
+    iceCream = vtkSphere()
     iceCream.SetCenter(1.333, 0, 0)
     iceCream.SetRadius(0.5)
 
-    bite = vtk.vtkSphere()
+    bite = vtkSphere()
     bite.SetCenter(1.5, 0, 0.5)
     bite.SetRadius(0.25)
 
     # Combine primitives to build ice-cream cone. Clip the cone with planes.
-    theCone = vtk.vtkImplicitBoolean()
+    theCone = vtkImplicitBoolean()
     theCone.SetOperationTypeToIntersection()
     theCone.AddFunction(cone)
     theCone.AddFunction(vertPlane)
     theCone.AddFunction(basePlane)
 
     # Take a bite out of the ice cream.
-    theCream = vtk.vtkImplicitBoolean()
+    theCream = vtkImplicitBoolean()
     theCream.SetOperationTypeToDifference()
     theCream.AddFunction(iceCream)
     theCream.AddFunction(bite)
@@ -53,41 +72,41 @@ def main():
     # implicit function (which in this case is the cone). This is
     # then contoured to get a polygonal surface.
     #
-    theConeSample = vtk.vtkSampleFunction()
+    theConeSample = vtkSampleFunction()
     theConeSample.SetImplicitFunction(theCone)
     theConeSample.SetModelBounds(-1, 1.5, -1.25, 1.25, -1.25, 1.25)
     theConeSample.SetSampleDimensions(128, 128, 128)
     theConeSample.ComputeNormalsOff()
 
-    theConeSurface = vtk.vtkContourFilter()
+    theConeSurface = vtkContourFilter()
     theConeSurface.SetInputConnection(theConeSample.GetOutputPort())
     theConeSurface.SetValue(0, 0.0)
 
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(theConeSurface.GetOutputPort())
     coneMapper.ScalarVisibilityOff()
 
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
     coneActor.GetProperty().SetColor(colors.GetColor3d('Chocolate'))
 
     # The same here for the ice cream.
     #
-    theCreamSample = vtk.vtkSampleFunction()
+    theCreamSample = vtkSampleFunction()
     theCreamSample.SetImplicitFunction(theCream)
     theCreamSample.SetModelBounds(0, 2.5, -1.25, 1.25, -1.25, 1.25)
     theCreamSample.SetSampleDimensions(128, 128, 128)
     theCreamSample.ComputeNormalsOff()
 
-    theCreamSurface = vtk.vtkContourFilter()
+    theCreamSurface = vtkContourFilter()
     theCreamSurface.SetInputConnection(theCreamSample.GetOutputPort())
     theCreamSurface.SetValue(0, 0.0)
 
-    creamMapper = vtk.vtkPolyDataMapper()
+    creamMapper = vtkPolyDataMapper()
     creamMapper.SetInputConnection(theCreamSurface.GetOutputPort())
     creamMapper.ScalarVisibilityOff()
 
-    creamActor = vtk.vtkActor()
+    creamActor = vtkActor()
     creamActor.SetMapper(creamMapper)
     creamActor.GetProperty().SetDiffuseColor(colors.GetColor3d('Mint'))
     creamActor.GetProperty().SetSpecular(.6)
@@ -95,12 +114,12 @@ def main():
 
     # Create the usual rendering stuff.
     #
-    ren1 = vtk.vtkRenderer()
+    ren1 = vtkRenderer()
 
-    renWin = vtk.vtkRenderWindow()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size.

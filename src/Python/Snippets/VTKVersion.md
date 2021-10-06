@@ -8,6 +8,8 @@ To use the snippet, click the *Copy to clipboard* at the upper right of the code
 
 ``` python
 
+# from vtkmodules.vtkCommonCore import vtkVersion
+
 def vtk_check_version(major, minor=0, build=0):
     """
     Check the version number of VTK.
@@ -17,7 +19,7 @@ def vtk_check_version(major, minor=0, build=0):
     :param build: Build version
     :return: True if the version number is the same or greater
     """
-    ver = vtk.vtkVersion()
+    ver = vtkVersion()
     if major > ver.GetVTKMajorVersion():
         return True
     elif major == ver.GetVTKMajorVersion() and minor > ver.GetVTKMinorVersion():

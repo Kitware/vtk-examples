@@ -1,16 +1,37 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkFiltersCore import (
+    vtkStructuredGridOutlineFilter,
+    vtkTubeFilter
+)
+from vtkmodules.vtkFiltersFlowPaths import vtkStreamTracer
+from vtkmodules.vtkFiltersGeometry import vtkStructuredGridGeometryFilter
+from vtkmodules.vtkFiltersSources import vtkPointSource
+from vtkmodules.vtkIOParallel import vtkMultiBlockPLOT3DReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkCamera,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     xyxFile, qFile = get_program_parameters()
 
     # Read the data.
     #
-    pl3d = vtk.vtkMultiBlockPLOT3DReader()
+    pl3d = vtkMultiBlockPLOT3DReader()
     pl3d.AutoDetectFormatOn()
     pl3d.SetXYZFileName(xyxFile)
     pl3d.SetQFileName(qFile)
@@ -22,77 +43,77 @@ def main():
 
     # blue to red lut
     #
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.SetHueRange(0.667, 0.0)
 
     # Computational planes.
-    floorComp = vtk.vtkStructuredGridGeometryFilter()
+    floorComp = vtkStructuredGridGeometryFilter()
     floorComp.SetExtent(0, 37, 0, 75, 0, 0)
     floorComp.SetInputData(sg)
     floorComp.Update()
 
-    floorMapper = vtk.vtkPolyDataMapper()
+    floorMapper = vtkPolyDataMapper()
     floorMapper.SetInputConnection(floorComp.GetOutputPort())
     floorMapper.ScalarVisibilityOff()
     floorMapper.SetLookupTable(lut)
 
-    floorActor = vtk.vtkActor()
+    floorActor = vtkActor()
     floorActor.SetMapper(floorMapper)
     floorActor.GetProperty().SetRepresentationToWireframe()
     floorActor.GetProperty().SetColor(colors.GetColor3d('Beige'))
     floorActor.GetProperty().SetLineWidth(2)
 
-    subFloorComp = vtk.vtkStructuredGridGeometryFilter()
+    subFloorComp = vtkStructuredGridGeometryFilter()
 
     subFloorComp.SetExtent(0, 37, 0, 15, 22, 22)
     subFloorComp.SetInputData(sg)
 
-    subFloorMapper = vtk.vtkPolyDataMapper()
+    subFloorMapper = vtkPolyDataMapper()
     subFloorMapper.SetInputConnection(subFloorComp.GetOutputPort())
     subFloorMapper.SetLookupTable(lut)
     subFloorMapper.SetScalarRange(sg.GetScalarRange())
 
-    subFloorActor = vtk.vtkActor()
+    subFloorActor = vtkActor()
 
     subFloorActor.SetMapper(subFloorMapper)
 
-    subFloor2Comp = vtk.vtkStructuredGridGeometryFilter()
+    subFloor2Comp = vtkStructuredGridGeometryFilter()
     subFloor2Comp.SetExtent(0, 37, 60, 75, 22, 22)
     subFloor2Comp.SetInputData(sg)
 
-    subFloor2Mapper = vtk.vtkPolyDataMapper()
+    subFloor2Mapper = vtkPolyDataMapper()
     subFloor2Mapper.SetInputConnection(subFloor2Comp.GetOutputPort())
     subFloor2Mapper.SetLookupTable(lut)
     subFloor2Mapper.SetScalarRange(sg.GetScalarRange())
 
-    subFloor2Actor = vtk.vtkActor()
+    subFloor2Actor = vtkActor()
 
     subFloor2Actor.SetMapper(subFloor2Mapper)
 
-    postComp = vtk.vtkStructuredGridGeometryFilter()
+    postComp = vtkStructuredGridGeometryFilter()
 
     postComp.SetExtent(10, 10, 0, 75, 0, 37)
     postComp.SetInputData(sg)
 
-    postMapper = vtk.vtkPolyDataMapper()
+    postMapper = vtkPolyDataMapper()
     postMapper.SetInputConnection(postComp.GetOutputPort())
     postMapper.SetLookupTable(lut)
     postMapper.SetScalarRange(sg.GetScalarRange())
 
-    postActor = vtk.vtkActor()
+    postActor = vtkActor()
     postActor.SetMapper(postMapper)
     postActor.GetProperty().SetColor(colors.GetColor3d('Beige'))
 
-    fanComp = vtk.vtkStructuredGridGeometryFilter()
+    fanComp = vtkStructuredGridGeometryFilter()
     fanComp.SetExtent(0, 37, 38, 38, 0, 37)
     fanComp.SetInputData(sg)
 
-    fanMapper = vtk.vtkPolyDataMapper()
+    fanMapper = vtkPolyDataMapper()
     fanMapper.SetInputConnection(fanComp.GetOutputPort())
     fanMapper.SetLookupTable(lut)
     fanMapper.SetScalarRange(sg.GetScalarRange())
 
-    fanActor = vtk.vtkActor()
+    fanActor = vtkActor()
 
     fanActor.SetMapper(fanMapper)
     fanActor.GetProperty().SetColor(colors.GetColor3d('Beige'))
@@ -100,16 +121,16 @@ def main():
     # streamers
     #
     # spherical seed points
-    rake = vtk.vtkPointSource()
+    rake = vtkPointSource()
     rake.SetCenter(-0.74, 0, 0.3)
     rake.SetNumberOfPoints(10)
 
     # a line of seed points
-    seedsComp = vtk.vtkStructuredGridGeometryFilter()
+    seedsComp = vtkStructuredGridGeometryFilter()
     seedsComp.SetExtent(10, 10, 37, 39, 1, 35)
     seedsComp.SetInputData(sg)
 
-    streamers = vtk.vtkStreamTracer()
+    streamers = vtkStreamTracer()
     streamers.SetInputConnection(pl3d.GetOutputPort())
 
     # streamers SetSource [rake GetOutput]
@@ -120,37 +141,37 @@ def main():
     streamers.SetIntegratorType(2)
     streamers.Update()
 
-    tubes = vtk.vtkTubeFilter()
+    tubes = vtkTubeFilter()
     tubes.SetInputConnection(streamers.GetOutputPort())
     tubes.SetNumberOfSides(8)
     tubes.SetRadius(0.08)
     tubes.SetVaryRadius(0)
 
-    mapTubes = vtk.vtkPolyDataMapper()
+    mapTubes = vtkPolyDataMapper()
 
     mapTubes.SetInputConnection(tubes.GetOutputPort())
     mapTubes.SetScalarRange(sg.GetScalarRange())
 
-    tubesActor = vtk.vtkActor()
+    tubesActor = vtkActor()
     tubesActor.SetMapper(mapTubes)
 
     # outline
-    outline = vtk.vtkStructuredGridOutlineFilter()
+    outline = vtkStructuredGridOutlineFilter()
     outline.SetInputData(sg)
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
     outlineActor.GetProperty().SetColor(colors.GetColor3d('Beige'))
 
     # Create graphics stuff.
-    ren1 = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
 
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Add the actors to the renderer, set the background and size.
@@ -163,7 +184,7 @@ def main():
     ren1.AddActor(fanActor)
     ren1.AddActor(tubesActor)
 
-    aCam = vtk.vtkCamera()
+    aCam = vtkCamera()
     aCam.SetFocalPoint(0.00657892, 0, 2.41026)
     aCam.SetPosition(-1.94838, -47.1275, 39.4607)
     aCam.SetViewUp(0.00653193, 0.617865, 0.786257)

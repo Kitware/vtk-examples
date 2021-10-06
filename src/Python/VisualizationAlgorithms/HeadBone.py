@@ -1,6 +1,28 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import (
+    VTK_VERSION_NUMBER,
+    vtkVersion
+)
+from vtkmodules.vtkCommonDataModel import vtkMergePoints
+from vtkmodules.vtkFiltersCore import (
+    vtkFlyingEdges3D,
+    vtkMarchingCubes
+)
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkIOImage import vtkMetaImageReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
@@ -9,27 +31,21 @@ def main():
 
     file_name = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the RenderWindow, Renderer and Interactor.
-    #
-
-    ren = vtk.vtkRenderer()
-
-    ren_win = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    ren_win = vtkRenderWindow()
     ren_win.AddRenderer(ren)
-
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(ren_win)
 
     # Create the pipeline.
-    #
-
-    reader = vtk.vtkMetaImageReader()
+    reader = vtkMetaImageReader()
     reader.SetFileName(file_name)
     reader.Update()
 
-    locator = vtk.vtkMergePoints()
+    locator = vtkMergePoints()
     locator.SetDivisions(64, 64, 92)
     locator.SetNumberOfPointsPerBucket(2)
     locator.AutomaticOff()
@@ -37,13 +53,13 @@ def main():
     if use_flying_edges:
         try:
             using_marching_cubes = False
-            iso = vtk.vtkDiscreteFlyingEdges3D()
+            iso = vtkFlyingEdges3D()
         except AttributeError:
             using_marching_cubes = True
-            iso = vtk.vtkDiscreteMarchingCubes()
+            iso = vtkMarchingCubes()
     else:
         using_marching_cubes = True
-        iso = vtk.vtkDiscreteMarchingCubes()
+        iso = vtkMarchingCubes()
     iso.SetInputConnection(reader.GetOutputPort())
     iso.ComputeGradientsOn()
     iso.ComputeScalarsOff()
@@ -51,21 +67,21 @@ def main():
     if using_marching_cubes:
         iso.SetLocator(locator)
 
-    iso_mapper = vtk.vtkPolyDataMapper()
+    iso_mapper = vtkPolyDataMapper()
     iso_mapper.SetInputConnection(iso.GetOutputPort())
     iso_mapper.ScalarVisibilityOff()
 
-    iso_actor = vtk.vtkActor()
+    iso_actor = vtkActor()
     iso_actor.SetMapper(iso_mapper)
     iso_actor.GetProperty().SetColor(colors.GetColor3d('Ivory'))
 
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(reader.GetOutputPort())
 
-    outline_mapper = vtk.vtkPolyDataMapper()
+    outline_mapper = vtkPolyDataMapper()
     outline_mapper.SetInputConnection(outline.GetOutputPort())
 
-    outline_actor = vtk.vtkActor()
+    outline_actor = vtkActor()
     outline_actor.SetMapper(outline_mapper)
 
     # Add the actors to the renderer, set the background and size.
@@ -110,9 +126,9 @@ def vtk_version_ok(major, minor, build):
     """
     needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
     try:
-        vtk_version_number = vtk.VTK_VERSION_NUMBER
+        vtk_version_number = VTK_VERSION_NUMBER
     except AttributeError:  # as error:
-        ver = vtk.vtkVersion()
+        ver = vtkVersion()
         vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
                              + ver.GetVTKBuildVersion()
     if vtk_version_number >= needed_version:

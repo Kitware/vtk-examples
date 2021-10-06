@@ -5,6 +5,7 @@
 """
 
 import collections
+from pathlib import Path
 
 # noinspection PyUnresolvedReferences
 import vtkmodules.vtkInteractionStyle
@@ -388,7 +389,7 @@ def display_bounding_box_and_center(name, index, bounds):
     print(s)
 
 
-def write_image(fileName, renWin, rgba=True):
+def write_image(file_name, ren_win, rgba=True):
     """
     Write the render window view to an image file.
 
@@ -396,21 +397,25 @@ def write_image(fileName, renWin, rgba=True):
      BMP, JPEG, PNM, PNG, PostScript, TIFF.
     The default parameters are used for all writers, change as needed.
 
-    :param fileName: The file name, if no extension then PNG is assumed.
-    :param renWin: The render window.
+    :param file_name: The file name, if no extension then PNG is assumed.
+    :param ren_win: The render window.
     :param rgba: Used to set the buffer type.
     :return:
     """
 
-    import os
-
-    if fileName:
+    if file_name:
+        valid_suffixes = ['.bmp', '.jpg', '.png', '.pnm', '.ps', '.tiff']
         # Select the writer to use.
-        path, ext = os.path.splitext(fileName)
-        ext = ext.lower()
-        if not ext:
+        parent = Path(file_name).resolve().parent
+        path = Path(parent) / file_name
+        if path.suffix:
+            ext = path.suffix.lower()
+        else:
             ext = '.png'
-            fileName = fileName + ext
+            path = Path(str(path)).with_suffix(ext)
+        if path.suffix not in valid_suffixes:
+            print(f'No writer for this file suffix: {ext}')
+            return
         if ext == '.bmp':
             writer = vtkBMPWriter()
         elif ext == '.jpg':
@@ -427,7 +432,7 @@ def write_image(fileName, renWin, rgba=True):
             writer = vtkPNGWriter()
 
         windowto_image_filter = vtkWindowToImageFilter()
-        windowto_image_filter.SetInput(renWin)
+        windowto_image_filter.SetInput(ren_win)
         windowto_image_filter.SetScale(1)  # image quality
         if rgba:
             windowto_image_filter.SetInputBufferTypeToRGBA()
@@ -437,7 +442,7 @@ def write_image(fileName, renWin, rgba=True):
             windowto_image_filter.ReadFrontBufferOff()
             windowto_image_filter.Update()
 
-        writer.SetFileName(fileName)
+        writer.SetFileName(path)
         writer.SetInputConnection(windowto_image_filter.GetOutputPort())
         writer.Write()
     else:

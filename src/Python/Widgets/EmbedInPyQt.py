@@ -2,9 +2,18 @@
 
 import sys
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
 from PyQt4 import QtGui
-from vtk.qt4.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+from qt4.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderer
+)
 
 
 class MainWindow(QtGui.QMainWindow):
@@ -18,21 +27,21 @@ class MainWindow(QtGui.QMainWindow):
         self.vtkWidget = QVTKRenderWindowInteractor(self.frame)
         self.vl.addWidget(self.vtkWidget)
 
-        self.ren = vtk.vtkRenderer()
+        self.ren = vtkRenderer()
         self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
         self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
 
         # Create source
-        source = vtk.vtkSphereSource()
+        source = vtkSphereSource()
         source.SetCenter(0, 0, 0)
         source.SetRadius(5.0)
 
         # Create a mapper
-        mapper = vtk.vtkPolyDataMapper()
+        mapper = vtkPolyDataMapper()
         mapper.SetInputConnection(source.GetOutputPort())
 
         # Create an actor
-        actor = vtk.vtkActor()
+        actor = vtkActor()
         actor.SetMapper(mapper)
 
         self.ren.AddActor(actor)

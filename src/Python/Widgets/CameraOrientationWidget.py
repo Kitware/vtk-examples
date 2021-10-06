@@ -6,7 +6,20 @@
 
 from pathlib import Path
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkIOXML import vtkXMLPolyDataReader
+from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -22,24 +35,24 @@ def get_program_parameters():
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     path = get_program_parameters()
     if not Path(path).is_file():
         print('Unable to find the file:', path)
         return
 
-    renderer = vtk.vtkRenderer()
-    ren_win = vtk.vtkRenderWindow()
-    interactor = vtk.vtkRenderWindowInteractor()
+    renderer = vtkRenderer()
+    ren_win = vtkRenderWindow()
+    interactor = vtkRenderWindowInteractor()
 
-    reader = vtk.vtkXMLPolyDataReader()
+    reader = vtkXMLPolyDataReader()
     reader.SetFileName(path)
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(reader.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.GetProperty().SetColor(colors.GetColor3d('Beige'))
     actor.SetMapper(mapper)
 
@@ -53,7 +66,7 @@ def main():
     # Important: The interactor must be set prior to enabling the widget.
     interactor.SetRenderWindow(ren_win)
 
-    cam_orient_manipulator = vtk.vtkCameraOrientationWidget()
+    cam_orient_manipulator = vtkCameraOrientationWidget()
     cam_orient_manipulator.SetParentRenderer(renderer)
     # Enable the widget.
     cam_orient_manipulator.On()

@@ -1,32 +1,50 @@
 #!/usr/bin/env python
-import vtkmodules.all as vtk
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkArrowSource
+from vtkmodules.vtkGeovisCore import (
+    vtkCompassRepresentation,
+    vtkCompassWidget
+)
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
-    arrowSource = vtk.vtkArrowSource()
+    arrowSource = vtkArrowSource()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(arrowSource.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('PeachPuff'))
 
     # a renderer and render window
-    renderer = vtk.vtkRenderer()
-    renderWindow = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renderWindow = vtkRenderWindow()
     renderWindow.AddRenderer(renderer)
 
     # an interactor
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+    renderWindowInteractor = vtkRenderWindowInteractor()
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Create the widget and its representation
-    compassRepresentation = vtk.vtkCompassRepresentation()
+    compassRepresentation = vtkCompassRepresentation()
 
-    compassWidget = vtk.vtkCompassWidget()
+    compassWidget = vtkCompassWidget()
     compassWidget.SetInteractor(renderWindowInteractor)
     compassWidget.SetRepresentation(compassRepresentation)
 
@@ -40,7 +58,7 @@ def main():
     renderWindow.Render()
     compassWidget.EnabledOn()
 
-    style = vtk.vtkInteractorStyleTrackballCamera()
+    style = vtkInteractorStyleTrackballCamera()
     renderWindowInteractor.SetInteractorStyle(style)
 
     # begin interaction

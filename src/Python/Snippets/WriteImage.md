@@ -9,7 +9,20 @@ To use the snippet, click the *Copy to clipboard* at the upper right of the code
 ```python
 
 
-def WriteImage(fileName, renWin, rgba=True):
+# from pathlib import Path
+# 
+# from vtkmodules.vtkIOImage import (
+#     vtkBMPWriter,
+#     vtkJPEGWriter,
+#     vtkPNGWriter,
+#     vtkPNMWriter,
+#     vtkPostScriptWriter,
+#     vtkTIFFWriter
+# )
+# from vtkmodules.vtkRenderingCore import vtkWindowToImageFilter
+
+
+def write_image(file_name, ren_win, rgba=True):
     """
     Write the render window view to an image file.
 
@@ -17,38 +30,42 @@ def WriteImage(fileName, renWin, rgba=True):
      BMP, JPEG, PNM, PNG, PostScript, TIFF.
     The default parameters are used for all writers, change as needed.
 
-    :param fileName: The file name, if no extension then PNG is assumed.
-    :param renWin: The render window.
+    :param file_name: The file name, if no extension then PNG is assumed.
+    :param ren_win: The render window.
     :param rgba: Used to set the buffer type.
     :return:
     """
 
-    import os
-
-    if fileName:
+    if file_name:
+        valid_suffixes = ['.bmp', '.jpg', '.png', '.pnm', '.ps', '.tiff']
         # Select the writer to use.
-        path, ext = os.path.splitext(fileName)
-        ext = ext.lower()
-        if not ext:
+        parent = Path(file_name).resolve().parent
+        path = Path(parent) / file_name
+        if path.suffix:
+            ext = path.suffix.lower()
+        else:
             ext = '.png'
-            fileName = fileName + ext
+            path = Path(str(path)).with_suffix(ext)
+        if path.suffix not in valid_suffixes:
+            print(f'No writer for this file suffix: {ext}')
+            return
         if ext == '.bmp':
-            writer = vtk.vtkBMPWriter()
+            writer = vtkBMPWriter()
         elif ext == '.jpg':
-            writer = vtk.vtkJPEGWriter()
+            writer = vtkJPEGWriter()
         elif ext == '.pnm':
-            writer = vtk.vtkPNMWriter()
+            writer = vtkPNMWriter()
         elif ext == '.ps':
             if rgba:
                 rgba = False
-            writer = vtk.vtkPostScriptWriter()
+            writer = vtkPostScriptWriter()
         elif ext == '.tiff':
-            writer = vtk.vtkTIFFWriter()
+            writer = vtkTIFFWriter()
         else:
-            writer = vtk.vtkPNGWriter()
+            writer = vtkPNGWriter()
 
-        windowto_image_filter = vtk.vtkWindowToImageFilter()
-        windowto_image_filter.SetInput(renWin)
+        windowto_image_filter = vtkWindowToImageFilter()
+        windowto_image_filter.SetInput(ren_win)
         windowto_image_filter.SetScale(1)  # image quality
         if rgba:
             windowto_image_filter.SetInputBufferTypeToRGBA()
@@ -58,12 +75,11 @@ def WriteImage(fileName, renWin, rgba=True):
             windowto_image_filter.ReadFrontBufferOff()
             windowto_image_filter.Update()
 
-        writer.SetFileName(fileName)
+        writer.SetFileName(path)
         writer.SetInputConnection(windowto_image_filter.GetOutputPort())
         writer.Write()
     else:
         raise RuntimeError('Need a filename.')
-
 
 ```
 

@@ -1,48 +1,57 @@
 #!/usr/bin/env python
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersCore import vtkContourFilter
+from vtkmodules.vtkFiltersModeling import vtkOutlineFilter
+from vtkmodules.vtkIOLegacy import vtkStructuredPointsReader
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
     fileName = get_program_parameters()
 
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create the RenderWindow, Renderer and Interactor.
-    #
-
-    ren1 = vtk.vtkRenderer()
-
-    renWin = vtk.vtkRenderWindow()
+    ren1 = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
-
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Create the pipeline.
-    #
-    reader = vtk.vtkStructuredPointsReader()
+    reader = vtkStructuredPointsReader()
     reader.SetFileName(fileName)
 
-    iso = vtk.vtkContourFilter()
+    iso = vtkContourFilter()
     iso.SetInputConnection(reader.GetOutputPort())
     iso.SetValue(0, 128)
 
-    isoMapper = vtk.vtkPolyDataMapper()
+    isoMapper = vtkPolyDataMapper()
     isoMapper.SetInputConnection(iso.GetOutputPort())
     isoMapper.ScalarVisibilityOff()
 
-    isoActor = vtk.vtkActor()
+    isoActor = vtkActor()
     isoActor.SetMapper(isoMapper)
     isoActor.GetProperty().SetColor(colors.GetColor3d("Banana"))
 
-    outline = vtk.vtkOutlineFilter()
+    outline = vtkOutlineFilter()
     outline.SetInputConnection(reader.GetOutputPort())
 
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
 
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.SetMapper(outlineMapper)
 
     # Add the actors to the renderer, set the background and size.
@@ -69,7 +78,7 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename', help='ironProt.vtk.')
+    parser.add_argument('filename', help='ironProt.vtk')
     args = parser.parse_args()
     return args.filename
 

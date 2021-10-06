@@ -6,18 +6,36 @@ This program encompasses the functionality of
   StreamlinesWithLineWidget.tcl and LineWidget.tcl.
 """
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+from vtkmodules.vtkCommonMath import vtkRungeKutta4
+from vtkmodules.vtkFiltersCore import vtkStructuredGridOutlineFilter
+from vtkmodules.vtkFiltersFlowPaths import vtkStreamTracer
+from vtkmodules.vtkFiltersModeling import vtkRibbonFilter
+from vtkmodules.vtkIOParallel import vtkMultiBlockPLOT3DReader
+from vtkmodules.vtkInteractionWidgets import vtkLineWidget
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     fileName1, fileName2, numOfStreamLines, illustration = get_program_parameters()
     if illustration:
         numOfStreamLines = 25
 
     # Start by loading some data.
-    pl3d = vtk.vtkMultiBlockPLOT3DReader()
+    pl3d = vtkMultiBlockPLOT3DReader()
     pl3d.SetXYZFileName(fileName1)
     pl3d.SetQFileName(fileName2)
     pl3d.SetScalarFunctionNumber(100)  # Density
@@ -27,20 +45,20 @@ def main():
     pl3d_output = pl3d.GetOutput().GetBlock(0)
 
     # Create the Renderer, RenderWindow and RenderWindowInteractor.
-    ren = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    ren = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # Needed by: vtkStreamTracer and vtkLineWidget.
-    seeds = vtk.vtkPolyData()
-    streamline = vtk.vtkActor()
-    seeds2 = vtk.vtkPolyData()
-    streamline2 = vtk.vtkActor()
+    seeds = vtkPolyData()
+    streamline = vtkActor()
+    seeds2 = vtkPolyData()
+    streamline2 = vtkActor()
 
     # The line widget is used seed the streamlines.
-    lineWidget = vtk.vtkLineWidget()
+    lineWidget = vtkLineWidget()
     lineWidget.SetResolution(numOfStreamLines)
     lineWidget.SetInputData(pl3d_output)
     lineWidget.GetPolyData(seeds)
@@ -58,7 +76,7 @@ def main():
     lineWidget.AddObserver("InteractionEvent", GenerateStreamlinesCallback(seeds, renWin))
 
     # The second line widget is used seed more streamlines.
-    lineWidget2 = vtk.vtkLineWidget()
+    lineWidget2 = vtkLineWidget()
     lineWidget2.SetResolution(numOfStreamLines)
     lineWidget2.SetInputData(pl3d_output)
     lineWidget2.GetPolyData(seeds2)
@@ -72,8 +90,8 @@ def main():
     lineWidget2.AddObserver("InteractionEvent", GenerateStreamlinesCallback(seeds2, renWin))
 
     # Here we set up two streamlines.
-    rk4 = vtk.vtkRungeKutta4()
-    streamer = vtk.vtkStreamTracer()
+    rk4 = vtkRungeKutta4()
+    streamer = vtkStreamTracer()
     streamer.SetInputData(pl3d_output)
     streamer.SetSourceData(seeds)
     streamer.SetMaximumPropagation(100)
@@ -81,17 +99,17 @@ def main():
     streamer.SetIntegrationDirectionToForward()
     streamer.SetComputeVorticity(1)
     streamer.SetIntegrator(rk4)
-    rf = vtk.vtkRibbonFilter()
+    rf = vtkRibbonFilter()
     rf.SetInputConnection(streamer.GetOutputPort())
     rf.SetWidth(0.1)
     rf.SetWidthFactor(5)
-    streamMapper = vtk.vtkPolyDataMapper()
+    streamMapper = vtkPolyDataMapper()
     streamMapper.SetInputConnection(rf.GetOutputPort())
     streamMapper.SetScalarRange(pl3d_output.GetScalarRange())
     streamline.SetMapper(streamMapper)
     streamline.VisibilityOff()
 
-    streamer2 = vtk.vtkStreamTracer()
+    streamer2 = vtkStreamTracer()
     streamer2.SetInputData(pl3d_output)
     streamer2.SetSourceData(seeds2)
     streamer2.SetMaximumPropagation(100)
@@ -99,22 +117,22 @@ def main():
     streamer2.SetIntegrationDirectionToForward()
     streamer2.SetComputeVorticity(1)
     streamer2.SetIntegrator(rk4)
-    rf2 = vtk.vtkRibbonFilter()
+    rf2 = vtkRibbonFilter()
     rf2.SetInputConnection(streamer2.GetOutputPort())
     rf2.SetWidth(0.1)
     rf2.SetWidthFactor(5)
-    streamMapper2 = vtk.vtkPolyDataMapper()
+    streamMapper2 = vtkPolyDataMapper()
     streamMapper2.SetInputConnection(rf2.GetOutputPort())
     streamMapper2.SetScalarRange(pl3d_output.GetScalarRange())
     streamline2.SetMapper(streamMapper2)
     streamline2.VisibilityOff()
 
     # Get an outline of the data set for context.
-    outline = vtk.vtkStructuredGridOutlineFilter()
+    outline = vtkStructuredGridOutlineFilter()
     outline.SetInputData(pl3d_output)
-    outlineMapper = vtk.vtkPolyDataMapper()
+    outlineMapper = vtkPolyDataMapper()
     outlineMapper.SetInputConnection(outline.GetOutputPort())
-    outlineActor = vtk.vtkActor()
+    outlineActor = vtkActor()
     outlineActor.GetProperty().SetColor(colors.GetColor3d("Black"))
     outlineActor.SetMapper(outlineMapper)
 

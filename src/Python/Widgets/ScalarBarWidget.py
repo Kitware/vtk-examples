@@ -3,7 +3,22 @@
 #
 # by Panos Mavrogiorgos, email : pmav99 >a< gmail
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonCore import vtkLookupTable
+from vtkmodules.vtkIOLegacy import vtkUnstructuredGridReader
+from vtkmodules.vtkInteractionWidgets import vtkScalarBarWidget
+from vtkmodules.vtkRenderingAnnotation import vtkScalarBarActor
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkDataSetMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 def get_program_parameters():
@@ -13,13 +28,13 @@ def get_program_parameters():
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('filename', help='uGridEx.vtk.')
+    parser.add_argument('filename', help='uGridEx.vtkp')
     args = parser.parse_args()
     return args.filename
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
 
@@ -28,43 +43,43 @@ def main():
 
     # Create a custom lut. The lut is used for both at the mapper and at the
     # scalar_bar
-    lut = vtk.vtkLookupTable()
+    lut = vtkLookupTable()
     lut.Build()
 
     # Read the source file.
-    reader = vtk.vtkUnstructuredGridReader()
+    reader = vtkUnstructuredGridReader()
     reader.SetFileName(file_name)
     reader.Update()  # Needed because of GetScalarRange
     output = reader.GetOutput()
     scalar_range = output.GetScalarRange()
 
-    mapper = vtk.vtkDataSetMapper()
+    mapper = vtkDataSetMapper()
     mapper.SetInputData(output)
     mapper.SetScalarRange(scalar_range)
     mapper.SetLookupTable(lut)
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
 
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.AddActor(actor)
     renderer.SetBackground(colors.GetColor3d('MidnightBLue'))
 
-    render_window = vtk.vtkRenderWindow()
+    render_window = vtkRenderWindow()
     render_window.AddRenderer(renderer)
     render_window.SetSize(300, 300)
     render_window.SetWindowName("ScalarBarWidget")
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)
 
     # create the scalar_bar
-    scalar_bar = vtk.vtkScalarBarActor()
+    scalar_bar = vtkScalarBarActor()
     scalar_bar.SetOrientationToHorizontal()
     scalar_bar.SetLookupTable(lut)
 
     # create the scalar_bar_widget
-    scalar_bar_widget = vtk.vtkScalarBarWidget()
+    scalar_bar_widget = vtkScalarBarWidget()
     scalar_bar_widget.SetInteractor(interactor)
     scalar_bar_widget.SetScalarBarActor(scalar_bar)
     scalar_bar_widget.On()

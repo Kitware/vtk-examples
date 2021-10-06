@@ -1,42 +1,58 @@
-import vtkmodules.all as vtk
+#!/usr/bin/env python
+
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkCommonTransforms import vtkTransform
+from vtkmodules.vtkFiltersSources import vtkConeSource
+from vtkmodules.vtkInteractionWidgets import vtkBoxWidget
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer
+)
 
 
 # Call back function to resize the cone
 
 
 def boxCallback(obj, event):
-    t = vtk.vtkTransform()
+    t = vtkTransform()
     obj.GetTransform(t)
     obj.GetProp3D().SetUserTransform(t)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # Create a Cone
-    cone = vtk.vtkConeSource()
+    cone = vtkConeSource()
     cone.SetResolution(20)
-    coneMapper = vtk.vtkPolyDataMapper()
+    coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(cone.GetOutputPort())
-    coneActor = vtk.vtkActor()
+    coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
     coneActor.GetProperty().SetColor(colors.GetColor3d('BurlyWood'))
 
     # A renderer and render window
-    renderer = vtk.vtkRenderer()
+    renderer = vtkRenderer()
     renderer.SetBackground(colors.GetColor3d('Blue'))
     renderer.AddActor(coneActor)
 
-    renwin = vtk.vtkRenderWindow()
+    renwin = vtkRenderWindow()
     renwin.AddRenderer(renderer)
     renwin.SetWindowName('BoxWidget')
 
     # An interactor
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(renwin)
 
     # A Box widget
-    boxWidget = vtk.vtkBoxWidget()
+    boxWidget = vtkBoxWidget()
     boxWidget.SetInteractor(interactor)
     boxWidget.SetProp3D(coneActor)
     boxWidget.SetPlaceFactor(1.25)  # Make the box 1.25x larger than the actor

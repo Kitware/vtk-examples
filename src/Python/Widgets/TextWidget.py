@@ -3,37 +3,54 @@
 #
 # by Panos Mavrogiorgos, email : pmav99 >a< gmail
 
-import vtkmodules.all as vtk
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkInteractionStyle
+# noinspection PyUnresolvedReferences
+import vtkmodules.vtkRenderingOpenGL2
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkFiltersSources import vtkSphereSource
+from vtkmodules.vtkInteractionWidgets import (
+    vtkTextRepresentation,
+    vtkTextWidget
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkRenderWindow,
+    vtkRenderWindowInteractor,
+    vtkRenderer,
+    vtkTextActor
+)
 
 
 def main():
-    colors = vtk.vtkNamedColors()
+    colors = vtkNamedColors()
 
     # colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])
 
-    source = vtk.vtkSphereSource()
+    source = vtkSphereSource()
 
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(source.GetOutputPort())
 
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('MistyRose'))
 
-    renderer = vtk.vtkRenderer()
-    render_window = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    render_window = vtkRenderWindow()
     render_window.AddRenderer(renderer)
 
-    interactor = vtk.vtkRenderWindowInteractor()
+    interactor = vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)
 
     # Create the TextActor
-    text_actor = vtk.vtkTextActor()
+    text_actor = vtkTextActor()
     text_actor.SetInput('This is a test')
     text_actor.GetTextProperty().SetColor(colors.GetColor3d('Lime'))
 
     # Create the text representation. Used for positioning the text_actor
-    text_representation = vtk.vtkTextRepresentation()
+    text_representation = vtkTextRepresentation()
     text_representation.GetPositionCoordinate().SetValue(0.15, 0.15)
     text_representation.GetPosition2Coordinate().SetValue(0.7, 0.2)
 
@@ -45,7 +62,7 @@ def main():
     # selected or not. If not, then events (such as left mouse down) allow the user
     # to 'move' the widget, and no selection is possible. Otherwise the
     # SelectRegion() method is invoked.
-    text_widget = vtk.vtkTextWidget()
+    text_widget = vtkTextWidget()
     text_widget.SetRepresentation(text_representation)
 
     text_widget.SetInteractor(interactor)
