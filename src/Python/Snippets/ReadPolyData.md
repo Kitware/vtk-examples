@@ -7,45 +7,59 @@ To use the snippet, click the *Copy to clipboard* at the upper right of the code
 ### Implementation
 
 ``` python
+# from pathlib import Path
+
+# from vtkmodules.vtkIOGeometry import (
+#     vtkBYUReader,
+#     vtkOBJReader,
+#     vtkSTLReader
+# )
+# from vtkmodules.vtkIOLegacy import vtkPolyDataReader
+# from vtkmodules.vtkIOPLY import vtkPLYReader
+# from vtkmodules.vtkIOXML import vtkXMLPolyDataReader
+
 
 def ReadPolyData(file_name):
-    import os
-    path, extension = os.path.splitext(file_name)
-    extension = extension.lower()
-    if extension == ".ply":
-        reader = vtk.vtkPLYReader()
-        reader.SetFileName(file_name)
-        reader.Update()
-        poly_data = reader.GetOutput()
-    elif extension == ".vtp":
-        reader = vtk.vtkXMLPolyDataReader()
-        reader.SetFileName(file_name)
-        reader.Update()
-        poly_data = reader.GetOutput()
-    elif extension == ".obj":
-        reader = vtk.vtkOBJReader()
-        reader.SetFileName(file_name)
-        reader.Update()
-        poly_data = reader.GetOutput()
-    elif extension == ".stl":
-        reader = vtk.vtkSTLReader()
-        reader.SetFileName(file_name)
-        reader.Update()
-        poly_data = reader.GetOutput()
-    elif extension == ".vtk":
-        reader = vtk.vtkPolyDataReader()
-        reader.SetFileName(file_name)
-        reader.Update()
-        poly_data = reader.GetOutput()
-    elif extension == ".g":
-        reader = vtk.vtkBYUReader()
-        reader.SetGeometryFileName(file_name)
-        reader.Update()
-        poly_data = reader.GetOutput()
+    valid_suffixes = ['.g', '.obj', '.stl', '.ply', '.vtk', '.vtp']
+    path = Path(file_name)
+    if path.suffix:
+        ext = path.suffix.lower()
+    if path.suffix not in valid_suffixes:
+        print(f'No reader for this file suffix: {ext}')
+        return None
     else:
-        # Return a None if the extension is unknown.
-        poly_data = None
-    return poly_data
+        if ext == ".ply":
+            reader = vtkPLYReader()
+            reader.SetFileName(file_name)
+            reader.Update()
+            poly_data = reader.GetOutput()
+        elif ext == ".vtp":
+            reader = vtkXMLPolyDataReader()
+            reader.SetFileName(file_name)
+            reader.Update()
+            poly_data = reader.GetOutput()
+        elif ext == ".obj":
+            reader = vtkOBJReader()
+            reader.SetFileName(file_name)
+            reader.Update()
+            poly_data = reader.GetOutput()
+        elif ext == ".stl":
+            reader = vtkSTLReader()
+            reader.SetFileName(file_name)
+            reader.Update()
+            poly_data = reader.GetOutput()
+        elif ext == ".vtk":
+            reader = vtkPolyDataReader()
+            reader.SetFileName(file_name)
+            reader.Update()
+            poly_data = reader.GetOutput()
+        elif ext == ".g":
+            reader = vtkBYUReader()
+            reader.SetGeometryFileName(file_name)
+            reader.Update()
+            poly_data = reader.GetOutput()
+
+        return poly_data
 
 
 ```
