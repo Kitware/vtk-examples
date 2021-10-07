@@ -108,19 +108,19 @@ function registerListener(event, func) {
   <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;BalloonWidget&quot;</span><span class=p>);</span>
 
   <span class=c1>// An interactor.</span>
-<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>iren</span><span class=p>;</span>
-</span>  <span class=n>iren</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>iRen</span><span class=p>;</span>
+</span>  <span class=n>iRen</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
 
   <span class=c1>// Create the widget.</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBalloonRepresentation</span><span class=o>&gt;</span> <span class=n>balloonRep</span><span class=p>;</span>
 </span>  <span class=n>balloonRep</span><span class=o>-&gt;</span><span class=n>SetBalloonLayoutToImageRight</span><span class=p>();</span>
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBalloonWidget</span><span class=o>&gt;</span> <span class=n>balloonWidget</span><span class=p>;</span>
-</span>  <span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>);</span>
+</span>  <span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iRen</span><span class=p>);</span>
   <span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>balloonRep</span><span class=p>);</span>
-  <span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>AddBalloon</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>,</span> <span class=s>&quot;This is a sphere&quot;</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>);</span>
+  <span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>AddBalloon</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>,</span> <span class=s>&quot;This is a sphere&quot;</span><span class=p>,</span> <span class=k>nullptr</span><span class=p>);</span>
   <span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>AddBalloon</span><span class=p>(</span><span class=n>regularPolygonActor</span><span class=p>,</span> <span class=s>&quot;This is a regular polygon&quot;</span><span class=p>,</span>
-                            <span class=nb>NULL</span><span class=p>);</span>
+                            <span class=k>nullptr</span><span class=p>);</span>
 
   <span class=c1>// Add the actors to the scene.</span>
   <span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>);</span>
@@ -129,10 +129,12 @@ function registerListener(event, func) {
 
   <span class=c1>// Render</span>
   <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
+
   <span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>EnabledOn</span><span class=p>();</span>
 
   <span class=c1>// Begin mouse interaction.</span>
-  <span class=n>iren</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
+  <span class=n>iRen</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
+  <span class=n>iRen</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
 
   <span class=k>return</span> <span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
