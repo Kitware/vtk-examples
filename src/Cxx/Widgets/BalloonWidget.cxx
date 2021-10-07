@@ -51,19 +51,19 @@ int main(int, char*[])
   renWin->SetWindowName("BalloonWidget");
 
   // An interactor.
-  vtkNew<vtkRenderWindowInteractor> iren;
-  iren->SetRenderWindow(renWin);
+  vtkNew<vtkRenderWindowInteractor> iRen;
+  iRen->SetRenderWindow(renWin);
 
   // Create the widget.
   vtkNew<vtkBalloonRepresentation> balloonRep;
   balloonRep->SetBalloonLayoutToImageRight();
 
   vtkNew<vtkBalloonWidget> balloonWidget;
-  balloonWidget->SetInteractor(iren);
+  balloonWidget->SetInteractor(iRen);
   balloonWidget->SetRepresentation(balloonRep);
-  balloonWidget->AddBalloon(sphereActor, "This is a sphere", NULL);
+  balloonWidget->AddBalloon(sphereActor, "This is a sphere", nullptr);
   balloonWidget->AddBalloon(regularPolygonActor, "This is a regular polygon",
-                            NULL);
+                            nullptr);
 
   // Add the actors to the scene.
   ren->AddActor(sphereActor);
@@ -72,10 +72,12 @@ int main(int, char*[])
 
   // Render
   renWin->Render();
+
   balloonWidget->EnabledOn();
 
   // Begin mouse interaction.
-  iren->Start();
+  iRen->Initialize();
+  iRen->Start();
 
   return EXIT_SUCCESS;
 }
