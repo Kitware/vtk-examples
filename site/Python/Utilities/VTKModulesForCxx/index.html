@@ -93,6 +93,12 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>json</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>sources</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>file</span>
 
 
+<span class=k>class</span> <span class=nc>Patterns</span><span class=p>:</span>
+    <span class=n>header_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^#include *[&lt;\&quot;](\S+)[&gt;\&quot;]&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>vtk_include_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^(vtk\S+)&#39;</span><span class=p>)</span>
+</span><span class=hll>    <span class=n>vtk_qt_include_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^(QVTK\S+)&#39;</span><span class=p>)</span>
+</span>
+
 <span class=k>def</span> <span class=nf>get_headers_modules</span><span class=p>(</span><span class=n>json_data</span><span class=p>):</span>
     <span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>    From the parsed JSON data file make a dictionary whose key is the</span>
@@ -118,10 +124,6 @@ function registerListener(event, func) {
 <span class=sd>    :return:</span>
 <span class=sd>    &quot;&quot;&quot;</span>
 
-    <span class=n>header_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^#include *[&lt;\&quot;](\S+)[&gt;\&quot;]&#39;</span><span class=p>)</span>
-<span class=hll>    <span class=n>vtk_include_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^(vtk\S+)&#39;</span><span class=p>)</span>
-</span><span class=hll>    <span class=n>vtk_qt_include_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^(QVTK\S+)&#39;</span><span class=p>)</span>
-</span>
     <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>jpath</span><span class=p>)</span> <span class=k>as</span> <span class=n>data_file</span><span class=p>:</span>
         <span class=n>json_data</span> <span class=o>=</span> <span class=n>json</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>data_file</span><span class=p>)</span>
 <span class=hll>    <span class=n>vtk_headers_modules</span> <span class=o>=</span> <span class=n>get_headers_modules</span><span class=p>(</span><span class=n>json_data</span><span class=p>)</span>
@@ -136,15 +138,15 @@ function registerListener(event, func) {
         <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
             <span class=n>content</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>read_text</span><span class=p>()</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
             <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>content</span><span class=p>:</span>
-                <span class=n>m</span> <span class=o>=</span> <span class=n>header_pattern</span><span class=o>.</span><span class=n>match</span><span class=p>(</span><span class=n>line</span><span class=o>.</span><span class=n>strip</span><span class=p>())</span>
+                <span class=n>m</span> <span class=o>=</span> <span class=n>Patterns</span><span class=o>.</span><span class=n>header_pattern</span><span class=o>.</span><span class=n>match</span><span class=p>(</span><span class=n>line</span><span class=o>.</span><span class=n>strip</span><span class=p>())</span>
                 <span class=k>if</span> <span class=n>m</span><span class=p>:</span>
                     <span class=c1># We have a header name, split it from its path (if the path exists).</span>
                     <span class=n>header_parts</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=n>m</span><span class=o>.</span><span class=n>group</span><span class=p>(</span><span class=mi>1</span><span class=p>))</span>
-<span class=hll>                    <span class=n>m</span> <span class=o>=</span> <span class=n>vtk_include_pattern</span><span class=o>.</span><span class=n>match</span><span class=p>(</span><span class=n>header_parts</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
+<span class=hll>                    <span class=n>m</span> <span class=o>=</span> <span class=n>Patterns</span><span class=o>.</span><span class=n>vtk_include_pattern</span><span class=o>.</span><span class=n>match</span><span class=p>(</span><span class=n>header_parts</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
 </span>                    <span class=k>if</span> <span class=n>m</span><span class=p>:</span>
                         <span class=n>headers</span><span class=p>[</span><span class=n>m</span><span class=o>.</span><span class=n>group</span><span class=p>(</span><span class=mi>1</span><span class=p>)]</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>path</span><span class=p>)</span>
                         <span class=k>continue</span>
-<span class=hll>                    <span class=n>m</span> <span class=o>=</span> <span class=n>vtk_qt_include_pattern</span><span class=o>.</span><span class=n>match</span><span class=p>(</span><span class=n>header_parts</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
+<span class=hll>                    <span class=n>m</span> <span class=o>=</span> <span class=n>Patterns</span><span class=o>.</span><span class=n>vtk_qt_include_pattern</span><span class=o>.</span><span class=n>match</span><span class=p>(</span><span class=n>header_parts</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
 </span>                    <span class=k>if</span> <span class=n>m</span><span class=p>:</span>
                         <span class=n>headers</span><span class=p>[</span><span class=n>m</span><span class=o>.</span><span class=n>group</span><span class=p>(</span><span class=mi>1</span><span class=p>)]</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>path</span><span class=p>)</span>
     <span class=k>for</span> <span class=n>incl</span> <span class=ow>in</span> <span class=n>headers</span><span class=p>:</span>
