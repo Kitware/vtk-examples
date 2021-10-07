@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-# Needs fixing
-
 # noinspection PyUnresolvedReferences
 import vtkmodules.vtkInteractionStyle
 # noinspection PyUnresolvedReferences
