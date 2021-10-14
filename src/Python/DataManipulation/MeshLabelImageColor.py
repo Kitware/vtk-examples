@@ -6,7 +6,6 @@ import vtkmodules.vtkInteractionStyle
 import vtkmodules.vtkRenderingOpenGL2
 from vtkmodules.vtkCommonColor import vtkNamedColors
 from vtkmodules.vtkCommonCore import (
-    VTK_VERSION_NUMBER,
     vtkLookupTable,
     vtkVersion
 )
@@ -80,8 +79,7 @@ def main():
     # smoother.GenerateErrorVectorsOn()
     smoother.Update()
 
-    smoothed_polys = smoother.GetOutput()
-    smoother_error = smoothed_polys.GetPointData().GetScalars()
+    smoother_error = smoother.GetOutput().GetPointData().GetScalars()
 
     # Find min and max z.
     se_range = smoother_error.GetRange()
@@ -94,12 +92,16 @@ def main():
     # maxz = 1
     # minz = 0.3
     # maxz = 0.6
-    minz = 3.25
-    maxz = 3.85
+    # minz = 3.25
+    # maxz = 3.85
+    # minz = 0.5
+    # maxz = 0.8
+    # minz = 0.2
+    maxz = 0.7
 
     # Create the color map.
     lut = vtkLookupTable()
-    lut.SetTableRange(minz, maxz)  # This does nothing, use mapper.SetScalarRange(minz, maxz).
+    # lut.SetTableRange(minz, maxz)  # This does nothing, use mapper.SetScalarRange(minz, maxz).
     lut.SetHueRange(2 / 3.0, 1)
     # lut.SetSaturationRange(0, 0)
     # lut.SetValueRange(1, 0)
@@ -108,18 +110,22 @@ def main():
 
     # Calculate cell normals.
     triangle_cell_normals = vtkPolyDataNormals()
-    triangle_cell_normals.SetInputData(smoothed_polys)
+    triangle_cell_normals.SetInputConnection(smoother.GetOutputPort())
     triangle_cell_normals.ComputeCellNormalsOn()
     triangle_cell_normals.ComputePointNormalsOff()
     triangle_cell_normals.ConsistencyOn()
     triangle_cell_normals.AutoOrientNormalsOn()
     triangle_cell_normals.Update()  # Creates vtkPolyData.
+    # triangle_cell_normals.SetInputConnection(smoother.GetOutputPort())
+    # triangle_cell_normals.SetFeatureAngle(60.0)
+    sr = triangle_cell_normals.GetOutput().GetPointData().GetScalars().GetRange()
 
     mapper = vtkPolyDataMapper()
     # mapper.SetInput(smoothed_polys) # This has no normals.
     mapper.SetInputConnection(triangle_cell_normals.GetOutputPort())  # this is better for vis;-)
     mapper.ScalarVisibilityOn()  # Show colour.
-    mapper.SetScalarRange(minz, maxz)
+    # mapper.SetScalarRange(minz, maxz)
+    mapper.SetScalarRange(sr)
     # mapper.SetScalarModeToUseCellData() # Contains the label eg. 31
     mapper.SetScalarModeToUsePointData()  # The smoother error relates to the verts.
     mapper.SetLookupTable(lut)
@@ -145,10 +151,12 @@ def main():
 
     # Start the initialization and rendering.
     iren.Initialize()
-    ren.GetActiveCamera().SetPosition(-0.004332, -1.771289, -0.754580)
-    ren.GetActiveCamera().SetFocalPoint(0.000271, -0.001974, 0.006892)
-    ren.GetActiveCamera().SetViewUp(0.790211, -0.243999, 0.562166)
-    ren.ResetCameraClippingRange()
+    camera = ren.GetActiveCamera()
+    camera.SetPosition(264.284581, 135.963916, -3.174693)
+    camera.SetFocalPoint(256.006912, 175.949646, 24.175843)
+    camera.SetViewUp(0.816221, -0.201415, 0.541494)
+    camera.SetDistance(49.147026)
+    camera.SetClippingRange(26.948176, 77.209351)
     ren_win.Render()
     ren_win.SetWindowName('MeshLabelImageColor')
     ren_win.Render()
@@ -174,19 +182,16 @@ def vtk_version_ok(major, minor, build):
     """
     Check the VTK version.
 
-    :param major: Major version.
-    :param minor: Minor version.
-    :param build: Build version.
-    :return: True if the requested VTK version is greater or equal to the actual VTK version.
+    :param major: Requested major version.
+    :param minor: Requested minor version.
+    :param build: Requested build version.
+    :return: True if the requested VTK version is >= the actual VTK version.
     """
-    needed_version = 10000000000 * int(major) + 100000000 * int(minor) + int(build)
-    try:
-        vtk_version_number = VTK_VERSION_NUMBER
-    except AttributeError:  # as error:
-        ver = vtkVersion()
-        vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() + 100000000 * ver.GetVTKMinorVersion() \
-                             + ver.GetVTKBuildVersion()
-    if vtk_version_number >= needed_version:
+    requested_version = (100 * int(major) + int(minor)) * 100000000 + int(build)
+    ver = vtkVersion()
+    actual_version = (100 * ver.GetVTKMajorVersion() + ver.GetVTKMinorVersion()) \
+                     * 100000000 + ver.GetVTKBuildVersion()
+    if actual_version >= requested_version:
         return True
     else:
         return False
