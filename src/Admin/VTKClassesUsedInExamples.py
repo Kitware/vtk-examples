@@ -154,6 +154,23 @@ class VTKClassesInExamples:
         """
         For each example, get the example file paths.
         """
+
+        # Set up our patterns.
+        suffix_patterns = dict()
+        suffix_patterns['CSharp'] = re.compile(r'\.cs$')
+        suffix_patterns['Cxx'] = re.compile(r'\.(hxx|HXX|hpp|HPP|[hH]\+\+|[hH]|cpp|CPP|cxx|CXX|[cC]\+\+|txx|TXX)$')
+        suffix_patterns['Java'] = re.compile(r'\.java$')
+        suffix_patterns['Python'] = re.compile(r'\.py$')
+
+        # Set up our folders to exclude.
+        excluded_dirs = dict()
+        excluded_dirs['CSharp'] = []
+        excluded_dirs['Cxx'] = ['CMakeTechniques', 'Untested']
+        excluded_dirs['Java'] = ['Untested']
+        excluded_dirs['Python'] = ['Problems']
+        for d in excluded_dirs:
+            excluded_dirs[d] = sorted(['Deprecated', 'Snippets'] + excluded_dirs[d])
+
         for eg in self.example_types:
             # Get the paths to the examples in a particular sub directory e.g Cxx.
             file_paths = defaultdict(list)
@@ -161,29 +178,15 @@ class VTKClassesInExamples:
             # Does the directory exist?
             if not directory.is_dir():
                 raise RuntimeError(f'Non-existent folder: {str(directory)}')
-            exclude_dirs = ['Deprecated', 'Snippets']
-            if eg == 'CSharp':
-                ext_pattern = re.compile(r'\.cs$')
-            elif eg == 'Cxx':
-                ext_pattern = re.compile(r'\.(hxx|HXX|hpp|HPP|[hH]\+\+|[hH]|cpp|CPP|cxx|CXX|[cC]\+\+|txx|TXX)$')
-                exclude_dirs = exclude_dirs + ['CMakeTechniques', 'Untested']
-            elif eg == 'Java':
-                ext_pattern = re.compile(r'\.java$')
-                exclude_dirs = exclude_dirs + ['Untested']
-            elif eg == 'Python':
-                ext_pattern = re.compile(r'\.py$')
-                exclude_dirs = exclude_dirs + ['Problems']
-            else:
-                raise RuntimeError('Unknown example type.')
 
             # Pull out the subdirectories directly under directory.
             # Also exclude some of these subdirectories.
-            subdirs = [f for f in directory.iterdir() if f.is_dir() and f.parts[-1] not in exclude_dirs]
+            subdirs = [f for f in directory.iterdir() if f.is_dir() and f.parts[-1] not in excluded_dirs[eg]]
             # Now get the file paths we want.
             for subdir in subdirs:
                 path_list = [f for f in subdir.iterdir() if f.is_file()]
                 for path in path_list:
-                    m = ext_pattern.match(path.suffix)
+                    m = suffix_patterns[eg].match(path.suffix)
                     if m:
                         key = '/'.join(path.parts[-3:-1])
                         file_paths[key].append(path)
