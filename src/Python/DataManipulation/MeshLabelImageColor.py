@@ -149,16 +149,15 @@ def get_program_parameters():
 def get_diverging_lut(ct=0):
     """
     See: [Diverging Color Maps for Scientific Visualization](https://www.kennethmoreland.com/color-maps/)
-                       start point         midPoint            end point
-     cool to warm:     0.230, 0.299, 0.754 0.865, 0.865, 0.865 0.706, 0.016, 0.150
-     purple to orange: 0.436, 0.308, 0.631 0.865, 0.865, 0.865 0.759, 0.334, 0.046
-     green to purple:  0.085, 0.532, 0.201 0.865, 0.865, 0.865 0.436, 0.308, 0.631
-     blue to brown:    0.217, 0.525, 0.910 0.865, 0.865, 0.865 0.677, 0.492, 0.093
-     green to red:     0.085, 0.532, 0.201 0.865, 0.865, 0.865 0.758, 0.214, 0.233
 
-    :return:
+    :param ct: The index of the color map to use.
+    :return: The lookup table.
     """
+
     cm = dict()
+    # Start point = 0.0, mid point = 0.5 and end point = 1.0.
+    # Each value is a list with three sublists corresponding to the start point,
+    # mid point and end point along with the rgb color values for the respective point.
     # cool to warm
     cm[0] = [[0.0, 0.230, 0.299, 0.754], [0.5, 0.865, 0.865, 0.865], [1.0, 0.706, 0.016, 0.150]]
     # purple to orange
@@ -169,6 +168,11 @@ def get_diverging_lut(ct=0):
     cm[3] = [[0.0, 0.217, 0.525, 0.910], [0.5, 0.865, 0.865, 0.865], [1.0, 0.677, 0.492, 0.093]]
     # green to red
     cm[4] = [[0.0, 0.085, 0.532, 0.201], [0.5, 0.865, 0.865, 0.865], [1.0, 0.758, 0.214, 0.233]]
+
+    ct = abs(ct)
+    if ct > len(cm) - 1:
+        ct = 0
+        print('The selected diverging color map is unavailable. Using the default cool to warm one.')
 
     ctf = vtkColorTransferFunction()
     ctf.SetColorSpaceToDiverging()
