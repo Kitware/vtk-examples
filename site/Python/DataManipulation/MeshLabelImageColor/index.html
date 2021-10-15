@@ -206,16 +206,15 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>get_diverging_lut</span><span class=p>(</span><span class=n>ct</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
     <span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>    See: [Diverging Color Maps for Scientific Visualization](https://www.kennethmoreland.com/color-maps/)</span>
-<span class=sd>                       start point         midPoint            end point</span>
-<span class=sd>     cool to warm:     0.230, 0.299, 0.754 0.865, 0.865, 0.865 0.706, 0.016, 0.150</span>
-<span class=sd>     purple to orange: 0.436, 0.308, 0.631 0.865, 0.865, 0.865 0.759, 0.334, 0.046</span>
-<span class=sd>     green to purple:  0.085, 0.532, 0.201 0.865, 0.865, 0.865 0.436, 0.308, 0.631</span>
-<span class=sd>     blue to brown:    0.217, 0.525, 0.910 0.865, 0.865, 0.865 0.677, 0.492, 0.093</span>
-<span class=sd>     green to red:     0.085, 0.532, 0.201 0.865, 0.865, 0.865 0.758, 0.214, 0.233</span>
 
-<span class=sd>    :return:</span>
+<span class=sd>    :param ct: The index of the color map to use.</span>
+<span class=sd>    :return: The lookup table.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
+
     <span class=n>cm</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
+    <span class=c1># Start point = 0.0, mid point = 0.5 and end point = 1.0.</span>
+    <span class=c1># Each value is a list with three sublists corresponding to the start point,</span>
+    <span class=c1># mid point and end point along with the rgb color values for the respective point.</span>
     <span class=c1># cool to warm</span>
     <span class=n>cm</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=p>[[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.230</span><span class=p>,</span> <span class=mf>0.299</span><span class=p>,</span> <span class=mf>0.754</span><span class=p>],</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>],</span> <span class=p>[</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.706</span><span class=p>,</span> <span class=mf>0.016</span><span class=p>,</span> <span class=mf>0.150</span><span class=p>]]</span>
     <span class=c1># purple to orange</span>
@@ -226,6 +225,11 @@ function registerListener(event, func) {
     <span class=n>cm</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=p>[[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.217</span><span class=p>,</span> <span class=mf>0.525</span><span class=p>,</span> <span class=mf>0.910</span><span class=p>],</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>],</span> <span class=p>[</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.677</span><span class=p>,</span> <span class=mf>0.492</span><span class=p>,</span> <span class=mf>0.093</span><span class=p>]]</span>
     <span class=c1># green to red</span>
     <span class=n>cm</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>=</span> <span class=p>[[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.085</span><span class=p>,</span> <span class=mf>0.532</span><span class=p>,</span> <span class=mf>0.201</span><span class=p>],</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>],</span> <span class=p>[</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.758</span><span class=p>,</span> <span class=mf>0.214</span><span class=p>,</span> <span class=mf>0.233</span><span class=p>]]</span>
+
+    <span class=n>ct</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>ct</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>ct</span> <span class=o>&gt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>cm</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>:</span>
+        <span class=n>ct</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The selected diverging color map is unavailable. Using the default cool to warm one.&#39;</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>()</span>
 </span>    <span class=n>ctf</span><span class=o>.</span><span class=n>SetColorSpaceToDiverging</span><span class=p>()</span>
