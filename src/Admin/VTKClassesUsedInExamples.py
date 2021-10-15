@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import json
-import os
 import re
 import time
 from collections import defaultdict
 from dataclasses import dataclass
-from pathlib import Path, PurePath
+from pathlib import Path
 from urllib.request import urlopen
 
 
@@ -32,7 +31,7 @@ Note:
                         help='Specify the number of columns for unused VTK classes output, default is 5.', nargs='?',
                         const=5, type=int, default=5)
     parser.add_argument('-e', '--excluded_columns',
-                        help='Specify the number of columns for excluded VTK classes output, default is 5.', nargs='?',
+                        help='Specify the number of columns for excluded VTK classes output, default is 3.', nargs='?',
                         const=3, type=int, default=3)
     parser.add_argument('-a', '--add_vtk_html', help='Add html paths to the VTK classes.', action='store_true')
 
@@ -70,10 +69,11 @@ class VTKClassesInExamples:
     Determine what classes are being used or not used in the examples.
     """
 
-    def __init__(self, base_directory, output_directory, columns, excluded_columns, add_vtk_html):
+    def __init__(self, base_directory: Path, output_directory: Path, columns, excluded_columns, add_vtk_html):
         """
+        Note: base_directory, output_directory are Path objects.
         :param base_directory: The path to the VTK Examples sources, usually some_path/vtk-examples/src
-        :param output_directory: Where the coverage file will be written.
+        :param output_directory: Tha path to where the coverage files will be written.
         :param columns: When generating the classes not used table, the number of columns to use.
         :param excluded_columns: When generating the excluded classes table, the number of columns to use.
         :param add_vtk_html: True if the Doxygen documentation paths are to be added to the vtk classes in the tables.
@@ -83,8 +83,17 @@ class VTKClassesInExamples:
         self.excluded_classes = ['vtkActor', 'vtkCamera', 'vtkNamedColors', 'vtkPolyDataMapper', 'vtkProperty',
                                  'vtkRenderer', 'vtkRenderWindow', 'vtkRenderWindowInteractor', ]
 
-        self.base_directory = base_directory
-        self.output_directory = output_directory
+        # Make sure that they are paths.
+        # See: https://stackoverflow.com/questions/58647584/how-to-test-if-object-is-a-pathlib-path
+        if isinstance(base_directory, Path):
+            self.base_directory = base_directory
+        else:
+            self.base_directory = Path(base_directory)
+        if isinstance(output_directory, Path):
+            self.output_directory = output_directory
+        else:
+            self.output_directory = Path(output_directory)
+
         self.columns = columns
         self.excluded_columns = excluded_columns
         self.add_vtk_html = add_vtk_html
@@ -148,42 +157,41 @@ class VTKClassesInExamples:
         for eg in self.example_types:
             # Get the paths to the examples in a particular sub directory e.g Cxx.
             file_paths = defaultdict(list)
-            directory = Path(self.base_directory, eg)
+            directory = self.base_directory / eg
             # Does the directory exist?
             if not directory.is_dir():
                 raise RuntimeError(f'Non-existent folder: {str(directory)}')
-            exclude_dirs = ['Deprecated']
+            exclude_dirs = ['Deprecated', 'Snippets']
             if eg == 'CSharp':
                 fn_pattern = re.compile(r'^[0-9a-zA-Z_\-]+\.cs$')
+                ext_pattern = re.compile(r'\.cs$')
             elif eg == 'Cxx':
                 fn_pattern = re.compile(
                     r'^[0-9a-zA-Z_\-]+\.(hxx|HXX|hpp|HPP|[hH]\+\+|[hH]|cpp|CPP|cxx|CXX|[cC]\+\+|txx|TXX)$')
+                ext_pattern = re.compile(r'\.(hxx|HXX|hpp|HPP|[hH]\+\+|[hH]|cpp|CPP|cxx|CXX|[cC]\+\+|txx|TXX)$')
+
                 exclude_dirs = exclude_dirs + ['CMakeTechniques', 'Untested']
             elif eg == 'Java':
                 fn_pattern = re.compile(r'^[0-9a-zA-Z_\-]+\.java$')
+                ext_pattern = re.compile(r'\.java$')
+
                 exclude_dirs = exclude_dirs + ['Untested']
             elif eg == 'Python':
                 fn_pattern = re.compile(r'^[0-9a-zA-Z_\-]+\.py$')
                 exclude_dirs = exclude_dirs + ['Problems']
+                ext_pattern = re.compile(r'\.py$')
             else:
                 raise RuntimeError('Unknown example type.')
 
-            # Walk the tree.
-            for root, directories, files in os.walk(str(directory)):
-                # The only visible folders on the web pages are those directly under the language.
-                # So we keep folders like Cxx/xx but exclude folders like Cxx/xx/yy.
-                if root[len(str(directory)):].count(os.sep) > 1:
-                    continue
-                sp = PurePath(root).parts
-                idx = sp.index(eg)
-                key = '/'.join(sp[idx:])
-                if exclude_dirs and len(sp[idx:]) > 1:
-                    if sp[idx:][1] in exclude_dirs:
-                        continue
-                for filename in files:
-                    m = fn_pattern.match(filename)
+            # Non recursive.
+            subdirs = [f for f in directory.iterdir() if f.is_dir() and f.parts[-1] not in exclude_dirs]
+            for dir in subdirs:
+                path_list = [f for f in dir.iterdir() if f.is_file()]
+                for path in path_list:
+                    m = ext_pattern.match(path.suffix)
                     if m:
-                        file_paths[key].append(str(Path(root, filename)))
+                        key = '/'.join(path.parts[-3:-1])
+                        file_paths[key].append(path)
             self.example_file_paths[eg] = file_paths
 
     def vtk_classes_in_examples(self):
@@ -207,16 +215,24 @@ class VTKClassesInExamples:
             else:
                 raise RuntimeError('Unknown example type.')
 
+            # Skip some lines in the files.
+            #   Empty lines.
+            #   Single opening or closing bracket.
+            #   Single opening or closing curly brace.
+            skip_patterns = re.compile(r'(^ *$)|(^ *[(|\)]+$)|(^ *[{|}]+$)')
+
             for k, v in self.example_file_paths[eg].items():
                 for fn in v:
                     # Open and read the file building a list of classes.
-                    with open(fn) as f:
-                        for line in f:
-                            m = class_pattern.match(line)
-                            if m:
-                                c = m.group(m.lastindex)
-                                if c in self.vtk_classes:
-                                    res[c][k].add(Path(fn).stem)
+                    content = fn.read_text().split('\n')
+                    for line in content:
+                        if skip_patterns.match(line):
+                            continue
+                        m = class_pattern.match(line)
+                        if m:
+                            c = m.group(m.lastindex)
+                            if c in self.vtk_classes:
+                                res[c][k].add(Path(fn).stem)
             self.classes_used[eg] = res
 
     def make_crossreferences(self):
@@ -251,9 +267,9 @@ class VTKClassesInExamples:
         vtk_docs_link = links.vtk_docs
 
         eg_fmt = '[{:s}]({:s})'
-        h1 = '# VTK Classes used in the Examples\n\n'
-        h2 = '## {:s}\n\n'
-        h3 = '### {:s}\n\n'
+        h1 = '# VTK Classes used in the Examples\n'
+        h2 = '## {:s}\n'
+        h3 = '### {:s}\n'
 
         # Excluded classes columns.
         h1ec = ' VTK Class '
@@ -266,14 +282,14 @@ class VTKClassesInExamples:
             th1ec += '|' + h1ec
             th2ec += '|' + h2ec
             trec += '|' + r1ec
-        th1ec += '|\n'
-        th2ec += '|\n'
-        trec += '|\n'
+        th1ec += '|'
+        th2ec += '|'
+        trec += '|'
 
         # Classes and examples.
-        th1 = '| VTK Class | Examples |\n'
-        th2 = '|--------------|----------------------|\n'
-        tr = '| {:s} | {:s} |\n'
+        th1 = '| VTK Class | Examples |'
+        th2 = '|--------------|----------------------|'
+        tr = '| {:s} | {:s} |'
         for eg in self.example_types:
             if eg == 'Cxx':
                 excl_classes = self.excluded_classes + ['vtkSmartPointer', 'vtkNew']
@@ -284,10 +300,10 @@ class VTKClassesInExamples:
             res.append(h2.format(eg))
             res.append(
                 f'Out of {len(self.vtk_classes)} available VTK classes,'
-                f' {len(self.classes_used[eg])} are demonstrated here.\n\n')
+                f' {len(self.classes_used[eg])} are demonstrated here.\n')
             # Excluded classes
             res.append(h3.format('Excluded classes'))
-            res.append('These classes are excluded since they occur in the majority of the examples:\n\n')
+            res.append('These classes are excluded since they occur in the majority of the examples:\n')
             res.append(th1ec)
             res.append(th2ec)
             tmp = []
@@ -303,7 +319,7 @@ class VTKClassesInExamples:
                 while len(tmp) < self.excluded_columns:
                     tmp.append('')
                 res.append(trec.format(*tmp))
-            res.append('\n')
+            res.append('')
             res.append(h3.format('Classes used'))
             res.append(th1)
             res.append(th2)
@@ -327,6 +343,7 @@ class VTKClassesInExamples:
                         res.append(tr.format(f'[{c}]({vtk_docs_link}{self.vtk_classes[c]}#details)', f_list.strip()))
                     else:
                         res.append(tr.format(f'{c}', f_list.strip()))
+            res.append('')
             self.classes_used_table[eg] = res
 
     def make_classes_not_used_table(self):
@@ -396,32 +413,33 @@ class VTKClassesInExamples:
         self.make_classes_used_table()
         self.make_classes_not_used_table()
 
-    def print_tables(self):
-        p = Path(self.output_directory)
-        if not p.is_dir():
-            p.mkdir(parents=True, exist_ok=True)
+    def write_files(self):
+        if not self.output_directory.is_dir():
+            self.output_directory.mkdir(parents=True, exist_ok=True)
         if self.vtk_examples_xref:
-            fn = Path(self.output_directory, 'vtk_vtk-examples_xref.json')
+            fn = self.output_directory / 'vtk_vtk-examples_xref.json'
             with open(fn, 'w') as outfile:
                 json.dump(self.vtk_examples_xref, outfile)
         for eg in self.example_types:
-            fn = Path(self.output_directory, eg + 'VTKClassesUsed.md')
-            with open(fn, 'w') as f:
-                f.writelines(self.classes_used_table[eg])
-            fn = Path(self.output_directory, eg + 'VTKClassesNotUsed.md')
-            with open(fn, 'w') as f:
-                f.writelines(self.classes_not_used_table[eg])
+            fn = self.output_directory / (eg + 'VTKClassesUsed.md')
+            fn.write_text('\n'.join(self.classes_used_table[eg]))
+            fn = self.output_directory / (eg + 'VTKClassesNotUsed.md')
+            fn.write_text('\n'.join(self.classes_not_used_table[eg]))
 
 
 def main():
     example_source, coverage_dest, columns, excluded_columns, add_vtk_html = get_program_parameters()
-    if not Path(example_source).is_dir():
-        print(f'The path: {example_source} does not exist.')
-    if not Path(coverage_dest).is_dir():
-        print(f'The path: {coverage_dest} does not exist.')
-    vtk_classes = VTKClassesInExamples(example_source, coverage_dest, columns, excluded_columns, add_vtk_html)
+    source_path = Path(example_source)
+    coverage_path = Path(coverage_dest)
+    if not source_path.is_dir():
+        print(f'The path: {source_path} does not exist.')
+        return
+    if not coverage_path.is_dir():
+        print(f'The path: {coverage_path} does not exist.')
+        print(f'Creating it.')
+    vtk_classes = VTKClassesInExamples(source_path, coverage_dest, columns, excluded_columns, add_vtk_html)
     vtk_classes.build_tables()
-    vtk_classes.print_tables()
+    vtk_classes.write_files()
 
 
 if __name__ == '__main__':
