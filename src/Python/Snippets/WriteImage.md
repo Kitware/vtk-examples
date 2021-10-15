@@ -87,6 +87,6 @@ def write_image(file_name, ren_win, rgba=True):
 
 ```python
 
-  WriteImage(f, renWin, rgba=False)
+  write_image(file_name, ren_win, rgba=False)
 
 ```
