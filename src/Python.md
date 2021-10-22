@@ -572,6 +572,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [PointDataSubdivision](/Python/Visualization/PointDataSubdivision) | Vary the shapes of glyphed points using a programmable glyph filter
 [PointSize](/Python/Visualization/PointSize) |
 [ProbeCombustor](/Python/VisualizationAlgorithms/ProbeCombustor) | Probing data in a combustor.  Probes are regular arrays of 50 by 50 points that are then passed through a contouring filter.
+[ProgrammableGlyphFilter](/Python/Visualization/ProgrammableGlyphFilter) | Generate a custom glyph at each point.
 [ProgrammableGlyphs](/Python/Visualization/ProgrammableGlyphs) | Generate programmable glyphs.
 [PseudoVolumeRendering](/Python/VolumeRendering/PseudoVolumeRendering) | Here we use 100 cut planes, each with an opacity of 0.05. They are then rendered back-to-front to simulate volume rendering.
 [QuadricVisualization](/Python/Visualization/QuadricVisualization) | Visualizing a quadric function.
