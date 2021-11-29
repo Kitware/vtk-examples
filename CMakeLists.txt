@@ -138,6 +138,9 @@ else ()
      message(STATUS "VTKWikiExamples: git lfs is installed.")
 endif()
 
+# Prevent a "command line is too long" failure in Windows.
+set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
+
 message(STATUS "")
 message(STATUS "Some tests will be excluded.")
 include (${PROJECT_SOURCE_DIR}/src/ExcludedTests/ExcludedTests.cmake)
