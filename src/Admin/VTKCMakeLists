@@ -19,7 +19,6 @@ if (VTK_VERSION VERSION_LESS "8.90.0")
   add_executable(XXX MACOSX_BUNDLE XXX.cxx )
   target_link_libraries(XXX PRIVATE ${VTK_LIBRARIES})
 else()
-  # include all components
   # Prevent a "command line is too long" failure in Windows.
   set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
   add_executable(XXX MACOSX_BUNDLE XXX.cxx )

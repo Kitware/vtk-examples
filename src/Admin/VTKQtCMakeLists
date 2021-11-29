@@ -81,7 +81,6 @@ if (VTK_VERSION VERSION_LESS "8.90.0")
   endif()
   target_link_libraries(XXX ${VTK_LIBRARIES})
 else()
-  # include all components
   # Prevent a "command line is too long" failure in Windows.
   set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
   # CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.
