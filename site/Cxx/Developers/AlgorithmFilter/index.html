@@ -76,31 +76,6 @@ function registerListener(event, func) {
 
   <span class=k>return</span> <span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
-</code></pre></div> <p><strong>vtkTest.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#include</span> <span class=cpf>&quot;vtkTest.h&quot;</span><span class=cp></span>
-</span>
-<span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkObjectFactory.h&gt;</span><span class=cp></span>
-</span>
-<span class=hll><span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTest</span><span class=p>);</span>
-</span>
-<span class=hll><span class=n>vtkTest</span><span class=o>::</span><span class=n>vtkTest</span><span class=p>()</span>
-</span><span class=p>{</span>
-  <span class=k>this</span><span class=o>-&gt;</span><span class=n>Value</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
-<span class=p>}</span>
-
-<span class=hll><span class=n>vtkTest</span><span class=o>::~</span><span class=n>vtkTest</span><span class=p>()</span>
-</span><span class=p>{</span>
-<span class=p>}</span>
-
-<span class=hll><span class=kt>void</span> <span class=n>vtkTest</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span> <span class=n>os</span><span class=p>,</span> <span class=n>vtkIndent</span> <span class=n>indent</span><span class=p>)</span>
-</span><span class=p>{</span>
-  <span class=k>this</span><span class=o>-&gt;</span><span class=n>Superclass</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>os</span><span class=p>,</span> <span class=n>indent</span><span class=p>);</span>
-<span class=p>}</span>
-
-<span class=hll><span class=kt>void</span> <span class=n>vtkTest</span><span class=o>::</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span> <span class=n>t</span><span class=p>)</span>
-</span><span class=p>{</span>
-<span class=hll>  <span class=n>vtkTest</span><span class=o>*</span> <span class=n>m</span> <span class=o>=</span> <span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkTest</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>t</span><span class=p>);</span>
-</span>  <span class=k>this</span><span class=o>-&gt;</span><span class=n>Value</span> <span class=o>=</span> <span class=n>m</span><span class=o>-&gt;</span><span class=n>GetValue</span><span class=p>();</span>
-<span class=p>}</span>
 </code></pre></div> <p><strong>vtkTestAlgorithmFilter.h</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#ifndef __vtkTestAlgorithmFilter_h</span>
 </span><span class=hll><span class=cp>#define __vtkTestAlgorithmFilter_h</span>
 </span>
@@ -191,34 +166,31 @@ function registerListener(event, func) {
 </span><span class=p>};</span>
 
 <span class=cp>#endif</span>
-</code></pre></div> <p><strong>vtkTest.h</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#ifndef __vtkTest_h</span>
-</span><span class=hll><span class=cp>#define __vtkTest_h</span>
+</code></pre></div> <p><strong>vtkTest.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#include</span> <span class=cpf>&quot;vtkTest.h&quot;</span><span class=cp></span>
 </span>
-<span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkDataObject.h&gt;</span><span class=cp></span>
+<span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkObjectFactory.h&gt;</span><span class=cp></span>
 </span>
-<span class=hll><span class=k>class</span> <span class=nc>vtkTest</span> <span class=o>:</span> <span class=k>public</span> <span class=n>vtkDataObject</span>
+<span class=hll><span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTest</span><span class=p>);</span>
+</span>
+<span class=hll><span class=n>vtkTest</span><span class=o>::</span><span class=n>vtkTest</span><span class=p>()</span>
 </span><span class=p>{</span>
-<span class=k>public</span><span class=o>:</span>
-<span class=hll>  <span class=k>static</span> <span class=n>vtkTest</span><span class=o>*</span> <span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTest</span><span class=p>,</span> <span class=n>vtkDataObject</span><span class=p>);</span>
-</span><span class=hll>  <span class=kt>void</span> <span class=nf>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span> <span class=n>os</span><span class=p>,</span> <span class=n>vtkIndent</span> <span class=n>indent</span><span class=p>)</span> <span class=k>override</span><span class=p>;</span>
-</span><span class=hll>  <span class=kt>void</span> <span class=nf>ShallowCopy</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span> <span class=n>t</span><span class=p>)</span> <span class=k>override</span><span class=p>;</span>
-</span>
-<span class=hll>  <span class=n>vtkGetMacro</span><span class=p>(</span><span class=n>Value</span><span class=p>,</span> <span class=kt>double</span><span class=p>);</span>
-</span><span class=hll>  <span class=n>vtkSetMacro</span><span class=p>(</span><span class=n>Value</span><span class=p>,</span> <span class=kt>double</span><span class=p>);</span>
-</span>
-<span class=k>protected</span><span class=o>:</span>
-<span class=hll>  <span class=n>vtkTest</span><span class=p>();</span>
-</span><span class=hll>  <span class=o>~</span><span class=n>vtkTest</span><span class=p>();</span>
-</span>
-<span class=k>private</span><span class=o>:</span>
-<span class=hll>  <span class=n>vtkTest</span><span class=p>(</span><span class=k>const</span> <span class=n>vtkTest</span><span class=o>&amp;</span><span class=p>);</span>        <span class=c1>// Not implemented.</span>
-</span><span class=hll>  <span class=kt>void</span> <span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span> <span class=n>vtkTest</span><span class=o>&amp;</span><span class=p>);</span> <span class=c1>// Not implemented.</span>
-</span>
-  <span class=kt>double</span> <span class=n>Value</span><span class=p>;</span>
-<span class=p>};</span>
+  <span class=k>this</span><span class=o>-&gt;</span><span class=n>Value</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
+<span class=p>}</span>
 
-<span class=cp>#endif</span>
+<span class=hll><span class=n>vtkTest</span><span class=o>::~</span><span class=n>vtkTest</span><span class=p>()</span>
+</span><span class=p>{</span>
+<span class=p>}</span>
+
+<span class=hll><span class=kt>void</span> <span class=n>vtkTest</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span> <span class=n>os</span><span class=p>,</span> <span class=n>vtkIndent</span> <span class=n>indent</span><span class=p>)</span>
+</span><span class=p>{</span>
+  <span class=k>this</span><span class=o>-&gt;</span><span class=n>Superclass</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>os</span><span class=p>,</span> <span class=n>indent</span><span class=p>);</span>
+<span class=p>}</span>
+
+<span class=hll><span class=kt>void</span> <span class=n>vtkTest</span><span class=o>::</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span> <span class=n>t</span><span class=p>)</span>
+</span><span class=p>{</span>
+<span class=hll>  <span class=n>vtkTest</span><span class=o>*</span> <span class=n>m</span> <span class=o>=</span> <span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkTest</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>t</span><span class=p>);</span>
+</span>  <span class=k>this</span><span class=o>-&gt;</span><span class=n>Value</span> <span class=o>=</span> <span class=n>m</span><span class=o>-&gt;</span><span class=n>GetValue</span><span class=p>();</span>
+<span class=p>}</span>
 </code></pre></div> <p><strong>vtkTestAlgorithmFilter.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#include</span> <span class=cpf>&quot;vtkTestAlgorithmFilter.h&quot;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&quot;vtkTest.h&quot;</span><span class=cp></span>
 </span>
@@ -443,6 +415,34 @@ function registerListener(event, func) {
     <span class=k>this</span><span class=o>-&gt;</span><span class=n>AddInputDataObject</span><span class=p>(</span><span class=n>index</span><span class=p>,</span> <span class=n>input</span><span class=p>);</span>
   <span class=p>}</span>
 <span class=p>}</span>
+</code></pre></div> <p><strong>vtkTest.h</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#ifndef __vtkTest_h</span>
+</span><span class=hll><span class=cp>#define __vtkTest_h</span>
+</span>
+<span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkDataObject.h&gt;</span><span class=cp></span>
+</span>
+<span class=hll><span class=k>class</span> <span class=nc>vtkTest</span> <span class=o>:</span> <span class=k>public</span> <span class=n>vtkDataObject</span>
+</span><span class=p>{</span>
+<span class=k>public</span><span class=o>:</span>
+<span class=hll>  <span class=k>static</span> <span class=n>vtkTest</span><span class=o>*</span> <span class=n>New</span><span class=p>();</span>
+</span><span class=hll>  <span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTest</span><span class=p>,</span> <span class=n>vtkDataObject</span><span class=p>);</span>
+</span><span class=hll>  <span class=kt>void</span> <span class=nf>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span> <span class=n>os</span><span class=p>,</span> <span class=n>vtkIndent</span> <span class=n>indent</span><span class=p>)</span> <span class=k>override</span><span class=p>;</span>
+</span><span class=hll>  <span class=kt>void</span> <span class=nf>ShallowCopy</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span> <span class=n>t</span><span class=p>)</span> <span class=k>override</span><span class=p>;</span>
+</span>
+<span class=hll>  <span class=n>vtkGetMacro</span><span class=p>(</span><span class=n>Value</span><span class=p>,</span> <span class=kt>double</span><span class=p>);</span>
+</span><span class=hll>  <span class=n>vtkSetMacro</span><span class=p>(</span><span class=n>Value</span><span class=p>,</span> <span class=kt>double</span><span class=p>);</span>
+</span>
+<span class=k>protected</span><span class=o>:</span>
+<span class=hll>  <span class=n>vtkTest</span><span class=p>();</span>
+</span><span class=hll>  <span class=o>~</span><span class=n>vtkTest</span><span class=p>();</span>
+</span>
+<span class=k>private</span><span class=o>:</span>
+<span class=hll>  <span class=n>vtkTest</span><span class=p>(</span><span class=k>const</span> <span class=n>vtkTest</span><span class=o>&amp;</span><span class=p>);</span>        <span class=c1>// Not implemented.</span>
+</span><span class=hll>  <span class=kt>void</span> <span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span> <span class=n>vtkTest</span><span class=o>&amp;</span><span class=p>);</span> <span class=c1>// Not implemented.</span>
+</span>
+  <span class=kt>double</span> <span class=n>Value</span><span class=p>;</span>
+<span class=p>};</span>
+
+<span class=cp>#endif</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.3</span> <span class=s>FATAL_ERROR</span><span class=p>)</span>
 
 <span class=nb>project</span><span class=p>(</span><span class=s>AlgorithmFilter</span><span class=p>)</span>
@@ -454,7 +454,7 @@ function registerListener(event, func) {
 
 <span class=nb>if</span> <span class=p>(</span><span class=s>NOT</span> <span class=s>VTK_FOUND</span><span class=p>)</span>
   <span class=nb>message</span><span class=p>(</span><span class=s2>&quot;Skipping AlgorithmFilter: ${VTK_NOT_FOUND_MESSAGE}&quot;</span><span class=p>)</span>
-  <span class=nb>return</span> <span class=p>()</span>
+  <span class=nb>return</span><span class=p>()</span>
 <span class=nb>endif</span><span class=p>()</span>
 <span class=nb>message</span> <span class=p>(</span><span class=s>STATUS</span> <span class=s2>&quot;VTK_VERSION: ${VTK_VERSION}&quot;</span><span class=p>)</span>
 <span class=nb>if</span> <span class=p>(</span><span class=s>VTK_VERSION</span> <span class=s>VERSION_LESS</span> <span class=s2>&quot;8.90.0&quot;</span><span class=p>)</span>
@@ -462,8 +462,10 @@ function registerListener(event, func) {
   <span class=nb>include</span><span class=p>(</span><span class=o>${</span><span class=nv>VTK_USE_FILE</span><span class=o>}</span><span class=p>)</span>
   <span class=nb>add_executable</span><span class=p>(</span><span class=s>AlgorithmFilter</span> <span class=s>MACOSX_BUNDLE</span> <span class=s>AlgorithmFilter.cxx</span> <span class=p>)</span>
   <span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>AlgorithmFilter</span> <span class=s>PRIVATE</span> <span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span><span class=p>)</span>
-<span class=nb>else</span> <span class=p>()</span>
+<span class=nb>else</span><span class=p>()</span>
   <span class=c># include all components</span>
+  <span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
+  <span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span> <span class=s2>&quot;ON&quot;</span> <span class=s>CACHE</span> <span class=s>BOOL</span> <span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
   <span class=nb>add_executable</span><span class=p>(</span><span class=s>AlgorithmFilter</span> <span class=s>MACOSX_BUNDLE</span> <span class=s>AlgorithmFilter.cxx</span> <span class=p>)</span>
   <span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>AlgorithmFilter</span> <span class=s>PRIVATE</span> <span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span><span class=p>)</span>
   <span class=c># vtk_module_autoinit is needed</span>
@@ -471,7 +473,7 @@ function registerListener(event, func) {
     <span class=s>TARGETS</span> <span class=s>AlgorithmFilter</span>
     <span class=s>MODULES</span> <span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
     <span class=p>)</span>
-<span class=nb>endif</span> <span class=p>()</span>
+<span class=nb>endif</span><span class=p>()</span>
 </code></pre></div> <h3 id=download-and-build-algorithmfilter>Download and Build AlgorithmFilter<a class=headerlink href=#download-and-build-algorithmfilter title="Permanent link">&para;</a></h3> <p>Click <a href=https://github.com/Kitware/vtk-examples/raw/gh-pages/Tarballs/AlgorithmFilter.tar>here to download AlgorithmFilter</a> and its <em>CMakeLists.txt</em> file. Once the <em>tarball AlgorithmFilter.tar</em> has been downloaded and extracted,</p> <div class=codehilite><pre><span></span><code>cd AlgorithmFilter/build
 </code></pre></div> <p>If VTK is installed:</p> <div class=codehilite><pre><span></span><code>cmake ..
 </code></pre></div> <p>If VTK is not installed but compiled on your system, you will need to specify the path to your VTK build:</p> <div class=codehilite><pre><span></span><code>cmake -DVTK_DIR:PATH=/home/me/vtk_build ..
