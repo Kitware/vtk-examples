@@ -10,7 +10,7 @@ find_package(VTK COMPONENTS ZZZ
 
 if (NOT VTK_FOUND)
   message("Skipping XXX: ${VTK_NOT_FOUND_MESSAGE}")
-  return ()
+  return()
 endif()
 message (STATUS "VTK_VERSION: ${VTK_VERSION}")
 if (VTK_VERSION VERSION_LESS "8.90.0")
@@ -18,8 +18,10 @@ if (VTK_VERSION VERSION_LESS "8.90.0")
   include(${VTK_USE_FILE})
   add_executable(XXX MACOSX_BUNDLE XXX.cxx )
   target_link_libraries(XXX PRIVATE ${VTK_LIBRARIES})
-else ()
+else()
   # include all components
+  # Prevent a "command line is too long" failure in Windows.
+  set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
   add_executable(XXX MACOSX_BUNDLE XXX.cxx )
   target_link_libraries(XXX PRIVATE ${VTK_LIBRARIES})
   # vtk_module_autoinit is needed
@@ -27,7 +29,7 @@ else ()
     TARGETS XXX
     MODULES ${VTK_LIBRARIES}
     )
-endif ()
+endif()
 ```
 
 ###Download and Build XXX
