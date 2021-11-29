@@ -254,7 +254,6 @@ function registerListener(event, func) {
   <span class=n>add_executable</span><span class=p>(</span><span class=n>CellLocatorVisualization</span> <span class=n>MACOSX_BUNDLE</span> <span class=n>CellLocatorVisualization</span><span class=p>.</span><span class=n>cxx</span> <span class=p>)</span>
   <span class=n>target_link_libraries</span><span class=p>(</span><span class=n>CellLocatorVisualization</span> <span class=n>PRIVATE</span> <span class=n>$</span><span class=p>{</span><span class=n>VTK_LIBRARIES</span><span class=p>})</span>
 <span class=k>else</span><span class=p>()</span>
-  <span class=cp># include all components</span>
   <span class=cp># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
   <span class=n>set</span><span class=p>(</span><span class=n>CMAKE_NINJA_FORCE_RESPONSE_FILE</span> <span class=s>&quot;ON&quot;</span> <span class=n>CACHE</span> <span class=n>BOOL</span> <span class=s>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
   <span class=n>add_executable</span><span class=p>(</span><span class=n>CellLocatorVisualization</span> <span class=n>MACOSX_BUNDLE</span> <span class=n>CellLocatorVisualization</span><span class=p>.</span><span class=n>cxx</span> <span class=p>)</span>
