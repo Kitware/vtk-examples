@@ -25,7 +25,10 @@ int main(int, char*[])
   vtkNew<vtkRenderView> renderView;
   renderView->SetInteractionMode(vtkRenderView::INTERACTION_MODE_3D);
   renderView->GetRenderer()->AddActor(actor);
+  renderView->RenderOnMouseMoveOn();
   renderView->Update();
+  renderView->GetRenderer()->SetBackground(
+      colors->GetColor3d("Beige").GetData());
 
   renderView->ResetCamera();
   renderView->GetInteractor()->Start();
