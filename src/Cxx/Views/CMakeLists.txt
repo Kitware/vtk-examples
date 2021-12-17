@@ -3,6 +3,7 @@ project (${WIKI}Views)
 if(NOT VTK__BINARY_DIR)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
+    vtkCommonColor
     vtkCommonCore
     vtkFiltersSources
     vtkInteractionStyle
@@ -38,3 +39,10 @@ foreach(SOURCE_FILE ${ALL_FILES})
       )
   endif()
 endforeach()
+
+if (BUILD_TESTING)
+  # Testing
+  set(KIT Views)
+
+  include(${WikiExamples_SOURCE_DIR}/CMake/ExamplesTesting.cmake)
+endif()
