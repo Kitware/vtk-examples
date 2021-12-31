@@ -657,6 +657,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [OrientationMarkerWidget1](/Python/Widgets/OrientationMarkerWidget1) | Display a polydata as an orientation icon.
 [ScalarBarWidget](/Python/Widgets/ScalarBarWidget) | The ScalarBarWidget displays a scalar bar that is movable and changes orientation automatically when close to the borders of the image. It needs a ScalarBarActor
 [SphereWidget](/Python/Widgets/SphereWidget) | This 3D widget defines a sphere that can be interactively placed in a scene.
+[SplineWidget](/Python/Widgets/SplineWidget) | This example shows how to use vtkSplineWidget with a callback being used to get the length of the spline widget.
 [TextWidget](/Python/Widgets/TextWidget) | Annotate a VTK image with movable text
 
 ## Plotting
