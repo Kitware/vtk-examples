@@ -27,7 +27,7 @@ int main(int, char*[])
                                                {{1, 1, 1}},
                                                {{0, 1, 1}}}};
   // The ordering of the corner points on each face.
-  std::array<std::array<vtkIdType, 4>, 6> ordering = {{{{0, 1, 2, 3}},
+  std::array<std::array<vtkIdType, 4>, 6> ordering = {{{{0, 3, 2, 1}},
                                                        {{4, 5, 6, 7}},
                                                        {{0, 1, 5, 4}},
                                                        {{1, 2, 6, 5}},
