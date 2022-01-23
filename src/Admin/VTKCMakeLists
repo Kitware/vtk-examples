@@ -1,6 +1,6 @@
 ###CMakeLists.txt
 ```cmake
-cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
 project(XXX)
 
@@ -33,7 +33,7 @@ endif()
 
 ###Download and Build XXX
 
-Click [here to download XXX](WWW/raw/gh-pages/Tarballs/XXX.tar) and its *CMakeLists.txt* file.
+Click [here to download XXX](WWW/raw/gh-pages/Tarballs/Cxx/XXX.tar) and its *CMakeLists.txt* file.
 Once the *tarball XXX.tar* has been downloaded and extracted,
 ```
 cd XXX/build
