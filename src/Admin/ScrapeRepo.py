@@ -461,7 +461,7 @@ def add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_path, te
     :param src_path: Path to the source folder e.g. vtk-examples/src.
     :param doc_path: Path to the docs folder e.g. vtk-examples-doc/docs.
     :param baseline_path: The baseline directories relative to root_path/repo_dir.
-    :param test_images: The cache containing the rest images.
+    :param test_images: The cache containing the test images.
     :param from_file: The file to copy/edit
     :param to_file: The save file name.
     :param stats: Statistics.
@@ -542,6 +542,105 @@ def add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_path, te
             ofn.write(line + '\n')
 
 
+def add_trame_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_path, test_images, from_file, to_file,
+                             stats):
+    """
+    Add thumbnails, and language links, then copy to the doc_dir.
+    :param web_repo_url: The repository URL.
+    :param src_path: Path to the source folder e.g. vtk-examples/src.
+    :param doc_path: Path to the docs folder e.g. vtk-examples-doc/docs.
+    :param baseline_path: The baseline directories relative to root_path/repo_dir.
+    :param test_images: The cache containing the test images.
+    :param from_file: The file to copy/edit
+    :param to_file: The save file name.
+    :param stats: Statistics.
+    :return:
+    """
+    from_path = src_path / from_file
+    to_path = doc_path / to_file
+    with open(from_path, 'r') as md_file:
+        lines = dict()
+        line_count = 0
+        x = []
+        for line in md_file:
+            example_line = get_example_line(line.strip())[0]
+            with_doxy = add_vtk_nightly_doc_link(line, stats)
+            x.append(False)
+            x.append(with_doxy.rstrip())
+            if example_line != '':
+                stats['thumb_count'] += 1
+                example_path = PurePath(example_line)
+                example_path = example_path.with_name('Test' + example_path.stem + '.png')
+                baseline = baseline_path.joinpath(example_path.relative_to('/'))
+                if baseline.is_file():
+                    baseline_url = '/'.join([web_repo_url, 'blob/gh-pages', 'src/Testing/Baseline',
+                                             str(example_path.relative_to('/').parent), example_path.name])
+                    x[0] = True
+                    x.append(baseline_url)
+            lines[line_count] = x
+            line_count += 1
+            x = []
+        add_image_link(test_images, lines, stats)
+        for k, v in lines.items():
+            line_changed = False
+            if v[1] != '':
+                if '](/Coverage' in v[1]:
+                    # Make the coverage link relative.
+                    v[1] = re.sub(r'][ ]*\([ ]*/', r'](', v[1])
+                    v[1] = v[1].replace('.md', '')
+                    line_changed = True
+                if '/CSharp/' in v[1] or '/Cxx/' in v[1] or '/Java/' in v[1] or '/Python/' in v[1]:
+                    # Make the language link relative, also drop off the language.
+                    v[1] = re.sub(r'][ ]*\([ ]*/\w+/', r'](', v[1])
+                    line_changed = True
+            if line_changed:
+                lines[k] = v
+
+        # if from_file != 'VTKBookFigures.md':
+        #     if not has_how_to:
+        #         for k, v in lines.items():
+        #             line_changed = False
+        #             if v[1] != '':
+        #                 if '](/Coverage' in v[1]:
+        #                     # Make the coverage link relative.
+        #                     v[1] = re.sub(r'][ ]*\([ ]*/', r'](', v[1])
+        #                     v[1] = v[1].replace('.md', '')
+        #                     line_changed = True
+        #                 if '/CSharp/' in v[1] or '/Cxx/' in v[1] or '/Java/' in v[1] or '/Python/' in v[1]:
+        #                     # Make the language link relative, also drop off the language.
+        #                     v[1] = re.sub(r'][ ]*\([ ]*/\w+/', r'](', v[1])
+        #                     line_changed = True
+        #             if line_changed:
+        #                 lines[k] = v
+        #     else:
+        #         for k, v in lines.items():
+        #             line_changed = False
+        #             if v[1] != '':
+        #                 if '/CSharp/' in v[1] or '/Cxx/' in v[1] or '/Java/' in v[1] or '/Python/' in v[1]:
+        #                     # Make the language link relative to the src folder.
+        #                     link_head = r'](' + r'../' + lang + r'/'
+        #                     if '.md' in v[1]:
+        #                         v[1] = v[1].replace('.md', '')
+        #                     v[1] = re.sub(r'][ ]*\([ ]*/\w+/', link_head, v[1])
+        #                     line_changed = True
+        #             if line_changed:
+        #                 lines[k] = v
+        # else:
+        #     for k, v in lines.items():
+        #         line_changed = False
+        #         if v[1] != '':
+        #             v[1] = re.sub(r'][ ]*\([ ]*/', r'](../', v[1])
+        #             line_changed = True
+        #         if line_changed:
+        #             lines[k] = v
+
+    with open(to_path, 'w') as ofn:
+        k = sorted(lines.keys())
+        for kv in k:
+            line = ''.join(lines[kv][1:])
+            ofn.write(line + '\n')
+
+
 def fill_cmake_lists(cmake_contents, example_name, extra_names, vtk_modules, web_repo_url):
     """
     Fill in the template parameters in a CMakeLists template file.
@@ -576,7 +675,60 @@ def fill_qt_cmake_lists(cmake_contents, example_name, vtk_modules, web_repo_url)
     return r3
 
 
+def fill_trame_instructions(trame_contents, example_name, web_repo_url):
+    """
+    Fill in the template parameters for the trame template file.
+
+    :param trame_contents: The template file.
+    :param example_name: The example file name.
+    :param web_repo_url: The web repository URL.
+    :return: A text file.
+    """
+    r1 = re.sub(r'WWW', web_repo_url, trame_contents)
+    r2 = re.sub(r'XXX', example_name.stem, r1)
+    return r2
+
+
 def get_example_paths(src_path, available_languages, example_paths):
+    """
+    Get the examples paths and any supplementary files.
+    :param src_path:
+    :param available_languages:
+    :param example_paths:
+    :return:
+    """
+    excluded_paths = ['Boneyard', 'Broken', 'Deprecated', 'Untested', 'Databases', 'Problems', 'Wishlist']
+    # Scan all Cxx directories and look for extras.
+    # This holds any extra files needed for an example,
+    # key is the extra file path and the set holds the additional paths needed by an example.
+    all_extras = defaultdict(set)
+    for path in (src_path / 'Cxx').iterdir():
+        if path.is_dir() and path.parts[-1] not in excluded_paths:
+            files = path.glob('*.extras')
+            for f in files:
+                with open(f, 'r') as ifn:
+                    for line in ifn:
+                        line = line.strip()
+                        all_extras[f.with_suffix(available_languages['Cxx'])].add(f.parent / line)
+    # Now get all the examples.
+    for lang, lang_ext in available_languages.items():
+        for path in (src_path / lang).iterdir():
+            if path.is_dir() and path.parts[-1] not in excluded_paths:
+                files = path.glob('*' + lang_ext)
+                for f in files:
+                    if f in all_extras:
+                        example_paths[lang][f] = all_extras[f]
+                    else:
+                        example_paths[lang][f] = set()
+    for lang in available_languages:
+        # Remove the files in all_extras that have been picked up.
+        for k, v in all_extras.items():
+            for vv in v:
+                if vv in example_paths[lang]:
+                    example_paths[lang].pop(vv)
+
+
+def get_trame_paths(src_path, available_languages, example_paths):
     """
     Get the examples paths and any supplementary files.
     :param src_path:
@@ -1025,6 +1177,7 @@ def get_statistics(stats):
     res.append('  Java examples:            ' + str(stats['java_count']))
     res.append('  Total examples:           ' + str(sum(totals)))
     res.append('  Tarballs C++:             ' + str(stats['cxx_tar_count']))
+    res.append('  Tarballs trame:           ' + str(stats['cxx_trame_count']))
     res.append('  Doxygen added:            ' + str(stats['doxy_count']))
     res.append('  Thumbnails added:         ' + str(stats['thumb_count']))
     res.append('  Test Image Cache hits:    ' + str(stats['test_image_hits']))
@@ -1045,7 +1198,9 @@ def main():
     stats['cs_count'] = 0
     stats['py_count'] = 0
     stats['java_count'] = 0
+    stats['trame_count'] = 0
     stats['cxx_tar_count'] = 0
+    stats['trame_tar_count'] = 0
     stats['thumb_count'] = 0
     stats['doxy_count'] = 0
 
@@ -1087,9 +1242,12 @@ def main():
 
     ref_stat1 = os.stat(src_path / 'Admin/VTKQtCMakeLists')
     ref_stat2 = os.stat(src_path / 'Admin/VTKCMakeLists')
+    ref_stat3 = os.stat(src_path / 'Admin/trame_template')
     ref_mtime = ref_stat1.st_mtime
     if ref_stat2.st_mtime > ref_stat1.st_mtime:
         ref_mtime = ref_stat2.st_mtime
+    if ref_stat3.st_mtime > ref_stat1.st_mtime:
+        ref_mtime = ref_stat3.st_mtime
 
     # Create a dict to hold the example paths grouped by language.
     # Data format
@@ -1113,11 +1271,16 @@ def main():
              'CSharp.md', 'CSharpHowTo.md',
              'Java.md', 'JavaHowTo.md',
              'JavaScript.md',
+             'trame.md',
              'Cxx/Snippets.md', 'Python/Snippets.md', 'Java/Snippets.md',
              'VTKBookFigures.md', 'VTKFileFormats.md']
     for p in pages:
-        add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_src_path, test_images_dict, p, p,
-                                 stats)
+        if p != 'trame.md':
+            add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_src_path, test_images_dict, p, p,
+                                     stats)
+        # else:
+        #     add_trame_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_src_path, test_images_dict, p, p,
+        #                              stats)
 
     snippets = ['Cxx/Snippets', 'Python/Snippets', 'Java/Snippets']
     for snippet in snippets:
@@ -1139,23 +1302,24 @@ def main():
 
     # Get a list of all  examples
     # A dictionary of available languages and extensions
-    available_languages = {'Cxx': '.cxx', 'Python': '.py', 'Java': '.java', 'CSharp': '.cs'}
+    available_languages = {'Cxx': '.cxx', 'Python': '.py', 'trame': '.py', 'Java': '.java', 'CSharp': '.cs'}
 
     # Copy coverage files
     for k in available_languages.keys():
-        dest = doc_path / k / 'Coverage'
-        dest.mkdir(parents=True, exist_ok=True)
-        src = web_repo_path / '/'.join(['src/Coverage', k + 'VTKClassesNotUsed.md'])
-        shutil.copy(src, dest)
-        src = web_repo_path / '/'.join(['src/Coverage', k + 'VTKClassesUsed.md'])
-        with open(src, 'r') as ifh:
-            lines = ifh.readlines()
-        dest = doc_path / '/'.join([k, 'Coverage', k + 'VTKClassesUsed.md'])
-        with open(dest, 'w') as ofh:
-            for line in lines:
-                # Make the link to the example relative.
-                line = re.sub(r'][ ]*\([ ]*/\w+/', r'](../../', line)
-                ofh.write(line)
+        if k != 'trame':
+            dest = doc_path / k / 'Coverage'
+            dest.mkdir(parents=True, exist_ok=True)
+            src = web_repo_path / '/'.join(['src/Coverage', k + 'VTKClassesNotUsed.md'])
+            shutil.copy(src, dest)
+            src = web_repo_path / '/'.join(['src/Coverage', k + 'VTKClassesUsed.md'])
+            with open(src, 'r') as ifh:
+                lines = ifh.readlines()
+            dest = doc_path / '/'.join([k, 'Coverage', k + 'VTKClassesUsed.md'])
+            with open(dest, 'w') as ofh:
+                for line in lines:
+                    # Make the link to the example relative.
+                    line = re.sub(r'][ ]*\([ ]*/\w+/', r'](../../', line)
+                    ofh.write(line)
 
     # Copy Instructions files
     dest = doc_path / 'Instructions'
