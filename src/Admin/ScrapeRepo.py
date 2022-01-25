@@ -727,8 +727,34 @@ def get_example_paths(src_path, available_languages, example_paths):
                 if vv in example_paths[lang]:
                     example_paths[lang].pop(vv)
 
+def extract_paths(src_path, fn):
+    """
+    Parse the markdown file extracting the paths in the tables.
 
-def get_trame_paths(src_path, available_languages, example_paths):
+    :param src_path: The path to the sources.
+    :param fn: The top level markdown file with the extension e.g. trame.md.
+    :return:  A list of the paths
+    """
+    """
+    :return:
+    """
+    row = re.compile(r'^.*(\[.+\]\(.+\)).*\|.+$')
+    row_key = re.compile(r'\[(.*?)\].*\((.*?)\)')
+    paths = list()
+    path = Path(src_path) / fn
+    if path.is_file():
+        lines = path.read_text().split('\n')
+        for line in lines:
+            if row.match(line):
+                kv = line.split('|')[0].strip()
+                m = row_key.match(kv)
+                if m:
+                    paths.append(m.group(2))
+    return paths
+
+
+
+def get_trame_paths(src_path, trame_md):
     """
     Get the examples paths and any supplementary files.
     :param src_path:
@@ -736,7 +762,7 @@ def get_trame_paths(src_path, available_languages, example_paths):
     :param example_paths:
     :return:
     """
-    excluded_paths = ['Boneyard', 'Broken', 'Deprecated', 'Untested', 'Databases', 'Problems', 'Wishlist']
+    excluded_paths = ['data']
     # Scan all Cxx directories and look for extras.
     # This holds any extra files needed for an example,
     # key is the extra file path and the set holds the additional paths needed by an example.
@@ -1157,6 +1183,58 @@ def make_cxx_tarballs(web_repo_dir, example_paths, example_to_CMake, ref_mtime, 
     # Cleanup the temporary directories
     shutil.rmtree(tmp_dir)
 
+def make_trame_tarballs(web_repo_dir, src_path, example_paths, ref_mtime, stats):
+    """
+    Create tarballs for each example.
+    :param web_repo_dir: Repository path.
+    :param example_paths:  The examples.
+    :param src_path:  The path to the sources.
+    :param ref_mtime: The reference mtime.
+    :param stats: Statistics.
+    :return:
+    """
+
+    tmp_dir = Path(tempfile.mkdtemp(prefix='VTKTarballs') + '/')
+
+    # Create the Tarballs directory in the source tree if not present
+    tar_dir = Path(web_repo_dir) / 'Tarballs'
+    tar_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create tarballs
+    # For each example, create a directory and copy that example's files
+    # into the directory
+    tarball_args = list()
+    for example in example_paths:
+        example_path = PurePath(example)
+        tar_tmp_path = tmp_dir / example_path.parent.relative_to(example_path.parent.anchor)
+        tar_tmp_path.mkdir(parents=True, exist_ok=True)
+        tar_fn = tar_tmp_path / example_path.name
+        source_path =  Path(src_path) / example_path.relative_to(example_path.anchor)
+        shutil.copytree(source_path, tar_fn)
+        os.utime(tar_fn, (ref_mtime, ref_mtime))
+
+        # Set the mtimes for the directories containing the example
+        # Since the mtime is stored in the tar header for each file and directory,
+        # we need a consistent time so that a tar of an unchanged example will be equal
+        # to the one in the repo
+        os.utime(tar_tmp_path, (ref_mtime, ref_mtime))
+        destination_path = tar_dir / example_path.relative_to(example_path.anchor).with_suffix('.tar')
+        destination_path.parent.mkdir(parents=True, exist_ok=True)
+        tarball_args.append((tar_fn, tar_dir / destination_path))
+
+    # The default value of max_workers is min(32, os.cpu_count() + 4) for Python 3.8 or greater
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_results = [executor.submit(make_tarball, *k) for k in tarball_args]
+        # Block execution until all the tasks are completed
+        concurrent.futures.wait(future_results)
+        # for future in future_results:
+        #     yield future.result()
+
+    stats['trame_tar_count'] = len(tarball_args)
+    os.utime(tmp_dir, (0, ref_mtime))
+    # Cleanup the temporary directories
+    shutil.rmtree(tmp_dir)
+
 
 def get_statistics(stats):
     """
@@ -1177,7 +1255,7 @@ def get_statistics(stats):
     res.append('  Java examples:            ' + str(stats['java_count']))
     res.append('  Total examples:           ' + str(sum(totals)))
     res.append('  Tarballs C++:             ' + str(stats['cxx_tar_count']))
-    res.append('  Tarballs trame:           ' + str(stats['cxx_trame_count']))
+    res.append('  Tarballs trame:           ' + str(stats['trame_tar_count']))
     res.append('  Doxygen added:            ' + str(stats['doxy_count']))
     res.append('  Thumbnails added:         ' + str(stats['thumb_count']))
     res.append('  Test Image Cache hits:    ' + str(stats['test_image_hits']))
@@ -1271,16 +1349,11 @@ def main():
              'CSharp.md', 'CSharpHowTo.md',
              'Java.md', 'JavaHowTo.md',
              'JavaScript.md',
-             'trame.md',
              'Cxx/Snippets.md', 'Python/Snippets.md', 'Java/Snippets.md',
              'VTKBookFigures.md', 'VTKFileFormats.md']
     for p in pages:
-        if p != 'trame.md':
-            add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_src_path, test_images_dict, p, p,
+        add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_src_path, test_images_dict, p, p,
                                      stats)
-        # else:
-        #     add_trame_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_src_path, test_images_dict, p, p,
-        #                              stats)
 
     snippets = ['Cxx/Snippets', 'Python/Snippets', 'Java/Snippets']
     for snippet in snippets:
@@ -1302,24 +1375,23 @@ def main():
 
     # Get a list of all  examples
     # A dictionary of available languages and extensions
-    available_languages = {'Cxx': '.cxx', 'Python': '.py', 'trame': '.py', 'Java': '.java', 'CSharp': '.cs'}
+    available_languages = {'Cxx': '.cxx', 'Python': '.py', 'Java': '.java', 'CSharp': '.cs'}
 
     # Copy coverage files
     for k in available_languages.keys():
-        if k != 'trame':
-            dest = doc_path / k / 'Coverage'
-            dest.mkdir(parents=True, exist_ok=True)
-            src = web_repo_path / '/'.join(['src/Coverage', k + 'VTKClassesNotUsed.md'])
-            shutil.copy(src, dest)
-            src = web_repo_path / '/'.join(['src/Coverage', k + 'VTKClassesUsed.md'])
-            with open(src, 'r') as ifh:
-                lines = ifh.readlines()
-            dest = doc_path / '/'.join([k, 'Coverage', k + 'VTKClassesUsed.md'])
-            with open(dest, 'w') as ofh:
-                for line in lines:
-                    # Make the link to the example relative.
-                    line = re.sub(r'][ ]*\([ ]*/\w+/', r'](../../', line)
-                    ofh.write(line)
+        dest = doc_path / k / 'Coverage'
+        dest.mkdir(parents=True, exist_ok=True)
+        src = web_repo_path / '/'.join(['src/Coverage', k + 'VTKClassesNotUsed.md'])
+        shutil.copy(src, dest)
+        src = web_repo_path / '/'.join(['src/Coverage', k + 'VTKClassesUsed.md'])
+        with open(src, 'r') as ifh:
+            lines = ifh.readlines()
+        dest = doc_path / '/'.join([k, 'Coverage', k + 'VTKClassesUsed.md'])
+        with open(dest, 'w') as ofh:
+            for line in lines:
+                # Make the link to the example relative.
+                line = re.sub(r'][ ]*\([ ]*/\w+/', r'](../../', line)
+                ofh.write(line)
 
     # Copy Instructions files
     dest = doc_path / 'Instructions'
@@ -1370,15 +1442,19 @@ def main():
                     cf.write(str(key) + ' ' + ' '.join(contents) + '\n')
 
     make_markdown_example_page(example_paths, available_languages, src_path, doc_path,
-                               repo_name, web_repo_url, vtk_modules_cache,
-                               example_to_CMake, stats)
+                                   repo_name, web_repo_url, vtk_modules_cache,
+                                   example_to_CMake, stats)
 
     # This is not added to the web pages but can be useful for debugging.
     # Only enable if you need it.
     # make_examples_sources_html(example_paths, src_path, doc_path, web_repo_url, web_site_url)
+    make_cxx_tarballs(web_repo_dir, example_paths, example_to_CMake, ref_mtime, stats)
+
+    #  Now deal with examples where each individual example is a whole folder.
+    trame_example_paths = extract_paths(src_path, 'trame.md')
 
     # Create tarballs for each example
-    make_cxx_tarballs(web_repo_dir, example_paths, example_to_CMake, ref_mtime, stats)
+    make_trame_tarballs(web_repo_dir, src_path, trame_example_paths, ref_mtime, stats)
 
     # Update the test image cache file if necessary
     if stats['test_image_misses'] > 0:

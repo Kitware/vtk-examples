@@ -16,7 +16,9 @@ If you are new to **trame** then this [tutorial](https://kitware.github.io/trame
 
 | Example Name | Description | Image |
 | -------------- | ------------- | ------- |
-[Multi Filter](/trame/Applications/MultiFilter/MultiFilter) | A multi filter example using VTK.
+[FiniteElementAnalysis](/trame/Applications/FiniteElementAnalysis) | Finite element analysis.
+[Multi Filter](/trame/Applications/MultiFilter) | A multi filter example using VTK.
+[RemoteSelection](/trame/Applications/RemoteSelection) | How to select a data file remotely.
 
 ### MiniApps
 
