@@ -50,6 +50,7 @@ mkdir -p ${WEB_REPO_DIR}/src/stylesheets
 mkdir -p ${WEB_REPO_DIR}/src/SupplementaryData
 mkdir -p ${WEB_REPO_DIR}/src/Testing/Baseline
 mkdir -p ${WEB_REPO_DIR}/src/VTKBook/Figures
+mkdir -p ${WEB_REPO_DIR}/src/VTKFileFormats/Figures
 
 echo "2) Copy the baseline images and other essential files"
 rsync -zavh index.html ${WEB_REPO_DIR}
@@ -65,6 +66,7 @@ rsync -zavh src/stylesheets/ ${WEB_REPO_DIR}/src/stylesheets
 rsync -zavh src/SupplementaryData/ ${WEB_REPO_DIR}/src/SupplementaryData
 rsync -zavh src/Testing/Baseline/ ${WEB_REPO_DIR}/src/Testing/Baseline
 rsync -zavh src/VTKBook/Figures/ ${WEB_REPO_DIR}/src/VTKBook/Figures
+rsync -zavh src/VTKFileFormats/Figures/ ${WEB_REPO_DIR}/src/VTKFileFormats/Figures
 cp web_gitignore ${WEB_REPO_DIR}/.gitignore
 
 echo "3) Create coverage files"
