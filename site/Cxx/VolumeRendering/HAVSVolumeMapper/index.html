@@ -60,8 +60,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkColorTransferFunction.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkContourFilter.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkDataSetTriangleFilter.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkHAVSVolumeMapper.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
+</span><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkHAVSVolumeMapper.h&gt;</span><span class=cp></span>
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPiecewiseFunction.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
@@ -88,8 +88,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// This is the data that will be volume rendered.</span>
-<span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>volumeFilename</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span><span class=w> </span><span class=c1>// &quot;/Data/ironProt.vtk&quot;;</span>
-</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>volumeFilename</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span><span class=w> </span><span class=c1>// &quot;/Data/ironProt.vtk&quot;;</span>
+
 <span class=w>  </span><span class=c1>// Create a reader for the other data that will be contoured and</span>
 <span class=w>  </span><span class=c1>// displayed as a polygonal mesh.</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>contourFilename</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span><span class=w> </span><span class=c1>// &quot;/Data/neghip.slc&quot;;</span>
@@ -109,8 +109,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSLCReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader2</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>reader2</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>contourFilename</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Convert from vtkImageData to vtkUnstructuredGrid.</span>
-</span><span class=w>  </span><span class=c1>// Remove any cells where all values are below 80.</span>
+<span class=w>  </span><span class=c1>// Convert from vtkImageData to vtkUnstructuredGrid.</span>
+<span class=w>  </span><span class=c1>// Remove any cells where all values are below 80.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>thresh</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>thresh</span><span class=o>-&gt;</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mi>80</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>thresh</span><span class=o>-&gt;</span><span class=n>AllScalarsOff</span><span class=p>();</span><span class=w></span>

@@ -176,9 +176,9 @@ function registerListener(event, func) {
 
 <span class=cp>#ifdef VTK_CELL_ARRAY_V2</span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Newer versions of vtkCellArray prefer local iterators:</span>
-</span><span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>cellIter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtk</span><span class=o>::</span><span class=n>TakeSmartPointer</span><span class=p>(</span><span class=n>cells</span><span class=o>-&gt;</span><span class=n>NewIterator</span><span class=p>());</span><span class=w></span>
-</span><span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>GoToFirstCell</span><span class=p>();</span><span class=w> </span><span class=o>!</span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>IsDoneWithTraversal</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Newer versions of vtkCellArray prefer local iterators:</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>cellIter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtk</span><span class=o>::</span><span class=n>TakeSmartPointer</span><span class=p>(</span><span class=n>cells</span><span class=o>-&gt;</span><span class=n>NewIterator</span><span class=p>());</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>GoToFirstCell</span><span class=p>();</span><span class=w> </span><span class=o>!</span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>IsDoneWithTraversal</span><span class=p>();</span><span class=w></span>
 <span class=w>       </span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>GoToNextCell</span><span class=p>())</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>vtkIdList</span><span class=o>*</span><span class=w> </span><span class=n>cell</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>GetCurrentCell</span><span class=p>();</span><span class=w></span>
@@ -190,9 +190,9 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=c1>// Compute the point id to hold the label</span>
 <span class=w>    </span><span class=c1>// Mid point or a random point</span>
-<span class=hll><span class=w>    </span><span class=c1>// const vtkIdType samplePtIdx = cell-&gt;GetNumberOfIds() / 2;</span>
-</span><span class=hll><span class=w>    </span><span class=k>const</span><span class=w> </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>samplePtIdx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=p>(</span><span class=w></span>
-</span><span class=w>        </span><span class=n>randomSequence</span><span class=o>-&gt;</span><span class=n>GetRangeValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>cell</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>()));</span><span class=w></span>
+<span class=w>    </span><span class=c1>// const vtkIdType samplePtIdx = cell-&gt;GetNumberOfIds() / 2;</span>
+<span class=w>    </span><span class=k>const</span><span class=w> </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>samplePtIdx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=p>(</span><span class=w></span>
+<span class=w>        </span><span class=n>randomSequence</span><span class=o>-&gt;</span><span class=n>GetRangeValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>cell</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>()));</span><span class=w></span>
 <span class=w>    </span><span class=n>randomSequence</span><span class=o>-&gt;</span><span class=n>Next</span><span class=p>();</span><span class=w></span>
 
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>midPointId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cell</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>samplePtIdx</span><span class=p>);</span><span class=w></span>
@@ -209,11 +209,11 @@ function registerListener(event, func) {
 
 <span class=cp>#else </span><span class=c1>// VTK_CELL_ARRAY_V2</span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Older implementations of vtkCellArray use internal iterator APIs (not</span>
-</span><span class=w>  </span><span class=c1>// thread safe):</span>
-<span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=o>*</span><span class=w> </span><span class=n>indices</span><span class=p>;</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>numberOfPoints</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>lineCount</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Older implementations of vtkCellArray use internal iterator APIs (not</span>
+<span class=w>  </span><span class=c1>// thread safe):</span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=o>*</span><span class=w> </span><span class=n>indices</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>numberOfPoints</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>lineCount</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>cells</span><span class=o>-&gt;</span><span class=n>InitTraversal</span><span class=p>();</span><span class=w> </span><span class=n>cells</span><span class=o>-&gt;</span><span class=n>GetNextCell</span><span class=p>(</span><span class=n>numberOfPoints</span><span class=p>,</span><span class=w> </span><span class=n>indices</span><span class=p>);</span><span class=w></span>
 <span class=w>       </span><span class=n>lineCount</span><span class=o>++</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
@@ -227,9 +227,9 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// Mid point or a random point</span>
 <span class=w>    </span><span class=c1>// auto midPointId = indices[numberOfPoints / 2];</span>
 <span class=w>    </span><span class=c1>// auto midPointId =</span>
-<span class=hll><span class=w>    </span><span class=c1>//    indices[static_cast&lt;vtkIdType&gt;(vtkMath::Random(0, numberOfPoints))];</span>
-</span><span class=hll><span class=w>    </span><span class=k>const</span><span class=w> </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>samplePtIdx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=p>(</span><span class=w></span>
-</span><span class=w>        </span><span class=n>randomSequence</span><span class=o>-&gt;</span><span class=n>GetRangeValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>cell</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>()));</span><span class=w></span>
+<span class=w>    </span><span class=c1>//    indices[static_cast&lt;vtkIdType&gt;(vtkMath::Random(0, numberOfPoints))];</span>
+<span class=w>    </span><span class=k>const</span><span class=w> </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>samplePtIdx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=p>(</span><span class=w></span>
+<span class=w>        </span><span class=n>randomSequence</span><span class=o>-&gt;</span><span class=n>GetRangeValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>cell</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>()));</span><span class=w></span>
 <span class=w>    </span><span class=n>randomSequence</span><span class=o>-&gt;</span><span class=n>Next</span><span class=p>();</span><span class=w></span>
 
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>midPoint</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span><span class=w></span>

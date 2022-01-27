@@ -76,8 +76,8 @@ function registerListener(event, func) {
 <span class=w>                            </span><span class=c1>// returned here</span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>closestPointDist2</span><span class=p>;</span><span class=w> </span><span class=c1>// the squared distance to the closest point will be</span>
 <span class=w>                            </span><span class=c1>// returned here</span>
-<span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>cellId</span><span class=p>;</span><span class=w> </span><span class=c1>// the cell id of the cell containing the closest point will</span>
-</span><span class=w>                    </span><span class=c1>// be returned here</span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>cellId</span><span class=p>;</span><span class=w> </span><span class=c1>// the cell id of the cell containing the closest point will</span>
+<span class=w>                    </span><span class=c1>// be returned here</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>subId</span><span class=p>;</span><span class=w>        </span><span class=c1>// this is rarely used (in triangle strips only, I believe)</span>
 <span class=w>  </span><span class=n>cellLocator</span><span class=o>-&gt;</span><span class=n>FindClosestPoint</span><span class=p>(</span><span class=n>testPoint</span><span class=p>,</span><span class=w> </span><span class=n>closestPoint</span><span class=p>,</span><span class=w> </span><span class=n>cellId</span><span class=p>,</span><span class=w> </span><span class=n>subId</span><span class=p>,</span><span class=w></span>
 <span class=w>                                </span><span class=n>closestPointDist2</span><span class=p>);</span><span class=w></span>

@@ -66,30 +66,30 @@ function registerListener(event, func) {
 <span class=c1># select some lines/curves in the parallel coordinates view</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkLookupTable</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkElevationFilter</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersExtraction</span> <span class=kn>import</span> <span class=n>vtkExtractSelection</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkAnnotationLink</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkAnnotationLink</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkBrownianPoints</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=n>vtkOutlineFilter</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingCore</span> <span class=kn>import</span> <span class=n>vtkRTAnalyticSource</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingGeneral</span> <span class=kn>import</span> <span class=n>vtkImageGradient</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderer</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkViewsInfovis</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkParallelCoordinatesRepresentation</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkViewsInfovis</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkParallelCoordinatesRepresentation</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParallelCoordinatesView</span>
 </span><span class=p>)</span>
 
@@ -139,11 +139,11 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>annotationLink</span> <span class=o>=</span> <span class=n>vtkAnnotationLink</span><span class=p>()</span>
 </span>    <span class=c1># If you don&#39;t set the FieldType explicitly it ends up as UNKNOWN</span>
     <span class=c1># (as of 21 Feb 2010)</span>
-<span class=hll>    <span class=c1># See vtkSelectionNode doc for field and content type enum values</span>
-</span>    <span class=n>annotationLink</span><span class=o>.</span><span class=n>GetCurrentSelection</span><span class=p>()</span><span class=o>.</span><span class=n>GetNode</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>SetFieldType</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>  <span class=c1># Point</span>
+    <span class=c1># See vtkSelectionNode doc for field and content type enum values</span>
+    <span class=n>annotationLink</span><span class=o>.</span><span class=n>GetCurrentSelection</span><span class=p>()</span><span class=o>.</span><span class=n>GetNode</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>SetFieldType</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>  <span class=c1># Point</span>
     <span class=n>annotationLink</span><span class=o>.</span><span class=n>GetCurrentSelection</span><span class=p>()</span><span class=o>.</span><span class=n>GetNode</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>SetContentType</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span>  <span class=c1># Indices</span>
-<span class=hll>    <span class=c1># Update before passing annotationLink to vtkExtractSelection</span>
-</span>    <span class=n>annotationLink</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+    <span class=c1># Update before passing annotationLink to vtkExtractSelection</span>
+    <span class=n>annotationLink</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
     <span class=c1># Connect the annotation link to the parallel coordinates representation</span>
     <span class=n>rep</span><span class=o>.</span><span class=n>SetAnnotationLink</span><span class=p>(</span><span class=n>annotationLink</span><span class=p>)</span>
 

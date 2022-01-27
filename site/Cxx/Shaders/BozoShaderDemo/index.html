@@ -83,8 +83,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSTLReader.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkXMLPolyDataReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/SystemTools.hxx&gt;</span><span class=cp></span>
-</span>
+</span><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/SystemTools.hxx&gt;</span><span class=cp></span>
+
 <span class=cp>#if VTK_VERSION_NUMBER &gt;= 89000000000ULL</span>
 <span class=cp>#define USE_SHADER_PROPERTIES 1</span>
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkShaderProperty.h&gt;</span><span class=cp></span>
@@ -100,10 +100,10 @@ function registerListener(event, func) {
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkShaderCallback</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkCommand</span><span class=w></span>
 </span><span class=p>{</span><span class=w></span>
 <span class=k>public</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkShaderCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkShaderCallback</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=p>}</span><span class=w></span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkShaderCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkShaderCallback</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkRenderer</span><span class=o>*</span><span class=w> </span><span class=n>Renderer</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=kt>float</span><span class=w> </span><span class=n>k</span><span class=p>;</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>calldata</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=w></span>
@@ -119,8 +119,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;k: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>k</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=n>vtkShaderCallback</span><span class=p>()</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkShaderCallback</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Renderer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>k</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>5</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
@@ -173,8 +173,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// Create textActors</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>textMapper</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=n>textMapper</span><span class=o>-&gt;</span><span class=n>SetTextProperty</span><span class=p>(</span><span class=n>textProperty</span><span class=p>);</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=n>textMapper</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>i</span><span class=p>]).</span><span class=n>c_str</span><span class=p>());</span><span class=w></span>
-</span>
+<span class=w>    </span><span class=n>textMapper</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>i</span><span class=p>]).</span><span class=n>c_str</span><span class=p>());</span><span class=w></span>
+
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>textActor</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=n>textActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapper</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=n>textActor</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>20</span><span class=p>,</span><span class=w> </span><span class=mi>20</span><span class=p>);</span><span class=w></span>
@@ -269,8 +269,8 @@ function registerListener(event, func) {
 <span class=w>                                     </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>    </span><span class=p>);</span><span class=w></span>
 <span class=cp>#else</span>
-<span class=hll><span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w> </span><span class=s>&quot;//VTK::System::Dec&quot;</span><span class=p>,</span><span class=w></span>
-</span><span class=w>                                 </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=c1>// before the standard replacements</span>
+<span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w> </span><span class=s>&quot;//VTK::System::Dec&quot;</span><span class=p>,</span><span class=w></span>
+<span class=w>                                 </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=c1>// before the standard replacements</span>
 <span class=w>                                 </span><span class=n>shaderCode</span><span class=p>.</span><span class=n>str</span><span class=p>(),</span><span class=w></span>
 <span class=w>                                 </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>    </span><span class=p>);</span><span class=w></span>
@@ -288,8 +288,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=p>);</span><span class=w></span>
 <span class=cp>#else</span>
 <span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span><span class=w></span>
-<span class=hll><span class=w>        </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w>   </span><span class=c1>// in the fragment shader</span>
-</span><span class=w>        </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
+<span class=w>        </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w>   </span><span class=c1>// in the fragment shader</span>
+<span class=w>        </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
 <span class=w>        </span><span class=nb>true</span><span class=p>,</span><span class=w>                  </span><span class=c1>// before the standard replacements</span>
 <span class=w>        </span><span class=s>&quot;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
 <span class=w>        </span><span class=s>&quot;  varying vec4 myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span><span class=w></span>
@@ -338,8 +338,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=p>);</span><span class=w></span>
 <span class=cp>#else</span>
 <span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span><span class=w></span>
-<span class=hll><span class=w>        </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w>   </span><span class=c1>// in the fragment shader</span>
-</span><span class=w>        </span><span class=s>&quot;//VTK::Light::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the light block</span>
+<span class=w>        </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w>   </span><span class=c1>// in the fragment shader</span>
+<span class=w>        </span><span class=s>&quot;//VTK::Light::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the light block</span>
 <span class=w>        </span><span class=nb>false</span><span class=p>,</span><span class=w>                 </span><span class=c1>// after the standard replacements</span>
 <span class=w>        </span><span class=s>&quot;//VTK::Light::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default calc</span>
 <span class=w>        </span><span class=s>&quot;#define pnoise(x) ((noise(x) + 1.0) / 2.0)</span><span class=se>\n</span><span class=s>&quot;</span><span class=w></span>
@@ -423,8 +423,8 @@ function registerListener(event, func) {
 </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>polyData</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w></span>
-<span class=hll><span class=w>      </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameExtension</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>fileName</span><span class=p>));</span><span class=w></span>
-</span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.ply&quot;</span><span class=p>)</span><span class=w></span>
+<span class=w>      </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameExtension</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>fileName</span><span class=p>));</span><span class=w></span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.ply&quot;</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPLYReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>);</span><span class=w></span>
@@ -452,8 +452,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtk&quot;</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtk&quot;</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>

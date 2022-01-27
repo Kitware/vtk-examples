@@ -109,8 +109,8 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Connected vertices: &quot;</span><span class=p>;</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>connectedVertices</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>connectedVertices</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>connectedVertices</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>connectedVertices</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>i</span><span class=p>));</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
@@ -220,15 +220,15 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=cm>/*</span>
 <span class=cm>  cout &lt;&lt; &quot;Vertex 0 is used in cells &quot;;</span>
-<span class=hll><span class=cm>  for(vtkIdType i = 0; i &lt; cellIdList-&gt;GetNumberOfIds(); i++)</span>
-</span><span class=cm>    {</span>
+<span class=cm>  for(vtkIdType i = 0; i &lt; cellIdList-&gt;GetNumberOfIds(); i++)</span>
+<span class=cm>    {</span>
 <span class=cm>    cout &lt;&lt; cellIdList-&gt;GetId(i) &lt;&lt; &quot;, &quot;;</span>
 <span class=cm>    }</span>
 <span class=cm>  cout &lt;&lt; endl;</span>
 <span class=cm>  */</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>cellIdList</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>cellIdList</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=c1>// cout &lt;&lt; &quot;id &quot; &lt;&lt; i &lt;&lt; &quot; : &quot; &lt;&lt; cellIdList-&gt;GetId(i) &lt;&lt; endl;</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span><span class=w> </span><span class=n>pointIdList</span><span class=p>;</span><span class=w></span>

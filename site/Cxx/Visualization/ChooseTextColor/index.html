@@ -67,8 +67,8 @@ function registerListener(event, func) {
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;sstream&gt;</span><span class=cp></span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span><span class=cp></span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/SystemTools.hxx&gt;</span><span class=cp></span>
-</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/SystemTools.hxx&gt;</span><span class=cp></span>
+
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span><span class=w></span>
 <span class=c1>// Given a color, find a contrasting color. If the goven color is &quot;light&quot;,</span>
 <span class=c1>// use the lightColor otherwise use the darkColor</span>
@@ -108,8 +108,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>fontFile</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span><span class=w></span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>stringstream</span><span class=w> </span><span class=n>str</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=n>str</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Font: &quot;</span><span class=w></span>
-<span class=hll><span class=w>      </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameWithoutExtension</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]))</span><span class=w></span>
-</span><span class=w>      </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span><span class=w></span>
+<span class=w>      </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameWithoutExtension</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]))</span><span class=w></span>
+<span class=w>      </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span><span class=w></span>
 <span class=w>      </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Background: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>backColor</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span><span class=w></span>
 <span class=w>      </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Light Color: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>lightColor</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span><span class=w></span>
 <span class=w>      </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Dark Color: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>darkColor</span><span class=p>;</span><span class=w></span>

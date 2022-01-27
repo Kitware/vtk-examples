@@ -106,9 +106,9 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>numberOfTuples</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>64</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=n>frequencies</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>frequencies</span><span class=o>-&gt;</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=n>numberOfTuples</span><span class=p>);</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=o>*</span><span class=w> </span><span class=n>output</span><span class=w> </span><span class=o>=</span><span class=w></span>
-</span><span class=hll><span class=w>      </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>histogram</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalarPointer</span><span class=p>());</span><span class=w></span>
-</span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=o>*</span><span class=w> </span><span class=n>output</span><span class=w> </span><span class=o>=</span><span class=w></span>
+<span class=w>      </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>histogram</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalarPointer</span><span class=p>());</span><span class=w></span>
+
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>numberOfTuples</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>j</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>frequencies</span><span class=o>-&gt;</span><span class=n>SetTuple1</span><span class=p>(</span><span class=n>j</span><span class=p>,</span><span class=w> </span><span class=o>*</span><span class=n>output</span><span class=o>++</span><span class=p>);</span><span class=w></span>
@@ -118,8 +118,8 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=n>dataObject</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddArray</span><span class=p>(</span><span class=n>frequencies</span><span class=p>);</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Create a vtkBarChartActor</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBarChartActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>barChart</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Create a vtkBarChartActor</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBarChartActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>barChart</span><span class=p>;</span><span class=w></span>
 </span>
 <span class=w>  </span><span class=n>barChart</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>dataObject</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>barChart</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Histogram&quot;</span><span class=p>);</span><span class=w></span>

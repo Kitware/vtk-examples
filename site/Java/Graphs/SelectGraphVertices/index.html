@@ -59,8 +59,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkDataRepresentation</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkGraphLayoutView</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkIdTypeArray</span><span class=p>;</span>
-</span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkNativeLibrary</span><span class=p>;</span>
-</span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkRandomGraphSource</span><span class=p>;</span>
+</span><span class=kn>import</span> <span class=nn>vtk.vtkNativeLibrary</span><span class=p>;</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkRandomGraphSource</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkSelection</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkSelectionNode</span><span class=p>;</span>
 </span>
@@ -73,21 +73,21 @@ function registerListener(event, func) {
 
   <span class=cm>/*</span>
 <span class=cm>   * The following static calls will load the respective</span>
-<span class=hll><span class=cm>   * vtkJava interface libraries on first reference to this</span>
-</span><span class=cm>   * class.</span>
+<span class=cm>   * vtkJava interface libraries on first reference to this</span>
+<span class=cm>   * class.</span>
 <span class=cm>   */</span>
   <span class=c1>// Loading Native Libraries.</span>
   <span class=c1>// Now it works in eclipse without any issues.</span>
   <span class=kd>static</span> <span class=p>{</span>
-<span class=hll>    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span> <span class=p>{</span>
-</span><span class=hll>      <span class=k>for</span> <span class=p>(</span><span class=n>vtkNativeLibrary</span> <span class=n>lib</span> <span class=p>:</span> <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span> <span class=p>{</span>
-</span>        <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span> <span class=p>{</span>
+    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span> <span class=p>{</span>
+      <span class=k>for</span> <span class=p>(</span><span class=n>vtkNativeLibrary</span> <span class=n>lib</span> <span class=p>:</span> <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span> <span class=p>{</span>
+        <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span> <span class=p>{</span>
           <span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span> <span class=o>+</span> <span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
         <span class=p>}</span>
       <span class=p>}</span>
     <span class=p>}</span>
-<span class=hll>    <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>DisableOutputWindow</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span>
-</span>  <span class=p>}</span>
+    <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>DisableOutputWindow</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span>
+  <span class=p>}</span>
 
   <span class=cm>/**</span>
 <span class=cm>   * All Java programs require a host class. in addition,</span>
@@ -125,9 +125,9 @@ function registerListener(event, func) {
     <span class=cm>/*</span>
 <span class=hll><span class=cm>     * The vtkDataRepresentation should already have a vtkAnnotationLink,</span>
 </span><span class=cm>     * so we just want to grab it and add an observer with our callback function attached</span>
-<span class=hll><span class=cm>     * Note that Java callbacks use the this &quot;pointer&quot; to anchor vtk objects used by the callback</span>
-</span><span class=hll><span class=cm>     * to establish references to required vtkobjects.</span>
-</span><span class=cm>     */</span>
+<span class=cm>     * Note that Java callbacks use the this &quot;pointer&quot; to anchor vtk objects used by the callback</span>
+<span class=cm>     * to establish references to required vtkobjects.</span>
+<span class=cm>     */</span>
     <span class=n>link</span> <span class=o>=</span> <span class=n>rep</span><span class=p>.</span><span class=na>GetAnnotationLink</span><span class=p>();</span>
     <span class=n>link</span><span class=p>.</span><span class=na>AddObserver</span><span class=p>(</span><span class=s>&quot;AnnotationChangedEvent&quot;</span><span class=p>,</span> <span class=k>this</span><span class=p>,</span> <span class=s>&quot;selectionCallback&quot;</span><span class=p>);</span>
 
@@ -140,8 +140,8 @@ function registerListener(event, func) {
 
   <span class=cm>/*</span>
 <span class=cm>   * The Java callback signature has no parameters. This complicates some</span>
-<span class=hll><span class=cm>   * vtk processes by eliminating the eventid and user data normally available</span>
-</span><span class=cm>   * to C++ logic.</span>
+<span class=cm>   * vtk processes by eliminating the eventid and user data normally available</span>
+<span class=cm>   * to C++ logic.</span>
 <span class=cm>   */</span>
   <span class=kd>public</span> <span class=kt>void</span> <span class=nf>selectionCallback</span><span class=p>()</span> <span class=p>{</span>
     <span class=c1>// In C++ there is some extra data passed to the callback, but in Python</span>

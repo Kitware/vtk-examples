@@ -60,8 +60,8 @@ function registerListener(event, func) {
 <span class=c1>// and how to scroll with the mousewheel or the up/down keys</span>
 <span class=c1>// through all slices</span>
 <span class=c1>//</span>
-<span class=hll><span class=c1>// some standard vtk headers</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkActor.h&gt;</span><span class=cp></span>
+<span class=c1>// some standard vtk headers</span>
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkActor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkObjectFactory.h&gt;</span><span class=cp></span>
@@ -173,8 +173,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>MoveSliceForward</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=c1>// don&#39;t forward events, otherwise the image will be zoomed</span>
 <span class=w>    </span><span class=c1>// in case another interactorstyle is used (e.g. trackballstyle, ...)</span>
-<span class=hll><span class=w>    </span><span class=c1>// vtkInteractorStyleImage::OnMouseWheelForward();</span>
-</span><span class=w>  </span><span class=p>}</span><span class=w></span>
+<span class=w>    </span><span class=c1>// vtkInteractorStyleImage::OnMouseWheelForward();</span>
+<span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>OnMouseWheelBackward</span><span class=p>()</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
@@ -185,12 +185,12 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=p>}</span><span class=w></span>
 <span class=w>    </span><span class=c1>// don&#39;t forward events, otherwise the image will be zoomed</span>
 <span class=w>    </span><span class=c1>// in case another interactorstyle is used (e.g. trackballstyle, ...)</span>
-<span class=hll><span class=w>    </span><span class=c1>// vtkInteractorStyleImage::OnMouseWheelBackward();</span>
-</span><span class=w>  </span><span class=p>}</span><span class=w></span>
+<span class=w>    </span><span class=c1>// vtkInteractorStyleImage::OnMouseWheelBackward();</span>
+<span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=p>};</span><span class=w></span>
 
-<span class=hll><span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>myVtkInteractorStyleImage</span><span class=p>);</span><span class=w></span>
-</span>
+<span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>myVtkInteractorStyleImage</span><span class=p>);</span><span class=w></span>
+
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
 <span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span><span class=w></span>
@@ -205,8 +205,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>folder</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=c1>// std::string folder = &quot;C:\\VTK\\vtkdata-5.8.0\\Data\\DicomTestImages&quot;;</span>
-</span>
+<span class=w>  </span><span class=c1>// std::string folder = &quot;C:\\VTK\\vtkdata-5.8.0\\Data\\DicomTestImages&quot;;</span>
+
 <span class=w>  </span><span class=c1>// Read all the DICOM files in the specified directory.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDICOMImageReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetDirectoryName</span><span class=p>(</span><span class=n>folder</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span><span class=w></span>
@@ -253,8 +253,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>usageTextActor</span><span class=o>-&gt;</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.05</span><span class=p>,</span><span class=w> </span><span class=mf>0.95</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// create an interactor with our own style (inherit from</span>
-<span class=hll><span class=w>  </span><span class=c1>// vtkInteractorStyleImage) in order to catch mousewheel and key events</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// vtkInteractorStyleImage) in order to catch mousewheel and key events</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span><span class=w></span>
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>myVtkInteractorStyleImage</span><span class=o>&gt;</span><span class=w> </span><span class=n>myInteractorStyle</span><span class=p>;</span><span class=w></span>
 </span>

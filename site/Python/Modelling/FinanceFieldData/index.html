@@ -59,23 +59,23 @@ function registerListener(event, func) {
 <span class=c1># -*- coding: utf-8 -*-</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkDataObjectToDataSetFilter</span><span class=p>,</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkDataObjectToDataSetFilter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkFieldDataToAttributeDataFilter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkTubeFilter</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkAxes</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkAxes</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkMarchingContourFilter</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOLegacy</span> <span class=kn>import</span> <span class=n>vtkDataObjectReader</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingHybrid</span> <span class=kn>import</span> <span class=n>vtkGaussianSplatter</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkCamera</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkFollower</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>

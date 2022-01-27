@@ -114,8 +114,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPKMeansStatistics</span><span class=o>&gt;</span><span class=w> </span><span class=n>pKMeansStatistics</span><span class=p>;</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=c1>// vtkNew&lt;vtkKMeansStatistics&gt; pKMeansStatistics;</span>
-</span><span class=w>  </span><span class=c1>// pks-&gt;SetMaxNumIterations( 10 );</span>
+</span><span class=w>  </span><span class=c1>// vtkNew&lt;vtkKMeansStatistics&gt; pKMeansStatistics;</span>
+<span class=w>  </span><span class=c1>// pks-&gt;SetMaxNumIterations( 10 );</span>
 <span class=hll><span class=w>  </span><span class=n>pKMeansStatistics</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>vtkStatisticsAlgorithm</span><span class=o>::</span><span class=n>INPUT_DATA</span><span class=p>,</span><span class=w></span>
 </span><span class=w>                                  </span><span class=n>inputData</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>pKMeansStatistics</span><span class=o>-&gt;</span><span class=n>SetColumnStatus</span><span class=p>(</span><span class=n>inputData</span><span class=o>-&gt;</span><span class=n>GetColumnName</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span><span class=w> </span><span class=mi>1</span><span class=p>);</span><span class=w></span>
@@ -152,8 +152,8 @@ function registerListener(event, func) {
 </span><span class=w>      </span><span class=n>pKMeansStatistics</span><span class=o>-&gt;</span><span class=n>GetOutputDataObject</span><span class=p>(</span><span class=w></span>
 <span class=hll><span class=w>          </span><span class=n>vtkStatisticsAlgorithm</span><span class=o>::</span><span class=n>OUTPUT_MODEL</span><span class=p>));</span><span class=w></span>
 </span><span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>outputMeta</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkTable</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>outputMetaDS</span><span class=o>-&gt;</span><span class=n>GetBlock</span><span class=p>(</span><span class=mi>0</span><span class=p>));</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=c1>// auto outputMeta = dynamic_cast&lt;vtkTable*&gt;( outputMetaDS-&gt;GetBlock( 1 ) );</span>
-</span><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>coord0</span><span class=w> </span><span class=o>=</span><span class=w></span>
+</span><span class=w>  </span><span class=c1>// auto outputMeta = dynamic_cast&lt;vtkTable*&gt;( outputMetaDS-&gt;GetBlock( 1 ) );</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>coord0</span><span class=w> </span><span class=o>=</span><span class=w></span>
 <span class=hll><span class=w>      </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>outputMeta</span><span class=o>-&gt;</span><span class=n>GetColumnByName</span><span class=p>(</span><span class=s>&quot;coord 0&quot;</span><span class=p>));</span><span class=w></span>
 </span><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>coord1</span><span class=w> </span><span class=o>=</span><span class=w></span>
 <span class=hll><span class=w>      </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>outputMeta</span><span class=o>-&gt;</span><span class=n>GetColumnByName</span><span class=p>(</span><span class=s>&quot;coord 1&quot;</span><span class=p>));</span><span class=w></span>

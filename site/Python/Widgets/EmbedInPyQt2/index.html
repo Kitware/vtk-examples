@@ -61,15 +61,15 @@ function registerListener(event, func) {
 <span class=kn>import</span> <span class=nn>sys</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=kn>from</span> <span class=nn>PyQt4</span> <span class=kn>import</span> <span class=n>QtGui</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=kn>from</span> <span class=nn>PyQt4</span> <span class=kn>import</span> <span class=n>QtGui</span>
 <span class=kn>from</span> <span class=nn>PyQt4.QtGui</span> <span class=kn>import</span> <span class=n>QApplication</span>
 <span class=kn>from</span> <span class=nn>qt4.QVTKRenderWindowInteractor</span> <span class=kn>import</span> <span class=n>QVTKRenderWindowInteractor</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkSphereSource</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderer</span>
 </span><span class=p>)</span>
@@ -81,9 +81,9 @@ function registerListener(event, func) {
         <span class=n>MainWindow</span><span class=o>.</span><span class=n>resize</span><span class=p>(</span><span class=mi>603</span><span class=p>,</span> <span class=mi>553</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>centralWidget</span> <span class=o>=</span> <span class=n>QtGui</span><span class=o>.</span><span class=n>QWidget</span><span class=p>(</span><span class=n>MainWindow</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>gridlayout</span> <span class=o>=</span> <span class=n>QtGui</span><span class=o>.</span><span class=n>QGridLayout</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>centralWidget</span><span class=p>)</span>
-<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>vtkWidget</span> <span class=o>=</span> <span class=n>QVTKRenderWindowInteractor</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>centralWidget</span><span class=p>)</span>
-</span><span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>gridlayout</span><span class=o>.</span><span class=n>addWidget</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>vtkWidget</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
-</span>        <span class=n>MainWindow</span><span class=o>.</span><span class=n>setCentralWidget</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>centralWidget</span><span class=p>)</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>vtkWidget</span> <span class=o>=</span> <span class=n>QVTKRenderWindowInteractor</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>centralWidget</span><span class=p>)</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>gridlayout</span><span class=o>.</span><span class=n>addWidget</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>vtkWidget</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+        <span class=n>MainWindow</span><span class=o>.</span><span class=n>setCentralWidget</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>centralWidget</span><span class=p>)</span>
 
 
 <span class=k>class</span> <span class=nc>SimpleView</span><span class=p>(</span><span class=n>QtGui</span><span class=o>.</span><span class=n>QMainWindow</span><span class=p>):</span>
@@ -93,9 +93,9 @@ function registerListener(event, func) {
         <span class=bp>self</span><span class=o>.</span><span class=n>ui</span> <span class=o>=</span> <span class=n>Ui_MainWindow</span><span class=p>()</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>ui</span><span class=o>.</span><span class=n>setupUi</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span>
 <span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
-</span><span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>ui</span><span class=o>.</span><span class=n>vtkWidget</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>ren</span><span class=p>)</span>
-</span><span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>iren</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>ui</span><span class=o>.</span><span class=n>vtkWidget</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span>
-</span>
+</span>        <span class=bp>self</span><span class=o>.</span><span class=n>ui</span><span class=o>.</span><span class=n>vtkWidget</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>ren</span><span class=p>)</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>iren</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>ui</span><span class=o>.</span><span class=n>vtkWidget</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span>
+
         <span class=c1># Create source</span>
 <span class=hll>        <span class=n>source</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
 </span>        <span class=n>source</span><span class=o>.</span><span class=n>SetCenter</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>

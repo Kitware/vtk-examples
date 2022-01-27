@@ -91,8 +91,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPolyDataReader.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSTLReader.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkXMLPolyDataReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/SystemTools.hxx&gt;</span><span class=cp></span>
-</span>
+</span><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/SystemTools.hxx&gt;</span><span class=cp></span>
+
 <span class=cp>#define VTKISRBP_ORIENT 0</span>
 <span class=cp>#define VTKISRBP_SELECT 1</span>
 
@@ -135,9 +135,9 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SelectedMapper</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>extractPolyDataGeometry</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span><span class=w></span>
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SelectedMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span><span class=w></span>
 
-<span class=hll><span class=w>      </span><span class=c1>//        vtkIdTypeArray* ids =</span>
-</span><span class=hll><span class=w>      </span><span class=c1>//        dynamic_cast&lt;vtkIdTypeArray*&gt;(selected-&gt;GetPointData()-&gt;GetArray(&quot;OriginalIds&quot;));</span>
-</span>
+<span class=w>      </span><span class=c1>//        vtkIdTypeArray* ids =</span>
+<span class=w>      </span><span class=c1>//        dynamic_cast&lt;vtkIdTypeArray*&gt;(selected-&gt;GetPointData()-&gt;GetArray(&quot;OriginalIds&quot;));</span>
+
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SelectedActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=w></span>
 <span class=w>          </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SelectedActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span><span class=w></span>
@@ -163,8 +163,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>SelectedActor</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>SelectedMapper</span><span class=p>;</span><span class=w></span>
 </span><span class=p>};</span><span class=w></span>
-<span class=hll><span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>HighlightInteractorStyle</span><span class=p>);</span><span class=w></span>
-</span>
+<span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>HighlightInteractorStyle</span><span class=p>);</span><span class=w></span>
+
 <span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>ReadPolyData</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>fileName</span><span class=p>);</span><span class=w></span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
@@ -184,9 +184,9 @@ function registerListener(event, func) {
 <span class=cp>#endif</span>
 <span class=w>  </span><span class=n>idFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// This is needed to convert the ouput of vtkIdFilter (vtkDataSet) back to</span>
-</span><span class=hll><span class=w>  </span><span class=c1>// vtkPolyData</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetSurfaceFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>surfaceFilter</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// This is needed to convert the ouput of vtkIdFilter (vtkDataSet) back to</span>
+<span class=w>  </span><span class=c1>// vtkPolyData</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetSurfaceFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>surfaceFilter</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>surfaceFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>idFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>surfaceFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 
@@ -234,8 +234,8 @@ function registerListener(event, func) {
 </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>polyData</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w></span>
-<span class=hll><span class=w>      </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameLastExtension</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>fileName</span><span class=p>));</span><span class=w></span>
-</span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.ply&quot;</span><span class=p>)</span><span class=w></span>
+<span class=w>      </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameLastExtension</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>fileName</span><span class=p>));</span><span class=w></span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.ply&quot;</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPLYReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>);</span><span class=w></span>
@@ -263,8 +263,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtk&quot;</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtk&quot;</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>

@@ -74,15 +74,15 @@ function registerListener(event, func) {
 </span>
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span><span class=w></span>
 <span class=c1>// Callback for the interaction</span>
-<span class=hll><span class=c1>// This does the actual work: updates the vtkPlane implicit function.</span>
-</span><span class=c1>// This in turn causes the pipeline to update and clip the object.</span>
+<span class=c1>// This does the actual work: updates the vtkPlane implicit function.</span>
+<span class=c1>// This in turn causes the pipeline to update and clip the object.</span>
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkIPWCallback</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkCommand</span><span class=w></span>
 </span><span class=p>{</span><span class=w></span>
 <span class=k>public</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkIPWCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkIPWCallback</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=p>}</span><span class=w></span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkIPWCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkIPWCallback</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w></span>
 </span><span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>vtkImplicitPlaneWidget2</span><span class=o>*</span><span class=w> </span><span class=n>planeWidget</span><span class=w> </span><span class=o>=</span><span class=w></span>
@@ -92,8 +92,8 @@ function registerListener(event, func) {
 </span><span class=w>            </span><span class=n>planeWidget</span><span class=o>-&gt;</span><span class=n>GetRepresentation</span><span class=p>());</span><span class=w></span>
 <span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>GetPlane</span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Plane</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkIPWCallback</span><span class=p>()</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>Plane</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span><span class=w> </span><span class=n>Actor</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkIPWCallback</span><span class=p>()</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>Plane</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span><span class=w> </span><span class=n>Actor</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkPlane</span><span class=o>*</span><span class=w> </span><span class=n>Plane</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkActor</span><span class=o>*</span><span class=w> </span><span class=n>Actor</span><span class=p>;</span><span class=w></span>

@@ -121,8 +121,8 @@ function registerListener(event, func) {
 <span class=w>         </span><span class=n>loop</span><span class=p>.</span><span class=n>GenerateSelectionScalarsOn</span><span class=p>();</span><span class=w></span>
 <span class=w>         </span><span class=n>loop</span><span class=p>.</span><span class=n>SetSelectionModeToSmallestRegion</span><span class=p>();</span><span class=w> </span><span class=c1>//negative scalars inside</span>
 
-<span class=hll><span class=w>         </span><span class=n>vtkClipPolyData</span><span class=w> </span><span class=n>clip</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=c1>//clips out positive region</span>
-</span><span class=hll><span class=w>         </span><span class=n>vtkClipPolyData</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
+<span class=w>         </span><span class=n>vtkClipPolyData</span><span class=w> </span><span class=n>clip</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=c1>//clips out positive region</span>
+<span class=hll><span class=w>         </span><span class=n>vtkClipPolyData</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span><span class=w>         </span><span class=n>clip</span><span class=p>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>loop</span><span class=p>.</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 
 <span class=hll><span class=w>         </span><span class=n>vtkPolyDataMapper</span><span class=w> </span><span class=n>clipMapper</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkPolyDataMapper</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>

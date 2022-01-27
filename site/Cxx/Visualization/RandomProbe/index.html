@@ -115,8 +115,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>randomProbe</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>thresholdCone</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>randomProbe</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>randomProbe</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=w></span>
-<span class=hll><span class=w>      </span><span class=s>&quot;vtkValidPointMask&quot;</span><span class=p>);</span><span class=w></span>
-</span>
+<span class=w>      </span><span class=s>&quot;vtkValidPointMask&quot;</span><span class=p>);</span><span class=w></span>
+
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThresholdPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>selectPoints</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>selectPoints</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>randomProbe</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>selectPoints</span><span class=o>-&gt;</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span><span class=w></span>

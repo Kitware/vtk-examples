@@ -101,20 +101,20 @@ function registerListener(event, func) {
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkImageInteractionCallback</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkCommand</span><span class=w></span>
 </span><span class=p>{</span><span class=w></span>
 <span class=k>public</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkImageInteractionCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkImageInteractionCallback</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=p>}</span><span class=w></span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkImageInteractionCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkImageInteractionCallback</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=n>vtkImageInteractionCallback</span><span class=p>()</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkImageInteractionCallback</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Viewer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>NULL</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Picker</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>NULL</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Annotation</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>NULL</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=o>~</span><span class=n>vtkImageInteractionCallback</span><span class=p>()</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=o>~</span><span class=n>vtkImageInteractionCallback</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Viewer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>NULL</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Picker</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>NULL</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Annotation</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>NULL</span><span class=p>;</span><span class=w></span>
@@ -156,8 +156,8 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>path</span><span class=p>)</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>      </span><span class=n>vtkCollectionSimpleIterator</span><span class=w> </span><span class=n>sit</span><span class=p>;</span><span class=w></span>
-</span><span class=w>      </span><span class=n>path</span><span class=o>-&gt;</span><span class=n>InitTraversal</span><span class=p>(</span><span class=n>sit</span><span class=p>);</span><span class=w></span>
+<span class=w>      </span><span class=n>vtkCollectionSimpleIterator</span><span class=w> </span><span class=n>sit</span><span class=p>;</span><span class=w></span>
+<span class=w>      </span><span class=n>path</span><span class=o>-&gt;</span><span class=n>InitTraversal</span><span class=p>(</span><span class=n>sit</span><span class=p>);</span><span class=w></span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>path</span><span class=o>-&gt;</span><span class=n>GetNumberOfItems</span><span class=p>()</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=o>!</span><span class=n>validPick</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span><span class=w></span>
 <span class=w>      </span><span class=p>{</span><span class=w></span>
 <span class=w>        </span><span class=k>auto</span><span class=w> </span><span class=n>node</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>path</span><span class=o>-&gt;</span><span class=n>GetNextNode</span><span class=p>(</span><span class=n>sit</span><span class=p>);</span><span class=w></span>
@@ -196,8 +196,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>      </span><span class=n>image_coordinate</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkMath</span><span class=o>::</span><span class=n>Round</span><span class=p>(</span><span class=n>pos</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span><span class=w></span>
 </span><span class=hll><span class=w>      </span><span class=n>image_coordinate</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkMath</span><span class=o>::</span><span class=n>Round</span><span class=p>(</span><span class=n>pos</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span><span class=w></span>
 </span><span class=w>      </span><span class=k>break</span><span class=p>;</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=k>default</span><span class=o>:</span><span class=w> </span><span class=c1>// vtkImageViewer2::SLICE_ORIENTATION_XY</span>
-</span><span class=hll><span class=w>      </span><span class=n>image_coordinate</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkMath</span><span class=o>::</span><span class=n>Round</span><span class=p>(</span><span class=n>pos</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span><span class=w></span>
+<span class=w>    </span><span class=k>default</span><span class=o>:</span><span class=w> </span><span class=c1>// vtkImageViewer2::SLICE_ORIENTATION_XY</span>
+<span class=hll><span class=w>      </span><span class=n>image_coordinate</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkMath</span><span class=o>::</span><span class=n>Round</span><span class=p>(</span><span class=n>pos</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span><span class=w></span>
 </span><span class=hll><span class=w>      </span><span class=n>image_coordinate</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkMath</span><span class=o>::</span><span class=n>Round</span><span class=p>(</span><span class=n>pos</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span><span class=w></span>
 </span><span class=w>      </span><span class=n>image_coordinate</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Viewer</span><span class=o>-&gt;</span><span class=n>GetSlice</span><span class=p>();</span><span class=w></span>
 <span class=w>      </span><span class=k>break</span><span class=p>;</span><span class=w></span>
@@ -213,9 +213,9 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=k>switch</span><span class=w> </span><span class=p>(</span><span class=n>image</span><span class=o>-&gt;</span><span class=n>GetScalarType</span><span class=p>())</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>      </span><span class=n>vtkTemplateMacro</span><span class=p>(</span><span class=w></span>
-</span><span class=hll><span class=w>          </span><span class=p>(</span><span class=n>vtkValueMessageTemplate</span><span class=o>&lt;</span><span class=n>VTK_TT</span><span class=o>&gt;</span><span class=p>(</span><span class=n>image</span><span class=p>,</span><span class=w> </span><span class=n>image_coordinate</span><span class=p>,</span><span class=w> </span><span class=n>message</span><span class=p>)));</span><span class=w></span>
-</span>
+<span class=w>      </span><span class=n>vtkTemplateMacro</span><span class=p>(</span><span class=w></span>
+<span class=w>          </span><span class=p>(</span><span class=n>vtkValueMessageTemplate</span><span class=o>&lt;</span><span class=n>VTK_TT</span><span class=o>&gt;</span><span class=p>(</span><span class=n>image</span><span class=p>,</span><span class=w> </span><span class=n>image_coordinate</span><span class=p>,</span><span class=w> </span><span class=n>message</span><span class=p>)));</span><span class=w></span>
+
 <span class=w>    </span><span class=k>default</span><span class=o>:</span><span class=w></span>
 <span class=w>      </span><span class=k>return</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=p>}</span><span class=w></span>
@@ -226,10 +226,10 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=k>private</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkImageViewer2</span><span class=o>*</span><span class=w> </span><span class=n>Viewer</span><span class=p>;</span><span class=w>         </span><span class=c1>// Pointer to the viewer</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkPropPicker</span><span class=o>*</span><span class=w> </span><span class=n>Picker</span><span class=p>;</span><span class=w>           </span><span class=c1>// Pointer to the picker</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkCornerAnnotation</span><span class=o>*</span><span class=w> </span><span class=n>Annotation</span><span class=p>;</span><span class=w> </span><span class=c1>// Pointer to the annotation</span>
-</span><span class=p>};</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkImageViewer2</span><span class=o>*</span><span class=w> </span><span class=n>Viewer</span><span class=p>;</span><span class=w>         </span><span class=c1>// Pointer to the viewer</span>
+<span class=w>  </span><span class=n>vtkPropPicker</span><span class=o>*</span><span class=w> </span><span class=n>Picker</span><span class=p>;</span><span class=w>           </span><span class=c1>// Pointer to the picker</span>
+<span class=w>  </span><span class=n>vtkCornerAnnotation</span><span class=o>*</span><span class=w> </span><span class=n>Annotation</span><span class=p>;</span><span class=w> </span><span class=c1>// Pointer to the annotation</span>
+<span class=p>};</span><span class=w></span>
 
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 

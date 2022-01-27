@@ -74,13 +74,13 @@ function registerListener(event, func) {
 
 <span class=c1># First access the VTK module (and any other needed modules) by importing them.</span>
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkConeSource</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderer</span>
@@ -91,11 +91,11 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1>#</span>
-<span class=hll>    <span class=c1># Next we create an instance of vtkConeSource and set some of its</span>
-</span><span class=hll>    <span class=c1># properties. The instance of vtkConeSource &#39;cone&#39; is part of a</span>
-</span>    <span class=c1># visualization pipeline (it is a source process object) it produces data</span>
-<span class=hll>    <span class=c1># (output type is vtkPolyData) which other filters may process.</span>
-</span>    <span class=c1>#</span>
+    <span class=c1># Next we create an instance of vtkConeSource and set some of its</span>
+    <span class=c1># properties. The instance of vtkConeSource &#39;cone&#39; is part of a</span>
+    <span class=c1># visualization pipeline (it is a source process object) it produces data</span>
+    <span class=c1># (output type is vtkPolyData) which other filters may process.</span>
+    <span class=c1>#</span>
 <span class=hll>    <span class=n>cone</span> <span class=o>=</span> <span class=n>vtkConeSource</span><span class=p>()</span>
 </span>    <span class=n>cone</span><span class=o>.</span><span class=n>SetHeight</span><span class=p>(</span><span class=mf>3.0</span><span class=p>)</span>
     <span class=n>cone</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
@@ -103,10 +103,10 @@ function registerListener(event, func) {
 
     <span class=c1>#</span>
     <span class=c1># In this example we terminate the pipeline with a mapper process object.</span>
-<span class=hll>    <span class=c1># (Intermediate filters such as vtkShrinkPolyData could be inserted in</span>
-</span>    <span class=c1># between the source and the mapper.)  We create an instance of</span>
-<span class=hll>    <span class=c1># vtkPolyDataMapper to map the polygonal data into graphics primitives. We</span>
-</span>    <span class=c1># connect the output of the cone source to the input of this mapper.</span>
+    <span class=c1># (Intermediate filters such as vtkShrinkPolyData could be inserted in</span>
+    <span class=c1># between the source and the mapper.)  We create an instance of</span>
+    <span class=c1># vtkPolyDataMapper to map the polygonal data into graphics primitives. We</span>
+    <span class=c1># connect the output of the cone source to the input of this mapper.</span>
     <span class=c1>#</span>
 <span class=hll>    <span class=n>coneMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>coneMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cone</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -114,8 +114,8 @@ function registerListener(event, func) {
     <span class=c1>#</span>
     <span class=c1># Create an actor to represent the cone. The actor orchestrates rendering</span>
     <span class=c1># of the mapper&#39;s graphics primitives. An actor also refers to properties</span>
-<span class=hll>    <span class=c1># via a vtkProperty instance, and includes an internal transformation</span>
-</span>    <span class=c1># matrix. We set this actor&#39;s mapper to be coneMapper which we created</span>
+    <span class=c1># via a vtkProperty instance, and includes an internal transformation</span>
+    <span class=c1># matrix. We set this actor&#39;s mapper to be coneMapper which we created</span>
     <span class=c1># above.</span>
     <span class=c1>#</span>
 <span class=hll>    <span class=n>coneActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
@@ -124,8 +124,8 @@ function registerListener(event, func) {
 
     <span class=c1>#</span>
     <span class=c1># Create two renderers and assign actors to them. A renderer renders into</span>
-<span class=hll>    <span class=c1># a viewport within the vtkRenderWindow. It is part or all of a window on</span>
-</span>    <span class=c1># the screen and it is responsible for drawing the actors it has.  We also</span>
+    <span class=c1># a viewport within the vtkRenderWindow. It is part or all of a window on</span>
+    <span class=c1># the screen and it is responsible for drawing the actors it has.  We also</span>
     <span class=c1># set the background color here. In this example we are adding the same</span>
     <span class=c1># actor to two different renderers it is okay to add different actors to</span>
     <span class=c1># different renderers as well.</span>

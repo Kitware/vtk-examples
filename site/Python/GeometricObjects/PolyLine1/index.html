@@ -63,19 +63,19 @@ function registerListener(event, func) {
 <span class=kn>import</span> <span class=nn>math</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkPoints</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkPoints</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkCellArray</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkCellArray</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyData</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
@@ -89,8 +89,8 @@ function registerListener(event, func) {
     <span class=c1># Set the background color.</span>
     <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>,</span> <span class=p>[</span><span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
-<span class=hll>    <span class=c1># vtkPoints represents 3D points. The data model for vtkPoints is an array of</span>
-</span>    <span class=c1># vx-vy-vz triplets accessible by (point or cell) id.</span>
+    <span class=c1># vtkPoints represents 3D points. The data model for vtkPoints is an array of</span>
+    <span class=c1># vx-vy-vz triplets accessible by (point or cell) id.</span>
 <span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
 </span>    <span class=n>points</span><span class=o>.</span><span class=n>SetNumberOfPoints</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span>
     <span class=n>c</span> <span class=o>=</span> <span class=n>math</span><span class=o>.</span><span class=n>cos</span><span class=p>(</span><span class=n>math</span><span class=o>.</span><span class=n>pi</span> <span class=o>/</span> <span class=mi>6</span><span class=p>)</span>  <span class=c1># helper variable</span>
@@ -101,8 +101,8 @@ function registerListener(event, func) {
     <span class=n>points</span><span class=o>.</span><span class=n>SetPoint</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=o>-</span><span class=n>c</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
     <span class=n>points</span><span class=o>.</span><span class=n>SetPoint</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=o>-</span><span class=n>c</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
 
-<span class=hll>    <span class=c1># vtkCellArray is a supporting object that explicitly represents cell connectivity.</span>
-</span>    <span class=c1># The cell array structure is a raw integer list of the form:</span>
+    <span class=c1># vtkCellArray is a supporting object that explicitly represents cell connectivity.</span>
+    <span class=c1># The cell array structure is a raw integer list of the form:</span>
     <span class=c1># (n,id1,id2,...,idn, n,id1,id2,...,idn, ...) where n is the number of points in</span>
     <span class=c1># the cell, and id is a zero-offset index into an associated point list.</span>
 <span class=hll>    <span class=n>lines</span> <span class=o>=</span> <span class=n>vtkCellArray</span><span class=p>()</span>
@@ -115,23 +115,23 @@ function registerListener(event, func) {
     <span class=n>lines</span><span class=o>.</span><span class=n>InsertCellPoint</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
     <span class=n>lines</span><span class=o>.</span><span class=n>InsertCellPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
 
-<span class=hll>    <span class=c1># vtkPolyData is a data object that is a concrete implementation of vtkDataSet.</span>
-</span><span class=hll>    <span class=c1># vtkPolyData represents a geometric structure consisting of vertices, lines,</span>
-</span>    <span class=c1># polygons, and/or triangle strips</span>
+    <span class=c1># vtkPolyData is a data object that is a concrete implementation of vtkDataSet.</span>
+    <span class=c1># vtkPolyData represents a geometric structure consisting of vertices, lines,</span>
+    <span class=c1># polygons, and/or triangle strips</span>
 <span class=hll>    <span class=n>polygon</span> <span class=o>=</span> <span class=n>vtkPolyData</span><span class=p>()</span>
 </span>    <span class=n>polygon</span><span class=o>.</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>)</span>
     <span class=n>polygon</span><span class=o>.</span><span class=n>SetLines</span><span class=p>(</span><span class=n>lines</span><span class=p>)</span>
 
-<span class=hll>    <span class=c1># vtkPolyDataMapper is a class that maps polygonal data (i.e., vtkPolyData)</span>
-</span>    <span class=c1># to graphics primitives</span>
+    <span class=c1># vtkPolyDataMapper is a class that maps polygonal data (i.e., vtkPolyData)</span>
+    <span class=c1># to graphics primitives</span>
 <span class=hll>    <span class=n>polygonMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>polygonMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>polygon</span><span class=p>)</span>
     <span class=n>polygonMapper</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=c1># Create an actor to represent the polygon. The actor orchestrates rendering of</span>
     <span class=c1># the mapper&#39;s graphics primitives. An actor also refers to properties via a</span>
-<span class=hll>    <span class=c1># vtkProperty instance, and includes an internal transformation matrix. We</span>
-</span>    <span class=c1># set this actor&#39;s mapper to be polygonMapper which we created above.</span>
+    <span class=c1># vtkProperty instance, and includes an internal transformation matrix. We</span>
+    <span class=c1># set this actor&#39;s mapper to be polygonMapper which we created above.</span>
 <span class=hll>    <span class=n>polygonActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>polygonActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>polygonMapper</span><span class=p>)</span>
     <span class=n>polygonActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;AliceBlue&#39;</span><span class=p>))</span>
@@ -159,10 +159,10 @@ function registerListener(event, func) {
     <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span> <span class=mi>300</span><span class=p>)</span>
 
-<span class=hll>    <span class=c1># The vtkRenderWindowInteractor class watches for events (e.g., keypress,</span>
-</span><span class=hll>    <span class=c1># mouse) in the vtkRenderWindow. These events are translated into</span>
-</span><span class=hll>    <span class=c1># event invocations that VTK understands (see VTK/Common/vtkCommand.h</span>
-</span>    <span class=c1># for all events that VTK processes). Then observers of these VTK</span>
+    <span class=c1># The vtkRenderWindowInteractor class watches for events (e.g., keypress,</span>
+    <span class=c1># mouse) in the vtkRenderWindow. These events are translated into</span>
+    <span class=c1># event invocations that VTK understands (see VTK/Common/vtkCommand.h</span>
+    <span class=c1># for all events that VTK processes). Then observers of these VTK</span>
     <span class=c1># events can process them as appropriate.</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>

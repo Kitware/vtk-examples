@@ -59,12 +59,12 @@ function registerListener(event, func) {
 <span class=c1># -*- coding: utf-8 -*-</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkBiQuadraticQuad</span><span class=p>,</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkBiQuadraticQuad</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkBiQuadraticQuadraticHexahedron</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkBiQuadraticQuadraticWedge</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkBiQuadraticTriangle</span><span class=p>,</span>
@@ -83,8 +83,8 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkUnstructuredGrid</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkSphereSource</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkActor2D</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkGlyph3DMapper</span><span class=p>,</span>
@@ -274,8 +274,8 @@ function registerListener(event, func) {
     <span class=n>iRen</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=hll><span class=c1># These functions return a vtkUnstructured grid corresponding to the object.</span>
-</span>
+<span class=c1># These functions return a vtkUnstructured grid corresponding to the object.</span>
+
 <span class=k>def</span> <span class=nf>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>aCell</span><span class=p>):</span>
     <span class=n>pcoords</span> <span class=o>=</span> <span class=n>aCell</span><span class=o>.</span><span class=n>GetParametricCoords</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>aCell</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>()):</span>

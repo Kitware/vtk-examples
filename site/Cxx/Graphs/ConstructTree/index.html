@@ -70,19 +70,19 @@ function registerListener(event, func) {
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMutableDirectedGraph</span><span class=o>&gt;</span><span class=w> </span><span class=n>graph</span><span class=p>;</span><span class=w></span>
 </span>
-<span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>v1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>graph</span><span class=o>-&gt;</span><span class=n>AddVertex</span><span class=p>();</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>v2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>graph</span><span class=o>-&gt;</span><span class=n>AddChild</span><span class=p>(</span><span class=n>v1</span><span class=p>);</span><span class=w></span>
-</span><span class=w>  </span><span class=n>graph</span><span class=o>-&gt;</span><span class=n>AddChild</span><span class=p>(</span><span class=n>v1</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>v1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>graph</span><span class=o>-&gt;</span><span class=n>AddVertex</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>v2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>graph</span><span class=o>-&gt;</span><span class=n>AddChild</span><span class=p>(</span><span class=n>v1</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>graph</span><span class=o>-&gt;</span><span class=n>AddChild</span><span class=p>(</span><span class=n>v1</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>graph</span><span class=o>-&gt;</span><span class=n>AddChild</span><span class=p>(</span><span class=n>v2</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=cm>/*</span>
 <span class=cm>  //equivalent to:</span>
 
-<span class=hll><span class=cm>  vtkIdType v1 = g-&gt;AddVertex();</span>
-</span><span class=hll><span class=cm>  vtkIdType v2 = g-&gt;AddVertex();</span>
-</span><span class=hll><span class=cm>  vtkIdType v3 = g-&gt;AddVertex();</span>
-</span><span class=hll><span class=cm>  vtkIdType v4 = g-&gt;AddVertex();</span>
-</span>
+<span class=cm>  vtkIdType v1 = g-&gt;AddVertex();</span>
+<span class=cm>  vtkIdType v2 = g-&gt;AddVertex();</span>
+<span class=cm>  vtkIdType v3 = g-&gt;AddVertex();</span>
+<span class=cm>  vtkIdType v4 = g-&gt;AddVertex();</span>
+
 <span class=cm>  g-&gt;AddEdge ( v1, v2 );</span>
 <span class=cm>  g-&gt;AddEdge ( v1, v3 );</span>
 <span class=cm>  g-&gt;AddEdge ( v2, v4 );</span>

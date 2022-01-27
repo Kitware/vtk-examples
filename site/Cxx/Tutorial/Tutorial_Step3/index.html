@@ -83,11 +83,11 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
 </span>
 <span class=w>  </span><span class=c1>//</span>
-<span class=hll><span class=w>  </span><span class=c1>// Next we create an instance of vtkConeSource and set some of its</span>
-</span><span class=hll><span class=w>  </span><span class=c1>// properties. The instance of vtkConeSource &quot;cone&quot; is part of a</span>
-</span><span class=w>  </span><span class=c1>// visualization pipeline (it is a source process object); it produces data</span>
-<span class=hll><span class=w>  </span><span class=c1>// (output type is vtkPolyData) which other filters may process.</span>
-</span><span class=w>  </span><span class=c1>//</span>
+<span class=w>  </span><span class=c1>// Next we create an instance of vtkConeSource and set some of its</span>
+<span class=w>  </span><span class=c1>// properties. The instance of vtkConeSource &quot;cone&quot; is part of a</span>
+<span class=w>  </span><span class=c1>// visualization pipeline (it is a source process object); it produces data</span>
+<span class=w>  </span><span class=c1>// (output type is vtkPolyData) which other filters may process.</span>
+<span class=w>  </span><span class=c1>//</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkConeSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>cone</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetHeight</span><span class=p>(</span><span class=mf>3.0</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span><span class=w></span>
@@ -95,10 +95,10 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// In this example we terminate the pipeline with a mapper process object.</span>
-<span class=hll><span class=w>  </span><span class=c1>// (Intermediate filters such as vtkShrinkPolyData could be inserted in</span>
-</span><span class=w>  </span><span class=c1>// between the source and the mapper.)  We create an instance of</span>
-<span class=hll><span class=w>  </span><span class=c1>// vtkPolyDataMapper to map the polygonal data into graphics primitives. We</span>
-</span><span class=w>  </span><span class=c1>// connect the output of the cone source to the input of this mapper.</span>
+<span class=w>  </span><span class=c1>// (Intermediate filters such as vtkShrinkPolyData could be inserted in</span>
+<span class=w>  </span><span class=c1>// between the source and the mapper.)  We create an instance of</span>
+<span class=w>  </span><span class=c1>// vtkPolyDataMapper to map the polygonal data into graphics primitives. We</span>
+<span class=w>  </span><span class=c1>// connect the output of the cone source to the input of this mapper.</span>
 <span class=w>  </span><span class=c1>//</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>coneMapper</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>coneMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
@@ -106,8 +106,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// Create an actor to represent the cone. The actor orchestrates rendering</span>
 <span class=w>  </span><span class=c1>// of the mapper&#39;s graphics primitives. An actor also refers to properties</span>
-<span class=hll><span class=w>  </span><span class=c1>// via a vtkProperty instance, and includes an internal transformation</span>
-</span><span class=w>  </span><span class=c1>// matrix. We set this actor&#39;s mapper to be coneMapper which we created</span>
+<span class=w>  </span><span class=c1>// via a vtkProperty instance, and includes an internal transformation</span>
+<span class=w>  </span><span class=c1>// matrix. We set this actor&#39;s mapper to be coneMapper which we created</span>
 <span class=w>  </span><span class=c1>// above.</span>
 <span class=w>  </span><span class=c1>//</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>coneActor</span><span class=p>;</span><span class=w></span>
@@ -116,8 +116,8 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// Create two renderers and assign actors to them. A renderer renders into</span>
-<span class=hll><span class=w>  </span><span class=c1>// a viewport within the vtkRenderWindow. It is part or all of a window on</span>
-</span><span class=w>  </span><span class=c1>// the screen and it is responsible for drawing the actors it has.  We also</span>
+<span class=w>  </span><span class=c1>// a viewport within the vtkRenderWindow. It is part or all of a window on</span>
+<span class=w>  </span><span class=c1>// the screen and it is responsible for drawing the actors it has.  We also</span>
 <span class=w>  </span><span class=c1>// set the background color here. In this example we are adding the same</span>
 <span class=w>  </span><span class=c1>// actor to two different renderers; it is okay to add different actors to</span>
 <span class=w>  </span><span class=c1>// different renderers as well.</span>

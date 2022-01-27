@@ -59,15 +59,15 @@ function registerListener(event, func) {
 <span class=c1># -*- coding: utf-8 -*-</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkColorSeries</span><span class=p>,</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkColorSeries</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkNamedColors</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonComputationalGeometry</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkParametricBoy</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonComputationalGeometry</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkParametricBoy</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParametricEllipsoid</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParametricMobius</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParametricRandomHills</span><span class=p>,</span>
@@ -75,8 +75,8 @@ function registerListener(event, func) {
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkVersion</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkColor3ub</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkCleanPolyData</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkCleanPolyData</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkElevationFilter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkGlyph3D</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkMaskPoints</span><span class=p>,</span>
@@ -84,12 +84,12 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkTriangleFilter</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersHybrid</span> <span class=kn>import</span> <span class=n>vtkRenderLargeImage</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkButterflySubdivisionFilter</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkButterflySubdivisionFilter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkLinearSubdivisionFilter</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkArrowSource</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkArrowSource</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkConeSource</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParametricFunctionSource</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkSphereSource</span><span class=p>,</span>
@@ -98,8 +98,8 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOImage</span> <span class=kn>import</span> <span class=n>vtkPNGWriter</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInteractionWidgets</span> <span class=kn>import</span> <span class=n>vtkOrientationMarkerWidget</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingAnnotation</span> <span class=kn>import</span> <span class=n>vtkAxesActor</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkActor2D</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkColorTransferFunction</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
@@ -284,8 +284,8 @@ function registerListener(event, func) {
         <span class=n>elev</span><span class=o>.</span><span class=n>SetLowPoint</span><span class=p>(</span><span class=n>coneBounds</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>elev</span><span class=o>.</span><span class=n>SetHighPoint</span><span class=p>(</span><span class=n>coneBounds</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
-<span class=hll>        <span class=c1># vtkButterflySubdivisionFilter and vtkLinearSubdivisionFilter operate on triangles.</span>
-</span><span class=hll>        <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTriangleFilter</span><span class=p>()</span>
+        <span class=c1># vtkButterflySubdivisionFilter and vtkLinearSubdivisionFilter operate on triangles.</span>
+<span class=hll>        <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTriangleFilter</span><span class=p>()</span>
 </span>        <span class=n>tf</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>elev</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
         <span class=n>tf</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=k>return</span> <span class=n>tf</span>
@@ -576,8 +576,8 @@ function registerListener(event, func) {
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
     <span class=n>requiredMajorVersion</span> <span class=o>=</span> <span class=mi>6</span>
-<span class=hll>    <span class=c1># print(vtkVersion().GetVTKMajorVersion())</span>
-</span><span class=hll>    <span class=k>if</span> <span class=n>vtkVersion</span><span class=p>()</span><span class=o>.</span><span class=n>GetVTKMajorVersion</span><span class=p>()</span> <span class=o>&lt;</span> <span class=n>requiredMajorVersion</span><span class=p>:</span>
+    <span class=c1># print(vtkVersion().GetVTKMajorVersion())</span>
+<span class=hll>    <span class=k>if</span> <span class=n>vtkVersion</span><span class=p>()</span><span class=o>.</span><span class=n>GetVTKMajorVersion</span><span class=p>()</span> <span class=o>&lt;</span> <span class=n>requiredMajorVersion</span><span class=p>:</span>
 </span>        <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;You need VTK Version 6 or greater.&quot;</span><span class=p>)</span>
 <span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;The class vtkNamedColors is in VTK version 6 or greater.&quot;</span><span class=p>)</span>
 </span>        <span class=n>exit</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>

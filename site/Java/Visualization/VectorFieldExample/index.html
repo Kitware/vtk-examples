@@ -67,10 +67,10 @@ function registerListener(event, func) {
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkArrowSource</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkCubeSource</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkGlyph3D</span><span class=p>;</span>
-</span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkNativeLibrary</span><span class=p>;</span>
-</span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkObject</span><span class=p>;</span>
-</span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkPanel</span><span class=p>;</span>
-</span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkPolyData</span><span class=p>;</span>
+</span><span class=kn>import</span> <span class=nn>vtk.vtkNativeLibrary</span><span class=p>;</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkObject</span><span class=p>;</span>
+</span><span class=kn>import</span> <span class=nn>vtk.vtkPanel</span><span class=p>;</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkPolyData</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkPolyDataMapper</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkThresholdPoints</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkUnstructuredGrid</span><span class=p>;</span>
@@ -84,18 +84,18 @@ function registerListener(event, func) {
   <span class=c1>// Loading Native Libraries.</span>
   <span class=c1>// Now it works in eclipse without any issues.</span>
   <span class=kd>static</span> <span class=p>{</span>
-<span class=hll>    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span> <span class=p>{</span>
-</span><span class=hll>      <span class=k>for</span> <span class=p>(</span><span class=n>vtkNativeLibrary</span> <span class=n>lib</span> <span class=p>:</span> <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span> <span class=p>{</span>
-</span>        <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span> <span class=p>{</span>
+    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span> <span class=p>{</span>
+      <span class=k>for</span> <span class=p>(</span><span class=n>vtkNativeLibrary</span> <span class=n>lib</span> <span class=p>:</span> <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span> <span class=p>{</span>
+        <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span> <span class=p>{</span>
           <span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span> <span class=o>+</span> <span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
         <span class=p>}</span>
       <span class=p>}</span>
     <span class=p>}</span>
-<span class=hll>    <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>DisableOutputWindow</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span>
-</span>  <span class=p>}</span>
+    <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>DisableOutputWindow</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span>
+  <span class=p>}</span>
 
-<span class=hll>  <span class=kd>public</span> <span class=kd>static</span> <span class=n>vtkPanel</span> <span class=nf>showVectorField</span><span class=p>(</span>
-</span>      <span class=n>File</span> <span class=n>file</span><span class=p>,</span>
+  <span class=kd>public</span> <span class=kd>static</span> <span class=n>vtkPanel</span> <span class=nf>showVectorField</span><span class=p>(</span>
+      <span class=n>File</span> <span class=n>file</span><span class=p>,</span>
       <span class=kt>int</span> <span class=n>elementInFile</span><span class=p>,</span>
       <span class=kt>double</span> <span class=n>threshold</span><span class=p>,</span>
       <span class=kt>double</span> <span class=n>scaleFactor</span><span class=p>)</span> <span class=p>{</span>
@@ -151,8 +151,8 @@ function registerListener(event, func) {
 </span>    <span class=n>vectorActor</span><span class=p>.</span><span class=na>SetMapper</span><span class=p>(</span><span class=n>vectorGlyphMapper</span><span class=p>);</span>
 
 
-<span class=hll>    <span class=n>vtkPanel</span> <span class=n>vis</span> <span class=o>=</span> <span class=k>new</span> <span class=n>vtkPanel</span><span class=p>();</span>
-</span>    <span class=n>vis</span><span class=p>.</span><span class=na>GetRenderer</span><span class=p>().</span><span class=na>AddActor</span><span class=p>(</span><span class=n>vectorActor</span><span class=p>);</span>
+    <span class=n>vtkPanel</span> <span class=n>vis</span> <span class=o>=</span> <span class=k>new</span> <span class=n>vtkPanel</span><span class=p>();</span>
+    <span class=n>vis</span><span class=p>.</span><span class=na>GetRenderer</span><span class=p>().</span><span class=na>AddActor</span><span class=p>(</span><span class=n>vectorActor</span><span class=p>);</span>
 
     <span class=k>return</span> <span class=n>vis</span><span class=p>;</span>
   <span class=p>}</span>
@@ -177,8 +177,8 @@ function registerListener(event, func) {
 
         <span class=n>File</span> <span class=n>file</span> <span class=o>=</span> <span class=k>new</span> <span class=n>File</span><span class=p>(</span><span class=n>filename</span><span class=p>);</span> <span class=c1>// needs to be replaced</span>
 
-<span class=hll>        <span class=n>vtkPanel</span> <span class=n>panel</span> <span class=o>=</span> <span class=n>showVectorField</span><span class=p>(</span><span class=n>file</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mf>0.001</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>);</span> <span class=c1>// values need to be replaced</span>
-</span>
+        <span class=n>vtkPanel</span> <span class=n>panel</span> <span class=o>=</span> <span class=n>showVectorField</span><span class=p>(</span><span class=n>file</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mf>0.001</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>);</span> <span class=c1>// values need to be replaced</span>
+
         <span class=n>frame</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=n>panel</span><span class=p>,</span> <span class=n>BorderLayout</span><span class=p>.</span><span class=na>CENTER</span><span class=p>);</span>
         <span class=n>frame</span><span class=p>.</span><span class=na>setSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>);</span>
         <span class=n>frame</span><span class=p>.</span><span class=na>setLocationRelativeTo</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span>

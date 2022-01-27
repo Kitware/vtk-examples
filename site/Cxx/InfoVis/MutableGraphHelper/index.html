@@ -68,9 +68,9 @@ function registerListener(event, func) {
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMutableGraphHelper</span><span class=o>&gt;</span><span class=w> </span><span class=n>graphHelper</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>graphHelper</span><span class=o>-&gt;</span><span class=n>SetGraph</span><span class=p>(</span><span class=n>g</span><span class=p>);</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>v0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>graphHelper</span><span class=o>-&gt;</span><span class=n>AddVertex</span><span class=p>();</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>v1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>graphHelper</span><span class=o>-&gt;</span><span class=n>AddVertex</span><span class=p>();</span><span class=w></span>
-</span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>v0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>graphHelper</span><span class=o>-&gt;</span><span class=n>AddVertex</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>v1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>graphHelper</span><span class=o>-&gt;</span><span class=n>AddVertex</span><span class=p>();</span><span class=w></span>
+
 <span class=w>  </span><span class=n>graphHelper</span><span class=o>-&gt;</span><span class=n>AddEdge</span><span class=p>(</span><span class=n>v0</span><span class=p>,</span><span class=w> </span><span class=n>v1</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Can also do this:</span>

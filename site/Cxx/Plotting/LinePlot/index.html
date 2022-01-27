@@ -117,10 +117,10 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>line</span><span class=o>-&gt;</span><span class=n>SetWidth</span><span class=p>(</span><span class=mf>5.0</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// For dotted line, the line type can be from 2 to 5 for different dash/dot</span>
-<span class=hll><span class=w>  </span><span class=c1>// patterns (see enum in vtkPen containing DASH_LINE, value 2):</span>
-</span><span class=w>  </span><span class=c1>// #ifndef WIN32</span>
-<span class=hll><span class=w>  </span><span class=c1>//   line-&gt;GetPen()-&gt;SetLineType(vtkPen::DASH_LINE);</span>
-</span><span class=w>  </span><span class=c1>// #endif</span>
+<span class=w>  </span><span class=c1>// patterns (see enum in vtkPen containing DASH_LINE, value 2):</span>
+<span class=w>  </span><span class=c1>// #ifndef WIN32</span>
+<span class=w>  </span><span class=c1>//   line-&gt;GetPen()-&gt;SetLineType(vtkPen::DASH_LINE);</span>
+<span class=w>  </span><span class=c1>// #endif</span>
 <span class=w>  </span><span class=c1>// (ifdef-ed out on Windows because DASH_LINE does not work on Windows</span>
 <span class=w>  </span><span class=c1>//  machines with built-in Intel HD graphics card...)</span>
 

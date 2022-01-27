@@ -67,8 +67,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkInteractorStyleTrackballCamera.h&gt;</span><span class=cp></span>
 </span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTestFilter.h&gt;</span><span class=cp></span>
-</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTestFilter.h&gt;</span><span class=cp></span>
+
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>CustomStyle</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkInteractorStyleTrackballCamera</span><span class=w></span>
 </span><span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=k>public</span><span class=o>:</span><span class=w></span>
@@ -119,8 +119,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTestFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>Filter</span><span class=p>;</span><span class=w></span>
 </span>
 <span class=p>};</span><span class=w></span>
-<span class=hll><span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>CustomStyle</span><span class=p>);</span><span class=w></span>
-</span>
+<span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>CustomStyle</span><span class=p>);</span><span class=w></span>
+
 <span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=w> </span><span class=o>*</span><span class=n>argv</span><span class=p>[])</span><span class=w></span>
 <span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=c1>// Create a renderer, render window, and interactor</span>
@@ -145,9 +145,9 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span><span class=w></span>
 <span class=p>}</span><span class=w></span>
-</code></pre></div> <p><strong>vtkTestFilter.h</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#ifndef __vtkTestFilter_h</span>
-</span><span class=hll><span class=cp>#define __vtkTestFilter_h</span>
-</span>
+</code></pre></div> <p><strong>vtkTestFilter.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTestFilter_h</span>
+<span class=cp>#define __vtkTestFilter_h</span>
+
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPolyDataAlgorithm.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span>
@@ -155,29 +155,29 @@ function registerListener(event, func) {
 </span><span class=p>{</span><span class=w></span>
 <span class=k>public</span><span class=o>:</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTestFilter</span><span class=p>,</span><span class=n>vtkPolyDataAlgorithm</span><span class=p>);</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTestFilter</span><span class=w> </span><span class=o>*</span><span class=nf>New</span><span class=p>();</span><span class=w></span>
-</span>
+</span><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTestFilter</span><span class=w> </span><span class=o>*</span><span class=nf>New</span><span class=p>();</span><span class=w></span>
+
 <span class=hll><span class=w>  </span><span class=n>vtkPolyData</span><span class=o>*</span><span class=w> </span><span class=nf>GetIntermediateOutput</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=k>return</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Output</span><span class=p>;}</span><span class=w></span>
 </span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>RefreshEvent</span><span class=p>;</span><span class=w></span>
 
 <span class=k>protected</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkTestFilter</span><span class=p>();</span><span class=w></span>
-</span>
+<span class=w>  </span><span class=n>vtkTestFilter</span><span class=p>();</span><span class=w></span>
+
 <span class=hll><span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=nf>RequestData</span><span class=p>(</span><span class=n>vtkInformation</span><span class=w> </span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=w> </span><span class=o>**</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=w> </span><span class=o>*</span><span class=p>);</span><span class=w></span>
 </span>
 <span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>Iterate</span><span class=p>(</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>iteration</span><span class=p>);</span><span class=w></span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>Output</span><span class=p>;</span><span class=w></span>
 </span><span class=k>private</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkTestFilter</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w>  </span><span class=c1>// Not implemented.</span>
-</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w>  </span><span class=c1>// Not implemented.</span>
-</span>
+<span class=w>  </span><span class=n>vtkTestFilter</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w>  </span><span class=c1>// Not implemented.</span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w>  </span><span class=c1>// Not implemented.</span>
+
 <span class=p>};</span><span class=w></span>
 
 <span class=cp>#endif</span>
-</code></pre></div> <p><strong>vtkTestFilter.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTestFilter.h&gt;</span><span class=cp></span>
-</span>
+</code></pre></div> <p><strong>vtkTestFilter.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTestFilter.h&gt;</span><span class=cp></span>
+
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkObjectFactory.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCommand.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkStreamingDemandDrivenPipeline.h&gt;</span><span class=cp></span>
@@ -188,10 +188,10 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkAppendPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span><span class=cp></span>
 </span>
-<span class=hll><span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTestFilter</span><span class=p>);</span><span class=w></span>
-</span>
-<span class=hll><span class=n>vtkTestFilter</span><span class=o>::</span><span class=n>vtkTestFilter</span><span class=p>()</span><span class=w></span>
-</span><span class=p>{</span><span class=w></span>
+<span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTestFilter</span><span class=p>);</span><span class=w></span>
+
+<span class=n>vtkTestFilter</span><span class=o>::</span><span class=n>vtkTestFilter</span><span class=p>()</span><span class=w></span>
+<span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SetNumberOfInputPorts</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Output</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span>
@@ -222,8 +222,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=mi>1</span><span class=p>;</span><span class=w></span>
 <span class=p>}</span><span class=w></span>
 
-<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>vtkTestFilter</span><span class=o>::</span><span class=n>Iterate</span><span class=p>(</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>iteration</span><span class=p>)</span><span class=w></span>
-</span><span class=p>{</span><span class=w></span>
+<span class=kt>void</span><span class=w> </span><span class=n>vtkTestFilter</span><span class=o>::</span><span class=n>Iterate</span><span class=p>(</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>iteration</span><span class=p>)</span><span class=w></span>
+<span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphereSource</span><span class=w> </span><span class=o>=</span><span class=w></span>
 </span><span class=hll><span class=w>    </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span><span class=w>  </span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=n>iteration</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>

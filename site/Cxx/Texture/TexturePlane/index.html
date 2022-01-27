@@ -73,8 +73,8 @@ function registerListener(event, func) {
 <span class=c1>//</span>
 <span class=c1>// Load in the texture map. A texture is any unsigned char image. If it</span>
 <span class=c1>// is not of this type, you will have to map it through a lookup table</span>
-<span class=hll><span class=c1>// or by using vtkImageShiftScale.</span>
-</span><span class=c1>//</span>
+<span class=c1>// or by using vtkImageShiftScale.</span>
+<span class=c1>//</span>
 <span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span><span class=w></span>
 <span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=c1>// Verify input arguments</span>
@@ -94,8 +94,8 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>atext</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>textureFile</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>atext</span><span class=o>-&gt;</span><span class=n>InterpolateOn</span><span class=p>();</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Create a plane source and actor. The vtkPlanesSource generates</span>
-</span><span class=w>  </span><span class=c1>// texture coordinates.</span>
+<span class=w>  </span><span class=c1>// Create a plane source and actor. The vtkPlanesSource generates</span>
+<span class=w>  </span><span class=c1>// texture coordinates.</span>
 <span class=w>  </span><span class=c1>//</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlaneSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>plane</span><span class=p>;</span><span class=w></span>
 </span>

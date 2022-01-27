@@ -59,12 +59,12 @@ function registerListener(event, func) {
 <span class=c1># -*- coding: utf-8 -*-</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkPoints</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkHexagonalPrism</span><span class=p>,</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkPoints</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkHexagonalPrism</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkHexahedron</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkLine</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPentagonalPrism</span><span class=p>,</span>
@@ -90,53 +90,53 @@ function registerListener(event, func) {
     <span class=n>uGrids</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkVertex</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Vertex.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Vertex.vtk&#39;</span><span class=p>)</span>
+
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakePolyVertex</span><span class=p>())</span>
-<span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;PolyVertex.vtk&#39;</span><span class=p>)</span>
-</span>
+    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;PolyVertex.vtk&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkLine</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Line.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Line.vtk&#39;</span><span class=p>)</span>
+
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakePolyLine</span><span class=p>())</span>
-<span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;PolyLine.vtk&#39;</span><span class=p>)</span>
-</span>
+    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;PolyLine.vtk&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkTriangle</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Triangle.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Triangle.vtk&#39;</span><span class=p>)</span>
+
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeTriangleStrip</span><span class=p>())</span>
-<span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;TriangleStrip.vtk&#39;</span><span class=p>)</span>
-</span>
+    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;TriangleStrip.vtk&#39;</span><span class=p>)</span>
+
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakePolygon</span><span class=p>())</span>
-<span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Polygon.vtk&#39;</span><span class=p>)</span>
-</span>
+    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Polygon.vtk&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkPixel</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Pixel.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Pixel.vtk&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkQuad</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Quad.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Quad.vtk&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkTetra</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Tetra.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Tetra.vtk&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkVoxel</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Voxel.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Voxel.vtk&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkHexahedron</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Hexahedron.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Hexahedron.vtk&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkWedge</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Wedge.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Wedge.vtk&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkPyramid</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Pyramid.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Pyramid.vtk&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkPentagonalPrism</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;PentagonalPrism.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;PentagonalPrism.vtk&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkHexagonalPrism</span><span class=p>()))</span>
-</span><span class=hll>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;HexagonalPrism.vtk&#39;</span><span class=p>)</span>
-</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;HexagonalPrism.vtk&#39;</span><span class=p>)</span>
+
     <span class=c1># Write each grid into  a file</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>uGrids</span><span class=p>)):</span>
         <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Writing: &#39;</span><span class=p>,</span> <span class=n>filenames</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>

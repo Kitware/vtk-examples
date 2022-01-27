@@ -297,8 +297,8 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=c1>// Draw a cube the same size and at the same position as the one</span>
 <span class=w>    </span><span class=c1>// created previously.  Extract the edges because we only want to see</span>
-<span class=hll><span class=w>    </span><span class=c1>// the outline of the cube.  Pass the edges through a vtkTubeFilter so</span>
-</span><span class=w>    </span><span class=c1>// they are displayed as tubes rather than lines.</span>
+<span class=w>    </span><span class=c1>// the outline of the cube.  Pass the edges through a vtkTubeFilter so</span>
+<span class=w>    </span><span class=c1>// they are displayed as tubes rather than lines.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCubeSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>CubeModel</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=n>CubeModel</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>.5</span><span class=p>,</span><span class=w> </span><span class=mf>.5</span><span class=p>,</span><span class=w> </span><span class=mf>.5</span><span class=p>);</span><span class=w></span>
 
@@ -321,8 +321,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>CubeEdges</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.4</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=n>CubeEdges</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span><span class=w></span>
 
-<span class=hll><span class=w>    </span><span class=c1>// Create a sphere to use as a glyph source for vtkGlyph3D.</span>
-</span><span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>Sphere</span><span class=p>;</span><span class=w></span>
+<span class=w>    </span><span class=c1>// Create a sphere to use as a glyph source for vtkGlyph3D.</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>Sphere</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=n>Sphere</span><span class=o>-&gt;</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>0.04</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=n>Sphere</span><span class=o>-&gt;</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=n>Sphere</span><span class=o>-&gt;</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span><span class=w></span>
@@ -331,8 +331,8 @@ function registerListener(event, func) {
 </span><span class=w>    </span><span class=n>ThresholdIn</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>Grid</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=n>ThresholdIn</span><span class=o>-&gt;</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mf>.5</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=c1>// Display spheres at the vertices remaining in the cube data set after</span>
-<span class=hll><span class=w>    </span><span class=c1>// it was passed through vtkThresholdPoints.</span>
-</span><span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;</span><span class=w> </span><span class=n>Vertices</span><span class=p>;</span><span class=w></span>
+<span class=w>    </span><span class=c1>// it was passed through vtkThresholdPoints.</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;</span><span class=w> </span><span class=n>Vertices</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=n>Vertices</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>ThresholdIn</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>    </span><span class=n>Vertices</span><span class=o>-&gt;</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>Sphere</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>    </span><span class=c1>// Create a mapper and actor to display the glyphs.</span>

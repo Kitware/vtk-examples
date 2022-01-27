@@ -75,8 +75,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>            </span><span class=n>vtkSphereSource</span><span class=w> </span><span class=n>sphereSource</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkSphereSource</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span><span class=w>            </span><span class=n>sphereSource</span><span class=p>.</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 <span class=hll><span class=w>            </span><span class=n>vtkXMLPolyDataWriter</span><span class=w> </span><span class=n>writer</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkXMLPolyDataWriter</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
-</span><span class=hll><span class=w>            </span><span class=n>writer</span><span class=p>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=s>@&quot;c:\vtk\vtkdata-5.8.0\Data\testFindAllArrayNames.vtp&quot;</span><span class=p>);</span><span class=w></span>
-</span><span class=w>            </span><span class=n>writer</span><span class=p>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphereSource</span><span class=p>.</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+</span><span class=w>            </span><span class=n>writer</span><span class=p>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=s>@&quot;c:\vtk\vtkdata-5.8.0\Data\testFindAllArrayNames.vtp&quot;</span><span class=p>);</span><span class=w></span>
+<span class=w>            </span><span class=n>writer</span><span class=p>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphereSource</span><span class=p>.</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>            </span><span class=n>writer</span><span class=p>.</span><span class=n>Write</span><span class=p>();</span><span class=w></span>
 <span class=w>            </span><span class=n>polydata</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>sphereSource</span><span class=p>.</span><span class=n>GetOutput</span><span class=p>();</span><span class=w></span>
 <span class=w>         </span><span class=p>}</span><span class=w></span>
@@ -104,8 +104,8 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=s>&quot;Type table/key: &quot;</span><span class=w> </span><span class=p>+</span><span class=w> </span>
 <span class=w>            </span><span class=n>Environment</span><span class=p>.</span><span class=n>NewLine</span><span class=w> </span><span class=p>+</span><span class=w> </span>
 <span class=w>            </span><span class=s>&quot;-------------------------&quot;</span><span class=p>);</span><span class=w></span>
-<span class=hll><span class=w>         </span><span class=c1>//more values can be found in &lt;VTK_DIR&gt;/Common/vtkSetGet.h</span>
-</span>
+<span class=w>         </span><span class=c1>//more values can be found in &lt;VTK_DIR&gt;/Common/vtkSetGet.h</span>
+
 <span class=w>         </span><span class=n>Console</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=m>3</span><span class=w> </span><span class=p>+</span><span class=w> </span><span class=s>&quot; unsigned char&quot;</span><span class=p>);</span><span class=w></span>
 <span class=w>         </span><span class=n>Console</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=m>7</span><span class=w> </span><span class=p>+</span><span class=w> </span><span class=s>&quot; unsigned int&quot;</span><span class=p>);</span><span class=w></span>
 <span class=w>         </span><span class=n>Console</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=m>10</span><span class=w> </span><span class=p>+</span><span class=w> </span><span class=s>&quot; float&quot;</span><span class=p>);</span><span class=w></span>

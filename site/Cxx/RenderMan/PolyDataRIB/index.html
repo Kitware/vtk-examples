@@ -70,10 +70,10 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkXMLPolyDataReader.h&gt;</span><span class=cp></span>
 </span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/SystemTools.hxx&gt;</span><span class=cp></span>
-</span>
-<span class=hll><span class=c1>// static vtkSmartPointer&lt;vtkRIBProperty&gt; spatter(const char *sizes,</span>
-</span><span class=c1>//                                                const char *specksize,</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/SystemTools.hxx&gt;</span><span class=cp></span>
+
+<span class=c1>// static vtkSmartPointer&lt;vtkRIBProperty&gt; spatter(const char *sizes,</span>
+<span class=c1>//                                                const char *specksize,</span>
 <span class=c1>//                                                const char *spattercolor,</span>
 <span class=c1>//                                                const char *basecolor);</span>
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span><span class=w></span>
@@ -98,8 +98,8 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>filename</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span><span class=w></span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>prefix</span><span class=w> </span><span class=o>=</span><span class=w></span>
-<span class=hll><span class=w>      </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameWithoutExtension</span><span class=p>(</span><span class=n>filename</span><span class=p>);</span><span class=w></span>
-</span>
+<span class=w>      </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameWithoutExtension</span><span class=p>(</span><span class=n>filename</span><span class=p>);</span><span class=w></span>
+
 <span class=w>  </span><span class=c1>// Read all the data from the file</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filename</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span><span class=w></span>
@@ -163,13 +163,13 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span><span class=w></span>
 <span class=p>}</span><span class=w></span>
 
-<span class=hll><span class=c1>// vtkSmartPointer&lt;vtkRIBProperty&gt; spatter(const char *sizes,</span>
-</span><span class=c1>//                                         const char *specksize,</span>
+<span class=c1>// vtkSmartPointer&lt;vtkRIBProperty&gt; spatter(const char *sizes,</span>
+<span class=c1>//                                         const char *specksize,</span>
 <span class=c1>//                                         const char *spattercolor,</span>
 <span class=c1>//                                         const char *basecolor)</span>
 <span class=c1>// {</span>
-<span class=hll><span class=c1>//   vtkNew&lt;vtkRIBProperty&gt; spatterProp;</span>
-</span><span class=c1>//   spatterProp-&gt;SetVariable(&quot;sizes&quot;, &quot;float&quot;);</span>
+<span class=c1>//   vtkNew&lt;vtkRIBProperty&gt; spatterProp;</span>
+<span class=c1>//   spatterProp-&gt;SetVariable(&quot;sizes&quot;, &quot;float&quot;);</span>
 <span class=c1>//   spatterProp-&gt;AddVariable(&quot;specksize&quot;, &quot;float&quot;);</span>
 <span class=c1>//   spatterProp-&gt;AddVariable(&quot;spattercolor&quot;, &quot;color&quot;);</span>
 <span class=c1>//   spatterProp-&gt;AddVariable(&quot;basecolor&quot;, &quot;color&quot;);</span>

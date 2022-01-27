@@ -89,8 +89,8 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=c1>// Create a data array to hold the weighting coefficients</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>tfarray</span><span class=p>;</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>npoints</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sphereData</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>();</span><span class=w></span>
-</span><span class=w>  </span><span class=n>tfarray</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span><span class=w></span>
+</span><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>npoints</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sphereData</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=n>tfarray</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>tfarray</span><span class=o>-&gt;</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=n>npoints</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Parameterize the sphere along the z axis, and fill the weights</span>
@@ -119,8 +119,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Create field data to hold the array, and bind it to the sphere</span>
-<span class=hll><span class=w>  </span><span class=c1>//  vtkNew&lt;vtkFieldData&gt; fd;</span>
-</span><span class=w>  </span><span class=n>tfarray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;weights&quot;</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=c1>//  vtkNew&lt;vtkFieldData&gt; fd;</span>
+<span class=w>  </span><span class=n>tfarray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;weights&quot;</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>sphereData</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddArray</span><span class=p>(</span><span class=n>tfarray</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Use an ordinary transform to stretch the shape</span>

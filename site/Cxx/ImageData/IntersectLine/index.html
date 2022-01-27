@@ -111,8 +111,8 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=mi>1000</span><span class=p>;</span><span class=w> </span><span class=c1>// 1000 is an arbitrary constant that should be much larger</span>
 <span class=w>                  </span><span class=c1>// than the size of the scene (to create an &quot;infinite&quot; ray)</span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=w> </span><span class=n>intersectedCells</span><span class=w> </span><span class=o>=</span><span class=w></span>
-</span><span class=w>      </span><span class=n>IntersectImage</span><span class=p>(</span><span class=n>grid</span><span class=p>,</span><span class=w> </span><span class=n>rayOrigin</span><span class=p>,</span><span class=w> </span><span class=n>rayEndPoint</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=w> </span><span class=n>intersectedCells</span><span class=w> </span><span class=o>=</span><span class=w></span>
+<span class=w>      </span><span class=n>IntersectImage</span><span class=p>(</span><span class=n>grid</span><span class=p>,</span><span class=w> </span><span class=n>rayOrigin</span><span class=p>,</span><span class=w> </span><span class=n>rayEndPoint</span><span class=p>);</span><span class=w></span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkShrinkFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>shrinkFilter</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>shrinkFilter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>grid</span><span class=p>);</span><span class=w></span>
@@ -126,8 +126,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>visibilityArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Visibility&quot;</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Initially, set all cells to visible</span>
-<span class=hll><span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>cellId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
-</span><span class=w>       </span><span class=n>cellId</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>shrinkFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfCells</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>cellId</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>cellId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
+<span class=w>       </span><span class=n>cellId</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>shrinkFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfCells</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>cellId</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>visibilityArray</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
@@ -200,14 +200,14 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>subId</span><span class=p>;</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// The third parameter is an &quot;initial guess&quot; of the cellId</span>
-<span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>cellId</span><span class=w> </span><span class=o>=</span><span class=w></span>
-</span><span class=w>      </span><span class=n>grid</span><span class=o>-&gt;</span><span class=n>FindCell</span><span class=p>(</span><span class=n>point</span><span class=p>,</span><span class=w> </span><span class=nb>NULL</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>.1</span><span class=p>,</span><span class=w> </span><span class=n>subId</span><span class=p>,</span><span class=w> </span><span class=n>pcoords</span><span class=p>,</span><span class=w> </span><span class=n>weights</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>cellId</span><span class=w> </span><span class=o>=</span><span class=w></span>
+<span class=w>      </span><span class=n>grid</span><span class=o>-&gt;</span><span class=n>FindCell</span><span class=p>(</span><span class=n>point</span><span class=p>,</span><span class=w> </span><span class=nb>NULL</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>.1</span><span class=p>,</span><span class=w> </span><span class=n>subId</span><span class=p>,</span><span class=w> </span><span class=n>pcoords</span><span class=p>,</span><span class=w> </span><span class=n>weights</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>cellId</span><span class=p>;</span><span class=w></span>
 <span class=p>}</span><span class=w></span>
 
 <span class=c1>// Intersect a finite line (with end points p0 and p1) with all of the</span>
-<span class=hll><span class=c1>// cells of a vtkImageData</span>
-</span><span class=hll><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=w> </span><span class=n>IntersectImage</span><span class=p>(</span><span class=n>vtkImageData</span><span class=o>*</span><span class=w> </span><span class=n>image</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=w> </span><span class=n>p0</span><span class=p>[</span><span class=mi>3</span><span class=p>],</span><span class=w></span>
+<span class=c1>// cells of a vtkImageData</span>
+<span class=hll><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=w> </span><span class=n>IntersectImage</span><span class=p>(</span><span class=n>vtkImageData</span><span class=o>*</span><span class=w> </span><span class=n>image</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=w> </span><span class=n>p0</span><span class=p>[</span><span class=mi>3</span><span class=p>],</span><span class=w></span>
 </span><span class=w>                                      </span><span class=kt>double</span><span class=w> </span><span class=n>p1</span><span class=p>[</span><span class=mi>3</span><span class=p>])</span><span class=w></span>
 <span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=c1>// Intersect a ray with the bounding box of the grid. There should</span>
@@ -233,8 +233,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>hit</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkBox</span><span class=o>::</span><span class=n>IntersectWithLine</span><span class=p>(</span><span class=n>bounds</span><span class=p>,</span><span class=w> </span><span class=n>p0</span><span class=p>,</span><span class=w> </span><span class=n>p1</span><span class=p>,</span><span class=w> </span><span class=n>t0</span><span class=p>,</span><span class=w> </span><span class=n>t1</span><span class=p>,</span><span class=w> </span><span class=n>entrancePoint</span><span class=p>,</span><span class=w></span>
 </span><span class=w>                                      </span><span class=n>exitPoint</span><span class=p>,</span><span class=w> </span><span class=o>*</span><span class=n>entryPlane</span><span class=p>,</span><span class=w> </span><span class=o>*</span><span class=n>exitPlane</span><span class=p>);</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=w> </span><span class=n>intersectedCells</span><span class=p>;</span><span class=w></span>
-</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=w> </span><span class=n>intersectedCells</span><span class=p>;</span><span class=w></span>
+
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>hit</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Not hit!&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
@@ -255,8 +255,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>image</span><span class=o>-&gt;</span><span class=n>GetDimensions</span><span class=p>(</span><span class=n>dim</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Make sure to include the first cell that the line hits</span>
-<span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>startCellId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>FindCell</span><span class=p>(</span><span class=n>image</span><span class=p>,</span><span class=w> </span><span class=n>entrancePoint</span><span class=p>);</span><span class=w></span>
-</span><span class=w>  </span><span class=n>intersectedCells</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>startCellId</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>startCellId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>FindCell</span><span class=p>(</span><span class=n>image</span><span class=p>,</span><span class=w> </span><span class=n>entrancePoint</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>intersectedCells</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>startCellId</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span><span class=w></span>
 <span class=w>  </span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>entrancePoint</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span><span class=w></span>
@@ -298,8 +298,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Make sure to include the last cell that the line hits</span>
-<span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>endCellId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>FindCell</span><span class=p>(</span><span class=n>image</span><span class=p>,</span><span class=w> </span><span class=n>exitPoint</span><span class=p>);</span><span class=w></span>
-</span><span class=w>  </span><span class=n>intersectedCells</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>endCellId</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>endCellId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>FindCell</span><span class=p>(</span><span class=n>image</span><span class=p>,</span><span class=w> </span><span class=n>exitPoint</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>intersectedCells</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>endCellId</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>intersectedCells</span><span class=p>;</span><span class=w></span>
 <span class=p>}</span><span class=w></span>

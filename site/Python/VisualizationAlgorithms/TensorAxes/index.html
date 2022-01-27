@@ -60,13 +60,13 @@ function registerListener(event, func) {
 <span class=c1># Translated from TenAxes.tcl</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkLookupTable</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkTensorGlyph</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkTensorGlyph</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkTubeFilter</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkAxes</span>
@@ -74,8 +74,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=n>vtkOutlineFilter</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkConeSource</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingHybrid</span> <span class=kn>import</span> <span class=n>vtkPointLoad</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkCamera</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
@@ -130,8 +130,8 @@ function registerListener(event, func) {
 </span>    <span class=n>tensorAxesMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tensorAxes</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tensorAxesMapper</span><span class=o>.</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>lut</span><span class=p>)</span>
     <span class=n>plane</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>  <span class=c1># force update for scalar range</span>
-<span class=hll>    <span class=c1># This is deprecated from vtk 8.1 onwards.</span>
-</span>    <span class=c1># tensorAxesMapper.ImmediateModeRenderingOn()</span>
+    <span class=c1># This is deprecated from vtk 8.1 onwards.</span>
+    <span class=c1># tensorAxesMapper.ImmediateModeRenderingOn()</span>
     <span class=n>tensorAxesMapper</span><span class=o>.</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=n>plane</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalarRange</span><span class=p>())</span>
 
 <span class=hll>    <span class=n>tensorActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>

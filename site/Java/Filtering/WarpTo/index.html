@@ -60,8 +60,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkLineSource</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkTubeFilter</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkWarpTo</span><span class=p>;</span>
-</span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkNativeLibrary</span><span class=p>;</span>
-</span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkPolyDataMapper</span><span class=p>;</span>
+</span><span class=kn>import</span> <span class=nn>vtk.vtkNativeLibrary</span><span class=p>;</span>
+<span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkPolyDataMapper</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkNamedColors</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkRenderer</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span> <span class=nn>vtk.vtkRenderWindowInteractor</span><span class=p>;</span>
@@ -73,18 +73,18 @@ function registerListener(event, func) {
   <span class=c1>// Load VTK library and print which library was not properly loaded</span>
   <span class=kd>static</span> 
   <span class=p>{</span>
-<span class=hll>    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span> 
-</span>    <span class=p>{</span>
-<span class=hll>      <span class=k>for</span> <span class=p>(</span><span class=n>vtkNativeLibrary</span> <span class=n>lib</span> <span class=p>:</span> <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span> 
-</span>      <span class=p>{</span>
+    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span> 
+    <span class=p>{</span>
+      <span class=k>for</span> <span class=p>(</span><span class=n>vtkNativeLibrary</span> <span class=n>lib</span> <span class=p>:</span> <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span> 
+      <span class=p>{</span>
         <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span> 
         <span class=p>{</span>
           <span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span> <span class=o>+</span> <span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
         <span class=p>}</span>
       <span class=p>}</span>
     <span class=p>}</span>
-<span class=hll>    <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>DisableOutputWindow</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span>
-</span>  <span class=p>}</span>
+    <span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>DisableOutputWindow</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span>
+  <span class=p>}</span>
   <span class=c1>// -----------------------------------------------------------------</span>
 
 

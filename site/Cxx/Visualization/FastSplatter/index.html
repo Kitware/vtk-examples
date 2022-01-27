@@ -145,10 +145,10 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>splatter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>resultScale</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Set up a viewer for the image.  vtkImageViewer and</span>
-</span><span class=hll><span class=w>  </span><span class=c1>// vtkImageViewer2 are convenient wrappers around vtkActor2D,</span>
-</span><span class=hll><span class=w>  </span><span class=c1>// vtkImageMapper, vtkRenderer, and vtkRenderWindow.  All you need</span>
-</span><span class=w>  </span><span class=c1>// to supply is the interactor and hooray, Bob&#39;s your uncle.</span>
+<span class=w>  </span><span class=c1>// Set up a viewer for the image.  vtkImageViewer and</span>
+<span class=w>  </span><span class=c1>// vtkImageViewer2 are convenient wrappers around vtkActor2D,</span>
+<span class=w>  </span><span class=c1>// vtkImageMapper, vtkRenderer, and vtkRenderWindow.  All you need</span>
+<span class=w>  </span><span class=c1>// to supply is the interactor and hooray, Bob&#39;s your uncle.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageViewer2</span><span class=o>&gt;</span><span class=w> </span><span class=n>imageViewer</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>resultScale</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>SetColorLevel</span><span class=p>(</span><span class=mi>127</span><span class=p>);</span><span class=w></span>

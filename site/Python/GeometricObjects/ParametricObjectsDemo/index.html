@@ -67,14 +67,14 @@ function registerListener(event, func) {
 <span class=kn>from</span> <span class=nn>pathlib</span> <span class=kn>import</span> <span class=n>Path</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingFreeType</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonComputationalGeometry</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkParametricBohemianDome</span><span class=p>,</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingFreeType</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonComputationalGeometry</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkParametricBohemianDome</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParametricBour</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParametricBoy</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParametricCatalanMinimal</span><span class=p>,</span>
@@ -97,28 +97,28 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkParametricSuperToroid</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParametricTorus</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkMinimalStandardRandomSequence</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkMinimalStandardRandomSequence</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPoints</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkGlyph3D</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkGlyph3D</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkMaskPoints</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkArrowSource</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkArrowSource</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParametricFunctionSource</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOImage</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkBMPWriter</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkIOImage</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkBMPWriter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkJPEGWriter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPNGWriter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPNMWriter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPostScriptWriter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkTIFFWriter</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkActor2D</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkProperty</span><span class=p>,</span>

@@ -60,28 +60,28 @@ function registerListener(event, func) {
 <span class=kn>import</span> <span class=nn>os.path</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkPlane</span><span class=p>,</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkPlane</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyData</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkClipPolyData</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkClipPolyData</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkFeatureEdges</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkStripper</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkSphereSource</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOGeometry</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkBYUReader</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOGeometry</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkBYUReader</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkOBJReader</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkSTLReader</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOPLY</span> <span class=kn>import</span> <span class=n>vtkPLYReader</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
@@ -202,8 +202,8 @@ function registerListener(event, func) {
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
     <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>:</span>
-<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLpoly_dataReader</span><span class=p>()</span>
-</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
+        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLpoly_dataReader</span><span class=p>()</span>
+        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
     <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
@@ -216,9 +216,9 @@ function registerListener(event, func) {
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-<span class=hll>    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>:</span>
-</span><span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkpoly_dataReader</span><span class=p>()</span>
-</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>:</span>
+        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkpoly_dataReader</span><span class=p>()</span>
+        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
     <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.g&#39;</span><span class=p>:</span>

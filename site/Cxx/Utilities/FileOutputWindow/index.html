@@ -64,8 +64,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFileOutputWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>fileOutputWindow</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>fileOutputWindow</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=s>&quot;output.txt&quot;</span><span class=p>);</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Note that the SetInstance function is a static member of vtkOutputWindow.</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkOutputWindow</span><span class=o>::</span><span class=n>SetInstance</span><span class=p>(</span><span class=n>fileOutputWindow</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Note that the SetInstance function is a static member of vtkOutputWindow.</span>
+<span class=hll><span class=w>  </span><span class=n>vtkOutputWindow</span><span class=o>::</span><span class=n>SetInstance</span><span class=p>(</span><span class=n>fileOutputWindow</span><span class=p>);</span><span class=w></span>
 </span>
 <span class=w>  </span><span class=c1>// This causes an error intentionally (file name not specified) - this error</span>
 <span class=w>  </span><span class=c1>// will be written to the file output.txt</span>

@@ -62,8 +62,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span><span class=cp></span>
 </span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTestFilterSelfProgressFilter.h&quot;</span><span class=cp></span>
-</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTestFilterSelfProgressFilter.h&quot;</span><span class=cp></span>
+
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>ProgressFunction</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w></span>
 </span><span class=w>                      </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>clientData</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>callData</span><span class=p>);</span><span class=w></span>
 
@@ -78,9 +78,9 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span><span class=w></span>
 <span class=p>}</span><span class=w></span>
-</code></pre></div> <p><strong>vtkTestFilterSelfProgressFilter.h</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#ifndef __vtkTestFilterSelfProgressFilter_h</span>
-</span><span class=hll><span class=cp>#define __vtkTestFilterSelfProgressFilter_h</span>
-</span>
+</code></pre></div> <p><strong>vtkTestFilterSelfProgressFilter.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTestFilterSelfProgressFilter_h</span>
+<span class=cp>#define __vtkTestFilterSelfProgressFilter_h</span>
+
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPolyDataAlgorithm.h&gt;</span><span class=cp></span>
 </span>
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTestFilterSelfProgressFilter</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkPolyDataAlgorithm</span><span class=w></span>
@@ -88,20 +88,20 @@ function registerListener(event, func) {
 <span class=k>public</span><span class=o>:</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>,</span><span class=n>vtkAlgorithm</span><span class=p>);</span><span class=w></span>
 </span>
-<span class=hll><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=w> </span><span class=o>*</span><span class=nf>New</span><span class=p>();</span><span class=w></span>
-</span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=w> </span><span class=o>*</span><span class=nf>New</span><span class=p>();</span><span class=w></span>
+
 <span class=k>protected</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>();</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=o>~</span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>()</span><span class=w> </span><span class=p>{}</span><span class=w></span>
-</span>
+<span class=w>  </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=o>~</span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>()</span><span class=w> </span><span class=p>{}</span><span class=w></span>
+
 <span class=hll><span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>RequestData</span><span class=p>(</span><span class=n>vtkInformation</span><span class=w> </span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=w> </span><span class=o>**</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=w> </span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span><span class=w></span>
 </span>
 <span class=hll><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>ProgressFunction</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>clientData</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>callData</span><span class=p>);</span><span class=w></span>
 </span>
 <span class=k>private</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>&amp;</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>delete</span><span class=p>;</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>&amp;</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>delete</span><span class=p>;</span><span class=w></span>
-</span>
+<span class=w>  </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>&amp;</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>delete</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>&amp;</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>delete</span><span class=p>;</span><span class=w></span>
+
 <span class=p>};</span><span class=w></span>
 
 <span class=cp>#endif</span>
@@ -113,29 +113,29 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkObjectFactory.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkStreamingDemandDrivenPipeline.h&gt;</span><span class=cp></span>
 </span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTestFilterSelfProgressFilter.h&quot;</span><span class=cp></span>
-</span>
-<span class=hll><span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>);</span><span class=w></span>
-</span>
-<span class=hll><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>::</span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>()</span><span class=w></span>
-</span><span class=p>{</span><span class=w></span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTestFilterSelfProgressFilter.h&quot;</span><span class=cp></span>
+
+<span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>);</span><span class=w></span>
+
+<span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>::</span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=p>()</span><span class=w></span>
+<span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCallbackCommand</span><span class=o>&gt;</span><span class=w> </span><span class=n>progressCallback</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>progressCallback</span><span class=o>-&gt;</span><span class=n>SetCallback</span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>ProgressFunction</span><span class=p>);</span><span class=w></span>
 
 <span class=hll><span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>ProgressEvent</span><span class=p>,</span><span class=w> </span><span class=n>progressCallback</span><span class=p>);</span><span class=w></span>
 </span><span class=p>}</span><span class=w></span>
 
-<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>::</span><span class=n>ProgressFunction</span><span class=p>(</span><span class=w></span>
-</span><span class=hll><span class=w>    </span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=cm>/* eventId */</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=cm>/* clientData */</span><span class=p>,</span><span class=w></span>
+<span class=kt>void</span><span class=w> </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>::</span><span class=n>ProgressFunction</span><span class=p>(</span><span class=w></span>
+<span class=hll><span class=w>    </span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=cm>/* eventId */</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=cm>/* clientData */</span><span class=p>,</span><span class=w></span>
 </span><span class=w>    </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=cm>/* callData */</span><span class=p>)</span><span class=w></span>
 <span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>*</span><span class=w> </span><span class=n>testFilter</span><span class=w> </span><span class=o>=</span><span class=w></span>
-</span><span class=hll><span class=w>      </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span><span class=w></span>
-</span><span class=w>  </span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Progress: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testFilter</span><span class=o>-&gt;</span><span class=n>GetProgress</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>*</span><span class=w> </span><span class=n>testFilter</span><span class=w> </span><span class=o>=</span><span class=w></span>
+<span class=w>      </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Progress: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testFilter</span><span class=o>-&gt;</span><span class=n>GetProgress</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 <span class=p>}</span><span class=w></span>
 
-<span class=hll><span class=kt>int</span><span class=w> </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>::</span><span class=n>RequestData</span><span class=p>(</span><span class=w></span>
-</span><span class=hll><span class=w>    </span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>request</span><span class=p>),</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=w> </span><span class=n>inputVector</span><span class=p>,</span><span class=w></span>
+<span class=kt>int</span><span class=w> </span><span class=n>vtkTestFilterSelfProgressFilter</span><span class=o>::</span><span class=n>RequestData</span><span class=p>(</span><span class=w></span>
+<span class=hll><span class=w>    </span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>request</span><span class=p>),</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=w> </span><span class=n>inputVector</span><span class=p>,</span><span class=w></span>
 </span><span class=hll><span class=w>    </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=w> </span><span class=n>outputVector</span><span class=p>)</span><span class=w></span>
 </span><span class=p>{</span><span class=w></span>
 
@@ -150,8 +150,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkPolyData</span><span class=o>*</span><span class=w> </span><span class=n>output</span><span class=w> </span><span class=o>=</span><span class=w></span>
 </span><span class=hll><span class=w>      </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>outInfo</span><span class=o>-&gt;</span><span class=n>Get</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>::</span><span class=n>DATA_OBJECT</span><span class=p>()));</span><span class=w></span>
 </span>
-<span class=hll><span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>input</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>input</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>UpdateProgress</span><span class=p>(</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=n>input</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 

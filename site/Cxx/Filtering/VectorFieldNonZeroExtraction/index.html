@@ -84,8 +84,8 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMagnitude</span><span class=o>&gt;</span><span class=w> </span><span class=n>magnitudeFilter</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>magnitudeFilter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>image</span><span class=p>);</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>magnitudeFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w> </span><span class=c1>// This filter produces a vtkImageData with an</span>
-</span><span class=w>                             </span><span class=c1>// array named &quot;Magnitude&quot;</span>
+<span class=w>  </span><span class=n>magnitudeFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w> </span><span class=c1>// This filter produces a vtkImageData with an</span>
+<span class=w>                             </span><span class=c1>// array named &quot;Magnitude&quot;</span>
 
 <span class=w>  </span><span class=n>image</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddArray</span><span class=p>(</span><span class=w></span>
 <span class=w>      </span><span class=n>magnitudeFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>());</span><span class=w></span>

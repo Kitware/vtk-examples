@@ -158,10 +158,10 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=cm>/*</span>
 <span class=cm>  // Not in selection</span>
-<span class=hll><span class=cm>  selectionNode1-&gt;GetProperties()-&gt;Set(vtkSelectionNode::INVERSE(), 1); //invert</span>
-</span><span class=cm>  the selection</span>
-<span class=hll><span class=cm>  selectionNode2-&gt;GetProperties()-&gt;Set(vtkSelectionNode::INVERSE(), 1); //invert</span>
-</span><span class=cm>  the selection extractSelection-&gt;Update(); std::cout &lt;&lt; &quot;There are &quot; &lt;&lt;</span>
+<span class=cm>  selectionNode1-&gt;GetProperties()-&gt;Set(vtkSelectionNode::INVERSE(), 1); //invert</span>
+<span class=cm>  the selection</span>
+<span class=cm>  selectionNode2-&gt;GetProperties()-&gt;Set(vtkSelectionNode::INVERSE(), 1); //invert</span>
+<span class=cm>  the selection extractSelection-&gt;Update(); std::cout &lt;&lt; &quot;There are &quot; &lt;&lt;</span>
 <span class=hll><span class=cm>  dynamic_cast&lt;vtkDataSet*&gt; (extractSelection-&gt;GetOutput())-&gt;GetNumberOfPoints()</span>
 </span><span class=cm>            &lt;&lt; &quot; points not in the selection.&quot; &lt;&lt; std::endl;</span>
 <span class=cm>  */</span><span class=w></span>

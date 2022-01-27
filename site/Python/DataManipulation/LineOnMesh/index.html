@@ -60,13 +60,13 @@ function registerListener(event, func) {
 <span class=kn>import</span> <span class=nn>numpy</span> <span class=k>as</span> <span class=nn>np</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonComputationalGeometry</span> <span class=kn>import</span> <span class=n>vtkParametricSpline</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span>    <span class=n>mutable</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
+    <span class=n>mutable</span><span class=p>,</span>
 <span class=hll>    <span class=n>vtkPoints</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkUnsignedCharArray</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkCellArray</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkCellArray</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkCellLocator</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyData</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkTriangle</span>
@@ -74,8 +74,8 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkCleanPolyData</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=n>vtkLoopSubdivisionFilter</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkParametricFunctionSource</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
@@ -172,8 +172,8 @@ function registerListener(event, func) {
 </span>    <span class=n>actor_loop</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
     <span class=n>actor_loop</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToFlat</span><span class=p>()</span>
 
-<span class=hll>    <span class=c1># Update the pipeline so that vtkCellLocator finds cells!</span>
-</span>    <span class=n>smooth_loop</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+    <span class=c1># Update the pipeline so that vtkCellLocator finds cells!</span>
+    <span class=n>smooth_loop</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=c1># Define a cellLocator to be able to compute intersections between lines.</span>
     <span class=c1># and the surface</span>

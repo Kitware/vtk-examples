@@ -77,8 +77,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphereSource</span><span class=p>;</span><span class=w></span>
 </span>
 <span class=w>  </span><span class=c1>// Generate random vectors</span>
-<span class=hll><span class=w>  </span><span class=n>vtkMath</span><span class=o>::</span><span class=n>RandomSeed</span><span class=p>(</span><span class=mi>5070</span><span class=p>);</span><span class=w> </span><span class=c1>// for testing</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBrownianPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>brownianPoints</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkMath</span><span class=o>::</span><span class=n>RandomSeed</span><span class=p>(</span><span class=mi>5070</span><span class=p>);</span><span class=w> </span><span class=c1>// for testing</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBrownianPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>brownianPoints</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>brownianPoints</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkArrowSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrowSource</span><span class=p>;</span><span class=w></span>

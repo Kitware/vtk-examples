@@ -59,16 +59,16 @@ function registerListener(event, func) {
 
 <span class=kn>import</span> <span class=nn>math</span>
 
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkColorSeries</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkColorSeries</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkNamedColors</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonComputationalGeometry</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkParametricRandomHills</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonComputationalGeometry</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkParametricRandomHills</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParametricTorus</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkDoubleArray</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkDoubleArray</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkFloatArray</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkLookupTable</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPoints</span><span class=p>,</span>
@@ -78,8 +78,8 @@ function registerListener(event, func) {
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkPolyData</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonTransforms</span> <span class=kn>import</span> <span class=n>vtkTransform</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkCleanPolyData</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkCleanPolyData</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkDelaunay2D</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkElevationFilter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkGlyph3D</span><span class=p>,</span>
@@ -90,8 +90,8 @@ function registerListener(event, func) {
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersModeling</span> <span class=kn>import</span> <span class=n>vtkBandedPolyDataContourFilter</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkArrowSource</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkArrowSource</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkParametricFunctionSource</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPlaneSource</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkSphereSource</span><span class=p>,</span>
@@ -100,8 +100,8 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInteractionStyle</span> <span class=kn>import</span> <span class=n>vtkInteractorStyleTrackballCamera</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInteractionWidgets</span> <span class=kn>import</span> <span class=n>vtkCameraOrientationWidget</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingAnnotation</span> <span class=kn>import</span> <span class=n>vtkScalarBarActor</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkColorTransferFunction</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
@@ -109,8 +109,8 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkRenderer</span>
 </span><span class=p>)</span>
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=c1># ------------------------------------------------------------</span>
@@ -277,8 +277,8 @@ function registerListener(event, func) {
     <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
     <span class=c1># Important: The interactor must be set prior to enabling the widget.</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
-<span class=hll>    <span class=k>if</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>20210718</span><span class=p>):</span>
-</span><span class=hll>        <span class=n>cam_orient_manipulator</span> <span class=o>=</span> <span class=n>vtkCameraOrientationWidget</span><span class=p>()</span>
+    <span class=k>if</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>20210718</span><span class=p>):</span>
+<span class=hll>        <span class=n>cam_orient_manipulator</span> <span class=o>=</span> <span class=n>vtkCameraOrientationWidget</span><span class=p>()</span>
 </span><span class=hll>        <span class=n>cam_orient_manipulator</span> <span class=o>=</span> <span class=n>vtkCameraOrientationWidget</span><span class=p>()</span>
 </span>        <span class=n>cam_orient_manipulator</span><span class=o>.</span><span class=n>SetParentRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
         <span class=c1># Enable the widget.</span>
@@ -306,8 +306,8 @@ function registerListener(event, func) {
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=hll><span class=k>def</span> <span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-</span>    <span class=sd>&quot;&quot;&quot;</span>
+<span class=k>def</span> <span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
+    <span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Requested major version.</span>
@@ -437,8 +437,8 @@ function registerListener(event, func) {
     <span class=n>fn</span><span class=o>.</span><span class=n>SetNumberOfHills</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
     <span class=c1># Make the normals face out of the surface.</span>
     <span class=c1># Not needed with VTK 8.0 or later.</span>
-<span class=hll>    <span class=c1># if fn.GetClassName() == &#39;vtkParametricRandomHills&#39;:</span>
-</span>    <span class=c1>#    fn.ClockwiseOrderingOff()</span>
+    <span class=c1># if fn.GetClassName() == &#39;vtkParametricRandomHills&#39;:</span>
+    <span class=c1>#    fn.ClockwiseOrderingOff()</span>
 
 <span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtkParametricFunctionSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>SetParametricFunction</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
@@ -446,8 +446,8 @@ function registerListener(event, func) {
     <span class=n>source</span><span class=o>.</span><span class=n>SetVResolution</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>SetScalarModeToZ</span><span class=p>()</span>
     <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-<span class=hll>    <span class=c1># Name the arrays (not needed in VTK 6.2+ for vtkParametricFunctionSource).</span>
-</span>    <span class=c1># source.GetOutput().GetPointData().GetNormals().SetName(&#39;Normals&#39;)</span>
+    <span class=c1># Name the arrays (not needed in VTK 6.2+ for vtkParametricFunctionSource).</span>
+    <span class=c1># source.GetOutput().GetPointData().GetNormals().SetName(&#39;Normals&#39;)</span>
     <span class=c1># source.GetOutput().GetPointData().GetScalars().SetName(&#39;Scalars&#39;)</span>
     <span class=c1># Rename the scalars to &#39;Elevation&#39; since we are using the Z-scalars as elevations.</span>
     <span class=n>source</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;Elevation&#39;</span><span class=p>)</span>
@@ -480,8 +480,8 @@ function registerListener(event, func) {
     <span class=n>source</span><span class=o>.</span><span class=n>SetScalarModeToZ</span><span class=p>()</span>
     <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-<span class=hll>    <span class=c1># Name the arrays (not needed in VTK 6.2+ for vtkParametricFunctionSource).</span>
-</span>    <span class=c1># source.GetOutput().GetPointData().GetNormals().SetName(&#39;Normals&#39;)</span>
+    <span class=c1># Name the arrays (not needed in VTK 6.2+ for vtkParametricFunctionSource).</span>
+    <span class=c1># source.GetOutput().GetPointData().GetNormals().SetName(&#39;Normals&#39;)</span>
     <span class=c1># source.GetOutput().GetPointData().GetScalars().SetName(&#39;Scalars&#39;)</span>
     <span class=c1># Rename the scalars to &#39;Elevation&#39; since we are using the Z-scalars as elevations.</span>
     <span class=n>source</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;Elevation&#39;</span><span class=p>)</span>
@@ -706,8 +706,8 @@ function registerListener(event, func) {
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=c1># Sometimes the contouring algorithm can create a volume whose gradient</span>
     <span class=c1># vector and ordering of polygon (using the right hand rule) are</span>
-<span class=hll>    <span class=c1># inconsistent. vtkReverseSense cures this problem.</span>
-</span><span class=hll>    <span class=n>reverse</span> <span class=o>=</span> <span class=n>vtkReverseSense</span><span class=p>()</span>
+    <span class=c1># inconsistent. vtkReverseSense cures this problem.</span>
+<span class=hll>    <span class=n>reverse</span> <span class=o>=</span> <span class=n>vtkReverseSense</span><span class=p>()</span>
 </span>
     <span class=c1># Choose a random subset of points.</span>
 <span class=hll>    <span class=n>mask_pts</span> <span class=o>=</span> <span class=n>vtkMaskPoints</span><span class=p>()</span>

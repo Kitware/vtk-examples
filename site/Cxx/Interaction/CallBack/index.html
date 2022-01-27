@@ -102,8 +102,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>CameraModifiedCallback</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=c1>// Here we Create a vtkCallbackCommand and reimplement it.</span>
-</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>evId</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Here we Create a vtkCallbackCommand and reimplement it.</span>
+<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>evId</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=w></span>
 </span><span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=c1>// Note the use of reinterpret_cast to cast the caller to the expected type.</span>
 <span class=hll><span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>interactor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>reinterpret_cast</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span><span class=w></span>
@@ -227,11 +227,11 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=c1>// Set the camera to use.</span>
 <span class=w>  </span><span class=n>getOrientation</span><span class=o>-&gt;</span><span class=n>cam</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span><span class=w></span>
 <span class=cp>#else</span>
-<span class=hll><span class=w>  </span><span class=c1>// Create the vtkCallbackCommand.</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCallbackCommand</span><span class=o>&gt;</span><span class=w> </span><span class=n>getOrientation</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Create the vtkCallbackCommand.</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCallbackCommand</span><span class=o>&gt;</span><span class=w> </span><span class=n>getOrientation</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=c1>// Set the callback to the function we created.</span>
-<span class=hll><span class=w>  </span><span class=n>getOrientation</span><span class=o>-&gt;</span><span class=n>SetCallback</span><span class=p>(</span><span class=n>vtkCallbackFunc</span><span class=p>);</span><span class=w></span>
-</span><span class=w>  </span><span class=c1>// Set the client data.</span>
+<span class=w>  </span><span class=n>getOrientation</span><span class=o>-&gt;</span><span class=n>SetCallback</span><span class=p>(</span><span class=n>vtkCallbackFunc</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Set the client data.</span>
 <span class=w>  </span><span class=n>getOrientation</span><span class=o>-&gt;</span><span class=n>SetClientData</span><span class=p>(</span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>());</span><span class=w></span>
 <span class=cp>#endif</span>
 <span class=hll><span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>EndInteractionEvent</span><span class=p>,</span><span class=w> </span><span class=n>getOrientation</span><span class=p>);</span><span class=w></span>

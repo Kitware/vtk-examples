@@ -75,8 +75,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>surfaceFilter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetSurfaceFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=c1>// std::cerr &lt;&lt; &quot;Usage: &quot; &lt;&lt; argv[0] &lt;&lt; &quot; Filename(.vtk) e.g. uGridEx.vtk &quot;</span>
-</span><span class=w>    </span><span class=c1>//          &lt;&lt; std::endl;</span>
+<span class=w>    </span><span class=c1>// std::cerr &lt;&lt; &quot;Usage: &quot; &lt;&lt; argv[0] &lt;&lt; &quot; Filename(.vtk) e.g. uGridEx.vtk &quot;</span>
+<span class=w>    </span><span class=c1>//          &lt;&lt; std::endl;</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>unstructuredGrid</span><span class=w> </span><span class=o>=</span><span class=w></span>
 <span class=hll><span class=w>        </span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkVertex</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span><span class=w></span>
 </span><span class=w>    </span><span class=n>surfaceFilter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>unstructuredGrid</span><span class=p>);</span><span class=w></span>

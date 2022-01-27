@@ -85,11 +85,11 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
 </span>
 <span class=w>  </span><span class=c1>//</span>
-<span class=hll><span class=w>  </span><span class=c1>// Next we create an instance of vtkConeSource and set some of its</span>
-</span><span class=hll><span class=w>  </span><span class=c1>// properties. The instance of vtkConeSource &quot;cone&quot; is part of a</span>
-</span><span class=w>  </span><span class=c1>// visualization pipeline (it is a source process object); it produces data</span>
-<span class=hll><span class=w>  </span><span class=c1>// (output type is vtkPolyData) which other filters may process.</span>
-</span><span class=w>  </span><span class=c1>//</span>
+<span class=w>  </span><span class=c1>// Next we create an instance of vtkConeSource and set some of its</span>
+<span class=w>  </span><span class=c1>// properties. The instance of vtkConeSource &quot;cone&quot; is part of a</span>
+<span class=w>  </span><span class=c1>// visualization pipeline (it is a source process object); it produces data</span>
+<span class=w>  </span><span class=c1>// (output type is vtkPolyData) which other filters may process.</span>
+<span class=w>  </span><span class=c1>//</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkConeSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>cone</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetHeight</span><span class=p>(</span><span class=mf>3.0</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span><span class=w></span>
@@ -97,10 +97,10 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// In this example we terminate the pipeline with a mapper process object.</span>
-<span class=hll><span class=w>  </span><span class=c1>// (Intermediate filters such as vtkShrinkPolyData could be inserted in</span>
-</span><span class=w>  </span><span class=c1>// between the source and the mapper.)  We create an instance of</span>
-<span class=hll><span class=w>  </span><span class=c1>// vtkPolyDataMapper to map the polygonal data into graphics primitives. We</span>
-</span><span class=w>  </span><span class=c1>// connect the output of the cone source to the input of this mapper.</span>
+<span class=w>  </span><span class=c1>// (Intermediate filters such as vtkShrinkPolyData could be inserted in</span>
+<span class=w>  </span><span class=c1>// between the source and the mapper.)  We create an instance of</span>
+<span class=w>  </span><span class=c1>// vtkPolyDataMapper to map the polygonal data into graphics primitives. We</span>
+<span class=w>  </span><span class=c1>// connect the output of the cone source to the input of this mapper.</span>
 <span class=w>  </span><span class=c1>//</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>coneMapper</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>coneMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
@@ -108,8 +108,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// Create an actor to represent the cone. The actor orchestrates rendering</span>
 <span class=w>  </span><span class=c1>// of the mapper&#39;s graphics primitives. An actor also refers to properties</span>
-<span class=hll><span class=w>  </span><span class=c1>// via a vtkProperty instance, and includes an internal transformation</span>
-</span><span class=w>  </span><span class=c1>// matrix. We set this actor&#39;s mapper to be coneMapper which we created</span>
+<span class=w>  </span><span class=c1>// via a vtkProperty instance, and includes an internal transformation</span>
+<span class=w>  </span><span class=c1>// matrix. We set this actor&#39;s mapper to be coneMapper which we created</span>
 <span class=w>  </span><span class=c1>// above.</span>
 <span class=w>  </span><span class=c1>//</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>coneActor</span><span class=p>;</span><span class=w></span>
@@ -137,20 +137,20 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Tutorial_Step5&quot;</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>//</span>
-<span class=hll><span class=w>  </span><span class=c1>// The vtkRenderWindowInteractor class watches for events (e.g., keypress,</span>
-</span><span class=hll><span class=w>  </span><span class=c1>// mouse) in the vtkRenderWindow. These events are translated into</span>
-</span><span class=hll><span class=w>  </span><span class=c1>// event invocations that VTK understands (see VTK/Common/vtkCommand.h</span>
-</span><span class=w>  </span><span class=c1>// for all events that VTK processes). Then observers of these VTK</span>
+<span class=w>  </span><span class=c1>// The vtkRenderWindowInteractor class watches for events (e.g., keypress,</span>
+<span class=w>  </span><span class=c1>// mouse) in the vtkRenderWindow. These events are translated into</span>
+<span class=w>  </span><span class=c1>// event invocations that VTK understands (see VTK/Common/vtkCommand.h</span>
+<span class=w>  </span><span class=c1>// for all events that VTK processes). Then observers of these VTK</span>
 <span class=w>  </span><span class=c1>// events can process them as appropriate.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>iren</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>//</span>
-<span class=hll><span class=w>  </span><span class=c1>// By default the vtkRenderWindowInteractor instantiates an instance</span>
-</span><span class=hll><span class=w>  </span><span class=c1>// of vtkInteractorStyle. vtkInteractorStyle translates a set of events</span>
-</span><span class=w>  </span><span class=c1>// it observes into operations on the camera, actors, and/or properties</span>
-<span class=hll><span class=w>  </span><span class=c1>// in the vtkRenderWindow associated with the vtkRenderWinodwInteractor.</span>
-</span><span class=w>  </span><span class=c1>// Here we specify a particular interactor style.</span>
+<span class=w>  </span><span class=c1>// By default the vtkRenderWindowInteractor instantiates an instance</span>
+<span class=w>  </span><span class=c1>// of vtkInteractorStyle. vtkInteractorStyle translates a set of events</span>
+<span class=w>  </span><span class=c1>// it observes into operations on the camera, actors, and/or properties</span>
+<span class=w>  </span><span class=c1>// in the vtkRenderWindow associated with the vtkRenderWinodwInteractor.</span>
+<span class=w>  </span><span class=c1>// Here we specify a particular interactor style.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleTrackballCamera</span><span class=o>&gt;</span><span class=w> </span><span class=n>style</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>style</span><span class=p>);</span><span class=w></span>
 
@@ -159,8 +159,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// exited, here we leave an event loop running. The user can use the mouse</span>
 <span class=w>  </span><span class=c1>// and keyboard to perform the operations on the scene according to the</span>
 <span class=w>  </span><span class=c1>// current interaction style. When the user presses the &quot;e&quot; key, by default</span>
-<span class=hll><span class=w>  </span><span class=c1>// an ExitEvent is invoked by the vtkRenderWindowInteractor which is caught</span>
-</span><span class=w>  </span><span class=c1>// and drops out of the event loop (triggered by the Start() method that</span>
+<span class=w>  </span><span class=c1>// an ExitEvent is invoked by the vtkRenderWindowInteractor which is caught</span>
+<span class=w>  </span><span class=c1>// and drops out of the event loop (triggered by the Start() method that</span>
 <span class=w>  </span><span class=c1>// follows.</span>
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span><span class=w></span>
@@ -169,8 +169,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// Final note: recall that observers can watch for particular events and</span>
 <span class=w>  </span><span class=c1>// take appropriate action. Pressing &quot;u&quot; in the render window causes the</span>
-<span class=hll><span class=w>  </span><span class=c1>// vtkRenderWindowInteractor to invoke a UserEvent. This can be caught to</span>
-</span><span class=w>  </span><span class=c1>// popup a GUI, etc. See the Tcl Cone5.tcl example for an idea of how this</span>
+<span class=w>  </span><span class=c1>// vtkRenderWindowInteractor to invoke a UserEvent. This can be caught to</span>
+<span class=w>  </span><span class=c1>// popup a GUI, etc. See the Tcl Cone5.tcl example for an idea of how this</span>
 <span class=w>  </span><span class=c1>// works.</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span><span class=w></span>

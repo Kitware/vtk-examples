@@ -163,8 +163,8 @@ function registerListener(event, func) {
 <span class=w>         </span><span class=p>}</span><span class=w></span>
 
 <span class=hll><span class=w>         </span><span class=n>vtkXMLImageDataWriter</span><span class=w> </span><span class=n>writer</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkXMLImageDataWriter</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
-</span><span class=hll><span class=w>         </span><span class=n>writer</span><span class=p>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=s>@&quot;c:\vtk\vtkdata-5.8.0\Data\testIsoContours.vti&quot;</span><span class=p>);</span><span class=w></span>
-</span><span class=cp>#if VTK_MAJOR_VERSION_5</span><span class=w></span>
+</span><span class=w>         </span><span class=n>writer</span><span class=p>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=s>@&quot;c:\vtk\vtkdata-5.8.0\Data\testIsoContours.vti&quot;</span><span class=p>);</span><span class=w></span>
+<span class=cp>#if VTK_MAJOR_VERSION_5</span><span class=w></span>
 <span class=w>         </span><span class=n>writer</span><span class=p>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>data</span><span class=p>.</span><span class=n>GetProducerPort</span><span class=p>());</span><span class=w></span>
 <span class=cp>#else</span><span class=w></span>
 <span class=w>         </span><span class=n>writer</span><span class=p>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>data</span><span class=p>);</span><span class=w></span>

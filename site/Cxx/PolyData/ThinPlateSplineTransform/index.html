@@ -144,8 +144,8 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>SetSourceLandmarks</span><span class=p>(</span><span class=n>p2</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>SetTargetLandmarks</span><span class=p>(</span><span class=n>p1</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>SetBasisToR2LogR</span><span class=p>();</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=c1>// You must invert the transform before passing it to vtkImageReslice</span>
-</span><span class=w>  </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>Inverse</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=c1>// You must invert the transform before passing it to vtkImageReslice</span>
+<span class=w>  </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>Inverse</span><span class=p>();</span><span class=w></span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageReslice</span><span class=o>&gt;</span><span class=w> </span><span class=n>reslice</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>reslice</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>blend</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>

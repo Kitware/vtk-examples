@@ -116,11 +116,11 @@ function registerListener(event, func) {
 <span class=w>         </span><span class=n>textProperty</span><span class=p>.</span><span class=n>SetJustificationToCentered</span><span class=p>();</span><span class=w></span>
 
 <span class=w>         </span><span class=k>for</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=m>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=p>&lt;</span><span class=w> </span><span class=n>numberOfViewports</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=p>++)</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>            </span><span class=c1>// Note: Here we create a superclass pointer (vtkPolyDataAlgorithm) so that we can easily instantiate different</span>
-</span><span class=w>            </span><span class=c1>// types of subdivision filters. Typically you would not want to do this, but rather create the pointer to be the type</span>
+<span class=w>            </span><span class=c1>// Note: Here we create a superclass pointer (vtkPolyDataAlgorithm) so that we can easily instantiate different</span>
+<span class=w>            </span><span class=c1>// types of subdivision filters. Typically you would not want to do this, but rather create the pointer to be the type</span>
 <span class=w>            </span><span class=c1>// filter you will actually use, e.g. </span>
-<span class=hll><span class=w>            </span><span class=c1>// &lt;vtkLinearSubdivisionFilter&gt;  subdivisionFilter = &lt;vtkLinearSubdivisionFilter&gt;.New();</span>
-</span><span class=hll><span class=w>            </span><span class=n>vtkPolyDataAlgorithm</span><span class=w> </span><span class=n>subdivisionFilter</span><span class=p>;</span><span class=w></span>
+<span class=w>            </span><span class=c1>// &lt;vtkLinearSubdivisionFilter&gt;  subdivisionFilter = &lt;vtkLinearSubdivisionFilter&gt;.New();</span>
+<span class=hll><span class=w>            </span><span class=n>vtkPolyDataAlgorithm</span><span class=w> </span><span class=n>subdivisionFilter</span><span class=p>;</span><span class=w></span>
 </span><span class=w>            </span><span class=k>switch</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w></span>
 <span class=w>               </span><span class=k>case</span><span class=w> </span><span class=m>0</span><span class=p>:</span><span class=w></span>
 <span class=hll><span class=w>                  </span><span class=n>subdivisionFilter</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkLinearSubdivisionFilter</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>

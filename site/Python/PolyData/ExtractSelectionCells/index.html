@@ -63,20 +63,20 @@ function registerListener(event, func) {
 <span class=sd>&#39;&#39;&#39;</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkIdTypeArray</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkSelection</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkSelection</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkSelectionNode</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkUnstructuredGrid</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersExtraction</span> <span class=kn>import</span> <span class=n>vtkExtractSelection</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkSphereSource</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkCamera</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkProperty</span><span class=p>,</span>
@@ -129,8 +129,8 @@ function registerListener(event, func) {
     <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are </span><span class=si>%s</span><span class=s1> cells in the selection&#39;</span> <span class=o>%</span> <span class=n>selected</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>())</span>
 
     <span class=c1># Get points that are NOT in the selection</span>
-<span class=hll>    <span class=n>selectionNode</span><span class=o>.</span><span class=n>GetProperties</span><span class=p>()</span><span class=o>.</span><span class=n>Set</span><span class=p>(</span><span class=n>vtkSelectionNode</span><span class=o>.</span><span class=n>INVERSE</span><span class=p>(),</span> <span class=mi>1</span><span class=p>)</span>  <span class=c1># invert the selection</span>
-</span>    <span class=n>extractSelection</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+    <span class=n>selectionNode</span><span class=o>.</span><span class=n>GetProperties</span><span class=p>()</span><span class=o>.</span><span class=n>Set</span><span class=p>(</span><span class=n>vtkSelectionNode</span><span class=o>.</span><span class=n>INVERSE</span><span class=p>(),</span> <span class=mi>1</span><span class=p>)</span>  <span class=c1># invert the selection</span>
+    <span class=n>extractSelection</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>notSelected</span> <span class=o>=</span> <span class=n>vtkUnstructuredGrid</span><span class=p>()</span>
 </span>    <span class=n>notSelected</span><span class=o>.</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>extractSelection</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>

@@ -74,14 +74,14 @@ function registerListener(event, func) {
 
 <span class=c1># First access the VTK module (and any other needed modules) by importing them.</span>
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonTransforms</span> <span class=kn>import</span> <span class=n>vtkTransform</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkConeSource</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInteractionStyle</span> <span class=kn>import</span> <span class=n>vtkInteractorStyleTrackballCamera</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInteractionWidgets</span> <span class=kn>import</span> <span class=n>vtkBoxWidget</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
@@ -93,11 +93,11 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1>#</span>
-<span class=hll>    <span class=c1># Next we create an instance of vtkConeSource and set some of its</span>
-</span><span class=hll>    <span class=c1># properties. The instance of vtkConeSource &#39;cone&#39; is part of a</span>
-</span>    <span class=c1># visualization pipeline (it is a source process object) it produces data</span>
-<span class=hll>    <span class=c1># (output type is vtkPolyData) which other filters may process.</span>
-</span>    <span class=c1>#</span>
+    <span class=c1># Next we create an instance of vtkConeSource and set some of its</span>
+    <span class=c1># properties. The instance of vtkConeSource &#39;cone&#39; is part of a</span>
+    <span class=c1># visualization pipeline (it is a source process object) it produces data</span>
+    <span class=c1># (output type is vtkPolyData) which other filters may process.</span>
+    <span class=c1>#</span>
 <span class=hll>    <span class=n>cone</span> <span class=o>=</span> <span class=n>vtkConeSource</span><span class=p>()</span>
 </span>    <span class=n>cone</span><span class=o>.</span><span class=n>SetHeight</span><span class=p>(</span><span class=mf>3.0</span><span class=p>)</span>
     <span class=n>cone</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
@@ -105,10 +105,10 @@ function registerListener(event, func) {
 
     <span class=c1>#</span>
     <span class=c1># In this example we terminate the pipeline with a mapper process object.</span>
-<span class=hll>    <span class=c1># (Intermediate filters such as vtkShrinkPolyData could be inserted in</span>
-</span>    <span class=c1># between the source and the mapper.)  We create an instance of</span>
-<span class=hll>    <span class=c1># vtkPolyDataMapper to map the polygonal data into graphics primitives. We</span>
-</span>    <span class=c1># connect the output of the cone source to the input of this mapper.</span>
+    <span class=c1># (Intermediate filters such as vtkShrinkPolyData could be inserted in</span>
+    <span class=c1># between the source and the mapper.)  We create an instance of</span>
+    <span class=c1># vtkPolyDataMapper to map the polygonal data into graphics primitives. We</span>
+    <span class=c1># connect the output of the cone source to the input of this mapper.</span>
     <span class=c1>#</span>
 <span class=hll>    <span class=n>coneMapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>coneMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cone</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -116,8 +116,8 @@ function registerListener(event, func) {
     <span class=c1>#</span>
     <span class=c1># Create an actor to represent the cone. The actor orchestrates rendering</span>
     <span class=c1># of the mapper&#39;s graphics primitives. An actor also refers to properties</span>
-<span class=hll>    <span class=c1># via a vtkProperty instance, and includes an internal transformation</span>
-</span>    <span class=c1># matrix. We set this actor&#39;s mapper to be coneMapper which we created</span>
+    <span class=c1># via a vtkProperty instance, and includes an internal transformation</span>
+    <span class=c1># matrix. We set this actor&#39;s mapper to be coneMapper which we created</span>
     <span class=c1># above.</span>
     <span class=c1>#</span>
 <span class=hll>    <span class=n>coneActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
@@ -145,26 +145,26 @@ function registerListener(event, func) {
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Tutorial_Step6&#39;</span><span class=p>)</span>
 
     <span class=c1>#</span>
-<span class=hll>    <span class=c1># The vtkRenderWindowInteractor class watches for events (e.g., keypress,</span>
-</span><span class=hll>    <span class=c1># mouse) in the vtkRenderWindow. These events are translated into</span>
-</span><span class=hll>    <span class=c1># event invocations that VTK understands (see VTK/Common/vtkCommand.h</span>
-</span>    <span class=c1># for all events that VTK processes). Then observers of these VTK</span>
+    <span class=c1># The vtkRenderWindowInteractor class watches for events (e.g., keypress,</span>
+    <span class=c1># mouse) in the vtkRenderWindow. These events are translated into</span>
+    <span class=c1># event invocations that VTK understands (see VTK/Common/vtkCommand.h</span>
+    <span class=c1># for all events that VTK processes). Then observers of these VTK</span>
     <span class=c1># events can process them as appropriate.</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=c1>#</span>
-<span class=hll>    <span class=c1># By default the vtkRenderWindowInteractor instantiates an instance</span>
-</span><span class=hll>    <span class=c1># of vtkInteractorStyle. vtkInteractorStyle translates a set of events</span>
-</span>    <span class=c1># it observes into operations on the camera, actors, and/or properties</span>
-<span class=hll>    <span class=c1># in the vtkRenderWindow associated with the vtkRenderWinodwInteractor.</span>
-</span>    <span class=c1># Here we specify a particular interactor style.</span>
+    <span class=c1># By default the vtkRenderWindowInteractor instantiates an instance</span>
+    <span class=c1># of vtkInteractorStyle. vtkInteractorStyle translates a set of events</span>
+    <span class=c1># it observes into operations on the camera, actors, and/or properties</span>
+    <span class=c1># in the vtkRenderWindow associated with the vtkRenderWinodwInteractor.</span>
+    <span class=c1># Here we specify a particular interactor style.</span>
 <span class=hll>    <span class=n>style</span> <span class=o>=</span> <span class=n>vtkInteractorStyleTrackballCamera</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>style</span><span class=p>)</span>
 
     <span class=c1>#</span>
-<span class=hll>    <span class=c1># Here we use a vtkBoxWidget to transform the underlying coneActor (by</span>
-</span>    <span class=c1># manipulating its transformation matrix). Many other types of widgets</span>
+    <span class=c1># Here we use a vtkBoxWidget to transform the underlying coneActor (by</span>
+    <span class=c1># manipulating its transformation matrix). Many other types of widgets</span>
     <span class=c1># are available for use, see the documentation for more details.</span>
     <span class=c1>#</span>
     <span class=c1># The SetInteractor method is how 3D widgets are associated with the render</span>
@@ -184,8 +184,8 @@ function registerListener(event, func) {
     <span class=c1>#</span>
     <span class=n>boxWidget</span><span class=o>.</span><span class=n>SetProp3D</span><span class=p>(</span><span class=n>coneActor</span><span class=p>)</span>
     <span class=n>boxWidget</span><span class=o>.</span><span class=n>PlaceWidget</span><span class=p>()</span>
-<span class=hll>    <span class=n>callback</span> <span class=o>=</span> <span class=n>vtkMyCallback</span><span class=p>()</span>
-</span>    <span class=n>boxWidget</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;InteractionEvent&#39;</span><span class=p>,</span> <span class=n>callback</span><span class=p>)</span>
+    <span class=n>callback</span> <span class=o>=</span> <span class=n>vtkMyCallback</span><span class=p>()</span>
+    <span class=n>boxWidget</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;InteractionEvent&#39;</span><span class=p>,</span> <span class=n>callback</span><span class=p>)</span>
 
     <span class=c1>#</span>
     <span class=c1># Normally the user presses the &#39;i&#39; key to bring a 3D widget to life. Here</span>
@@ -200,8 +200,8 @@ function registerListener(event, func) {
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=hll><span class=k>class</span> <span class=nc>vtkMyCallback</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
-</span>    <span class=sd>&quot;&quot;&quot;</span>
+<span class=k>class</span> <span class=nc>vtkMyCallback</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
+    <span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>    Callback for the interaction.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
 

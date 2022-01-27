@@ -210,8 +210,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>p1</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.2</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>};</span><span class=w></span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>p2</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.2</span><span class=p>};</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Create a vtkPoints container and store the points in it</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>pts</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Create a vtkPoints container and store the points in it</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>pts</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>pts</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>origin</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>pts</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>p0</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>pts</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>p1</span><span class=p>);</span><span class=w></span>
@@ -231,8 +231,8 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>line2</span><span class=o>-&gt;</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetId</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>line2</span><span class=o>-&gt;</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetId</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=p>);</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Create a vtkCellArray container and store the lines in it</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCellArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>lines</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Create a vtkCellArray container and store the lines in it</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCellArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>lines</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>lines</span><span class=o>-&gt;</span><span class=n>InsertNextCell</span><span class=p>(</span><span class=n>line0</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>lines</span><span class=o>-&gt;</span><span class=n>InsertNextCell</span><span class=p>(</span><span class=n>line1</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>lines</span><span class=o>-&gt;</span><span class=n>InsertNextCell</span><span class=p>(</span><span class=n>line2</span><span class=p>);</span><span class=w></span>
@@ -242,8 +242,8 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>namedColors</span><span class=p>;</span><span class=w></span>
 </span>
-<span class=hll><span class=w>  </span><span class=c1>// Create a vtkUnsignedCharArray container and store the colors in it</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkUnsignedCharArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Create a vtkUnsignedCharArray container and store the colors in it</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkUnsignedCharArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>InsertNextTupleValue</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;DarkRed&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>InsertNextTupleValue</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;DarkGreen&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>

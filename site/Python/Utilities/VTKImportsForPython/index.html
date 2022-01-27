@@ -90,18 +90,18 @@ function registerListener(event, func) {
 
 
 <span class=k>class</span> <span class=nc>Patterns</span><span class=p>:</span>
-<span class=hll>    <span class=n>vtk_patterns</span> <span class=o>=</span> <span class=p>[</span>
-</span>        <span class=c1># Class pattern.</span>
-<span class=hll>        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(vtk[a-zA-Z0-9]+)\(&#39;</span><span class=p>),</span>
-</span>        <span class=c1># Constants pattern.</span>
+    <span class=n>vtk_patterns</span> <span class=o>=</span> <span class=p>[</span>
+        <span class=c1># Class pattern.</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(vtk[a-zA-Z0-9]+)\(&#39;</span><span class=p>),</span>
+        <span class=c1># Constants pattern.</span>
         <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(VTK_[A-Z_]+)&#39;</span><span class=p>),</span>
         <span class=c1># Special patterns ...</span>
         <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(mutable)\(&#39;</span><span class=p>),</span>
-<span class=hll>        <span class=c1># Handle vtkClass.yyy</span>
-</span><span class=hll>        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(vtk[a-zA-Z0-9]+)\.&#39;</span><span class=p>),</span>
-</span><span class=hll>        <span class=c1># Handle class xx(vtkClass):</span>
-</span><span class=hll>        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;\( ?(vtk[a-zA-Z0-9]+) ?\)&#39;</span><span class=p>),</span>
-</span>    <span class=p>]</span>
+        <span class=c1># Handle vtkClass.yyy</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(vtk[a-zA-Z0-9]+)\.&#39;</span><span class=p>),</span>
+        <span class=c1># Handle class xx(vtkClass):</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;\( ?(vtk[a-zA-Z0-9]+) ?\)&#39;</span><span class=p>),</span>
+    <span class=p>]</span>
     <span class=n>skip_patterns</span> <span class=o>=</span> <span class=p>[</span>
         <span class=c1># Empty lines</span>
         <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^ *$&#39;</span><span class=p>),</span>
@@ -109,9 +109,9 @@ function registerListener(event, func) {
         <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^ *import&#39;</span><span class=p>),</span>
         <span class=c1># from ... import ...</span>
         <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^ *from[ \S]+import&#39;</span><span class=p>),</span>
-<span class=hll>        <span class=c1># Any vtk class on its own</span>
-</span><span class=hll>        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^ *vtk[a-zA-Z0-9]+,*$&#39;</span><span class=p>),</span>
-</span>        <span class=c1># Single closing bracket</span>
+        <span class=c1># Any vtk class on its own</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^ *vtk[a-zA-Z0-9]+,*$&#39;</span><span class=p>),</span>
+        <span class=c1># Single closing bracket</span>
         <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^ *\)+$&#39;</span><span class=p>),</span>
     <span class=p>]</span>
 
@@ -130,14 +130,14 @@ function registerListener(event, func) {
     <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>json_data</span><span class=p>[</span><span class=s1>&#39;modules&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
         <span class=n>m</span> <span class=o>=</span> <span class=n>k</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;::&#39;</span><span class=p>)</span>
         <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>m</span><span class=p>)</span> <span class=o>&gt;</span> <span class=mi>1</span><span class=p>:</span>
-<span class=hll>            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;vtk</span><span class=si>{</span><span class=n>m</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-</span>    <span class=k>return</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>res</span><span class=p>)</span>
+            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;vtk</span><span class=si>{</span><span class=n>m</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=k>return</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>res</span><span class=p>)</span>
 
 
 <span class=k>def</span> <span class=nf>get_classes_constants</span><span class=p>(</span><span class=n>paths</span><span class=p>):</span>
     <span class=sd>&quot;&quot;&quot;</span>
-<span class=hll><span class=sd>    Extract the vtk class names and constants from the path.</span>
-</span>
+<span class=sd>    Extract the vtk class names and constants from the path.</span>
+
 <span class=sd>    :param paths: The path(s) to the Python file(s).</span>
 <span class=sd>    :return: The file name, the VTK classes and any VTK constants.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
@@ -150,8 +150,8 @@ function registerListener(event, func) {
                 <span class=n>m</span> <span class=o>=</span> <span class=n>pattern</span><span class=o>.</span><span class=n>search</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
                 <span class=k>if</span> <span class=n>m</span><span class=p>:</span>
                     <span class=k>continue</span>
-<span class=hll>            <span class=k>for</span> <span class=n>pattern</span> <span class=ow>in</span> <span class=n>Patterns</span><span class=o>.</span><span class=n>vtk_patterns</span><span class=p>:</span>
-</span>                <span class=n>m</span> <span class=o>=</span> <span class=n>pattern</span><span class=o>.</span><span class=n>search</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
+            <span class=k>for</span> <span class=n>pattern</span> <span class=ow>in</span> <span class=n>Patterns</span><span class=o>.</span><span class=n>vtk_patterns</span><span class=p>:</span>
+                <span class=n>m</span> <span class=o>=</span> <span class=n>pattern</span><span class=o>.</span><span class=n>search</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
                 <span class=k>if</span> <span class=n>m</span><span class=p>:</span>
                     <span class=k>for</span> <span class=n>g</span> <span class=ow>in</span> <span class=n>m</span><span class=o>.</span><span class=n>groups</span><span class=p>():</span>
                         <span class=n>res</span><span class=p>[</span><span class=nb>str</span><span class=p>(</span><span class=n>path</span><span class=p>)]</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
@@ -167,40 +167,40 @@ function registerListener(event, func) {
         <span class=k>for</span> <span class=n>module</span> <span class=ow>in</span> <span class=n>module_keys</span><span class=p>:</span>
             <span class=n>classes</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=nb>list</span><span class=p>(</span><span class=n>imports</span><span class=p>[</span><span class=n>name</span><span class=p>][</span><span class=n>module</span><span class=p>]))</span>
             <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>classes</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-<span class=hll>                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;from vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1> import </span><span class=si>{</span><span class=n>classes</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-</span>            <span class=k>else</span><span class=p>:</span>
+                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;from vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1> import </span><span class=si>{</span><span class=n>classes</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=k>else</span><span class=p>:</span>
                 <span class=n>c_list</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
                 <span class=k>for</span> <span class=n>c</span> <span class=ow>in</span> <span class=n>classes</span><span class=p>:</span>
                     <span class=n>c_list</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;    </span><span class=si>{</span><span class=n>c</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
                 <span class=n>s</span> <span class=o>=</span> <span class=s1>&#39;(</span><span class=se>\n</span><span class=s1>&#39;</span>
                 <span class=n>s</span> <span class=o>+=</span> <span class=s1>&#39;,</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>c_list</span><span class=p>)</span>
                 <span class=n>s</span> <span class=o>+=</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>    )&#39;</span>
-<span class=hll>                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;from vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1> import </span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-</span><span class=hll>        <span class=n>additional_modules</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;vtkInteractionStyle&#39;</span><span class=p>,</span> <span class=s1>&#39;vtkRenderingFreeType&#39;</span><span class=p>,</span>
-</span><span class=hll>                              <span class=s1>&#39;vtkRenderingContextOpenGL2&#39;</span><span class=p>,</span> <span class=s1>&#39;vtkRenderingOpenGL2&#39;</span><span class=p>,</span> <span class=s1>&#39;vtkRenderingVolumeOpenGL2&#39;</span><span class=p>,</span>
-</span><span class=hll>                              <span class=s1>&#39;vtkRenderingUI&#39;</span><span class=p>]</span>
-</span>        <span class=n>comments</span> <span class=o>=</span> <span class=p>[</span>
+                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;from vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1> import </span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=n>additional_modules</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;vtkInteractionStyle&#39;</span><span class=p>,</span> <span class=s1>&#39;vtkRenderingFreeType&#39;</span><span class=p>,</span>
+                              <span class=s1>&#39;vtkRenderingContextOpenGL2&#39;</span><span class=p>,</span> <span class=s1>&#39;vtkRenderingOpenGL2&#39;</span><span class=p>,</span> <span class=s1>&#39;vtkRenderingVolumeOpenGL2&#39;</span><span class=p>,</span>
+                              <span class=s1>&#39;vtkRenderingUI&#39;</span><span class=p>]</span>
+        <span class=n>comments</span> <span class=o>=</span> <span class=p>[</span>
             <span class=s1>&#39;&#39;</span><span class=p>,</span>
             <span class=s1>&#39;# You may need to uncomment one or more of the following imports.&#39;</span><span class=p>,</span>
-<span class=hll>            <span class=s1>&#39;# If vtkRenderWindow is used and you want to use OpenGL,&#39;</span><span class=p>,</span>
-</span><span class=hll>            <span class=s1>&#39;#   you also need the vtkRenderingOpenGL2 module.&#39;</span><span class=p>,</span>
-</span><span class=hll>            <span class=s1>&#39;# If vtkRenderWindowInteractor is used, uncomment vtkInteractionStyle&#39;</span><span class=p>,</span>
-</span><span class=hll>            <span class=s1>&#39;# If text rendering is used, uncomment vtkRenderingFreeType.&#39;</span><span class=p>,</span>
-</span>            <span class=s1>&#39;#&#39;</span><span class=p>,</span>
+            <span class=s1>&#39;# If vtkRenderWindow is used and you want to use OpenGL,&#39;</span><span class=p>,</span>
+            <span class=s1>&#39;#   you also need the vtkRenderingOpenGL2 module.&#39;</span><span class=p>,</span>
+            <span class=s1>&#39;# If vtkRenderWindowInteractor is used, uncomment vtkInteractionStyle&#39;</span><span class=p>,</span>
+            <span class=s1>&#39;# If text rendering is used, uncomment vtkRenderingFreeType.&#39;</span><span class=p>,</span>
+            <span class=s1>&#39;#&#39;</span><span class=p>,</span>
             <span class=s1>&#39;# If using PyCharm, preface each one you select with this line:&#39;</span><span class=p>,</span>
             <span class=s1>&#39;# noinspection PyUnresolvedReferences&#39;</span><span class=p>,</span>
             <span class=s1>&#39;#&#39;</span><span class=p>,</span>
         <span class=p>]</span>
         <span class=n>res</span> <span class=o>+=</span> <span class=n>comments</span>
         <span class=k>for</span> <span class=n>module</span> <span class=ow>in</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>additional_modules</span><span class=p>):</span>
-<span class=hll>            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;# import vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-</span>        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
+            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;# import vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>res</span>
 
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>json_path</span><span class=p>,</span> <span class=n>src_paths</span><span class=p>,</span> <span class=n>ofn</span><span class=p>):</span>
-<span class=hll>    <span class=n>use_json</span> <span class=o>=</span> <span class=ow>not</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>20210918</span><span class=p>)</span>
-</span>    <span class=k>if</span> <span class=n>use_json</span><span class=p>:</span>
+    <span class=n>use_json</span> <span class=o>=</span> <span class=ow>not</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>20210918</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>use_json</span><span class=p>:</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>json_path</span><span class=p>:</span>
             <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;modules.json (from your VTK build directory) is needed.&#39;</span><span class=p>)</span>
             <span class=k>return</span>
@@ -232,16 +232,16 @@ function registerListener(event, func) {
         <span class=k>return</span>
 
     <span class=k>if</span> <span class=n>use_json</span><span class=p>:</span>
-<span class=hll>        <span class=n>vtk_modules</span> <span class=o>=</span> <span class=n>get_available_modules</span><span class=p>(</span><span class=n>jpath</span><span class=p>)</span>
-</span>    <span class=k>else</span><span class=p>:</span>
-<span class=hll>        <span class=n>vtklib</span> <span class=o>=</span> <span class=n>importlib</span><span class=o>.</span><span class=n>__import__</span><span class=p>(</span><span class=s1>&#39;vtkmodules&#39;</span><span class=p>)</span>
-</span><span class=hll>        <span class=n>vtk_modules</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>vtklib</span><span class=o>.</span><span class=n>__all__</span><span class=p>)</span>
-</span>
+        <span class=n>vtk_modules</span> <span class=o>=</span> <span class=n>get_available_modules</span><span class=p>(</span><span class=n>jpath</span><span class=p>)</span>
+    <span class=k>else</span><span class=p>:</span>
+        <span class=n>vtklib</span> <span class=o>=</span> <span class=n>importlib</span><span class=o>.</span><span class=n>__import__</span><span class=p>(</span><span class=s1>&#39;vtkmodules&#39;</span><span class=p>)</span>
+        <span class=n>vtk_modules</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>vtklib</span><span class=o>.</span><span class=n>__all__</span><span class=p>)</span>
+
     <span class=n>name_to_module</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
-<span class=hll>    <span class=k>for</span> <span class=n>module</span> <span class=ow>in</span> <span class=n>vtk_modules</span><span class=p>:</span>
-</span>        <span class=k>try</span><span class=p>:</span>
-<span class=hll>            <span class=n>module_dict</span> <span class=o>=</span> <span class=n>importlib</span><span class=o>.</span><span class=n>import_module</span><span class=p>(</span><span class=s1>&#39;vtkmodules.&#39;</span> <span class=o>+</span> <span class=n>module</span><span class=p>)</span><span class=o>.</span><span class=vm>__dict__</span>
-</span>            <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>module_dict</span><span class=p>:</span>
+    <span class=k>for</span> <span class=n>module</span> <span class=ow>in</span> <span class=n>vtk_modules</span><span class=p>:</span>
+        <span class=k>try</span><span class=p>:</span>
+            <span class=n>module_dict</span> <span class=o>=</span> <span class=n>importlib</span><span class=o>.</span><span class=n>import_module</span><span class=p>(</span><span class=s1>&#39;vtkmodules.&#39;</span> <span class=o>+</span> <span class=n>module</span><span class=p>)</span><span class=o>.</span><span class=vm>__dict__</span>
+            <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>module_dict</span><span class=p>:</span>
                 <span class=n>name_to_module</span><span class=p>[</span><span class=n>name</span><span class=p>]</span> <span class=o>=</span> <span class=n>module</span>
         <span class=k>except</span> <span class=ne>ModuleNotFoundError</span><span class=p>:</span>
             <span class=c1># print(module, &#39; not found.&#39;)</span>
@@ -249,11 +249,11 @@ function registerListener(event, func) {
 
     <span class=n>imports</span> <span class=o>=</span> <span class=n>collections</span><span class=o>.</span><span class=n>defaultdict</span><span class=p>(</span><span class=k>lambda</span><span class=p>:</span> <span class=n>collections</span><span class=o>.</span><span class=n>defaultdict</span><span class=p>(</span><span class=nb>set</span><span class=p>))</span>
     <span class=k>for</span> <span class=n>name</span><span class=p>,</span> <span class=n>classes_constants</span> <span class=ow>in</span> <span class=n>classes_constants</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-<span class=hll>        <span class=k>for</span> <span class=n>vtk_class</span> <span class=ow>in</span> <span class=n>classes_constants</span><span class=p>:</span>
-</span><span class=hll>            <span class=k>if</span> <span class=n>vtk_class</span> <span class=ow>in</span> <span class=n>name_to_module</span><span class=p>:</span>
-</span><span class=hll>                <span class=n>module</span> <span class=o>=</span> <span class=n>name_to_module</span><span class=p>[</span><span class=n>vtk_class</span><span class=p>]</span>
-</span><span class=hll>                <span class=n>imports</span><span class=p>[</span><span class=n>name</span><span class=p>][</span><span class=n>module</span><span class=p>]</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>vtk_class</span><span class=p>)</span>
-</span>
+        <span class=k>for</span> <span class=n>vtk_class</span> <span class=ow>in</span> <span class=n>classes_constants</span><span class=p>:</span>
+            <span class=k>if</span> <span class=n>vtk_class</span> <span class=ow>in</span> <span class=n>name_to_module</span><span class=p>:</span>
+                <span class=n>module</span> <span class=o>=</span> <span class=n>name_to_module</span><span class=p>[</span><span class=n>vtk_class</span><span class=p>]</span>
+                <span class=n>imports</span><span class=p>[</span><span class=n>name</span><span class=p>][</span><span class=n>module</span><span class=p>]</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>vtk_class</span><span class=p>)</span>
+
     <span class=n>res</span> <span class=o>=</span> <span class=n>format_imports</span><span class=p>(</span><span class=n>imports</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>ofn</span><span class=p>:</span>
         <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ofn</span><span class=p>)</span>
@@ -264,8 +264,8 @@ function registerListener(event, func) {
         <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
 
 
-<span class=hll><span class=k>def</span> <span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-</span>    <span class=sd>&quot;&quot;&quot;</span>
+<span class=k>def</span> <span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
+    <span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Requested major version.</span>

@@ -150,12 +150,12 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>unsigned</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>numberOfViewports</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=c1>// Note: Here we create a superclass pointer (vtkPolyDataAlgorithm) so</span>
-</span><span class=w>    </span><span class=c1>// that we can easily instantiate different types of subdivision filters.</span>
+<span class=w>    </span><span class=c1>// Note: Here we create a superclass pointer (vtkPolyDataAlgorithm) so</span>
+<span class=w>    </span><span class=c1>// that we can easily instantiate different types of subdivision filters.</span>
 <span class=w>    </span><span class=c1>// Typically you would not want to do this, but rather create the pointer</span>
 <span class=w>    </span><span class=c1>// to be the type filter you will actually use, e.g.</span>
-<span class=hll><span class=w>    </span><span class=c1>// vtkNew&lt;vtkLinearSubdivisionFilter&gt;  subdivisionFilter;</span>
-</span><span class=hll><span class=w>    </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataAlgorithm</span><span class=o>&gt;</span><span class=w> </span><span class=n>subdivisionFilter</span><span class=p>;</span><span class=w></span>
+<span class=w>    </span><span class=c1>// vtkNew&lt;vtkLinearSubdivisionFilter&gt;  subdivisionFilter;</span>
+<span class=hll><span class=w>    </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataAlgorithm</span><span class=o>&gt;</span><span class=w> </span><span class=n>subdivisionFilter</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=k>switch</span><span class=w> </span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=w></span>
@@ -264,8 +264,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtk&quot;</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtk&quot;</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span><span class=w></span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>

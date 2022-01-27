@@ -71,8 +71,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ColorCallback</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=c1>// Here we Create a vtkCallbackCommand and reimplement it.</span>
-</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>evId</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Here we Create a vtkCallbackCommand and reimplement it.</span>
+<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>evId</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=w></span>
 </span><span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=c1>// Note the use of reinterpret_cast to cast the caller to the expected type.</span>
 <span class=w>    </span><span class=c1>// Just do this to demonstrate who called callback and the event that</span>

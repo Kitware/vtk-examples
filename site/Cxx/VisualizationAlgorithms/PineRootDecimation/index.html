@@ -93,14 +93,14 @@ function registerListener(event, func) {
 <span class=cm>   */</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>NumberofTriangles</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>[](</span><span class=n>vtkPolyData</span><span class=o>*</span><span class=w> </span><span class=n>pd</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w></span>
 </span><span class=hll><span class=w>    </span><span class=n>vtkCellArray</span><span class=o>*</span><span class=w> </span><span class=n>cells</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetPolys</span><span class=p>();</span><span class=w></span>
-</span><span class=hll><span class=w>    </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>npts</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
-</span><span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>numOfTriangles</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
+</span><span class=w>    </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>npts</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>numOfTriangles</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
 <span class=cp>#ifdef VTK_CELL_ARRAY_V2</span>
 
-<span class=hll><span class=w>    </span><span class=c1>// Newer versions of vtkCellArray prefer local iterators:</span>
-</span><span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetNumberOfPolys</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>cellIter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtk</span><span class=o>::</span><span class=n>TakeSmartPointer</span><span class=p>(</span><span class=n>cells</span><span class=o>-&gt;</span><span class=n>NewIterator</span><span class=p>());</span><span class=w></span>
-</span><span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>GoToFirstCell</span><span class=p>();</span><span class=w> </span><span class=o>!</span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>IsDoneWithTraversal</span><span class=p>();</span><span class=w></span>
+<span class=w>    </span><span class=c1>// Newer versions of vtkCellArray prefer local iterators:</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetNumberOfPolys</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>cellIter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtk</span><span class=o>::</span><span class=n>TakeSmartPointer</span><span class=p>(</span><span class=n>cells</span><span class=o>-&gt;</span><span class=n>NewIterator</span><span class=p>());</span><span class=w></span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>GoToFirstCell</span><span class=p>();</span><span class=w> </span><span class=o>!</span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>IsDoneWithTraversal</span><span class=p>();</span><span class=w></span>
 <span class=w>         </span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>GoToNextCell</span><span class=p>())</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=k>auto</span><span class=w> </span><span class=n>cell</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>GetCurrentCell</span><span class=p>();</span><span class=w></span>
@@ -117,10 +117,10 @@ function registerListener(event, func) {
 
 <span class=cp>#else  </span><span class=c1>// VTK_CELL_ARRAY_V2</span>
 
-<span class=hll><span class=w>    </span><span class=c1>// Older implementations of vtkCellArray use internal iterator APIs (not</span>
-</span><span class=w>    </span><span class=c1>// thread safe):</span>
-<span class=hll><span class=w>    </span><span class=n>vtkIdType</span><span class=o>*</span><span class=w> </span><span class=n>pts</span><span class=p>;</span><span class=w></span>
-</span><span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetNumberOfPolys</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span><span class=w></span>
+<span class=w>    </span><span class=c1>// Older implementations of vtkCellArray use internal iterator APIs (not</span>
+<span class=w>    </span><span class=c1>// thread safe):</span>
+<span class=w>    </span><span class=n>vtkIdType</span><span class=o>*</span><span class=w> </span><span class=n>pts</span><span class=p>;</span><span class=w></span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetNumberOfPolys</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=kt>int</span><span class=w> </span><span class=n>c</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cells</span><span class=o>-&gt;</span><span class=n>GetNextCell</span><span class=p>(</span><span class=n>npts</span><span class=p>,</span><span class=w> </span><span class=n>pts</span><span class=p>);</span><span class=w></span>
 <span class=w>      </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>c</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w></span>
@@ -139,14 +139,14 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>};</span><span class=w></span>
 <span class=w>  </span><span class=c1>///**</span>
 <span class=w>  </span><span class=c1>//* Count the triangles in the polydata.</span>
-<span class=hll><span class=w>  </span><span class=c1>//* @param pd: vtkPolyData.</span>
-</span><span class=w>  </span><span class=c1>//* @return The number of triangles.</span>
+<span class=w>  </span><span class=c1>//* @param pd: vtkPolyData.</span>
+<span class=w>  </span><span class=c1>//* @return The number of triangles.</span>
 <span class=w>  </span><span class=c1>//*/</span>
-<span class=hll><span class=w>  </span><span class=c1>// auto NumberofTriangles = [](vtkPolyData* pd) {</span>
-</span><span class=hll><span class=w>  </span><span class=c1>//  vtkCellArray* cells = pd-&gt;GetPolys();</span>
-</span><span class=hll><span class=w>  </span><span class=c1>//  vtkIdType npts = 0;</span>
-</span><span class=hll><span class=w>  </span><span class=c1>//  vtkIdType* pts;</span>
-</span><span class=w>  </span><span class=c1>//  auto numOfTriangles = 0;</span>
+<span class=w>  </span><span class=c1>// auto NumberofTriangles = [](vtkPolyData* pd) {</span>
+<span class=w>  </span><span class=c1>//  vtkCellArray* cells = pd-&gt;GetPolys();</span>
+<span class=w>  </span><span class=c1>//  vtkIdType npts = 0;</span>
+<span class=w>  </span><span class=c1>//  vtkIdType* pts;</span>
+<span class=w>  </span><span class=c1>//  auto numOfTriangles = 0;</span>
 <span class=w>  </span><span class=c1>//  for (auto i = 0; i &lt; pd-&gt;GetNumberOfPolys(); ++i)</span>
 <span class=w>  </span><span class=c1>//  {</span>
 <span class=w>  </span><span class=c1>//    int c = cells-&gt;GetNextCell(npts, pts);</span>
@@ -194,8 +194,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>connect</span><span class=o>-&gt;</span><span class=n>SetExtractionModeToLargestRegion</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>connect</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;After Connectivity.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=c1>// Note the use of dynamic_cast&lt;vtkPolyData*&gt; here.</span>
-</span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are: &quot;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Note the use of dynamic_cast&lt;vtkPolyData*&gt; here.</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are: &quot;</span><span class=w></span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>NumberofTriangles</span><span class=p>(</span><span class=w></span>
 <span class=hll><span class=w>                   </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>connect</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()))</span><span class=w></span>
 </span><span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; triangles.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>

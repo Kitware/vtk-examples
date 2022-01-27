@@ -74,13 +74,13 @@ function registerListener(event, func) {
 
 <span class=c1># First access the VTK module (and any other needed modules) by importing them.</span>
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=n>vtkConeSource</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderer</span>
@@ -115,8 +115,8 @@ function registerListener(event, func) {
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Tutorial_Step2&#39;</span><span class=p>)</span>
 
     <span class=c1># Here is where we setup the observer.</span>
-<span class=hll>    <span class=n>mo1</span> <span class=o>=</span> <span class=n>vtkMyCallback</span><span class=p>(</span><span class=n>ren1</span><span class=p>)</span>
-</span>    <span class=n>ren1</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;StartEvent&#39;</span><span class=p>,</span> <span class=n>mo1</span><span class=p>)</span>
+    <span class=n>mo1</span> <span class=o>=</span> <span class=n>vtkMyCallback</span><span class=p>(</span><span class=n>ren1</span><span class=p>)</span>
+    <span class=n>ren1</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;StartEvent&#39;</span><span class=p>,</span> <span class=n>mo1</span><span class=p>)</span>
 
     <span class=c1>#</span>
     <span class=c1># Now we loop over 360 degrees and render the cone each time.</span>
@@ -128,8 +128,8 @@ function registerListener(event, func) {
         <span class=n>ren1</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
 
 
-<span class=hll><span class=k>class</span> <span class=nc>vtkMyCallback</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
-</span>    <span class=sd>&quot;&quot;&quot;</span>
+<span class=k>class</span> <span class=nc>vtkMyCallback</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
+    <span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>    Callback for the interaction.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
 

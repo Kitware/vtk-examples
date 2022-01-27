@@ -95,8 +95,8 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// uncomment to inspect</span>
 <span class=w>  </span><span class=c1>// std::cerr &lt;&lt; root-&gt;GetClassName() &lt;&lt; std::endl;</span>
-<span class=hll><span class=w>  </span><span class=c1>// root-&gt;PrintSelf(std::cerr, vtkIndent(0));</span>
-</span>
+<span class=w>  </span><span class=c1>// root-&gt;PrintSelf(std::cerr, vtkIndent(0));</span>
+
 <span class=w>  </span><span class=c1>// PART 2 Do something with the data</span>
 <span class=w>  </span><span class=c1>// a non composite aware filter, the pipeline will iterate</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkExtractEdges</span><span class=o>&gt;</span><span class=w> </span><span class=n>edges</span><span class=p>;</span><span class=w></span>
@@ -105,21 +105,21 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// uncomment to inspect</span>
 <span class=w>  </span><span class=c1>// edges-&gt;Update();</span>
 <span class=w>  </span><span class=c1>// cerr &lt;&lt; edges-&gt;GetOutputDataObject(0)-&gt;GetClassName() &lt;&lt; endl;</span>
-<span class=hll><span class=w>  </span><span class=c1>// edges-&gt;GetOutputDataObject(0)-&gt;PrintSelf(std::cerr, vtkIndent(0));</span>
-</span>
+<span class=w>  </span><span class=c1>// edges-&gt;GetOutputDataObject(0)-&gt;PrintSelf(std::cerr, vtkIndent(0));</span>
+
 <span class=w>  </span><span class=c1>// PART 3 Show the data</span>
 <span class=w>  </span><span class=c1>// also demonstrate a composite aware filter</span>
 <span class=w>  </span><span class=c1>// this filter aggregates all blocks into one polydata</span>
 <span class=w>  </span><span class=c1>// this is handy for display, although fairly limited</span>
-<span class=hll><span class=w>  </span><span class=c1>// see vtkCompositePolyDataMapper2 for something better</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCompositeDataGeometryFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>polydata</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// see vtkCompositePolyDataMapper2 for something better</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCompositeDataGeometryFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>polydata</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>edges</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// uncomment to inspect</span>
 <span class=w>  </span><span class=c1>// polydata-&gt;Update();</span>
 <span class=w>  </span><span class=c1>// std::cerr &lt;&lt; polydata-&gt;GetOutput()-&gt;GetClassName() &lt;&lt; std::endl;</span>
-<span class=hll><span class=w>  </span><span class=c1>// polydata-&gt;GetOutput()-&gt;PrintSelf(std::cerr, vtkIndent(0));</span>
-</span>
+<span class=w>  </span><span class=c1>// polydata-&gt;GetOutput()-&gt;PrintSelf(std::cerr, vtkIndent(0));</span>
+
 <span class=w>  </span><span class=c1>// display the data</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>aren</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renWin</span><span class=p>;</span><span class=w></span>

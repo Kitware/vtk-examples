@@ -71,8 +71,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransform.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVersionMacros.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkWindowToImageFilter.h&gt;</span><span class=cp></span>
+</span><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVersionMacros.h&gt;</span><span class=cp></span>
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkWindowToImageFilter.h&gt;</span><span class=cp></span>
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;array&gt;</span><span class=cp></span>
 
@@ -107,10 +107,10 @@ function registerListener(event, func) {
 <span class=cm>/*</span>
 <span class=cm>// Used to estimate positions similar to the book illustrations.</span>
 <span class=hll><span class=cm>static void CameraModifiedCallback(vtkObject* caller,</span>
-</span><span class=hll><span class=cm>                                   long unsigned int vtkNotUsed(eventId),</span>
-</span><span class=hll><span class=cm>                                   void* vtkNotUsed(clientData),</span>
-</span><span class=hll><span class=cm>                                   void* vtkNotUsed(callData));</span>
-</span><span class=cm>*/</span><span class=w></span>
+</span><span class=cm>                                   long unsigned int vtkNotUsed(eventId),</span>
+<span class=cm>                                   void* vtkNotUsed(clientData),</span>
+<span class=cm>                                   void* vtkNotUsed(callData));</span>
+<span class=cm>*/</span><span class=w></span>
 
 <span class=c1>// Save a screenshot.</span>
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>Screenshot</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>fileName</span><span class=p>,</span><span class=w> </span><span class=n>vtkRenderWindow</span><span class=o>*</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span><span class=w></span>
@@ -187,10 +187,10 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Activate this if you want to see the Position and Focal point.</span>
-<span class=hll><span class=w>  </span><span class=c1>// vtkNew&lt;vtkCallbackCommand&gt; modifiedCallback;</span>
-</span><span class=w>  </span><span class=c1>// modifiedCallback-&gt;SetCallback(CameraModifiedCallback);</span>
-<span class=hll><span class=w>  </span><span class=c1>// ren-&gt;GetActiveCamera()-&gt;AddObserver(vtkCommand::ModifiedEvent,</span>
-</span><span class=w>  </span><span class=c1>// modifiedCallback);</span>
+<span class=w>  </span><span class=c1>// vtkNew&lt;vtkCallbackCommand&gt; modifiedCallback;</span>
+<span class=w>  </span><span class=c1>// modifiedCallback-&gt;SetCallback(CameraModifiedCallback);</span>
+<span class=w>  </span><span class=c1>// ren-&gt;GetActiveCamera()-&gt;AddObserver(vtkCommand::ModifiedEvent,</span>
+<span class=w>  </span><span class=c1>// modifiedCallback);</span>
 
 <span class=w>  </span><span class=c1>// These four rotations use the same camera position.</span>
 <span class=w>  </span><span class=n>Rotate_X</span><span class=p>(</span><span class=n>cowActor</span><span class=p>,</span><span class=w> </span><span class=n>ren</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span><span class=w></span>
@@ -497,10 +497,10 @@ function registerListener(event, func) {
 
 <span class=cm>/*</span>
 <span class=hll><span class=cm>static void CameraModifiedCallback(vtkObject* caller,</span>
-</span><span class=hll><span class=cm>                                   long unsigned int vtkNotUsed(eventId),</span>
-</span><span class=hll><span class=cm>                                   void* vtkNotUsed(clientData),</span>
-</span><span class=hll><span class=cm>                                   void* vtkNotUsed(callData))</span>
-</span><span class=cm>{</span>
+</span><span class=cm>                                   long unsigned int vtkNotUsed(eventId),</span>
+<span class=cm>                                   void* vtkNotUsed(clientData),</span>
+<span class=cm>                                   void* vtkNotUsed(callData))</span>
+<span class=cm>{</span>
 <span class=cm>  std::cout &lt;&lt; caller-&gt;GetClassName() &lt;&lt; &quot; modified&quot; &lt;&lt; std::endl;</span>
 <span class=hll><span class=cm>  vtkCamera* camera = static_cast&lt;vtkCamera*&gt;(caller);</span>
 </span><span class=cm>  // Print the interesting stuff.</span>

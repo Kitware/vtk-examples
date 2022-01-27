@@ -93,12 +93,12 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCompositeDataDisplayAttributes</span><span class=o>&gt;</span><span class=w> </span><span class=n>cdsa</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetCompositeDataDisplayAttributes</span><span class=p>(</span><span class=n>cdsa</span><span class=p>.</span><span class=n>Get</span><span class=p>());</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// You can use the vtkCompositeDataDisplayAttributes to set the color,</span>
-</span><span class=w>  </span><span class=c1>// opacity and visibiliy of individual blocks of the multiblock dataset.</span>
-<span class=hll><span class=w>  </span><span class=c1>// Attributes are mapped by block pointers (vtkDataObject*), so these can</span>
-</span><span class=w>  </span><span class=c1>// be queried by their flat index through a convenience function in the</span>
-<span class=hll><span class=w>  </span><span class=c1>// attribute class (vtkCompositeDataDisplayAttributes::DataObjectFromIndex).</span>
-</span><span class=w>  </span><span class=c1>// Alternatively, one can set attributes directly through the mapper using</span>
+<span class=w>  </span><span class=c1>// You can use the vtkCompositeDataDisplayAttributes to set the color,</span>
+<span class=w>  </span><span class=c1>// opacity and visibiliy of individual blocks of the multiblock dataset.</span>
+<span class=w>  </span><span class=c1>// Attributes are mapped by block pointers (vtkDataObject*), so these can</span>
+<span class=w>  </span><span class=c1>// be queried by their flat index through a convenience function in the</span>
+<span class=w>  </span><span class=c1>// attribute class (vtkCompositeDataDisplayAttributes::DataObjectFromIndex).</span>
+<span class=w>  </span><span class=c1>// Alternatively, one can set attributes directly through the mapper using</span>
 <span class=w>  </span><span class=c1>// flat indices.</span>
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// This sets the block at flat index 2 red</span>

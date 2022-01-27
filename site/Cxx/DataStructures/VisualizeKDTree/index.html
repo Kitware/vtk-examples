@@ -99,12 +99,12 @@ function registerListener(event, func) {
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkSliderCallback</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkCommand</span><span class=w></span>
 </span><span class=p>{</span><span class=w></span>
 <span class=k>public</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkSliderCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkSliderCallback</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkSliderCallback</span><span class=p>()</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>KdTree</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span><span class=w> </span><span class=n>Level</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span><span class=w> </span><span class=n>PolyData</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span><span class=w> </span><span class=n>Renderer</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkSliderCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkSliderCallback</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=p>}</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkSliderCallback</span><span class=p>()</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>KdTree</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span><span class=w> </span><span class=n>Level</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span><span class=w> </span><span class=n>PolyData</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span><span class=w> </span><span class=n>Renderer</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w></span>
@@ -266,8 +266,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtk&quot;</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtk&quot;</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>reader</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span><span class=w></span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>

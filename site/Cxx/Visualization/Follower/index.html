@@ -81,8 +81,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>mapper</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>textSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Create a subclass of vtkActor: a vtkFollower that remains facing the camera</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFollower</span><span class=o>&gt;</span><span class=w> </span><span class=n>follower</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// Create a subclass of vtkActor: a vtkFollower that remains facing the camera</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFollower</span><span class=o>&gt;</span><span class=w> </span><span class=n>follower</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>follower</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>follower</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Gold&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
 

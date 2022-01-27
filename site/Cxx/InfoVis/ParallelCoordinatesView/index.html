@@ -72,8 +72,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkStringArray.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTable.h&gt;</span><span class=cp></span>
 </span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/SystemTools.hxx&gt;</span><span class=cp></span>
-</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/SystemTools.hxx&gt;</span><span class=cp></span>
+
 <span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span><span class=w></span>
 <span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
@@ -92,9 +92,9 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFieldDelimiterCharacters</span><span class=p>(</span><span class=s>&quot;,&quot;</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=n>table</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=n>title</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameWithoutExtension</span><span class=p>(</span><span class=w></span>
-</span><span class=hll><span class=w>        </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameName</span><span class=p>(</span><span class=n>inputFilename</span><span class=p>));</span><span class=w></span>
-</span><span class=w>  </span><span class=p>}</span><span class=w></span>
+<span class=w>    </span><span class=n>title</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameWithoutExtension</span><span class=p>(</span><span class=w></span>
+<span class=w>        </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameName</span><span class=p>(</span><span class=n>inputFilename</span><span class=p>));</span><span class=w></span>
+<span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=w>  </span><span class=k>else</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>title</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;Generated Data&quot;</span><span class=p>;</span><span class=w></span>
@@ -132,8 +132,8 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>polydata</span><span class=p>;</span><span class=w></span>
 </span>
-<span class=hll><span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>GetNumberOfColumns</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>GetNumberOfColumns</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkStringArray</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>table</span><span class=o>-&gt;</span><span class=n>GetColumn</span><span class=p>(</span><span class=n>i</span><span class=p>)))</span><span class=w></span>
 </span><span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; is &quot;</span><span class=w></span>
@@ -169,8 +169,8 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// List all of the attribute arrays you want plotted in parallel coordinates</span>
 <span class=w>  </span><span class=c1>// Set up the parallel coordinates Representation to be used in the View</span>
-<span class=hll><span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>GetNumberOfColumns</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>GetNumberOfColumns</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkStringArray</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>table</span><span class=o>-&gt;</span><span class=n>GetColumn</span><span class=p>(</span><span class=n>i</span><span class=p>)))</span><span class=w></span>
 </span><span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=k>continue</span><span class=p>;</span><span class=w></span>

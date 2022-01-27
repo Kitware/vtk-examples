@@ -96,8 +96,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;double weight: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>weight</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 
 <span class=w>  </span><span class=cm>/*</span>
-<span class=hll><span class=cm>  // This causes a crash because the array is not a vtkFloatArray</span>
-</span><span class=cm>  double weightf =</span>
+<span class=cm>  // This causes a crash because the array is not a vtkFloatArray</span>
+<span class=cm>  double weightf =</span>
 <span class=hll><span class=cm>  dynamic_cast&lt;vtkFloatArray*&gt;(polydata-&gt;GetPointData()-&gt;GetScalars())-&gt;GetValue(0);</span>
 </span><span class=cm>  std::cout &lt;&lt; &quot;float weight: &quot; &lt;&lt; weightf &lt;&lt; std::endl;</span>
 <span class=cm>  */</span><span class=w></span>

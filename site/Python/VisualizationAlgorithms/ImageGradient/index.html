@@ -59,26 +59,26 @@ function registerListener(event, func) {
 
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOImage</span> <span class=kn>import</span> <span class=n>vtkMetaImageReader</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingColor</span> <span class=kn>import</span> <span class=n>vtkImageHSVToRGB</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkImageCast</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkImageCast</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkImageConstantPad</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkImageExtractComponents</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkImageMagnify</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingGeneral</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkImageEuclideanToPolar</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingGeneral</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkImageEuclideanToPolar</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkImageGaussianSmooth</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkImageGradient</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInteractionImage</span> <span class=kn>import</span> <span class=n>vtkImageViewer</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkRenderWindowInteractor</span>
 </span><span class=p>)</span>
 
 
@@ -142,9 +142,9 @@ function registerListener(event, func) {
     <span class=n>rgb</span><span class=o>.</span><span class=n>SetMaximum</span><span class=p>(</span><span class=mf>255.0</span><span class=p>)</span>
 
     <span class=c1># Set up a viewer for the image.</span>
-<span class=hll>    <span class=c1># Note that vtkImageViewer and vtkImageViewer2 are convenience wrappers around</span>
-</span><span class=hll>    <span class=c1># vtkActor2D, vtkImageMapper, vtkRenderer, and vtkRenderWindow.</span>
-</span>    <span class=c1># So all that needs to be supplied is the interactor.</span>
+    <span class=c1># Note that vtkImageViewer and vtkImageViewer2 are convenience wrappers around</span>
+    <span class=c1># vtkActor2D, vtkImageMapper, vtkRenderer, and vtkRenderWindow.</span>
+    <span class=c1># So all that needs to be supplied is the interactor.</span>
 <span class=hll>    <span class=n>viewer</span> <span class=o>=</span> <span class=n>vtkImageViewer</span><span class=p>()</span>
 </span>    <span class=n>viewer</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>rgb</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>viewer</span><span class=o>.</span><span class=n>SetZSlice</span><span class=p>(</span><span class=mi>22</span><span class=p>)</span>

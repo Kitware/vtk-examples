@@ -72,8 +72,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTextProperty.h&gt;</span><span class=cp></span>
 </span>
-<span class=hll><span class=c1>// The vtkCubeAxesActor2D draws axes on the bounding box of the data set and</span>
-</span><span class=c1>// labels the axes with x-y-z coordinates.</span>
+<span class=c1>// The vtkCubeAxesActor2D draws axes on the bounding box of the data set and</span>
+<span class=c1>// labels the axes with x-y-z coordinates.</span>
 
 <span class=c1>//----------------------------------------------------------------------------//</span>
 <span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span><span class=w></span>
@@ -83,8 +83,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlatonicSolidSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>icosahedron</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>icosahedron</span><span class=o>-&gt;</span><span class=n>SetSolidTypeToIcosahedron</span><span class=p>();</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Create a vtkPolyDataNormals filter to calculate the normals of the data</span>
-</span><span class=w>  </span><span class=c1>// set.</span>
+<span class=w>  </span><span class=c1>// Create a vtkPolyDataNormals filter to calculate the normals of the data</span>
+<span class=w>  </span><span class=c1>// set.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataNormals</span><span class=o>&gt;</span><span class=w> </span><span class=n>normals</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>icosahedron</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 
@@ -98,8 +98,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>icosahedron_actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=w></span>
 <span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Plum&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Create a vtkOutlineFilter to draw the bounding box of the data set.</span>
-</span><span class=w>  </span><span class=c1>// Also create the associated mapper and actor.</span>
+<span class=w>  </span><span class=c1>// Create a vtkOutlineFilter to draw the bounding box of the data set.</span>
+<span class=w>  </span><span class=c1>// Also create the associated mapper and actor.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOutlineFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>outline</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>outline</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 
@@ -148,8 +148,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>ShadowOn</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Create a vtkCubeAxesActor2D.  Use the outer edges of the bounding box to</span>
-</span><span class=w>  </span><span class=c1>// draw the axes.  Add the actor to the renderer.</span>
+<span class=w>  </span><span class=c1>// Create a vtkCubeAxesActor2D.  Use the outer edges of the bounding box to</span>
+<span class=w>  </span><span class=c1>// draw the axes.  Add the actor to the renderer.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCubeAxesActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>axes</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetCamera</span><span class=p>(</span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>());</span><span class=w></span>
@@ -159,8 +159,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetAxisLabelTextProperty</span><span class=p>(</span><span class=n>tprop</span><span class=p>.</span><span class=n>GetPointer</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>axes</span><span class=p>.</span><span class=n>GetPointer</span><span class=p>());</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// Create a vtkCubeAxesActor2D.  Use the closest vertex to the camera to</span>
-</span><span class=w>  </span><span class=c1>// determine where to draw the axes.  Add the actor to the renderer.</span>
+<span class=w>  </span><span class=c1>// Create a vtkCubeAxesActor2D.  Use the closest vertex to the camera to</span>
+<span class=w>  </span><span class=c1>// determine where to draw the axes.  Add the actor to the renderer.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCubeAxesActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>axes2</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>axes2</span><span class=o>-&gt;</span><span class=n>SetViewProp</span><span class=p>(</span><span class=n>icosahedron_actor</span><span class=p>.</span><span class=n>GetPointer</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>axes2</span><span class=o>-&gt;</span><span class=n>SetCamera</span><span class=p>(</span><span class=n>ren2</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>());</span><span class=w></span>

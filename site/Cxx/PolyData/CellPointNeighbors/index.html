@@ -86,15 +86,15 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Find all cells connected to point 0</span>
-<span class=hll><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>cellId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
-</span>
+<span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>cellId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
+
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span><span class=w> </span><span class=n>cellPointIds</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetCellPoints</span><span class=p>(</span><span class=n>cellId</span><span class=p>,</span><span class=w> </span><span class=n>cellPointIds</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// neighbor cells may be listed multiple times</span>
 <span class=w>  </span><span class=c1>// use std::set instead of std::list if you want a unique list of neighbors</span>
-<span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>list</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=w> </span><span class=n>neighbors</span><span class=p>;</span><span class=w></span>
-</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>list</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=w> </span><span class=n>neighbors</span><span class=p>;</span><span class=w></span>
+
 <span class=w>  </span><span class=cm>/* For each vertex of the cell, we calculate which cells use that point.</span>
 <span class=cm>   So if we do this for each vertex, we have all the neighbors.</span>
 <span class=cm>   In the case of using &quot;cellPointIds&quot; as a parameter of &quot;GetCellNeighbors&quot;,</span>
@@ -102,8 +102,8 @@ function registerListener(event, func) {
 <span class=cm>   set of points is the current one. That is why we have to make each vertice at</span>
 <span class=cm>   time.*/</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>cellPointIds</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>cellPointIds</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span><span class=w> </span><span class=n>idList</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=n>idList</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=n>cellPointIds</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>i</span><span class=p>));</span><span class=w></span>
 
@@ -113,8 +113,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetCellNeighbors</span><span class=p>(</span><span class=n>cellId</span><span class=p>,</span><span class=w> </span><span class=n>idList</span><span class=p>,</span><span class=w></span>
 <span class=w>                                                  </span><span class=n>neighborCellIds</span><span class=p>);</span><span class=w></span>
 
-<span class=hll><span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>neighborCellIds</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=n>j</span><span class=o>++</span><span class=p>)</span><span class=w></span>
-</span><span class=w>    </span><span class=p>{</span><span class=w></span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>neighborCellIds</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=n>j</span><span class=o>++</span><span class=p>)</span><span class=w></span>
+<span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=n>neighbors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>neighborCellIds</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>j</span><span class=p>));</span><span class=w></span>
 <span class=w>    </span><span class=p>}</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>

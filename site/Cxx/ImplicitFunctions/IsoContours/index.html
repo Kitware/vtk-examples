@@ -82,10 +82,10 @@ function registerListener(event, func) {
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkSliderCallback</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkCommand</span><span class=w></span>
 </span><span class=p>{</span><span class=w></span>
 <span class=k>public</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkSliderCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkSliderCallback</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=p>}</span><span class=w></span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkSliderCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkSliderCallback</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w></span>
 </span><span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>vtkSliderWidget</span><span class=o>*</span><span class=w> </span><span class=n>sliderWidget</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>reinterpret_cast</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span><span class=w></span>
@@ -94,8 +94,8 @@ function registerListener(event, func) {
 </span><span class=w>            </span><span class=o>-&gt;</span><span class=n>GetValue</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>ContourFilter</span><span class=o>-&gt;</span><span class=n>GenerateValues</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>value</span><span class=p>,</span><span class=w> </span><span class=n>value</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkSliderCallback</span><span class=p>()</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>ContourFilter</span><span class=p>(</span><span class=nb>NULL</span><span class=p>)</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkSliderCallback</span><span class=p>()</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>ContourFilter</span><span class=p>(</span><span class=nb>NULL</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkContourFilter</span><span class=o>*</span><span class=w> </span><span class=n>ContourFilter</span><span class=p>;</span><span class=w></span>
 </span><span class=p>};</span><span class=w></span>

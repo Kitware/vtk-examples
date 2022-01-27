@@ -82,10 +82,10 @@ function registerListener(event, func) {
 
 
 <span class=w>     </span><span class=k>private</span><span class=w> </span><span class=k>void</span><span class=w> </span><span class=nf>ReadPLOT3D</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>         </span><span class=c1>// Path to vtk data must be set as an environment variable</span>
-</span><span class=hll><span class=w>         </span><span class=c1>// VTK_DATA_ROOT = &quot;C:\VTK\vtkdata-5.8.0&quot;</span>
-</span><span class=hll><span class=w>         </span><span class=n>vtkTesting</span><span class=w> </span><span class=n>test</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkTesting</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
-</span><span class=w>         </span><span class=kt>string</span><span class=w> </span><span class=n>root</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>test</span><span class=p>.</span><span class=n>GetDataRoot</span><span class=p>();</span><span class=w></span>
+<span class=w>         </span><span class=c1>// Path to vtk data must be set as an environment variable</span>
+<span class=w>         </span><span class=c1>// VTK_DATA_ROOT = &quot;C:\VTK\vtkdata-5.8.0&quot;</span>
+<span class=w>         </span><span class=n>vtkTesting</span><span class=w> </span><span class=n>test</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkTesting</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
+<span class=w>         </span><span class=kt>string</span><span class=w> </span><span class=n>root</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>test</span><span class=p>.</span><span class=n>GetDataRoot</span><span class=p>();</span><span class=w></span>
 <span class=w>         </span><span class=kt>string</span><span class=w> </span><span class=n>filePathXYZ</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>System</span><span class=p>.</span><span class=n>IO</span><span class=p>.</span><span class=n>Path</span><span class=p>.</span><span class=n>Combine</span><span class=p>(</span><span class=n>root</span><span class=p>,</span><span class=w> </span><span class=s>@&quot;Data\bluntfinxyz.bin&quot;</span><span class=p>);</span><span class=w></span>
 <span class=w>         </span><span class=kt>string</span><span class=w> </span><span class=n>filePathQ</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>System</span><span class=p>.</span><span class=n>IO</span><span class=p>.</span><span class=n>Path</span><span class=p>.</span><span class=n>Combine</span><span class=p>(</span><span class=n>root</span><span class=p>,</span><span class=w> </span><span class=s>@&quot;Data\bluntfinq.bin&quot;</span><span class=p>);</span><span class=w></span>
 <span class=w>         </span><span class=c1>//string filePathXYZ = System.IO.Path.Combine(root, @&quot;Data\combxyz.bin&quot;);</span>
@@ -109,8 +109,8 @@ function registerListener(event, func) {
 <span class=w>         </span><span class=c1>//// This filter is multi-block aware and will request blocks from the</span>
 <span class=w>         </span><span class=c1>//// input. These blocks will be processed by simple processes as if they</span>
 <span class=w>         </span><span class=c1>//// are the whole dataset</span>
-<span class=hll><span class=w>         </span><span class=c1>//vtkCompositeDataGeometryFilter geom1 = vtkCompositeDataGeometryFilter.New();</span>
-</span><span class=w>         </span><span class=c1>//geom1.SetInputConnection(0, reader.GetOutputPort(0));</span>
+<span class=w>         </span><span class=c1>//vtkCompositeDataGeometryFilter geom1 = vtkCompositeDataGeometryFilter.New();</span>
+<span class=w>         </span><span class=c1>//geom1.SetInputConnection(0, reader.GetOutputPort(0));</span>
 
 <span class=hll><span class=w>         </span><span class=n>vtkStructuredGridGeometryFilter</span><span class=w> </span><span class=n>geometryFilter</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkStructuredGridGeometryFilter</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span><span class=w>         </span><span class=n>geometryFilter</span><span class=p>.</span><span class=n>SetInput</span><span class=p>(</span><span class=n>reader</span><span class=p>.</span><span class=n>GetOutput</span><span class=p>().</span><span class=n>GetBlock</span><span class=p>(</span><span class=m>0</span><span class=p>));</span><span class=w></span>

@@ -126,13 +126,13 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>scene</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkAnimationScene</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&gt;=</span><span class=w> </span><span class=mi>2</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=n>strcmp</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span><span class=w> </span><span class=s>&quot;-real&quot;</span><span class=p>)</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=n>vtkLogF</span><span class=p>(</span><span class=n>INFO</span><span class=p>,</span><span class=w> </span><span class=s>&quot;real-time mode&quot;</span><span class=p>);</span><span class=w></span>
-</span><span class=w>    </span><span class=n>scene</span><span class=o>-&gt;</span><span class=n>SetModeToRealTime</span><span class=p>();</span><span class=w></span>
+<span class=w>    </span><span class=n>vtkLogF</span><span class=p>(</span><span class=n>INFO</span><span class=p>,</span><span class=w> </span><span class=s>&quot;real-time mode&quot;</span><span class=p>);</span><span class=w></span>
+<span class=w>    </span><span class=n>scene</span><span class=o>-&gt;</span><span class=n>SetModeToRealTime</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=w>  </span><span class=k>else</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=n>vtkLogF</span><span class=p>(</span><span class=n>INFO</span><span class=p>,</span><span class=w> </span><span class=s>&quot;sequence mode&quot;</span><span class=p>);</span><span class=w></span>
-</span><span class=w>    </span><span class=n>scene</span><span class=o>-&gt;</span><span class=n>SetModeToSequence</span><span class=p>();</span><span class=w></span>
+<span class=w>    </span><span class=n>vtkLogF</span><span class=p>(</span><span class=n>INFO</span><span class=p>,</span><span class=w> </span><span class=s>&quot;sequence mode&quot;</span><span class=p>);</span><span class=w></span>
+<span class=w>    </span><span class=n>scene</span><span class=o>-&gt;</span><span class=n>SetModeToSequence</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=w>  </span><span class=n>scene</span><span class=o>-&gt;</span><span class=n>SetLoop</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>scene</span><span class=o>-&gt;</span><span class=n>SetFrameRate</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span><span class=w></span>
@@ -181,8 +181,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCommand.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVector.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVectorOperators.h&gt;</span><span class=cp></span>
-</span>
+</span><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVectorOperators.h&gt;</span><span class=cp></span>
+
 <span class=k>class</span><span class=w> </span><span class=nc>ActorAnimator</span><span class=w></span>
 <span class=p>{</span><span class=w></span>
 <span class=k>public</span><span class=o>:</span><span class=w></span>

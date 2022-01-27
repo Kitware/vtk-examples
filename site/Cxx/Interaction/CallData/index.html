@@ -79,15 +79,15 @@ function registerListener(event, func) {
 </span><span class=p>{</span><span class=w></span>
 <span class=k>public</span><span class=o>:</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkMyTestFilter</span><span class=p>,</span><span class=w> </span><span class=n>vtkPolyDataAlgorithm</span><span class=p>);</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkMyTestFilter</span><span class=o>*</span><span class=w> </span><span class=nf>New</span><span class=p>();</span><span class=w></span>
-</span>
+</span><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkMyTestFilter</span><span class=o>*</span><span class=w> </span><span class=nf>New</span><span class=p>();</span><span class=w></span>
+
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>RefreshEvent</span><span class=p>;</span><span class=w></span>
 
 <span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>Counter</span><span class=p>;</span><span class=w></span>
 
 <span class=k>protected</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkMyTestFilter</span><span class=p>()</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkMyTestFilter</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SetNumberOfInputPorts</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span><span class=w></span>
 
 <span class=hll><span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>RefreshEvent</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>UserEvent</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>;</span><span class=w></span>
@@ -104,28 +104,28 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=k>private</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkMyTestFilter</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkMyTestFilter</span><span class=o>&amp;</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>delete</span><span class=p>;</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkMyTestFilter</span><span class=o>&amp;</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>delete</span><span class=p>;</span><span class=w></span>
-</span><span class=p>};</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkMyTestFilter</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkMyTestFilter</span><span class=o>&amp;</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>delete</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkMyTestFilter</span><span class=o>&amp;</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>delete</span><span class=p>;</span><span class=w></span>
+<span class=p>};</span><span class=w></span>
 
-<span class=hll><span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkMyTestFilter</span><span class=p>);</span><span class=w></span>
-</span>
+<span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkMyTestFilter</span><span class=p>);</span><span class=w></span>
+
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>CallbackFunction</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w></span>
 </span><span class=w>                      </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>clientData</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>callData</span><span class=p>);</span><span class=w></span>
 
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTimerCallback</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkCommand</span><span class=w></span>
 </span><span class=p>{</span><span class=w></span>
 <span class=k>public</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTimerCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=n>vtkTimerCallback</span><span class=o>*</span><span class=w> </span><span class=n>cb</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkTimerCallback</span><span class=p>;</span><span class=w></span>
-</span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTimerCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>    </span><span class=n>vtkTimerCallback</span><span class=o>*</span><span class=w> </span><span class=n>cb</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkTimerCallback</span><span class=p>;</span><span class=w></span>
+
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>cb</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>eventId</span><span class=p>),</span><span class=w></span>
-</span><span class=hll><span class=w>                       </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>callData</span><span class=p>))</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
+</span><span class=w>                       </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>callData</span><span class=p>))</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>TestFilter</span><span class=o>-&gt;</span><span class=n>Modified</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=n>TestFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>iren</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkRenderWindowInteractor</span><span class=o>::</span><span class=n>SafeDownCast</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span><span class=w></span>
@@ -138,8 +138,8 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>timerId</span><span class=p>;</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=n>vtkMyTestFilter</span><span class=o>*</span><span class=w> </span><span class=n>TestFilter</span><span class=p>;</span><span class=w></span>
-</span><span class=p>};</span><span class=w></span>
+<span class=w>  </span><span class=n>vtkMyTestFilter</span><span class=o>*</span><span class=w> </span><span class=n>TestFilter</span><span class=p>;</span><span class=w></span>
+<span class=p>};</span><span class=w></span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
 <span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span><span class=w></span>
@@ -195,9 +195,9 @@ function registerListener(event, func) {
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>CallbackFunction</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>caller</span><span class=p>),</span><span class=w></span>
-</span><span class=hll><span class=w>                      </span><span class=kt>long</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>eventId</span><span class=p>),</span><span class=w></span>
-</span><span class=hll><span class=w>                      </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>clientData</span><span class=p>),</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>callData</span><span class=p>)</span><span class=w></span>
-</span><span class=p>{</span><span class=w></span>
+</span><span class=w>                      </span><span class=kt>long</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>eventId</span><span class=p>),</span><span class=w></span>
+<span class=w>                      </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>clientData</span><span class=p>),</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>callData</span><span class=p>)</span><span class=w></span>
+<span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=o>*</span><span class=w> </span><span class=n>callDataCasted</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>reinterpret_cast</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>callData</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=o>*</span><span class=n>callDataCasted</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 <span class=p>}</span><span class=w></span>

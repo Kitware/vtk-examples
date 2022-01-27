@@ -70,8 +70,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTextProperty.h&gt;</span><span class=cp></span>
 </span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/CommandLineArguments.hxx&gt;</span><span class=cp></span>
-</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtksys/CommandLineArguments.hxx&gt;</span><span class=cp></span>
+
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span><span class=w></span>
 <span class=c1>// Cloud Parameters</span>
 <span class=k>class</span><span class=w> </span><span class=nc>CloudParameters</span><span class=w></span>
@@ -162,8 +162,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>WordColorName</span><span class=p>;</span><span class=w></span>
 <span class=p>};</span><span class=w></span>
 
-<span class=hll><span class=kt>bool</span><span class=w> </span><span class=nf>ProcessCommandLine</span><span class=p>(</span><span class=n>vtksys</span><span class=o>::</span><span class=n>CommandLineArguments</span><span class=o>&amp;</span><span class=w> </span><span class=n>arg</span><span class=p>,</span><span class=w></span>
-</span><span class=w>                        </span><span class=n>CloudParameters</span><span class=o>&amp;</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>);</span><span class=w></span>
+<span class=kt>bool</span><span class=w> </span><span class=nf>ProcessCommandLine</span><span class=p>(</span><span class=n>vtksys</span><span class=o>::</span><span class=n>CommandLineArguments</span><span class=o>&amp;</span><span class=w> </span><span class=n>arg</span><span class=p>,</span><span class=w></span>
+<span class=w>                        </span><span class=n>CloudParameters</span><span class=o>&amp;</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>);</span><span class=w></span>
 
 <span class=kt>void</span><span class=w> </span><span class=nf>CloudParametersToWordCloud</span><span class=p>(</span><span class=n>CloudParameters</span><span class=o>&amp;</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>,</span><span class=w></span>
 <span class=hll><span class=w>                                </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkWordCloud</span><span class=o>&gt;&amp;</span><span class=w> </span><span class=n>wordCloud</span><span class=p>);</span><span class=w></span>
@@ -173,8 +173,8 @@ function registerListener(event, func) {
 <span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=c1>// Process command line argumemts</span>
 <span class=w>  </span><span class=n>CloudParameters</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>;</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtksys</span><span class=o>::</span><span class=n>CommandLineArguments</span><span class=w> </span><span class=n>arg</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=n>arg</span><span class=p>.</span><span class=n>Initialize</span><span class=p>(</span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>vtksys</span><span class=o>::</span><span class=n>CommandLineArguments</span><span class=w> </span><span class=n>arg</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=n>arg</span><span class=p>.</span><span class=n>Initialize</span><span class=p>(</span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>ProcessCommandLine</span><span class=p>(</span><span class=n>arg</span><span class=p>,</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>))</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span><span class=w></span>
@@ -229,11 +229,11 @@ function registerListener(event, func) {
 <span class=p>}</span><span class=w></span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=kt>bool</span><span class=w> </span><span class=nf>ProcessCommandLine</span><span class=p>(</span><span class=n>vtksys</span><span class=o>::</span><span class=n>CommandLineArguments</span><span class=o>&amp;</span><span class=w> </span><span class=n>arg</span><span class=p>,</span><span class=w></span>
-</span><span class=w>                        </span><span class=n>CloudParameters</span><span class=o>&amp;</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>)</span><span class=w></span>
+<span class=kt>bool</span><span class=w> </span><span class=nf>ProcessCommandLine</span><span class=p>(</span><span class=n>vtksys</span><span class=o>::</span><span class=n>CommandLineArguments</span><span class=o>&amp;</span><span class=w> </span><span class=n>arg</span><span class=p>,</span><span class=w></span>
+<span class=w>                        </span><span class=n>CloudParameters</span><span class=o>&amp;</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>)</span><span class=w></span>
 <span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>typedef</span><span class=w> </span><span class=n>vtksys</span><span class=o>::</span><span class=n>CommandLineArguments</span><span class=w> </span><span class=n>argT</span><span class=p>;</span><span class=w></span>
-</span>
+<span class=w>  </span><span class=k>typedef</span><span class=w> </span><span class=n>vtksys</span><span class=o>::</span><span class=n>CommandLineArguments</span><span class=w> </span><span class=n>argT</span><span class=p>;</span><span class=w></span>
+
 <span class=w>  </span><span class=c1>// Need this to get arguments without --&#39;s</span>
 <span class=w>  </span><span class=n>arg</span><span class=p>.</span><span class=n>StoreUnusedArguments</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span><span class=w></span>
 

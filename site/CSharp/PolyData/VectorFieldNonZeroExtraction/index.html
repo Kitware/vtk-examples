@@ -85,8 +85,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>         </span><span class=n>vtkImageData</span><span class=w> </span><span class=n>image</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkImageData</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span><span class=w>         </span><span class=n>CreateVectorField</span><span class=p>(</span><span class=k>ref</span><span class=w> </span><span class=n>image</span><span class=p>);</span><span class=w></span>
 
-<span class=hll><span class=w>         </span><span class=c1>// This filter produces a vtkImageData with an array named &quot;Magnitude&quot;</span>
-</span><span class=hll><span class=w>         </span><span class=n>vtkImageMagnitude</span><span class=w> </span><span class=n>magnitudeFilter</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkImageMagnitude</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
+<span class=w>         </span><span class=c1>// This filter produces a vtkImageData with an array named &quot;Magnitude&quot;</span>
+<span class=hll><span class=w>         </span><span class=n>vtkImageMagnitude</span><span class=w> </span><span class=n>magnitudeFilter</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkImageMagnitude</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span><span class=w>         </span><span class=n>magnitudeFilter</span><span class=p>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>image</span><span class=p>.</span><span class=n>GetProducerPort</span><span class=p>());</span><span class=w></span>
 <span class=w>         </span><span class=n>magnitudeFilter</span><span class=p>.</span><span class=n>Update</span><span class=p>();</span><span class=w> </span>
 
@@ -105,8 +105,8 @@ function registerListener(event, func) {
 <span class=w>         </span><span class=n>thresholdVector</span><span class=p>.</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 
 <span class=w>         </span><span class=c1>// in case you want to save imageData</span>
-<span class=hll><span class=w>         </span><span class=c1>//vtkXMLPolyDataWriter writer = vtkXMLPolyDataWriter.New();</span>
-</span><span class=w>         </span><span class=c1>//writer.SetFileName(&quot;output.vtp&quot;);</span>
+<span class=w>         </span><span class=c1>//vtkXMLPolyDataWriter writer = vtkXMLPolyDataWriter.New();</span>
+<span class=w>         </span><span class=c1>//writer.SetFileName(&quot;output.vtp&quot;);</span>
 <span class=w>         </span><span class=c1>//writer.SetInputConnection(thresholdPoints.GetOutputPort());</span>
 <span class=w>         </span><span class=c1>//writer.Write();</span>
 

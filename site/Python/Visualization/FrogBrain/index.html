@@ -60,17 +60,17 @@ function registerListener(event, func) {
 <span class=kn>from</span> <span class=nn>pathlib</span> <span class=kn>import</span> <span class=n>Path</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
-</span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span>    <span class=n>VTK_VERSION_NUMBER</span><span class=p>,</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
+<span class=c1># noinspection PyUnresolvedReferences</span>
+<span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
+    <span class=n>VTK_VERSION_NUMBER</span><span class=p>,</span>
 <span class=hll>    <span class=n>vtkLookupTable</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkVersion</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkFlyingEdges3D</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkFlyingEdges3D</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkMarchingCubes</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataNormals</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkStripper</span><span class=p>,</span>
@@ -79,8 +79,8 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOImage</span> <span class=kn>import</span> <span class=n>vtkMetaImageReader</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingCore</span> <span class=kn>import</span> <span class=n>vtkImageThreshold</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkImagingGeneral</span> <span class=kn>import</span> <span class=n>vtkImageGaussianSmooth</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
@@ -103,9 +103,9 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>tissue</span><span class=p>):</span>
-<span class=hll>    <span class=c1># vtkFlyingEdges3D was introduced in VTK &gt;= 8.2</span>
-</span><span class=hll>    <span class=n>use_flying_edges</span> <span class=o>=</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-</span>
+    <span class=c1># vtkFlyingEdges3D was introduced in VTK &gt;= 8.2</span>
+    <span class=n>use_flying_edges</span> <span class=o>=</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>data_folder</span><span class=p>)</span>
@@ -311,8 +311,8 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>tissue_map</span>
 
 
-<span class=hll><span class=k>def</span> <span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-</span>    <span class=sd>&quot;&quot;&quot;</span>
+<span class=k>def</span> <span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
+    <span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Major version.</span>
@@ -322,13 +322,13 @@ function registerListener(event, func) {
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=n>needed_version</span> <span class=o>=</span> <span class=mi>10000000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>major</span><span class=p>)</span> <span class=o>+</span> <span class=mi>100000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>minor</span><span class=p>)</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>build</span><span class=p>)</span>
     <span class=k>try</span><span class=p>:</span>
-<span class=hll>        <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=n>VTK_VERSION_NUMBER</span>
-</span>    <span class=k>except</span> <span class=ne>AttributeError</span><span class=p>:</span>  <span class=c1># as error:</span>
+        <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=n>VTK_VERSION_NUMBER</span>
+    <span class=k>except</span> <span class=ne>AttributeError</span><span class=p>:</span>  <span class=c1># as error:</span>
 <span class=hll>        <span class=n>ver</span> <span class=o>=</span> <span class=n>vtkVersion</span><span class=p>()</span>
-</span><span class=hll>        <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=mi>10000000000</span> <span class=o>*</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMajorVersion</span><span class=p>()</span> <span class=o>+</span> <span class=mi>100000000</span> <span class=o>*</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMinorVersion</span><span class=p>()</span> \
-</span>                             <span class=o>+</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKBuildVersion</span><span class=p>()</span>
-<span class=hll>    <span class=k>if</span> <span class=n>vtk_version_number</span> <span class=o>&gt;=</span> <span class=n>needed_version</span><span class=p>:</span>
-</span>        <span class=k>return</span> <span class=kc>True</span>
+</span>        <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=mi>10000000000</span> <span class=o>*</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMajorVersion</span><span class=p>()</span> <span class=o>+</span> <span class=mi>100000000</span> <span class=o>*</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMinorVersion</span><span class=p>()</span> \
+                             <span class=o>+</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKBuildVersion</span><span class=p>()</span>
+    <span class=k>if</span> <span class=n>vtk_version_number</span> <span class=o>&gt;=</span> <span class=n>needed_version</span><span class=p>:</span>
+        <span class=k>return</span> <span class=kc>True</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=k>return</span> <span class=kc>False</span>
 

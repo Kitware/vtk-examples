@@ -70,8 +70,8 @@ function registerListener(event, func) {
 
 <span class=w>      </span><span class=k>private</span><span class=w> </span><span class=k>void</span><span class=w> </span><span class=nf>renderWindowControl1_Load</span><span class=p>(</span><span class=kt>object</span><span class=w> </span><span class=n>sender</span><span class=p>,</span><span class=w> </span><span class=n>EventArgs</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w></span>
 <span class=w>         </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>            </span><span class=kt>string</span><span class=w> </span><span class=n>filePath</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=s>@&quot;C:\VTK\vtkdata-5.8.0\Data\quadraticTetra01.vtu&quot;</span><span class=p>;</span><span class=w></span>
-</span>
+<span class=w>            </span><span class=kt>string</span><span class=w> </span><span class=n>filePath</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=s>@&quot;C:\VTK\vtkdata-5.8.0\Data\quadraticTetra01.vtu&quot;</span><span class=p>;</span><span class=w></span>
+
 <span class=w>            </span><span class=c1>// reader</span>
 <span class=hll><span class=w>            </span><span class=n>vtkXMLUnstructuredGridReader</span><span class=w> </span><span class=n>reader</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=n>vtkXMLUnstructuredGridReader</span><span class=p>.</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span><span class=w>            </span><span class=k>if</span><span class=p>(</span><span class=n>reader</span><span class=p>.</span><span class=n>CanReadFile</span><span class=p>(</span><span class=n>filePath</span><span class=p>)</span><span class=w> </span><span class=p>==</span><span class=w> </span><span class=m>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w></span>

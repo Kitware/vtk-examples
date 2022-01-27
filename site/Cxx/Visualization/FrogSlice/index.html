@@ -278,12 +278,12 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// these transformations permute medical image data to maintain proper</span>
 <span class=w>  </span><span class=c1>// orientation regardless of the acquisition order. After applying these</span>
-<span class=hll><span class=w>  </span><span class=c1>// transforms with vtkTransformFilter, a view up of 0,-1,0 will result in</span>
-</span><span class=w>  </span><span class=c1>// the body part facing the viewer. NOTE: some transformations have a -1</span>
+<span class=w>  </span><span class=c1>// transforms with vtkTransformFilter, a view up of 0,-1,0 will result in</span>
+<span class=w>  </span><span class=c1>// the body part facing the viewer. NOTE: some transformations have a -1</span>
 <span class=w>  </span><span class=c1>// scale factor for one of the components.</span>
 <span class=w>  </span><span class=c1>//       To ensure proper polygon orientation and normal direction, you must</span>
-<span class=hll><span class=w>  </span><span class=c1>//       apply the vtkPolyDataNormals filter.</span>
-</span><span class=w>  </span><span class=c1>//</span>
+<span class=w>  </span><span class=c1>//       apply the vtkPolyDataNormals filter.</span>
+<span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// Naming:</span>
 <span class=w>  </span><span class=c1>// si - superior to inferior (top to bottom)</span>
 <span class=w>  </span><span class=c1>// is - inferior to superior (bottom to top)</span>

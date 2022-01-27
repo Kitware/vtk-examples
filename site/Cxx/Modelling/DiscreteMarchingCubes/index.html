@@ -72,8 +72,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphere.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVersion.h&gt;</span><span class=cp></span>
 </span>
-<span class=hll><span class=c1>// vtkDiscreteFlyingEdges3D was introduced in VTK &gt;= 8.2</span>
-</span><span class=cp>#if VTK_MAJOR_VERSION &gt;= 9 || (VTK_MAJOR_VERSION &gt;= 8 &amp;&amp; VTK_MINOR_VERSION &gt;= 2)</span>
+<span class=c1>// vtkDiscreteFlyingEdges3D was introduced in VTK &gt;= 8.2</span>
+<span class=cp>#if VTK_MAJOR_VERSION &gt;= 9 || (VTK_MAJOR_VERSION &gt;= 8 &amp;&amp; VTK_MINOR_VERSION &gt;= 2)</span>
 <span class=cp>#define USE_FLYING_EDGES</span>
 <span class=cp>#else</span>
 

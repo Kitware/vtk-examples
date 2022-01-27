@@ -73,14 +73,14 @@ function registerListener(event, func) {
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkMyCallback</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkCommand</span><span class=w></span>
 </span><span class=p>{</span><span class=w></span>
 <span class=k>public</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkMyCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
-</span><span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkMyCallback</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=p>}</span><span class=w></span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkMyCallback</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=p>{</span><span class=w></span>
+<span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkMyCallback</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w></span>
 </span><span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=hll><span class=w>    </span><span class=c1>// Here we use the vtkBoxWidget to transform the underlying coneActor</span>
-</span><span class=w>    </span><span class=c1>// (by manipulating its transformation matrix).</span>
+<span class=w>    </span><span class=c1>// Here we use the vtkBoxWidget to transform the underlying coneActor</span>
+<span class=w>    </span><span class=c1>// (by manipulating its transformation matrix).</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>t</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>    </span><span class=n>vtkBoxWidget</span><span class=o>*</span><span class=w> </span><span class=n>widget</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>reinterpret_cast</span><span class=o>&lt;</span><span class=n>vtkBoxWidget</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span><span class=w></span>
 </span><span class=w>    </span><span class=n>widget</span><span class=o>-&gt;</span><span class=n>GetTransform</span><span class=p>(</span><span class=n>t</span><span class=p>);</span><span class=w></span>
@@ -89,8 +89,8 @@ function registerListener(event, func) {
 <span class=p>};</span><span class=w></span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=hll><span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>argc</span><span class=p>),</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>argv</span><span class=p>)[])</span><span class=w></span>
-</span><span class=p>{</span><span class=w></span>
+<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>argc</span><span class=p>),</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>argv</span><span class=p>)[])</span><span class=w></span>
+<span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkConeSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>cone</span><span class=p>;</span><span class=w></span>

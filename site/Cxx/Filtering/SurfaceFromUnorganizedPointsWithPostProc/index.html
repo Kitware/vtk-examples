@@ -100,8 +100,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>input</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=w>  </span><span class=c1>// Read some points</span>
-<span class=hll><span class=w>  </span><span class=c1>// vtkNew&lt;vtkPoints points;</span>
-</span>
+<span class=w>  </span><span class=c1>// vtkNew&lt;vtkPoints points;</span>
+
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>polydata</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>input</span><span class=o>-&gt;</span><span class=n>GetPoints</span><span class=p>());</span><span class=w></span>
 
@@ -115,8 +115,8 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Sometimes the contouring algorithm can create a volume whose gradient</span>
 <span class=w>  </span><span class=c1>// vector and ordering of polygon (using the right hand rule) are</span>
-<span class=hll><span class=w>  </span><span class=c1>// inconsistent. vtkReverseSense cures this problem.</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkReverseSense</span><span class=o>&gt;</span><span class=w> </span><span class=n>reverse</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// inconsistent. vtkReverseSense cures this problem.</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkReverseSense</span><span class=o>&gt;</span><span class=w> </span><span class=n>reverse</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>reverse</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>contourFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>reverse</span><span class=o>-&gt;</span><span class=n>ReverseCellsOn</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>reverse</span><span class=o>-&gt;</span><span class=n>ReverseNormalsOn</span><span class=p>();</span><span class=w></span>

@@ -85,8 +85,8 @@ function registerListener(event, func) {
 </span><span class=w>                                         </span><span class=kt>int</span><span class=w> </span><span class=n>level</span><span class=p>);</span><span class=w></span>
 
 <span class=cm>/*----------------------------------------------------------------------------*</span>
-<span class=hll><span class=cm> *                Koch Snowflake as collection of vtkTriangles                *</span>
-</span><span class=cm> *----------------------------------------------------------------------------*/</span><span class=w></span>
+<span class=cm> *                Koch Snowflake as collection of vtkTriangles                *</span>
+<span class=cm> *----------------------------------------------------------------------------*/</span><span class=w></span>
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>as_triangles</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>start</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>end</span><span class=p>,</span><span class=w> </span><span class=n>vtkCellArray</span><span class=o>*</span><span class=w> </span><span class=n>cells</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>level</span><span class=p>,</span><span class=w></span>
 </span><span class=hll><span class=w>                  </span><span class=n>vtkIntArray</span><span class=o>*</span><span class=w> </span><span class=n>data</span><span class=p>);</span><span class=w></span>
 </span>
@@ -101,8 +101,8 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=c1>// Initially, set up the points to be an equilateral triangle. Note that the</span>
 <span class=w>  </span><span class=c1>// first point is the same as the last point to make this a closed curve when</span>
-<span class=hll><span class=w>  </span><span class=c1>// I create the vtkPolyLine.</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>points</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// I create the vtkPolyLine.</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>points</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>4</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>cos</span><span class=p>(</span><span class=mf>2.</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>vtkMath</span><span class=o>::</span><span class=n>Pi</span><span class=p>()</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mi>3</span><span class=p>),</span><span class=w></span>
@@ -112,8 +112,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>outline_pd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>as_polyline</span><span class=p>(</span><span class=n>points</span><span class=p>,</span><span class=w> </span><span class=n>LEVEL</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=c1>// You have already gone through the trouble of putting the points in the</span>
 <span class=w>  </span><span class=c1>// right places - so &quot;all&quot; you need to do now is to create polygons from the</span>
-<span class=hll><span class=w>  </span><span class=c1>// points that are in the vtkPoints.</span>
-</span>
+<span class=w>  </span><span class=c1>// points that are in the vtkPoints.</span>
+
 <span class=w>  </span><span class=c1>// The points that are passed in, have an overlap of the beginning and the</span>
 <span class=w>  </span><span class=c1>// end.</span>
 
@@ -208,19 +208,19 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>level</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=c1>// We&#39;re going to make the next set of points from the old one and swap</span>
-<span class=hll><span class=w>    </span><span class=c1>// them at the end. The vtkSmartPointer will go out of scope and be</span>
-</span><span class=w>    </span><span class=c1>// deleted.</span>
+<span class=w>    </span><span class=c1>// them at the end. The vtkSmartPointer will go out of scope and be</span>
+<span class=w>    </span><span class=c1>// deleted.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>temp</span><span class=p>;</span><span class=w></span>
 </span><span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>v0</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span><span class=w></span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>v1</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span><span class=w></span>
 
-<span class=hll><span class=w>    </span><span class=c1>// The first point of the previous vtkPoints is the first point of the next</span>
-</span><span class=hll><span class=w>    </span><span class=c1>// vtkPoints.</span>
-</span><span class=w>    </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>GetPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>v0</span><span class=p>);</span><span class=w></span>
+<span class=w>    </span><span class=c1>// The first point of the previous vtkPoints is the first point of the next</span>
+<span class=w>    </span><span class=c1>// vtkPoints.</span>
+<span class=w>    </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>GetPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>v0</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=n>temp</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>v0</span><span class=p>);</span><span class=w></span>
 
-<span class=hll><span class=w>    </span><span class=c1>// Iterate over &quot;edges&quot; in the vtkPoints</span>
-</span><span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>ii</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span><span class=w> </span><span class=n>ii</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>();</span><span class=w> </span><span class=n>ii</span><span class=o>++</span><span class=p>)</span><span class=w></span>
+<span class=w>    </span><span class=c1>// Iterate over &quot;edges&quot; in the vtkPoints</span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>ii</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span><span class=w> </span><span class=n>ii</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>();</span><span class=w> </span><span class=n>ii</span><span class=o>++</span><span class=p>)</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>ii</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>v0</span><span class=p>);</span><span class=w></span>
 <span class=w>      </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>ii</span><span class=p>,</span><span class=w> </span><span class=n>v1</span><span class=p>);</span><span class=w></span>

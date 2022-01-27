@@ -151,10 +151,10 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>rgb</span><span class=o>-&gt;</span><span class=n>SetMaximum</span><span class=p>(</span><span class=mf>255.0</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Set up a viewer for the image.</span>
-<span class=hll><span class=w>  </span><span class=c1>// Note that vtkImageViewer and vtkImageViewer2 are convenience wrappers</span>
-</span><span class=w>  </span><span class=c1>// around</span>
-<span class=hll><span class=w>  </span><span class=c1>// vtkActor2D, vtkImageMapper, vtkRenderer, and vtkRenderWindow.</span>
-</span><span class=w>  </span><span class=c1>// So all that needs to be supplied is the interactor.</span>
+<span class=w>  </span><span class=c1>// Note that vtkImageViewer and vtkImageViewer2 are convenience wrappers</span>
+<span class=w>  </span><span class=c1>// around</span>
+<span class=w>  </span><span class=c1>// vtkActor2D, vtkImageMapper, vtkRenderer, and vtkRenderWindow.</span>
+<span class=w>  </span><span class=c1>// So all that needs to be supplied is the interactor.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageViewer</span><span class=o>&gt;</span><span class=w> </span><span class=n>viewer</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>viewer</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>rgb</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>viewer</span><span class=o>-&gt;</span><span class=n>SetZSlice</span><span class=p>(</span><span class=mi>22</span><span class=p>);</span><span class=w></span>

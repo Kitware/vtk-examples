@@ -87,8 +87,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span><span class=w> </span><span class=n>mask</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>CreateMask</span><span class=p>(</span><span class=n>mask</span><span class=p>);</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=c1>// vtkNew&lt;vtkImageStencilData&gt; stencilData;</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageToImageStencil</span><span class=o>&gt;</span><span class=w> </span><span class=n>imageToImageStencil</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// vtkNew&lt;vtkImageStencilData&gt; stencilData;</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageToImageStencil</span><span class=o>&gt;</span><span class=w> </span><span class=n>imageToImageStencil</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>imageToImageStencil</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>mask</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>imageToImageStencil</span><span class=o>-&gt;</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mi>122</span><span class=p>);</span><span class=w></span>
 

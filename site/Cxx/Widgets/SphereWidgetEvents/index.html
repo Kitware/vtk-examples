@@ -85,8 +85,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>MySphereWidget</span><span class=p>();</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Create a new callback command rather than using the one defined in</span>
-<span class=hll><span class=w>  </span><span class=c1>// vtkSphereWidget. This prevents problems with unexpected behavior due</span>
-</span><span class=w>  </span><span class=c1>// to the AbortFlag being manipulated.</span>
+<span class=w>  </span><span class=c1>// vtkSphereWidget. This prevents problems with unexpected behavior due</span>
+<span class=w>  </span><span class=c1>// to the AbortFlag being manipulated.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCallbackCommand</span><span class=o>&gt;</span><span class=w> </span><span class=n>MyEventCallbackCommand</span><span class=p>;</span><span class=w></span>
 </span><span class=p>};</span><span class=w></span>
 
@@ -112,9 +112,9 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=n>MySphereWidget</span><span class=o>::</span><span class=n>ProcessEvents</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>object</span><span class=p>),</span><span class=w></span>
 </span><span class=w>                                   </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>event</span><span class=p>,</span><span class=w></span>
-<span class=hll><span class=w>                                   </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>clientdata</span><span class=p>),</span><span class=w></span>
-</span><span class=hll><span class=w>                                   </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>calldata</span><span class=p>))</span><span class=w></span>
-</span><span class=p>{</span><span class=w></span>
+<span class=w>                                   </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>clientdata</span><span class=p>),</span><span class=w></span>
+<span class=w>                                   </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>calldata</span><span class=p>))</span><span class=w></span>
+<span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=k>switch</span><span class=w> </span><span class=p>(</span><span class=n>event</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=k>case</span><span class=w> </span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>StartInteractionEvent</span><span class=o>:</span><span class=w></span>
@@ -129,8 +129,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=p>}</span><span class=w></span>
 
-<span class=hll><span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>MySphereWidget</span><span class=p>);</span><span class=w></span>
-</span><span class=p>}</span><span class=w></span>
+<span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>MySphereWidget</span><span class=p>);</span><span class=w></span>
+<span class=p>}</span><span class=w></span>
 
 <span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span><span class=w></span>
 <span class=p>{</span><span class=w></span>

@@ -191,8 +191,8 @@ function registerListener(event, func) {
         <span class=bp>self</span><span class=o>.</span><span class=n>cnStartTable</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Red&#39;</span><span class=p>,</span> <span class=s1>&#39;Green&#39;</span><span class=p>,</span> <span class=s1>&#39;Brown&#39;</span><span class=p>]</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>cnEndTable</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Purple&#39;</span><span class=p>,</span> <span class=s1>&#39;Blue/Cyan&#39;</span><span class=p>,</span> <span class=s1>&#39;Gray&#39;</span><span class=p>]</span>
 
-<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>vtkcn</span> <span class=o>=</span> <span class=p>{</span>
-</span>            <span class=s1>&#39;Whites&#39;</span><span class=p>:</span> <span class=p>[</span><span class=s1>&#39;antique_white&#39;</span><span class=p>,</span> <span class=s1>&#39;azure&#39;</span><span class=p>,</span> <span class=s1>&#39;bisque&#39;</span><span class=p>,</span> <span class=s1>&#39;blanched_almond&#39;</span><span class=p>,</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>vtkcn</span> <span class=o>=</span> <span class=p>{</span>
+            <span class=s1>&#39;Whites&#39;</span><span class=p>:</span> <span class=p>[</span><span class=s1>&#39;antique_white&#39;</span><span class=p>,</span> <span class=s1>&#39;azure&#39;</span><span class=p>,</span> <span class=s1>&#39;bisque&#39;</span><span class=p>,</span> <span class=s1>&#39;blanched_almond&#39;</span><span class=p>,</span>
                        <span class=s1>&#39;cornsilk&#39;</span><span class=p>,</span> <span class=s1>&#39;eggshell&#39;</span><span class=p>,</span> <span class=s1>&#39;floral_white&#39;</span><span class=p>,</span> <span class=s1>&#39;gainsboro&#39;</span><span class=p>,</span>
                        <span class=s1>&#39;ghost_white&#39;</span><span class=p>,</span> <span class=s1>&#39;honeydew&#39;</span><span class=p>,</span> <span class=s1>&#39;ivory&#39;</span><span class=p>,</span> <span class=s1>&#39;lavender&#39;</span><span class=p>,</span>
                        <span class=s1>&#39;lavender_blush&#39;</span><span class=p>,</span> <span class=s1>&#39;lemon_chiffon&#39;</span><span class=p>,</span> <span class=s1>&#39;linen&#39;</span><span class=p>,</span> <span class=s1>&#39;mint_cream&#39;</span><span class=p>,</span>
@@ -253,12 +253,12 @@ function registerListener(event, func) {
         <span class=p>}</span>
         <span class=c1># Ordering of the tables and when to start and end a column of tables</span>
         <span class=c1># in the layout.</span>
-<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>vtkcnOrder</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Whites&#39;</span><span class=p>,</span> <span class=s1>&#39;Greys&#39;</span><span class=p>,</span> <span class=s1>&#39;Blacks&#39;</span><span class=p>,</span> <span class=s1>&#39;Reds&#39;</span><span class=p>,</span> <span class=s1>&#39;Oranges&#39;</span><span class=p>,</span> <span class=s1>&#39;Browns&#39;</span><span class=p>,</span> <span class=s1>&#39;Yellows&#39;</span><span class=p>,</span> <span class=s1>&#39;Greens&#39;</span><span class=p>,</span> <span class=s1>&#39;Cyans&#39;</span><span class=p>,</span>
-</span>                           <span class=s1>&#39;Blues&#39;</span><span class=p>,</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>vtkcnOrder</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Whites&#39;</span><span class=p>,</span> <span class=s1>&#39;Greys&#39;</span><span class=p>,</span> <span class=s1>&#39;Blacks&#39;</span><span class=p>,</span> <span class=s1>&#39;Reds&#39;</span><span class=p>,</span> <span class=s1>&#39;Oranges&#39;</span><span class=p>,</span> <span class=s1>&#39;Browns&#39;</span><span class=p>,</span> <span class=s1>&#39;Yellows&#39;</span><span class=p>,</span> <span class=s1>&#39;Greens&#39;</span><span class=p>,</span> <span class=s1>&#39;Cyans&#39;</span><span class=p>,</span>
+                           <span class=s1>&#39;Blues&#39;</span><span class=p>,</span>
                            <span class=s1>&#39;Magentas&#39;</span><span class=p>]</span>
-<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>vtkcnStartTable</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Whites&#39;</span><span class=p>,</span> <span class=s1>&#39;Browns&#39;</span><span class=p>,</span> <span class=s1>&#39;Cyans&#39;</span><span class=p>]</span>
-</span><span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>vtkcnEndTable</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Oranges&#39;</span><span class=p>,</span> <span class=s1>&#39;Greens&#39;</span><span class=p>,</span> <span class=s1>&#39;Magentas&#39;</span><span class=p>]</span>
-</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>vtkcnStartTable</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Whites&#39;</span><span class=p>,</span> <span class=s1>&#39;Browns&#39;</span><span class=p>,</span> <span class=s1>&#39;Cyans&#39;</span><span class=p>]</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>vtkcnEndTable</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Oranges&#39;</span><span class=p>,</span> <span class=s1>&#39;Greens&#39;</span><span class=p>,</span> <span class=s1>&#39;Magentas&#39;</span><span class=p>]</span>
+
 
 <span class=k>class</span> <span class=nc>HTMLTableMaker</span><span class=p>:</span>
     <span class=sd>&quot;&quot;&quot;</span>
@@ -434,8 +434,8 @@ function registerListener(event, func) {
             <span class=k>for</span> <span class=n>val</span> <span class=ow>in</span> <span class=n>value</span><span class=p>:</span>
                 <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>val</span><span class=p>)</span> <span class=o>&gt;</span> <span class=n>maxLength</span><span class=p>:</span>
                     <span class=n>maxLength</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>val</span><span class=p>)</span>
-<span class=hll>        <span class=k>for</span> <span class=n>key</span><span class=p>,</span> <span class=n>value</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>cs</span><span class=o>.</span><span class=n>vtkcn</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-</span>            <span class=k>for</span> <span class=n>val</span> <span class=ow>in</span> <span class=n>value</span><span class=p>:</span>
+        <span class=k>for</span> <span class=n>key</span><span class=p>,</span> <span class=n>value</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>cs</span><span class=o>.</span><span class=n>vtkcn</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
+            <span class=k>for</span> <span class=n>val</span> <span class=ow>in</span> <span class=n>value</span><span class=p>:</span>
                 <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>val</span><span class=p>)</span> <span class=o>&gt;</span> <span class=n>maxLength</span><span class=p>:</span>
                     <span class=n>maxLength</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>val</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>maxLength</span>
@@ -467,15 +467,15 @@ function registerListener(event, func) {
 
     <span class=k>def</span> <span class=nf>MakeVTKColorTables</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
         <span class=n>res</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
-<span class=hll>        <span class=k>for</span> <span class=n>key</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>cs</span><span class=o>.</span><span class=n>vtkcnOrder</span><span class=p>:</span>
-</span><span class=hll>            <span class=k>if</span> <span class=n>key</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>cs</span><span class=o>.</span><span class=n>vtkcnStartTable</span><span class=p>:</span>
-</span>                <span class=n>res</span> <span class=o>+=</span> <span class=s1>&#39;&lt;td&gt;</span><span class=se>\n</span><span class=s1>&#39;</span>
+        <span class=k>for</span> <span class=n>key</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>cs</span><span class=o>.</span><span class=n>vtkcnOrder</span><span class=p>:</span>
+            <span class=k>if</span> <span class=n>key</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>cs</span><span class=o>.</span><span class=n>vtkcnStartTable</span><span class=p>:</span>
+                <span class=n>res</span> <span class=o>+=</span> <span class=s1>&#39;&lt;td&gt;</span><span class=se>\n</span><span class=s1>&#39;</span>
                 <span class=n>res</span> <span class=o>+=</span> <span class=s1>&#39;&lt;table&gt;</span><span class=se>\n</span><span class=s1>&#39;</span>
                 <span class=n>res</span> <span class=o>+=</span> <span class=bp>self</span><span class=o>.</span><span class=n>MakeTableHeader</span><span class=p>(</span><span class=s1>&#39;HTML name&#39;</span><span class=p>)</span>
             <span class=c1># Add in the name of the group in the color table.</span>
             <span class=n>res</span> <span class=o>+=</span> <span class=bp>self</span><span class=o>.</span><span class=n>MakeTD</span><span class=p>(</span><span class=n>key</span><span class=p>)</span>
-<span class=hll>            <span class=n>values</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>cs</span><span class=o>.</span><span class=n>vtkcn</span><span class=p>[</span><span class=n>key</span><span class=p>]</span>
-</span>            <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>values</span><span class=p>:</span>
+            <span class=n>values</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>cs</span><span class=o>.</span><span class=n>vtkcn</span><span class=p>[</span><span class=n>key</span><span class=p>]</span>
+            <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>values</span><span class=p>:</span>
                 <span class=n>rgb</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>nc</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=n>name</span><span class=p>)</span>
                 <span class=n>Y</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>htmlRGBA</span><span class=o>.</span><span class=n>RGBToLumaCCIR601</span><span class=p>(</span><span class=n>rgb</span><span class=p>)</span>
                 <span class=n>textColor</span> <span class=o>=</span> <span class=s1>&#39;#000000&#39;</span>  <span class=c1># Black</span>
@@ -487,8 +487,8 @@ function registerListener(event, func) {
                 <span class=n>htmlColor</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>htmlRGBA</span><span class=o>.</span><span class=n>RGBToHTMLColor</span><span class=p>(</span><span class=n>rgb</span><span class=p>)</span>
                 <span class=c1># Make the row for each color in the group.</span>
                 <span class=n>res</span> <span class=o>+=</span> <span class=bp>self</span><span class=o>.</span><span class=n>MakeTR_HTML</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=n>htmlColor</span><span class=p>,</span> <span class=n>rgb</span><span class=p>,</span> <span class=n>textColor</span><span class=p>)</span>
-<span class=hll>            <span class=k>if</span> <span class=n>key</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>cs</span><span class=o>.</span><span class=n>vtkcnEndTable</span><span class=p>:</span>
-</span>                <span class=n>res</span> <span class=o>+=</span> <span class=s1>&#39;&lt;/table&gt;</span><span class=se>\n</span><span class=s1>&#39;</span>
+            <span class=k>if</span> <span class=n>key</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>cs</span><span class=o>.</span><span class=n>vtkcnEndTable</span><span class=p>:</span>
+                <span class=n>res</span> <span class=o>+=</span> <span class=s1>&#39;&lt;/table&gt;</span><span class=se>\n</span><span class=s1>&#39;</span>
                 <span class=n>res</span> <span class=o>+=</span> <span class=s1>&#39;&lt;/td&gt;</span><span class=se>\n</span><span class=s1>&#39;</span>
         <span class=k>return</span> <span class=n>res</span>
 

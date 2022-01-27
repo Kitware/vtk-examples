@@ -60,38 +60,38 @@ function registerListener(event, func) {
 <span class=kn>from</span> <span class=nn>pathlib</span> <span class=kn>import</span> <span class=n>Path</span>
 
 <span class=kn>import</span> <span class=nn>numpy</span> <span class=k>as</span> <span class=nn>np</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.numpy_interface</span> <span class=kn>import</span> <span class=n>dataset_adapter</span> <span class=k>as</span> <span class=n>dsa</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkColorSeries</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.numpy_interface</span> <span class=kn>import</span> <span class=n>dataset_adapter</span> <span class=k>as</span> <span class=n>dsa</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkColorSeries</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkNamedColors</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span>    <span class=n>VTK_DOUBLE</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=p>(</span>
+    <span class=n>VTK_DOUBLE</span><span class=p>,</span>
 <span class=hll>    <span class=n>vtkIdList</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkVersion</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkFeatureEdges</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkFeatureEdges</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkIdFilter</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkCurvatures</span>
 </span><span class=c1># noinspection PyUnresolvedReferences</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkIOXML</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkXMLPolyDataReader</span><span class=p>,</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.vtkIOXML</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkXMLPolyDataReader</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkXMLPolyDataWriter</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkInteractionWidgets</span> <span class=kn>import</span> <span class=n>vtkCameraOrientationWidget</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingAnnotation</span> <span class=kn>import</span> <span class=n>vtkScalarBarActor</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
-</span><span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
+</span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkColorTransferFunction</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderer</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtk.util</span> <span class=kn>import</span> <span class=n>numpy_support</span>
-</span>
+<span class=kn>from</span> <span class=nn>vtk.util</span> <span class=kn>import</span> <span class=n>numpy_support</span>
+
 
 <span class=k>def</span> <span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=kn>import</span> <span class=nn>argparse</span>
@@ -140,8 +140,8 @@ function registerListener(event, func) {
     <span class=n>scalar_range</span> <span class=o>=</span> <span class=n>source</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>(</span><span class=n>curvature</span><span class=p>)</span><span class=o>.</span><span class=n>GetRange</span><span class=p>()</span>
 
     <span class=c1># Uncomment the following lines if you want to write out the polydata.</span>
-<span class=hll>    <span class=c1># writer = vtkXMLPolyDataWriter()</span>
-</span>    <span class=c1># writer.SetFileName(&#39;Source.vtp&#39;)</span>
+    <span class=c1># writer = vtkXMLPolyDataWriter()</span>
+    <span class=c1># writer.SetFileName(&#39;Source.vtp&#39;)</span>
     <span class=c1># writer.SetInputData(source)</span>
     <span class=c1># writer.SetDataModeToAscii()</span>
     <span class=c1># writer.Write()</span>
@@ -198,8 +198,8 @@ function registerListener(event, func) {
     <span class=c1># Important: The interactor must be set prior to enabling the widget.</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
 
-<span class=hll>    <span class=k>if</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>20210718</span><span class=p>):</span>
-</span><span class=hll>        <span class=n>cam_orient_manipulator</span> <span class=o>=</span> <span class=n>vtkCameraOrientationWidget</span><span class=p>()</span>
+    <span class=k>if</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>20210718</span><span class=p>):</span>
+<span class=hll>        <span class=n>cam_orient_manipulator</span> <span class=o>=</span> <span class=n>vtkCameraOrientationWidget</span><span class=p>()</span>
 </span>        <span class=n>cam_orient_manipulator</span><span class=o>.</span><span class=n>SetParentRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
         <span class=c1># Enable the widget.</span>
         <span class=n>cam_orient_manipulator</span><span class=o>.</span><span class=n>On</span><span class=p>()</span>
@@ -214,8 +214,8 @@ function registerListener(event, func) {
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=hll><span class=k>def</span> <span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-</span>    <span class=sd>&quot;&quot;&quot;</span>
+<span class=k>def</span> <span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
+    <span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Requested major version.</span>
@@ -341,8 +341,8 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=n>epsilon</span> <span class=o>!=</span> <span class=mf>0.0</span><span class=p>:</span>
         <span class=n>curvatures</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>where</span><span class=p>(</span><span class=nb>abs</span><span class=p>(</span><span class=n>curvatures</span><span class=p>)</span> <span class=o>&lt;</span> <span class=n>epsilon</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>curvatures</span><span class=p>)</span>
         <span class=c1># Curvatures is now an ndarray</span>
-<span class=hll>        <span class=n>curv</span> <span class=o>=</span> <span class=n>numpy_support</span><span class=o>.</span><span class=n>numpy_to_vtk</span><span class=p>(</span><span class=n>num_array</span><span class=o>=</span><span class=n>curvatures</span><span class=o>.</span><span class=n>ravel</span><span class=p>(),</span>
-</span>                                          <span class=n>deep</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
+        <span class=n>curv</span> <span class=o>=</span> <span class=n>numpy_support</span><span class=o>.</span><span class=n>numpy_to_vtk</span><span class=p>(</span><span class=n>num_array</span><span class=o>=</span><span class=n>curvatures</span><span class=o>.</span><span class=n>ravel</span><span class=p>(),</span>
+                                          <span class=n>deep</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
                                           <span class=n>array_type</span><span class=o>=</span><span class=n>VTK_DOUBLE</span><span class=p>)</span>
         <span class=n>curv</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=n>curvature_name</span><span class=p>)</span>
         <span class=n>source</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>RemoveArray</span><span class=p>(</span><span class=n>curvature_name</span><span class=p>)</span>
