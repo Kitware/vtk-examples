@@ -953,7 +953,7 @@ groups specify the active attributes in the dataset.
   <figcaption>Figure 6. - Image data VTKHDF File Format</figcaption>
 </figure>
 
-## Unstructured grid
+### Unstructured grid
 The format for unstructured grid is shown in Figure 7.
 The unstructured grid is split into partitions, with a partition for
 each MPI rank. This is reflected in the HDF5 file structure. Each HDF
