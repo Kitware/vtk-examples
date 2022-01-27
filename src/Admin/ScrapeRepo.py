@@ -83,7 +83,7 @@ def create_html_ids(from_file, html_id_set):
                 html_id_set.add(id_found[0])
 
 
-def copy_chapter_add_links(from_to_file, html_id_set, stats):
+def copy_chapter_add_links(from_to_file, html_id_set, vtk_classes, stats):
     """
      Copy a file and add figure and doxygen links.
 
@@ -92,6 +92,7 @@ def copy_chapter_add_links(from_to_file, html_id_set, stats):
 
     :param from_to_file: [from, to]
     :param html_id_set: A set of html ids
+    :param vtk_classes: A set of known VTK Classes.
     :param stats: Statistics
     :return:
     """
@@ -104,7 +105,7 @@ def copy_chapter_add_links(from_to_file, html_id_set, stats):
                 if not in_code:
                     # Make the language link relative, also drop off VTKBook.
                     line = re.sub(r'][ ]*\([ ]*/\w+/', r'](../', line)
-                    line = add_vtk_nightly_doc_link(line, stats)
+                    line = add_vtk_nightly_doc_link(line, vtk_classes, stats)
                     figure_found = sorted(re.findall(r'\*\*(Figure[^\*]*)\*\*', line), reverse=True)
                     if len(figure_found) > 0:
                         for figure in figure_found:
@@ -364,21 +365,35 @@ def write_extra_cxx_code(to_file, code_name, code):
     to_file.write("```" + "\n")
 
 
-def lines_with_vtk_classes(src_file_name):
+def lines_with_vtk_classes(src_file_name, vtk_classes):
     """
     Return A string of line numbers to highlight that have vtk class mentions.
     :param src_file_name: The source file
+    :param vtk_classes: A set of known VTK Classes.
     :return: A string of line numbers to highlight.
     """
     with open(src_file_name, 'r') as ifh:
         lines = ifh.readlines()
         line_number = 1
-        reg = re.compile(r'(vtk[0-9a-zA-Z]*)')
+        reg = re.compile(r'(vtk[0-9a-zA-Z]+)')
         hl_lines = []
+        suffix = src_file_name.suffix.lower()
         for line in lines:
-            if reg.search(line):
-                hl_lines.append(str(line_number))
+            # Lets eliminate comments.
+            if '//' in line and suffix in ['.cxx', '.cs', 'java']:
+                line_number += 1
+                continue
+            if '#' in line and suffix in ['.py']:
+                line_number += 1
+                continue
+            m = reg.findall(line)
+            if m:
+                for g in m:
+                    if g in vtk_classes:
+                        hl_lines.append(str(line_number))
+                        break
             line_number += 1
+
         hl_lines = ' '.join(hl_lines)
         hl_lines = 'hl_lines="' + hl_lines + '"\n'
     return hl_lines
@@ -410,10 +425,11 @@ def find_other_given_lang(example, example_lang, other_lang, other_ext):
     return ''
 
 
-def add_vtk_nightly_doc_link(s, stats):
+def add_vtk_nightly_doc_link(s, vtk_classes, stats):
     """
     If vtkXXXX is in the string, add a link to the doxygen file.
     :param s: The string.
+    :param vtk_classes: A set of known VTK Classes.
     :param stats: Statistics
     :return:
     """
@@ -432,13 +448,18 @@ def add_vtk_nightly_doc_link(s, stats):
     if reg2.findall(s):
         s = re.sub(no_link, '_ktv' + r'\1', s)
     s = s.replace('_ktvvtk', '_ktv_')
-    n = len(reg3.findall(s))
-    if n > 0:
-        stats['doxy_count'] += n
-        s = re.sub(link,
-                   r'[\1](' + r'https://www.vtk.org/doc/nightly/html/class' + r'\1.html#details)', s)
-    s = s.replace('_ktv_', 'vtk')
-    return s
+    m = set(reg3.findall(s))
+    new_str = s
+    if m:
+        # if n > 1:
+        for c in m:
+            if c in vtk_classes:
+                ss = new_str.split(c)
+                new_link = f'[{c}](https://www.vtk.org/doc/nightly/html/class{c}.html#details)'
+                new_str = new_link.join(ss)
+                stats['doxy_count'] += 1
+    new_str = new_str.replace('_ktv_', 'vtk')
+    return new_str
 
 
 def get_example_line(s):
@@ -454,7 +475,7 @@ def get_example_line(s):
 
 
 def add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_path, test_images, from_file, to_file,
-                             stats):
+                             vtk_classes, stats):
     """
     Add thumbnails, and language links, then copy to the doc_dir.
     :param web_repo_url: The repository URL.
@@ -464,6 +485,7 @@ def add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_path, te
     :param test_images: The cache containing the test images.
     :param from_file: The file to copy/edit
     :param to_file: The save file name.
+    :param vtk_classes: A set of known VTK Classes.
     :param stats: Statistics.
     :return:
     """
@@ -480,7 +502,7 @@ def add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_path, te
         x = []
         for line in md_file:
             example_line = get_example_line(line.strip())[0]
-            with_doxy = add_vtk_nightly_doc_link(line, stats)
+            with_doxy = add_vtk_nightly_doc_link(line, vtk_classes, stats)
             x.append(False)
             x.append(with_doxy.rstrip())
             if example_line != '':
@@ -801,7 +823,7 @@ def get_trame_paths(src_path, trame_md):
 
 def make_markdown_example_page(example_paths, available_languages, src_path, doc_path,
                                repo_name, web_repo_url, vtk_modules_cache,
-                               example_to_CMake, stats):
+                               example_to_CMake, vtk_classes, stats):
     """
 
     :param example_paths: Example paths
@@ -812,6 +834,7 @@ def make_markdown_example_page(example_paths, available_languages, src_path, doc
     :param web_repo_url: The web repository URL.
     :param vtk_modules_cache: The VTK modules cache.
     :param example_to_CMake: A dictionary to hold CMakeLists.txt files.
+    :param vtk_classes: A set of known VTK Classes.
     :param stats: Statistics
     :return:
     """
@@ -857,7 +880,7 @@ def make_markdown_example_page(example_paths, available_languages, src_path, doc
                 if description_path.exists() and description_path.is_file():
                     with open(description_path, 'r') as description_file:
                         description = description_file.read()
-                    description = add_vtk_nightly_doc_link(description, stats)
+                    description = add_vtk_nightly_doc_link(description, vtk_classes, stats)
                     md_file.write(description)
                 # Add examples from other available languages if they exist
                 if len(other_languages) > 0:
@@ -880,7 +903,7 @@ def make_markdown_example_page(example_paths, available_languages, src_path, doc
                 # Get the source code and highlight it.
                 with open(source_path, 'r') as ifh:
                     src = ifh.read()
-                hilite_lines = lines_with_vtk_classes(source_path)
+                hilite_lines = lines_with_vtk_classes(source_path, vtk_classes)
                 md_file.write('###Code\n')
                 md_file.write('**' + source_path.name + '**' + '\n')
                 vtk_modules = None
@@ -909,7 +932,7 @@ def make_markdown_example_page(example_paths, available_languages, src_path, doc
                             extra_names += ' ' + path.name
                         with open(path, 'r') as extra_fh:
                             extra_code = extra_fh.read()
-                        hilite_lines = lines_with_vtk_classes(path)
+                        hilite_lines = lines_with_vtk_classes(path, vtk_classes)
                         md_file.write('**' + path.name + '**' + '\n')
                         md_file.write('``` c++ ' + hilite_lines + '\n')
                         md_file.write(extra_code)
@@ -1251,6 +1274,7 @@ def get_statistics(stats):
             totals.append(v)
     res = list()
     res.append('ScrapeRepo Summary')
+    res.append('  VTK Classes:              ' + str(stats['vtk_classes']))
     res.append('  C++ examples:             ' + str(stats['cxx_count']))
     res.append('  CSharp examples:          ' + str(stats['cs_count']))
     res.append('  Python examples:          ' + str(stats['py_count']))
@@ -1270,6 +1294,7 @@ def get_statistics(stats):
 def main():
     # Initialize the statistics
     stats = Counter()
+    stats['vtk_classes'] = 0
     stats['test_image_hits'] = 0
     stats['test_image_misses'] = 0
     stats['vtk_modules_hits'] = 0
@@ -1340,6 +1365,14 @@ def main():
     # Create a dict to hold CMakeLists.txt file
     example_to_CMake = dict()
 
+    src = web_repo_path / '/'.join(['src/Coverage', 'vtk_classes.txt'])
+    if src.is_file():
+        # This is used to make sure only links to VTK CLasses are made.
+        vtk_classes = set(src.read_text().split('\n'))
+        stats['vtk_classes'] = len(vtk_classes)
+    else:
+        vtk_classes = None
+
     # Create Snippets directories for Cxx, Python and Java
     (doc_path / 'Cxx/Snippets').mkdir(parents=True, exist_ok=True)
     (doc_path / 'Python/Snippets').mkdir(parents=True, exist_ok=True)
@@ -1355,7 +1388,7 @@ def main():
              'VTKBookFigures.md', 'VTKFileFormats.md']
     for p in pages:
         add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_src_path, test_images_dict, p, p,
-                                 stats)
+                                 vtk_classes, stats)
 
     snippets = ['Cxx/Snippets', 'Python/Snippets', 'Java/Snippets']
     for snippet in snippets:
@@ -1416,7 +1449,7 @@ def main():
     ch_src_dest = list(zip(ch_src, ch_dest))
     print('Found', len(html_id_set), ' VTK Book figures with html ids')
     for ch in ch_src_dest:
-        copy_chapter_add_links(ch, html_id_set, stats)
+        copy_chapter_add_links(ch, html_id_set, vtk_classes, stats)
 
     # Copy VTKBookLaTeX files
     dest = doc_path / 'VTKBookLaTeX'
@@ -1445,7 +1478,7 @@ def main():
 
     make_markdown_example_page(example_paths, available_languages, src_path, doc_path,
                                repo_name, web_repo_url, vtk_modules_cache,
-                               example_to_CMake, stats)
+                               example_to_CMake, vtk_classes, stats)
 
     # This is not added to the web pages but can be useful for debugging.
     # Only enable if you need it.

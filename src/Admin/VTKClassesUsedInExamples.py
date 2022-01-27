@@ -412,6 +412,11 @@ class VTKClassesInExamples:
     def generate_files(self):
         if not self.output_path.is_dir():
             self.output_path.mkdir(parents=True, exist_ok=True)
+        # Write out all the VTK Classes that we found.
+        if self.vtk_classes:
+            keys = '\n'.join(sorted(self.vtk_classes.keys()))
+            fn = self.output_path / 'vtk_classes.txt'
+            fn.write_text(keys)
         if self.vtk_examples_xref:
             fn = self.output_path / 'vtk_vtk-examples_xref.json'
             with open(fn, 'w') as outfile:
