@@ -949,7 +949,7 @@ as the corresponding attributes for the vtkImageData dataset. `Scalars`,
 groups specify the active attributes in the dataset.
 
 <figure>
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKFileFormats/Figures/?vtkhdf?-image-data.svg?raw=true" width="640" alt="Image data VTKHDF File Format">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKFileFormats/Figures/vtkhdf-image-data.svg" width="640" alt="Image data VTKHDF File Format">
   <figcaption>Figure 6. - Image data VTKHDF File Format</figcaption>
 </figure>
 
@@ -992,7 +992,7 @@ using the following formulas:
 | CellData | NumberOfCells[i] * sizeof(cell_array_k[0]) |
 
 <figure>
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKFileFormats/Figures/?vtkhdf?-unstructured-grid.svg?raw=true" width="640" alt="Image data VTKHDF File Format">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKFileFormats/Figures/vtkhdf-unstructured-grid.svg" width="640" alt="Image data VTKHDF File Format">
   <figcaption>Figure 7. - Unstructured grid VTKHDF File Format</figcaption>
 </figure>
 
