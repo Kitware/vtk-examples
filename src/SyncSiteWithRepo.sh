@@ -4,6 +4,8 @@
 #                    examples repository
 #
 # These Python packages are needed: mkdocs, pygments, htmlmin
+# Run: pip install mkdocs-material
+# If needed.
 #
 # A typical command would look something like this:
 # ./src/SyncSiteWithRepo.sh https://gitlab.kitware.com/vtk/vtk-examples https://kitware.github.io/vtk-examples/site/ https://github.com/Kitware/vtk-examples <local-path>/vtk-examples-web/ <local-path>/VTK/

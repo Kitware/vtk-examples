@@ -18,6 +18,11 @@ Over time we hope that the examples will answer many of the users' questions. So
 
 The above examples demonstrate how to *use* VTK functionalities. There are also examples specifically to demonstrate how to write code as a VTK filter using VTK techniques. This is helpful so that your custom code can be called in a fashion that other people are already familiar with. It is also necessary if you plan to contribute your classes to VTK.
 
+## Exampeles for visualising:
+* [trame](trame/)
+
+These examples consist of tarfiles that you download, set up and run.
+
 ## Information about the VTK Examples
 * [Users](Instructions/ForUsers/): If you just want to use the VTK Examples, this is the place for you. You will learn how to search for examples, build a few examples and build all of the examples.
 * [Developers](Instructions/ForDevelopers/): If you want to contribute examples, this section explains everything you need to know. You will learn how to add a new example and the guidelines for writing an example.
