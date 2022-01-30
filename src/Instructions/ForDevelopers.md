@@ -142,15 +142,31 @@ Keep the same directory structure as that in Cxx.
   * [WriteImage](../../Python/Snippets/WriteImage/) for Python
   * [WriteImage](../../Java/Snippets/WriteImage/) for Java
 
+#### Steps for trame
+
+Create a folder called **MyNewExample** in **vtk-examples/**src**/**trame**/**TOPIC**/**MyNewExample**
+
+If you have an image, either jpg or png, it must be named ****MyNewExample.jpg** or **MyNewExample.png**.
+
+If you want a description it must be named **MyNewExample.md** with the first two lines being:
+
+``` txt
+### Description
+
+This example is ...
+```
+
+Then add your trame file(s) to the folder.
+
 #### Add the example to the language page
 
-Depending on the language of your example, edit the file *Cxx.md*, *Python.md*, *CSharp.md*, or *Java.md*.
+Depending on the language of your example, edit the file *Cxx.md*, *Python.md*, *CSharp.md*, *Java.md* or *trame.md*.
 
 Find the section for your topic and add a line for your new example. The format of the line is:
 
 \[**MyNewExample**\]\(/**LANG**/**TOPIC**/**MyNewExample**\) | doxygen | short description
 
-where **LANG** is one of Cxx, Python, CSharp, Java.
+where **LANG** is one of Cxx, Python, CSharp, Java or trame.
 
 #### Commit your changes to your topic branch
 
