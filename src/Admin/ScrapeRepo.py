@@ -1053,7 +1053,7 @@ def insert_thumbnails_and_links(web_repo_url, web_repo_path, example_paths, key,
                             image_url = '/'.join([web_repo_url, f'blob/gh-pages/src', *parts[-3:], image_file.name])
                             x[0] = True
                             x.append(image_url)
-                            stats[f'{key}_thumb_count'] += 1
+                            stats[f'{key.lower()}_thumb_count'] += 1
                             break
         lines[line_count] = x
         line_count += 1
@@ -1156,7 +1156,7 @@ def make_md_example_page(example_paths, key, src_path, doc_path,
                 md_file.write('``` python ' + hilite_lines + '\n')
                 md_file.write(src)
                 md_file.write('```' + '\n')
-        stats[f'{key}_count'] += 1
+        stats[f'{key.lower()}_count'] += 1
 
 
 def make_tar_file(src, dest):
@@ -1290,7 +1290,7 @@ def make_tarballs(example_paths, key, ref_mtime, stats):
         # for future in future_results:
         #     yield future.result()
 
-    stats[f'{key}_tar_count'] = len(tarball_args)
+    stats[f'{key.lower()}_tar_count'] = len(tarball_args)
     os.utime(tmp_dir, (0, ref_mtime))
     # Cleanup the temporary directories
     shutil.rmtree(tmp_dir)
