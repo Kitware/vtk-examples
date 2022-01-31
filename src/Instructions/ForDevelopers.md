@@ -102,11 +102,11 @@ DataStructures, Filters, GeometricObjects, Image, Meshes etc.
   * [Python available snippets](../../Python/Snippets).
   * [Java available snippets](../../Java/Snippets).
 
-* Save your source code in __REPO_NAME__/src/**LANGUAGE**/**TOPIC**/
+* Save your source code in __REPO_NAME__/src/LANGUAGE/TOPIC/
 
-    Where **LANGUAGE** is Cxx, Python, CSharp or Java and **TOPIC** is the topic that you have chosen.
+    Where LANGUAGE is Cxx, Python, CSharp or Java and TOPIC is the topic that you have chosen.
 
-* Trame examples are a single folder and these are saved in  __REPO_NAME__/src/Trame/**TOPIC**/
+* Trame examples are a single folder and these are saved in  __REPO_NAME__/src/Trame/TOPIC/
 
 ### C++
 
@@ -125,9 +125,9 @@ Note: If **MyNewExample** is not built, then in the directory where you put the 
     touch CMakeLists.txt
 ```
 
-* If your C++ example does any rendering, the test will fail the first time and create an image in __REPO_NAME__/build/Testing/Temporary. The image will be called Test**MyNewExample**.png.
+* If your C++ example does any rendering, the test will fail the first time and create an image in __REPO_NAME__/build/Testing/Temporary. The image will be called **TestMyNewExample.png**.
 
-* Copy the image into: __REPO_NAME__/src/Testing/Baseline/**LANG**/**TOPIC**/. For Python and other languages, create an image with the proper name using a screen capture and copy that image into the proper location.
+* Copy the image into: __REPO_NAME__/src/Testing/Baseline/LANG/TOPIC/. For Python and other languages, create an image with the proper name using a screen capture and copy that image into the proper location.
 
 * Rerun ctest and the test should pass.
 
@@ -142,7 +142,7 @@ If you are basing your code on a Cxx example use the same name as the Cxx exampl
 Keep the same directory structure as that in Cxx.
 
 * Follow first three steps above.
-* Manually create a test image if your example does any rendering. The image should be called Test**MyNewExample**.png.
+* Manually create a test image if your example does any rendering. The image should be called **TestMyNewExample.png**.
 
   The following snippets can be used to write the image out:
 
@@ -151,9 +151,9 @@ Keep the same directory structure as that in Cxx.
 
 ### Trame
 
-Create a folder called **MyNewExample** in **vtk-examples/**src**/**Trame**/**TOPIC**/**MyNewExample**
+Create a folder called **MyNewExample** in **vtk-examples**/**src**/**Trame**/**TOPIC**/**MyNewExample**
 
-If you have an image, either jpg or png, it must be named ****MyNewExample.jpg** or **MyNewExample.png**. If both images exist the jpg one will be used.
+If you have an image, either jpg or png, it must be named **MyNewExample.jpg** or **MyNewExample.png**. If both images exist the jpg one will be used.
 
 If you want a description it must be named **MyNewExample.md** with the first two lines being:
 
