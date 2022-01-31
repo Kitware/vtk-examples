@@ -31,7 +31,7 @@ else()
 endif()
 ```
 
-###Download and Build XXX
+### Download and Build XXX
 
 Click [here to download XXX](WWW/raw/gh-pages/Tarballs/Cxx/XXX.tar) and its *CMakeLists.txt* file.
 Once the *tarball XXX.tar* has been downloaded and extracted,
