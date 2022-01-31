@@ -2,7 +2,7 @@
 
 The success of the VTK Examples depends on the contributions from the VTK user community. If you wish to contribute to this valuable resource, please follow these guidelines. If you are a VTK Example User, [go here](../ForUsers) or an Example Administrator [go here](../ForAdministrators).
 
-**C++, C#,  Python, Java** and **trame** examples are welcome! Examples should illustrate a single concept.
+**C++, C#,  Python, Java** and **Trame** examples are welcome! Examples should illustrate a single concept.
 
 ## Follow the Coding Guidelines
 
@@ -92,7 +92,7 @@ The examples are organized by topic.
 * For **C++, Python Java, C#**, current topics include Animation,
 DataStructures, Filters, GeometricObjects, Image, Meshes etc.
 
-* For **trame**, current topics include  Advanced, Applications, MiniApps etc.
+* For **Trame**, current topics include  Advanced, Applications, MiniApps etc.
 
 ### Write the source
 
@@ -106,7 +106,7 @@ DataStructures, Filters, GeometricObjects, Image, Meshes etc.
 
     Where **LANGUAGE** is Cxx, Python, CSharp or Java and **TOPIC** is the topic that you have chosen.
 
-* trame examples are a single folder and these are saved in  __REPO_NAME__/src/trame/**TOPIC**/
+* Trame examples are a single folder and these are saved in  __REPO_NAME__/src/Trame/**TOPIC**/
 
 ### C++
 
@@ -149,9 +149,9 @@ Keep the same directory structure as that in Cxx.
   * [WriteImage](../../Python/Snippets/WriteImage/) for Python
   * [WriteImage](../../Java/Snippets/WriteImage/) for Java
 
-### trame
+### Trame
 
-Create a folder called **MyNewExample** in **vtk-examples/**src**/**trame**/**TOPIC**/**MyNewExample**
+Create a folder called **MyNewExample** in **vtk-examples/**src**/**Trame**/**TOPIC**/**MyNewExample**
 
 If you have an image, either jpg or png, it must be named ****MyNewExample.jpg** or **MyNewExample.png**. If both images exist the jpg one will be used.
 
@@ -164,14 +164,14 @@ If you want a description it must be named **MyNewExample.md** with the first tw
 
 Use [markdown](https://guides.github.com/features/mastering-markdown/) to format the description. Also look at existing files for layout ideas.
 
-Then add your trame file(s) to the folder.
+Then add your Trame file(s) to the folder.
 
 !!! note
     All Python files will be picked up and rendered on the web page. A tarball will be automatically generated and a link for downloading will be provided.
 
 ## Add the example to the language page
 
-Depending on the language of your example, edit the file *Cxx.md*, *Python.md*, *CSharp.md*, *Java.md* or *trame.md*.
+Depending on the language of your example, edit the file *Cxx.md*, *Python.md*, *CSharp.md*, *Java.md* or *Trame.md*.
 
 Find the section for your topic and add a line for your new example. The format of the line is:
 
@@ -179,7 +179,7 @@ Find the section for your topic and add a line for your new example. The format 
 [MyNewExample](LANG/TOPIC/MyNewExample) | short description
 ```
 
-where **LANG** is one of Cxx, Python, CSharp, Java or trame.
+where **LANG** is one of Cxx, Python, CSharp, Java or Trame.
 
 If an image exists, it will be automatically picked up.
 

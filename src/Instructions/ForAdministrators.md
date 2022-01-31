@@ -26,6 +26,7 @@ The major elements of the tree are:
     |   |-- ScrapeRepo.py       # script to create docs/ in the web site folder
     |   |-- VTKCMakeLists       # template for Cxx examples
     |   |-- VTKQtCMakeLists     # template for Cxx Qt
+    |   |-- Trame_template      # template for Trame
     |-- Artifacts       # Additional images, docs, etc.
     |-- Images          # Images used in creating the static web pages.
     |-- Instructions    # Documentation
@@ -55,12 +56,15 @@ This repository is separate from the vtk examples source files. It contains the 
     |-- Cache           # Stores cache files used by ScrapeRepo.py.
     |-- Coverage        # Stores VTK classes used and classes used by language.
     |-- Images          # Images used in creating the static web pages.
+    |-- Trame           # Additional files specific to this topic.
+    |-- VTKBook         # Additional files specific to this topic.
+    |-- VTKFileFormats  # Additional files specific to this topic.
     |-- Testing
     |   |-- Baseline # Baselines for examples
     |   |   |-- LANGUAGE
     |   |   |   |-- TOPIC
     |   |-- Data    # Data for examples
-|-- Tarballs        # Tar files for each Cxx example
+|-- Tarballs        # Tar files for each Cxx and Trame example
 ```
 
 ## Look and Feel

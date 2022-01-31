@@ -1,4 +1,4 @@
-﻿# trame Examples
+﻿# Trame Examples
 
 [trame](https://kitware.github.io/trame/docs/index.html) is a web framework that weaves together open source components into customized visual analytics easily. it uses VTK and ParaView platforms at its core, **trame** provides complete control of 3D visualizations and data movements.
 
@@ -16,15 +16,15 @@ If you are new to **trame** then this [tutorial](https://kitware.github.io/trame
 
 | Example Name | Description | Image |
 | -------------- | ------------- | ------- |
-[FiniteElementAnalysis](/trame/Applications/FiniteElementAnalysis) | Finite element analysis.
-[Multi Filter](/trame/Applications/MultiFilter) | A multi filter example using VTK.
-[RemoteSelection](/trame/Applications/RemoteSelection) | How to select a data file remotely.
+[FiniteElementAnalysis](/Trame/Applications/FiniteElementAnalysis) | Finite element analysis.
+[Multi Filter](/Trame/Applications/MultiFilter) | A multi filter example using VTK.
+[RemoteSelection](/Trame/Applications/RemoteSelection) | How to select a data file remotely.
 
 ### MiniApps
 
 | Example Name | Description | Image |
 | -------------- | ------------- | ------- |
-[SimpleCone](/trame/MiniApps/SimpleCone) | Demonstrate basic usage of trame with VTK.
+[SimpleCone](/Trame/MiniApps/SimpleCone) | Demonstrate basic usage of trame with VTK.
 
 ### Advanced
 

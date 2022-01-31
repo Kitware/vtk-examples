@@ -599,7 +599,7 @@ def fill_qt_cmake_lists(cmake_contents, example_name, vtk_modules, web_repo_url)
 
 def fill_trame_instructions(trame_contents, relative_path, web_repo_url):
     """
-    Fill in the template parameters for the trame template file.
+    Fill in the template parameters for the Trame template file.
 
     :param trame_contents: The template file.
     :param relative_path: The relative path to the tarfile.
@@ -1305,7 +1305,7 @@ def get_statistics(stats):
     """
     totals = list()
     for k, v in stats.items():
-        if k in ['cxx_count', 'cs_count', 'py_count', 'java_count', 'trame count']:
+        if k in ['cxx_count', 'cs_count', 'py_count', 'java_count', 'trame_count']:
             totals.append(v)
     res = list()
     res.append('ScrapeRepo Summary')
@@ -1314,10 +1314,10 @@ def get_statistics(stats):
     res.append('  CSharp examples:          ' + str(stats['cs_count']))
     res.append('  Python examples:          ' + str(stats['py_count']))
     res.append('  Java examples:            ' + str(stats['java_count']))
-    res.append('  trame examples:           ' + str(stats['trame_count']))
+    res.append('  Trame examples:           ' + str(stats['trame_count']))
     res.append('  Total examples:           ' + str(sum(totals)))
     res.append('  Tarballs C++:             ' + str(stats['cxx_tar_count']))
-    res.append('  Tarballs trame:           ' + str(stats['trame_tar_count']))
+    res.append('  Tarballs Trame:           ' + str(stats['trame_tar_count']))
     res.append('  Doxygen added:            ' + str(stats['doxy_count']))
     res.append('  Thumbnails added:         ' + str(stats['thumb_count']))
     res.append('  Test Image Cache hits:    ' + str(stats['test_image_hits']))
@@ -1383,7 +1383,7 @@ def main():
 
     ref_stat1 = os.stat(src_path / 'Admin/VTKQtCMakeLists')
     ref_stat2 = os.stat(src_path / 'Admin/VTKCMakeLists')
-    ref_stat3 = os.stat(src_path / 'Admin/trame_template')
+    ref_stat3 = os.stat(src_path / 'Admin/Trame_template')
     ref_mtime = ref_stat1.st_mtime
     if ref_stat2.st_mtime > ref_stat1.st_mtime:
         ref_mtime = ref_stat2.st_mtime
@@ -1525,19 +1525,19 @@ def main():
     folder_paths = dict()
     # The structure is:
     # {t: v, ...}
-    # t = example type e.g trame
+    # t = example type e.g Trame
     # v = a list of dictionaries containing the paths,
     #     the first element is always the path to the
-    #     language page e.g. trame.md.
+    #     language page e.g. Trame.md.
     #     A list is used because it may be that there is an example
     #     of the same name in a different topic (not recommended)
-    extract_paths(web_repo_dir, src_path, folder_paths, 'trame')
-    copy_images(web_repo_dir, folder_paths, 'trame')
-    insert_thumbnails_and_links(web_repo_url, web_repo_path, folder_paths, 'trame', vtk_classes, stats)
-    make_md_example_page(folder_paths, 'trame', src_path, doc_path, repo_name, web_repo_url, vtk_classes, stats)
+    extract_paths(web_repo_dir, src_path, folder_paths, 'Trame')
+    copy_images(web_repo_dir, folder_paths, 'Trame')
+    insert_thumbnails_and_links(web_repo_url, web_repo_path, folder_paths, 'Trame', vtk_classes, stats)
+    make_md_example_page(folder_paths, 'Trame', src_path, doc_path, repo_name, web_repo_url, vtk_classes, stats)
 
     # Create tarballs for each example
-    make_tarballs(folder_paths, 'trame', ref_mtime, stats)
+    make_tarballs(folder_paths, 'Trame', ref_mtime, stats)
     make_cxx_tarballs(web_repo_dir, example_paths, example_to_cmake, ref_mtime, stats)
 
     # Update the test image cache file if necessary
