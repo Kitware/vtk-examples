@@ -22,6 +22,10 @@ If you are new to **trame** then this [tutorial](https://kitware.github.io/trame
 
 ### MiniApps
 
+| Example Name | Description | Image |
+| -------------- | ------------- | ------- |
+[SimpleCone](/trame/MiniApps/SimpleCone) | Demonstrate basic usage of trame with VTK.
+
 ### Advanced
 
 ## ParaView Examples

@@ -2,13 +2,14 @@
 
 The success of the VTK Examples depends on the contributions from the VTK user community. If you wish to contribute to this valuable resource, please follow these guidelines. If you are a VTK Example User, [go here](../ForUsers) or an Example Administrator [go here](../ForAdministrators).
 
-C++, C#,  Python, and Java examples are welcome! Examples should illustrate a single concept.
+**C++, C#,  Python, Java** and **trame** examples are welcome! Examples should illustrate a single concept.
 
 ## Follow the Coding Guidelines
 
 When you write an example, please follow the [coding guidelines](../Guidelines). Create the example in your local repository, compile and run it before you generate a pull request.
 
-Some additional steps need to be done for Python C# and Java, see the sections below.
+!!! tip
+    Look at existing examples that may be similar to your one in order to get an idea of layout, formatting conventions, file naming etc.
 
 ## Setup for Development
 
@@ -74,7 +75,7 @@ Sync your repository with the __REPO_NAME__ repository. Remember that to run the
 
 where **YOUR_VTK_BIN_DIR** is the location of your VTK build.
 
-### Add the example
+## Add the example
 
 Create a branch in your repository
 
@@ -84,12 +85,16 @@ Create a branch in your repository
 
   where **MyNewExample** is the name of your new example.
 
-#### Choose a Topic
+### Choose a Topic
 
-The examples are organized by topic. Current topics include Animation,
-DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
+The examples are organized by topic.
 
-#### Write the source
+* For **C++, Python Java, C#**, current topics include Animation,
+DataStructures, Filters, GeometricObjects, Image, Meshes etc.
+
+* For **trame**, current topics include  Advanced, Applications, MiniApps etc.
+
+### Write the source
 
 * The following snippets may be of use:
 
@@ -101,7 +106,9 @@ DataStructures, Filters, GeometricObjects, Images, Meshes, etc.
 
     Where **LANGUAGE** is Cxx, Python, CSharp or Java and **TOPIC** is the topic that you have chosen.
 
-#### Steps for C++
+* trame examples are a single folder and these are saved in  __REPO_NAME__/src/trame/**TOPIC**/
+
+### C++
 
 * Build and test your example (**NOTE:** only for cxx examples)
 
@@ -126,9 +133,9 @@ Note: If **MyNewExample** is not built, then in the directory where you put the 
 
 At this point you are ready to push the changes to GitLab.
 
-#### Steps for Python, Java and C#
+### Python, Java and C#
 
-* [ ] *TODO: Add in new instructions for* ***Python***.
+Please check the [coding guidelines](../Guidelines) for Python code.
 
 If you are basing your code on a Cxx example use the same name as the Cxx example. This ensures that automatic cross-referencing works.
 
@@ -142,33 +149,41 @@ Keep the same directory structure as that in Cxx.
   * [WriteImage](../../Python/Snippets/WriteImage/) for Python
   * [WriteImage](../../Java/Snippets/WriteImage/) for Java
 
-#### Steps for trame
+### trame
 
 Create a folder called **MyNewExample** in **vtk-examples/**src**/**trame**/**TOPIC**/**MyNewExample**
 
-If you have an image, either jpg or png, it must be named ****MyNewExample.jpg** or **MyNewExample.png**.
+If you have an image, either jpg or png, it must be named ****MyNewExample.jpg** or **MyNewExample.png**. If both images exist the jpg one will be used.
 
 If you want a description it must be named **MyNewExample.md** with the first two lines being:
 
 ``` txt
 ### Description
-
-This example is ...
+  
 ```
+
+Use [markdown](https://guides.github.com/features/mastering-markdown/) to format the description. Also look at existing files for layout ideas.
 
 Then add your trame file(s) to the folder.
 
-#### Add the example to the language page
+!!! note
+    All Python files will be picked up and rendered on the web page. A tarball will be automatically generated and a link for downloading will be provided.
+
+## Add the example to the language page
 
 Depending on the language of your example, edit the file *Cxx.md*, *Python.md*, *CSharp.md*, *Java.md* or *trame.md*.
 
 Find the section for your topic and add a line for your new example. The format of the line is:
 
-\[**MyNewExample**\]\(/**LANG**/**TOPIC**/**MyNewExample**\) | doxygen | short description
+``` text
+[MyNewExample](LANG/TOPIC/MyNewExample) | short description
+```
 
 where **LANG** is one of Cxx, Python, CSharp, Java or trame.
 
-#### Commit your changes to your topic branch
+If an image exists, it will be automatically picked up.
+
+## Commit your changes to your topic branch
 
 ``` bash
 git add MyNewExample.cxx
@@ -186,27 +201,34 @@ finally,
 git commit
 ```
 
-### Push the changes to GitLab
+## Push the changes to GitLab
 
 ``` bash
 git push origin MyNewExample
 ```
 
-#### Go to your GitLab project
+### Go to your GitLab project
 
 Then generate a merge request for review.
 
 See here for [how to generate a merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html).
 
-### Advanced usage
+## Advanced usage
 
-#### Add a description
+### Add a description
 
 If your example could benefit from an extended description, you can create a file **MyNewExample.md**. Store the file alongside your source code. Use [markdown](https://guides.github.com/features/mastering-markdown/) to format the description. Also look at existing files for layout ideas.
 
+The first two lines must be:
+
+``` txt
+### Description
+  
+```
+
 In the markdown file any references to the vtk classes will be automatically converted to HTML links in the final documentation. This will cause problems when a VTK class name is used in a reference or when there are non-existent links in the documentation. To circumvent this just surround the vtk object with two question marks, for example: `?vtkTypeFloat32Array?`.
 
-#### Add arguments to the test
+### Add arguments to the test
 
 If your example requires arguments, you will need to edit the *CMakeLists.txt* in the topic directory.
 
@@ -214,7 +236,7 @@ If your example requires arguments, you will need to edit the *CMakeLists.txt* i
 
 * Add an *ADD_TEST* line. See other *CMakeLists.txt* files for examples.
 
-#### Add extra files to a C++ example
+### Add extra files to a C++ example
 
 Most C++ examples consist of one file. If other files are required,
 place them in the same directory as the example. Then add a file with

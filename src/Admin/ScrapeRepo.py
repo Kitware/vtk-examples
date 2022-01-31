@@ -505,11 +505,11 @@ def add_thumbnails_and_links(web_repo_url, src_path, doc_path, baseline_path, te
             x.append(False)
             x.append(with_doxy.rstrip())
             if example_line != '':
-                stats['thumb_count'] += 1
                 example_path = PurePath(example_line)
                 example_path = example_path.with_name('Test' + example_path.stem + '.png')
                 baseline = baseline_path.joinpath(example_path.relative_to('/'))
                 if baseline.is_file():
+                    stats['thumb_count'] += 1
                     baseline_url = '/'.join([web_repo_url, 'blob/gh-pages', 'src/Testing/Baseline',
                                              str(example_path.relative_to('/').parent), example_path.name])
                     x[0] = True
@@ -654,7 +654,7 @@ def get_example_paths(src_path, available_languages, example_paths):
 
 def make_markdown_example_page(example_paths, available_languages, src_path, doc_path,
                                repo_name, web_repo_url, vtk_modules_cache,
-                               example_to_CMake, vtk_classes, stats):
+                               example_to_cmake, vtk_classes, stats):
     """
 
     :param example_paths: Example paths
@@ -664,7 +664,7 @@ def make_markdown_example_page(example_paths, available_languages, src_path, doc
     :param repo_name: The repository name.
     :param web_repo_url: The web repository URL.
     :param vtk_modules_cache: The VTK modules cache.
-    :param example_to_CMake: A dictionary to hold CMakeLists.txt files.
+    :param example_to_cmake: A dictionary to hold CMakeLists.txt files.
     :param vtk_classes: A set of known VTK Classes.
     :param stats: Statistics
     :return:
@@ -701,7 +701,8 @@ def make_markdown_example_page(example_paths, available_languages, src_path, doc
                     # href to open image in new tab
                     md_file.write('<a href="' + image_url + ' target="_blank">' + '\n')
                     md_file.write(
-                        '<img style="border:2px solid beige;float:center" src="' + image_url + '" width="256" />' + '\n')
+                        '<img style="border:2px solid beige;float:center" src="' +
+                        image_url + '" width="256" />' + '\n')
                     md_file.write('</a>' + '\n')
                     md_file.write('<hr>\n')
                     md_file.write('\n')
@@ -772,16 +773,16 @@ def make_markdown_example_page(example_paths, available_languages, src_path, doc
                     pass
 
                 # Check for a CMake file.
-                custom_CMake_path = source_path.with_suffix('.cmake')
-                if os.path.isfile(custom_CMake_path):
-                    with open(custom_CMake_path, 'r') as ifh:
+                custom_cmake_path = source_path.with_suffix('.cmake')
+                if os.path.isfile(custom_cmake_path):
+                    with open(custom_cmake_path, 'r') as ifh:
                         cmake = ifh.read()
                 else:
                     if parts[-3] == 'Cxx':
                         # Use the templates to generate the CMake file.
                         if is_qt_example(src):
                             with open(cmake_qt_template, 'r') as CMakeFile:
-                                CMake_contents = CMakeFile.read()
+                                cmake_contents = CMakeFile.read()
                             # Create component lines for the VTK modules
                             needed_modules = ''
                             for vtk_module in vtk_modules:
@@ -791,10 +792,10 @@ def make_markdown_example_page(example_paths, available_languages, src_path, doc
                                     needed_modules += '\n  ' + 'vtk' + vtk_module
                             if needed_modules == '':
                                 pass
-                            cmake = fill_qt_cmake_lists(CMake_contents, source_path, needed_modules, web_repo_url)
+                            cmake = fill_qt_cmake_lists(cmake_contents, source_path, needed_modules, web_repo_url)
                         else:
                             with open(cmake_template, 'r') as CMakeFile:
-                                CMake_contents = CMakeFile.read()
+                                cmake_contents = CMakeFile.read()
                             # Create component lines for the VTK modules
                             needed_modules = ''
                             for vtk_module in vtk_modules:
@@ -802,11 +803,11 @@ def make_markdown_example_page(example_paths, available_languages, src_path, doc
                                     needed_modules += '\n  ' + vtk_module
                                 else:
                                     needed_modules += '\n  ' + 'vtk' + vtk_module
-                            cmake = fill_cmake_lists(CMake_contents, source_path, extra_names, needed_modules,
+                            cmake = fill_cmake_lists(cmake_contents, source_path, extra_names, needed_modules,
                                                      web_repo_url)
 
                 if parts[-3] == 'Cxx':
-                    example_to_CMake[source_path] = get_vtk_cmake_file(cmake)
+                    example_to_cmake[source_path] = get_vtk_cmake_file(cmake)
                     md_file.write(cmake)
 
 
@@ -1172,12 +1173,12 @@ def make_tar_file(src, dest):
     tar.close()
 
 
-def make_cxx_tarballs(web_repo_dir, example_paths, example_to_CMake, ref_mtime, stats):
+def make_cxx_tarballs(web_repo_dir, example_paths, example_to_cmake, ref_mtime, stats):
     """
     Create tarballs for each example.
     :param web_repo_dir: Repository path.
     :param example_paths:  The examples.
-    :param example_to_CMake: A dictionary to holding the CMakeLists.txt file.
+    :param example_to_cmake: A dictionary to holding the CMakeLists.txt file.
     :param ref_mtime: The reference mtime.
     :param stats: Statistics.
     :return:
@@ -1197,7 +1198,7 @@ def make_cxx_tarballs(web_repo_dir, example_paths, example_to_CMake, ref_mtime, 
     # configure with CMake and build the example.
     tarball_args = list()
     for example in example_paths['Cxx']:
-        if example not in example_to_CMake:
+        if example not in example_to_cmake:
             continue
         # Make the temporary directories for the example
         tar_tmp_path = tmp_dir / example.stem
@@ -1216,11 +1217,11 @@ def make_cxx_tarballs(web_repo_dir, example_paths, example_to_CMake, ref_mtime, 
             os.utime(tar_fn, (ref_mtime, ref_mtime))
 
         # Some examples do not have a CMakeLists.txt file
-        if example in example_to_CMake:
+        if example in example_to_cmake:
             (tar_tmp_path / 'build').mkdir(parents=True, exist_ok=True)
             cmake_fn = tar_tmp_path / 'CMakeLists.txt'
             with open(cmake_fn, 'w') as cmake_fh:
-                cmake_fh.write(example_to_CMake[example][0])
+                cmake_fh.write(example_to_cmake[example][0])
             os.utime(cmake_fn, (ref_mtime, ref_mtime))
             os.utime(tar_tmp_path / 'build', (ref_mtime, ref_mtime))
 
@@ -1398,7 +1399,7 @@ def main():
     # v  = A set holding any additional paths needed by the example.
     example_paths = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
     # Create a dict to hold CMakeLists.txt file
-    example_to_CMake = dict()
+    example_to_cmake = dict()
 
     src = web_repo_path / '/'.join(['src/Coverage', 'vtk_classes.txt'])
     if src.is_file():
@@ -1514,29 +1515,30 @@ def main():
 
     make_markdown_example_page(example_paths, available_languages, src_path, doc_path,
                                repo_name, web_repo_url, vtk_modules_cache,
-                               example_to_CMake, vtk_classes, stats)
+                               example_to_cmake, vtk_classes, stats)
 
     # This is not added to the web pages but can be useful for debugging.
     # Only enable if you need it.
     # make_examples_sources_html(example_paths, src_path, doc_path, web_repo_url, web_site_url)
-    make_cxx_tarballs(web_repo_dir, example_paths, example_to_CMake, ref_mtime, stats)
 
     # Now deal with examples where each individual example is a whole folder.
-    example_paths = dict()
+    folder_paths = dict()
     # The structure is:
-    # [t][v]
+    # {t: v, ...}
     # t = example type e.g trame
     # v = a list of dictionaries containing the paths,
-    #     the first element is the path to the top-level
-    #     markdown file e.g. trame.md.
-    extract_paths(web_repo_dir, src_path, example_paths, 'trame')
-    copy_images(web_repo_dir, example_paths, 'trame')
-    insert_thumbnails_and_links(web_repo_url, web_repo_path, example_paths, 'trame', vtk_classes, stats)
-    make_md_example_page(example_paths, 'trame', src_path, doc_path,
-                         repo_name, web_repo_url, vtk_classes, stats)
+    #     the first element is always the path to the
+    #     language page e.g. trame.md.
+    #     A list is used because it may be that there is an example
+    #     of the same name in a different topic (not recommended)
+    extract_paths(web_repo_dir, src_path, folder_paths, 'trame')
+    copy_images(web_repo_dir, folder_paths, 'trame')
+    insert_thumbnails_and_links(web_repo_url, web_repo_path, folder_paths, 'trame', vtk_classes, stats)
+    make_md_example_page(folder_paths, 'trame', src_path, doc_path, repo_name, web_repo_url, vtk_classes, stats)
 
     # Create tarballs for each example
-    make_tarballs(example_paths, 'trame', ref_mtime, stats)
+    make_tarballs(folder_paths, 'trame', ref_mtime, stats)
+    make_cxx_tarballs(web_repo_dir, example_paths, example_to_cmake, ref_mtime, stats)
 
     # Update the test image cache file if necessary
     if stats['test_image_misses'] > 0:
