@@ -18,6 +18,7 @@ from vtkmodules.vtkIOGeometry import (
     vtkOBJReader,
     vtkSTLReader
 )
+from vtkmodules.vtkIOLegacy import vtkPolyDataReader
 from vtkmodules.vtkIOPLY import vtkPLYReader
 from vtkmodules.vtkIOXML import vtkXMLPolyDataReader
 from vtkmodules.vtkRenderingCore import (
@@ -185,7 +186,7 @@ def ReadPolyData(file_name):
         reader.Update()
         poly_data = reader.GetOutput()
     elif extension == '.vtk':
-        reader = vtkpoly_dataReader()
+        reader = vtkPolyDataReader()
         reader.SetFileName(file_name)
         reader.Update()
         poly_data = reader.GetOutput()
