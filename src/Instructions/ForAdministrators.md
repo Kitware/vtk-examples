@@ -303,6 +303,6 @@ Given a *repo_dir*, *site_url*, *web_site_url*, *web_repo_url*, *web_repo_dir*  
 
      This sanity check sees if a reasonable number of files have been updated.
 
-7. Copies the style sheets and runs mkdocs to build the static website in folder called `site`.
+7. Copies the style sheets and runs mkdocs to build the static website in the folder called `site`.
 
 8. Minifies the HTML
