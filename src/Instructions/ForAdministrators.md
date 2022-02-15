@@ -287,7 +287,7 @@ Given a *repo_dir*, *site_url*, *web_site_url*, *web_repo_url*, *web_repo_dir*  
 
 3. Creates the coverage files
 
-   The [VTKClassesUsedInExamples.py](__BLOB__/src/Admin/VTKClassesUsedInExamples.py) python script generates two tables for each language. One table lists each class and what classes it uses. The second table lists the classes that are not used in any example.
+    The [VTKClassesUsedInExamples.py](__BLOB__/src/Admin/VTKClassesUsedInExamples.py) python script generates two tables for each language. One table lists each class and what classes it uses. The second table lists the classes that are not used in any example.
 
 4. Wipes the *docs* and *site* directory
 
@@ -303,6 +303,6 @@ Given a *repo_dir*, *site_url*, *web_site_url*, *web_repo_url*, *web_repo_dir*  
 
      This sanity check sees if a reasonable number of files have been updated.
 
-7. Copies the style sheets and runs mkdocs to build the static website in `site`
+7. Copies the style sheets and runs mkdocs to build the static website in folder called `site`.
 
 8. Minifies the HTML
