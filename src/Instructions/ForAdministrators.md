@@ -279,26 +279,30 @@ Given a *repo_dir*, *site_url*, *web_site_url*, *web_repo_url*, *web_repo_dir*  
 
 ### [SyncSiteWithRepo.sh](__BLOB__/src/SyncSiteWithRepo.sh)
 
-1. Copies across all needed files such as baseline images and other essential files like `mkdocs.yml` using rsync.
+1. Checks for a virtual environment called `vtk-examples-web` and activates it. This environment contains `mkdocs-material` and `htmlmin`. Installing `mkdocs-material` will automatically install compatible versions of all dependencies: `MkDocs`, `Markdown`, `Pygments` and `Python Markdown Extensions`.
 
-2. Creates the coverage files
+    **Note:** There are instructions for how to setup the virtual environment in the header comments of the script.
+
+2. Copies across all needed files such as baseline images and other essential files like `mkdocs.yml` using rsync.
+
+3. Creates the coverage files
 
    The [VTKClassesUsedInExamples.py](__BLOB__/src/Admin/VTKClassesUsedInExamples.py) python script generates two tables for each language. One table lists each class and what classes it uses. The second table lists the classes that are not used in any example.
 
-3. Wipes the *docs* and *site* directory
+4. Wipes the *docs* and *site* directory
 
     The *docs* directory contains all of the md and HTML files for the site. A clean directory prevents old files from being used.
 
     The *site* directory contains all of the static html files for the site. A clean directory prevents old files from being used.
 
-4. Runs the [ScrapeRepo.py](__BLOB__/src/Admin/ScrapeRepo.py) python script.
+5. Runs the [ScrapeRepo.py](__BLOB__/src/Admin/ScrapeRepo.py) python script.
 
     This script populates the *docs* directory.
 
-5. Checks for a successful scrape
+6. Checks for a successful scrape
 
      This sanity check sees if a reasonable number of files have been updated.
 
-6. Copies the style sheets and runs mkdocs to build the static website in `site`
+7. Copies the style sheets and runs mkdocs to build the static website in `site`
 
-7. Minifies the HTML
+8. Minifies the HTML

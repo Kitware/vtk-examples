@@ -10,6 +10,29 @@
 # A typical command would look something like this:
 # ./src/SyncSiteWithRepo.sh https://gitlab.kitware.com/vtk/vtk-examples https://kitware.github.io/vtk-examples/site/ https://github.com/Kitware/vtk-examples <local-path>/vtk-examples-web/ <local-path>/VTK/
 #
+# We are using a virtual environment called vtk-examples-web
+#
+# To create it:
+# python3 -m venv $HOME/venv/vtk-examples-web
+#
+# Set up the environment:
+#
+# source $HOME/venv/vtk-examples-web/bin/activate
+# python -m pip install --upgrade pip
+# pip install wheel
+# pip install mkdocs-material htmlmin
+
+
+if [ -f "$HOME/venv/vtk-examples-web/bin/activate" ]; then
+  source $HOME/venv/vtk-examples-web/bin/activate
+else
+  echo "vtk-examples-web environment not activated."
+  echo "Please create it as described in the above comments."
+  exit 1
+fi
+
+
+
 if [ $# -lt 5 ]
   then
   echo "Usage: SyncSiteWithRepo SITE_URL WEB_SITE_URL WEB_REPO_URL WEB_DIR VTK_SOURCE_DIR"
@@ -78,7 +101,7 @@ echo "4) Scrape the repo building the markdown files"
 rm -rf ${WEB_REPO_DIR}/docs/*
 rm -rf ${WEB_REPO_DIR}/site/*
 
-src/Admin/ScrapeRepo.py src ${SITE_URL} ${WEB_SITE_URL} ${WEB_REPO_URL} ${WEB_REPO_DIR} ${VTK_SOURCE_DIR}
+python src/Admin/ScrapeRepo.py src ${SITE_URL} ${WEB_SITE_URL} ${WEB_REPO_URL} ${WEB_REPO_DIR} ${VTK_SOURCE_DIR}
 
 echo "5) Check for a successful scrape"
 pushd ${WEB_REPO_DIR}/docs
@@ -96,7 +119,7 @@ echo "6) Build the html pages"
 mkdir -p ${WEB_REPO_DIR}/docs/stylesheets
 cp ${WEB_REPO_DIR}/src/stylesheets/extra.css ${WEB_REPO_DIR}/docs/stylesheets/extra.css
 pushd ${WEB_REPO_DIR}
-mkdocs build
+python -m mkdocs build
 popd
 
 ######################
