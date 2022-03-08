@@ -365,6 +365,7 @@ This section includes vtkUnstructuredGrid.
 [LUTUtilities](/Python/Utilities/LUTUtilities) | A utility class for vtkLookupTable allowing you to output the table contents or to compare tables.
 [MultipleRenderWindows](/Python/Visualization/MultipleRenderWindows) | Multiple Render Windows.
 [MultipleViewports](/Python/Visualization/MultipleViewports) | Multiple Viewports.
+[ResetCameraOrientation](/Python/Utilities/ResetCameraOrientation) | Reset camera orientation to a previously saved orientation.
 [SaveSceneToFieldData](/Python/Utilities/SaveSceneToFieldData) | Save a vtkCamera's state in a vtkDataSet's vtkFieldData and restore it.
 [SaveSceneToFile](/Python/Utilities/SaveSceneToFile) | Save a vtkCamera's state in a file and restore it.
 [SelectExamples](/Python/Utilities/SelectExamples) | Given a VTK Class and a language, select the matching examples.
@@ -479,7 +480,6 @@ This section includes vtkUnstructuredGrid.
 [TextureCutSphere](/Python/Texture/TextureCutSphere) | Examples of texture thresholding. (b) Boolean combination of two planes to cut nested spheres.
 [TexturePlane](/Python/Texture/TexturePlane) | Example of texture mapping.
 [TextureThreshold](/Python/Texture/TextureThreshold) | Demonstrate the use of scalar thresholds to show values of flow density on three planes.
-
 
 ## Tutorial
 

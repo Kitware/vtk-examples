@@ -665,6 +665,7 @@ This section includes vtkUnstructuredGrid.
 [PiecewiseFunction](/Cxx/Utilities/PiecewiseFunction) | Interpolation using a piecewise function.
 [PointInPolygon](/Cxx/Utilities/PointInPolygon) | Point inside polygon test.
 [RenderScalarToFloatBuffer](/Cxx/Utilities/RenderScalarToFloatBuffer) | Demonstrates how to render scalars in a vtkPolyData object into a vtkFloatArray buffer for further processing.
+[ResetCameraOrientation](/Cxx/Utilities/ResetCameraOrientation) | Reset camera orientation to a previously saved orientation.
 [ReportRenderWindowCapabilities](/Cxx/Utilities/ReportRenderWindowCapabilities) | Report the capabilities of a render window.
 [SaveSceneToFieldData](/Cxx/Utilities/SaveSceneToFieldData) | Save a vtkCamera's state in a vtkDataSet's vtkFieldData and restore it.
 [SaveSceneToFile](/Cxx/Utilities/SaveSceneToFile) | Save a vtkCamera's state in a file and restore it.
