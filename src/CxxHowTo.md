@@ -19,6 +19,7 @@ Here are some snippets and examples that highlight interesting features that may
 [CameraOrientationWidget](/Cxx/Widgets/CameraOrientationWidget) | This 3D camera orientation widget can be used in conjunction with [CameraPosition](/Cxx/Snippets/CameraPosition) to get a nice camera position.
 [CameraPosition](/Cxx/Snippets/CameraPosition) | Get the camera position while moving the image.
 [MergeSelections](/Cxx/PolyData/MergeSelections) | Use the same camera for all renderers.
+[ResetCameraOrientation](/Cxx/Utilities/ResetCameraOrientation) | Reset camera orientation to a previously saved orientation.
 [ShareCamera](/Cxx/Utilities/ShareCamera) | Use the same camera for all renderers.
 
 ## Coloring
