@@ -1,4 +1,8 @@
-import os
+r"""
+Version for trame 1.x - https://github.com/Kitware/trame/blob/release-v1/examples/VTK/Applications/RemoteSelection/app.py
+Delta v1..v2          - https://github.com/Kitware/trame/commit/03f28bb0084490acabf218264b96a1dbb3a17f19
+"""
+
 import pandas as pd
 
 # Plotly/chart imports
@@ -6,9 +10,10 @@ import plotly.graph_objects as go
 import plotly.express as px
 
 # Trame imports
-from trame import RemoteFile, state, controller as ctrl
-from trame.layouts import SinglePage
-from trame.html import Div, vuetify, plotly, vtk, observer
+from trame.app import get_server
+from trame.assets.remote import HttpFile
+from trame.ui.vuetify import SinglePageLayout
+from trame.widgets import vuetify, plotly, vtk, trame
 
 # VTK imports
 from vtkmodules.vtkIOXML import vtkXMLUnstructuredGridReader
@@ -24,10 +29,13 @@ from vtkmodules.vtkRenderingCore import (
     vtkRenderWindow,
     vtkRenderWindowInteractor,
     vtkHardwareSelector,
-    vtkRenderedAreaPicker
+    vtkRenderedAreaPicker,
 )
 
-from vtkmodules.vtkInteractionStyle import vtkInteractorStyleRubberBandPick, vtkInteractorStyleSwitch  # noqa
+from vtkmodules.vtkInteractionStyle import (
+    vtkInteractorStyleRubberBandPick,
+    vtkInteractorStyleSwitch,
+)  # noqa
 import vtkmodules.vtkRenderingOpenGL2  # noqa
 
 from vtkmodules.vtkInteractionStyle import vtkInteractorStyleRubberBandPick
@@ -36,11 +44,19 @@ from vtkmodules.vtkInteractionStyle import vtkInteractorStyleRubberBandPick
 # Data file information
 # -----------------------------------------------------------------------------
 
-dataset_file = RemoteFile(
+dataset_file = HttpFile(
     "./data/disk_out_ref.vtu",
     "https://github.com/Kitware/trame/raw/master/examples/data/disk_out_ref.vtu",
-    __file__
+    __file__,
 )
+
+# -----------------------------------------------------------------------------
+# Trame setup
+# -----------------------------------------------------------------------------
+
+server = get_server()
+state, ctrl = server.state, server.controller
+
 
 # -----------------------------------------------------------------------------
 # VTK
@@ -115,13 +131,16 @@ SELECTED_IDX = []
 
 
 @state.change("figure_size", "scatter_x", "scatter_y")
-def update_figure(**kwargs):
+def update_figure(figure_size, scatter_x, scatter_y, **kwargs):
+    if figure_size is None:
+        return
+
     # Generate figure
-    bounds = state.figure_size.get("size", {})
+    bounds = figure_size.get("size", {})
     fig = px.scatter(
         DATAFRAME,
-        x=state.scatter_x,
-        y=state.scatter_y,
+        x=scatter_x,
+        y=scatter_y,
         width=bounds.get("width", 200),
         height=bounds.get("height", 200),
     )
@@ -136,7 +155,9 @@ def update_figure(**kwargs):
     # Update chart
     ctrl.update_figure(fig)
 
+
 # -----------------------------------------------------------------------------
+
 
 @state.change("vtk_selection")
 def update_interactor(vtk_selection, **kwargs):
@@ -145,6 +166,7 @@ def update_interactor(vtk_selection, **kwargs):
         interactor_selection.StartSelect()
     else:
         rw_interactor.SetInteractorStyle(interactor_trackball)
+
 
 # -----------------------------------------------------------------------------
 
@@ -175,19 +197,24 @@ def on_chart_selection(selected_point_idxs):
     selection_actor.SetVisibility(1)
 
     # Update 3D view
-    ctrl.update_view()
+    ctrl.view_update()
+
 
 def on_box_selection_change(selection):
     global SELECTED_IDX
 
     actor.GetProperty().SetOpacity(1)
-    selector.SetArea(int(renderer.GetPickX1()), int(renderer.GetPickY1()),
-                     int(renderer.GetPickX2()), int(renderer.GetPickY2()))
+    selector.SetArea(
+        int(renderer.GetPickX1()),
+        int(renderer.GetPickY1()),
+        int(renderer.GetPickX2()),
+        int(renderer.GetPickY2()),
+    )
     s = selector.Select()
     n = s.GetNode(0)
     ids = dsa.vtkDataArrayToVTKArray(n.GetSelectionData().GetArray("SelectedIds"))
     surface = dsa.WrapDataObject(surface_filter.GetOutput())
-    SELECTED_IDX = surface.PointData['vtkOriginalPointIds'][ids].tolist()
+    SELECTED_IDX = surface.PointData["vtkOriginalPointIds"][ids].tolist()
 
     selection_extract.SetInputConnection(surface_filter.GetOutputPort())
     selection_extract.SetInputDataObject(1, s)
@@ -197,10 +224,10 @@ def on_box_selection_change(selection):
     actor.GetProperty().SetOpacity(0.5)
 
     # Update scatter plot with selection
-    update_figure()
+    update_figure(**state.to_dict())
 
     # Update 3D view
-    ctrl.update_view()
+    ctrl.view_update()
 
     # disable selection mode
     state.vtk_selection = False
@@ -214,7 +241,7 @@ DROPDOWN_STYLES = {
     "dense": True,
     "hide_details": True,
     "classes": "px-2",
-    "style": "max-width: calc(25vw - 10px);"
+    "style": "max-width: calc(25vw - 10px);",
 }
 
 CHART_STYLE = {
@@ -232,7 +259,7 @@ CHART_STYLE = {
             "hoverCompareCartesian",
         ],
     ),
-    "displaylogo": ("false",),
+    "display_logo": ("false",),
 }
 
 VTK_VIEW_SETTINGS = {
@@ -244,65 +271,71 @@ VTK_VIEW_SETTINGS = {
 # UI
 # -----------------------------------------------------------------------------
 
-layout = SinglePage("VTK selection", on_ready=ctrl.update_view)
-layout.title.set_text("VTK & plotly")
+state.trame__title = "VTK selection"
+ctrl.on_server_ready.add(ctrl.view_update)
 
+with SinglePageLayout(server) as layout:
+    layout.title.set_text("VTK & plotly")
+    layout.icon.click = ctrl.view_reset_camera
 
-with layout.toolbar as tb:
-    tb.dense = True
-    vuetify.VSpacer()
-    vuetify.VSelect(
-        v_model=("scatter_y", FIELD_NAMES[1]),
-        items=("fields", FIELD_NAMES),
-        **DROPDOWN_STYLES,
-    )
-    vuetify.VSelect(
-        v_model=("scatter_x", FIELD_NAMES[0]),
-        items=("fields", FIELD_NAMES),
-        **DROPDOWN_STYLES,
-    )
+    with layout.toolbar as tb:
+        tb.dense = True
+        vuetify.VSpacer()
+        vuetify.VSelect(
+            v_model=("scatter_y", FIELD_NAMES[1]),
+            items=("fields", FIELD_NAMES),
+            **DROPDOWN_STYLES,
+        )
+        vuetify.VSelect(
+            v_model=("scatter_x", FIELD_NAMES[0]),
+            items=("fields", FIELD_NAMES),
+            **DROPDOWN_STYLES,
+        )
 
-with layout.content:
-    with vuetify.VContainer(fluid=True, classes="fill-height pa-0 ma-0"):
-        with vuetify.VRow(dense=True, style="height: 100%;"):
-            with vuetify.VCol(classes="pa-0", style="border-right: 1px solid #ccc; position: relative;"):
-                html_view = vtk.VtkRemoteView(
-                    render_window,
-                    box_selection=("vtk_selection",),
-                    box_selection_change=(on_box_selection_change, "[$event]"),
-                    **VTK_VIEW_SETTINGS,
-                )
-                # html_view = vtk.VtkLocalView(
-                #     render_window,
-                #     box_selection=("vtk_selection",),
-                #     box_selection_change=(on_box_selection_change, "[$event]"),
-                #     **VTK_VIEW_SETTINGS,
-                # )
-                ctrl.update_view = html_view.update
-                vuetify.VCheckbox(
-                    small=True,
-                    on_icon="mdi-selection-drag",
-                    off_icon="mdi-rotate-3d",
-                    v_model=("vtk_selection", False),
-                    style="position: absolute; top: 0; right: 0; z-index: 1;",
-                    dense=True,
-                    hide_details=True,
-                )
-            with vuetify.VCol(classes="pa-0"):
-                with observer.SizeObserver("figure_size"):
-                    html_plot = plotly.Plotly(
-                        "figure",
-                        selected=(
-                            on_chart_selection,
-                            "[$event?.points.map(({pointIndex}) => pointIndex)]",
-                        ),
-                        **CHART_STYLE,
+    with layout.content:
+        with vuetify.VContainer(fluid=True, classes="fill-height pa-0 ma-0"):
+            with vuetify.VRow(dense=True, style="height: 100%;"):
+                with vuetify.VCol(
+                    classes="pa-0",
+                    style="border-right: 1px solid #ccc; position: relative;",
+                ):
+                    view = vtk.VtkRemoteView(
+                        render_window,
+                        box_selection=("vtk_selection",),
+                        box_selection_change=(on_box_selection_change, "[$event]"),
+                        **VTK_VIEW_SETTINGS,
                     )
-                    ctrl.update_figure = html_plot.update
+                    # view = vtk.VtkLocalView(
+                    #     render_window,
+                    #     box_selection=("vtk_selection",),
+                    #     box_selection_change=(on_box_selection_change, "[$event]"),
+                    #     **VTK_VIEW_SETTINGS,
+                    # )
+                    ctrl.view_update = view.update
+                    ctrl.view_reset_camera = view.reset_camera
+                    vuetify.VCheckbox(
+                        small=True,
+                        on_icon="mdi-selection-drag",
+                        off_icon="mdi-rotate-3d",
+                        v_model=("vtk_selection", False),
+                        style="position: absolute; top: 0; right: 0; z-index: 1;",
+                        dense=True,
+                        hide_details=True,
+                    )
+                with vuetify.VCol(classes="pa-0"):
+                    with trame.SizeObserver("figure_size"):
+                        html_plot = plotly.Figure(
+                            selected=(
+                                on_chart_selection,
+                                "[$event?.points.map(({pointIndex}) => pointIndex)]",
+                            ),
+                            **CHART_STYLE,
+                        )
+                        ctrl.update_figure = html_plot.update
 
 # -----------------------------------------------------------------------------
 # Main
 # -----------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    layout.start()
+    server.start()

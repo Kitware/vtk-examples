@@ -1,3 +1,4 @@
 plotly
 pandas
-vtk
+vtk>=9.1
+trame>=2.0.0rc2
