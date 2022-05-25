@@ -8,7 +8,7 @@
 # If needed.
 #
 # A typical command would look something like this:
-# ./src/SyncSiteWithRepo.sh https://gitlab.kitware.com/vtk/vtk-examples https://kitware.github.io/vtk-examples/site/ https://github.com/Kitware/vtk-examples <local-path>/vtk-examples-web/ <local-path>/VTK/
+# ./src/SyncSiteWithRepo.sh https://gitlab.kitware.com/vtk/vtk-examples https://kitware.github.io/vtk-examples/site/ https://github.com/Kitware/vtk-examples <local-path>/vtk-examples-web/ <local-path>/vtk/
 #
 # We are using a virtual environment called vtk-examples-web
 #
@@ -32,7 +32,6 @@ else
 fi
 
 
-
 if [ $# -lt 5 ]
   then
   echo "Usage: SyncSiteWithRepo SITE_URL WEB_SITE_URL WEB_REPO_URL WEB_DIR VTK_SOURCE_DIR"
@@ -41,7 +40,7 @@ if [ $# -lt 5 ]
   echo "  WEB_SITE_URL is the VTK Examples website site URL, e.g. https://<username>.github.io/<site_name>/site"
   echo "  WEB_REPO_URL is the VTK Examples website source URL, e.g. https://github.com/<username>/<site_name>"
   echo "  WEB_REPO_DIR is the local website source dir, e.g. <local_path>/<site_name>-web"
-  echo "  VTK_SOURCE_DIR is the local VTK source directory, e.g. <local_path>/src/VTK"
+  echo "  VTK_SOURCE_DIR is the local VTK source directory, e.g. <local_path>/vtk/vtk"
   echo "Notes:"
   echo " 1. Paths must be specified as absolute or full paths, not relative paths."
   echo " 2. This is run from the top-level VTKExamples directory. e.g <local_path>/vtk-examples/"
@@ -61,7 +60,6 @@ echo " Web Site URL:          "$WEB_SITE_URL
 echo " Web Repository URL:    "$WEB_REPO_URL
 echo " Web Repository DIR:    "$WEB_REPO_DIR
 echo " VTK Source DIR:        "$VTK_SOURCE_DIR
-
 
 echo "1) Make the directories (if needed)"
 mkdir -p ${WEB_REPO_DIR}/docs
