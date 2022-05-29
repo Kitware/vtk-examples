@@ -7,7 +7,7 @@ from pathlib import Path
 
 def get_program_parameters():
     import argparse
-    description = 'Generate a FindPackage(VTK COMPONENTS ...) that lists all modules referenced by a set of files.'
+    description = 'Generate a find_package(VTK COMPONENTS ...) that lists all modules referenced by a set of files.'
     epilogue = '''
 This uses the VTK source folder to determine the modules and headers.
 Then the user files/folders are looked at to find the headers being used.
@@ -15,19 +15,20 @@ Finally a find_package() is output with the modules you need for
  inclusion in your CMakeLists.txt file.
 
 Note:
-1) If your include file is not found when building, you may need to search
-     the VTK source to find where the file is. Then look at contents of
-     vtk.module in that folder and add the module name to the
-     makeLists.txt file. 
+1) If include file(s) are not found when building your application.
+    You may need to search the VTK source to find where the file is.
+    Then look at contents of vtk.module in that folder and add the
+     module name to the find_package statement. 
 2) If linking fails, it usually means that the needed module has not been
-     built, so you may need to add it to your VTK build.     
+     built, so you may need to add it to your VTK build and rebuild VTK.
+3) More modules than strictly necessary may be included.     
     '''
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('-p', '--path', help='The path to the VTK source tree.')
-    parser.add_argument('-s', '--source', nargs='+', help='The path to the application files or folders.')
+    parser.add_argument('vtk_path', help='The path to the VTK source tree.')
+    parser.add_argument('application', nargs='+', help='Paths to the application files or folders.')
     args = parser.parse_args()
-    return args.path, args.source
+    return args.vtk_path, args.application
 
 
 def check_paths(vtk_src_dir, application_srcs):
@@ -92,6 +93,7 @@ def find_vtk_modules(vtk_src_dir):
 def build_headers_modules(modules):
     """
     Make a dictionary whose key is the header filename and value is the module.
+
     :param modules: The modules.
     :return: Headers and their corresponding module.
     """
@@ -181,7 +183,7 @@ def generate_find_package(vtk_src_dir, application_srcs):
         all_modules.add('VTK::IOExportPDF')
         all_modules.add('VTK::RenderingContextOpenGL2')
 
-    res = ['All modules referenced in your files:', 'find_package(VTK COMPONENTS']
+    res = ['All modules referenced in your files:', 'find_package(VTK', ' COMPONENTS']
     for m in sorted(all_modules):
         res.append(' ' * 2 + m.replace('VTK::', 'vtk'))
     res.append(')')

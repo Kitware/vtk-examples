@@ -1,7 +1,7 @@
 # Change these to reflect the user and site details.
 site_name: vtk-examples
 site_url: https://kitware.github.io/vtk-examples/site/
-repo_name: Kitware/vtk-examples/vtk-examples
+repo_name: Kitware/vtk-examples
 repo_url: https://github.com/Kitware/vtk-examples
 
 theme:
