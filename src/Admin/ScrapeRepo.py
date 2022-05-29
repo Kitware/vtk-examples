@@ -162,7 +162,7 @@ def update_vtk_modules_cache(src_file, cmd_path, vtk_src_path, vtk_modules_cache
             stats['vtk_modules_misses'] += 1
         if cmd_path.exists():
             try:
-                cmd = str(cmd_path) + ' -p ' + str(vtk_src_path) + ' -s ' + str(src_file)
+                cmd = str(cmd_path) + ' ' + str(vtk_src_path) + ' ' + str(src_file)
                 process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, )
             except subprocess.CalledProcessError as err:
                 print('ERROR:', err)
@@ -198,6 +198,10 @@ def look_for_vtk_modules(str_to_parse):
     vtk_modules = list()
     for word in words:
         if "find_package" in word:
+            continue
+        if "VTK" in word:
+            continue
+        if "COMPONENTS" in word:
             continue
         if ")" in word:
             continue
