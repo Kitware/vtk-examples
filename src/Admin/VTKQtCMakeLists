@@ -10,16 +10,16 @@ endif()
 PROJECT(XXX)
 
 find_package(VTK COMPONENTS ZZZ
-  vtkGUISupportQt
-  vtkRenderingQt
+  GUISupportQt
+  RenderingQt
   QUIET
 )
 
 if(NOT VTK_FOUND)
-  message(FATAL_ERROR "XXX: ${VTK_NOT_FOUND_MESSAGE}")
+  message(FATAL_ERROR "XXX: Unable to find the VTK build folder.")
 endif()
 
-if(NOT(vtkGUISupportQt_LOADED OR TARGET VTK::GUISupportQt))
+if(NOT(TARGET VTK::GUISupportQt))
   message(FATAL_ERROR "XXX: VTK not built with Qt support.")
 endif()
 
@@ -44,14 +44,9 @@ endforeach()
 
 message (STATUS "VTK_VERSION: ${VTK_VERSION}, Qt Version: ${Qt${VTK_QT_VERSION}Widgets_VERSION}")
 
-if (VTK_VERSION VERSION_LESS "8.90.0")
-# Instruct CMake to run moc automatically when needed.
-  set(CMAKE_AUTOMOC ON)
-else()
 # Instruct CMake to run moc and uic automatically when needed.
-  set(CMAKE_AUTOMOC ON)
-  set(CMAKE_AUTOUIC ON)
-endif()
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -62,42 +57,24 @@ file(GLOB CXX_FILES *.cxx)
 # For VTK versions greater than or equal to 8.90.0:
 #  CMAKE_AUTOUIC is ON so we handle uic automatically for Qt targets.
 #  CMAKE_AUTOMOC is ON so we handle moc automatically for Qt targets.
-# However we have to do the following for VTK versions less than 8.90.0,
-#  and we also assume, in this case, that Qt5 is being used.
-if (VTK_VERSION VERSION_LESS "8.90.0")
-  qt5_wrap_ui(UISrcs ${EXAMPLE}.ui)
-endif()
 
-if (VTK_VERSION VERSION_LESS "8.90.0")
-  # old system
-  include(${VTK_USE_FILE})
-  # CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.
-  add_executable(XXX MACOSX_BUNDLE
-    ${CXX_FILES} ${UISrcs} ${QT_WRAP})
-  if (Qt${VTK_QT_VERSION}Widgets_VERSION VERSION_LESS "5.11.0")
-    qt5_use_modules(XXX ${qt_components})
-  else()
-    target_link_libraries(XXX ${qt_modules})
-  endif()
-  target_link_libraries(XXX ${VTK_LIBRARIES})
+# Prevent a "command line is too long" failure in Windows.
+set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
+# CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.
+add_executable(XXX MACOSX_BUNDLE
+  ${CXX_FILES} ${UISrcs} ${QT_WRAP}
+)
+if (Qt${VTK_QT_VERSION}Widgets_VERSION VERSION_LESS "5.11.0")
+  qt5_use_modules(XXX ${qt_components})
 else()
-  # Prevent a "command line is too long" failure in Windows.
-  set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
-  # CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.
-  add_executable(XXX MACOSX_BUNDLE
-    ${CXX_FILES} ${UISrcs} ${QT_WRAP})
-  if (Qt${VTK_QT_VERSION}Widgets_VERSION VERSION_LESS "5.11.0")
-    qt5_use_modules(XXX ${qt_components})
-  else()
-    target_link_libraries(XXX ${qt_modules})
-  endif()
-  target_link_libraries(XXX ${VTK_LIBRARIES})
-  # vtk_module_autoinit is needed
-  vtk_module_autoinit(
-    TARGETS XXX
-    MODULES ${VTK_LIBRARIES}
-  )
+  target_link_libraries(XXX ${qt_modules})
 endif()
+target_link_libraries(XXX ${VTK_LIBRARIES})
+# vtk_module_autoinit is needed
+vtk_module_autoinit(
+  TARGETS XXX
+  MODULES ${VTK_LIBRARIES}
+)
 ```
 
 ###Download and Build XXX
@@ -114,7 +91,7 @@ If VTK and Qt are installed:
 ```
 If VTK is not installed but compiled on your system, you will need to specify the path to your VTK build:
 ```
- cmake -DVTK_DIR:PATH=/home/me/vtk_build ..
+ cmake -DVTK_DIR=/home/me/vtk_build ..
 ```
 If Qt is not found on your system, you will need to tell CMake where to find qmake:
 ```

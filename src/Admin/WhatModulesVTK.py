@@ -183,13 +183,10 @@ def generate_find_package(vtk_src_dir, application_srcs):
         all_modules.add('VTK::IOExportPDF')
         all_modules.add('VTK::RenderingContextOpenGL2')
 
-    res = ['All modules referenced in your files:', 'find_package(VTK', ' COMPONENTS']
+    res = ['find_package(VTK', ' COMPONENTS']
     for m in sorted(all_modules):
-        res.append(' ' * 2 + m.replace('VTK::', 'vtk'))
+        res.append(' ' * 2 + m)
     res.append(')')
-    res.append(
-        'Your application code includes ' + str(len(all_modules)) + ' of ' + str(
-            len(vtk_modules)) + ' vtk modules.')
     return res
 
 

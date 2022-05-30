@@ -194,24 +194,26 @@ def look_for_vtk_modules(str_to_parse):
     :param str_to_parse: The string to parse
     :return: The VTK modules found.
     """
+    prefix = 'VTK::'
     words = str_to_parse.split('\n')
     vtk_modules = list()
     for word in words:
-        if "find_package" in word:
-            continue
-        if "VTK" in word:
-            continue
-        if "COMPONENTS" in word:
-            continue
-        if ")" in word:
-            continue
-        if "Your" in word:
-            continue
-        if "All" in word:
-            continue
-        if word == "":
-            continue
-        vtk_modules.append(word.strip())
+        # if "find_package" in word:
+        #     continue
+        # if "VTK" in word:
+        #     continue
+        # if "COMPONENTS" in word:
+        #     continue
+        # if ")" in word:
+        #     continue
+        # if "Your" in word:
+        #     continue
+        # if "All" in word:
+        #     continue
+        # if word == "":
+        #     continue
+        if prefix in word:
+            vtk_modules.append(word.strip().replace(prefix,''))
     return vtk_modules
 
 
@@ -790,10 +792,11 @@ def make_markdown_example_page(example_paths, available_languages, src_path, doc
                             # Create component lines for the VTK modules
                             needed_modules = ''
                             for vtk_module in vtk_modules:
-                                if 'vtk' in vtk_module:
-                                    needed_modules += '\n  ' + vtk_module
-                                else:
-                                    needed_modules += '\n  ' + 'vtk' + vtk_module
+                                needed_modules += '\n  ' + vtk_module
+                                # if 'vtk' in vtk_module:
+                                #     needed_modules += '\n  ' + vtk_module
+                                # else:
+                                #     needed_modules += '\n  ' + 'vtk' + vtk_module
                             if needed_modules == '':
                                 pass
                             cmake = fill_qt_cmake_lists(cmake_contents, source_path, needed_modules, web_repo_url)
@@ -803,10 +806,11 @@ def make_markdown_example_page(example_paths, available_languages, src_path, doc
                             # Create component lines for the VTK modules
                             needed_modules = ''
                             for vtk_module in vtk_modules:
-                                if 'vtk' in vtk_module:
-                                    needed_modules += '\n  ' + vtk_module
-                                else:
-                                    needed_modules += '\n  ' + 'vtk' + vtk_module
+                                needed_modules += '\n  ' + vtk_module
+                                # if 'vtk' in vtk_module:
+                                #     needed_modules += '\n  ' + vtk_module
+                                # else:
+                                #     needed_modules += '\n  ' + 'vtk' + vtk_module
                             cmake = fill_cmake_lists(cmake_contents, source_path, extra_names, needed_modules,
                                                      web_repo_url)
 
