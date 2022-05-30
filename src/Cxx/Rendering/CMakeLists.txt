@@ -3,71 +3,57 @@ project (${WIKI}Rendering)
 if(NOT VTK_BINARY_DIR)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
-    vtkCommonColor
+    CommonColor
     CommonComputationalGeometry
-    vtkCommonCore
-    vtkCommonDataModel
-    vtkCommonSystem
-    vtkCommonTransforms
-    vtkFiltersCore
-    vtkFiltersGeneral
-    vtkFiltersGeometry
+    CommonCore
+    CommonDataModel
+    CommonSystem
+    CommonTransforms
+    FiltersCore
+    FiltersGeneral
+    FiltersGeometry
     FiltersModeling
-    vtkFiltersSources
-    vtkIOGeometry
-    vtkIOImage
-    vtkIOLegacy
-    vtkIOPLY
-    vtkIOParallel
-    vtkIOXML
-    vtkImagingCore
-    vtkImagingHybrid
-    vtkImagingSources
-    vtkInteractionImage
-    vtkInteractionStyle
+    FiltersSources
+    IOGeometry
+    IOImage
+    IOLegacy
+    IOPLY
+    IOParallel
+    IOXML
+    ImagingCore
+    ImagingHybrid
+    ImagingSources
+    InteractionImage
+    InteractionStyle
     InteractionWidgets
     RenderingAnnotation
-    vtkRenderingContextOpenGL2
-    vtkRenderingCore
-    vtkRenderingFreeType
-    vtkRenderingGL2PSOpenGL2
-    vtkRenderingOpenGL2
+    RenderingContextOpenGL2
+    RenderingCore
+    RenderingFreeType
+    RenderingGL2PSOpenGL2
+    RenderingOpenGL2
     OPTIONAL_COMPONENTS
-    vtkTestingRendering
+    TestingRendering
     QUIET
     )
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    include(${VTK_USE_FILE})
-  endif()
 endif()
 
 set(KIT_LIBS ${VTK_LIBRARIES})
 
-set(RECENT_SRCS
-  PBR_Skybox
-  PBR_Skybox_Texturing
-  PBR_Skybox_Anisotropy
-)
 
 #
 # Build all .cxx files in the directory
 file(GLOB ALL_FILES *.cxx)
-
-if(VTK_VERSION VERSION_LESS "8.90.0")
-  list(REMOVE_ITEM ALL_FILES ${RECENT_SRCS})
-endif()
 
 foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ".cxx" "" TMP ${SOURCE_FILE})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx)
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (VTK_VERSION VERSION_GREATER "8.8")
-    vtk_module_autoinit(
-      TARGETS ${WIKI}${EXAMPLE}
-      MODULES ${VTK_LIBRARIES}
-      )
-  endif()
+  vtk_module_autoinit(
+    TARGETS ${WIKI}${EXAMPLE}
+    MODULES ${VTK_LIBRARIES}
+    )
 endforeach()
 
 if (BUILD_TESTING)
@@ -78,6 +64,9 @@ if (BUILD_TESTING)
     HiddenLineRemoval
     InterpolateCamera
     MotionBlur
+    PBR_Skybox
+    PBR_Skybox_Texturing
+    PBR_Skybox_Anisotropy
     Rainbow
     Rotations
     RotationsA
@@ -90,13 +79,6 @@ if (BUILD_TESTING)
     WalkCowA
     WalkCowB
     )
-
-  if(NOT VTK_VERSION VERSION_LESS "8.90.0")
-    set(NEEDS_ARGS
-        ${NEEDS_ARGS}
-        ${RECENT_SRCS}
-    )
-  endif()
 
   set(DATA ${WikiExamples_SOURCE_DIR}/src/Testing/Data)
   set(TEMP ${WikiExamples_BINARY_DIR}/Testing/Temporary)
@@ -146,22 +128,20 @@ if (BUILD_TESTING)
   add_test(${KIT}-WalkCowB ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestWalkCowB ${DATA}/cow.g 2)
 
-  if(NOT VTK_VERSION VERSION_LESS "8.90.0")
-    add_test(${KIT}-PBR_Skybox ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestPBR_Skybox ${DATA}/Skyboxes/spiaggia_di_mondello_4k.hdr Boy)
-    add_test(${KIT}-PBR_Skybox_Texturing ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestPBR_Skybox_Texturing ${DATA}/Skyboxes/spiaggia_di_mondello_4k.hdr
-       ${DATA}/Textures/Isotropic/vtk_Base_Color.png
-       ${DATA}/Textures/Isotropic/vtk_Normal.png
-       ${DATA}/Textures/Isotropic/vtk_Material.png
-       ${DATA}/Textures/Isotropic/vtk_dark_bkg.png Boy)
-    add_test(${KIT}-PBR_Skybox_Anisotropy ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestPBR_Skybox_Anisotropy ${DATA}/Skyboxes/spiaggia_di_mondello_4k.hdr
-       ${DATA}/Textures/Anisotropic/CarbonFiberAniso_albedo.png
-       ${DATA}/Textures/Anisotropic/CarbonFiberAniso_normal.png
-       ${DATA}/Textures/Anisotropic/CarbonFiberAniso_orm.png
-       ${DATA}/Textures/Anisotropic/CarbonFiberAniso_anisotropyAngle.png Boy)
-  endif()
+  add_test(${KIT}-PBR_Skybox ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestPBR_Skybox ${DATA}/Skyboxes/spiaggia_di_mondello_4k.hdr Boy)
+  add_test(${KIT}-PBR_Skybox_Texturing ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestPBR_Skybox_Texturing ${DATA}/Skyboxes/spiaggia_di_mondello_4k.hdr
+     ${DATA}/Textures/Isotropic/vtk_Base_Color.png
+     ${DATA}/Textures/Isotropic/vtk_Normal.png
+     ${DATA}/Textures/Isotropic/vtk_Material.png
+     ${DATA}/Textures/Isotropic/vtk_dark_bkg.png Boy)
+  add_test(${KIT}-PBR_Skybox_Anisotropy ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestPBR_Skybox_Anisotropy ${DATA}/Skyboxes/spiaggia_di_mondello_4k.hdr
+     ${DATA}/Textures/Anisotropic/CarbonFiberAniso_albedo.png
+     ${DATA}/Textures/Anisotropic/CarbonFiberAniso_normal.png
+     ${DATA}/Textures/Anisotropic/CarbonFiberAniso_orm.png
+     ${DATA}/Textures/Anisotropic/CarbonFiberAniso_anisotropyAngle.png Boy)
 
 
   include(${WikiExamples_SOURCE_DIR}/CMake/ExamplesTesting.cmake)

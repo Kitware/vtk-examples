@@ -3,18 +3,15 @@ project (${WIKI}Video)
 include(${WikiExamples_SOURCE_DIR}/CMake/AddOptionalIfInLibrary.cmake)
 if(NOT VTK_BINARY_DIR)
   set(optional "")
-  Add_Optional_If_In_Library(vtkIOFFMPEG VTK_LIBRARIES optional)
-  Add_Optional_If_In_Library(vtkIOOggTheora VTK_LIBRARIES optional)
+  Add_Optional_If_In_Library(IOFFMPEG VTK_LIBRARIES optional)
+  Add_Optional_If_In_Library(IOOggTheora VTK_LIBRARIES optional)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
-    vtkCommonCore
-    vtkImagingSources
+    CommonCore
+    ImagingSources
     ${optional}
     QUIET
     )
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    include(${VTK_USE_FILE})
-  endif()
 endif()
 
 if(WIN32)

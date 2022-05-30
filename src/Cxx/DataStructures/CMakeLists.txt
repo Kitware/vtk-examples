@@ -3,35 +3,32 @@ project (${WIKI}DataStructures)
 if(NOT VTK_BINARY_DIR)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
- vtkChartsCore
-  vtkCommonColor
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonSystem
-  vtkFiltersExtraction
-  vtkFiltersFlowPaths
-  vtkFiltersGeneral
-  vtkFiltersSources
-  vtkIOGeometry
-  vtkIOLegacy
-  vtkIOPLY
-  vtkIOXML
-  vtkInteractionStyle
-  vtkInteractionWidgets
-  vtkRenderingContext2D
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingOpenGL2
-  vtkViewsContext2D
-  OPTIONAL_COMPONENTS
-  vtkTestingRendering
-  QUIET
+    ChartsCore
+    CommonColor
+    CommonCore
+    CommonDataModel
+    CommonSystem
+    FiltersExtraction
+    FiltersFlowPaths
+    FiltersGeneral
+    FiltersSources
+    IOGeometry
+    IOLegacy
+    IOPLY
+    IOXML
+    InteractionStyle
+    InteractionWidgets
+    RenderingContext2D
+    RenderingContextOpenGL2
+    RenderingCore
+    RenderingFreeType
+    RenderingGL2PSOpenGL2
+    RenderingOpenGL2
+    ViewsContext2D
+    OPTIONAL_COMPONENTS
+    TestingRendering
+    QUIET
    )
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    include(${VTK_USE_FILE})
-  endif()
 endif()
 
 set(KIT_LIBS ${VTK_LIBRARIES})
@@ -44,12 +41,10 @@ foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx)
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (NOT VTK_VERSION VERSION_LESS "8.90.0")
-    vtk_module_autoinit(
-      TARGETS ${WIKI}${EXAMPLE}
-      MODULES ${VTK_LIBRARIES}
-      )
-  endif()
+  vtk_module_autoinit(
+    TARGETS ${WIKI}${EXAMPLE}
+    MODULES ${VTK_LIBRARIES}
+    )
 endforeach()
 
 if (BUILD_TESTING)

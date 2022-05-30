@@ -5,48 +5,45 @@ if(NOT VTK_BINARY_DIR)
   Add_Optional_If_In_Library(Boolean "${VTK_AVAILABLE_COMPONENTS}" optional)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
-    vtkCommonColor
-    vtkCommonComputationalGeometry
-    vtkCommonCore
-    vtkCommonDataModel
-    vtkCommonExecutionModel
-    vtkCommonTransforms
-    vtkFiltersCore
-    vtkFiltersExtraction
-    vtkFiltersGeneral
-    vtkFiltersGeometry
-    vtkFiltersHybrid
-    vtkFiltersModeling
-    vtkFiltersPoints
-    vtkFiltersSources
-    vtkFiltersVerdict
-    vtkIOGeometry
-    vtkIOImage
-    vtkIOImport
-    vtkIOLegacy
-    vtkIOPLY
-    vtkIOXML
-    vtkImagingCore
-    vtkImagingHybrid
-    vtkImagingSources
-    vtkImagingStencil
-    vtkInteractionStyle
-    vtkInteractionWidgets
-    vtkRenderingAnnotation
-    vtkRenderingCore
-    vtkRenderingFreeType
-    vtkRenderingGL2PSOpenGL2
-    vtkRenderingLOD
-    vtkRenderingOpenGL2
+    CommonColor
+    CommonComputationalGeometry
+    CommonCore
+    CommonDataModel
+    CommonExecutionModel
+    CommonTransforms
+    FiltersCore
+    FiltersExtraction
+    FiltersGeneral
+    FiltersGeometry
+    FiltersHybrid
+    FiltersModeling
+    FiltersPoints
+    FiltersSources
+    FiltersVerdict
+    IOGeometry
+    IOImage
+    IOImport
+    IOLegacy
+    IOPLY
+    IOXML
+    ImagingCore
+    ImagingHybrid
+    ImagingSources
+    ImagingStencil
+    InteractionStyle
+    InteractionWidgets
+    RenderingAnnotation
+    RenderingCore
+    RenderingFreeType
+    RenderingGL2PSOpenGL2
+    RenderingLOD
+    RenderingOpenGL2
     ${optional}
     OPTIONAL_COMPONENTS
-    #    vtkFiltersParallelStatistics
-    vtkTestingRendering
+    #    FiltersParallelStatistics
+    TestingRendering
     QUIET
     )
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    include(${VTK_USE_FILE})
-  endif()
 endif()
 
 set(KIT_LIBS ${VTK_LIBRARIES})
@@ -55,24 +52,20 @@ set(KIT_LIBS ${VTK_LIBRARIES})
 # Build all .cxx files in the directory
 file(GLOB ALL_FILES *.cxx)
 
-Requires_Version(Curvatures "6.0.0" ALL_FILES)
-Requires_Version(AlignTwoPolyDatas "8.2" ALL_FILES)
-Requires_Class(AlignTwoPolyDatas vtkHausdorffDistancePointSetFilter)
+Requires_Class(AlignTwoPolyDatas HausdorffDistancePointSetFilter)
 
 foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ".cxx" "" TMP ${SOURCE_FILE})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx)
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (VTK_VERSION VERSION_GREATER "8.8")
-    vtk_module_autoinit(
-      TARGETS ${WIKI}${EXAMPLE}
-      MODULES ${VTK_LIBRARIES}
-      )
-  endif()
+  vtk_module_autoinit(
+    TARGETS ${WIKI}${EXAMPLE}
+    MODULES ${VTK_LIBRARIES}
+    )
 endforeach()
 
-Requires_Target(PolyDataBooleanOperationFilter vtkPolyDataBooleanFilter)
+#Requires_Target(PolyDataBooleanOperationFilter vtkPolyDataBooleanFilter)
 
 if (BUILD_TESTING)
   # Testing

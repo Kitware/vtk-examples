@@ -3,47 +3,44 @@ project (${WIKI}VisualizationAlgorithms)
 if(NOT VTK_BINARY_DIR)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
-    vtkCommonColor
-    vtkCommonComputationalGeometry
-    vtkCommonCore
-    vtkCommonDataModel
-    vtkCommonMath
-    vtkCommonTransforms
-    vtkFiltersCore
-    vtkFiltersExtraction
-    vtkFiltersFlowPaths
-    vtkFiltersGeneral
-    vtkFiltersGeneric
-    vtkFiltersGeometry
-    vtkFiltersHybrid
-    vtkFiltersModeling
-    vtkFiltersSources
-    vtkFiltersTexture
-    vtkIOGeometry
-    vtkIOImage
-    vtkIOImport
-    vtkIOLegacy
-    vtkIOParallel
-    vtkIOXML
-    vtkImagingColor
-    vtkImagingCore
-    vtkImagingGeneral
-    vtkImagingHybrid
-    vtkInteractionImage
-    vtkInteractionStyle
-    vtkInteractionWidgets
-    vtkRenderingAnnotation
-    vtkRenderingCore
-    vtkRenderingFreeType
-    vtkRenderingLOD
-    vtkRenderingOpenGL2
+    CommonColor
+    CommonComputationalGeometry
+    CommonCore
+    CommonDataModel
+    CommonMath
+    CommonTransforms
+    FiltersCore
+    FiltersExtraction
+    FiltersFlowPaths
+    FiltersGeneral
+    FiltersGeneric
+    FiltersGeometry
+    FiltersHybrid
+    FiltersModeling
+    FiltersSources
+    FiltersTexture
+    IOGeometry
+    IOImage
+    IOImport
+    IOLegacy
+    IOParallel
+    IOXML
+    ImagingColor
+    ImagingCore
+    ImagingGeneral
+    ImagingHybrid
+    InteractionImage
+    InteractionStyle
+    InteractionWidgets
+    RenderingAnnotation
+    RenderingCore
+    RenderingFreeType
+    RenderingLOD
+    RenderingOpenGL2
     OPTIONAL_COMPONENTS
-    vtkTestingRendering
+    TestingRendering
     QUIET
     )
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    include(${VTK_USE_FILE})
-  endif()
 endif()
 
 set(KIT_LIBS ${VTK_LIBRARIES})
@@ -62,12 +59,10 @@ foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx)
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (NOT VTK_VERSION VERSION_LESS "8.90.0")
     vtk_module_autoinit(
       TARGETS ${WIKI}${EXAMPLE}
       MODULES ${VTK_LIBRARIES}
       )
-  endif()
 endforeach()
 
 if (BUILD_TESTING)

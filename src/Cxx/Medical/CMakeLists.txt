@@ -3,27 +3,27 @@ project (${WIKI}Medical)
 if(NOT VTK_BINARY_DIR)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
-    vtkCommonColor
-    vtkCommonCore
-    vtkCommonDataModel
-    vtkCommonTransforms
-    vtkFiltersCore
-    vtkFiltersGeneral
-    vtkFiltersGeometry
-    vtkFiltersModeling
-    vtkFiltersSources
-    vtkIOImage
-    vtkIOXML
-    vtkImagingCore
-    vtkImagingStatistics
-    vtkInteractionStyle
-    vtkRenderingCore
-    vtkRenderingFreeType
-    vtkRenderingOpenGL2
-    vtkRenderingVolume
-    vtkRenderingVolumeOpenGL2
+    CommonColor
+    CommonCore
+    CommonDataModel
+    CommonTransforms
+    FiltersCore
+    FiltersGeneral
+    FiltersGeometry
+    FiltersModeling
+    FiltersSources
+    IOImage
+    IOXML
+    ImagingCore
+    ImagingStatistics
+    InteractionStyle
+    RenderingCore
+    RenderingFreeType
+    RenderingOpenGL2
+    RenderingVolume
+    RenderingVolumeOpenGL2
     OPTIONAL_COMPONENTS
-    vtkTestingRendering
+    TestingRendering
     QUIET
     )
   if (VTK_VERSION VERSION_LESS "8.90.0")
@@ -45,12 +45,10 @@ foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx)
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (NOT VTK_VERSION VERSION_LESS "8.90.0")
-    vtk_module_autoinit(
-      TARGETS ${WIKI}${EXAMPLE}
-      MODULES ${VTK_LIBRARIES}
-      )
-  endif()
+  vtk_module_autoinit(
+    TARGETS ${WIKI}${EXAMPLE}
+    MODULES ${VTK_LIBRARIES}
+    )
 endforeach()
 
 if (BUILD_TESTING)

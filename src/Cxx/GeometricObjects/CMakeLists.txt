@@ -3,33 +3,30 @@ project (${WIKI}GeometricObjects)
 if(NOT VTK_BINARY_DIR)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
-    vtkCommonColor
-    vtkCommonComputationalGeometry
-    vtkCommonCore
-    vtkCommonDataModel
-    vtkCommonExecutionModel
-    vtkCommonTransforms
-    vtkFiltersCore
-    vtkFiltersGeneral
-    vtkFiltersHybrid
-    vtkFiltersModeling
-    vtkFiltersSources
-    vtkIOImage
-    vtkIOXML
-    vtkInteractionStyle
-    vtkInteractionWidgets
-    vtkRenderingAnnotation
-    vtkRenderingCore
-    vtkRenderingFreeType
-    vtkRenderingLabel
-    vtkRenderingOpenGL2
+    CommonColor
+    CommonComputationalGeometry
+    CommonCore
+    CommonDataModel
+    CommonExecutionModel
+    CommonTransforms
+    FiltersCore
+    FiltersGeneral
+    FiltersHybrid
+    FiltersModeling
+    FiltersSources
+    IOImage
+    IOXML
+    InteractionStyle
+    InteractionWidgets
+    RenderingAnnotation
+    RenderingCore
+    RenderingFreeType
+    RenderingLabel
+    RenderingOpenGL2
     OPTIONAL_COMPONENTS
-    vtkTestingRendering
+    TestingRendering
     QUIET
     )
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    include(${VTK_USE_FILE})
-  endif()
 endif()
 
 set(KIT_LIBS ${VTK_LIBRARIES})
@@ -38,29 +35,27 @@ set(KIT_LIBS ${VTK_LIBRARIES})
 # Build all .cxx files in the directory
 file(GLOB ALL_FILES *.cxx)
 
-set(VERSION_MIN "7.0")
-Requires_Version(ParametricKuenDemo ${VERSION_MIN} ALL_FILES)
-Requires_Version(ParametricObjectsDemo2 ${VERSION_MIN} ALL_FILES)
-Requires_Module(OpenVRCone vtkRenderingOpenVR)
-Requires_Module(OpenVRCube vtkRenderingOpenVR)
-Requires_Module(OpenVRCylinder vtkRenderingOpenVR)
-Requires_Module(OpenVRFrustum vtkRenderingOpenVR)
-Requires_Module(OpenVROrientedArrow vtkRenderingOpenVR)
-Requires_Module(OpenVROrientedCylinder vtkRenderingOpenVR)
-Requires_Module(OpenVRSphere vtkRenderingOpenVR)
-Requires_Module(OpenVRTessellatedBoxSource vtkRenderingOpenVR)
+# set(VERSION_MIN "7.0")
+# Requires_Version(ParametricKuenDemo ${VERSION_MIN} ALL_FILES)
+# Requires_Version(ParametricObjectsDemo2 ${VERSION_MIN} ALL_FILES)
+Requires_Module(OpenVRCone RenderingOpenVR)
+Requires_Module(OpenVRCube RenderingOpenVR)
+Requires_Module(OpenVRCylinder RenderingOpenVR)
+Requires_Module(OpenVRFrustum RenderingOpenVR)
+Requires_Module(OpenVROrientedArrow RenderingOpenVR)
+Requires_Module(OpenVROrientedCylinder RenderingOpenVR)
+Requires_Module(OpenVRSphere RenderingOpenVR)
+Requires_Module(OpenVRTessellatedBoxSource RenderingOpenVR)
 
 foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ".cxx" "" TMP ${SOURCE_FILE})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx)
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (NOT VTK_VERSION VERSION_LESS "8.90.0")
-    vtk_module_autoinit(
-      TARGETS ${WIKI}${EXAMPLE}
-      MODULES ${VTK_LIBRARIES}
-      )
-  endif()
+  vtk_module_autoinit(
+    TARGETS ${WIKI}${EXAMPLE}
+    MODULES ${VTK_LIBRARIES}
+    )
 endforeach()
 
 if (BUILD_TESTING)
