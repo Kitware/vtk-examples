@@ -3,38 +3,35 @@ project (${WIKI}InfoVis)
 if(NOT VTK_BINARY_DIR)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
-    vtkCommonColor
-    vtkCommonComputationalGeometry
-    vtkCommonCore
-    vtkCommonDataModel
-    vtkFiltersGeneral
-    vtkFiltersSources
-    vtkFiltersStatistics
-    vtkImagingCore
-    vtkImagingSources
-    vtkIOCore
-    vtkIOImage
-    vtkIOInfovis
-    vtkIOXML
-    vtkInfovisCore
-    vtkInfovisLayout
-    vtkInteractionImage
-    vtkInteractionStyle
-    vtkRenderingCore
-    vtkRenderingFreeType
-    vtkRenderingGL2PSOpenGL2
-    vtkRenderingOpenGL2
-    vtkRenderingContextOpenGL2
-    vtkViewsCore
-    vtkViewsInfovis
+    CommonColor
+    CommonComputationalGeometry
+    CommonCore
+    CommonDataModel
+    FiltersGeneral
+    FiltersSources
+    FiltersStatistics
+    ImagingCore
+    ImagingSources
+    IOCore
+    IOImage
+    IOInfovis
+    IOXML
+    InfovisCore
+    InfovisLayout
+    InteractionImage
+    InteractionStyle
+    RenderingCore
+    RenderingFreeType
+    RenderingGL2PSOpenGL2
+    RenderingOpenGL2
+    RenderingContextOpenGL2
+    ViewsCore
+    ViewsInfovis
     vtksys
     OPTIONAL_COMPONENTS
-    vtkTestingRendering
+    TestingRendering
     QUIET
     )
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    include(${VTK_USE_FILE})
-  endif()
 endif()
 set(KIT_LIBS ${VTK_LIBRARIES})
 
@@ -54,12 +51,9 @@ if (BOOST_SRCS)
 endif()
 
 if(VTK_USE_BOOST)
-  Requires_Module(MutableGraphHelper vtkInfovisBoostGraphAlgorithms)
+  Requires_Module(MutableGraphHelper InfovisBoostGraphAlgorithms)
 endif()
 
-set(VERSION_MIN "6.0")
-Requires_Version(TreeMapView ${VERSION_MIN})
-#Requires_Setting_On (TreeMapView BUILD_TESTING)
 Requires_Class(WordCloudDemo vtkWordCloud)
 
 if(NOT VTK_USE_PARALLEL)
@@ -74,12 +68,10 @@ foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx)
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (VTK_VERSION VERSION_GREATER "8.8")
-    vtk_module_autoinit(
-      TARGETS ${WIKI}${EXAMPLE}
-      MODULES ${VTK_LIBRARIES}
-      )
-  endif()
+  vtk_module_autoinit(
+    TARGETS ${WIKI}${EXAMPLE}
+    MODULES ${VTK_LIBRARIES}
+    )
 endforeach()
 
 if (BUILD_TESTING)

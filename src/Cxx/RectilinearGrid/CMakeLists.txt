@@ -3,24 +3,21 @@ project (${WIKI}RectilinearGrid)
 if(NOT VTK_BINARY_DIR)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
-    vtkCommonColor
-    vtkCommonCore
-    vtkCommonDataModel
-    vtkFiltersGeneral
-    vtkFiltersGeometry
-    vtkIOXML
-    vtkInteractionStyle
-    vtkRenderingCore
-    vtkRenderingFreeType
-    vtkRenderingOpenGL2
+    CommonColor
+    CommonCore
+    CommonDataModel
+    FiltersGeneral
+    FiltersGeometry
+    IOXML
+    InteractionStyle
+    RenderingCore
+    RenderingFreeType
+    RenderingOpenGL2
     OPTIONAL_COMPONENTS
-    vtkRenderingGL2PSOpenGL2
-    vtkTestingRendering
+    RenderingGL2PSOpenGL2
+    TestingRendering
     QUIET
     )
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    include(${VTK_USE_FILE})
-  endif()
 endif()
 
 set(KIT_LIBS ${VTK_LIBRARIES})
@@ -33,12 +30,10 @@ foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx)
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (NOT VTK_VERSION VERSION_LESS "8.90.0")
-    vtk_module_autoinit(
-      TARGETS ${WIKI}${EXAMPLE}
-      MODULES ${VTK_LIBRARIES}
-      )
-  endif()
+  vtk_module_autoinit(
+    TARGETS ${WIKI}${EXAMPLE}
+    MODULES ${VTK_LIBRARIES}
+    )
 endforeach()
 
 if (BUILD_TESTING)

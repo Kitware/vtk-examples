@@ -3,29 +3,26 @@ project (${WIKI}Graphs)
 if(NOT VTK_BINARY_DIR)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
-    vtkCommonCore
-    vtkCommonDataModel
-    vtkFiltersCore
-    vtkFiltersGeneral
-    vtkFiltersModeling
-    vtkFiltersSources
-    vtkIOLegacy
-    vtkIOXML
-    vtkInfovisCore
-    vtkInfovisLayout
-    vtkInteractionStyle
-    vtkRenderingCore
-    vtkRenderingFreeType
-    vtkRenderingOpenGL2
-    vtkViewsCore
-    vtkViewsInfovis
+    CommonCore
+    CommonDataModel
+    FiltersCore
+    FiltersGeneral
+    FiltersModeling
+    FiltersSources
+    IOLegacy
+    IOXML
+    InfovisCore
+    InfovisLayout
+    InteractionStyle
+    RenderingCore
+    RenderingFreeType
+    RenderingOpenGL2
+    ViewsCore
+    ViewsInfovis
     OPTIONAL_COMPONENTS
-    vtkTestingRendering
+    TestingRendering
     QUIET
     )
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    include(${VTK_USE_FILE})
-  endif()
 endif()
 
 set(KIT_LIBS ${VTK_LIBRARIES})
@@ -51,12 +48,12 @@ if (BOOST_SRCS)
 endif()
 
 if(VTK_USE_BOOST)
-  Requires_Module(AdjacentVertexIterator vtkInfovisBoostGraphAlgorithms)
-  Requires_Module(BreadthFirstDistance vtkInfovisBoostGraphAlgorithms)
-  Requires_Module(BoostBreadthFirstSearchTree vtkInfovisBoostGraphAlgorithms)
-  Requires_Module(ConnectedComponents vtkInfovisBoostGraphAlgorithms)
-  Requires_Module(DepthFirstSearchIterator vtkInfovisBoostGraphAlgorithms)
-  Requires_Module(MinimumSpanningTree vtkInfovisBoostGraphAlgorithms)
+  Requires_Module(AdjacentVertexIterator InfovisBoostGraphAlgorithms)
+  Requires_Module(BreadthFirstDistance InfovisBoostGraphAlgorithms)
+  Requires_Module(BoostBreadthFirstSearchTree InfovisBoostGraphAlgorithms)
+  Requires_Module(ConnectedComponents InfovisBoostGraphAlgorithms)
+  Requires_Module(DepthFirstSearchIterator InfovisBoostGraphAlgorithms)
+  Requires_Module(MinimumSpanningTree InfovisBoostGraphAlgorithms)
 endif()
 
 foreach(SOURCE_FILE ${ALL_FILES})
@@ -64,12 +61,10 @@ foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx)
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (NOT VTK_VERSION VERSION_LESS "8.90.0")
-    vtk_module_autoinit(
-      TARGETS ${WIKI}${EXAMPLE}
-      MODULES ${VTK_LIBRARIES}
-      )
-  endif()
+  vtk_module_autoinit(
+    TARGETS ${WIKI}${EXAMPLE}
+    MODULES ${VTK_LIBRARIES}
+    )
 endforeach()
 
 if (BUILD_TESTING)

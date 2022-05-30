@@ -5,56 +5,53 @@ if(NOT VTK_BINARY_DIR)
   Add_Optional_If_In_Library(SplineDrivenImageSlicer "${VTK_AVAILABLE_COMPONENTS}" optional)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
-  vtkCommonColor
-  vtkCommonComputationalGeometry
-  vtkCommonCore
-  vtkCommonDataModel
-  vtkCommonExecutionModel
-  vtkCommonMath
-  vtkCommonSystem
-  vtkCommonTransforms
-  vtkDomainsChemistry
-  vtkDomainsChemistryOpenGL2
-  vtkFiltersCore
-  vtkFiltersFlowPaths
-  vtkFiltersGeneral
-  vtkFiltersGeometry
-  vtkFiltersHybrid
-  vtkFiltersModeling
-  vtkFiltersProgrammable
-  vtkFiltersSources
-  vtkFiltersTexture
-  vtkIOChemistry
-  vtkIOGeometry
-  vtkIOImage
-  vtkIOLegacy
-  vtkIOPLY
-  vtkIOParallel
-  vtkIOXML
-  vtkImagingColor
-  vtkImagingCore
-  vtkImagingGeneral
-  vtkImagingHybrid
-  vtkImagingMorphological
-  vtkImagingSources
-  vtkInteractionImage
-  vtkInteractionStyle
-  vtkInteractionWidgets
-  vtkRenderingAnnotation
-  vtkRenderingContextOpenGL2
-  vtkRenderingCore
-  vtkRenderingFreeType
-  vtkRenderingGL2PSOpenGL2
-  vtkRenderingLOD
-  vtkRenderingLabel
-  vtkRenderingOpenGL2
-  vtkTestingRendering
+  CommonColor
+  CommonComputationalGeometry
+  CommonCore
+  CommonDataModel
+  CommonExecutionModel
+  CommonMath
+  CommonSystem
+  CommonTransforms
+  DomainsChemistry
+  DomainsChemistryOpenGL2
+  FiltersCore
+  FiltersFlowPaths
+  FiltersGeneral
+  FiltersGeometry
+  FiltersHybrid
+  FiltersModeling
+  FiltersProgrammable
+  FiltersSources
+  FiltersTexture
+  IOChemistry
+  IOGeometry
+  IOImage
+  IOLegacy
+  IOPLY
+  IOParallel
+  IOXML
+  ImagingColor
+  ImagingCore
+  ImagingGeneral
+  ImagingHybrid
+  ImagingMorphological
+  ImagingSources
+  InteractionImage
+  InteractionStyle
+  InteractionWidgets
+  RenderingAnnotation
+  RenderingContextOpenGL2
+  RenderingCore
+  RenderingFreeType
+  RenderingGL2PSOpenGL2
+  RenderingLOD
+  RenderingLabel
+  RenderingOpenGL2
+  TestingRendering
   ${optional}
   QUIET
 )
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    include(${VTK_USE_FILE})
-  endif()
 endif()
 
 set(KIT_LIBS ${VTK_LIBRARIES})
@@ -64,18 +61,8 @@ set(KIT_LIBS ${VTK_LIBRARIES})
 
 file(GLOB ALL_FILES *.cxx)
 
-set(VERSION_MIN "6.0.0")
-Requires_Version(AssignCellColorsFromLUT ${VERSION_MIN} ALL_FILES)
-Requires_Version(NamedColors ${VERSION_MIN} ALL_FILES)
-Requires_Version(NamedColorPatches ${VERSION_MIN} ALL_FILES)
-Requires_Version(Legend ${VERSION_MIN} ALL_FILES)
-Requires_Version(ElevationBandsWithGlyphs ${VERSION_MIN} ALL_FILES)
 Requires_Module(ExtrudePolyDataAlongLine SplineDrivenImageSlicer)
-Requires_Version(CurvatureBandsWithGlyphs ${VERSION_MIN} ALL_FILES)
-Requires_Version(PointDataSubdivision ${VERSION_MIN} ALL_FILES)
-Requires_Version(ProjectSphere ${VERSION_MIN} ALL_FILES)
-Requires_Version(BillboardTextActor3D "7.1.0" ALL_FILES)
-#Requires_Module(ShadowsOpenGL vtkRenderingOpenGL)
+#Requires_Module(ShadowsOpenGL RenderingOpenGL)
 #Requires_Setting_Off(StreamLines VTK_LEGACY_REMOVE)
 Requires_GitLfs(Hawaii ALL_FILES)
 Requires_GitLfs(FrogBrain ALL_FILES)
@@ -86,12 +73,10 @@ foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx)
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (NOT VTK_VERSION VERSION_LESS "8.90.0")
-    vtk_module_autoinit(
-      TARGETS ${WIKI}${EXAMPLE}
-      MODULES ${VTK_LIBRARIES}
-      )
-  endif()
+  vtk_module_autoinit(
+    TARGETS ${WIKI}${EXAMPLE}
+    MODULES ${VTK_LIBRARIES}
+    )
 endforeach()
 
 if (BUILD_TESTING)

@@ -20,25 +20,25 @@ project (QtVTKWikiExamples)
 if(NOT VTK_BINARY_DIR)
   set(VTK_LIBRARIES "")
   find_package(VTK COMPONENTS
-    vtkChartsCore
-    vtkCommonColor
-    vtkCommonCore
-    vtkCommonDataModel
-    vtkFiltersCore
-    vtkFiltersSources
-    vtkGUISupportQt
-    vtkInfovisCore
-    vtkInteractionStyle
-    vtkInteractionWidgets
-    vtkRenderingContext2D
-    vtkRenderingContextOpenGL2
-    vtkRenderingCore
-    vtkRenderingFreeType
-    vtkRenderingGL2PSOpenGL2
-    vtkRenderingOpenGL2
-    vtkRenderingQt
-    vtkViewsContext2D
-    vtkViewsQt
+    ChartsCore
+    CommonColor
+    CommonCore
+    CommonDataModel
+    FiltersCore
+    FiltersSources
+    GUISupportQt
+    InfovisCore
+    InteractionStyle
+    InteractionWidgets
+    RenderingContext2D
+    RenderingContextOpenGL2
+    RenderingCore
+    RenderingFreeType
+    RenderingGL2PSOpenGL2
+    RenderingOpenGL2
+    RenderingQt
+    ViewsContext2D
+    ViewsQt
     QUIET
     )
     if (VTK_VERSION VERSION_LESS "8.90.0")
@@ -58,11 +58,11 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 file(GLOB ALL_UI_FILES *.ui)
 file(GLOB ALL_FILES *.cxx)
 
-Requires_Module(ShareCameraQt vtkViewsQt)
-Requires_Module(ShareCameraQtDriver vtkViewsQt)
-Requires_Module(SideBySideRenderWindowsQt vtkViewsQt)
-Requires_Module(SideBySideRenderWindowsQtDriver vtkViewsQt)
-Requires_Module(QImageToImageSource vtkRenderingQt)
+Requires_Module(ShareCameraQt ViewsQt)
+Requires_Module(ShareCameraQtDriver ViewsQt)
+Requires_Module(SideBySideRenderWindowsQt ViewsQt)
+Requires_Module(SideBySideRenderWindowsQtDriver ViewsQt)
+Requires_Module(QImageToImageSource RenderingQt)
 
 find_package(Qt6Widgets QUIET)
 set(qt_version 6)
@@ -119,9 +119,6 @@ foreach(EXAMPLE_FILE ${ALL_UI_FILES})
   #  CMAKE_AUTOMOC is ON so we handle moc automatically for Qt targets.
   # However we have to do the following for VTK versions less than 8.90.0,
   #  and we also assume, in this case, that Qt5 is being used.
-  if (VTK_VERSION VERSION_LESS "8.90.0")
-    qt5_wrap_ui(UISrcs ${EXAMPLE}.ui)
-  endif()
   add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}Driver.cxx ${EXAMPLE}.cxx ${UISrcs} ${EXAMPLE}.h)
   if (Qt${qt_version}Widgets_VERSION VERSION_LESS "5.11.0")
     qt5_use_modules(${WIKI}${EXAMPLE} ${qt_components})
@@ -129,12 +126,10 @@ foreach(EXAMPLE_FILE ${ALL_UI_FILES})
     target_link_libraries(${WIKI}${EXAMPLE} ${qt_modules})
   endif()
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (VTK_VERSION VERSION_GREATER "8.8")
     vtk_module_autoinit(
       TARGETS ${WIKI}${EXAMPLE}
       MODULES ${VTK_LIBRARIES}
       )
-  endif()
   list(REMOVE_ITEM ALL_FILES ${CMAKE_CURRENT_SOURCE_DIR}/${EXAMPLE}Driver.cxx ${CMAKE_CURRENT_SOURCE_DIR}/${EXAMPLE}.cxx)
 endforeach()
 
@@ -149,10 +144,8 @@ foreach(EXAMPLE_FILE ${ALL_FILES})
     target_link_libraries(${WIKI}${EXAMPLE} ${qt_modules})
   endif()
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS})
-  if (VTK_VERSION VERSION_GREATER "8.8")
   vtk_module_autoinit(
     TARGETS ${WIKI}${EXAMPLE}
     MODULES ${VTK_LIBRARIES}
     )
-  endif()
 endforeach()
