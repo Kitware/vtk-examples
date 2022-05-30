@@ -343,6 +343,7 @@ https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/V
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestMultipleViewports.png https://tinyurl.com/yyusassj
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Utilities/TestPCADemo.png https://tinyurl.com/y6t6bxza
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Utilities/TestRenderScalarToFloatBuffer.png https://tinyurl.com/yya99y8a
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Utilities/TestResetCameraOrientation.png https://tinyurl.com/y9bqw6oa
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Utilities/TestSaveSceneToFieldData.png https://tinyurl.com/y58jvm4n
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Utilities/TestSaveSceneToFile.png https://tinyurl.com/yxmn76ly
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Utilities/TestScreenshot.png https://tinyurl.com/y2p9oamk
@@ -1001,6 +1002,7 @@ https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Pytho
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Filtering/TestDelaunay2D.png https://tinyurl.com/y3jlura2
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Visualization/TestMultipleRenderWindows.png https://tinyurl.com/yz7vzzmq
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Visualization/TestMultipleViewports.png https://tinyurl.com/y2bgr52h
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Utilities/TestResetCameraOrientation.png https://tinyurl.com/y9xm52pn
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Utilities/TestSaveSceneToFieldData.png https://tinyurl.com/y4rryghk
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Utilities/TestSaveSceneToFile.png https://tinyurl.com/y24lfhsp
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Utilities/TestScreenshot.png https://tinyurl.com/y4hhh2nw
@@ -1446,5 +1448,3 @@ https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Java/
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Java/Widgets/TestSeedWidget.png https://tinyurl.com/y5qecojc
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Java/Widgets/TestSplineWidget.png https://tinyurl.com/yyl8bgg7
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Java/Widgets/TestTextWidget.png https://tinyurl.com/y6exej6l
-https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Utilities/TestResetCameraOrientation.png https://tinyurl.com/y9bqw6oa
-https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Utilities/TestResetCameraOrientation.png https://tinyurl.com/y9xm52pn

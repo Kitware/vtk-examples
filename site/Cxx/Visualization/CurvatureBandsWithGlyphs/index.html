@@ -1477,47 +1477,40 @@ function registerListener(event, func) {
 <span class=nb>project</span><span class=p>(</span><span class=s>CurvatureBandsWithGlyphs</span><span class=p>)</span>
 
 <span class=nb>find_package</span><span class=p>(</span><span class=s>VTK</span><span class=w> </span><span class=s>COMPONENTS</span><span class=w> </span>
-<span class=w>  </span><span class=s>vtkCommonColor</span>
-<span class=w>  </span><span class=s>vtkCommonComputationalGeometry</span>
-<span class=w>  </span><span class=s>vtkCommonCore</span>
-<span class=w>  </span><span class=s>vtkCommonDataModel</span>
-<span class=w>  </span><span class=s>vtkCommonTransforms</span>
-<span class=w>  </span><span class=s>vtkFiltersCore</span>
-<span class=w>  </span><span class=s>vtkFiltersGeneral</span>
-<span class=w>  </span><span class=s>vtkFiltersModeling</span>
-<span class=w>  </span><span class=s>vtkFiltersSources</span>
-<span class=w>  </span><span class=s>vtkInteractionStyle</span>
-<span class=w>  </span><span class=s>vtkInteractionWidgets</span>
-<span class=w>  </span><span class=s>vtkRenderingAnnotation</span>
-<span class=w>  </span><span class=s>vtkRenderingContextOpenGL2</span>
-<span class=w>  </span><span class=s>vtkRenderingCore</span>
-<span class=w>  </span><span class=s>vtkRenderingFreeType</span>
-<span class=w>  </span><span class=s>vtkRenderingGL2PSOpenGL2</span>
-<span class=w>  </span><span class=s>vtkRenderingOpenGL2</span>
+<span class=w>  </span><span class=s>CommonColor</span>
+<span class=w>  </span><span class=s>CommonComputationalGeometry</span>
+<span class=w>  </span><span class=s>CommonCore</span>
+<span class=w>  </span><span class=s>CommonDataModel</span>
+<span class=w>  </span><span class=s>CommonTransforms</span>
+<span class=w>  </span><span class=s>FiltersCore</span>
+<span class=w>  </span><span class=s>FiltersGeneral</span>
+<span class=w>  </span><span class=s>FiltersModeling</span>
+<span class=w>  </span><span class=s>FiltersSources</span>
+<span class=w>  </span><span class=s>InteractionStyle</span>
+<span class=w>  </span><span class=s>InteractionWidgets</span>
+<span class=w>  </span><span class=s>RenderingAnnotation</span>
+<span class=w>  </span><span class=s>RenderingContextOpenGL2</span>
+<span class=w>  </span><span class=s>RenderingCore</span>
+<span class=w>  </span><span class=s>RenderingFreeType</span>
+<span class=w>  </span><span class=s>RenderingGL2PSOpenGL2</span>
+<span class=w>  </span><span class=s>RenderingOpenGL2</span>
 <span class=w>  </span><span class=s>QUIET</span>
 <span class=p>)</span>
 
 <span class=nb>if</span> <span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s2>&quot;Skipping CurvatureBandsWithGlyphs: ${VTK_NOT_FOUND_MESSAGE}&quot;</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>return</span><span class=p>()</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;CurvatureBandsWithGlyphs: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
-<span class=nb>message</span> <span class=p>(</span><span class=s>STATUS</span><span class=w> </span><span class=s2>&quot;VTK_VERSION: ${VTK_VERSION}&quot;</span><span class=p>)</span>
-<span class=nb>if</span> <span class=p>(</span><span class=s>VTK_VERSION</span><span class=w> </span><span class=s>VERSION_LESS</span><span class=w> </span><span class=s2>&quot;8.90.0&quot;</span><span class=p>)</span>
-<span class=w>  </span><span class=c># old system</span>
-<span class=w>  </span><span class=nb>include</span><span class=p>(</span><span class=o>${</span><span class=nv>VTK_USE_FILE</span><span class=o>}</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>add_executable</span><span class=p>(</span><span class=s>CurvatureBandsWithGlyphs</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>CurvatureBandsWithGlyphs.cxx</span><span class=w> </span><span class=p>)</span>
-<span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>CurvatureBandsWithGlyphs</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span><span class=p>)</span>
-<span class=nb>else</span><span class=p>()</span>
-<span class=w>  </span><span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=w>  </span><span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>add_executable</span><span class=p>(</span><span class=s>CurvatureBandsWithGlyphs</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>CurvatureBandsWithGlyphs.cxx</span><span class=w> </span><span class=p>)</span>
-<span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>CurvatureBandsWithGlyphs</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span><span class=p>)</span>
-<span class=w>  </span><span class=c># vtk_module_autoinit is needed</span>
-<span class=w>  </span><span class=nb>vtk_module_autoinit</span><span class=p>(</span>
-<span class=w>    </span><span class=s>TARGETS</span><span class=w> </span><span class=s>CurvatureBandsWithGlyphs</span>
-<span class=w>    </span><span class=s>MODULES</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
-<span class=w>    </span><span class=p>)</span>
-<span class=nb>endif</span><span class=p>()</span>
+
+<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=nb>add_executable</span><span class=p>(</span><span class=s>CurvatureBandsWithGlyphs</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>CurvatureBandsWithGlyphs.cxx</span><span class=w> </span><span class=p>)</span>
+<span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>CurvatureBandsWithGlyphs</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
+<span class=p>)</span>
+<span class=c># vtk_module_autoinit is needed</span>
+<span class=nb>vtk_module_autoinit</span><span class=p>(</span>
+<span class=w>  </span><span class=s>TARGETS</span><span class=w> </span><span class=s>CurvatureBandsWithGlyphs</span>
+<span class=w>  </span><span class=s>MODULES</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
+<span class=p>)</span>
 </code></pre></div> <h3 id=download-and-build-curvaturebandswithglyphs>Download and Build CurvatureBandsWithGlyphs<a class=headerlink href=#download-and-build-curvaturebandswithglyphs title="Permanent link">&para;</a></h3> <p>Click <a href=https://github.com/Kitware/vtk-examples/raw/gh-pages/Tarballs/Cxx/CurvatureBandsWithGlyphs.tar>here to download CurvatureBandsWithGlyphs</a> and its <em>CMakeLists.txt</em> file. Once the <em>tarball CurvatureBandsWithGlyphs.tar</em> has been downloaded and extracted,</p> <div class=codehilite><pre><span></span><code>cd CurvatureBandsWithGlyphs/build
 </code></pre></div> <p>If VTK is installed:</p> <div class=codehilite><pre><span></span><code>cmake ..
 </code></pre></div> <p>If VTK is not installed but compiled on your system, you will need to specify the path to your VTK build:</p> <div class=codehilite><pre><span></span><code>cmake -DVTK_DIR:PATH=/home/me/vtk_build ..

@@ -192,41 +192,34 @@ function registerListener(event, func) {
 <span class=n>project</span><span class=p>(</span><span class=n>AppendFilter</span><span class=p>)</span><span class=w></span>
 
 <span class=n>find_package</span><span class=p>(</span><span class=n>VTK</span><span class=w> </span><span class=n>COMPONENTS</span><span class=w> </span>
-<span class=w>  </span><span class=n>vtkCommonColor</span><span class=w></span>
-<span class=w>  </span><span class=n>vtkCommonCore</span><span class=w></span>
-<span class=w>  </span><span class=n>vtkCommonDataModel</span><span class=w></span>
-<span class=w>  </span><span class=n>vtkFiltersCore</span><span class=w></span>
-<span class=w>  </span><span class=n>vtkFiltersSources</span><span class=w></span>
-<span class=w>  </span><span class=n>vtkInteractionStyle</span><span class=w></span>
-<span class=w>  </span><span class=n>vtkRenderingContextOpenGL2</span><span class=w></span>
-<span class=w>  </span><span class=n>vtkRenderingCore</span><span class=w></span>
-<span class=w>  </span><span class=n>vtkRenderingFreeType</span><span class=w></span>
-<span class=w>  </span><span class=n>vtkRenderingGL2PSOpenGL2</span><span class=w></span>
-<span class=w>  </span><span class=n>vtkRenderingOpenGL2</span><span class=w></span>
+<span class=w>  </span><span class=n>CommonColor</span><span class=w></span>
+<span class=w>  </span><span class=n>CommonCore</span><span class=w></span>
+<span class=w>  </span><span class=n>CommonDataModel</span><span class=w></span>
+<span class=w>  </span><span class=n>FiltersCore</span><span class=w></span>
+<span class=w>  </span><span class=n>FiltersSources</span><span class=w></span>
+<span class=w>  </span><span class=n>InteractionStyle</span><span class=w></span>
+<span class=w>  </span><span class=n>RenderingContextOpenGL2</span><span class=w></span>
+<span class=w>  </span><span class=n>RenderingCore</span><span class=w></span>
+<span class=w>  </span><span class=n>RenderingFreeType</span><span class=w></span>
+<span class=w>  </span><span class=n>RenderingGL2PSOpenGL2</span><span class=w></span>
+<span class=w>  </span><span class=n>RenderingOpenGL2</span><span class=w></span>
 <span class=w>  </span><span class=n>QUIET</span><span class=w></span>
 <span class=p>)</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>NOT</span><span class=w> </span><span class=n>VTK_FOUND</span><span class=p>)</span><span class=w></span>
-<span class=w>  </span><span class=n>message</span><span class=p>(</span><span class=s>&quot;Skipping AppendFilter: ${VTK_NOT_FOUND_MESSAGE}&quot;</span><span class=p>)</span><span class=w></span>
-<span class=w>  </span><span class=k>return</span><span class=p>()</span><span class=w></span>
+<span class=w>  </span><span class=n>message</span><span class=p>(</span><span class=n>FATAL_ERROR</span><span class=w> </span><span class=s>&quot;AppendFilter: Unable to find the VTK build folder.&quot;</span><span class=p>)</span><span class=w></span>
 <span class=n>endif</span><span class=p>()</span><span class=w></span>
-<span class=n>message</span><span class=w> </span><span class=p>(</span><span class=n>STATUS</span><span class=w> </span><span class=s>&quot;VTK_VERSION: ${VTK_VERSION}&quot;</span><span class=p>)</span><span class=w></span>
-<span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>VTK_VERSION</span><span class=w> </span><span class=n>VERSION_LESS</span><span class=w> </span><span class=s>&quot;8.90.0&quot;</span><span class=p>)</span><span class=w></span>
-<span class=w>  </span><span class=cp># old system</span>
-<span class=w>  </span><span class=n>include</span><span class=p>(</span><span class=n>$</span><span class=p>{</span><span class=n>VTK_USE_FILE</span><span class=p>})</span><span class=w></span>
-<span class=w>  </span><span class=n>add_executable</span><span class=p>(</span><span class=n>AppendFilter</span><span class=w> </span><span class=n>MACOSX_BUNDLE</span><span class=w> </span><span class=n>AppendFilter</span><span class=p>.</span><span class=n>cxx</span><span class=w> </span><span class=p>)</span><span class=w></span>
-<span class=w>  </span><span class=n>target_link_libraries</span><span class=p>(</span><span class=n>AppendFilter</span><span class=w> </span><span class=n>PRIVATE</span><span class=w> </span><span class=n>$</span><span class=p>{</span><span class=n>VTK_LIBRARIES</span><span class=p>})</span><span class=w></span>
-<span class=k>else</span><span class=p>()</span><span class=w></span>
-<span class=w>  </span><span class=cp># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=w>  </span><span class=n>set</span><span class=p>(</span><span class=n>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s>&quot;ON&quot;</span><span class=w> </span><span class=n>CACHE</span><span class=w> </span><span class=n>BOOL</span><span class=w> </span><span class=s>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span><span class=w></span>
-<span class=w>  </span><span class=n>add_executable</span><span class=p>(</span><span class=n>AppendFilter</span><span class=w> </span><span class=n>MACOSX_BUNDLE</span><span class=w> </span><span class=n>AppendFilter</span><span class=p>.</span><span class=n>cxx</span><span class=w> </span><span class=p>)</span><span class=w></span>
-<span class=w>  </span><span class=n>target_link_libraries</span><span class=p>(</span><span class=n>AppendFilter</span><span class=w> </span><span class=n>PRIVATE</span><span class=w> </span><span class=n>$</span><span class=p>{</span><span class=n>VTK_LIBRARIES</span><span class=p>})</span><span class=w></span>
-<span class=w>  </span><span class=cp># vtk_module_autoinit is needed</span>
-<span class=w>  </span><span class=n>vtk_module_autoinit</span><span class=p>(</span><span class=w></span>
-<span class=w>    </span><span class=n>TARGETS</span><span class=w> </span><span class=n>AppendFilter</span><span class=w></span>
-<span class=w>    </span><span class=n>MODULES</span><span class=w> </span><span class=n>$</span><span class=p>{</span><span class=n>VTK_LIBRARIES</span><span class=p>}</span><span class=w></span>
-<span class=w>    </span><span class=p>)</span><span class=w></span>
-<span class=n>endif</span><span class=p>()</span><span class=w></span>
+
+<span class=cp># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
+<span class=n>set</span><span class=p>(</span><span class=n>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s>&quot;ON&quot;</span><span class=w> </span><span class=n>CACHE</span><span class=w> </span><span class=n>BOOL</span><span class=w> </span><span class=s>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span><span class=w></span>
+<span class=n>add_executable</span><span class=p>(</span><span class=n>AppendFilter</span><span class=w> </span><span class=n>MACOSX_BUNDLE</span><span class=w> </span><span class=n>AppendFilter</span><span class=p>.</span><span class=n>cxx</span><span class=w> </span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=n>target_link_libraries</span><span class=p>(</span><span class=n>AppendFilter</span><span class=w> </span><span class=n>PRIVATE</span><span class=w> </span><span class=n>$</span><span class=p>{</span><span class=n>VTK_LIBRARIES</span><span class=p>}</span><span class=w></span>
+<span class=p>)</span><span class=w></span>
+<span class=cp># vtk_module_autoinit is needed</span>
+<span class=n>vtk_module_autoinit</span><span class=p>(</span><span class=w></span>
+<span class=w>  </span><span class=n>TARGETS</span><span class=w> </span><span class=n>AppendFilter</span><span class=w></span>
+<span class=w>  </span><span class=n>MODULES</span><span class=w> </span><span class=n>$</span><span class=p>{</span><span class=n>VTK_LIBRARIES</span><span class=p>}</span><span class=w></span>
+<span class=p>)</span><span class=w></span>
 </code></pre></div> <h3 id=download-and-build-appendfilter>Download and Build AppendFilter<a class=headerlink href=#download-and-build-appendfilter title="Permanent link">&para;</a></h3> <p>Click <a href=https://github.com/Kitware/vtk-examples/raw/gh-pages/Tarballs/Cxx/AppendFilter.tar>here to download AppendFilter</a> and its <em>CMakeLists.txt</em> file. Once the <em>tarball AppendFilter.tar</em> has been downloaded and extracted,</p> <div class=codehilite><pre><span></span><code>cd AppendFilter/build
 </code></pre></div> <p>If VTK is installed:</p> <div class=codehilite><pre><span></span><code>cmake ..
 </code></pre></div> <p>If VTK is not installed but compiled on your system, you will need to specify the path to your VTK build:</p> <div class=codehilite><pre><span></span><code>cmake -DVTK_DIR:PATH=/home/me/vtk_build ..
