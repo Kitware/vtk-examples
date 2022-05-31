@@ -323,9 +323,8 @@ These examples demonstrate how to create an display one of the many vtkParametri
 [ExtractCellsUsingPoints](/Cxx/PolyData/ExtractCellsUsingPoints) | Extract points but bring cells that are still complete with them.
 [ExtractOutsideSurface](/Cxx/PolyData/ExtractOutsideSurface) | Extract the outer surface of a multiple surface polydata.
 [ExtractPolyLinesFromPolyData](/Cxx/PolyData/ExtractPolyLinesFromPolyData) | Extract polylines from polydata.
-[ExtractSelectedIds](/Cxx/PolyData/ExtractSelectedIds) | Extract selected points.
-[ExtractSelection](/Cxx/PolyData/ExtractSelection) | Extract selection points.
-[ExtractSelectionCells](/Cxx/PolyData/ExtractSelectionCells) | Extract selection cells.
+[ExtractSelection](/Cxx/PolyData/ExtractSelection) | Extract selected points.
+[ExtractSelectionCells](/Cxx/PolyData/ExtractSelectionCells) | Extract cell, select cell.
 [ExtractSelectionOriginalId](/Cxx/PolyData/ExtractSelectionOriginalId) | Extract selection and find correspondence between new and original Id.
 [ExtractVisibleCells](/Cxx/Filtering/ExtractVisibleCells) | Extract and highlight visible cells.
 [FieldData](/Cxx/PolyData/FieldData) | Add Global Miscellaneous Data (FieldData) to a Polydata.

@@ -1,9 +1,4 @@
-#!/usr/bin/env python
-
-'''
-converted from:
- - http://www.org/Wiki/VTK/Examples/Python/PolyData/ExtractSelectionCells
-'''
+#!/usr/bin/env python3
 
 # noinspection PyUnresolvedReferences
 import vtkmodules.vtkInteractionStyle
@@ -28,142 +23,124 @@ from vtkmodules.vtkRenderingCore import (
 )
 
 
-def main():
+def main(argv):
     colors = vtkNamedColors()
 
-    # colors.SetColor('leftBkg', [0.6, 0.5, 0.4, 1.0])
-    # colors.SetColor('centreBkg', [0.3, 0.1, 0.4, 1.0])
-    # colors.SetColor('rightBkg', [0.4, 0.5, 0.6, 1.0])
+    point_source = vtkPointSource()
 
-    pointSource = vtkPointSource()
-    pointSource.SetNumberOfPoints(50)
-    pointSource.Update()
+    point_source.SetNumberOfPoints(50)
+    point_source.Update()
 
-    print('There are %s input points\n' % pointSource.GetOutput().GetNumberOfPoints())
+    print('There are', point_source.GetOutput().GetNumberOfPoints(), 'input points.')
 
     ids = vtkIdTypeArray()
     ids.SetNumberOfComponents(1)
 
-    # Set values
-    i = 10
-    while i < 20:
+    # Set values.
+    for i in range(10, 20):
         ids.InsertNextValue(i)
-        i += 1
 
-    selectionNode = vtkSelectionNode()
-    selectionNode.SetFieldType(1)  # POINT
-    #  CELL_DATA = 0
-    #  POINT_DATA = 1
-    #  FIELD_DATA = 2
-    #  VERTEX_DATA = 3
-    #  EDGE_DATA = 4
-
-    selectionNode.SetContentType(4)  # INDICES
-    # SELECTIONS = 0
-    # GLOBALIDS = 1
-    # PEDIGREEIDS = 2
-    # VALUES = 3
-    # INDICES = 4
-    # FRUSTUM = 5
-    # LOCATIONS = 6
-    # THRESHOLDS = 7
-    # BLOCKS = 8
-    selectionNode.SetSelectionList(ids)
+    selection_node = vtkSelectionNode()
+    selection_node.SetFieldType(vtkSelectionNode.POINT)
+    selection_node.SetContentType(vtkSelectionNode.INDICES)
+    selection_node.SetSelectionList(ids)
 
     selection = vtkSelection()
-    selection.AddNode(selectionNode)
+    selection.AddNode(selection_node)
 
-    extractSelection = vtkExtractSelection()
+    extract_selection = vtkExtractSelection()
+    extract_selection.SetInputConnection(0, point_source.GetOutputPort())
+    extract_selection.SetInputData(1, selection)
+    extract_selection.Update()
 
-    extractSelection.SetInputConnection(0, pointSource.GetOutputPort())
-    extractSelection.SetInputData(1, selection)
-    extractSelection.Update()
-
-    # In selection
+    # In selection.
     selected = vtkUnstructuredGrid()
-    selected.ShallowCopy(extractSelection.GetOutput())
+    selected.ShallowCopy(extract_selection.GetOutput())
 
-    print('There are %s points in the selection' % selected.GetNumberOfPoints())
-    print('There are %s cells in the selection' % selected.GetNumberOfCells())
+    print('There are', selected.GetNumberOfPoints(), 'points and', selected.GetNumberOfCells(),
+          'cells in the selection.')
 
-    # Get points that are NOT in the selection
-    # invert the selection
-    selectionNode.GetProperties().Set(vtkSelectionNode.INVERSE(), 1)
-    extractSelection.Update()
+    # Get points that are NOT in the selection.
+    selection_node.GetProperties().Set(vtkSelectionNode().INVERSE(), 1)  # invert the selection.
+    extract_selection.Update()
 
-    notSelected = vtkUnstructuredGrid()
-    notSelected.ShallowCopy(extractSelection.GetOutput())
+    not_selected = vtkUnstructuredGrid()
+    not_selected.ShallowCopy(extract_selection.GetOutput())
 
-    print('There are %s points NOT in the selection' % notSelected.GetNumberOfPoints())
-    print('There are %s cells NOT in the selection' % notSelected.GetNumberOfCells())
+    print('There are', not_selected.GetNumberOfPoints(), 'points and', not_selected.GetNumberOfCells(),
+          'cells NOT in the selection.')
 
-    inputMapper = vtkDataSetMapper()
-    inputMapper.SetInputConnection(pointSource.GetOutputPort())
-    inputActor = vtkActor()
-    inputActor.SetMapper(inputMapper)
-    inputActor.GetProperty().SetColor(colors.GetColor3d('MidnightBlue'))
-    inputActor.GetProperty().SetPointSize(5)
+    input_mapper = vtkDataSetMapper()
+    input_mapper.SetInputConnection(point_source.GetOutputPort())
+    input_actor = vtkActor()
+    input_actor.SetMapper(input_mapper)
+    input_actor.GetProperty().SetColor(colors.GetColor3d("MidnightBlue"))
+    input_actor.GetProperty().SetPointSize(5)
 
-    selectedMapper = vtkDataSetMapper()
-    selectedMapper.SetInputData(selected)
-    selectedActor = vtkActor()
-    selectedActor.SetMapper(selectedMapper)
-    selectedActor.GetProperty().SetColor(colors.GetColor3d('MidnightBlue'))
-    selectedActor.GetProperty().SetPointSize(5)
+    selected_mapper = vtkDataSetMapper()
+    selected_mapper.SetInputData(selected)
 
-    notSelectedMapper = vtkDataSetMapper()
-    notSelectedMapper.SetInputData(notSelected)
-    notSelectedActor = vtkActor()
-    notSelectedActor.SetMapper(notSelectedMapper)
-    notSelectedActor.GetProperty().SetColor(colors.GetColor3d('MidnightBlue'))
-    notSelectedActor.GetProperty().SetPointSize(5)
+    selected_actor = vtkActor()
+    selected_actor.SetMapper(selected_mapper)
+    selected_actor.GetProperty().SetColor(colors.GetColor3d("MidnightBlue"))
+    selected_actor.GetProperty().SetPointSize(5)
 
-    # There will be one render window
-    renderWindow = vtkRenderWindow()
-    renderWindow.SetSize(900, 300)
-    renderWindow.SetWindowName('ExtractSelection')
+    not_selected_mapper = vtkDataSetMapper()
+    not_selected_mapper.SetInputData(not_selected)
 
-    # And one interactor
+    not_selected_actor = vtkActor()
+    not_selected_actor.SetMapper(not_selected_mapper)
+    not_selected_actor.GetProperty().SetColor(colors.GetColor3d("MidnightBlue"))
+    not_selected_actor.GetProperty().SetPointSize(5)
+
+    # There will be one render window.
+    render_window = vtkRenderWindow()
+    render_window.SetSize(900, 300)
+    render_window.SetWindowName("ExtractSelectedIds")
+
+    # And one interactor.
     interactor = vtkRenderWindowInteractor()
-    interactor.SetRenderWindow(renderWindow)
+    interactor.SetRenderWindow(render_window)
 
-    # Define viewport ranges
+    # Define viewport ranges.
     # (xmin, ymin, xmax, ymax)
-    leftViewport = [0.0, 0.0, 0.33, 1.0]
-    centerViewport = [0.33, 0.0, 0.66, 1.0]
-    rightViewport = [0.66, 0.0, 1.0, 1.0]
+    left_viewport = [0.0, 0.0, 0.33, 1.0]
+    center_viewport = [0.33, 0.0, 0.66, 1.0]
+    right_viewport = [0.66, 0.0, 1.0, 1.0]
 
-    # Create a camera for all renderers
+    # Create a camera for all renderers.
     camera = vtkCamera()
 
     # Setup the renderers
-    leftRenderer = vtkRenderer()
-    renderWindow.AddRenderer(leftRenderer)
-    leftRenderer.SetViewport(leftViewport)
-    leftRenderer.SetBackground(colors.GetColor3d('BurlyWood'))
-    leftRenderer.SetActiveCamera(camera)
+    left_renderer = vtkRenderer()
+    render_window.AddRenderer(left_renderer)
+    left_renderer.SetViewport(left_viewport)
+    left_renderer.SetBackground(colors.GetColor3d("BurlyWood"))
+    left_renderer.SetActiveCamera(camera)
 
-    centerRenderer = vtkRenderer()
-    renderWindow.AddRenderer(centerRenderer)
-    centerRenderer.SetViewport(centerViewport)
-    centerRenderer.SetBackground(colors.GetColor3d('orchid_dark'))
-    centerRenderer.SetActiveCamera(camera)
+    center_renderer = vtkRenderer()
+    render_window.AddRenderer(center_renderer)
+    center_renderer.SetViewport(center_viewport)
+    center_renderer.SetBackground(colors.GetColor3d("orchid_dark"))
+    center_renderer.SetActiveCamera(camera)
 
-    rightRenderer = vtkRenderer()
-    renderWindow.AddRenderer(rightRenderer)
-    rightRenderer.SetViewport(rightViewport)
-    rightRenderer.SetBackground(colors.GetColor3d('CornflowerBlue'))
-    rightRenderer.SetActiveCamera(camera)
+    right_renderer = vtkRenderer()
+    render_window.AddRenderer(right_renderer)
+    right_renderer.SetViewport(right_viewport)
+    right_renderer.SetBackground(colors.GetColor3d("CornflowerBlue"))
+    right_renderer.SetActiveCamera(camera)
 
-    leftRenderer.AddActor(inputActor)
-    centerRenderer.AddActor(selectedActor)
-    rightRenderer.AddActor(notSelectedActor)
+    left_renderer.AddActor(input_actor)
+    center_renderer.AddActor(selected_actor)
+    right_renderer.AddActor(not_selected_actor)
 
-    leftRenderer.ResetCamera()
+    left_renderer.ResetCamera()
 
-    renderWindow.Render()
+    render_window.Render()
     interactor.Start()
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+
+    main(sys.argv)
