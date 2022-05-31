@@ -212,7 +212,7 @@ If you are new to VTK then these [tutorials](#tutorial) will help to get you sta
 [CurvaturesAdjustEdges](/Python/PolyData/CurvaturesAdjustEdges) | Get the Gaussian and Mean curvatures of a surface with adjustments for edge effects.
 [CurvaturesDemo](/Python/PolyData/CurvaturesDemo) | Demonstrates how to get the Gaussian and Mean curvatures of a surface.
 [ExtractPolyLinesFromPolyData](/Python/PolyData/ExtractPolyLinesFromPolyData) | Extract polylines from polydata.
-[ExtractSelection](/Python/PolyData/ExtractSelection) |
+[ExtractSelection](/Python/PolyData/ExtractSelection) |Extract selected points.
 [ExtractSelectionCells](/Python/PolyData/ExtractSelectionCells) | Extract cell, select cell.
 [FilledPolygon](/Python/PolyData/FilledPolygon) |
 [Finance](/Python/Modelling/Finance) | Visualization of multidimensional financial data. The gray/wireframe surface represents the total data population. The red surface represents data points delinquent on loan payment.
@@ -348,7 +348,6 @@ This section includes vtkUnstructuredGrid.
 [MedicalDemo3](/Python/Medical/MedicalDemo3) | Create skin, bone and slices from volume data.
 [MedicalDemo4](/Python/Medical/MedicalDemo4) | Create a volume rendering.
 [TissueLens](/Python/Medical/TissueLens) | Cut a volume with a sphere.
-
 
 ### Surface reconstruction
 

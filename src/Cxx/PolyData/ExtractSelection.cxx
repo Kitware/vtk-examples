@@ -41,7 +41,7 @@ int main(int, char*[])
   vtkNew<vtkIdTypeArray> ids;
   ids->SetNumberOfComponents(1);
 
-  // Set values
+  // Set values.
   for (unsigned int i = 10; i < 20; i++)
   {
     ids->InsertNextValue(i);
@@ -56,21 +56,20 @@ int main(int, char*[])
   selection->AddNode(selectionNode);
 
   vtkNew<vtkExtractSelection> extractSelection;
-
   extractSelection->SetInputConnection(0, pointSource->GetOutputPort());
   extractSelection->SetInputData(1, selection);
   extractSelection->Update();
 
-  // In selection
+  // In selection.
   vtkNew<vtkUnstructuredGrid> selected;
   selected->ShallowCopy(extractSelection->GetOutput());
 
   std::cout << "There are " << selected->GetNumberOfPoints()
-            << " points in the selection." << std::endl;
-  std::cout << "There are " << selected->GetNumberOfCells()
+            << " points and ";
+  std::cout << selected->GetNumberOfCells()
             << " cells in the selection." << std::endl;
 
-  // Get points that are NOT in the selection
+  // Get points that are NOT in the selection.
   selectionNode->GetProperties()->Set(vtkSelectionNode::INVERSE(),
                                       1); // invert the selection
   extractSelection->Update();
@@ -79,8 +78,8 @@ int main(int, char*[])
   notSelected->ShallowCopy(extractSelection->GetOutput());
 
   std::cout << "There are " << notSelected->GetNumberOfPoints()
-            << " points NOT in the selection." << std::endl;
-  std::cout << "There are " << notSelected->GetNumberOfCells()
+            << " points and ";
+  std::cout << notSelected->GetNumberOfCells()
             << " cells NOT in the selection." << std::endl;
 
   vtkNew<vtkDataSetMapper> inputMapper;
@@ -109,25 +108,24 @@ int main(int, char*[])
       colors->GetColor3d("MidnightBlue").GetData());
   notSelectedActor->GetProperty()->SetPointSize(5);
 
-  // There will be one render window
+  // There will be one render window.
   vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->SetSize(900, 300);
   renderWindow->SetWindowName("ExtractSelection");
 
-  // And one interactor
+  // And one interactor.
   vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  // Define viewport ranges
-  // (xmin, ymin, xmax, ymax)
+  // Define viewport ranges (xmin, ymin, xmax, ymax).
   double leftViewport[4] = {0.0, 0.0, 0.33, 1.0};
   double centerViewport[4] = {0.33, 0.0, .66, 1.0};
   double rightViewport[4] = {0.66, 0.0, 1.0, 1.0};
 
-  // Create a camera for all renderers
+  // Create a camera for all renderers.
   vtkNew<vtkCamera> camera;
 
-  // Setup the renderers
+  // Setup the renderers.
   vtkNew<vtkRenderer> leftRenderer;
   renderWindow->AddRenderer(leftRenderer);
   leftRenderer->SetViewport(leftViewport);
