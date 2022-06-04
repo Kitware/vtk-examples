@@ -917,9 +917,12 @@ We use the same extension for serial and parallel formats and for all
 types of datasets. We use HDF standard file extensions such as hdf,
 hdf5, h5 or he5.
 
-VTK HDF files start with a group called `VTKHDF` with one attribute:
-`Version`, an array of two integers. Additional attributes can follow
-depending on the dataset type stored in the file.
+VTK HDF files start with a group called `VTKHDF` with two attributes:
+`Version`, an array of two integers and `Type`, a string showing the
+VTK dataset type stored in the file. Additional attributes can follow
+depending on the dataset type. Currently, `Version`
+is the array [1, 0] and `Type` can be `ImageData` or
+`UnstructuredGrid`.
 
 The data type for each HDF dataset is part of the dataset and it is
 determined at write time. The reader matches the type of the dataset
@@ -938,7 +941,8 @@ group or dataset in bold font and the attributes underneath with
 regular font.
 
 ### Image data
-The format for image data is detailed in the Figure 6.  An
+The format for image data is detailed in the Figure 6 where the `Type`
+attribute of the `VTKHDF` group is `ImageData`.  An
 ImageData (regular grid) is not split into partitions for parallel
 processing. We rely on the writer to chunk the data to optimize
 reading for a certain number of MPI ranks. Attribute data is stored in
@@ -954,7 +958,8 @@ groups specify the active attributes in the dataset.
 </figure>
 
 ### Unstructured grid
-The format for unstructured grid is shown in Figure 7.
+The format for unstructured grid is shown in Figure 7. In this case
+the `Type` attribute of the `VTKHDF` group is `UnstructuredGrid`.
 The unstructured grid is split into partitions, with a partition for
 each MPI rank. This is reflected in the HDF5 file structure. Each HDF
 dataset is obtained by concatenating the data for each partition. The
