@@ -1051,6 +1051,18 @@ GROUP "/" {
          (0): 0.131579, 0.125, 0.0952381
          }
       }
+      ATTRIBUTE "Type" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 9;
+            STRPAD H5T_STR_NULLPAD;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "ImageData"
+         }
+      }
       ATTRIBUTE "Version" {
          DATATYPE  H5T_STD_I64LE
          DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
@@ -1124,6 +1136,18 @@ The unstructured grid is the can example (only the can, not the brick) from Para
 HDF5 "./ExternalData/Testing/Data/can-pvtu.hdf" {
 GROUP "/" {
    GROUP "VTKHDF" {
+      ATTRIBUTE "Type" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 16;
+            STRPAD H5T_STR_NULLPAD;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "UnstructuredGrid"
+         }
+      }
       ATTRIBUTE "Version" {
          DATATYPE  H5T_STD_I64LE
          DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
