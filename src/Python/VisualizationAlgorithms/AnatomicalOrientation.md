@@ -30,4 +30,3 @@ The bottom right annotated cube actor shows this basis.
 RPS is a left-handed system whilst RAS and LPS are right-handed.
 
 Note that the text for the planes is carefully placed to avoid obstructing the figure and it also sits slightly above the plane.
- 
