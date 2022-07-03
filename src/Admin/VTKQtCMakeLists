@@ -12,7 +12,6 @@ PROJECT(XXX)
 find_package(VTK COMPONENTS ZZZ
   GUISupportQt
   RenderingQt
-  QUIET
 )
 
 if(NOT VTK_FOUND)

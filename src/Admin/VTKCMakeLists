@@ -5,7 +5,6 @@ cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 project(XXX)
 
 find_package(VTK COMPONENTS ZZZ
-  QUIET
 )
 
 if (NOT VTK_FOUND)
