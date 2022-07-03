@@ -7,4 +7,3 @@ This example loads a wrl file and displays it on the screen. An example file to 
 
 !!! warning
     The vtkVRMLImporter only imports VRML 2.0 files.
-

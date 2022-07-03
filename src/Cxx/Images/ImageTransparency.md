@@ -2,4 +2,3 @@
 
 !!! seealso
     [ImageStencil](../ImageStencil) and [Transparency](../Images/Transparency)
-

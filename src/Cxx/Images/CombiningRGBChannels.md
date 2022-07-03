@@ -6,4 +6,3 @@ This example creates three images of a square. Each square slightly overlaps the
 
 !!! seealso
     For the reverse operation, see [ExtractComponents](../ExtractComponents).
-

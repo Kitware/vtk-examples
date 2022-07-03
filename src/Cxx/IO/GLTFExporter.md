@@ -4,5 +4,3 @@ The examples uses vtkGLTFExporter to save the current scene in a *.gltf* file. T
 
 !!! warning
     Currently the camera is not writeen properly so the exported scene will not match the imported scene.
-
-

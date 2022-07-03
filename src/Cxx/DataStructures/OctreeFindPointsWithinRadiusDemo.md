@@ -21,4 +21,3 @@ OctreeFindPointsWithinRadius dragon.ply
     [KDTreeFindPointsWithinRadiusDemo](../KDTreeFindPointsWithinRadiusDemo),
     [StaticLocatorFindPointsWithinRadiusDemo](../StaticLocatorFindPointsWithinRadiusDemo),
     [PointLocatorFindPointsWithinRadiusDemo](../PointLocatorFindPointsWithinRadiusDemo)
-
