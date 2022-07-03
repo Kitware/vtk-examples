@@ -15,4 +15,3 @@ There are many sources of *glTF* file including:
 
 !!! info
     The original data can be found here: [FlightHelmet Data](https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/FlightHelmet)). Be sure to download all of the files.
-

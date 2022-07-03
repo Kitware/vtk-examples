@@ -6,4 +6,3 @@ The gradual attenuation of the filter is important. The ideal high-pass filter, 
 
 !!! info
     See [this figure](../../../VTKBook/10Chapter10/#Figure%2010-11) in [Chapter 10](../../../VTKBook/10Chapter10) the [VTK Textbook](../../../VTKBook/01Chapter1).
-

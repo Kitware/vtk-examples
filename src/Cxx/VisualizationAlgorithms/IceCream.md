@@ -3,4 +3,3 @@ This example demonstrates how to use boolean combinations of implicit functions 
 
 !!! info
     See [Figure 6-23c](../../../VTKBook/06Chapter6/#Figure%206-23c) in [Chapter 6](../../../VTKBook/06Chapter6) the [VTK Textbook](../../../VTKBook/01Chapter1).
-

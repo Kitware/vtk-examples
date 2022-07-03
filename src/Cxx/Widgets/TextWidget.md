@@ -2,4 +2,3 @@
 
 !!! seealso
     [DrawText](../../Visualization/DrawText)
-
