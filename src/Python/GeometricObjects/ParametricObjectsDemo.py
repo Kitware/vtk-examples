@@ -1,10 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
     Demonstrate all the parametric objects.
 """
 
-import collections
 from pathlib import Path
 
 # noinspection PyUnresolvedReferences
@@ -51,12 +50,7 @@ from vtkmodules.vtkFiltersSources import (
     vtkParametricFunctionSource
 )
 from vtkmodules.vtkIOImage import (
-    vtkBMPWriter,
-    vtkJPEGWriter,
-    vtkPNGWriter,
-    vtkPNMWriter,
-    vtkPostScriptWriter,
-    vtkTIFFWriter
+    vtkPNGWriter
 )
 from vtkmodules.vtkRenderingCore import (
     vtkActor,
@@ -80,213 +74,196 @@ def get_program_parameters():
     parser = argparse.ArgumentParser(description=description, epilog=epilogue,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('-s', '--surface_name', default=None, help='The name of the surface.')
-    parser.add_argument('-w', '--write_image', action='store_true', help='Write out the the image.')
-    parser.add_argument('-b', '--back_face', action='store_true', help='Color the back-face.')
+    parser.add_argument('-b', '--back_face', action='store_true', help='Color the back face.')
     parser.add_argument('-n', '--normals', action='store_true', help='Display normals.')
+    parser.add_argument('-l', '--limits', action='store_true', help='Display the geometric bounds of the object..')
     args = parser.parse_args()
-    return args.back_face, args.normals, args.surface_name, args.write_image
+    return args.surface_name, args.back_face, args.normals, args.limits
 
 
 def main():
-    back_face, normals, surface_name, write_out_image = get_program_parameters()
-
-    colors = vtkNamedColors()
-
-    if surface_name:
-        rendererSize = 800
-        gridColumnDimensions = 1
-        gridRowDimensions = 1
-    else:
-        rendererSize = 200
-        gridColumnDimensions = 5
-        gridRowDimensions = 5
-
-    # Create one text property for all
-    textProperty = vtkTextProperty()
-    textProperty.SetJustificationToCentered()
-    textProperty.SetFontSize(int(rendererSize / 12))
-    textProperty.SetColor(colors.GetColor3d("LavenderBlush"))
-
-    # Create a parametric function source, renderer, mapper, and actor
-    # for each object
-    pfnSrcs = []
-    renderers = []
-    mappers = []
-    actors = []
-    textmappers = []
-    textactors = []
-
-    # Glyph the normals
-    maskPts = []
-    arrow = []
-    glyph = []
-    glyphMapper = []
-    glyphActor = []
-
-    backProperty = vtkProperty()
-    if back_face:
-        backProperty.SetColor(colors.GetColor3d("Peru"))
-
-    boundingBox = []
+    surface_name, back_face, normals, limits = get_program_parameters()
 
     # Get the parametric functions and build the pipeline
     pfn = get_parametric_functions()
 
+    # Check for a single surface.
+    single_surface = [None, False]
     if surface_name:
-        # is the surface in the map?
-        surface_exists = list()
+        sn = surface_name.lower()
         for t in pfn.keys():
-            for obj in pfn[t].keys():
-                if surface_name == obj:
-                    surface_exists.append(True)
-                else:
-                    surface_exists.append(False)
-        if not any(surface_exists):
-            print('Nonexistent object:', surface_name)
-            return
+            if sn == t.lower():
+                single_surface[0] = t
+                single_surface[1] = True
+    if surface_name and not single_surface[1]:
+        print('Nonexistent surface:', surface_name)
+        return
 
-    single_surface = list()
-    obj_count = 0
+    if single_surface[1]:
+        renderer_size = 1000
+        grid_column_dimensions = 1
+        grid_row_dimensions = 1
+    else:
+        renderer_size = 200
+        grid_column_dimensions = 5
+        grid_row_dimensions = 5
+
+    colors = vtkNamedColors()
+
+    # Create one text property for all.
+    text_property = vtkTextProperty()
+    text_property.SetJustificationToCentered()
+    text_property.SetFontSize(int(renderer_size / 12))
+    text_property.SetColor(colors.GetColor3d("LavenderBlush"))
+
+    # Create a parametric function source, renderer, mapper, and actor
+    # for each object.
+    pfn_srcs = []
+    renderers = []
+    mappers = []
+    actors = []
+    text_mappers = []
+    text_actors = []
+
+    # Glyph the normals.
+    mask_pts = []
+    arrow = []
+    glyph = []
+    glyph_mapper = []
+    glyph_actor = []
+
+    back_property = vtkProperty()
+    if back_face:
+        back_property.SetColor(colors.GetColor3d("Peru"))
+
+    # Now decide on the surfaces to build.
+    surfaces = dict()
+    if single_surface[1]:
+        surfaces[single_surface[0]] = pfn[single_surface[0]]
+    else:
+        surfaces = pfn
+
+    # The bounding boxes for each object.
+    bounding_boxes = dict()
+    indexed_names = dict()
+    # The index of each parametric object.
+    obj_idx = -1
     sorted_names = list()
-    for t in sorted(pfn.keys()):
-        for obj in sorted(pfn[t].keys()):
-            sorted_names.append(obj)
-            if surface_name:
-                if obj == surface_name:
-                    single_surface = [surface_name, obj_count]
-            pfnSrcs.append(vtkParametricFunctionSource())
-            pfnSrcs[obj_count].SetParametricFunction(pfn[t][obj])
-            pfnSrcs[obj_count].SetUResolution(51)
-            pfnSrcs[obj_count].SetVResolution(51)
-            pfnSrcs[obj_count].SetWResolution(51)
-            pfnSrcs[obj_count].Update()
+    for obj in sorted(surfaces.keys()):
+        obj_idx += 1
+        indexed_names[obj_idx] = obj
+        pfn_srcs.append(vtkParametricFunctionSource())
+        pfn_srcs[obj_idx].SetParametricFunction(surfaces[obj])
+        pfn_srcs[obj_idx].SetUResolution(51)
+        pfn_srcs[obj_idx].SetVResolution(51)
+        pfn_srcs[obj_idx].SetWResolution(51)
+        pfn_srcs[obj_idx].Update()
 
-            mappers.append(vtkPolyDataMapper())
-            mappers[obj_count].SetInputConnection(pfnSrcs[obj_count].GetOutputPort())
+        mappers.append(vtkPolyDataMapper())
+        mappers[obj_idx].SetInputConnection(pfn_srcs[obj_idx].GetOutputPort())
 
-            actors.append(vtkActor())
-            actors[obj_count].SetMapper(mappers[obj_count])
-            actors[obj_count].GetProperty().SetColor(colors.GetColor3d("NavajoWhite"))
-            if back_face:
-                actors[obj_count].SetBackfaceProperty(backProperty)
+        actors.append(vtkActor())
+        actors[obj_idx].SetMapper(mappers[obj_idx])
+        actors[obj_idx].GetProperty().SetColor(colors.GetColor3d("NavajoWhite"))
+        if back_face:
+            actors[obj_idx].SetBackfaceProperty(back_property)
 
-            textmappers.append(vtkTextMapper())
-            textmappers[obj_count].SetInput(obj)
-            textmappers[obj_count].SetTextProperty(textProperty)
+        text_mappers.append(vtkTextMapper())
+        text_mappers[obj_idx].SetInput(obj)
+        text_mappers[obj_idx].SetTextProperty(text_property)
 
-            textactors.append(vtkActor2D())
-            textactors[obj_count].SetMapper(textmappers[obj_count])
-            textactors[obj_count].SetPosition(rendererSize / 2.0, 8)
+        text_actors.append(vtkActor2D())
+        text_actors[obj_idx].SetMapper(text_mappers[obj_idx])
+        text_actors[obj_idx].SetPosition(renderer_size / 2.0, 8)
 
-            renderers.append(vtkRenderer())
+        renderers.append(vtkRenderer())
+        renderers[obj_idx].SetBackground(colors.GetColor3d("MidnightBlue"))
 
-            bounds = pfnSrcs[obj_count].GetOutput().GetBounds()
-            boundingBox.append(bounds)
-            # display_bounding_box_and_center(obj, obj_count, bounds)
+        bounds = pfn_srcs[obj_idx].GetOutput().GetBounds()
+        bounding_boxes[obj] = bounds
 
-            if normals:
-                # Glyphing
-                maskPts.append(vtkMaskPoints())
-                maskPts[obj_count].RandomModeOn()
-                maskPts[obj_count].SetMaximumNumberOfPoints(150)
-                maskPts[obj_count].SetInputConnection(pfnSrcs[obj_count].GetOutputPort())
+        if normals:
+            # Glyphing
+            mask_pts.append(vtkMaskPoints())
+            mask_pts[obj_idx].RandomModeOn()
+            mask_pts[obj_idx].SetMaximumNumberOfPoints(150)
+            mask_pts[obj_idx].SetInputConnection(pfn_srcs[obj_idx].GetOutputPort())
 
-                arrow.append(vtkArrowSource())
-                arrow[obj_count].SetTipResolution(16)
-                arrow[obj_count].SetTipLength(0.3)
-                arrow[obj_count].SetTipRadius(0.1)
+            arrow.append(vtkArrowSource())
+            arrow[obj_idx].SetTipResolution(16)
+            arrow[obj_idx].SetTipLength(0.3)
+            arrow[obj_idx].SetTipRadius(0.1)
 
-                glyphScale = get_maximum_length(boundingBox[obj_count])
+            glyph_scale = get_maximum_length(bounding_boxes[obj])
 
-                glyph.append(vtkGlyph3D())
-                glyph[obj_count].SetSourceConnection(arrow[obj_count].GetOutputPort())
-                glyph[obj_count].SetInputConnection(maskPts[obj_count].GetOutputPort())
-                glyph[obj_count].SetVectorModeToUseNormal()
-                glyph[obj_count].SetScaleFactor(glyphScale / 10.0)
-                glyph[obj_count].OrientOn()
-                glyph[obj_count].Update()
+            glyph.append(vtkGlyph3D())
+            glyph[obj_idx].SetSourceConnection(arrow[obj_idx].GetOutputPort())
+            glyph[obj_idx].SetInputConnection(mask_pts[obj_idx].GetOutputPort())
+            glyph[obj_idx].SetVectorModeToUseNormal()
+            glyph[obj_idx].SetScaleFactor(glyph_scale / 10.0)
+            glyph[obj_idx].OrientOn()
+            glyph[obj_idx].Update()
 
-                glyphMapper.append(vtkPolyDataMapper())
-                glyphMapper[obj_count].SetInputConnection(
-                    glyph[obj_count].GetOutputPort())
+            glyph_mapper.append(vtkPolyDataMapper())
+            glyph_mapper[obj_idx].SetInputConnection(
+                glyph[obj_idx].GetOutputPort())
 
-                glyphActor.append(vtkActor())
-                glyphActor[obj_count].SetMapper(glyphMapper[obj_count])
-                glyphActor[obj_count].GetProperty().SetColor(colors.GetColor3d("GreenYellow"))
+            glyph_actor.append(vtkActor())
+            glyph_actor[obj_idx].SetMapper(glyph_mapper[obj_idx])
+            glyph_actor[obj_idx].GetProperty().SetColor(colors.GetColor3d("GreenYellow"))
 
-            obj_count += 1
-    # Need a renderer even if there is no actor
-    for i in range(obj_count, gridColumnDimensions * gridRowDimensions):
+    # Need a renderer even if there is no actor.
+    for i in range(obj_idx + 1, grid_column_dimensions * grid_row_dimensions):
         renderers.append(vtkRenderer())
         renderers[i].SetBackground(colors.GetColor3d("MidnightBlue"))
         sorted_names.append(None)
 
-    renderWindow = vtkRenderWindow()
-    renderWindow.SetSize(rendererSize * gridColumnDimensions, rendererSize * gridRowDimensions)
+    ren_win = vtkRenderWindow()
+    ren_win.SetSize(renderer_size * grid_column_dimensions, renderer_size * grid_row_dimensions)
 
-    for row in range(0, gridRowDimensions):
-        for col in range(0, gridColumnDimensions):
+    for row in range(0, grid_row_dimensions):
+        for col in range(0, grid_column_dimensions):
+            index = row * grid_column_dimensions + col
             # (xmin, ymin, xmax, ymax)
             viewport = [
-                float(col) * rendererSize / (gridColumnDimensions * rendererSize),
-                float(gridRowDimensions - (row + 1)) * rendererSize / (gridRowDimensions * rendererSize),
-                float(col + 1) * rendererSize / (gridColumnDimensions * rendererSize),
-                float(gridRowDimensions - row) * rendererSize / (gridRowDimensions * rendererSize)]
-            if not surface_name:
-                index = row * gridColumnDimensions + col
-                renderWindow.AddRenderer(renderers[index])
-                renderers[index].SetViewport(viewport)
-                if index > obj_count - 1:
-                    continue
-                renderers[index].AddActor(actors[index])
-                # Normals can only be computed for polygons and triangle strips.
-                # The Spline is a line.
-                if normals and sorted_names[index] != 'Spline':
-                    renderers[index].AddActor(glyphActor[index])
-                renderers[index].AddActor(textactors[index])
-                renderers[index].SetBackground(
-                    colors.GetColor3d("MidnightBlue"))
-                renderers[index].ResetCamera()
-                renderers[index].GetActiveCamera().Azimuth(30)
-                renderers[index].GetActiveCamera().Elevation(-30)
-                renderers[index].GetActiveCamera().Zoom(0.9)
-                renderers[index].ResetCameraClippingRange()
-            else:
-                index = single_surface[1]
-                if index != -1:
-                    renderWindow.AddRenderer(renderers[index])
-                    renderers[index].SetViewport(viewport)
-                    renderers[index].AddActor(actors[index])
-                    # Normals can only be computed for polygons and triangle strips.
-                    # The Spline is a line.
-                    if normals and sorted_names[index] != 'Spline':
-                        renderers[index].AddActor(glyphActor[index])
-                    renderers[index].AddActor(textactors[index])
-                    renderers[index].SetBackground(colors.GetColor3d("MidnightBlue"))
-                    renderers[index].ResetCamera()
-                    renderers[index].GetActiveCamera().Azimuth(30)
-                    renderers[index].GetActiveCamera().Elevation(-30)
-                    renderers[index].GetActiveCamera().Zoom(0.9)
-                    renderers[index].ResetCameraClippingRange()
+                float(col) * renderer_size / (grid_column_dimensions * renderer_size),
+                float(grid_row_dimensions - (row + 1)) * renderer_size / (grid_row_dimensions * renderer_size),
+                float(col + 1) * renderer_size / (grid_column_dimensions * renderer_size),
+                float(grid_row_dimensions - row) * renderer_size / (grid_row_dimensions * renderer_size)]
+            ren_win.AddRenderer(renderers[index])
+            renderers[index].SetViewport(viewport)
+            if index > obj_idx:
+                continue
+            renderers[index].AddActor(actors[index])
+            # Normals can only be computed for polygons and triangle strips.
+            # The Spline is a line.
+            if normals and indexed_names[index] != 'Spline':
+                renderers[index].AddActor(glyph_actor[index])
+            renderers[index].AddActor(text_actors[index])
+            renderers[index].ResetCamera()
+            renderers[index].GetActiveCamera().Azimuth(30)
+            renderers[index].GetActiveCamera().Elevation(-30)
+            renderers[index].GetActiveCamera().Zoom(0.9)
+            renderers[index].ResetCameraClippingRange()
 
-    interactor = vtkRenderWindowInteractor()
-    interactor.SetRenderWindow(renderWindow)
+    iren = vtkRenderWindowInteractor()
+    iren.SetRenderWindow(ren_win)
 
-    renderWindow.Render()
+    if limits:
+        for k, v in bounding_boxes.items():
+            display_bounding_box_and_center(k, v)
+
     if surface_name:
-        renderWindow.SetWindowName(single_surface[0])
+        fn = single_surface[0]
     else:
-        renderWindow.SetWindowName("ParametricObjectsDemo")
-    renderWindow.Render()
-    if write_out_image:
-        # -------------------------------
-        # Save the image
-        # -------------------------------
-        if surface_name:
-            write_image(single_surface[0], renderWindow, rgba=False)
-        else:
-            write_image('ParametricObjectsDemo', renderWindow, rgba=False)
-    interactor.Start()
+        fn = 'ParametricObjectsDemo'
+    ren_win.SetWindowName(fn)
+
+    print_callback = PrintCallback(iren, fn, 1, False)
+    iren.AddObserver('KeyPressEvent', print_callback)
+
+    iren.Initialize()
+    iren.Start()
 
 
 def get_parametric_functions():
@@ -297,46 +274,45 @@ def get_parametric_functions():
 
     :return: The map of functions.
     """
-    # We could use OrderedDict if Python version >= 3.2
-    pfn = collections.defaultdict(collections.defaultdict)
-    pfn[0]['Boy'] = vtkParametricBoy()
-    pfn[0]['ConicSpiral'] = vtkParametricConicSpiral()
-    pfn[0]['CrossCap'] = vtkParametricCrossCap()
-    pfn[0]['Dini'] = vtkParametricDini()
-    pfn[0]['Ellipsoid'] = vtkParametricEllipsoid()
-    pfn[0]['Enneper'] = vtkParametricEnneper()
-    pfn[0]['Figure8Klein'] = vtkParametricFigure8Klein()
-    pfn[0]['Klein'] = vtkParametricKlein()
-    pfn[0]['Mobius'] = vtkParametricMobius()
-    pfn[0]['RandomHills'] = vtkParametricRandomHills()
-    pfn[0]['Roman'] = vtkParametricRoman()
-    pfn[0]['SuperEllipsoid'] = vtkParametricSuperEllipsoid()
-    pfn[0]['SuperToroid'] = vtkParametricSuperToroid()
-    pfn[0]['Torus'] = vtkParametricTorus()
-    pfn[0]['Spline'] = vtkParametricSpline()
+    pfn = dict()
+    pfn['Boy'] = vtkParametricBoy()
+    pfn['ConicSpiral'] = vtkParametricConicSpiral()
+    pfn['CrossCap'] = vtkParametricCrossCap()
+    pfn['Dini'] = vtkParametricDini()
+    pfn['Ellipsoid'] = vtkParametricEllipsoid()
+    pfn['Enneper'] = vtkParametricEnneper()
+    pfn['Figure8Klein'] = vtkParametricFigure8Klein()
+    pfn['Klein'] = vtkParametricKlein()
+    pfn['Mobius'] = vtkParametricMobius()
+    pfn['RandomHills'] = vtkParametricRandomHills()
+    pfn['Roman'] = vtkParametricRoman()
+    pfn['SuperEllipsoid'] = vtkParametricSuperEllipsoid()
+    pfn['SuperToroid'] = vtkParametricSuperToroid()
+    pfn['Torus'] = vtkParametricTorus()
+    pfn['Spline'] = vtkParametricSpline()
     # Extra parametric surfaces.
-    pfn[1]['BohemianDome'] = vtkParametricBohemianDome()
-    pfn[1]['Bour'] = vtkParametricBour()
-    pfn[1]['CatalanMinimal'] = vtkParametricCatalanMinimal()
-    pfn[1]['Henneberg'] = vtkParametricHenneberg()
-    pfn[1]['Kuen'] = vtkParametricKuen()
-    pfn[1]['PluckerConoid'] = vtkParametricPluckerConoid()
-    pfn[1]['Pseudosphere'] = vtkParametricPseudosphere()
+    pfn['BohemianDome'] = vtkParametricBohemianDome()
+    pfn['Bour'] = vtkParametricBour()
+    pfn['CatalanMinimal'] = vtkParametricCatalanMinimal()
+    pfn['Henneberg'] = vtkParametricHenneberg()
+    pfn['Kuen'] = vtkParametricKuen()
+    pfn['PluckerConoid'] = vtkParametricPluckerConoid()
+    pfn['Pseudosphere'] = vtkParametricPseudosphere()
     # Now set some parameters.
-    pfn[0]["Ellipsoid"].SetXRadius(0.5)
-    pfn[0]["Ellipsoid"].SetYRadius(2.0)
-    pfn[0]["Mobius"].SetRadius(2.0)
-    pfn[0]["Mobius"].SetMinimumV(-0.5)
-    pfn[0]["Mobius"].SetMaximumV(0.5)
-    pfn[0]["RandomHills"].AllowRandomGenerationOn()
-    pfn[0]["RandomHills"].SetRandomSeed(1)
-    pfn[0]["RandomHills"].SetNumberOfHills(30)
-    pfn[0]["SuperEllipsoid"].SetN1(0.5)
-    pfn[0]["SuperEllipsoid"].SetN2(0.4)
-    pfn[0]["SuperToroid"].SetN1(0.5)
-    pfn[0]["SuperToroid"].SetN2(3.0)
+    pfn["Ellipsoid"].SetXRadius(0.5)
+    pfn["Ellipsoid"].SetYRadius(2.0)
+    pfn["Mobius"].SetRadius(2.0)
+    pfn["Mobius"].SetMinimumV(-0.5)
+    pfn["Mobius"].SetMaximumV(0.5)
+    pfn["RandomHills"].AllowRandomGenerationOn()
+    pfn["RandomHills"].SetRandomSeed(1)
+    pfn["RandomHills"].SetNumberOfHills(30)
+    pfn["SuperEllipsoid"].SetN1(0.5)
+    pfn["SuperEllipsoid"].SetN2(0.4)
+    pfn["SuperToroid"].SetN1(0.5)
+    pfn["SuperToroid"].SetN2(3.0)
     # The spline needs points
-    inputPoints = vtkPoints()
+    spline_points = vtkPoints()
     rng = vtkMinimalStandardRandomSequence()
     rng.SetSeed(8775070)
     for p in range(0, 10):
@@ -344,14 +320,14 @@ def get_parametric_functions():
         for idx in range(0, len(xyz)):
             xyz[idx] = rng.GetRangeValue(-1.0, 1.0)
             rng.Next()
-        inputPoints.InsertNextPoint(xyz)
+        spline_points.InsertNextPoint(xyz)
 
-    pfn[0]["Spline"].SetPoints(inputPoints)
+    pfn["Spline"].SetPoints(spline_points)
     # Extra parametric surfaces.
-    pfn[1]["BohemianDome"].SetA(5.0)
-    pfn[1]["BohemianDome"].SetB(1.0)
-    pfn[1]["BohemianDome"].SetC(2.0)
-    pfn[1]["Kuen"].SetDeltaV0(0.001)
+    pfn["BohemianDome"].SetA(5.0)
+    pfn["BohemianDome"].SetB(1.0)
+    pfn["BohemianDome"].SetC(2.0)
+    pfn["Kuen"].SetDeltaV0(0.001)
 
     return pfn
 
@@ -359,94 +335,81 @@ def get_parametric_functions():
 def get_centre(bounds):
     """
     Get the centre of the object from the bounding box.
+
+    :param bounds: The bounding box of the object.
+    :return:
     """
     if len(bounds) != 6:
-        return [None] * 6
+        return None
     return [bounds[i] - (bounds[i] - bounds[i - 1]) / 2.0 for i in range(1, len(bounds), 2)]
 
 
 def get_maximum_length(bounds):
     """
     Calculate the maximum length of the side bounding box.
+
+    :param bounds: The bounding box of the object.
+    :return:
     """
     if len(bounds) != 6:
         return None
     return max([bounds[i] - bounds[i - 1] for i in range(1, len(bounds), 2)])
 
 
-def display_bounding_box_and_center(name, index, bounds):
+def display_bounding_box_and_center(name, bounds):
+    """
+    Display the dimensions of the bounding box, maximum diagonal length
+     and coordinates of the centre.
+
+    :param name: The name of the object.
+    :param bounds: The bounding box of the object.
+    :return:
+    """
     if len(bounds) != 6:
         return
     max_len = get_maximum_length(bounds)
     centre = get_centre(bounds)
-    s = '{:21s}: {:>2d}\n'.format(name, index)
+    s = '{:21s}\n'.format(name)
     s += '{:21s}{:1s}'.format('  Bounds (min, max)', ':')
     s += '{:s}({:6.2f}, {:6.2f})'.format(' x:', bounds[0], bounds[1])
     s += '{:s}({:6.2f}, {:6.2f})'.format(' y:', bounds[2], bounds[3])
     s += '{:s}({:6.2f}, {:6.2f})\n'.format(' z:', bounds[4], bounds[5])
-    s += '  Maximum side length: {:6.2f}\n'.format(max_len)
-    s += '  Centre (x, y, z)   : ({:6.2f}, {:6.2f}, {:6.2f})\n'.format(centre[0], centre[1], centre[2])
+    if max_len:
+        s += '  Maximum side length: {:6.2f}\n'.format(max_len)
+    if centre:
+        s += '  Centre (x, y, z)   : ({:6.2f}, {:6.2f}, {:6.2f})\n'.format(centre[0], centre[1], centre[2])
     print(s)
 
 
-def write_image(file_name, ren_win, rgba=True):
-    """
-    Write the render window view to an image file.
-
-    Image types supported are:
-     BMP, JPEG, PNM, PNG, PostScript, TIFF.
-    The default parameters are used for all writers, change as needed.
-
-    :param file_name: The file name, if no extension then PNG is assumed.
-    :param ren_win: The render window.
-    :param rgba: Used to set the buffer type.
-    :return:
-    """
-
-    if file_name:
-        valid_suffixes = ['.bmp', '.jpg', '.png', '.pnm', '.ps', '.tiff']
-        # Select the writer to use.
+class PrintCallback:
+    def __init__(self, caller, file_name, image_quality=1, rgba=True):
+        self.caller = caller
+        self.image_quality = image_quality
+        # rgba is the the buffer type,
+        #  (if true, there is no background in the screenshot).
+        self.rgba = rgba
         parent = Path(file_name).resolve().parent
-        path = Path(parent) / file_name
-        if path.suffix:
-            ext = path.suffix.lower()
-        else:
-            ext = '.png'
-            path = Path(str(path)).with_suffix(ext)
-        if path.suffix not in valid_suffixes:
-            print(f'No writer for this file suffix: {ext}')
-            return
-        if ext == '.bmp':
-            writer = vtkBMPWriter()
-        elif ext == '.jpg':
-            writer = vtkJPEGWriter()
-        elif ext == '.pnm':
-            writer = vtkPNMWriter()
-        elif ext == '.ps':
-            if rgba:
-                rgba = False
-            writer = vtkPostScriptWriter()
-        elif ext == '.tiff':
-            writer = vtkTIFFWriter()
-        else:
-            writer = vtkPNGWriter()
+        pth = Path(parent) / file_name
+        self.path = Path(str(pth)).with_suffix('.png')
 
-        windowto_image_filter = vtkWindowToImageFilter()
-        windowto_image_filter.SetInput(ren_win)
-        windowto_image_filter.SetScale(1)  # image quality
-        if rgba:
-            windowto_image_filter.SetInputBufferTypeToRGBA()
-        else:
-            windowto_image_filter.SetInputBufferTypeToRGB()
+    def __call__(self, caller, ev):
+        # Save the screenshot.
+        if caller.GetKeyCode() == "k":
+            w2if = vtkWindowToImageFilter()
+            w2if.SetInput(caller.GetRenderWindow())
+            w2if.SetScale(self.image_quality, self.image_quality)
+            if self.rgba:
+                w2if.SetInputBufferTypeToRGBA()
+            else:
+                w2if.SetInputBufferTypeToRGB()
             # Read from the front buffer.
-            windowto_image_filter.ReadFrontBufferOff()
-            windowto_image_filter.Update()
-
-        writer.SetFileName(path)
-        writer.SetInputConnection(windowto_image_filter.GetOutputPort())
-        writer.Write()
-    else:
-        raise RuntimeError('Need a filename.')
+            w2if.ReadFrontBufferOn()
+            w2if.Update()
+            writer = vtkPNGWriter()
+            writer.SetFileName(self.path)
+            writer.SetInputData(w2if.GetOutput())
+            writer.Write()
+            print('Screenshot saved to:', self.path.name)
 
 
 if __name__ == '__main__':

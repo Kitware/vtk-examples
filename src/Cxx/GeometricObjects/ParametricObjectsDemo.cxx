@@ -1,5 +1,6 @@
 #include <vtkActor.h>
 #include <vtkActor2D.h>
+#include <vtkCallbackCommand.h>
 #include <vtkCamera.h>
 #include <vtkMath.h>
 #include <vtkMinimalStandardRandomSequence.h>
@@ -15,6 +16,11 @@
 #include <vtkSmartPointer.h>
 #include <vtkTextMapper.h>
 #include <vtkTextProperty.h>
+#include <vtk_cli11.h>
+#include <vtk_fmt.h>
+// clang-format off
+#include VTK_FMT(fmt/format.h)
+// clang-format on
 
 #include <vtkParametricBoy.h>
 #include <vtkParametricConicSpiral.h>
@@ -47,17 +53,12 @@
 #include <vtkMaskPoints.h>
 
 // For writing out the image.
-#include <vtkBMPWriter.h>
-#include <vtkImageWriter.h>
-#include <vtkJPEGWriter.h>
 #include <vtkPNGWriter.h>
-#include <vtkPNMWriter.h>
-#include <vtkPostScriptWriter.h>
-#include <vtkTIFFWriter.h>
 #include <vtkWindowToImageFilter.h>
 
 #include <algorithm>
 #include <array>
+#include <cstdlib>
 #include <iomanip>
 #include <iostream>
 #include <iterator>
@@ -70,152 +71,13 @@
 
 namespace {
 
-// Holds the arguments from the command line as a map.
-// e.g. key = name; value = (true|false,[value_0 ... value_n])
-typedef std::map<std::string, std::pair<bool, std::vector<std::string>>>
-    TCmdArgs;
-
-class CommandLineParser
-{
-public:
-  /**
-   * @param argvArgs: the command line arguments as a vector of strings.
-   * @param optArgs: the non-positional keys and their value.
-   * @param optArgsParam: the non-positional keys that have parameters and their
-   * value.
-   * @param posNum: the expected number of positional variables.
-   * @param posNumKName: the name of the positional values.
-   */
-  CommandLineParser(std::vector<std::string>& argvArgs,
-                    std::map<std::string, std::string>& optArgs,
-                    std::map<std::string, std::string>& optArgsParam,
-                    int posNum = 0, std::string const& posName = "_PKN");
-
-  ~CommandLineParser();
-
-public:
-  /**
-   * Parse the parameters from the command line.
-   *
-   * @return true if the parse was successful, false if unsuccessful.
-   */
-  bool Parse();
-
-  /**
-   * Get the parsed command line arguments.
-   *
-   * @return The parsed arguments.
-   */
-  TCmdArgs GetCommandArguments()
-  {
-    return this->cmdArgs;
-  }
-
-  /**
-   * @return The error message if Parse() failed.
-   */
-  std::string GetParseError()
-  {
-    return this->parseError;
-  }
-
-  /**
-   * @return The key name used to identify positional arguments.
-   */
-  std::string getPositionalKeyName()
-  {
-    return this->posName;
-  }
-
-  /**
-   * @return A string of the parsed command arguments.
-   */
-  std::string DisplayCommandArguments();
-
-private:
-  /**
-   * Separate the key from the value, e.g -kv -> k v.
-   *
-   * @return The vector with the keys separated from their value(s).
-   */
-  std::vector<std::string> SeparateKV();
-
-  /**
-   * Find any unknown non-positional keys.
-   *
-   * @return If unknown keys were found, true is returned.
-   */
-  bool HasUnknownKeys();
-
-  /**
-   * Find any duplicate non-positional keys.
-   *
-   * @return If duplicate keys were found, true is returned.
-   */
-  bool HasDuplicateKeys();
-
-  /**
-   * Take a map and get the set of values in the map.
-   *
-   * @param m: The map.
-   * @param s: The set of values from the map.
-   */
-  template <typename K, typename V>
-  void GetSetOfValues(std::map<K, V> const& m, std::set<V>& s);
-
-  /**
-   * Build a map of aliases for the keys from the key/value pairs.
-   *
-   * @param m: A map of key, value pairs.
-   * @param aliases: A map of aliases keyed by value.
-   */
-  template <typename K, typename V>
-  void FindAliases(std::map<K, V> m,
-                   std::map<V, std::pair<std::vector<K>, int>>& aliases);
-
-private:
-  TCmdArgs cmdArgs;
-  std::map<std::string, std::pair<std::vector<std::string>, int>> aliases;
-  std::vector<std::string> cmdLineVec;
-  std::map<std::string, std::string>& optArgs;
-  std::map<std::string, std::string>& optArgsParam;
-  int posNum;
-  std::string posName;
-  std::string parseError;
-  std::vector<std::string> cl;
-};
-
-/**
- * Show the command lime parameters.
- *
- * @param fn: The program name.
- */
-std::string ShowUsage(std::string fn);
-
 /**
  * Create a map of the parametric functions and set some parameters.
- * The first key groups the parametric functions and the
- *   second key is the name of the function.
  *
  * @return The map of functions.
  */
-std::map<int, std::map<std::string, vtkSmartPointer<vtkParametricFunction>>>
+std::map<std::string, vtkSmartPointer<vtkParametricFunction>>
 GetParametricFunctions();
-
-/**
- * Write the render window view to an image file.
- *
- * Image types supported are:
- *  BMP, JPEG, PNM, PNG, PostScript, TIFF.
- * The default parameters are used for all writers, change as needed.
- *
- * @param fileName The file name, if no extension then PNG is assumed.
- * @param renWin The render window.
- * @param rgba Used to set the buffer type.
- *
- */
-void WriteImage(std::string const& fileName, vtkRenderWindow* renWin,
-                bool rgba = true);
 
 /**
  * Get the centre of the object from the bounding box.
@@ -232,99 +94,174 @@ double GetMaximumLength(const std::vector<double>& bounds);
  *    and coordinates of the centre.
  *
  * @param name: The name of the object.
- * @param index: The index of the object.
  * @param bounds: The bounding box of the object.
  *
  */
-void DisplayBoundingBoxAndCenter(std::string const& name, int const& index,
+void DisplayBoundingBoxAndCenter(std::string const& name,
                                  std::vector<double> const& bounds);
+
+class PrintCallback : public vtkCallbackCommand
+{
+public:
+  PrintCallback() : fn_{""}, imageQuality_(1), rgba_(true)
+  {
+  }
+
+  static PrintCallback* New()
+  {
+    return new PrintCallback;
+  }
+
+  /*
+   * Create a vtkCallbackCommand and reimplement it.
+   *
+   */
+  void Execute(vtkObject* caller, unsigned long /*evId*/, void*) override
+  {
+    // Note the use of reinterpret_cast to cast the caller to the expected type.
+    auto rwi = reinterpret_cast<vtkRenderWindowInteractor*>(caller);
+
+    // Just do this to demonstrate who called the callback and the event that
+    // triggered it.
+    //     std::cout << rwi->GetClassName() << "  Event Id: " << evId <<
+    //     std::endl;
+
+    // Get the keypress
+    std::string key = rwi->GetKeySym();
+    if (key == "k" and !fn_.empty())
+    {
+      auto w2If = vtkSmartPointer<vtkWindowToImageFilter>::New();
+      w2If->SetInput(rwi->GetRenderWindow());
+      w2If->SetScale(this->imageQuality_, this->imageQuality_);
+      if (rgba_)
+      {
+        w2If->SetInputBufferTypeToRGBA();
+      }
+      else
+      {
+        w2If->SetInputBufferTypeToRGB();
+      }
+      // Read from the front buffer.
+      w2If->ReadFrontBufferOn();
+      w2If->Update();
+      auto writer = vtkSmartPointer<vtkPNGWriter>::New();
+      writer->SetFileName(fn_.c_str());
+      writer->SetInputConnection(w2If->GetOutputPort());
+      writer->Write();
+      std::cout << "Screenshot saved to: " << writer->GetFileName()
+                << std::endl;
+    }
+  }
+
+  /**
+   * Set the parameters for writing the
+   * the render window view to an image file.
+   *
+   * @param fileName The png image file name.
+   * @param imageQuality The image quality.
+   * @param rgba The buffer type, (if true, there is no background in the
+   * screenshot).
+   *
+   */
+  void SetParameters(const std::string& fileName, int imageQuality = 1,
+                     bool rgba = true)
+  {
+    if (!fileName.empty())
+    {
+      this->fn_ = fileName;
+      std::string ext{".png"};
+      auto found = this->fn_.find_last_of(".");
+      if (found == std::string::npos)
+      {
+        this->fn_ += ext;
+      }
+      else
+      {
+        this->fn_ = fileName.substr(0, fileName.find_last_of(".")) += ext;
+      }
+    }
+    this->imageQuality_ = imageQuality;
+    this->rgba_ = rgba;
+  }
+
+private:
+  PrintCallback(const PrintCallback&) = delete;
+  void operator=(const PrintCallback&) = delete;
+
+  std::string fn_;
+  int imageQuality_;
+  bool rgba_;
+};
 
 } // namespace
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
-  // These two maps need to be filled in by the user.
-  // key: Optional arguments such as -f or --foo with no parameters.
-  // value: A suitable name. For the keys -f or --foo, the name would be the
-  // same e.g f.
-  std::map<std::string, std::string> optArgs;
-  // key: Optional arguments requiring one or more paramters such as -s fn or
-  // --some_file fn. value: A suitable name. For the keys -s or --some_file, the
-  // name would be the same e.g s. To handle non-optional arguments we use a
-  // special key: _PKN (which can be user defined).
-  std::map<std::string, std::string> optArgsParam;
+  CLI::App app{"Display the parametric surfaces."};
 
-  // Specify key/value pairs for the arguments we want.
-  optArgs["-b"] = "b";
-  optArgs["-n"] = "n";
-  optArgs["-w"] = "w";
-  // These are followed by one or more parameters on the command line.
-  optArgsParam["-s"] = "s";
+  // Define options
+  std::string surfaceName;
+  app.add_option("-s, --surface_name", surfaceName, "The name of the surface.");
+  auto backFace{false};
+  app.add_flag("-b, --back_face", backFace, "Color the back face.");
+  auto normals{false};
+  app.add_flag("-n, --normals", normals, "Display normals.");
+  auto limits{false};
+  app.add_flag("-l, --limits", limits,
+               "Display the geometric bounds of the object.");
 
-  // The command line arguments
-  std::vector<std::string> cmdVec;
-  for (auto i = 1; i < argc; ++i)
+  CLI11_PARSE(app, argc, argv);
+
+  // Get the parametric functions.
+  auto pfn = GetParametricFunctions();
+
+  // Check for a single surface.
+  std::pair<std::string, bool> singleSurface{"", false};
+  if (!surfaceName.empty())
   {
-    cmdVec.push_back(argv[i]);
-  }
-
-  CommandLineParser clp(cmdVec, optArgs, optArgsParam);
-  if (!cmdVec.empty())
-  {
-    // Usually -h and --help are reserved for help.
-    if (std::any_of(cmdVec.begin(), cmdVec.end(), [](const std::string& str) {
-          return str.size() > 0 && (str == "-h" || str == "--help");
-        }))
+    std::string sn = surfaceName;
+    std::transform(sn.begin(), sn.end(), sn.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+    // Is the surface name in the map?
+    for (auto const& t : pfn)
     {
-      std::cout << ShowUsage(argv[0]) << std::endl;
-      return EXIT_SUCCESS;
-    }
-    if (!clp.Parse())
-    {
-      std::cerr << clp.GetParseError() << std::endl;
-      std::cerr << ShowUsage(argv[0]) << std::endl;
-      return EXIT_FAILURE;
+      std::string k = t.first;
+      std::transform(k.begin(), k.end(), k.begin(),
+                     [](unsigned char c) { return std::tolower(c); });
+      if (sn == k)
+      {
+        singleSurface.first = t.first;
+        singleSurface.second = true;
+      }
     }
   }
-  TCmdArgs cmdArgs = clp.GetCommandArguments();
-  // std::cout << clp.DisplayCommandArguments() << std::endl;
-
-  std::pair<std::string, int> singleSurface;
-  if (cmdArgs["s"].first)
+  if (!surfaceName.empty() && !singleSurface.second)
   {
-    if (cmdArgs["s"].second.size() > 0)
-    {
-      singleSurface.first = cmdArgs["s"].second[0];
-      singleSurface.second = -1;
-    }
-    else
-    {
-      std::cerr << "Surface name is missing." << std::endl;
-      return EXIT_FAILURE;
-    }
+    std::cout << "Nonexistent surface: " << surfaceName << std::endl;
+    return EXIT_FAILURE;
   }
-
-  vtkNew<vtkNamedColors> colors;
 
   auto rendererSize = 200;
   auto gridColumnDimensions = 5;
   auto gridRowDimensions = 5;
 
-  if (cmdArgs["s"].first)
+  if (singleSurface.second)
   {
-    rendererSize = 800;
+    rendererSize = 1000;
     gridColumnDimensions = 1;
     gridRowDimensions = 1;
   }
 
-  // Create one text property for all
+  vtkNew<vtkNamedColors> colors;
+
+  // Create one text property for all.
   vtkNew<vtkTextProperty> textProperty;
   textProperty->SetJustificationToCentered();
   textProperty->SetFontSize(rendererSize / 12);
   textProperty->SetColor(colors->GetColor3d("LavenderBlush").GetData());
 
   // Create a parametric function source, renderer, mapper, and actor
-  // for each object
+  // for each object.
   std::vector<vtkSmartPointer<vtkParametricFunctionSource>> pfnSrcs;
   std::vector<vtkSmartPointer<vtkRenderer>> renderers;
   std::vector<vtkSmartPointer<vtkPolyDataMapper>> mappers;
@@ -340,142 +277,118 @@ int main(int argc, char* argv[])
   std::vector<vtkSmartPointer<vtkActor>> glyphActor;
 
   auto backProperty = vtkSmartPointer<vtkProperty>::New();
-  if (cmdArgs["b"].first)
+  if (backFace)
   {
     backProperty->SetColor(colors->GetColor3d("Peru").GetData());
   }
 
-  std::vector<std::vector<double>> boundingBox;
-
-  // Get the parametric functions and build the pipeline
-  auto pfn = GetParametricFunctions();
-
-  if (cmdArgs["s"].first)
+  // Now decide on the surfaces to build.
+  std::map<std::string, vtkSmartPointer<vtkParametricFunction>> surfaces;
+  if (singleSurface.second)
   {
-    // Is the surface name in the map?
-    std::vector<bool> surfaceExists;
-    for (auto& t : pfn)
+    surfaces[singleSurface.first] = pfn[singleSurface.first];
+  }
+  else
+  {
+    surfaces = pfn;
+  }
+
+  // The bounding boxes for each object.
+  std::map<std::string, std::vector<double>> boundingBoxes;
+  std::map<int, std::string> indexedNames;
+  //  The index of each parametric object.
+  auto objIdx = -1;
+  for (auto const& obj : surfaces)
+  {
+    objIdx++;
+    indexedNames[objIdx] = obj.first;
+    pfnSrcs.push_back(vtkSmartPointer<vtkParametricFunctionSource>::New());
+    pfnSrcs[objIdx]->SetParametricFunction(obj.second);
+    pfnSrcs[objIdx]->SetUResolution(51);
+    pfnSrcs[objIdx]->SetVResolution(51);
+    pfnSrcs[objIdx]->SetWResolution(51);
+    pfnSrcs[objIdx]->Update();
+
+    mappers.push_back(vtkSmartPointer<vtkPolyDataMapper>::New());
+    mappers[objIdx]->SetInputConnection(pfnSrcs[objIdx]->GetOutputPort());
+
+    actors.push_back(vtkSmartPointer<vtkActor>::New());
+    actors[objIdx]->SetMapper(mappers[objIdx]);
+    actors[objIdx]->GetProperty()->SetColor(
+        colors->GetColor3d("NavajoWhite").GetData());
+    if (backFace)
     {
-      if (t.second.find(cmdArgs["s"].second[0]) == t.second.end())
-        surfaceExists.push_back(false);
-      else
-        surfaceExists.push_back(true);
+      actors[objIdx]->SetBackfaceProperty(backProperty);
     }
-    if (std::find(std::begin(surfaceExists), std::end(surfaceExists), true) ==
-        end(surfaceExists))
+
+    textmappers.push_back(vtkSmartPointer<vtkTextMapper>::New());
+    textmappers[objIdx]->SetInput(obj.first.c_str());
+    textmappers[objIdx]->SetTextProperty(textProperty);
+
+    textactors.push_back(vtkSmartPointer<vtkActor2D>::New());
+    textactors[objIdx]->SetMapper(textmappers[objIdx]);
+    textactors[objIdx]->SetPosition(rendererSize / 2.0, 8);
+
+    renderers.push_back(vtkSmartPointer<vtkRenderer>::New());
+    renderers[objIdx]->SetBackground(
+        colors->GetColor3d("MidnightBlue").GetData());
+
+    double bounds[6];
+    pfnSrcs[objIdx]->GetOutput()->GetBounds(bounds);
+    std::vector<double> v(std::begin(bounds), std::end(bounds));
+    boundingBoxes[obj.first] = v;
+
+    if (normals)
     {
-      // All entries in surfaceExists are false
-      std::cout << "Nonexistent surface: " << cmdArgs["s"].second[0]
-                << std::endl;
-      return EXIT_FAILURE;
+      // Glyphing
+      maskPts.push_back(vtkSmartPointer<vtkMaskPoints>::New());
+      maskPts[objIdx]->RandomModeOn();
+      maskPts[objIdx]->SetMaximumNumberOfPoints(150);
+      maskPts[objIdx]->SetInputConnection(pfnSrcs[objIdx]->GetOutputPort());
+
+      arrow.push_back(vtkSmartPointer<vtkArrowSource>::New());
+      arrow[objIdx]->SetTipResolution(16);
+      arrow[objIdx]->SetTipLength(0.3);
+      arrow[objIdx]->SetTipRadius(0.1);
+
+      auto glyphScale = GetMaximumLength(boundingBoxes[obj.first]);
+
+      glyph.push_back(vtkSmartPointer<vtkGlyph3D>::New());
+      glyph[objIdx]->SetSourceConnection(arrow[objIdx]->GetOutputPort());
+      glyph[objIdx]->SetInputConnection(maskPts[objIdx]->GetOutputPort());
+      glyph[objIdx]->SetVectorModeToUseNormal();
+      glyph[objIdx]->SetScaleFactor(glyphScale / 10.0);
+      glyph[objIdx]->OrientOn();
+      glyph[objIdx]->Update();
+
+      glyphMapper.push_back(vtkSmartPointer<vtkPolyDataMapper>::New());
+      glyphMapper[objIdx]->SetInputConnection(glyph[objIdx]->GetOutputPort());
+
+      glyphActor.push_back(vtkSmartPointer<vtkActor>::New());
+      glyphActor[objIdx]->SetMapper(glyphMapper[objIdx]);
+      glyphActor[objIdx]->GetProperty()->SetColor(
+          colors->GetColor3d("GreenYellow").GetData());
     }
   }
 
-  // The count of parametric objects
-  auto objCount = 0;
-  std::vector<std::string> sortedNames;
-  for (auto t : pfn)
-  {
-    for (auto obj : t.second)
-    {
-      sortedNames.push_back(obj.first);
-      if (cmdArgs["s"].first)
-      {
-        if (obj.first == singleSurface.first)
-        {
-          singleSurface.second = objCount;
-        }
-      }
-      pfnSrcs.push_back(vtkSmartPointer<vtkParametricFunctionSource>::New());
-      pfnSrcs[objCount]->SetParametricFunction(pfn[t.first][obj.first]);
-      pfnSrcs[objCount]->SetUResolution(51);
-      pfnSrcs[objCount]->SetVResolution(51);
-      pfnSrcs[objCount]->SetWResolution(51);
-      pfnSrcs[objCount]->Update();
-
-      mappers.push_back(vtkSmartPointer<vtkPolyDataMapper>::New());
-      mappers[objCount]->SetInputConnection(pfnSrcs[objCount]->GetOutputPort());
-
-      actors.push_back(vtkSmartPointer<vtkActor>::New());
-      actors[objCount]->SetMapper(mappers[objCount]);
-      actors[objCount]->GetProperty()->SetColor(
-          colors->GetColor3d("NavajoWhite").GetData());
-      if (cmdArgs["b"].first)
-      {
-
-        actors[objCount]->SetBackfaceProperty(backProperty);
-      }
-
-      textmappers.push_back(vtkSmartPointer<vtkTextMapper>::New());
-      textmappers[objCount]->SetInput(obj.first.c_str());
-      textmappers[objCount]->SetTextProperty(textProperty);
-
-      textactors.push_back(vtkSmartPointer<vtkActor2D>::New());
-      textactors[objCount]->SetMapper(textmappers[objCount]);
-      textactors[objCount]->SetPosition(rendererSize / 2.0, 8);
-
-      renderers.push_back(vtkSmartPointer<vtkRenderer>::New());
-
-      double bounds[6];
-      pfnSrcs[objCount]->GetOutput()->GetBounds(bounds);
-      std::vector<double> v(std::begin(bounds), std::end(bounds));
-      boundingBox.push_back(v);
-      // DisplayBoundingBoxAndCenter(obj.first, objCount, v);
-
-      if (cmdArgs["n"].first)
-      {
-        // Glyphing
-        maskPts.push_back(vtkSmartPointer<vtkMaskPoints>::New());
-        maskPts[objCount]->RandomModeOn();
-        maskPts[objCount]->SetMaximumNumberOfPoints(150);
-        maskPts[objCount]->SetInputConnection(
-            pfnSrcs[objCount]->GetOutputPort());
-
-        arrow.push_back(vtkSmartPointer<vtkArrowSource>::New());
-        arrow[objCount]->SetTipResolution(16);
-        arrow[objCount]->SetTipLength(0.3);
-        arrow[objCount]->SetTipRadius(0.1);
-
-        double glyphScale = GetMaximumLength(boundingBox[objCount]);
-
-        glyph.push_back(vtkSmartPointer<vtkGlyph3D>::New());
-        glyph[objCount]->SetSourceConnection(arrow[objCount]->GetOutputPort());
-        glyph[objCount]->SetInputConnection(maskPts[objCount]->GetOutputPort());
-        glyph[objCount]->SetVectorModeToUseNormal();
-        glyph[objCount]->SetScaleFactor(glyphScale / 10.0);
-        glyph[objCount]->OrientOn();
-        glyph[objCount]->Update();
-
-        glyphMapper.push_back(vtkSmartPointer<vtkPolyDataMapper>::New());
-        glyphMapper[objCount]->SetInputConnection(
-            glyph[objCount]->GetOutputPort());
-
-        glyphActor.push_back(vtkSmartPointer<vtkActor>::New());
-        glyphActor[objCount]->SetMapper(glyphMapper[objCount]);
-        glyphActor[objCount]->GetProperty()->SetColor(
-            colors->GetColor3d("GreenYellow").GetData());
-      }
-      objCount++;
-    }
-  }
-
-  // Need a renderer even if there is no actor
-  for (auto i = objCount; i < gridColumnDimensions * gridRowDimensions; i++)
+  // Need a renderer even if there is no actor.
+  for (auto i = objIdx; i < gridColumnDimensions * gridRowDimensions; i++)
   {
     renderers.push_back(vtkSmartPointer<vtkRenderer>::New());
     static_cast<vtkRenderer*>(renderers.back().GetPointer())
         ->SetBackground(colors->GetColor3d("MidnightBlue").GetData());
-    sortedNames.push_back("");
+    indexedNames[i] = "";
   }
 
-  auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->SetSize(rendererSize * gridColumnDimensions,
-                        rendererSize * gridRowDimensions);
+  auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  renWin->SetSize(rendererSize * gridColumnDimensions,
+                  rendererSize * gridRowDimensions);
 
   for (auto row = 0; row < gridRowDimensions; row++)
   {
     for (auto col = 0; col < gridColumnDimensions; col++)
     {
+      auto index = row * gridColumnDimensions + col;
       // (xmin, ymin, xmax, ymax)
       double viewport[4] = {
           static_cast<double>(col) * rendererSize /
@@ -486,186 +399,117 @@ int main(int argc, char* argv[])
               (gridColumnDimensions * rendererSize),
           static_cast<double>(gridRowDimensions - row) * rendererSize /
               (gridRowDimensions * rendererSize)};
-      if (!cmdArgs["s"].first)
+      renWin->AddRenderer(renderers[index]);
+      renderers[index]->SetViewport(viewport);
+      if (index > objIdx)
       {
-        auto index = row * gridColumnDimensions + col;
-        renderWindow->AddRenderer(renderers[index]);
-        renderers[index]->SetViewport(viewport);
-        if (index > objCount - 1)
-        {
-          continue;
-        }
-        renderers[index]->AddActor(actors[index]);
-        // Normals can only be computed for polygons and triangle strips.
-        // The Spline is a line.
-        if (cmdArgs["n"].first && sortedNames[index] != "Spline")
-        {
-          renderers[index]->AddActor(glyphActor[index]);
-        }
-        renderers[index]->AddActor(textactors[index]);
-        renderers[index]->SetBackground(
-            colors->GetColor3d("MidnightBlue").GetData());
-        renderers[index]->ResetCamera();
-        renderers[index]->GetActiveCamera()->Azimuth(30);
-        renderers[index]->GetActiveCamera()->Elevation(-30);
-        renderers[index]->GetActiveCamera()->Zoom(0.9);
-        renderers[index]->ResetCameraClippingRange();
+        continue;
       }
-
-      else
+      renderers[index]->AddActor(actors[index]);
+      // Normals can only be computed for polygons and triangle strips.
+      // The Spline is a line.
+      if (normals && indexedNames[index] != "Spline")
       {
-        auto index = singleSurface.second;
-        if (index != -1)
-        {
-          renderWindow->AddRenderer(renderers[index]);
-          renderers[index]->SetViewport(viewport);
-          renderers[index]->AddActor(actors[index]);
-          // Normals can only be computed for polygons and triangle strips.
-          // The Spline is a line.
-          if (cmdArgs["n"].first && singleSurface.first != "Spline")
-          {
-            renderers[index]->AddActor(glyphActor[index]);
-          }
-          renderers[index]->AddActor(textactors[index]);
-          renderers[index]->SetBackground(
-              colors->GetColor3d("MidnightBlue").GetData());
-          renderers[index]->ResetCamera();
-          renderers[index]->GetActiveCamera()->Azimuth(30);
-          renderers[index]->GetActiveCamera()->Elevation(-30);
-          renderers[index]->GetActiveCamera()->Zoom(0.9);
-          renderers[index]->ResetCameraClippingRange();
-        }
+        renderers[index]->AddActor(glyphActor[index]);
       }
+      renderers[index]->AddActor(textactors[index]);
+      renderers[index]->ResetCamera();
+      renderers[index]->GetActiveCamera()->Azimuth(30);
+      renderers[index]->GetActiveCamera()->Elevation(-30);
+      renderers[index]->GetActiveCamera()->Zoom(0.9);
+      renderers[index]->ResetCameraClippingRange();
     }
   }
 
-  vtkNew<vtkRenderWindowInteractor> interactor;
-  interactor->SetRenderWindow(renderWindow);
-
-  renderWindow->Render();
-  if (cmdArgs["s"].first)
+  if (limits)
   {
-    renderWindow->SetWindowName(singleSurface.first.c_str());
-  }
-  else
-  {
-    renderWindow->SetWindowName("ParametricObjectsDemo");
-  }
-  renderWindow->Render();
-  if (cmdArgs["w"].first)
-  {
-    // -------------------------------
-    // Save the image
-    // -------------------------------
-    if (cmdArgs["s"].first)
+    for (auto const& obj : boundingBoxes)
     {
-      WriteImage(singleSurface.first, renderWindow, false);
-    }
-    else
-    {
-      WriteImage("ParametricObjectsDemo", renderWindow, false);
+      DisplayBoundingBoxAndCenter(obj.first, obj.second);
     }
   }
 
-  interactor->Start();
+  std::string fn = "ParametricObjectsDemo";
+  if (!surfaceName.empty())
+  {
+    fn = singleSurface.first;
+  }
+  renWin->SetWindowName(fn.c_str());
+
+  vtkNew<vtkRenderWindowInteractor> iRen;
+  vtkNew<PrintCallback> printCallback;
+  printCallback->SetParameters(fn, 1, false);
+
+  iRen->SetRenderWindow(renWin);
+  iRen->AddObserver(vtkCommand::KeyPressEvent, printCallback);
+
+  iRen->Initialize();
+  iRen->Start();
 
   return EXIT_SUCCESS;
 }
 
 namespace {
 
-std::string ShowUsage(std::string fn)
-{
-  // Remove the folder (if present) then remove the extension in this order
-  // since the folder name may contain perionds.
-  auto last_slash_idx = fn.find_last_of("\\/");
-  if (std::string::npos != last_slash_idx)
-  {
-    fn.erase(0, last_slash_idx + 1);
-  }
-  auto period_idx = fn.rfind('.');
-  if (std::string::npos != period_idx)
-  {
-    fn.erase(period_idx);
-  }
-  std::ostringstream os;
-  os << "\nusage: " << fn << "[-h][-s SURFACE_NAME][-w][-b][-n]\n\n"
-     << "Display the parametric surfaces.\n\n"
-     << "optional arguments:\n"
-     << "  -h                    show this help message and exit\n"
-     << "  -s SURFACE_NAME       The name of the surface.\n"
-     << "  -w                    Write out the the image.\n"
-     << "  -b                    Color the back-face.\n"
-     << "  -n                    Display normals.\n"
-     << std::endl;
-  return os.str();
-}
-
-std::map<int, std::map<std::string, vtkSmartPointer<vtkParametricFunction>>>
+std::map<std::string, vtkSmartPointer<vtkParametricFunction>>
 GetParametricFunctions()
 {
-  std::map<int, std::map<std::string, vtkSmartPointer<vtkParametricFunction>>>
-      pfn;
-  pfn[0]["Boy"] = vtkSmartPointer<vtkParametricBoy>::New();
-  pfn[0]["ConicSpiral"] = vtkSmartPointer<vtkParametricConicSpiral>::New();
-  pfn[0]["CrossCap"] = vtkSmartPointer<vtkParametricCrossCap>::New();
-  pfn[0]["Dini"] = vtkSmartPointer<vtkParametricDini>::New();
-  pfn[0]["Ellipsoid"] = vtkSmartPointer<vtkParametricEllipsoid>::New();
-  pfn[0]["Enneper"] = vtkSmartPointer<vtkParametricEnneper>::New();
-  pfn[0]["Figure8Klein"] = vtkSmartPointer<vtkParametricFigure8Klein>::New();
-  pfn[0]["Klein"] = vtkSmartPointer<vtkParametricKlein>::New();
-  pfn[0]["Mobius"] = vtkSmartPointer<vtkParametricMobius>::New();
-  pfn[0]["RandomHills"] = vtkSmartPointer<vtkParametricRandomHills>::New();
-  pfn[0]["Roman"] = vtkSmartPointer<vtkParametricRoman>::New();
-  pfn[0]["SuperEllipsoid"] =
-      vtkSmartPointer<vtkParametricSuperEllipsoid>::New();
-  pfn[0]["SuperToroid"] = vtkSmartPointer<vtkParametricSuperToroid>::New();
-  pfn[0]["Torus"] = vtkSmartPointer<vtkParametricTorus>::New();
-  pfn[0]["Spline"] = vtkSmartPointer<vtkParametricSpline>::New();
+  std::map<std::string, vtkSmartPointer<vtkParametricFunction>> pfn;
+  pfn["Boy"] = vtkSmartPointer<vtkParametricBoy>::New();
+  pfn["ConicSpiral"] = vtkSmartPointer<vtkParametricConicSpiral>::New();
+  pfn["CrossCap"] = vtkSmartPointer<vtkParametricCrossCap>::New();
+  pfn["Dini"] = vtkSmartPointer<vtkParametricDini>::New();
+  pfn["Ellipsoid"] = vtkSmartPointer<vtkParametricEllipsoid>::New();
+  pfn["Enneper"] = vtkSmartPointer<vtkParametricEnneper>::New();
+  pfn["Figure8Klein"] = vtkSmartPointer<vtkParametricFigure8Klein>::New();
+  pfn["Klein"] = vtkSmartPointer<vtkParametricKlein>::New();
+  pfn["Mobius"] = vtkSmartPointer<vtkParametricMobius>::New();
+  pfn["RandomHills"] = vtkSmartPointer<vtkParametricRandomHills>::New();
+  pfn["Roman"] = vtkSmartPointer<vtkParametricRoman>::New();
+  pfn["SuperEllipsoid"] = vtkSmartPointer<vtkParametricSuperEllipsoid>::New();
+  pfn["SuperToroid"] = vtkSmartPointer<vtkParametricSuperToroid>::New();
+  pfn["Torus"] = vtkSmartPointer<vtkParametricTorus>::New();
+  pfn["Spline"] = vtkSmartPointer<vtkParametricSpline>::New();
   // Extra parametric surfaces.
-  pfn[1]["BohemianDome"] = vtkSmartPointer<vtkParametricBohemianDome>::New();
-  pfn[1]["Bour"] = vtkSmartPointer<vtkParametricBour>::New();
-  pfn[1]["CatalanMinimal"] =
-      vtkSmartPointer<vtkParametricCatalanMinimal>::New();
-  pfn[1]["Henneberg"] = vtkSmartPointer<vtkParametricHenneberg>::New();
-  pfn[1]["Kuen"] = vtkSmartPointer<vtkParametricKuen>::New();
-  pfn[1]["PluckerConoid"] = vtkSmartPointer<vtkParametricPluckerConoid>::New();
-  pfn[1]["Pseudosphere"] = vtkSmartPointer<vtkParametricPseudosphere>::New();
+  pfn["BohemianDome"] = vtkSmartPointer<vtkParametricBohemianDome>::New();
+  pfn["Bour"] = vtkSmartPointer<vtkParametricBour>::New();
+  pfn["CatalanMinimal"] = vtkSmartPointer<vtkParametricCatalanMinimal>::New();
+  pfn["Henneberg"] = vtkSmartPointer<vtkParametricHenneberg>::New();
+  pfn["Kuen"] = vtkSmartPointer<vtkParametricKuen>::New();
+  pfn["PluckerConoid"] = vtkSmartPointer<vtkParametricPluckerConoid>::New();
+  pfn["Pseudosphere"] = vtkSmartPointer<vtkParametricPseudosphere>::New();
 
   // Now set some parameters.
-  static_cast<vtkParametricEllipsoid*>(pfn[0]["Ellipsoid"].GetPointer())
+  static_cast<vtkParametricEllipsoid*>(pfn["Ellipsoid"].GetPointer())
       ->SetXRadius(0.5);
-  static_cast<vtkParametricEllipsoid*>(pfn[0]["Ellipsoid"].GetPointer())
+  static_cast<vtkParametricEllipsoid*>(pfn["Ellipsoid"].GetPointer())
       ->SetYRadius(2.0);
-  static_cast<vtkParametricMobius*>(pfn[0]["Mobius"].GetPointer())
-      ->SetRadius(2.0);
-  static_cast<vtkParametricMobius*>(pfn[0]["Mobius"].GetPointer())
+  static_cast<vtkParametricMobius*>(pfn["Mobius"].GetPointer())->SetRadius(2.0);
+  static_cast<vtkParametricMobius*>(pfn["Mobius"].GetPointer())
       ->SetMinimumV(-0.5);
-  static_cast<vtkParametricMobius*>(pfn[0]["Mobius"].GetPointer())
+  static_cast<vtkParametricMobius*>(pfn["Mobius"].GetPointer())
       ->SetMaximumV(0.5);
-  static_cast<vtkParametricRandomHills*>(pfn[0]["RandomHills"].GetPointer())
+  static_cast<vtkParametricRandomHills*>(pfn["RandomHills"].GetPointer())
       ->AllowRandomGenerationOn();
-  static_cast<vtkParametricRandomHills*>(pfn[0]["RandomHills"].GetPointer())
+  static_cast<vtkParametricRandomHills*>(pfn["RandomHills"].GetPointer())
       ->SetRandomSeed(1);
-  static_cast<vtkParametricRandomHills*>(pfn[0]["RandomHills"].GetPointer())
+  static_cast<vtkParametricRandomHills*>(pfn["RandomHills"].GetPointer())
       ->SetNumberOfHills(30);
-  static_cast<vtkParametricSuperEllipsoid*>(
-      pfn[0]["SuperEllipsoid"].GetPointer())
+  static_cast<vtkParametricSuperEllipsoid*>(pfn["SuperEllipsoid"].GetPointer())
       ->SetN1(0.5);
-  static_cast<vtkParametricSuperEllipsoid*>(
-      pfn[0]["SuperEllipsoid"].GetPointer())
+  static_cast<vtkParametricSuperEllipsoid*>(pfn["SuperEllipsoid"].GetPointer())
       ->SetN2(0.4);
-  static_cast<vtkParametricSuperToroid*>(pfn[0]["SuperToroid"].GetPointer())
+  static_cast<vtkParametricSuperToroid*>(pfn["SuperToroid"].GetPointer())
       ->SetN1(0.5);
-  static_cast<vtkParametricSuperToroid*>(pfn[0]["SuperToroid"].GetPointer())
+  static_cast<vtkParametricSuperToroid*>(pfn["SuperToroid"].GetPointer())
       ->SetN2(3.0);
   // The spline needs points
-  auto inputPoints = vtkSmartPointer<vtkPoints>::New();
-  auto rng = vtkSmartPointer<vtkMinimalStandardRandomSequence>::New();
+  vtkNew<vtkPoints> inputPoints;
+  vtkNew<vtkMinimalStandardRandomSequence> rng;
   rng->SetSeed(8775070);
   for (auto p = 0; p < 10; p++)
   {
-    std::array<double, 3> xyz;
+    std::array<double, 3> xyz{0, 0, 0};
     for (auto& idx : xyz)
     {
       idx = rng->GetRangeValue(-1.0, 1.0);
@@ -673,17 +517,16 @@ GetParametricFunctions()
     }
     inputPoints->InsertNextPoint(xyz.data());
   }
-  static_cast<vtkParametricSpline*>(pfn[0]["Spline"].GetPointer())
+  static_cast<vtkParametricSpline*>(pfn["Spline"].GetPointer())
       ->SetPoints(inputPoints);
   // Extra parametric surfaces.
-  static_cast<vtkParametricBohemianDome*>(pfn[1]["BohemianDome"].GetPointer())
+  static_cast<vtkParametricBohemianDome*>(pfn["BohemianDome"].GetPointer())
       ->SetA(5.0);
-  static_cast<vtkParametricBohemianDome*>(pfn[1]["BohemianDome"].GetPointer())
+  static_cast<vtkParametricBohemianDome*>(pfn["BohemianDome"].GetPointer())
       ->SetB(1.0);
-  static_cast<vtkParametricBohemianDome*>(pfn[1]["BohemianDome"].GetPointer())
+  static_cast<vtkParametricBohemianDome*>(pfn["BohemianDome"].GetPointer())
       ->SetC(2.0);
-  static_cast<vtkParametricKuen*>(pfn[1]["Kuen"].GetPointer())
-      ->SetDeltaV0(0.001);
+  static_cast<vtkParametricKuen*>(pfn["Kuen"].GetPointer())->SetDeltaV0(0.001);
   return pfn;
 }
 
@@ -694,7 +537,7 @@ std::vector<double> GetCentre(const std::vector<double>& bounds)
   {
     return centre;
   }
-  for (unsigned int i = 1; i < bounds.size(); i += 2)
+  for (size_t i = 1; i < bounds.size(); i += 2)
   {
     centre.push_back(bounds[i] - (bounds[i] - bounds[i - 1]) / 2.0);
   }
@@ -708,14 +551,14 @@ double GetMaximumLength(const std::vector<double>& bounds)
   {
     return maxLen;
   }
-  for (auto i = 0; i < int(bounds.size()); i += 2)
+  for (size_t i = 0; i < bounds.size(); i += 2)
   {
     maxLen = std::max(maxLen, std::abs(bounds[i + 1] - bounds[i]));
   }
   return maxLen;
 }
 
-void DisplayBoundingBoxAndCenter(std::string const& name, int const& index,
+void DisplayBoundingBoxAndCenter(std::string const& name,
                                  std::vector<double> const& bounds)
 {
   if (bounds.size() != 6)
@@ -724,418 +567,16 @@ void DisplayBoundingBoxAndCenter(std::string const& name, int const& index,
   }
   auto maxLength = GetMaximumLength(bounds);
   auto centre = GetCentre(bounds);
-  std::cout << std::left << std::setw(21) << name << std::right << ": "
-            << std::setw(2) << index << "\n"
-            << std::left << std::setw(21) << "  Bounds (min, max)"
-            << ": x:(" << std::right << std::fixed << std::setw(6)
-            << std::setprecision(2) << bounds[0] << ", " << std::setw(6)
-            << bounds[1] << ") y:(" << std::setw(6) << bounds[2] << ", "
-            << std::setw(6) << bounds[3] << ") z:(" << std::setw(6) << bounds[4]
-            << ", " << std::setw(6) << bounds[5] << ")\n"
-            << std::left << std::setw(21) << "  Maximum side length"
-            << ": " << std::right << std::setw(6) << maxLength << "\n"
-            << std::left << std::setw(21) << "  Centre (x, y, z)"
-            << ": (" << std::right << std::setw(6) << centre[0] << ", "
-            << std::setw(6) << centre[1] << ", " << std::setw(6) << centre[2]
-            << ")\n"
-            << std::endl;
-}
 
-void WriteImage(std::string const& fileName, vtkRenderWindow* renWin, bool rgba)
-{
-  if (!fileName.empty())
-  {
-    std::string fn = fileName;
-    std::string ext;
-    auto found = fn.find_last_of(".");
-    if (found == std::string::npos)
-    {
-      ext = ".png";
-      fn += ext;
-    }
-    else
-    {
-      ext = fileName.substr(found, fileName.size());
-    }
-    std::locale loc;
-    std::transform(ext.begin(), ext.end(), ext.begin(),
-                   [=](char const& c) { return std::tolower(c, loc); });
-    auto writer = vtkSmartPointer<vtkImageWriter>::New();
-    if (ext == ".bmp")
-    {
-      writer = vtkSmartPointer<vtkBMPWriter>::New();
-    }
-    else if (ext == ".jpg")
-    {
-      writer = vtkSmartPointer<vtkJPEGWriter>::New();
-    }
-    else if (ext == ".pnm")
-    {
-      writer = vtkSmartPointer<vtkPNMWriter>::New();
-    }
-    else if (ext == ".ps")
-    {
-      if (rgba)
-      {
-        rgba = false;
-      }
-      writer = vtkSmartPointer<vtkPostScriptWriter>::New();
-    }
-    else if (ext == ".tiff")
-    {
-      writer = vtkSmartPointer<vtkTIFFWriter>::New();
-    }
-    else
-    {
-      writer = vtkSmartPointer<vtkPNGWriter>::New();
-    }
-    auto window_to_image_filter =
-        vtkSmartPointer<vtkWindowToImageFilter>::New();
-    window_to_image_filter->SetInput(renWin);
-    window_to_image_filter->SetScale(1); // image quality
-    if (rgba)
-    {
-      window_to_image_filter->SetInputBufferTypeToRGBA();
-    }
-    else
-    {
-      window_to_image_filter->SetInputBufferTypeToRGB();
-    }
-    // Read from the front buffer.
-    window_to_image_filter->ReadFrontBufferOff();
-    window_to_image_filter->Update();
-
-    writer->SetFileName(fn.c_str());
-    writer->SetInputConnection(window_to_image_filter->GetOutputPort());
-    writer->Write();
-  }
-  else
-  {
-    std::cerr << "No filename provided." << std::endl;
-  }
-
-  return;
-}
-
-CommandLineParser::CommandLineParser(
-    std::vector<std::string>& cmdLineVec,
-    std::map<std::string, std::string>& optArgs,
-    std::map<std::string, std::string>& optArgsParam, int posNum,
-    std::string const& posName)
-  : cmdLineVec(cmdLineVec),
-    optArgs(optArgs),
-    optArgsParam(optArgsParam),
-    posNum(posNum),
-    posName(posName)
-{
-  // Make a set of all the values.
-  std::set<std::string> pVals;
-  this->GetSetOfValues(this->optArgs, pVals);
-  this->GetSetOfValues(this->optArgsParam, pVals);
-
-  // Set the default arguments
-  for (auto p : pVals)
-  {
-    this->cmdArgs[p].first = false;
-  }
-
-  // Get the aliases
-  this->FindAliases(this->optArgsParam, this->aliases);
-  this->FindAliases(this->optArgs, this->aliases);
-
-  cl = this->SeparateKV();
-}
-
-CommandLineParser::~CommandLineParser() = default;
-
-std::vector<std::string> CommandLineParser::SeparateKV()
-{
-  // For keys with parameters, short commands like -xy need to be split into
-  // -x y.
-  std::vector<std::string> cl;
-  if (!this->optArgsParam.empty())
-  {
-    for (auto v : this->cmdLineVec)
-    {
-      auto a = v.substr(0, 2);
-      if (this->optArgsParam.count(a) > 0 && v.size() > 2)
-      {
-        cl.push_back(a);
-        cl.push_back(v.substr(2));
-      }
-      else
-      {
-        cl.push_back(v);
-      }
-    }
-  }
-  return cl;
-}
-
-bool CommandLineParser::HasUnknownKeys()
-{
-  auto hasKV = !this->optArgsParam.empty();
-  auto hasNKV = !this->optArgs.empty();
-  std::vector<std::string> unknownKeys;
-  for (auto v : this->cl)
-  {
-    if (v[0] == '-' || v.substr(0, 2) == "--")
-    {
-      if ((hasKV && this->optArgsParam.count(v) > 0) ||
-          (hasNKV && this->optArgs.count(v) > 0))
-      {
-        continue;
-      }
-      else
-      {
-        unknownKeys.push_back(v);
-      }
-    }
-  }
-  if (unknownKeys.size() > 0)
-  {
-    std::ostringstream os;
-    os << "Unknown parameters found: ";
-    std::copy(std::begin(unknownKeys), std::prev(std::end(unknownKeys)),
-              std::ostream_iterator<std::string>(os, ", "));
-    os << unknownKeys.back();
-    this->parseError = os.str();
-    return true;
-  }
-  return false;
-}
-
-bool CommandLineParser::HasDuplicateKeys()
-{
-  // Look for duplicate non-positional parameters.
-  for (auto k : this->optArgsParam)
-  {
-    auto c = std::count(this->cl.begin(), this->cl.end(), k.first);
-    this->aliases[k.second].second += int(c);
-  }
-  for (auto k : this->optArgs)
-  {
-    auto c = std::count(this->cl.begin(), this->cl.end(), k.first);
-    this->aliases[k.second].second += int(c);
-  }
-  std::map<std::string, std::vector<std::string>> duplicates;
-  for (auto v : this->aliases)
-  {
-    if (v.second.second > 1)
-    {
-      duplicates[v.first] = v.second.first;
-    }
-  }
-  if (duplicates.size() > 0)
-  {
-    std::ostringstream os;
-    os << "Duplicated parameters found: ";
-    for (auto d : duplicates)
-    {
-      os << "(";
-      std::copy(std::begin(d.second), std::prev(std::end(d.second)),
-                std::ostream_iterator<std::string>(os, ", "));
-      os << d.second.back();
-      os << ") ";
-    }
-    // Get rid of trailing spaces
-    auto last = os.str().find_last_not_of(' ');
-    this->parseError = os.str().substr(0, last + 1);
-    return true;
-  }
-  return false;
-}
-
-bool CommandLineParser::Parse()
-{
-  this->parseError.clear();
-
-  if (!this->cl.empty())
-  {
-    if (HasUnknownKeys() || HasDuplicateKeys())
-    {
-      return false;
-    }
-
-    std::vector<std::string> positionalArguments;
-    for (auto it = this->cl.begin(); it != this->cl.end(); ++it)
-    {
-      if (!this->optArgs.empty())
-      {
-        if (this->optArgs.count(*it) > 0)
-        {
-          this->cmdArgs[this->optArgs[*it]].first = true;
-          continue;
-        }
-      }
-      if (!this->optArgsParam.empty())
-      {
-        if (this->optArgsParam.count(*it) > 0)
-        {
-          if (std::next(it) != this->cl.end())
-          {
-            auto key = this->optArgsParam[*it];
-            while (std::next(it) != this->cl.end())
-            {
-              if ((*std::next(it))[0] == '-')
-              {
-                break;
-              }
-              ++it;
-
-              std::string fn = *it;
-              if (fn[0] != '-')
-              {
-                if (!this->cmdArgs[key].first)
-                {
-                  this->cmdArgs[key].first = true;
-                }
-                this->cmdArgs[key].second.push_back(fn);
-              }
-              else
-              {
-                if (this->cmdArgs[key].second.empty())
-                {
-                  std::ostringstream os;
-                  os << key << " must be followed by a parameter.";
-                  this->parseError = os.str();
-                  return false;
-                }
-                else
-                {
-                  break;
-                }
-              }
-            }
-          }
-          else
-          {
-            std::ostringstream os;
-            os << *it
-               << " must be followed by a parameter, reached the end of the "
-                  "commands.";
-            this->parseError = os.str();
-            return false;
-          }
-          continue;
-        }
-      }
-      positionalArguments.push_back(*it);
-    }
-    if (this->posNum != int(positionalArguments.size()))
-    {
-      std::ostringstream os;
-      os << "Expected " << this->posNum << " positional arguments, got "
-         << positionalArguments.size() << " instead.";
-      this->parseError = os.str();
-      return false;
-    }
-    if (!positionalArguments.empty())
-    {
-      this->cmdArgs[this->posName].first = true;
-      this->cmdArgs[this->posName].second = positionalArguments;
-    }
-    else
-    {
-      this->cmdArgs[this->posName].first = false;
-    }
-  }
-  return true;
-}
-
-std::string CommandLineParser::DisplayCommandArguments()
-{
-  std::vector<std::string> setParameters;
-  std::vector<std::string> unSetParameters;
-  for (auto k : this->cmdArgs)
-  {
-    if (this->cmdArgs[k.first].first)
-    {
-      setParameters.push_back(k.first);
-    }
-    else
-    {
-      unSetParameters.push_back(k.first);
-    }
-  }
-  // Sort them
-  std::sort(setParameters.begin(), setParameters.end());
-  std::sort(unSetParameters.begin(), unSetParameters.end());
-
-  std::ostringstream os;
-  if (setParameters.size() > 0)
-  {
-    os << "Set parameters:" << std::endl;
-    for (auto k : setParameters)
-    {
-      if (this->cmdArgs[k].first)
-      {
-        os << "  " << k;
-        if (!this->cmdArgs[k].second.empty())
-        {
-          os << ": ";
-          std::copy(std::begin(cmdArgs[k].second),
-                    std::prev(std::end(cmdArgs[k].second)),
-                    std::ostream_iterator<std::string>(os, ", "));
-          os << this->cmdArgs[k].second.back();
-        }
-        os << std::endl;
-      }
-    }
-  }
-
-  if (unSetParameters.size() > 0)
-  {
-    os << "Unset parameters:" << std::endl;
-    for (auto k : unSetParameters)
-    {
-      if (!this->cmdArgs[k].first)
-      {
-        os << "  " << k;
-        if (!this->cmdArgs[k].second.empty())
-        {
-          os << ": ";
-          std::copy(std::begin(this->cmdArgs[k].second),
-                    std::prev(std::end(this->cmdArgs[k].second)),
-                    std::ostream_iterator<std::string>(os, ", "));
-          os << this->cmdArgs[k].second.back();
-        }
-        os << std::endl;
-      }
-    }
-  }
-  return os.str();
-}
-
-template <typename K, typename V>
-void CommandLineParser::GetSetOfValues(std::map<K, V> const& m, std::set<V>& s)
-{
-  std::for_each(m.begin(), m.end(), [&](const std::pair<const K, V>& element) {
-    s.insert(element.second);
-  });
-}
-
-template <typename K, typename V>
-void CommandLineParser::FindAliases(
-    std::map<K, V> m, std::map<V, std::pair<std::vector<K>, int>>& aliases)
-{
-  std::set<V> values;
-  this->GetSetOfValues(m, values);
-  for (auto v : values)
-  {
-    std::vector<K> a;
-    for (auto it : m)
-    {
-      if (it.second == v)
-      {
-        a.push_back(it.first);
-      }
-    }
-    if (a.size() > 0)
-    {
-      aliases[v] = std::pair<std::vector<K>, int>(a, 0);
-    }
-  }
+  auto s = fmt::format("{:<21s}\n", name);
+  s += fmt::format("{:21s}: ", "  Bounds (min, max)");
+  s += fmt::format("{:s}:({:6.2f}, {:6.2f}) ", "x", bounds[0], bounds[1]);
+  s += fmt::format("{:s}:({:6.2f}, {:6.2f}) ", "y", bounds[2], bounds[3]);
+  s += fmt::format("{:s}:({:6.2f}, {:6.2f})\n", "z", bounds[4], bounds[5]);
+  s += fmt::format("{:21s}: {:6.2f}\n", "  Maximum side length", maxLength);
+  s += fmt::format("{:21s}: ({:6.2f}, {:6.2f}, {:6.2f})\n",
+                   "  Centre (x, y, z)", centre[0], centre[1], centre[2]);
+  std::cout << s << std::endl;
 }
 
 } // namespace
