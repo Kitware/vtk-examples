@@ -23,6 +23,8 @@ if(NOT VTK_BINARY_DIR)
     RenderingFreeType
     RenderingLabel
     RenderingOpenGL2
+    cli11
+    fmt
     OPTIONAL_COMPONENTS
     TestingRendering
     QUIET
