@@ -121,14 +121,9 @@ public:
     // Note the use of reinterpret_cast to cast the caller to the expected type.
     auto rwi = reinterpret_cast<vtkRenderWindowInteractor*>(caller);
 
-    // Just do this to demonstrate who called the callback and the event that
-    // triggered it.
-    //     std::cout << rwi->GetClassName() << "  Event Id: " << evId <<
-    //     std::endl;
-
     // Get the keypress
     std::string key = rwi->GetKeySym();
-    if (key == "k" and !fn_.empty())
+    if (key == "k" && !fn_.empty())
     {
       auto w2If = vtkSmartPointer<vtkWindowToImageFilter>::New();
       w2If->SetInput(rwi->GetRenderWindow());
