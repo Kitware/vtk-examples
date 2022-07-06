@@ -1429,6 +1429,15 @@ def main():
         for f in files:
             shutil.copy(f, dest)
 
+    # Copy documentation files.
+    src = src_path / 'Documentation'
+    dest = doc_path / 'Documentation'
+    dest.mkdir(parents=True, exist_ok=True)
+    p = src.glob('*.md')
+    files = [x for x in p if x.is_file()]
+    for f in files:
+            shutil.copy(f, dest)
+
     # Copy favicon.png
     dest = doc_path / 'assets/images'
     dest.mkdir(parents=True, exist_ok=True)

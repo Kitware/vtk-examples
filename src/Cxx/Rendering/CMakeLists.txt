@@ -32,6 +32,8 @@ if(NOT VTK_BINARY_DIR)
     RenderingFreeType
     RenderingGL2PSOpenGL2
     RenderingOpenGL2
+    cli11
+    jsoncpp
     OPTIONAL_COMPONENTS
     TestingRendering
     QUIET
@@ -129,19 +131,11 @@ if (BUILD_TESTING)
     TestWalkCowB ${DATA}/cow.g 2)
 
   add_test(${KIT}-PBR_Skybox ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestPBR_Skybox ${DATA}/Skyboxes/spiaggia_di_mondello_4k.hdr Boy)
+    TestPBR_Skybox ${DATA}/PBR_Skybox.json)
   add_test(${KIT}-PBR_Skybox_Texturing ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestPBR_Skybox_Texturing ${DATA}/Skyboxes/spiaggia_di_mondello_4k.hdr
-     ${DATA}/Textures/Isotropic/vtk_Base_Color.png
-     ${DATA}/Textures/Isotropic/vtk_Normal.png
-     ${DATA}/Textures/Isotropic/vtk_Material.png
-     ${DATA}/Textures/Isotropic/vtk_dark_bkg.png Boy)
+    TestPBR_Skybox_Texturing ${DATA}/PBR_Skybox_Texturing)
   add_test(${KIT}-PBR_Skybox_Anisotropy ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestPBR_Skybox_Anisotropy ${DATA}/Skyboxes/spiaggia_di_mondello_4k.hdr
-     ${DATA}/Textures/Anisotropic/CarbonFiberAniso_albedo.png
-     ${DATA}/Textures/Anisotropic/CarbonFiberAniso_normal.png
-     ${DATA}/Textures/Anisotropic/CarbonFiberAniso_orm.png
-     ${DATA}/Textures/Anisotropic/CarbonFiberAniso_anisotropyAngle.png Boy)
+    TestPBR_Skybox_Anisotropy ${DATA}/PBR_Skybox_Anisotropy -sBoy)
 
 
   include(${WikiExamples_SOURCE_DIR}/CMake/ExamplesTesting.cmake)
