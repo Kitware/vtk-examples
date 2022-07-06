@@ -2,40 +2,37 @@
 
 Demonstrates physically based rendering (PBR) using image based lighting, anisotropic texturing and a skybox.
 
-Physically based rendering sets metallicity, roughness, occlusion strength and normal scaling of the object. Textures are used to set base color,  ORM, anisotropy and normals. Textures for the image based lighting and the skymap are supplied from a cubemap.
+Physically based rendering sets metallicity, roughness, occlusion strength and normal scaling of the object. Textures are used to set base color, ORM, anisotropy and normals. Textures for the image based lighting and the skymap are supplied from a cubemap.
 
-Image based lighting uses a cubemap texture to specify the environment.
+Image based lighting uses a cubemap texture to specify the environment. A Skybox is used to create the illusion of distant three-dimensional surroundings. Textures for the image based lighting and the skybox are supplied from an HDR or JPEG equirectangular Environment map or cubemap consisting of six image files.
 
-Textures are provided for:
+A good source for Skybox HDRs and Textures is [Poly Haven](https://polyhaven.com/all). Start with the 4K HDR versions of Skyboxes.
 
-- setting the base colour
-- normals  
-- **O**cclusion factor, the **R**oughness factor, and the **M**etalness factor (ORM)
-- anosotropy
-
-A Skybox is used to create the illusion of distant three-dimensional surroundings.
-
-You can select different cubemaps and different surfaces to visualise.
-
-Additionally HDR or JPEG equirectangular Environment maps can be used to generate the cubemaps. A good source for Skybox HDRSs and Textures is [Poly Haven](https://polyhaven.com/all). Start with the 4K HDR versions of Skyboxes.
-
-The parameters for this program are rather complex. Here are the parameters used to make the example image:
+The parameters used to generate the example image are loaded from a JSON file with the same name as the example. In this case:
 
 ``` text
-<DATA>/Skyboxes/spiaggia_di_mondello_4k.hdr  <DATA1>/CarbonFiberAniso_albedo.png <DATA1>/CarbonFiberAniso_normal.png <DATA1>/CarbonFiberAniso_orm.png <DATA1>/CarbonFiberAniso_anisotropyAngle.png Boy
+<DATA>/PBR_Skybox_Anisotropy.json
 ```
 
-We can also use the six individual cubemap files by specifying the folder where the cubemap files are:
+Where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data`.
+
+By default we use the equirectangular file to generate the texture for the lighting and skybox. We have optionally provided six individual cubemap files to generate lighting and a skybox.
+
+For information about the parameters in the JSON file, please see [PBR_JSON_format](../../Documentation/PBR_JSON_format.md).
+
+### Options
 
 ``` text
-<DATA>/Skyboxes/skybox2/    <DATA1>/CarbonFiberAniso_albedo.png <DATA1>/CarbonFiberAniso_normal.png <DATA1>/CarbonFiberAniso_orm.png <DATA1>/CarbonFiberAniso_anisotropyAngle.png Boy
+Positionals:
+ fileName         The path to the JSON file containing the parameters.
+
+Options:
+ -h,--help         Print this help message and exit
+ -s,--surface      The name of the surface. Overrides the surface entry in the json file.
+ -c,--use_cubemap  Build the cubemap from the six cubemap files. Overrides the equirectangular entry in the json file.
 ```
 
-We also provide an equirectangular file (useful when using ParaView): `<DATA>/Skyboxes/skybox2/skybox.jpg`.
-
-Where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data` and `<DATA1>` is the path to `?vtk-?examples/src/Testing/Data/Textures/Anisotropic`.
-
-Note that three cubemap skyboxes are available in `<DATA>/Skyboxes/` namely `skybox0`, `skybox1` and `skybox2`.
+Additionally, you can save a screenshot by pressing "k".
 
 #### Further Reading
 
@@ -43,10 +40,8 @@ Note that three cubemap skyboxes are available in `<DATA>/Skyboxes/` namely `sky
 - [PBR Journey Part 1: High Dynamic Range Image Based Lighting with VTK](https://blog.kitware.com/pbrj1/)
 - [PBR Journey Part 2 : Anisotropy model with VTK](https://blog.kitware.com/pbr-journey-part-2-anisotropy-model-with-vtk/)
 - [PBR Journey Part 3 : Clear Coat Model with VTK](https://blog.kitware.com/pbr-journey-part-3-clear-coat-model-with-vtk/)
+- [Object Shading Properties](https://gitlab.kitware.com/paraview/paraview-docs/-/blob/master/doc/source/ReferenceManual/objectShadingProperties.rst)
 
 !!! note
-    - Support was added for [HDR images in VTK 9.0](https://blog.kitware.com/pbrj1/), Thus for better performance, the skybox texture should set `MipmapOn` as well as `InterpolateOn` to exploit hardware capabilities when using HDR images.
-    - We are using a cubemap texture (and not a traditional texture), so one should set `UseSphericalHarmonicsOff` on the texture as well. This means that we need to use vtkOpenGLRenderer instead of vtkRenderer as the renderer.
-    - Occlusion is subtle, you will see it in the shadowing around objects on the surface.
-    - Physically Based Rendering (PBR) is only available in VTK 9.0+
-    - The cubemap/skybox files are found in `?vtk-?examples/src/Testing/Data/skyboxes/`.
+    - <DATA>/PBR_Skybox_Anisotropy.json assumes that the skyboxes and textures are in the subfolders `Skyboxes`and `Textures` relative to this file. This allows you to copy this JSON file and the assocuated subfolders to any other location on your computer.
+    - You can turn off the skybox in the JSON file by setting `"skybox":false`. Image based lighting will still be active.
