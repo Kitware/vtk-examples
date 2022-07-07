@@ -43,5 +43,5 @@ Additionally, you can save a screenshot by pressing "k".
 - [Object Shading Properties](https://gitlab.kitware.com/paraview/paraview-docs/-/blob/master/doc/source/ReferenceManual/objectShadingProperties.rst)
 
 !!! note
-    - <DATA>/PBR_Skybox_Texturing.json assumes that the skyboxes and textures are in the subfolders `Skyboxes`and `Textures` relative to this file. This allows you to copy this JSON file and the assocuated subfolders to any other location on your computer.
+    - `<DATA>/PBR_Skybox_Texturing.json` assumes that the skyboxes and textures are in the subfolders `Skyboxes` and `Textures` relative to this file. This allows you to copy this JSON file and the assocuated subfolders to any other location on your computer.
     - You can turn off the skybox in the JSON file by setting `"skybox":false`. Image based lighting will still be active.
