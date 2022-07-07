@@ -191,16 +191,16 @@ Options:
         <span class=n>has_cube_map</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=k>elif</span> <span class=s1>&#39;equirectangular&#39;</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>()</span> <span class=ow>and</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;equirectangular&#39;</span><span class=p>]:</span>
         <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Using the equirectangular file to generate the environment texture.&#39;</span><span class=p>)</span>
-        <span class=c1># Setting flip_X to True allows us to set the environment texture of the</span>
+        <span class=c1># Setting flip_X to False allows us to set the environment texture of the</span>
         <span class=c1># object correctly.</span>
-        <span class=n>env_texture</span> <span class=o>=</span> <span class=n>equirectangular_file_to_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;equirectangular&#39;</span><span class=p>],</span> <span class=kc>True</span><span class=p>)</span>
+        <span class=n>env_texture</span> <span class=o>=</span> <span class=n>equirectangular_file_to_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;equirectangular&#39;</span><span class=p>],</span> <span class=kc>False</span><span class=p>)</span>
         <span class=n>has_env_texture</span> <span class=o>=</span> <span class=kc>True</span>
         <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;equirectangular&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=s1>&#39;.hdr .pic&#39;</span><span class=p>:</span>
             <span class=n>gamma_correct</span> <span class=o>=</span> <span class=kc>True</span>
             <span class=n>is_hdr</span> <span class=o>=</span> <span class=kc>True</span>
         <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;skybox&#39;</span><span class=p>]:</span>
             <span class=c1># Generate a skybox.</span>
-            <span class=n>cube_map</span> <span class=o>=</span> <span class=n>equirectangular_file_to_cubemap</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;equirectangular&#39;</span><span class=p>],</span> <span class=kc>False</span><span class=p>)</span>
+            <span class=n>cube_map</span> <span class=o>=</span> <span class=n>equirectangular_file_to_cubemap</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;equirectangular&#39;</span><span class=p>],</span> <span class=kc>True</span><span class=p>)</span>
             <span class=n>has_cube_map</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=k>elif</span> <span class=s1>&#39;cubemap&#39;</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>()</span> <span class=ow>and</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;cubemap&#39;</span><span class=p>]:</span>
         <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Using the cubemap files to generate the environment texture.&#39;</span><span class=p>)</span>

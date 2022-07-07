@@ -579,10 +579,10 @@ Options:
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w></span>
 <span class=w>        </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Using the equirectangular file to generate the environment texture.&quot;</span><span class=w></span>
 <span class=w>        </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
-<span class=w>    </span><span class=c1>// Setting flip_X to true allows us to set the environment texture of the</span>
+<span class=w>    </span><span class=c1>// Setting flip_X to false allows us to set the environment texture of the</span>
 <span class=w>    </span><span class=c1>// object correctly.</span>
 <span class=w>    </span><span class=n>envTexture</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>EquirectangularFileToTexture</span><span class=p>(</span><span class=w></span>
-<span class=w>        </span><span class=n>parameters</span><span class=p>.</span><span class=n>parameters</span><span class=p>[</span><span class=s>&quot;equirectangular&quot;</span><span class=p>],</span><span class=w> </span><span class=nb>true</span><span class=p>);</span><span class=w></span>
+<span class=w>        </span><span class=n>parameters</span><span class=p>.</span><span class=n>parameters</span><span class=p>[</span><span class=s>&quot;equirectangular&quot;</span><span class=p>],</span><span class=w> </span><span class=nb>false</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=n>envTexture</span><span class=o>-&gt;</span><span class=n>MipmapOn</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=n>envTexture</span><span class=o>-&gt;</span><span class=n>InterpolateOn</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=n>hasEnvTexture</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>;</span><span class=w></span>
@@ -600,7 +600,7 @@ Options:
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>parameters</span><span class=p>.</span><span class=n>skybox</span><span class=p>)</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=n>cubeMap</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>EquirectangularFileToCubemap</span><span class=p>(</span><span class=w></span>
-<span class=w>          </span><span class=n>parameters</span><span class=p>.</span><span class=n>parameters</span><span class=p>[</span><span class=s>&quot;equirectangular&quot;</span><span class=p>],</span><span class=w> </span><span class=nb>false</span><span class=p>);</span><span class=w></span>
+<span class=w>          </span><span class=n>parameters</span><span class=p>.</span><span class=n>parameters</span><span class=p>[</span><span class=s>&quot;equirectangular&quot;</span><span class=p>],</span><span class=w> </span><span class=nb>true</span><span class=p>);</span><span class=w></span>
 <span class=w>      </span><span class=n>hasCubeMap</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=p>}</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
