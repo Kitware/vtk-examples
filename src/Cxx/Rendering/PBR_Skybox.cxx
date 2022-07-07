@@ -442,10 +442,10 @@ int main(int argc, char* argv[])
     std::cout
         << "Using the equirectangular file to generate the environment texture."
         << std::endl;
-    // Setting flip_X to true allows us to set the environment texture of the
+    // Setting flip_X to false allows us to set the environment texture of the
     // object correctly.
     envTexture = EquirectangularFileToTexture(
-        parameters.parameters["equirectangular"], true);
+        parameters.parameters["equirectangular"], false);
     envTexture->MipmapOn();
     envTexture->InterpolateOn();
     hasEnvTexture = true;
@@ -463,7 +463,7 @@ int main(int argc, char* argv[])
     if (parameters.skybox)
     {
       cubeMap = EquirectangularFileToCubemap(
-          parameters.parameters["equirectangular"], false);
+          parameters.parameters["equirectangular"], true);
       hasCubeMap = true;
     }
   }

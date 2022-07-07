@@ -577,7 +577,7 @@ int main(int argc, char* argv[])
     if (parameters.skybox)
     {
       cubeMap = EquirectangularFileToCubemap(
-          parameters.parameters["equirectangular"], false);
+          parameters.parameters["equirectangular"], true);
       hasCubeMap = true;
     }
   }

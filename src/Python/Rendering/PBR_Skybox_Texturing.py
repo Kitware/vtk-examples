@@ -127,16 +127,16 @@ def main():
         has_cube_map = True
     elif 'equirectangular' in parameters.keys() and parameters['equirectangular']:
         print('Using the equirectangular file to generate the environment texture.')
-        # Setting flip_X to True allows us to set the environment texture of the
+        # Setting flip_X to False allows us to set the environment texture of the
         # object correctly.
-        env_texture = equirectangular_file_to_texture(parameters['equirectangular'], True)
+        env_texture = equirectangular_file_to_texture(parameters['equirectangular'], False)
         has_env_texture = True
         if parameters['equirectangular'].suffix.lower() in '.hdr .pic':
             gamma_correct = True
             is_hdr = True
         if parameters['skybox']:
             # Generate a skybox.
-            cube_map = equirectangular_file_to_cubemap(parameters['equirectangular'], False)
+            cube_map = equirectangular_file_to_cubemap(parameters['equirectangular'], True)
             has_cube_map = True
     elif 'cubemap' in parameters.keys() and parameters['cubemap']:
         print('Using the cubemap files to generate the environment texture.')
