@@ -104,19 +104,19 @@ int main(int, char*[])
   // Add multiple line plots, setting the colors etc
   vtkPlot* line = 0;
   line = chart->AddPlot(vtkChart::BAR);
-  line->SetColor(colorSeries->GetColor(0).GetRed() / 255.0,
+  line->SetColorF(colorSeries->GetColor(0).GetRed() / 255.0,
                  colorSeries->GetColor(0).GetGreen() / 255.0,
                  colorSeries->GetColor(0).GetBlue() / 255.0);
   line->SetInputData(table, 0, 1);
 
   line = chart->AddPlot(vtkChart::BAR);
-  line->SetColor(colorSeries->GetColor(1).GetRed() / 255.0,
+  line->SetColorF(colorSeries->GetColor(1).GetRed() / 255.0,
                  colorSeries->GetColor(1).GetGreen() / 255.0,
                  colorSeries->GetColor(1).GetBlue() / 255.0);
   line->SetInputData(table, 0, 2);
 
   line = chart->AddPlot(vtkChart::BAR);
-  line->SetColor(colorSeries->GetColor(2).GetRed() / 255.0,
+  line->SetColorF(colorSeries->GetColor(2).GetRed() / 255.0,
                  colorSeries->GetColor(2).GetGreen() / 255.0,
                  colorSeries->GetColor(2).GetBlue() / 255.0);
   line->SetInputData(table, 0, 3);

@@ -100,13 +100,13 @@ int main(int, char*[])
   // Create the functional bag plots
   vtkColor3d color3d = colors->GetColor3d("Tomato");
   vtkNew<vtkPlotFunctionalBag> q3Plot;
-  q3Plot->SetColor(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+  q3Plot->SetColorF(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
   q3Plot->SetInputData(inputTable, "X", "Q3");
   chart->AddPlot(q3Plot);
 
   color3d = colors->GetColor3d("Banana");
   vtkNew<vtkPlotFunctionalBag> q2Plot;
-  q2Plot->SetColor(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+  q2Plot->SetColorF(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
   q2Plot->SetInputData(inputTable, "X", "Q2");
   chart->AddPlot(q2Plot);
 
@@ -125,7 +125,7 @@ int main(int, char*[])
                           color.GetBlue() / 255., 1.);
     double rgb[3];
     lookup->GetColor(j, rgb);
-    plot->SetColor(rgb[0], rgb[1], rgb[2]);
+    plot->SetColorF(rgb[0], rgb[1], rgb[2]);
     plot->SetInputData(inputTable, "X", inputTable->GetColumn(j)->GetName());
     plot->GetPen()->SetWidth(3.0);
     chart->AddPlot(plot);

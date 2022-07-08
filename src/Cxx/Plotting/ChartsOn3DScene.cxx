@@ -100,17 +100,17 @@ int main(int, char*[])
 
   vtkPlot* points = chart->AddPlot(vtkChart::POINTS);
   points->SetInputData(table, 0, 1);
-  points->SetColor(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+  points->SetColorF(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
   points->SetWidth(1.0);
   dynamic_cast<vtkPlotPoints*>(points)->SetMarkerStyle(vtkPlotPoints::CROSS);
   points = chart->AddPlot(vtkChart::POINTS);
   points->SetInputData(table, 0, 2);
-  points->SetColor(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+  points->SetColorF(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
   points->SetWidth(1.0);
   dynamic_cast<vtkPlotPoints*>(points)->SetMarkerStyle(vtkPlotPoints::PLUS);
   points = chart->AddPlot(vtkChart::POINTS);
   points->SetInputData(table, 0, 3);
-  points->SetColor(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+  points->SetColorF(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
   points->SetWidth(1.0);
 
   renwin->SetMultiSamples(0);
