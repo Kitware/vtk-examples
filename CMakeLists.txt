@@ -44,6 +44,22 @@ endif()
 message(STATUS "VTKWikiExamples: VTK VERSION: ${VTK_VERSION}(${VTK_RENDERING_BACKEND})")
 
 #-----------------------------------------------------------------------------
+# Set the C++ Standard.
+# Note: Since CMake 3.20.4, set(CMAKE_CXX_STANDARD 20) gets you -std:c++20,
+# so you need set(CMAKE_CXX_STANDARD 23) to get -std:c++latest for MSVC 16.11+
+# Supported values are 98, 11, 14, 17, 20, 23.
+if(MSVC)
+set(CMAKE_CXX_STANDARD 23)
+else()
+set(CMAKE_CXX_STANDARD 20)
+endif()
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# Enable this if you need -std=c++14 instead of -std=g++14 for gcc compilers.
+# This must be set before the target-definition (add_library or add_executable).
+#set(CMAKE_CXX_EXTENSIONS OFF)
+message(STATUS "C++ standard: ${CMAKE_CXX_STANDARD}")
+
+#-----------------------------------------------------------------------------
 set(CMAKE_MODULE_PATH
   ${WikiExamples_SOURCE_DIR}/CMake
   ${CMAKE_MODULE_PATH}
