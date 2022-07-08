@@ -190,7 +190,7 @@ private:
 
 } // namespace
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
   CLI::App app{"Display the parametric surfaces."};
 
