@@ -47,6 +47,12 @@ set(KIT_LIBS ${VTK_LIBRARIES})
 # Build all .cxx files in the directory
 file(GLOB ALL_FILES *.cxx)
 
+include(${WikiExamples_SOURCE_DIR}/CMake/RequiresCxxVersion.cmake)
+set(CXX_VERSION_MIN "17")
+Requires_Cxx_Version(PBR_Skybox ${CXX_VERSION_MIN} ALL_FILES)
+Requires_Cxx_Version(PBR_Skybox_Texturing ${CXX_VERSION_MIN} ALL_FILES)
+Requires_Cxx_Version(PBR_Skybox_Anisotropy ${CXX_VERSION_MIN} ALL_FILES)
+
 foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ".cxx" "" TMP ${SOURCE_FILE})
   string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
@@ -130,13 +136,18 @@ if (BUILD_TESTING)
   add_test(${KIT}-WalkCowB ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestWalkCowB ${DATA}/cow.g 2)
 
-  add_test(${KIT}-PBR_Skybox ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestPBR_Skybox ${DATA}/PBR_Skybox.json)
-  add_test(${KIT}-PBR_Skybox_Texturing ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestPBR_Skybox_Texturing ${DATA}/PBR_Skybox_Texturing)
-  add_test(${KIT}-PBR_Skybox_Anisotropy ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestPBR_Skybox_Anisotropy ${DATA}/PBR_Skybox_Anisotropy -sBoy)
-
+  if(TARGET PBR_Skybox)
+    add_test(${KIT}-PBR_Skybox ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+      TestPBR_Skybox ${DATA}/PBR_Skybox.json)
+  endif()
+  if(TARGET PBR_Skybox_Texturing)
+    add_test(${KIT}-PBR_Skybox_Texturing ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+      TestPBR_Skybox_Texturing ${DATA}/PBR_Skybox_Texturing)
+  endif()
+  if(TARGET PBR_Skybox_Anisotropy)
+    add_test(${KIT}-PBR_Skybox_Anisotropy ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+      TestPBR_Skybox_Anisotropy ${DATA}/PBR_Skybox_Anisotropy -sBoy)
+  endif()
 
   include(${WikiExamples_SOURCE_DIR}/CMake/ExamplesTesting.cmake)
 
