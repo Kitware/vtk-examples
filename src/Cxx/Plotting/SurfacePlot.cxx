@@ -14,6 +14,11 @@
 #include <vtkTable.h>
 #include <vtkUnsignedCharArray.h>
 #include <vtkVector.h>
+#include <vtkVersion.h>
+
+#if VTK_VERSION_NUMBER >= 90020220630ULL
+#define VTK_HAS_SETCOLORF 1
+#endif
 
 int main(int, char*[])
 {
@@ -54,7 +59,11 @@ int main(int, char*[])
   plot->SetXRange(0, 10.0);
   plot->SetYRange(0, 10.0);
   plot->SetInputData(table);
+#if VTK_HAS_SETCOLORF
   plot->GetPen()->SetColorF(colors->GetColor3d("Tomato").GetData());
+#else
+  plot->GetPen()->SetColorF(colors->GetColor3d("Tomato").GetData());
+#endif
   chart->AddPlot(plot);
 
   view->GetRenderWindow()->SetMultiSamples(0);

@@ -1,8 +1,3 @@
-#include <vtkNew.h>
-#include <vtkPlotArea.h>
-
-#include <vtkNamedColors.h>
-
 #include <vtkAxis.h>
 #include <vtkBrush.h>
 #include <vtkCharArray.h>
@@ -10,15 +5,23 @@
 #include <vtkContextScene.h>
 #include <vtkContextView.h>
 #include <vtkFloatArray.h>
+#include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkPlot.h>
+#include <vtkPlotArea.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkTable.h>
 #include <vtkTextProperty.h>
+#include <vtkVersion.h>
 
 #include <algorithm>
+
+#if VTK_VERSION_NUMBER >= 90020220630ULL
+#define VTK_HAS_SETCOLORF 1
+#endif
+
 //----------------------------------------------------------------------------
 int main(int, char*[])
 {
@@ -106,8 +109,13 @@ int main(int, char*[])
   area->SetInputArray(1, "Sine");
   area->SetInputArray(2, "Sine2");
   area->SetValidPointMaskName("ValidMask");
+#if VTK_HAS_SETCOLORF
   area->GetBrush()->SetColorF(color3d.GetRed(), color3d.GetGreen(),
-                              color3d.GetBlue(), .6);
+                              color3d.GetBlue(), 0.6);
+#else
+  area->GetBrush()->SetColor(color3d.GetRed(), color3d.GetGreen(),
+                             color3d.GetBlue(), 0.6);
+#endif
 
   chart->GetAxis(vtkAxis::LEFT)->SetLogScale(true);
 

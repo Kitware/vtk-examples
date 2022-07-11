@@ -14,6 +14,11 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkTable.h>
+#include <vtkVersion.h>
+
+#if VTK_VERSION_NUMBER >= 90020220630ULL
+#define VTK_HAS_SETCOLORF 1
+#endif
 
 //----------------------------------------------------------------------------
 int main(int, char*[])
@@ -99,6 +104,7 @@ int main(int, char*[])
   vtkColor3d color3d = colors->GetColor3d("banana");
 
   vtkPlot* points = chart->AddPlot(vtkChart::POINTS);
+#if VTK_HAS_SETCOLORF
   points->SetInputData(table, 0, 1);
   points->SetColorF(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
   points->SetWidth(1.0);
@@ -112,7 +118,21 @@ int main(int, char*[])
   points->SetInputData(table, 0, 3);
   points->SetColorF(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
   points->SetWidth(1.0);
-
+#else
+  points->SetInputData(table, 0, 1);
+  points->SetColor(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+  points->SetWidth(1.0);
+  dynamic_cast<vtkPlotPoints*>(points)->SetMarkerStyle(vtkPlotPoints::CROSS);
+  points = chart->AddPlot(vtkChart::POINTS);
+  points->SetInputData(table, 0, 2);
+  points->SetColor(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+  points->SetWidth(1.0);
+  dynamic_cast<vtkPlotPoints*>(points)->SetMarkerStyle(vtkPlotPoints::PLUS);
+  points = chart->AddPlot(vtkChart::POINTS);
+  points->SetInputData(table, 0, 3);
+  points->SetColor(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+  points->SetWidth(1.0);
+#endif
   renwin->SetMultiSamples(0);
   renwin->Render();
   iren->Initialize();

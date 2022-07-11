@@ -19,6 +19,10 @@
 
 #include <sstream>
 
+#if VTK_VERSION_NUMBER >= 90020220630ULL
+#define VTK_HAS_SETCOLORF 1
+#endif
+
 //----------------------------------------------------------------------------
 int main(int, char*[])
 {
@@ -100,13 +104,21 @@ int main(int, char*[])
   // Create the functional bag plots
   vtkColor3d color3d = colors->GetColor3d("Tomato");
   vtkNew<vtkPlotFunctionalBag> q3Plot;
+#if VTK_HAS_SETCOLORF
   q3Plot->SetColorF(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+#else
+  q3Plot->SetColor(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+#endif
   q3Plot->SetInputData(inputTable, "X", "Q3");
   chart->AddPlot(q3Plot);
 
   color3d = colors->GetColor3d("Banana");
   vtkNew<vtkPlotFunctionalBag> q2Plot;
+#if VTK_HAS_SETCOLORF
   q2Plot->SetColorF(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+#else
+  q2Plot->SetColor(color3d.GetRed(), color3d.GetGreen(), color3d.GetBlue());
+#endif
   q2Plot->SetInputData(inputTable, "X", "Q2");
   chart->AddPlot(q2Plot);
 
@@ -125,7 +137,11 @@ int main(int, char*[])
                           color.GetBlue() / 255., 1.);
     double rgb[3];
     lookup->GetColor(j, rgb);
+#if VTK_HAS_SETCOLORF
     plot->SetColorF(rgb[0], rgb[1], rgb[2]);
+#else
+    plot->SetColor(rgb[0], rgb[1], rgb[2]);
+#endif
     plot->SetInputData(inputTable, "X", inputTable->GetColumn(j)->GetName());
     plot->GetPen()->SetWidth(3.0);
     chart->AddPlot(plot);

@@ -13,10 +13,15 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkTable.h>
+#include <vtkVersion.h>
 
 #include <array>
 #include <cmath>
 #include <vector>
+
+#if VTK_VERSION_NUMBER >= 90020220630ULL
+#define VTK_HAS_SETCOLORF 1
+#endif
 
 int main(int, char*[])
 {
@@ -81,8 +86,13 @@ int main(int, char*[])
   auto yAxis = leftChart->GetAxis(vtkAxis::LEFT);
   yAxis->GetGridPen()->SetColor(colors->GetColor4ub("LightGrey"));
   yAxis->SetTitle("cos(x)");
+#if VTK_HAS_SETCOLORF
   leftChart->GetBackgroundBrush()->SetColorF(
       colors->GetColor4d("MistyRose").GetData());
+#else
+  leftChart->GetBackgroundBrush()->SetColor(
+      colors->GetColor4d("MistyRose").GetData());
+#endif
   leftChart->GetBackgroundBrush()->SetOpacityF(0.4);
   leftChart->SetTitle("Cosine");
 
@@ -102,8 +112,13 @@ int main(int, char*[])
   yAxis = rightChart->GetAxis(vtkAxis::LEFT);
   yAxis->GetGridPen()->SetColor(colors->GetColor4ub("LightCyan"));
   yAxis->SetTitle("sin(x)");
+#if VTK_HAS_SETCOLORF
   rightChart->GetBackgroundBrush()->SetColorF(
       colors->GetColor4d("Thistle").GetData());
+#else
+  rightChart->GetBackgroundBrush()->SetColor(
+      colors->GetColor4d("Thistle").GetData());
+#endif
   rightChart->GetBackgroundBrush()->SetOpacityF(0.4);
   rightChart->SetTitle("Sine");
 
