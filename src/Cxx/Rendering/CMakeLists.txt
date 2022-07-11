@@ -32,16 +32,15 @@ if(NOT VTK_BINARY_DIR)
     RenderingFreeType
     RenderingGL2PSOpenGL2
     RenderingOpenGL2
+    OPTIONAL_COMPONENTS
     cli11
     jsoncpp
-    OPTIONAL_COMPONENTS
     TestingRendering
     QUIET
     )
 endif()
 
 set(KIT_LIBS ${VTK_LIBRARIES})
-
 
 #
 # Build all .cxx files in the directory
@@ -52,6 +51,14 @@ set(CXX_VERSION_MIN "17")
 Requires_Cxx_Version(PBR_Skybox ${CXX_VERSION_MIN} ALL_FILES)
 Requires_Cxx_Version(PBR_Skybox_Texturing ${CXX_VERSION_MIN} ALL_FILES)
 Requires_Cxx_Version(PBR_Skybox_Anisotropy ${CXX_VERSION_MIN} ALL_FILES)
+
+include(${WikiExamples_SOURCE_DIR}/CMake/RequiresModule.cmake)
+Requires_Module(PBR_Skybox cli11)
+Requires_Module(PBR_Skybox jsoncpp)
+Requires_Module(PBR_Skybox_Texturing cli11)
+Requires_Module(PBR_Skybox_Texturing jsoncpp)
+Requires_Module(PBR_Skybox_Anisotropy cli11)
+Requires_Module(PBR_Skybox_Anisotropy jsoncpp)
 
 foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ".cxx" "" TMP ${SOURCE_FILE})

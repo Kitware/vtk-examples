@@ -49,7 +49,7 @@ message(STATUS "VTKWikiExamples: VTK VERSION: ${VTK_VERSION}(${VTK_RENDERING_BAC
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard to be used")
 set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE STRING "C++ standard to be used")
 
-message(STATUS "C++ standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "C++ standard: C++${CMAKE_CXX_STANDARD}")
 
 #-----------------------------------------------------------------------------
 set(CMAKE_MODULE_PATH

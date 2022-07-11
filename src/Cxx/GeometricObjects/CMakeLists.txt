@@ -23,9 +23,9 @@ if(NOT VTK_BINARY_DIR)
     RenderingFreeType
     RenderingLabel
     RenderingOpenGL2
+    OPTIONAL_COMPONENTS
     cli11
     fmt
-    OPTIONAL_COMPONENTS
     TestingRendering
     QUIET
     )
@@ -40,6 +40,8 @@ file(GLOB ALL_FILES *.cxx)
 # set(VERSION_MIN "7.0")
 # Requires_Version(ParametricKuenDemo ${VERSION_MIN} ALL_FILES)
 # Requires_Version(ParametricObjectsDemo2 ${VERSION_MIN} ALL_FILES)
+
+include(${WikiExamples_SOURCE_DIR}/CMake/RequiresModule.cmake)
 Requires_Module(OpenVRCone RenderingOpenVR)
 Requires_Module(OpenVRCube RenderingOpenVR)
 Requires_Module(OpenVRCylinder RenderingOpenVR)
@@ -48,6 +50,8 @@ Requires_Module(OpenVROrientedArrow RenderingOpenVR)
 Requires_Module(OpenVROrientedCylinder RenderingOpenVR)
 Requires_Module(OpenVRSphere RenderingOpenVR)
 Requires_Module(OpenVRTessellatedBoxSource RenderingOpenVR)
+Requires_Module(ParametricObjectsDemo cli11)
+Requires_Module(ParametricObjectsDemo fmt)
 
 foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ".cxx" "" TMP ${SOURCE_FILE})
