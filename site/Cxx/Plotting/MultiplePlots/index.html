@@ -70,10 +70,15 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTable.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVersion.h&gt;</span><span class=cp></span>
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;array&gt;</span><span class=cp></span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;cmath&gt;</span><span class=cp></span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vector&gt;</span><span class=cp></span>
+
+<span class=cp>#if VTK_VERSION_NUMBER &gt;= 90020220630ULL</span>
+<span class=cp>#define VTK_HAS_SETCOLORF 1</span>
+<span class=cp>#endif</span>
 
 <span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span><span class=w></span>
 <span class=p>{</span><span class=w></span>
@@ -138,8 +143,13 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>yAxis</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>leftChart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=n>vtkAxis</span><span class=o>::</span><span class=n>LEFT</span><span class=p>);</span><span class=w></span>
 </span><span class=w>  </span><span class=n>yAxis</span><span class=o>-&gt;</span><span class=n>GetGridPen</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s>&quot;LightGrey&quot;</span><span class=p>));</span><span class=w></span>
 <span class=w>  </span><span class=n>yAxis</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;cos(x)&quot;</span><span class=p>);</span><span class=w></span>
+<span class=cp>#if VTK_HAS_SETCOLORF</span>
 <span class=w>  </span><span class=n>leftChart</span><span class=o>-&gt;</span><span class=n>GetBackgroundBrush</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorF</span><span class=p>(</span><span class=w></span>
 <span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>&quot;MistyRose&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
+<span class=cp>#else</span>
+<span class=w>  </span><span class=n>leftChart</span><span class=o>-&gt;</span><span class=n>GetBackgroundBrush</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=w></span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>&quot;MistyRose&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
+<span class=cp>#endif</span>
 <span class=w>  </span><span class=n>leftChart</span><span class=o>-&gt;</span><span class=n>GetBackgroundBrush</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetOpacityF</span><span class=p>(</span><span class=mf>0.4</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>leftChart</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Cosine&quot;</span><span class=p>);</span><span class=w></span>
 
@@ -159,8 +169,13 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>yAxis</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>rightChart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=n>vtkAxis</span><span class=o>::</span><span class=n>LEFT</span><span class=p>);</span><span class=w></span>
 </span><span class=w>  </span><span class=n>yAxis</span><span class=o>-&gt;</span><span class=n>GetGridPen</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s>&quot;LightCyan&quot;</span><span class=p>));</span><span class=w></span>
 <span class=w>  </span><span class=n>yAxis</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;sin(x)&quot;</span><span class=p>);</span><span class=w></span>
+<span class=cp>#if VTK_HAS_SETCOLORF</span>
 <span class=w>  </span><span class=n>rightChart</span><span class=o>-&gt;</span><span class=n>GetBackgroundBrush</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorF</span><span class=p>(</span><span class=w></span>
 <span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>&quot;Thistle&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
+<span class=cp>#else</span>
+<span class=w>  </span><span class=n>rightChart</span><span class=o>-&gt;</span><span class=n>GetBackgroundBrush</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=w></span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>&quot;Thistle&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
+<span class=cp>#endif</span>
 <span class=w>  </span><span class=n>rightChart</span><span class=o>-&gt;</span><span class=n>GetBackgroundBrush</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetOpacityF</span><span class=p>(</span><span class=mf>0.4</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>rightChart</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Sine&quot;</span><span class=p>);</span><span class=w></span>
 

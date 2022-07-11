@@ -69,7 +69,12 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTable.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVersion.h&gt;</span><span class=cp></span>
 </span>
+<span class=cp>#if VTK_VERSION_NUMBER &gt;= 90020220630ULL</span>
+<span class=cp>#define VTK_HAS_SETCOLORF 1</span>
+<span class=cp>#endif</span>
+
 <span class=c1>// Plot the solution to the Lorenz attractor.</span>
 <span class=c1>// http://en.wikipedia.org/wiki/Lorenz_system</span>
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span><span class=w></span>
@@ -137,7 +142,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Add a line plot.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlotLine3D</span><span class=o>&gt;</span><span class=w> </span><span class=n>plot</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>plot</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>varXSolution</span><span class=p>);</span><span class=w></span>
+<span class=cp>#if VTK_HAS_SETCOLORF</span>
 <span class=w>  </span><span class=n>plot</span><span class=o>-&gt;</span><span class=n>GetPen</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorF</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightCoral&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
+<span class=cp>#else</span>
+<span class=w>  </span><span class=n>plot</span><span class=o>-&gt;</span><span class=n>GetPen</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightCoral&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
+<span class=cp>#endif</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetMultiSamples</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>plot</span><span class=o>-&gt;</span><span class=n>GetPen</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWidth</span><span class=p>(</span><span class=mf>2.0</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>AddPlot</span><span class=p>(</span><span class=n>plot</span><span class=p>);</span><span class=w></span>
