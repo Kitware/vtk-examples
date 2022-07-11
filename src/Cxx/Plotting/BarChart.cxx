@@ -16,6 +16,10 @@
 #include <vtkTextProperty.h>
 #include <vtkVersion.h>
 
+#if VTK_VERSION_NUMBER >= 90020220630ULL
+#define VTK_HAS_SETCOLORF 1
+#endif
+
 // Monthly circulation data
 static int data_2008[] = {10822, 10941, 9979,  10370, 9460, 11228,
                           15093, 12231, 10160, 9816,  9384, 7892};
@@ -102,24 +106,45 @@ int main(int, char*[])
   }
 
   // Add multiple line plots, setting the colors etc
+#if VTK_HAS_SETCOLORF
   vtkPlot* line = 0;
   line = chart->AddPlot(vtkChart::BAR);
   line->SetColorF(colorSeries->GetColor(0).GetRed() / 255.0,
+                  colorSeries->GetColor(0).GetGreen() / 255.0,
+                  colorSeries->GetColor(0).GetBlue() / 255.0);
+  line->SetInputData(table, 0, 1);
+
+  line = chart->AddPlot(vtkChart::BAR);
+  line->SetColorF(colorSeries->GetColor(1).GetRed() / 255.0,
+                  colorSeries->GetColor(1).GetGreen() / 255.0,
+                  colorSeries->GetColor(1).GetBlue() / 255.0);
+  line->SetInputData(table, 0, 2);
+
+  line = chart->AddPlot(vtkChart::BAR);
+  line->SetColorF(colorSeries->GetColor(2).GetRed() / 255.0,
+                  colorSeries->GetColor(2).GetGreen() / 255.0,
+                  colorSeries->GetColor(2).GetBlue() / 255.0);
+  line->SetInputData(table, 0, 3);
+#else
+  vtkPlot* line = 0;
+  line = chart->AddPlot(vtkChart::BAR);
+  line->SetColor(colorSeries->GetColor(0).GetRed() / 255.0,
                  colorSeries->GetColor(0).GetGreen() / 255.0,
                  colorSeries->GetColor(0).GetBlue() / 255.0);
   line->SetInputData(table, 0, 1);
 
   line = chart->AddPlot(vtkChart::BAR);
-  line->SetColorF(colorSeries->GetColor(1).GetRed() / 255.0,
+  line->SetColor(colorSeries->GetColor(1).GetRed() / 255.0,
                  colorSeries->GetColor(1).GetGreen() / 255.0,
                  colorSeries->GetColor(1).GetBlue() / 255.0);
   line->SetInputData(table, 0, 2);
 
   line = chart->AddPlot(vtkChart::BAR);
-  line->SetColorF(colorSeries->GetColor(2).GetRed() / 255.0,
+  line->SetColor(colorSeries->GetColor(2).GetRed() / 255.0,
                  colorSeries->GetColor(2).GetGreen() / 255.0,
                  colorSeries->GetColor(2).GetBlue() / 255.0);
   line->SetInputData(table, 0, 3);
+#endif
 
   // Finally render the scene and compare the image to a reference image
   view->GetRenderWindow()->SetMultiSamples(0);

@@ -12,6 +12,11 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkTable.h>
+#include <vtkVersion.h>
+
+#if VTK_VERSION_NUMBER >= 90020220630ULL
+#define VTK_HAS_SETCOLORF 1
+#endif
 
 // Plot the solution to the Lorenz attractor.
 // http://en.wikipedia.org/wiki/Lorenz_system
@@ -80,7 +85,11 @@ int main(int, char*[])
   // Add a line plot.
   vtkNew<vtkPlotLine3D> plot;
   plot->SetInputData(varXSolution);
+#if VTK_HAS_SETCOLORF
   plot->GetPen()->SetColorF(colors->GetColor3d("LightCoral").GetData());
+#else
+  plot->GetPen()->SetColor(colors->GetColor3d("LightCoral").GetData());
+#endif
   view->GetRenderWindow()->SetMultiSamples(0);
   plot->GetPen()->SetWidth(2.0);
   chart->AddPlot(plot);

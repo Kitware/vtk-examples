@@ -13,6 +13,11 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkTable.h>
+#include <vtkVersion.h>
+
+#if VTK_VERSION_NUMBER >= 90020220630ULL
+#define VTK_HAS_SETCOLORF 1
+#endif
 
 //----------------------------------------------------------------------------
 int main(int, char*[])
@@ -70,10 +75,17 @@ int main(int, char*[])
   vtkPlot* plot = chart->AddPlot(vtkChart::POINTS);
   plot->SetInputData(table, 0, 1);
   dynamic_cast<vtkPlotPoints*>(plot)->SetMarkerStyle(vtkPlotPoints::DIAMOND);
+#if VTK_HAS_SETCOLORF
   plot->GetXAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
   plot->GetYAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
+#else
+  plot->GetXAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+  plot->GetYAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+#endif
   plot->SetColor(colors->GetColor3ub("sea_green").GetRed(),
                  colors->GetColor3ub("sea_green").GetGreen(),
                  colors->GetColor3ub("sea_green").GetBlue(), 255);
@@ -82,10 +94,17 @@ int main(int, char*[])
   chart = matrix->GetChart(vtkVector2i(0, 1));
   plot = chart->AddPlot(vtkChart::POINTS);
   plot->SetInputData(table, 0, 2);
+#if VTK_HAS_SETCOLORF
   plot->GetXAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
   plot->GetYAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
+#else
+  plot->GetXAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+  plot->GetYAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+#endif
   plot->SetColor(colors->GetColor3ub("rose_madder").GetRed(),
                  colors->GetColor3ub("rose_madder").GetGreen(),
                  colors->GetColor3ub("rose_madder").GetBlue(), 255);
@@ -94,10 +113,17 @@ int main(int, char*[])
   chart = matrix->GetChart(vtkVector2i(1, 0));
   plot = chart->AddPlot(vtkChart::LINE);
   plot->SetInputData(table, 0, 3);
+#if VTK_HAS_SETCOLORF
   plot->GetXAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
   plot->GetYAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
+#else
+  plot->GetXAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+  plot->GetYAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+#endif
   plot->SetColor(colors->GetColor3ub("dark_orange").GetRed(),
                  colors->GetColor3ub("dark_orange").GetGreen(),
                  colors->GetColor3ub("dark_orange").GetBlue(), 255);
@@ -106,10 +132,17 @@ int main(int, char*[])
   chart = matrix->GetChart(vtkVector2i(1, 1));
   plot = chart->AddPlot(vtkChart::BAR);
   plot->SetInputData(table, 0, 4);
+#if VTK_HAS_SETCOLORF
   plot->GetXAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
   plot->GetYAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
+#else
+  plot->GetXAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+  plot->GetYAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+#endif
   plot->SetColor(colors->GetColor3ub("burnt_sienna").GetRed(),
                  colors->GetColor3ub("burnt_sienna").GetGreen(),
                  colors->GetColor3ub("burnt_sienna").GetBlue(), 255);
@@ -117,10 +150,17 @@ int main(int, char*[])
   plot = chart->AddPlot(vtkChart::POINTS);
   plot->SetInputData(table, 0, 1);
   dynamic_cast<vtkPlotPoints*>(plot)->SetMarkerStyle(vtkPlotPoints::CROSS);
+#if VTK_HAS_SETCOLORF
   plot->GetXAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
   plot->GetYAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
+#else
+  plot->GetXAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+  plot->GetYAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+#endif
   plot->SetColor(colors->GetColor3ub("rose_madder").GetRed(),
                  colors->GetColor3ub("rose_madder").GetGreen(),
                  colors->GetColor3ub("rose_madder").GetBlue(), 255);
@@ -130,20 +170,34 @@ int main(int, char*[])
   chart = matrix->GetChart(vtkVector2i(1, 0));
   plot = chart->AddPlot(vtkChart::LINE);
   plot->SetInputData(table, 0, 3);
+#if VTK_HAS_SETCOLORF
   plot->GetXAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
   plot->GetYAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
+#else
+  plot->GetXAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+  plot->GetYAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+#endif
   plot->SetColor(colors->GetColor3ub("dark_orange").GetRed(),
                  colors->GetColor3ub("dark_orange").GetGreen(),
                  colors->GetColor3ub("dark_orange").GetBlue(), 255);
 
   plot = chart->AddPlot(vtkChart::LINE);
   plot->SetInputData(table, 0, 3);
+#if VTK_HAS_SETCOLORF
   plot->GetXAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
   plot->GetYAxis()->GetGridPen()->SetColorF(
       colors->GetColor3d("warm_grey").GetData());
+#else
+  plot->GetXAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+  plot->GetYAxis()->GetGridPen()->SetColor(
+      colors->GetColor3d("warm_grey").GetData());
+#endif
   plot->SetColor(colors->GetColor3ub("royal_blue").GetRed(),
                  colors->GetColor3ub("royal_blue").GetGreen(),
                  colors->GetColor3ub("royal_blue").GetBlue(), 255);
