@@ -16,7 +16,7 @@
 #include <vtkTextProperty.h>
 #include <vtkVersion.h>
 
-#if VTK_VERSION_NUMBER >= 90020220630ULL
+#if VTK_VERSION_NUMBER >= 90220220630ULL
 #define VTK_HAS_SETCOLORF 1
 #endif
 
