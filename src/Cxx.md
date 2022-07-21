@@ -989,7 +989,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [ColorAnActor](/Cxx/Visualization/ColorAnActor) | Color an Actor.
 [ColorGlyphs](/Cxx/Visualization/ColorGlyphs) | Color glyphs.
 [ColorSeriesPatches](/Cxx/Visualization/ColorSeriesPatches) | Creates a HTML file called [VTKColorSeriesPatches](https://htmlpreview.github.io/?https://github.com/Kitware/vtk-examples/blob/gh-pages/VTKColorSeriesPatches.html)
-[ColoredAnnotatedCube](/Cxx/VisualizationAlgorithms/ColoredAnnotatedCube) | How to color the individual faces of an annotated cube.
+[ColoredAnnotatedCube](/Cxx/Visualization/ColoredAnnotatedCube) | How to color the individual faces of an annotated cube.
 [CombustorIsosurface](/Cxx/VisualizationAlgorithms/CombustorIsosurface) | Generate an isosurface of constant flow density.
 [ComplexV](/Cxx/Visualization/ComplexV) | ComplexV from the VTK Textbook.
 [ContourQuadric](/Cxx/VisualizationAlgorithms/ContourQuadric) | Contouring a quadric function.

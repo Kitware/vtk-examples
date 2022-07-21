@@ -10,13 +10,10 @@
 
 int main(int, char*[])
 {
-  vtkNew<vtkAnnotatedCubeActor> cube;
-  cube->SetFaceTextScale(0.666667);
-
-  // set up the renderer, window, and interactor
-  //
   vtkNew<vtkNamedColors> colors;
 
+  // Set up the renderer, window, and interactor.
+  //
   vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(colors->GetColor3d("Wheat").GetData());
 
@@ -28,7 +25,10 @@ int main(int, char*[])
   vtkNew<vtkRenderWindowInteractor> interactor;
   interactor->SetRenderWindow(renderWindow);
 
-  // anatomic labelling
+  vtkNew<vtkAnnotatedCubeActor> cube;
+  cube->SetFaceTextScale(2.0 / 3.0);
+
+  // Anatomic labelling.
   //
   cube->SetXPlusFaceText("A");
   cube->SetXMinusFaceText("P");
@@ -37,35 +37,36 @@ int main(int, char*[])
   cube->SetZPlusFaceText("S");
   cube->SetZMinusFaceText("I");
 
-  // change the vector text colors
+  // Change the vector text colors.
   //
   cube->GetTextEdgesProperty()->SetColor(colors->GetColor3d("Black").GetData());
   cube->GetTextEdgesProperty()->SetLineWidth(4);
 
-  vtkProperty* property;
-  property = cube->GetXPlusFaceProperty();
-  property->SetColor(colors->GetColor3d("Turquoise").GetData());
-  property = cube->GetXMinusFaceProperty();
-  property->SetColor(colors->GetColor3d("Turquoise").GetData());
-  property = cube->GetYPlusFaceProperty();
-  property->SetColor(colors->GetColor3d("Mint").GetData());
-  property = cube->GetYMinusFaceProperty();
-  property->SetColor(colors->GetColor3d("Mint").GetData());
-  property = cube->GetZPlusFaceProperty();
-  property->SetColor(colors->GetColor3d("Tomato").GetData());
-  property = cube->GetZMinusFaceProperty();
-  property->SetColor(colors->GetColor3d("Tomato").GetData());
+  // clang-format off
+  cube->GetXPlusFaceProperty()->SetColor(
+      colors->GetColor3d("Turquoise").GetData());
+  cube->GetXMinusFaceProperty()->SetColor(
+      colors->GetColor3d("Turquoise").GetData());
+  cube->GetYPlusFaceProperty()->SetColor(
+      colors->GetColor3d("Mint").GetData());
+  cube->GetYMinusFaceProperty()->SetColor(
+      colors->GetColor3d("Mint").GetData());
+  cube->GetZPlusFaceProperty()->SetColor(
+      colors->GetColor3d("Tomato").GetData());
+  cube->GetZMinusFaceProperty()->SetColor(
+      colors->GetColor3d("Tomato").GetData());
+  // clang-format on
 
   renderer->AddActor(cube);
 
-  // set up an interesting view
+  // Set up an interesting view.
   //
   vtkCamera* camera = renderer->GetActiveCamera();
   camera->SetViewUp(0, 0, 1);
   camera->SetFocalPoint(0, 0, 0);
   camera->SetPosition(4.5, 4.5, 2.5);
   renderer->ResetCamera();
-  camera->Dolly(1.3);
+  camera->Dolly(1.0);
   renderer->ResetCameraClippingRange();
 
   renderWindow->Render();
