@@ -487,7 +487,7 @@ https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/V
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestColorActorEdges.png https://tinyurl.com/y5jhnc22
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestColorAnActor.png https://tinyurl.com/y337gxjw
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestColorGlyphs.png https://tinyurl.com/y65d5qcd
-https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestColoredAnnotatedCube.png https://tinyurl.com/y4ghbtob
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestColoredAnnotatedCube.png https://tinyurl.com/243ta5vc
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestCombustorIsosurface.png https://tinyurl.com/y2rlzx39
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Visualization/TestComplexV.png https://tinyurl.com/y42qlmar
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/VisualizationAlgorithms/TestContourQuadric.png https://tinyurl.com/yxp2xtyn
@@ -1066,6 +1066,7 @@ https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Pytho
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Tutorial/TestTutorial_Step6.png https://tinyurl.com/y5u4atuc
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Visualization/TestAlphaFrequency.png https://tinyurl.com/y28uvykk
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/VisualizationAlgorithms/TestAnatomicalOrientation.png https://tinyurl.com/y4p85d2n
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Visualization/TestAnnotatedCubeActor.png https://tinyurl.com/26wdnpz9
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Visualization/TestAssignCellColorsFromLUT.png https://tinyurl.com/yyxprcd2
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Visualization/TestBlobbyLogo.png https://tinyurl.com/y6xd92a8
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Visualization/TestBlow.png https://tinyurl.com/y55vskg7
@@ -1079,7 +1080,7 @@ https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Pytho
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/VisualizationAlgorithms/TestClipSphereCylinder.png https://tinyurl.com/y65zy972
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Visualization/TestCollisionDetection.png https://tinyurl.com/y49qspc8
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Visualization/TestColorAnActor.png https://tinyurl.com/y2alaytf
-https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/VisualizationAlgorithms/TestColoredAnnotatedCube.png https://tinyurl.com/y3plwobs
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Visualization/TestColoredAnnotatedCube.png https://tinyurl.com/29c9padg
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/VisualizationAlgorithms/TestCombustorIsosurface.png https://tinyurl.com/yxsl25g8
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/Visualization/TestComplexV.png https://tinyurl.com/yy9bpctp
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/VisualizationAlgorithms/TestContourQuadric.png https://tinyurl.com/yyn2fka9
