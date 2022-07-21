@@ -501,6 +501,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 | -------------- | ------------- | ------- |
 [AlphaFrequency](/Python/Visualization/AlphaFrequency) | Linearly extrude fonts to show letter frequencies in text.
 [AnatomicalOrientation](/Python/VisualizationAlgorithms/AnatomicalOrientation) | Show a labelled set of anatomical planes transecting a human figure.
+[AnnotatedCubeActor](/Python/Visualization/AnnotatedCubeActor) | Annotated cube.
 [AssignCellColorsFromLUT](/Python/Visualization/AssignCellColorsFromLUT) | Demonstrates how to assign colors to cells in a vtkPolyData structure using lookup tables.
 [BlobbyLogo](/Python/Visualization/BlobbyLogo) | A logo created with vtkImplicitModeller.
 [Blow](/Python/Visualization/Blow) | Ten frames from a blow molding finite element analysis.
@@ -515,7 +516,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [CollisionDetection](/Python/Visualization/CollisionDetection) | Collison between two spheres.
 [ColorAnActor](/Python/Visualization/ColorAnActor) | Colour the actor.
 [ColorSeriesPatches](/Python/Visualization/ColorSeriesPatches) | Creates a HTML file called [VTKColorSeriesPatches](https://htmlpreview.github.io/?https://github.com/Kitware/vtk-examples/blob/gh-pages/VTKColorSeriesPatches.html)
-[ColoredAnnotatedCube](/Python/VisualizationAlgorithms/ColoredAnnotatedCube) | How to color the individual faces of an annotated cube.
+[ColoredAnnotatedCube](/Python/Visualization/ColoredAnnotatedCube) | How to color the individual faces of an annotated cube.
 [CombustorIsosurface](/Python/VisualizationAlgorithms/CombustorIsosurface) | Generate an isosurface of constant flow density.
 [ComplexV](/Python/Visualization/ComplexV) | ComplexV from the VTK Textbook.
 [ContourQuadric](/Python/VisualizationAlgorithms/ContourQuadric) | Contouring a quadric function.
