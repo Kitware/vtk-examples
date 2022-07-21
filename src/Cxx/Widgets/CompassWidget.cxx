@@ -1,13 +1,11 @@
 #include <vtkActor.h>
+#include <vtkAnnotatedCubeActor.h>
 #include <vtkCamera.h>
 #include <vtkCommand.h>
 #include <vtkCompassRepresentation.h>
 #include <vtkCompassWidget.h>
-#include <vtkCubeSource.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
-#include <vtkPolyData.h>
-#include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
@@ -53,14 +51,11 @@ int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
 
-  vtkNew<vtkCubeSource> cubeSource;
-
-  vtkNew<vtkPolyDataMapper> mapper;
-  mapper->SetInputConnection(cubeSource->GetOutputPort());
-
-  vtkNew<vtkActor> actor;
-  actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(colors->GetColor3d("PeachPuff").GetData());
+  // a cube with text on its faces
+  vtkNew<vtkAnnotatedCubeActor> actor;
+  actor->GetTextEdgesProperty()->SetColor(
+      colors->GetColor3d("Black").GetData());
+  actor->GetCubeProperty()->SetColor(colors->GetColor3d("PeachPuff").GetData());
 
   // a renderer and render window
   vtkNew<vtkRenderer> renderer;
