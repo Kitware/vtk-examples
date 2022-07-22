@@ -134,6 +134,7 @@ add_subdirectory(src/Cxx/Widgets)
 
 if(TARGET VTK::GUISupportQt)
   add_subdirectory(src/Cxx/Qt)
+  add_subdirectory(src/Cxx/MinimalQtVTKApp)
 else()
   message(STATUS "VTKWikiExamples: Not building Qt examples")
 endif()
