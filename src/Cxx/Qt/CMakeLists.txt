@@ -36,7 +36,9 @@ if(NOT VTK_BINARY_DIR)
     RenderingFreeType
     RenderingGL2PSOpenGL2
     RenderingOpenGL2
+    RenderingQt
     ViewsContext2D
+    ViewsQt
     QUIET
     )
     if (VTK_VERSION VERSION_LESS "8.90.0")

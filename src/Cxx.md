@@ -1395,6 +1395,7 @@ Click [here](http://www.vtk.org/Wiki/VTK/Tutorials/QtSetup) for a tutorial on ho
 [BorderWidgetQt](/Cxx/Qt/BorderWidgetQt) |  2D selection, 2D box.
 [EventQtSlotConnect](/Cxx/Qt/EventQtSlotConnect) | Connect a VTK event to a Qt slot.
 [ImageDataToQImage](/Cxx/Qt/ImageDataToQImage) | Convert a vtkImageData to a QImage.
+[MinimalQtVTKApp](/Cxx/Qt/MinimalQtVTKApp) | A minimal Qt/VTK application.
 [QImageToImageSource](/Cxx/Qt/QImageToImageSource) | Convert a QImage to a vtkImageData.
 [RenderWindowNoUiFile](/Cxx/Qt/RenderWindowNoUiFile) | This is a very basic example that shows how to create a Qt window. Typically, one would want to design a form in the QtDesigner (this is shown in [RenderWindowUISingleInheritance](/Cxx/Qt/RenderWindowUISingleInheritance)).
 [RenderWindowUISingleInheritance](/Cxx/Qt/RenderWindowUISingleInheritance) | Using a QVTKOpenGLWidget with the Qt Single Inheritance model.
