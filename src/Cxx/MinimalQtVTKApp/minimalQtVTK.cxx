@@ -1,12 +1,12 @@
-#include <vtkGenericOpenGLRenderWindow.h>
 #include <QVTKOpenGLNativeWidget.h>
-#include <vtkSphereSource.h>
+#include <vtkActor.h>
 #include <vtkDataSetMapper.h>
 #include <vtkDoubleArray.h>
-#include <vtkActor.h>
-#include <vtkRenderer.h>
+#include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkPointData.h>
 #include <vtkProperty.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
 #include <QApplication>
 #include <QDockWidget>
@@ -19,42 +19,50 @@
 
 #include <cmath>
 #include <cstdlib>
-#include "math.h"
+#include <random>
 
-void randomize(vtkSphereSource* vtksphere, vtkMapper * vtkmapper, vtkGenericOpenGLRenderWindow* vtkwindow)
+void randomize(vtkSphereSource* sphere, vtkMapper* mapper, vtkGenericOpenGLRenderWindow* window)
 {
-  double randAmp = 0.2 + ((std::rand() % 1000)/1000.0) * 0.2;
-  double randThetaFreq = 1.0 + (std::rand() % 9);
-  double randPhiFreq = 1.0 + (std::rand() % 9);
-  vtksphere->Update();
+  // generate randomness
+  std::mt19937 rand_eng(time(0));
+  double randAmp = 0.2 + ((rand_eng() % 1000) / 1000.0) * 0.2;
+  double randThetaFreq = 1.0 + (rand_eng() % 9);
+  double randPhiFreq = 1.0 + (rand_eng() % 9);
+
+  // extract and prepare data
+  sphere->Update();
   vtkSmartPointer<vtkPolyData> newsphere;
-  newsphere.TakeReference(vtksphere->GetOutput()->NewInstance());
-  newsphere->DeepCopy(vtksphere->GetOutput());
+  newsphere.TakeReference(sphere->GetOutput()->NewInstance());
+  newsphere->DeepCopy(sphere->GetOutput());
   vtkNew<vtkDoubleArray> height;
   height->SetName("Height");
   height->SetNumberOfComponents(1);
   height->SetNumberOfTuples(newsphere->GetNumberOfPoints());
   newsphere->GetPointData()->AddArray(height);
-  for(int iP = 0; iP < newsphere->GetNumberOfPoints(); iP++)
+
+  // deform the sphere
+  for (int iP = 0; iP < newsphere->GetNumberOfPoints(); iP++)
   {
     double pt[3];
     newsphere->GetPoint(iP, pt);
     double theta = std::atan2(pt[1], pt[0]);
     double phi = std::atan2(pt[2], std::sqrt(std::pow(pt[0], 2) + std::pow(pt[1], 2)));
-    double thisAmp = randAmp * std::cos(randThetaFreq*theta) * std::sin(randPhiFreq*phi);
+    double thisAmp = randAmp * std::cos(randThetaFreq * theta) * std::sin(randPhiFreq * phi);
     height->SetValue(iP, thisAmp);
-    pt[0] += thisAmp*std::cos(theta)*std::cos(phi);
-    pt[1] += thisAmp*std::sin(theta)*std::cos(phi);
-    pt[2] += thisAmp*std::sin(phi);
+    pt[0] += thisAmp * std::cos(theta) * std::cos(phi);
+    pt[1] += thisAmp * std::sin(theta) * std::cos(phi);
+    pt[2] += thisAmp * std::sin(phi);
     newsphere->GetPoints()->SetPoint(iP, pt);
   }
   newsphere->GetPointData()->SetScalars(height);
-  vtkmapper->SetInputConnection(nullptr);
-  vtkmapper->SetInputDataObject(nullptr);
-  vtkmapper->SetInputDataObject(newsphere);
-  vtkmapper->SetScalarModeToUsePointData();
-  vtkmapper->ColorByArrayComponent("Height", 0);
-  vtkwindow->Render();
+
+  // reconfigure the pipeline to take the new deformed sphere
+  mapper->SetInputConnection(nullptr);
+  mapper->SetInputDataObject(nullptr);
+  mapper->SetInputDataObject(newsphere);
+  mapper->SetScalarModeToUsePointData();
+  mapper->ColorByArrayComponent("Height", 0);
+  window->Render();
 }
 
 int main(int argc, char** argv)
@@ -87,34 +95,35 @@ int main(int argc, char** argv)
   // render area
   QPointer<QVTKOpenGLNativeWidget> vtkRenderWidget = new QVTKOpenGLNativeWidget();
   mainWindow.setCentralWidget(vtkRenderWidget);
-  
+
   // VTK part
-  vtkNew<vtkGenericOpenGLRenderWindow> vtkwindow;
-  vtkRenderWidget->setRenderWindow(vtkwindow.Get());
+  vtkNew<vtkGenericOpenGLRenderWindow> window;
+  vtkRenderWidget->setRenderWindow(window.Get());
 
-  vtkNew<vtkSphereSource> vtksphere;
-  vtksphere->SetRadius(1.0);
-  vtksphere->SetThetaResolution(100);
-  vtksphere->SetPhiResolution(100);
+  vtkNew<vtkSphereSource> sphere;
+  sphere->SetRadius(1.0);
+  sphere->SetThetaResolution(100);
+  sphere->SetPhiResolution(100);
 
-  vtkNew<vtkDataSetMapper> vtkmapper;
-  vtkmapper->SetInputConnection(vtksphere->GetOutputPort());
+  vtkNew<vtkDataSetMapper> mapper;
+  mapper->SetInputConnection(sphere->GetOutputPort());
 
-  vtkNew<vtkActor> vtkactor;
-  vtkactor->SetMapper(vtkmapper);
-  vtkactor->GetProperty()->SetEdgeVisibility(true);
-  vtkactor->GetProperty()->SetRepresentationToSurface();
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+  actor->GetProperty()->SetEdgeVisibility(true);
+  actor->GetProperty()->SetRepresentationToSurface();
 
-  vtkNew<vtkRenderer> vtkrenderer;
-  vtkrenderer->AddActor(vtkactor);
+  vtkNew<vtkRenderer> renderer;
+  renderer->AddActor(actor);
 
-  vtkwindow->AddRenderer(vtkrenderer);
+  window->AddRenderer(renderer);
 
   // setup initial status
-  randomize(vtksphere, vtkmapper, vtkwindow);
+  randomize(sphere, mapper, window);
 
-  //connect the buttons
-  QObject::connect(&randomizeButton, &QPushButton::released, [&vtksphere, &vtkmapper, &vtkwindow](){randomize(vtksphere, vtkmapper, vtkwindow);});
+  // connect the buttons
+  QObject::connect(&randomizeButton, &QPushButton::released,
+    [&sphere, &mapper, &window]() { randomize(sphere, mapper, window); });
 
   mainWindow.show();
 

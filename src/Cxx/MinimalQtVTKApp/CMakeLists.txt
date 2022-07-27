@@ -27,14 +27,14 @@ set(KIT_LIBS ${VTK_LIBRARIES} VTK::RenderingOpenGL2 VTK::GUISupportQt)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 
-file(GLOB ALL_FILES *.cxx)
+set(ALL_FILES minimalQtVTK.cxx)
 
 set(CMAKE_AUTORCC ON)
 
 foreach(SOURCE_FILE ${ALL_FILES})
-  string(REPLACE ".cxx" "" TMP ${SOURCE_FILE})
-  string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${TMP})
-  add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${EXAMPLE}.cxx resources/resources.qrc)
+  string(REPLACE ".cxx" "" EXAMPLE ${SOURCE_FILE})
+  string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" EXAMPLE ${EXAMPLE})
+  add_executable(${WIKI}${EXAMPLE} ${EXECUTABLE_FLAG} ${SOURCE_FILE} resources/resources.qrc)
   target_link_libraries(${WIKI}${EXAMPLE} ${KIT_LIBS} Qt5::Core Qt5::Widgets)
   vtk_module_autoinit(
     TARGETS ${WIKI}${EXAMPLE}
