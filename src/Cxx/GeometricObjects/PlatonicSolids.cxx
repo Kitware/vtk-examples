@@ -149,8 +149,9 @@ namespace {
 std::vector<std::tuple<std::string, double, double, double>>
 GetNameOrientation()
 {
-  auto getTuple = [](std::string name, double az, double el, double zoom) {
-    return std::make_tuple(name, az, el, zoom);
+  auto getTuple = [](std::string const& name, double const& azimuth,
+                     double const& elevation, double const& zoom) {
+    return std::make_tuple(name, azimuth, elevation, zoom);
   };
 
   std::vector<std::tuple<std::string, double, double, double>> res;

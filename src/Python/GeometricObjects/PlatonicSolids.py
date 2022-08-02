@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from collections import namedtuple
+
 # noinspection PyUnresolvedReferences
 import vtkmodules.vtkInteractionStyle
 # noinspection PyUnresolvedReferences
@@ -59,7 +61,7 @@ def main():
         actors[i].SetMapper(mappers[i])
 
         text_mappers.append(vtkTextMapper())
-        text_mappers[i].SetInput(name_orientation[i][0])
+        text_mappers[i].SetInput(name_orientation[i].name)
         text_mappers[i].SetTextProperty(text_property)
 
         text_actors.append(vtkActor2D())
@@ -99,9 +101,9 @@ def main():
             renderers[index].SetViewport(viewport)
             renderers[index].SetBackground(colors.GetColor3d('SlateGray'))
             renderers[index].ResetCamera()
-            renderers[index].GetActiveCamera().Azimuth(name_orientation[index][1])
-            renderers[index].GetActiveCamera().Elevation(name_orientation[index][2])
-            renderers[index].GetActiveCamera().Zoom(name_orientation[index][3])
+            renderers[index].GetActiveCamera().Azimuth(name_orientation[index].azimuth)
+            renderers[index].GetActiveCamera().Elevation(name_orientation[index].elevation)
+            renderers[index].GetActiveCamera().Zoom(name_orientation[index].zoom)
             renderers[index].ResetCameraClippingRange()
 
     iren.Initialize()
@@ -116,12 +118,17 @@ def get_name_orientation():
     :return: The solids and their initial orientations.
     """
 
-    # [[name azimuth, elevation, zoom] ...]
-    return [['Tetrahedron', 45.0, 30.0, 1.0],
-            ['Cube', -60.0, 45.0, 0.8],
-            ['Octahedron', -15.0, 10.0, 1.0],
-            ['Icosahedron', 4.5, 18.0, 1.0],
-            ['Dodecahedron', 171.0, 22.0, 1.0]]
+    # [[name, azimuth, elevation, zoom] ...]
+    res = [['Tetrahedron', 45.0, 30.0, 1.0],
+           ['Cube', -60.0, 45.0, 0.8],
+           ['Octahedron', -15.0, 10.0, 1.0],
+           ['Icosahedron', 4.5, 18.0, 1.0],
+           ['Dodecahedron', 171.0, 22.0, 1.0]]
+
+    platonic_solids = namedtuple('platonic_solids', ('name', 'azimuth', 'elevation', 'zoom'))
+    # Convert res to a list of named tuples.
+    res = [platonic_solids(*row) for row in res]
+    return res
 
 
 def get_platonic_lut():
