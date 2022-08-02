@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from collections import namedtuple
+
 # noinspection PyUnresolvedReferences
 import vtkmodules.vtkInteractionStyle
 # noinspection PyUnresolvedReferences
@@ -24,10 +26,123 @@ from vtkmodules.vtkRenderingCore import (
 def main():
     colors = vtkNamedColors()
 
-    # Each face has a different cell scalar
-    # Here we create a lookup table with a different colour
-    # for each face. The colors have been carefully
-    # chosen so that adjacent cells are colored distinctly.
+    mappers = list()
+    actors = list()
+    text_mappers = list()
+    text_actors = list()
+    renderers = list()
+
+    # Create a common text property.
+    text_property = vtkTextProperty()
+    text_property.SetFontSize(16)
+    text_property.SetJustificationToCentered()
+
+    # Create the render window and interactor.
+    ren_win = vtkRenderWindow()
+    ren_win.SetWindowName('PlatonicSolids')
+
+    iren = vtkRenderWindowInteractor()
+    iren.SetRenderWindow(ren_win)
+
+    name_orientation = get_name_orientation()
+    lut = get_platonic_lut()
+    platonic_solids = list()
+
+    for i in range(0, len(name_orientation)):
+        platonic_solids.append(vtkPlatonicSolidSource())
+        platonic_solids[i].SetSolidType(i)
+
+        mappers.append(vtkPolyDataMapper())
+        mappers[i].SetInputConnection(platonic_solids[i].GetOutputPort())
+        mappers[i].SetLookupTable(lut)
+        mappers[i].SetScalarRange(0, 19)
+
+        actors.append(vtkActor())
+        actors[i].SetMapper(mappers[i])
+
+        text_mappers.append(vtkTextMapper())
+        text_mappers[i].SetInput(name_orientation[i].name)
+        text_mappers[i].SetTextProperty(text_property)
+
+        text_actors.append(vtkActor2D())
+        text_actors[i].SetMapper(text_mappers[i])
+        text_actors[i].SetPosition(120, 16)
+
+        renderers.append(vtkRenderer())
+        renderers[i].AddActor(actors[i])
+        renderers[i].AddViewProp(text_actors[i])
+
+        ren_win.AddRenderer(renderers[i])
+
+    # Set up the viewports.
+    grid_dimension_x = 3
+    grid_dimension_y = 2
+    renderer_size = 300
+    ren_win.SetSize(renderer_size * grid_dimension_x, renderer_size * grid_dimension_y)
+    for row in range(0, grid_dimension_y):
+        for col in range(0, grid_dimension_x):
+            index = row * grid_dimension_x + col
+
+            # (x_min, y_min, x_max, y_max)
+            viewport = [float(col) / grid_dimension_x,
+                        float(grid_dimension_y - (row + 1)) / grid_dimension_y,
+                        float(col + 1) / grid_dimension_x,
+                        float(grid_dimension_y - row) / grid_dimension_y]
+
+            if index > (len(actors) - 1):
+                # Add a renderer even if there is no actor.
+                # This makes the render window background all the same color.
+                ren = vtkRenderer()
+                ren.SetBackground(colors.GetColor3d('SlateGray'))
+                ren.SetViewport(viewport)
+                ren_win.AddRenderer(ren)
+                continue
+
+            renderers[index].SetViewport(viewport)
+            renderers[index].SetBackground(colors.GetColor3d('SlateGray'))
+            renderers[index].ResetCamera()
+            renderers[index].GetActiveCamera().Azimuth(name_orientation[index].azimuth)
+            renderers[index].GetActiveCamera().Elevation(name_orientation[index].elevation)
+            renderers[index].GetActiveCamera().Zoom(name_orientation[index].zoom)
+            renderers[index].ResetCameraClippingRange()
+
+    iren.Initialize()
+    ren_win.Render()
+    iren.Start()
+
+
+def get_name_orientation():
+    """
+    Get the platonic solid names and initial orientations.
+
+    :return: The solids and their initial orientations.
+    """
+
+    # [[name, azimuth, elevation, zoom] ...]
+    res = [['Tetrahedron', 45.0, 30.0, 1.0],
+           ['Cube', -60.0, 45.0, 0.8],
+           ['Octahedron', -15.0, 10.0, 1.0],
+           ['Icosahedron', 4.5, 18.0, 1.0],
+           ['Dodecahedron', 171.0, 22.0, 1.0]]
+
+    platonic_solids = namedtuple('platonic_solids', ('name', 'azimuth', 'elevation', 'zoom'))
+    # Convert res to a list of named tuples.
+    res = [platonic_solids(*row) for row in res]
+    return res
+
+
+def get_platonic_lut():
+    """
+    Get a specialised lookup table for the platonic solids.
+
+    Since each face of a vtkPlatonicSolidSource has a different
+    cell scalar, we create a lookup table with a different colour
+    for each face.
+    The colors have been carefully chosen so that adjacent cells
+    are colored distinctly.
+
+    :return: The lookup table.
+    """
     lut = vtkLookupTable()
     lut.SetNumberOfTableValues(20)
     lut.SetTableRange(0.0, 19.0)
@@ -52,90 +167,7 @@ def main():
     lut.SetTableValue(17, 0, 0.4, 0.4)
     lut.SetTableValue(18, 0.4, 0, 0)
     lut.SetTableValue(19, 0.4, 0, 0.4)
-
-    mappers = list()
-    actors = list()
-    textMappers = list()
-    textActors = list()
-    renderers = list()
-
-    # Create a common text property.
-    textProperty = vtkTextProperty()
-    textProperty.SetFontSize(16)
-    textProperty.SetJustificationToCentered()
-
-    # Create the render window and interactor.
-    renWin = vtkRenderWindow()
-    renWin.SetWindowName('PlatonicSolids')
-
-    iRen = vtkRenderWindowInteractor()
-    iRen.SetRenderWindow(renWin)
-
-    # Create the source, renderer, mapper
-    # and actor for each object.
-    PlatonicSolids = list()
-    # There are five Platonic solids.
-    names = ['Tetrahedron', 'Cube', 'Octahedron', 'Icosahedron', 'Dodecahedron']
-    for i in range(0, len(names)):
-        PlatonicSolids.append(vtkPlatonicSolidSource())
-        PlatonicSolids[i].SetSolidType(i)
-
-        mappers.append(vtkPolyDataMapper())
-        mappers[i].SetInputConnection(PlatonicSolids[i].GetOutputPort())
-        mappers[i].SetLookupTable(lut)
-        mappers[i].SetScalarRange(0, 19)
-
-        actors.append(vtkActor())
-        actors[i].SetMapper(mappers[i])
-
-        textMappers.append(vtkTextMapper())
-        textMappers[i].SetInput(names[i])
-        textMappers[i].SetTextProperty(textProperty)
-
-        textActors.append(vtkActor2D())
-        textActors[i].SetMapper(textMappers[i])
-        textActors[i].SetPosition(120, 16)
-
-        renderers.append(vtkRenderer())
-        renderers[i].AddActor(actors[i])
-        renderers[i].AddViewProp(textActors[i])
-
-        renWin.AddRenderer(renderers[i])
-
-    # Setup the viewports
-    xGridDimensions = 3
-    yGridDimensions = 2
-    rendererSize = 300
-    renWin.SetSize(rendererSize * xGridDimensions, rendererSize * yGridDimensions)
-    for row in range(0, yGridDimensions):
-        for col in range(0, xGridDimensions):
-            index = row * xGridDimensions + col
-
-            # (xmin, ymin, xmax, ymax)
-            viewport = [float(col) / xGridDimensions,
-                        float(yGridDimensions - (row + 1)) / yGridDimensions,
-                        float(col + 1) / xGridDimensions,
-                        float(yGridDimensions - row) / yGridDimensions]
-
-            if index > (len(actors) - 1):
-                # Add a renderer even if there is no actor.
-                # This makes the render window background all the same color.
-                ren = vtkRenderer()
-                ren.SetBackground(colors.GetColor3d('SlateGray'))
-                ren.SetViewport(viewport)
-                renWin.AddRenderer(ren)
-                continue
-
-            renderers[index].SetViewport(viewport)
-            renderers[index].SetBackground(colors.GetColor3d('SlateGray'))
-            renderers[index].ResetCamera()
-            renderers[index].GetActiveCamera().Azimuth(4.5)
-            renderers[index].GetActiveCamera().Elevation(-18)
-            renderers[index].ResetCameraClippingRange()
-
-    iRen.Initialize()
-    renWin.Render()
-    iRen.Start()
+    return lut
 
 
 if __name__ == '__main__':
