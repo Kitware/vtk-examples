@@ -61,19 +61,34 @@ function registerListener(event, func) {
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkEventQtSlotConnect.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkGenericOpenGLRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkInteractorStyleTrackballActor.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkLookupTable.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPlatonicSolidSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkProperty.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVersion.h&gt;</span><span class=cp></span>
 </span>
 <span class=cp>#if VTK_VERSION_NUMBER &gt;= 89000000000ULL</span>
 <span class=cp>#define VTK890 1</span>
 <span class=cp>#endif</span>
+
+<span class=k>namespace</span><span class=w> </span><span class=p>{</span><span class=w></span>
+<span class=cm>/** Get a specialised lookup table for the platonic solids.</span>
+<span class=cm> *</span>
+<span class=hll><span class=cm> * Since each face of a vtkPlatonicSolidSource has a different</span>
+</span><span class=cm> * cell scalar, we create a lookup table with a different colour</span>
+<span class=cm> * for each face.</span>
+<span class=cm> * The colors have been carefully chosen so that adjacent cells</span>
+<span class=cm> * are colored distinctly.</span>
+<span class=cm> *</span>
+<span class=cm> * @return The lookup table.</span>
+<span class=cm> */</span><span class=w></span>
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetPlatonicLUT</span><span class=p>();</span><span class=w></span>
+</span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
 <span class=c1>// Constructor</span>
 <span class=n>EventQtSlotConnect</span><span class=o>::</span><span class=n>EventQtSlotConnect</span><span class=p>(</span><span class=n>QWidget</span><span class=o>*</span><span class=w> </span><span class=n>parent</span><span class=p>)</span><span class=w></span>
@@ -93,19 +108,21 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkEventQtSlotConnect</span><span class=o>&gt;</span><span class=w> </span><span class=n>slotConnector</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Connections</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>slotConnector</span><span class=p>;</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Sphere</span>
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphereSource</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphereMapper</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=n>sphereMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>lut</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetPlatonicLUT</span><span class=p>();</span><span class=w></span>
 
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphereActor</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>sphereMapper</span><span class=p>);</span><span class=w></span>
-<span class=w>  </span><span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlatonicSolidSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>source</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>source</span><span class=o>-&gt;</span><span class=n>SetSolidTypeToOctahedron</span><span class=p>();</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// VTK Renderer</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>mapper</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+<span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>lut</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>19</span><span class=p>);</span><span class=w></span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span><span class=w></span>
+
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>);</span><span class=w></span>
+</span><span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SteelBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
 
 <span class=cp>#if VTK890</span>
@@ -136,6 +153,39 @@ function registerListener(event, func) {
 </span><span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Clicked.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 <span class=p>}</span><span class=w></span>
+
+<span class=k>namespace</span><span class=w> </span><span class=p>{</span><span class=w></span>
+
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetPlatonicLUT</span><span class=p>()</span><span class=w></span>
+</span><span class=p>{</span><span class=w></span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>lut</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableRange</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>19.0</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>Build</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=mf>0.9</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>,</span><span class=w> </span><span class=mf>0.9</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span><span class=w> </span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=mf>0.5</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span><span class=w> </span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>,</span><span class=w> </span><span class=mf>0.5</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>11</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>12</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>14</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>15</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.4</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>16</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.4</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>17</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.4</span><span class=p>,</span><span class=w> </span><span class=mf>0.4</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>18</span><span class=p>,</span><span class=w> </span><span class=mf>0.4</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>19</span><span class=p>,</span><span class=w> </span><span class=mf>0.4</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.4</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>lut</span><span class=p>;</span><span class=w></span>
+<span class=p>}</span><span class=w></span>
+
+<span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 </code></pre></div> <p><strong>EventQtSlotConnectDriver.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QApplication&gt;</span><span class=cp></span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QSurfaceFormat&gt;</span><span class=cp></span>
 
@@ -155,44 +205,6 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>app</span><span class=p>.</span><span class=n>exec</span><span class=p>();</span><span class=w></span>
 <span class=p>}</span><span class=w></span>
-</code></pre></div> <p><strong>EventQtSlotConnect.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef EventQtSlotConnect_H</span>
-<span class=cp>#define EventQtSlotConnect_H</span>
-
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QMainWindow&gt;</span><span class=cp></span>
-
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkObject.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
-</span>
-<span class=c1>// Forward class declarations</span>
-<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkEventQtSlotConnect</span><span class=p>;</span><span class=w></span>
-</span>
-<span class=cm>/*</span>
-<span class=cm> * See &quot;The Single Inheritance Approach&quot; in this link:</span>
-<span class=cm> * [Using a Designer UI File in Your C++</span>
-<span class=cm> * Application](https://doc.qt.io/qt-5/designer-using-a-ui-file.html)</span>
-<span class=cm> */</span><span class=w></span>
-<span class=k>namespace</span><span class=w> </span><span class=nn>Ui</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=k>class</span><span class=w> </span><span class=nc>EventQtSlotConnect</span><span class=p>;</span><span class=w></span>
-<span class=p>}</span><span class=w></span>
-
-<span class=k>class</span><span class=w> </span><span class=nc>EventQtSlotConnect</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>QMainWindow</span><span class=w></span>
-<span class=p>{</span><span class=w></span>
-<span class=w>  </span><span class=n>Q_OBJECT</span><span class=w></span>
-<span class=k>public</span><span class=o>:</span><span class=w></span>
-<span class=w>  </span><span class=k>explicit</span><span class=w> </span><span class=n>EventQtSlotConnect</span><span class=p>(</span><span class=n>QWidget</span><span class=o>*</span><span class=w> </span><span class=n>parent</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>);</span><span class=w></span>
-<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=o>~</span><span class=n>EventQtSlotConnect</span><span class=p>();</span><span class=w></span>
-
-<span class=k>public</span><span class=w> </span><span class=n>slots</span><span class=o>:</span><span class=w></span>
-
-<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>slot_clicked</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>);</span><span class=w></span>
-</span>
-<span class=k>private</span><span class=o>:</span><span class=w></span>
-<span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkEventQtSlotConnect</span><span class=o>&gt;</span><span class=w> </span><span class=n>Connections</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=c1>// Designer form</span>
-<span class=w>  </span><span class=n>Ui</span><span class=o>::</span><span class=n>EventQtSlotConnect</span><span class=o>*</span><span class=w> </span><span class=n>ui</span><span class=p>;</span><span class=w></span>
-<span class=p>};</span><span class=w></span>
-
-<span class=cp>#endif</span>
 </code></pre></div> <p><strong>EventQtSlotConnect.ui</strong></p> <div class=codehilite><pre><span></span><code><span class=o>&lt;?</span><span class=n>xml</span><span class=w> </span><span class=n>version</span><span class=o>=</span><span class=s>&quot;1.0&quot;</span><span class=w> </span><span class=n>encoding</span><span class=o>=</span><span class=s>&quot;UTF-8&quot;</span><span class=o>?&gt;</span><span class=w></span>
 <span class=o>&lt;</span><span class=n>ui</span><span class=w> </span><span class=n>version</span><span class=o>=</span><span class=s>&quot;4.0&quot;</span><span class=o>&gt;</span><span class=w></span>
 <span class=w> </span><span class=o>&lt;</span><span class=k>class</span><span class=o>&gt;</span><span class=n>EventQtSlotConnect</span><span class=o>&lt;/</span><span class=k>class</span><span class=o>&gt;</span><span class=w></span>
@@ -261,6 +273,44 @@ function registerListener(event, func) {
 <span class=w> </span><span class=o>&lt;</span><span class=n>resources</span><span class=o>/&gt;</span><span class=w></span>
 <span class=w> </span><span class=o>&lt;</span><span class=n>connections</span><span class=o>/&gt;</span><span class=w></span>
 <span class=o>&lt;/</span><span class=n>ui</span><span class=o>&gt;</span><span class=w></span>
+</code></pre></div> <p><strong>EventQtSlotConnect.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef EventQtSlotConnect_H</span>
+<span class=cp>#define EventQtSlotConnect_H</span>
+
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QMainWindow&gt;</span><span class=cp></span>
+
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkObject.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
+</span>
+<span class=c1>// Forward class declarations</span>
+<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkEventQtSlotConnect</span><span class=p>;</span><span class=w></span>
+</span>
+<span class=cm>/*</span>
+<span class=cm> * See &quot;The Single Inheritance Approach&quot; in this link:</span>
+<span class=cm> * [Using a Designer UI File in Your C++</span>
+<span class=cm> * Application](https://doc.qt.io/qt-5/designer-using-a-ui-file.html)</span>
+<span class=cm> */</span><span class=w></span>
+<span class=k>namespace</span><span class=w> </span><span class=nn>Ui</span><span class=w> </span><span class=p>{</span><span class=w></span>
+<span class=k>class</span><span class=w> </span><span class=nc>EventQtSlotConnect</span><span class=p>;</span><span class=w></span>
+<span class=p>}</span><span class=w></span>
+
+<span class=k>class</span><span class=w> </span><span class=nc>EventQtSlotConnect</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>QMainWindow</span><span class=w></span>
+<span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=n>Q_OBJECT</span><span class=w></span>
+<span class=k>public</span><span class=o>:</span><span class=w></span>
+<span class=w>  </span><span class=k>explicit</span><span class=w> </span><span class=n>EventQtSlotConnect</span><span class=p>(</span><span class=n>QWidget</span><span class=o>*</span><span class=w> </span><span class=n>parent</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=o>~</span><span class=n>EventQtSlotConnect</span><span class=p>();</span><span class=w></span>
+
+<span class=k>public</span><span class=w> </span><span class=n>slots</span><span class=o>:</span><span class=w></span>
+
+<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>slot_clicked</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>);</span><span class=w></span>
+</span>
+<span class=k>private</span><span class=o>:</span><span class=w></span>
+<span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkEventQtSlotConnect</span><span class=o>&gt;</span><span class=w> </span><span class=n>Connections</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=c1>// Designer form</span>
+<span class=w>  </span><span class=n>Ui</span><span class=o>::</span><span class=n>EventQtSlotConnect</span><span class=o>*</span><span class=w> </span><span class=n>ui</span><span class=p>;</span><span class=w></span>
+<span class=p>};</span><span class=w></span>
+
+<span class=cp>#endif</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span><span class=w> </span><span class=s>3.12</span><span class=w> </span><span class=s>FATAL_ERROR</span><span class=p>)</span>
 
 <span class=nb>if</span><span class=p>(</span><span class=s>POLICY</span><span class=w> </span><span class=s>CMP0020</span><span class=p>)</span>
