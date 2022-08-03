@@ -41,7 +41,6 @@ SideBySideRenderWindowsQt::SideBySideRenderWindowsQt(QWidget* parent)
   vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetPhiResolution(30);
   sphereSource->SetThetaResolution(30);
-  sphereSource->Update();
   vtkNew<vtkElevationFilter> sphereElev;
   sphereElev->SetInputConnection(sphereSource->GetOutputPort());
   sphereElev->SetLowPoint(0, -1.0, 0);
@@ -53,7 +52,9 @@ SideBySideRenderWindowsQt::SideBySideRenderWindowsQt(QWidget* parent)
 
   // Cube
   vtkNew<vtkCubeSource> cubeSource;
-  cubeSource->Update();
+  cubeSource->SetXLength(0.8);
+  cubeSource->SetYLength(0.8);
+  cubeSource->SetZLength(0.8);
   vtkNew<vtkElevationFilter> cubeElev;
   cubeElev->SetInputConnection(cubeSource->GetOutputPort());
   cubeElev->SetLowPoint(0, -1.0, 0);
@@ -72,11 +73,10 @@ SideBySideRenderWindowsQt::SideBySideRenderWindowsQt(QWidget* parent)
 
   // Add Actor to renderer
   rightRenderer->AddActor(cubeActor);
-  rightRenderer->GetActiveCamera()->SetPosition(1.0, 0.8, 1.0);
-  rightRenderer->GetActiveCamera()->SetFocalPoint(0, 0, 0);
-  rightRenderer->SetBackground(colors->GetColor3d("LightSteelBlue").GetData());
+  rightRenderer->GetActiveCamera()->Azimuth(60);
   rightRenderer->ResetCamera();
   rightRenderer->GetActiveCamera()->Zoom(0.8);
+  rightRenderer->SetBackground(colors->GetColor3d("LightSteelBlue").GetData());
 
   // VTK/Qt wedded
 #if VTK890
