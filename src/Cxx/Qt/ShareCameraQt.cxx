@@ -3,6 +3,7 @@
 
 #include <vtkCamera.h>
 #include <vtkCommand.h>
+#include <vtkConeSource.h>
 #include <vtkCubeSource.h>
 #include <vtkDataObjectToTable.h>
 #include <vtkElevationFilter.h>
@@ -14,7 +15,6 @@
 #include <vtkQtTableView.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
-#include <vtkSphereSource.h>
 #include <vtkVersion.h>
 
 #if VTK_VERSION_NUMBER >= 89000000000ULL
@@ -39,18 +39,20 @@ ShareCameraQt::ShareCameraQt(QWidget* parent)
   this->ui->qvtkWidgetRight->SetRenderWindow(renderWindowRight);
 #endif
 
-  // Sphere
-  vtkNew<vtkSphereSource> sphereSource;
-  sphereSource->Update();
-  vtkNew<vtkPolyDataMapper> sphereMapper;
-  sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
-  vtkNew<vtkActor> sphereActor;
-  sphereActor->SetMapper(sphereMapper);
-  sphereActor->GetProperty()->SetColor(colors->GetColor4d("Tomato").GetData());
+  // Cone
+  vtkNew<vtkConeSource> coneSource;
+  coneSource->SetDirection(0.0, 1.0, 0.0);
+  vtkNew<vtkPolyDataMapper> coneMapper;
+  coneMapper->SetInputConnection(coneSource->GetOutputPort());
+  vtkNew<vtkActor> coneActor;
+  coneActor->SetMapper(coneMapper);
+  coneActor->GetProperty()->SetColor(colors->GetColor4d("Tomato").GetData());
 
   // Cube
   vtkNew<vtkCubeSource> cubeSource;
-  cubeSource->Update();
+  cubeSource->SetXLength(0.8);
+  cubeSource->SetYLength(0.8);
+  cubeSource->SetZLength(0.8);
   vtkNew<vtkPolyDataMapper> cubeMapper;
   cubeMapper->SetInputConnection(cubeSource->GetOutputPort());
   vtkNew<vtkActor> cubeActor;
@@ -60,7 +62,7 @@ ShareCameraQt::ShareCameraQt(QWidget* parent)
 
   // VTK Renderer
   vtkNew<vtkRenderer> leftRenderer;
-  leftRenderer->AddActor(sphereActor);
+  leftRenderer->AddActor(coneActor);
   leftRenderer->SetBackground(colors->GetColor3d("LightSteelBlue").GetData());
 
   vtkNew<vtkRenderer> rightRenderer;
@@ -85,10 +87,8 @@ ShareCameraQt::ShareCameraQt(QWidget* parent)
   rightRenderer->SetActiveCamera(leftRenderer->GetActiveCamera());
 
   // Position the cube using the left renderer active camera
-  leftRenderer->GetActiveCamera()->SetPosition(1.0, 0.8, 1.0);
-  leftRenderer->GetActiveCamera()->SetFocalPoint(0, 0, 0);
+  leftRenderer->GetActiveCamera()->Azimuth(60);
   leftRenderer->ResetCamera();
-  leftRenderer->GetActiveCamera()->Zoom(0.8);
 
   // Set up action signals and slots
   connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
