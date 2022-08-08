@@ -1,4 +1,5 @@
 #include <vtkActor.h>
+#include <vtkAxesActor.h>
 #include <vtkCamera.h>
 #include <vtkDataSetMapper.h>
 #include <vtkFieldData.h>
@@ -8,6 +9,7 @@
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkOBBTree.h>
+#include <vtkOrientationMarkerWidget.h>
 #include <vtkPoints.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
@@ -16,6 +18,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
+#include <vtkVersion.h>
 
 // Readers
 #include <vtkBYUReader.h>
@@ -30,11 +33,20 @@
 
 #include <algorithm> // For transform()
 #include <cctype>    // For to_lower
+#include <cmath>     // for std::isnan and std::isinf
 #include <string>    // For find_last_of()
 
 #include <array>
 #include <random>
 #include <sstream>
+
+#if VTK_VERSION_NUMBER >= 90020210809ULL
+#define VTK_HAS_COW 1
+#endif
+
+#if VTK_HAS_COW
+#include <vtkCameraOrientationWidget.h>
+#endif
 
 namespace {
 /**
@@ -86,15 +98,19 @@ int main(int argc, char* argv[])
   std::cout << "Loading target: " << argv[2] << std::endl;
   auto targetPolyData = ReadPolyData(argv[2]);
 
-  // If the target orientation is markedly different,
-  // you may need to apply a transform to orient the
-  // target with the source.
+  // If the target orientation is markedly different, you may need to apply a
+  // transform to orient the target with the source.
   // For example, when using Grey_Nurse_Shark.stl as the source and
-  // greatWhite.stl as the target, you need to uncomment the following
-  // two rotations.
+  // greatWhite.stl as the target, you need to transform the target.
+  auto sourceFound =
+      std::string(argv[1]).find("Grey_Nurse_Shark.stl") != std::string::npos;
+  auto targetFound =
+      std::string(argv[2]).find("greatWhite.stl") != std::string::npos;
   vtkNew<vtkTransform> trnf;
-  // trnf->RotateX(90);
-  // trnf->RotateY(-90);
+  if (sourceFound && targetFound)
+  {
+    trnf->RotateY(90);
+  }
   vtkNew<vtkTransformPolyDataFilter> tpd;
   tpd->SetTransform(trnf);
   tpd->SetInputData(targetPolyData);
@@ -140,6 +156,7 @@ int main(int argc, char* argv[])
   icp->CheckMeanDistanceOn();
   icp->StartByMatchingCentroidsOn();
   icp->Update();
+  auto icpMeanDistance = icp->GetMeanDistance();
 
   //  icp->Print(std::cout);
 
@@ -154,21 +171,31 @@ int main(int argc, char* argv[])
   distance->SetInputData(1, transform->GetOutput());
   distance->Update();
 
+  // Note: If there is an error extracting eigenfunctions, then this will be
+  // zero.
   double distanceAfterICP = static_cast<vtkPointSet*>(distance->GetOutput(0))
                                 ->GetFieldData()
                                 ->GetArray("HausdorffDistance")
                                 ->GetComponent(0, 0);
-
-  if (distanceAfterICP < bestDistance)
+  if (!(std::isnan(icpMeanDistance) || std::isinf(icpMeanDistance)))
   {
-    bestDistance = distanceAfterICP;
+    if (distanceAfterICP < bestDistance)
+    {
+      bestDistance = distanceAfterICP;
+    }
   }
 
-  std::cout << "Distance before, after align, after ICP, min: "
-            << distanceBeforeAlign << ", " << distanceAfterAlign << ", "
-            << distanceAfterICP << ", " << bestDistance << std::endl;
+  std::cout << "Distances:" << std::endl;
+  std::cout << "  Before aligning:                        "
+            << distanceBeforeAlign << std::endl;
+  std::cout << "  Aligning using oriented bounding boxes: "
+            << distanceAfterAlign << std::endl;
+  std::cout << "  Aligning using IterativeClosestPoint:   " << distanceAfterICP
+            << std::endl;
+  std::cout << "  Best distance:                          " << bestDistance
+            << std::endl;
 
-  // Select
+  // Select the source to use.
   vtkNew<vtkDataSetMapper> sourceMapper;
   if (bestDistance == distanceBeforeAlign)
   {
@@ -189,7 +216,7 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkActor> sourceActor;
   sourceActor->SetMapper(sourceMapper);
-  sourceActor->GetProperty()->SetOpacity(.6);
+  sourceActor->GetProperty()->SetOpacity(0.6);
   sourceActor->GetProperty()->SetDiffuseColor(
       colors->GetColor3d("White").GetData());
   renderer->AddActor(sourceActor);
@@ -208,7 +235,25 @@ int main(int argc, char* argv[])
 
   renderWindow->Render();
   renderWindow->SetWindowName("AlignTwoPolyDatas");
-  renderWindow->Render();
+
+#if VTK_HAS_COW
+  vtkNew<vtkCameraOrientationWidget> camOrientManipulator;
+  camOrientManipulator->SetParentRenderer(renderer);
+  // Enable the widget.
+  camOrientManipulator->On();
+#else
+  vtkNew<vtkAxesActor> axes;
+
+  vtkNew<vtkOrientationMarkerWidget> widget;
+  double rgba[4]{0.0, 0.0, 0.0, 0.0};
+  colors->GetColor("Carrot", rgba);
+  widget->SetOutlineColor(rgba[0], rgba[1], rgba[2]);
+  widget->SetOrientationMarker(axes);
+  widget->SetInteractor(interactor);
+  widget->SetViewport(0.0, 0.0, 0.2, 0.2);
+  widget->EnabledOn();
+  widget->InteractiveOn();
+#endif
 
   interactor->Start();
 

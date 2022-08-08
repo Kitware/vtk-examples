@@ -114,7 +114,7 @@ if (BUILD_TESTING)
   set(TEMP ${WikiExamples_BINARY_DIR}/Testing/Temporary)
 
   add_test(${KIT}-AlignTwoPolyDatas ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-    TestAlignTwoPolyDatas ${DATA}/thingiverse/Grey_Nurse_Shark.stl ${DATA}/shark.ply)
+    TestAlignTwoPolyDatas ${DATA}/thingiverse/Grey_Nurse_Shark.stl ${DATA}/greatWhite.stl)
 
   add_test(${KIT}-BooleanOperationPolyDataFilter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestBooleanOperationPolyDataFilter ${DATA}/Torso.vtp difference ${DATA}/ObliqueCone.vtp)
