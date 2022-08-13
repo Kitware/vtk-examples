@@ -653,6 +653,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [CameraOrientationWidget](/Python/Widgets/CameraOrientationWidget) | Demonstrates a 3D camera orientation widget.
 [CompassWidget](/Python/Widgets/CompassWidget) | Draws an interactive compass.
 [ContourWidget](/Python/Widgets/ContourWidget) | Draw a contour (line) which can be deformed by the user
+[ImplicitPlaneWidget2](/Python/Widgets/ImplicitPlaneWidget2) | Clip polydata with an implicit plane.
 [OrientationMarkerWidget](/Python/Widgets/OrientationMarkerWidget) | Draws two cubes. One of them can be clicked to be rotated, and will rotate the second one. The second one has annotations on it, and can also be moved.
 [OrientationMarkerWidget1](/Python/Widgets/OrientationMarkerWidget1) | Display a polydata as an orientation icon.
 [ScalarBarWidget](/Python/Widgets/ScalarBarWidget) | The ScalarBarWidget displays a scalar bar that is movable and changes orientation automatically when close to the borders of the image. It needs a ScalarBarActor
