@@ -26,6 +26,7 @@ public:
   {
     return new vtkIPWCallback;
   }
+
   virtual void Execute(vtkObject* caller, unsigned long, void*)
   {
     vtkImplicitPlaneWidget2* planeWidget =
@@ -33,14 +34,14 @@ public:
     vtkImplicitPlaneRepresentation* rep =
         reinterpret_cast<vtkImplicitPlaneRepresentation*>(
             planeWidget->GetRepresentation());
-    rep->GetPlane(this->Plane);
+    rep->GetPlane(this->plane);
   }
-  vtkIPWCallback() : Plane(0), Actor(0)
-  {
-  }
-  vtkPlane* Plane;
-  vtkActor* Actor;
+
+  vtkIPWCallback() = default;
+
+  vtkPlane* plane{nullptr};
 };
+
 } // namespace
 
 int main(int argc, char* argv[])
@@ -52,7 +53,7 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkXMLPolyDataReader> reader;
 
-  // Setup a visualization pipeline
+  // Setup a visualization pipeline.
   vtkNew<vtkPlane> plane;
   vtkNew<vtkClipPolyData> clipper;
   clipper->SetClipFunction(plane);
@@ -67,7 +68,7 @@ int main(int argc, char* argv[])
     clipper->SetInputConnection(reader->GetOutputPort());
   }
 
-  // Create a mapper and actor
+  // Create a mapper and actor.
   vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputConnection(clipper->GetOutputPort());
   vtkNew<vtkActor> actor;
@@ -78,7 +79,7 @@ int main(int argc, char* argv[])
 
   actor->SetBackfaceProperty(backFaces);
 
-  // A renderer and render window
+  // A renderer and render window.
   vtkNew<vtkRenderer> renderer;
   vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
@@ -87,24 +88,16 @@ int main(int argc, char* argv[])
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("SlateGray").GetData());
 
-  // An interactor
+  // An interactor.
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  renderWindow->Render();
-
-  renderer->GetActiveCamera()->Azimuth(-60);
-  renderer->GetActiveCamera()->Elevation(30);
-  renderer->ResetCamera();
-  renderer->GetActiveCamera()->Zoom(0.75);
-
-  // The callback will do the work
+  // The callback will do the work.
   vtkNew<vtkIPWCallback> myCallback;
-  myCallback->Plane = plane;
-  myCallback->Actor = actor;
+  myCallback->plane = plane;
 
   vtkNew<vtkImplicitPlaneRepresentation> rep;
-  rep->SetPlaceFactor(1.25); // This must be set prior to placing the widget
+  rep->SetPlaceFactor(1.25); // This must be set prior to placing the widget.
   rep->PlaceWidget(actor->GetBounds());
   rep->SetNormal(plane->GetNormal());
 
@@ -113,13 +106,17 @@ int main(int argc, char* argv[])
   planeWidget->SetRepresentation(rep);
   planeWidget->AddObserver(vtkCommand::InteractionEvent, myCallback);
 
-  // Render
+  renderer->GetActiveCamera()->Azimuth(-60);
+  renderer->GetActiveCamera()->Elevation(30);
+  renderer->ResetCamera();
+  renderer->GetActiveCamera()->Zoom(0.75);
 
+  // Render and interact.
   renderWindowInteractor->Initialize();
   renderWindow->Render();
   planeWidget->On();
 
-  // Begin mouse interaction
+  // Begin mouse interaction.
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
