@@ -921,8 +921,8 @@ VTK HDF files start with a group called `VTKHDF` with two attributes:
 `Version`, an array of two integers and `Type`, a string showing the
 VTK dataset type stored in the file. Additional attributes can follow
 depending on the dataset type. Currently, `Version`
-is the array [1, 0] and `Type` can be `ImageData` or
-`UnstructuredGrid`.
+is the array [1, 0] and `Type` can be `ImageData`, `UnstructuredGrid`
+or `OverlappingAMR`.
 
 The data type for each HDF dataset is part of the dataset and it is
 determined at write time. The reader matches the type of the dataset
@@ -997,7 +997,7 @@ using the following formulas:
 | CellData | NumberOfCells[i] * sizeof(cell_array_k[0]) |
 
 <figure>
-  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKFileFormats/Figures/vtkhdf-unstructured-grid.svg" width="640" alt="Image data VTKHDF File Format">
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKFileFormats/Figures/vtkhdf-unstructured-grid.svg" width="640" alt="Unstructured Grid VTKHDF File Format">
   <figcaption>Figure 7. - Unstructured grid VTKHDF File Format</figcaption>
 </figure>
 
@@ -1005,20 +1005,43 @@ To read the data for its rank a node reads the information about all
 partitions, compute the correct offset and then read data from that
 offset.
 
+### Overlapping AMR
+The format for Overlapping AMR is shown in Figure 8. In this case
+the `Type` attribute of the `VTKHDF` group is `OverlappingAMR`.
+The mandatory `Origin` parameter is a double triplet that defines
+the global origin of the AMR data set.
+Each level in an overlapping AMR file format (and data structure)
+consists of a list of uniform grids with the same spacing from the
+Spacing attribute. The Spacing attribute is a list a three doubles
+describing the spacing in each x/y/z direction.
+The AMRBox dataset contains the bounding box
+for each of these grids. Each line in this dataset is expected to contain
+6 integers describing the the indexed bounds in i, j, k space
+(imin/imax/jmin/jmax/kmin/kmax).
+The points and cell arrays for these grids are
+stored serialized in one dimension and stored in a dataset in the
+PointData or CellData group.
+
+<figure>
+  <img src="https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/VTKFileFormats/Figures/vtkhdf-overlapping-amr.svg" width="640" alt="Overlapping AMR VTKHDF File Format">
+  <figcaption>Figure 8. - Overlapping AMR VTKHDF File Format</figcaption>
+</figure>
+
 ### Limitations
 
 This specification and the reader available in VTK currently only
-supports ImageData and UnstructuredGrid. Other dataset types may be
-added later depending on interest and funding.
+supports ImageData, UnstructuredGrid and Overlapping AMR. Other dataset 
+types may be added later depending on interest and funding.
 
 ### Examples
 
-We present two examples of VTK HDF files, shown using h5dump -A one
-image file and one unstructured grid. These files can be examined in
-the VTK source code, by building VTK and enabling testing
-(`VTK_BUILD_TESTING`).  The two files are in the build directory
+We present three examples of VTK HDF files, shown using h5dump -A one
+image file, one unstructured grid and one overlapping AMR.
+These files can be examined in the VTK source code, by building VTK 
+and enabling testing (`VTK_BUILD_TESTING`). The two files are in the build directory
 ExternalData at `Testing/Data/mandelbrot-vti.hdf` for the ImageData
-and at `Testing/Data/can-pvtu.hdf` for the partitioned UnstructuredGrid.
+and at `Testing/Data/can-pvtu.hdf` for the partitioned UnstructuredGrid
+and `Testing/Data/amr_gaussian_pulse.hdf` for the overlapping AMR.
 
 #### ImageData
 
@@ -1276,5 +1299,130 @@ GROUP "/" {
       }
    }
 }
+}
+```
+
+#### Overlapping AMR
+
+The Overlapping AMR data file is an AMR Guaussian Pulse source with two levels
+(0 and 1), describing one Point Data, several Cell Data and a Field Data. Actual
+`Data` are not displayed for readibility.
+
+```
+GROUP "/" {
+   GROUP "VTKHDF" {
+      ATTRIBUTE "Origin" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 3 ) / ( 3 ) }
+         DATA {
+         (0): -2, -2, 0
+         }
+      }
+      ATTRIBUTE "Type" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 14;
+            STRPAD H5T_STR_NULLPAD;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "OverlappingAMR"
+         }
+      }
+      ATTRIBUTE "Version" {
+         DATATYPE  H5T_STD_I64LE
+         DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
+         DATA {
+         (0): 1, 0
+         }
+      }
+      GROUP "Level0" {
+         ATTRIBUTE "Spacing" {
+            DATATYPE  H5T_IEEE_F64LE
+            DATASPACE  SIMPLE { ( 3 ) / ( 3 ) }
+            DATA {
+            (0): 0.5, 0.5, 0.5
+            }
+         }
+         DATASET "AMRBox" {
+            DATATYPE  H5T_STD_I32LE
+            DATASPACE  SIMPLE { ( 1, 6 ) / ( 1, 6 ) }
+            DATA {
+            (0,0): 0, 4, 0, 4, 0, 4
+            }
+         }
+         GROUP "CellData" {
+            DATASET "Centroid" {
+               DATATYPE  H5T_IEEE_F64LE
+               DATASPACE  SIMPLE { ( 125, 3 ) / ( 125, 3 ) }
+            }
+            DATASET "Gaussian-Pulse" {
+               DATATYPE  H5T_IEEE_F64LE
+               DATASPACE  SIMPLE { ( 125 ) / ( 125 ) }
+            }
+            DATASET "vtkGhostType" {
+               DATATYPE  H5T_STD_U8LE
+               DATASPACE  SIMPLE { ( 125 ) / ( 125 ) }
+            }
+         }
+         GROUP "FieldData" {
+            DATASET "KE" {
+               DATATYPE  H5T_IEEE_F64LE
+               DATASPACE  SIMPLE { ( 44 ) / ( 44 ) }
+            }
+         }
+         GROUP "PointData" {
+            DATASET "Coord Result" {
+               DATATYPE  H5T_IEEE_F64LE
+               DATASPACE  SIMPLE { ( 216 ) / ( 216 ) }
+            }
+         }
+      }
+      GROUP "Level1" {
+         ATTRIBUTE "Spacing" {
+            DATATYPE  H5T_IEEE_F64LE
+            DATASPACE  SIMPLE { ( 3 ) / ( 3 ) }
+            DATA {
+            (0): 0.25, 0.25, 0.25
+            }
+         }
+         DATASET "AMRBox" {
+            DATATYPE  H5T_STD_I32LE
+            DATASPACE  SIMPLE { ( 2, 6 ) / ( 2, 6 ) }
+            DATA {
+            (0,0): 0, 3, 0, 5, 0, 9,
+            (1,0): 6, 9, 4, 9, 0, 9
+            }
+         }
+         GROUP "CellData" {
+            DATASET "Centroid" {
+               DATATYPE  H5T_IEEE_F64LE
+               DATASPACE  SIMPLE { ( 480, 3 ) / ( 480, 3 ) }
+            }
+            DATASET "Gaussian-Pulse" {
+               DATATYPE  H5T_IEEE_F64LE
+               DATASPACE  SIMPLE { ( 480 ) / ( 480 ) }
+            }
+            DATASET "vtkGhostType" {
+               DATATYPE  H5T_STD_U8LE
+               DATASPACE  SIMPLE { ( 480 ) / ( 480 ) }
+            }
+         }
+         GROUP "FieldData" {
+            DATASET "KE" {
+               DATATYPE  H5T_IEEE_F64LE
+               DATASPACE  SIMPLE { ( 88 ) / ( 88 ) }
+            }
+         }
+         GROUP "PointData" {
+            DATASET "Coord Result" {
+               DATATYPE  H5T_IEEE_F64LE
+               DATASPACE  SIMPLE { ( 770 ) / ( 770 ) }
+               }
+            }
+         }
+      }
+   }
 }
 ```
