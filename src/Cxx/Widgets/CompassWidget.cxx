@@ -1,4 +1,3 @@
-#include <vtkActor.h>
 #include <vtkAnnotatedCubeActor.h>
 #include <vtkCamera.h>
 #include <vtkCommand.h>
@@ -10,6 +9,10 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+
+#if VTK_VERSION_NUMBER >= 90220220831ULL
+#define VTK_HAS_IMPROVED_COMPASSWIDGETREPRESENTATION 1
+#endif
 
 class vtkICWValueChangedCallback : public vtkCommand
 {
@@ -68,8 +71,10 @@ int main(int, char*[])
 
   // create the widget and its representation
   vtkNew<vtkCompassRepresentation> compassRepresentation;
+#ifdef VTK_HAS_IMPROVED_COMPASSWIDGETREPRESENTATION
   compassRepresentation->SetMinimumDistance(2);
   compassRepresentation->SetMaximumDistance(10);
+#endif
 
   vtkNew<vtkCompassWidget> compassWidget;
   compassWidget->SetInteractor(renderWindowInteractor);
