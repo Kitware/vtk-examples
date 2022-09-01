@@ -359,6 +359,7 @@ This section includes vtkUnstructuredGrid.
 
 | Example Name | Description | Image |
 | -------------- | ------------- | ------- |
+[CheckVTKVersion](/Python/Utilities/CheckVTKVersion) | Check the VTK version and provide alternatives for different VTK versions.
 [ConstrainedDelaunay2D](/Python/Filtering/ConstrainedDelaunay2D) | Perform a 2D Delaunay triangulation on a point set respecting a specified boundary.
 [Delaunay2D](/Python/Filtering/Delaunay2D) |
 [LUTUtilities](/Python/Utilities/LUTUtilities) | A utility class for vtkLookupTable allowing you to output the table contents or to compare tables.
@@ -372,7 +373,6 @@ This section includes vtkUnstructuredGrid.
 [ShareCamera](/Python/Utilities/ShareCamera) | Share a camera between multiple renderers.
 [VTKImportsForPython](/Python/Utilities/VTKImportsForPython) | Generate import statements for the VTK classes in your Python code.
 [VTKModulesForCxx](/Python/Utilities/VTKModulesForCxx) | Generate a find_package(VTK COMPONENTS ...) command for CMake.
-[VTKVersion](/Python/Utilities/VTKVersion) |
 [VTKWithNumpy](/Python/Utilities/VTKWithNumpy) |
 [Variant](/Python/Utilities/Variant) |
 

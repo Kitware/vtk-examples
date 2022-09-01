@@ -21,6 +21,13 @@ Here are some snippets and examples that highlight interesting features that may
 [ResetCameraOrientation](/Python/Utilities/ResetCameraOrientation) | Reset camera orientation to a previously saved orientation.
 [ShareCamera](/Python/Utilities/ShareCamera) | Use the same camera for all renderers.
 
+## Check the VTK Version
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[CheckVTKVersion](/Python/Snippets/CheckVTKVersion) | Check the VTK version returning `True` if the requested VTK version is >= the current version.
+[CheckVTKVersion](/Python/Utilities/CheckVTKVersion) | Check the VTK version and provide alternatives for different VTK versions.
+
 ## Coloring
 
 | Example Name | Comments | Image |

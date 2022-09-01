@@ -8,6 +8,10 @@ Snippets are chunks of code that can be cut (*snipped*) and pasted into examples
 
 Output the camera position while moving the image.
 
+#### [CheckVTKVersion](/Python/Snippets/CheckVTKVersion.md)
+
+Check the VTK version returning `True` if the requested VTK version is >= the current version.
+
 #### [PointToGlyph](/Python/Snippets/PointToGlyph.md)
 
 Represent points as glyphs.
