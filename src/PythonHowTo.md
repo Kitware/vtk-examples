@@ -25,8 +25,8 @@ Here are some snippets and examples that highlight interesting features that may
 
 | Example Name | Comments | Image |
 | -------------- | ---------------------- | ------- |
-[CheckVTKVersion](/Python/Snippets/CheckVTKVersion) | Check the VTK version returning `True` if the requested VTK version is >= the current version.
-[CheckVTKVersion](/Python/Utilities/CheckVTKVersion) | Check the VTK version and provide alternatives for different VTK versions.
+[CheckVTKVersion-Snippet](/Python/Snippets/CheckVTKVersion) | Check the VTK version returning `True` if the requested VTK version is >= the current version.
+[CheckVTKVersion-Example](/Python/Utilities/CheckVTKVersion) | Check the VTK version and provide alternatives for different VTK versions.
 
 ## Coloring
 

@@ -59,5 +59,5 @@ def vtk_version_ok(major, minor, build):
 
 See:
 
-- [PBR_Skybox](/Python/Rendering/PBR_Skybox) for a typical usage example. Here we are deciding to use `vtkCameraOrientationWidget` instead of `vtkOrientationMarkerWidget` if the VTK version is >= 9.0.20210718.
-- [CheckVTKVersion](/Python/Utilities/CheckVTKVersion) for a test/example.
+- [PBR_Skybox](../../Rendering/PBR_Skybox) for a typical usage example. Here we are deciding to use `vtkCameraOrientationWidget` instead of `vtkOrientationMarkerWidget` if the VTK version is >= 9.0.20210718.
+- [CheckVTKVersion](../../Utilities/CheckVTKVersion) for a test/example.
