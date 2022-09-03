@@ -21,7 +21,8 @@ public:
   {
     return new vtkICWValueChangedCallback();
   }
-  virtual void Execute(vtkObject* caller, unsigned long eventId, void* callData)
+  virtual void Execute(vtkObject* caller, unsigned long vtkNotUsed(eventId),
+                       void* vtkNotUsed(callData))
   {
     vtkCompassWidget* widget = vtkCompassWidget::SafeDownCast(caller);
     vtkCamera* camera = widget->GetCurrentRenderer()->GetActiveCamera();
@@ -31,7 +32,7 @@ public:
     double tilt = widget->GetTilt();
     double heading = widget->GetHeading();
 
-    double pos[3];
+    double pos[3] = {0, 0, 0};
     pos[0] = distance * cos(vtkMath::RadiansFromDegrees(heading)) *
         cos(vtkMath::RadiansFromDegrees(tilt));
     pos[1] = distance * sin(vtkMath::RadiansFromDegrees(heading)) *
