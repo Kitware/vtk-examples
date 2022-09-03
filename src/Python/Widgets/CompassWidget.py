@@ -1,19 +1,15 @@
 #!/usr/bin/env python3
 
-# determine if the current VTK version has the improved CompassWidget
-import sys
-sys.path.append('../Utilities')
-from CheckVTKVersion import vtk_version_ok
-VTK_IMPROVED_COMPASSWIDGET = vtk_version_ok(9, 2, 20220831)
-
 import math
 # noinspection PyUnresolvedReferences
 import vtkmodules.vtkInteractionStyle
 # noinspection PyUnresolvedReferences
 import vtkmodules.vtkRenderingOpenGL2
 from vtkmodules.vtkCommonCore import (
+    VTK_VERSION_NUMBER,
     vtkCommand,
-    vtkMath
+    vtkMath,
+    vtkVersion
 )
 from vtkmodules.vtkCommonColor import vtkNamedColors
 from vtkmodules.vtkRenderingAnnotation import vtkAnnotatedCubeActor
@@ -24,17 +20,41 @@ from vtkmodules.vtkRenderingCore import (
     vtkRenderer
 )
 
-if VTK_IMPROVED_COMPASSWIDGET:
+try:
     from vtkmodules.vtkInteractionWidgets import (
         vtkCompassRepresentation,
         vtkCompassWidget
     )
-else:
+except:
     from vtkmodules.vtkGeovisCore import (
         vtkCompassRepresentation,
         vtkCompassWidget
     )
 
+def vtk_version_ok(major, minor, build):
+    """
+    Check the VTK version.
+
+    :param major: Major version.
+    :param minor: Minor version.
+    :param build: Build version.
+    :return: True if the requested VTK version is greater or equal to the actual VTK version.
+    """
+    needed_version = 10000000000 * int(major) \
+                     + 100000000 * int(minor) \
+                     + int(build)
+    try:
+        vtk_version_number = VTK_VERSION_NUMBER
+    except AttributeError:
+        # Expand component-wise comparisons for VTK versions < 8.90.
+        ver = vtkVersion()
+        vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() \
+                             + 100000000 * ver.GetVTKMinorVersion() \
+                             + ver.GetVTKBuildVersion()
+    if vtk_version_number >= needed_version:
+        return True
+    else:
+        return False
 
 def CompassWidgetValueChangedCallback(widget, event):
     """
@@ -64,6 +84,8 @@ def CompassWidgetValueChangedCallback(widget, event):
 
 
 def main():
+    use_improved_compass_widget = vtk_version_ok(9, 2, 20220831)
+    
     colors = vtkNamedColors()
 
     actor = vtkAnnotatedCubeActor()
@@ -88,7 +110,7 @@ def main():
     # add a callback to update the camera position on vtkCommand::WidgetValueChangedEvent
     compassWidget.AddObserver(vtkCommand.WidgetValueChangedEvent, CompassWidgetValueChangedCallback)
 
-    if VTK_IMPROVED_COMPASSWIDGET:
+    if use_improved_compass_widget:
         compassRepresentation.SetMinimumDistance(2)
         compassRepresentation.SetMaximumDistance(10)
         compassWidget.SetDistance(5)
@@ -105,7 +127,7 @@ def main():
     renderWindow.Render()
     compassWidget.EnabledOn()
 
-    if VTK_IMPROVED_COMPASSWIDGET:
+    if use_improved_compass_widget:
         # no interactor style - camera is moved by widget callback
         renderWindowInteractor.SetInteractorStyle(None)
         # set camera to initial position
