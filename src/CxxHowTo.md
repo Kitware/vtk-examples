@@ -22,6 +22,13 @@ Here are some snippets and examples that highlight interesting features that may
 [ResetCameraOrientation](/Cxx/Utilities/ResetCameraOrientation) | Reset camera orientation to a previously saved orientation.
 [ShareCamera](/Cxx/Utilities/ShareCamera) | Use the same camera for all renderers.
 
+## Check the VTK Version
+
+| Example Name | Comments | Image |
+| -------------- | ---------------------- | ------- |
+[CheckVTKVersion-Snippet](/Cxx/Snippets/CheckVTKVersion) | Check the VTK version returning `true` if the requested VTK version is >= the current version.
+[CheckVTKVersion-Example](/Cxx/Utilities/CheckVTKVersion) | Check the VTK version and provide alternatives for different VTK versions.
+
 ## Coloring
 
 | Example Name | Comments | Image |

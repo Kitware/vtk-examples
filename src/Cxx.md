@@ -633,7 +633,7 @@ This section includes vtkUnstructuredGrid.
 [BrownianPoints](/Cxx/Utilities/BrownianPoints) | Produce a random vector at each point in a dataset.
 [CardinalSpline](/Cxx/Utilities/CardinalSpline) | Cardinal spline Interpolation.
 [Casting](/Cxx/PolyData/Casting) | Casting VTK objects.
-[CheckVTKVersion](/Cxx/Utilities/CheckVTKVersion) | Check VTK Version.
+[CheckVTKVersion](/Cxx/Utilities/CheckVTKVersion) | Check VTK Version and provide alternatives for different VTK versions
 [ColorLookupTable](/Cxx/Utilities/ColorLookupTable) | Color Lookup Table.
 [ColorTransferFunction](/Cxx/Utilities/ColorTransferFunction) | Color Transfer Function.
 [CommandSubclass](/Cxx/Utilities/CommandSubclass) | Instead of using a callback function, it is more powerful to subclass vtkCommand.

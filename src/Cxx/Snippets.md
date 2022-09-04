@@ -8,6 +8,10 @@ Snippets are chunks of code that can be cut (*snipped*) and pasted into examples
 
 Output the camera position while moving the image.
 
+#### [CheckVTKVersion](/Cxx/Snippets/CheckVTKVersion.md)
+
+Check the VTK version returning `true` if the requested VTK version is >= the current version.
+
 #### [PointToGlyph](/Cxx/Snippets/PointToGlyph.md)
 
 Represent points as glyphs.
