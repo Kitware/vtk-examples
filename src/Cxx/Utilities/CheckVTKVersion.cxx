@@ -1,11 +1,18 @@
+#include <vtkNew.h>
 #include <vtkVersion.h>
 
+#include <array>
+#include <vector>
+
 #ifdef VTK_VERSION_NUMBER
-#if VTK_VERSION_NUMBER >= 90000000000ULL
-#define VTK_VER_GE_90 1
+#if VTK_VERSION_NUMBER >= 90020210809ULL
+#define VTK_HAS_COW 1
 #endif
-#else
-#define VTK_VERSION_NUMBER_NOT_DEFINED 1
+#endif
+
+#if VTK_HAS_COW
+// Add any specific includes here.
+// #include <vtkCameraOrientationWidget.h>
 #endif
 
 namespace {
@@ -16,7 +23,7 @@ namespace {
  * @param major: Minor version.
  * @param major: Build version.
  *
- * @return True if the requested VTK version is greater or equal to the actual
+ * @return true if the requested VTK version is greater or equal to the actual
  * VTK version.
  */
 bool VTKVersionOk(unsigned long long const& major,
@@ -27,33 +34,37 @@ bool VTKVersionOk(unsigned long long const& major,
 
 int main(int, char*[])
 {
-#ifdef VTK_VERSION_NUMBER
-  std::cout << "Source version: " << vtkVersion::GetVTKSourceVersion()
-            << std::endl;
-  std::cout << "Major Version : " << vtkVersion::GetVTKMajorVersion()
-            << std::endl;
-  std::cout << "Minor Version : " << vtkVersion::GetVTKMinorVersion()
-            << std::endl;
-#elif VTK_VERSION_NUMBER_NOT_DEFINED
-  std::cout << "VTK VTK_VERSION_NUMBER is not defined." << std::endl;
-  std::cout << "VTK Major Version: " << VTK_MAJOR_VERSION << std::endl;
-  std::cout << "VTK Minor Version: " << VTK_MINOR_VERSION << std::endl;
-#endif
+  std::cout << "VTK Version: " << vtkVersion::GetVTKVersion() << std::endl;
 
-#ifdef VTK_VER_GE_90
-  std::cout << "VTK Version is >= " << VTK_VERSION_NUMBER << std::endl;
-#endif
-
-  if (!VTKVersionOk(8, 90, 0))
+  // We can check and exit if the VTK version is too old.
+  if (!VTKVersionOk(9, 0, 0))
   {
-    std::cerr << "You need VTK version 8.90 or greater to run this program."
+    std::cerr << "You need VTK version 9.0.0 or greater to run this program."
               << std::endl;
     return EXIT_FAILURE;
   }
-  else
+
+  std::vector<std::array<int, 3>> testVersions = {{9, 2, 20220831}, {9, 19, 0}};
+  for (auto const& ver : testVersions)
   {
-    std::cout << "You have the needed VTK version" << endl;
+    if (VTKVersionOk(ver[0], ver[1], ver[2]))
+    {
+      std::cout << "This code works for VTK Versions >= " << ver[0] << "."
+                << ver[1] << "." << ver[2] << std::endl;
+    }
+    else
+    {
+      std::cout << "You need VTK Version " << ver[0] << "." << ver[1] << "."
+                << ver[2] << " or greater." << std::endl;
+    }
   }
+
+  // If we want to use alternative code do it this way.
+#ifdef VTK_HAS_COW
+  std::cout << "Using vtkCameraOrientationWidget." << std::endl;
+#else
+  std::cout << "Fallback to using vtkAxesActor" << std::endl;
+#endif
 
   return EXIT_SUCCESS;
 }
@@ -65,23 +76,17 @@ bool VTKVersionOk(unsigned long long const& major,
 {
   unsigned long long neededVersion =
       10000000000ULL * major + 100000000ULL * minor + build;
+  auto res = false;
 #ifndef VTK_VERSION_NUMBER
-  auto ver = vtkSmartPointer<vtkVersion>();
+  vtkNew<vtkVersion> ver;
   unsigned long long vtk_version_number =
       10000000000ULL * ver->GetVTKMajorVersion() +
       100000000ULL * ver->GetVTKMinorVersion() + ver->GetVTKBuildVersion();
-  if (vtk_version_number >= neededVersion)
-  {
-    return true;
-  }
-  return false;
+  res = vtk_version_number >= neededVersion;
 #else
-  if (VTK_VERSION_NUMBER >= neededVersion)
-  {
-    return true;
-  }
-  return false;
+  res = VTK_VERSION_NUMBER >= neededVersion;
 #endif
+  return res;
 }
 
 } // namespace

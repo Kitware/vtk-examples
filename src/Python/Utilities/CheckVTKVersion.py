@@ -33,21 +33,18 @@ def vtk_version_ok(major, minor, build):
 
 
 def main():
-    test_versions = ((9, 2, 20220831), (10, 99, 0))
+    print('VTK Version:',vtkVersion.GetVTKVersion())
+    if not vtk_version_ok(9, 0, 0):
+        print('You need VTK version 9.0.0 or greater to run this program.')
+        return
+
+    test_versions = ((9, 2, 20220831), (9, 19, 0))
     for ver in test_versions:
-        print('Checking VTK version >=', '.'.join(map(str, ver)))
         if vtk_version_ok(*ver):
-            try:
-                print('This code only works for VTK Versions >=', '.'.join(map(str, ver)))
-            except AttributeError:
-                print('Unable to execute the new code.')
-                pass
+            print('This code works for VTK Versions >=', '.'.join(map(str, ver)))
         else:
-            print('This is alternative code for older versions of VTK.')
-            print('It may not work for VTK Versions >=', '.'.join(map(str, ver)))
-        print('Rest of the code in this section.')
-        print(vtkVersion.GetVTKSourceVersion())
-        print()
+            print('You need VTK Version', '.'.join(map(str, ver)), 'or greater.')
+    print()
 
 
 if __name__ == '__main__':
