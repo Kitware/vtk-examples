@@ -5,6 +5,10 @@
 #include <vtkSphereSource.h>
 #include <vtkUnstructuredGrid.h>
 
+// Note that:
+// vtkCellTreeLocator moved from vtkFiltersGeneral to vtkCommonDataModel in
+// VTK commit 4a29e6f7dd9acb460644fe487d2e80aac65f7be9
+
 int main(int, char*[])
 {
   vtkNew<vtkSphereSource> sphereSource;
