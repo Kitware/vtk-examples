@@ -75,7 +75,13 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkThresholdPoints</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkTubeFilter</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersExtraction</span> <span class=kn>import</span> <span class=n>vtkExtractEdges</span>
+
+<span class=c1># vtkExtractEdges moved from vtkFiltersExtraction to vtkFiltersCore in</span>
+<span class=c1># VTK commit d9981b9aeb93b42d1371c6e295d76bfdc18430bd</span>
+<span class=k>try</span><span class=p>:</span>
+<span class=hll>    <span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkExtractEdges</span>
+</span><span class=k>except</span> <span class=ne>ImportError</span><span class=p>:</span>
+<span class=hll>    <span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersExtraction</span> <span class=kn>import</span> <span class=n>vtkExtractEdges</span>
 </span><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkShrinkPolyData</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkTransformPolyDataFilter</span>

@@ -1,8 +1,0 @@
-# ninja log v5
-0	77	1659138638505160737	MinimalQtVTKApp_autogen/timestamp	cdf6c87e8169c8b9
-0	77	1659138638505160737	MinimalQtVTKApp_autogen/mocs_compilation.cpp	cdf6c87e8169c8b9
-0	77	1659138638505160737	/home/amaclean/Kitware/vtk-examples-web/vtk-examples-web/Tarballs/Cxx/MinimalQtVTKApp/build/MinimalQtVTKApp_autogen/timestamp	cdf6c87e8169c8b9
-0	77	1659138638505160737	/home/amaclean/Kitware/vtk-examples-web/vtk-examples-web/Tarballs/Cxx/MinimalQtVTKApp/build/MinimalQtVTKApp_autogen/mocs_compilation.cpp	cdf6c87e8169c8b9
-77	118	1659138638553160318	CMakeFiles/MinimalQtVTKApp.dir/MinimalQtVTKApp_autogen/mocs_compilation.cpp.o	782498ac118adee1
-77	6639	1659138645077103286	CMakeFiles/MinimalQtVTKApp.dir/MinimalQtVTKApp.cxx.o	6c622cca46381fc
-6641	7876	1659138646309092508	MinimalQtVTKApp	a551d40d7b1f400e
