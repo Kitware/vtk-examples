@@ -18,7 +18,13 @@ from vtkmodules.vtkCommonDataModel import (
     vtkGenericCell
 )
 from vtkmodules.vtkFiltersCore import vtkTubeFilter
-from vtkmodules.vtkFiltersExtraction import vtkExtractEdges
+
+# vtkExtractEdges moved from vtkFiltersExtraction to vtkFiltersCore in
+# VTK commit d9981b9aeb93b42d1371c6e295d76bfdc18430bd
+try:
+    from vtkmodules.vtkFiltersCore import vtkExtractEdges
+except ImportError:
+    from vtkmodules.vtkFiltersExtraction import vtkExtractEdges
 from vtkmodules.vtkFiltersGeneral import vtkShrinkFilter
 from vtkmodules.vtkFiltersSources import vtkSphereSource
 from vtkmodules.vtkIOLegacy import vtkUnstructuredGridReader

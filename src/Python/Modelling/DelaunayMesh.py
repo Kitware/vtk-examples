@@ -23,7 +23,13 @@ from vtkmodules.vtkFiltersCore import (
     vtkGlyph3D,
     vtkTubeFilter
 )
-from vtkmodules.vtkFiltersExtraction import vtkExtractEdges
+
+# vtkExtractEdges moved from vtkFiltersExtraction to vtkFiltersCore in
+# VTK commit d9981b9aeb93b42d1371c6e295d76bfdc18430bd
+try:
+    from vtkmodules.vtkFiltersCore import vtkExtractEdges
+except ImportError:
+    from vtkmodules.vtkFiltersExtraction import vtkExtractEdges
 from vtkmodules.vtkFiltersSources import vtkSphereSource
 from vtkmodules.vtkRenderingCore import (
     vtkActor,

@@ -24,6 +24,10 @@
 #include <vtkUnstructuredGrid.h>
 #include <vtkVectorText.h>
 
+// Note that:
+// vtkExtractEdges moved from vtkFiltersExtraction to vtkFiltersCore in
+// VTK commit d9981b9aeb93b42d1371c6e295d76bfdc18430bd
+
 #include <algorithm>
 #include <iostream>
 #include <iterator>

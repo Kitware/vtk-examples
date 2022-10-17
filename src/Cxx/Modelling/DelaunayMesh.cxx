@@ -24,6 +24,10 @@ We create a fancy image of a 2D Delaunay triangulation. Points are
 #include <vtkSphereSource.h>
 #include <vtkTubeFilter.h>
 
+// Note that:
+// vtkExtractEdges moved from vtkFiltersExtraction to vtkFiltersCore in
+// VTK commit d9981b9aeb93b42d1371c6e295d76bfdc18430bd
+
 int main(int, char*[])
 {
   vtkNew<vtkNamedColors> colors;
