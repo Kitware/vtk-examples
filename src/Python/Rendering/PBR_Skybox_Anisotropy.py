@@ -19,8 +19,12 @@ from vtkmodules.vtkCommonCore import (
     vtkFloatArray,
     vtkVersion
 )
+from vtkmodules.vtkCommonDataModel import vtkPlane
 from vtkmodules.vtkCommonTransforms import vtkTransform
 from vtkmodules.vtkFiltersCore import (
+    vtkCleanPolyData,
+    vtkClipPolyData,
+    vtkPolyDataNormals,
     vtkPolyDataTangents,
     vtkTriangleFilter
 )
@@ -160,7 +164,7 @@ def main():
 
     # Get the surface
     surface = parameters['object'].lower()
-    available_surfaces = {'boy', 'mobius', 'randomhills', 'torus', 'sphere', 'cube'}
+    available_surfaces = {'boy', 'mobius', 'randomhills', 'torus', 'sphere', 'clippedsphere', 'cube', 'clippedcube'}
     if surface not in available_surfaces:
         surface = 'boy'
     if surface == 'mobius':
@@ -171,8 +175,12 @@ def main():
         source = get_torus()
     elif surface == 'sphere':
         source = get_sphere()
+    elif surface == 'clippedsphere':
+        source = get_clipped_sphere()
     elif surface == 'cube':
         source = get_cube()
+    elif surface == 'clippedcube':
+        source = get_clipped_cube()
     else:
         source = get_boy()
 
@@ -813,9 +821,32 @@ def get_sphere():
     surface.SetThetaResolution(theta_resolution)
     surface.SetPhiResolution(phi_resolution)
 
-    # Now the tangents
+    # Now the tangents.
     tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(surface.GetOutputPort())
+    tangents.Update()
+    return tangents.GetOutput()
+
+
+def get_clipped_sphere():
+    theta_resolution = 32
+    phi_resolution = 32
+    surface = vtkTexturedSphereSource()
+    surface.SetThetaResolution(theta_resolution)
+    surface.SetPhiResolution(phi_resolution)
+
+    clip_plane = vtkPlane()
+    clip_plane.SetOrigin(0, 0.3, 0)
+    clip_plane.SetNormal(0, -1, 0)
+
+    clipper = vtkClipPolyData()
+    clipper.SetInputConnection(surface.GetOutputPort())
+    clipper.SetClipFunction(clip_plane)
+    clipper.GenerateClippedOutputOn()
+
+    # Now the tangents.
+    tangents = vtkPolyDataTangents()
+    tangents.SetInputConnection(clipper.GetOutputPort())
     tangents.Update()
     return tangents.GetOutput()
 
@@ -823,16 +854,58 @@ def get_sphere():
 def get_cube():
     surface = vtkCubeSource()
 
-    # Triangulate
+    # Triangulate.
     triangulation = vtkTriangleFilter()
     triangulation.SetInputConnection(surface.GetOutputPort())
+
     # Subdivide the triangles
     subdivide = vtkLinearSubdivisionFilter()
     subdivide.SetInputConnection(triangulation.GetOutputPort())
     subdivide.SetNumberOfSubdivisions(3)
-    # Now the tangents
+
+    # Now the tangents.
     tangents = vtkPolyDataTangents()
     tangents.SetInputConnection(subdivide.GetOutputPort())
+    tangents.Update()
+    return tangents.GetOutput()
+
+
+def get_clipped_cube():
+    surface = vtkCubeSource()
+
+    # Triangulate.
+    triangulation = vtkTriangleFilter()
+    triangulation.SetInputConnection(surface.GetOutputPort())
+
+    # Subdivide the triangles
+    subdivide = vtkLinearSubdivisionFilter()
+    subdivide.SetInputConnection(triangulation.GetOutputPort())
+    subdivide.SetNumberOfSubdivisions(5)
+
+    clip_plane = vtkPlane()
+    clip_plane.SetOrigin(0, 0.3, 0)
+    clip_plane.SetNormal(0, -1, -1)
+
+    clipper = vtkClipPolyData()
+    clipper.SetInputConnection(subdivide.GetOutputPort())
+    clipper.SetClipFunction(clip_plane)
+    clipper.GenerateClippedOutputOn()
+
+    cleaner = vtkCleanPolyData()
+    cleaner.SetInputConnection(clipper.GetOutputPort())
+    cleaner.SetTolerance(0.005)
+    cleaner.Update()
+
+    normals = vtkPolyDataNormals()
+    normals.SetInputConnection(cleaner.GetOutputPort())
+    normals.FlipNormalsOn()
+    normals.SetFeatureAngle(60)
+
+    # Now the tangents.
+    tangents = vtkPolyDataTangents()
+    tangents.SetInputConnection(normals.GetOutputPort())
+    tangents.ComputeCellTangentsOn()
+    tangents.ComputePointTangentsOn()
     tangents.Update()
     return tangents.GetOutput()
 
