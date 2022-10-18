@@ -84,9 +84,13 @@ Options:
 </span><span class=hll>    <span class=n>vtkFloatArray</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkVersion</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonTransforms</span> <span class=kn>import</span> <span class=n>vtkTransform</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkPlane</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonTransforms</span> <span class=kn>import</span> <span class=n>vtkTransform</span>
 </span><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=p>(</span>
-<span class=hll>    <span class=n>vtkPolyDataTangents</span><span class=p>,</span>
+<span class=hll>    <span class=n>vtkCleanPolyData</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkClipPolyData</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataNormals</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataTangents</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkTriangleFilter</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeneral</span> <span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
@@ -209,7 +213,7 @@ Options:
 
     <span class=c1># Get the surface.</span>
     <span class=n>surface</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;object&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=n>available_surfaces</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;boy&#39;</span><span class=p>,</span> <span class=s1>&#39;mobius&#39;</span><span class=p>,</span> <span class=s1>&#39;randomhills&#39;</span><span class=p>,</span> <span class=s1>&#39;torus&#39;</span><span class=p>,</span> <span class=s1>&#39;sphere&#39;</span><span class=p>,</span> <span class=s1>&#39;cube&#39;</span><span class=p>}</span>
+    <span class=n>available_surfaces</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;boy&#39;</span><span class=p>,</span> <span class=s1>&#39;mobius&#39;</span><span class=p>,</span> <span class=s1>&#39;randomhills&#39;</span><span class=p>,</span> <span class=s1>&#39;torus&#39;</span><span class=p>,</span> <span class=s1>&#39;sphere&#39;</span><span class=p>,</span> <span class=s1>&#39;clippedsphere&#39;</span><span class=p>,</span> <span class=s1>&#39;cube&#39;</span><span class=p>,</span> <span class=s1>&#39;clippedcube&#39;</span><span class=p>}</span>
     <span class=k>if</span> <span class=n>surface</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>available_surfaces</span><span class=p>:</span>
         <span class=n>surface</span> <span class=o>=</span> <span class=s1>&#39;boy&#39;</span>
     <span class=k>if</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;mobius&#39;</span><span class=p>:</span>
@@ -220,8 +224,12 @@ Options:
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_torus</span><span class=p>()</span>
     <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;sphere&#39;</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_sphere</span><span class=p>()</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;clippedsphere&#39;</span><span class=p>:</span>
+        <span class=n>source</span> <span class=o>=</span> <span class=n>get_clipped_sphere</span><span class=p>()</span>
     <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;cube&#39;</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_cube</span><span class=p>()</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;clippedcube&#39;</span><span class=p>:</span>
+        <span class=n>source</span> <span class=o>=</span> <span class=n>get_clipped_cube</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_boy</span><span class=p>()</span>
 
@@ -732,20 +740,84 @@ Options:
     <span class=k>return</span> <span class=n>tangents</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
 
 
+<span class=k>def</span> <span class=nf>get_clipped_sphere</span><span class=p>():</span>
+    <span class=n>theta_resolution</span> <span class=o>=</span> <span class=mi>32</span>
+    <span class=n>phi_resolution</span> <span class=o>=</span> <span class=mi>32</span>
+<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtkTexturedSphereSource</span><span class=p>()</span>
+</span>    <span class=n>surface</span><span class=o>.</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=n>theta_resolution</span><span class=p>)</span>
+    <span class=n>surface</span><span class=o>.</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=n>phi_resolution</span><span class=p>)</span>
+
+<span class=hll>    <span class=n>clip_plane</span> <span class=o>=</span> <span class=n>vtkPlane</span><span class=p>()</span>
+</span>    <span class=n>clip_plane</span><span class=o>.</span><span class=n>SetOrigin</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.3</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>clip_plane</span><span class=o>.</span><span class=n>SetNormal</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+
+<span class=hll>    <span class=n>clipper</span> <span class=o>=</span> <span class=n>vtkClipPolyData</span><span class=p>()</span>
+</span>    <span class=n>clipper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>surface</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>clipper</span><span class=o>.</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clip_plane</span><span class=p>)</span>
+    <span class=n>clipper</span><span class=o>.</span><span class=n>GenerateClippedOutputOn</span><span class=p>()</span>
+
+    <span class=c1># Now the tangents.</span>
+<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
+</span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+    <span class=k>return</span> <span class=n>tangents</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
+
+
 <span class=k>def</span> <span class=nf>get_cube</span><span class=p>():</span>
 <span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtkCubeSource</span><span class=p>()</span>
 </span>
     <span class=c1># Triangulate.</span>
 <span class=hll>    <span class=n>triangulation</span> <span class=o>=</span> <span class=n>vtkTriangleFilter</span><span class=p>()</span>
 </span>    <span class=n>triangulation</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>surface</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+
     <span class=c1># Subdivide the triangles</span>
 <span class=hll>    <span class=n>subdivide</span> <span class=o>=</span> <span class=n>vtkLinearSubdivisionFilter</span><span class=p>()</span>
 </span>    <span class=n>subdivide</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>triangulation</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>subdivide</span><span class=o>.</span><span class=n>SetNumberOfSubdivisions</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
+
     <span class=c1># Now the tangents.</span>
 <span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
-</span>    <span class=c1># tangents.SetInputConnection(subdivide.GetOutputPort())</span>
-    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>triangulation</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+</span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>subdivide</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+    <span class=k>return</span> <span class=n>tangents</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
+
+
+<span class=k>def</span> <span class=nf>get_clipped_cube</span><span class=p>():</span>
+<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtkCubeSource</span><span class=p>()</span>
+</span>
+    <span class=c1># Triangulate.</span>
+<span class=hll>    <span class=n>triangulation</span> <span class=o>=</span> <span class=n>vtkTriangleFilter</span><span class=p>()</span>
+</span>    <span class=n>triangulation</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>surface</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+
+    <span class=c1># Subdivide the triangles</span>
+<span class=hll>    <span class=n>subdivide</span> <span class=o>=</span> <span class=n>vtkLinearSubdivisionFilter</span><span class=p>()</span>
+</span>    <span class=n>subdivide</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>triangulation</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>subdivide</span><span class=o>.</span><span class=n>SetNumberOfSubdivisions</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+
+<span class=hll>    <span class=n>clip_plane</span> <span class=o>=</span> <span class=n>vtkPlane</span><span class=p>()</span>
+</span>    <span class=n>clip_plane</span><span class=o>.</span><span class=n>SetOrigin</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.3</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>clip_plane</span><span class=o>.</span><span class=n>SetNormal</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
+
+<span class=hll>    <span class=n>clipper</span> <span class=o>=</span> <span class=n>vtkClipPolyData</span><span class=p>()</span>
+</span>    <span class=n>clipper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>subdivide</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>clipper</span><span class=o>.</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clip_plane</span><span class=p>)</span>
+    <span class=n>clipper</span><span class=o>.</span><span class=n>GenerateClippedOutputOn</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>cleaner</span> <span class=o>=</span> <span class=n>vtkCleanPolyData</span><span class=p>()</span>
+</span>    <span class=n>cleaner</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>cleaner</span><span class=o>.</span><span class=n>SetTolerance</span><span class=p>(</span><span class=mf>0.005</span><span class=p>)</span>
+    <span class=n>cleaner</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>normals</span> <span class=o>=</span> <span class=n>vtkPolyDataNormals</span><span class=p>()</span>
+</span>    <span class=n>normals</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cleaner</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>normals</span><span class=o>.</span><span class=n>FlipNormalsOn</span><span class=p>()</span>
+    <span class=n>normals</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=mi>60</span><span class=p>)</span>
+
+    <span class=c1># Now the tangents.</span>
+<span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
+</span>    <span class=n>tangents</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+    <span class=n>tangents</span><span class=o>.</span><span class=n>ComputeCellTangentsOn</span><span class=p>()</span>
+    <span class=n>tangents</span><span class=o>.</span><span class=n>ComputePointTangentsOn</span><span class=p>()</span>
     <span class=n>tangents</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>tangents</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
 

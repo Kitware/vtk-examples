@@ -68,6 +68,8 @@ Options:
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkBMPReader.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCallbackCommand.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCameraPass.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCleanPolyData.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkClipPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCubeSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkDataSet.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkEquirectangularToCubeMapTexture.h&gt;</span><span class=cp></span>
@@ -93,9 +95,11 @@ Options:
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkParametricMobius.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkParametricRandomHills.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkParametricTorus.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPlane.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPointData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPolyDataNormals.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPolyDataTangents.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkProperty.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkProperty2D.h&gt;</span><span class=cp></span>
@@ -237,7 +241,9 @@ Options:
 </span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetRandomHills</span><span class=p>();</span><span class=w></span>
 </span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetTorus</span><span class=p>();</span><span class=w></span>
 </span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetSphere</span><span class=p>();</span><span class=w></span>
+</span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetClippedSphere</span><span class=p>();</span><span class=w></span>
 </span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetCube</span><span class=p>();</span><span class=w></span>
+</span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetClippedCube</span><span class=p>();</span><span class=w></span>
 </span>
 <span class=cm>/**</span>
 <span class=cm> * Generate u, v texture coordinates on a parametric surface.</span>
@@ -633,8 +639,9 @@ Options:
 <span class=w>                 </span><span class=n>desiredSurface</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w></span>
 <span class=w>                 </span><span class=p>[](</span><span class=kt>char</span><span class=w> </span><span class=n>c</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>tolower</span><span class=p>(</span><span class=n>c</span><span class=p>);</span><span class=w> </span><span class=p>});</span><span class=w></span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=o>&gt;</span><span class=w> </span><span class=n>availableSurfaces</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;boy&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>},</span><span class=w>   </span><span class=p>{</span><span class=s>&quot;mobius&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>},</span><span class=w> </span><span class=p>{</span><span class=s>&quot;randomhills&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=p>},</span><span class=w></span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;torus&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=p>},</span><span class=w> </span><span class=p>{</span><span class=s>&quot;sphere&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=p>},</span><span class=w> </span><span class=p>{</span><span class=s>&quot;cube&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>5</span><span class=p>}};</span><span class=w></span>
+<span class=w>      </span><span class=p>{</span><span class=s>&quot;boy&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>},</span><span class=w>   </span><span class=p>{</span><span class=s>&quot;mobius&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>},</span><span class=w>     </span><span class=p>{</span><span class=s>&quot;randomhills&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=p>},</span><span class=w></span>
+<span class=w>      </span><span class=p>{</span><span class=s>&quot;torus&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=p>},</span><span class=w> </span><span class=p>{</span><span class=s>&quot;sphere&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=p>},</span><span class=w>     </span><span class=p>{</span><span class=s>&quot;clippedsphere&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>5</span><span class=p>},</span><span class=w></span>
+<span class=w>      </span><span class=p>{</span><span class=s>&quot;cube&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>6</span><span class=p>},</span><span class=w>  </span><span class=p>{</span><span class=s>&quot;clippedcube&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>7</span><span class=p>}};</span><span class=w></span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>availableSurfaces</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>desiredSurface</span><span class=p>)</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>availableSurfaces</span><span class=p>.</span><span class=n>end</span><span class=p>())</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>desiredSurface</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;boy&quot;</span><span class=p>;</span><span class=w></span>
@@ -655,7 +662,13 @@ Options:
 <span class=w>    </span><span class=n>source</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetSphere</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=k>break</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=k>case</span><span class=w> </span><span class=mi>5</span><span class=p>:</span><span class=w></span>
+<span class=w>    </span><span class=n>source</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetClippedSphere</span><span class=p>();</span><span class=w></span>
+<span class=w>    </span><span class=k>break</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=k>case</span><span class=w> </span><span class=mi>6</span><span class=p>:</span><span class=w></span>
 <span class=w>    </span><span class=n>source</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetCube</span><span class=p>();</span><span class=w></span>
+<span class=w>    </span><span class=k>break</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=k>case</span><span class=w> </span><span class=mi>7</span><span class=p>:</span><span class=w></span>
+<span class=w>    </span><span class=n>source</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetClippedCube</span><span class=p>();</span><span class=w></span>
 <span class=w>    </span><span class=k>break</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=k>case</span><span class=w> </span><span class=mi>0</span><span class=p>:</span><span class=w></span>
 <span class=w>  </span><span class=k>default</span><span class=o>:</span><span class=w></span>
@@ -1446,6 +1459,30 @@ Options:
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span><span class=w></span>
 <span class=p>}</span><span class=w></span>
 
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetClippedSphere</span><span class=p>()</span><span class=w></span>
+</span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>thetaResolution</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>32</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>phiResolution</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>32</span><span class=p>;</span><span class=w></span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTexturedSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>surface</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>surface</span><span class=o>-&gt;</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=n>thetaResolution</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>surface</span><span class=o>-&gt;</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=n>phiResolution</span><span class=p>);</span><span class=w></span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlane</span><span class=o>&gt;</span><span class=w> </span><span class=n>clip_plane</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>clip_plane</span><span class=o>-&gt;</span><span class=n>SetOrigin</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.3</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>clip_plane</span><span class=o>-&gt;</span><span class=n>SetNormal</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>-1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkClipPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>clipper</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>surface</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+<span class=w>  </span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clip_plane</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GenerateClippedOutputOn</span><span class=p>();</span><span class=w></span>
+
+<span class=w>  </span><span class=c1>// Now the tangents</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataTangents</span><span class=o>&gt;</span><span class=w> </span><span class=n>tangents</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+<span class=w>  </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span><span class=w></span>
+<span class=p>}</span><span class=w></span>
+
 <span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetCube</span><span class=p>()</span><span class=w></span>
 </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCubeSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>surface</span><span class=p>;</span><span class=w></span>
@@ -1453,13 +1490,56 @@ Options:
 <span class=w>  </span><span class=c1>// Triangulate</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTriangleFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>triangulation</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>triangulation</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>surface</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+
 <span class=w>  </span><span class=c1>// Subdivide the triangles</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLinearSubdivisionFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>subdivide</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>subdivide</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>triangulation</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>subdivide</span><span class=o>-&gt;</span><span class=n>SetNumberOfSubdivisions</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span><span class=w></span>
+
 <span class=w>  </span><span class=c1>// Now the tangents</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataTangents</span><span class=o>&gt;</span><span class=w> </span><span class=n>tangents</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>subdivide</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+<span class=w>  </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span><span class=w></span>
+<span class=p>}</span><span class=w></span>
+
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetClippedCube</span><span class=p>()</span><span class=w></span>
+</span><span class=p>{</span><span class=w></span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCubeSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>surface</span><span class=p>;</span><span class=w></span>
+</span>
+<span class=w>  </span><span class=c1>// Triangulate</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTriangleFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>triangulation</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>triangulation</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>surface</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+
+<span class=w>  </span><span class=c1>// Subdivide the triangles</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLinearSubdivisionFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>subdivide</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>subdivide</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>triangulation</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+<span class=w>  </span><span class=n>subdivide</span><span class=o>-&gt;</span><span class=n>SetNumberOfSubdivisions</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span><span class=w></span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlane</span><span class=o>&gt;</span><span class=w> </span><span class=n>clip_plane</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>clip_plane</span><span class=o>-&gt;</span><span class=n>SetOrigin</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.3</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>clip_plane</span><span class=o>-&gt;</span><span class=n>SetNormal</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>-1</span><span class=p>,</span><span class=w> </span><span class=mi>-1</span><span class=p>);</span><span class=w></span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkClipPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>clipper</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>subdivide</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+<span class=w>  </span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clip_plane</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GenerateClippedOutputOn</span><span class=p>();</span><span class=w></span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCleanPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>cleaner</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>cleaner</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+<span class=w>  </span><span class=n>cleaner</span><span class=o>-&gt;</span><span class=n>SetTolerance</span><span class=p>(</span><span class=mf>0.005</span><span class=p>);</span><span class=w></span>
+<span class=w>  </span><span class=n>cleaner</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataNormals</span><span class=o>&gt;</span><span class=w> </span><span class=n>normals</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cleaner</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+<span class=w>  </span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>FlipNormalsOn</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=mi>60</span><span class=p>);</span><span class=w></span>
+
+<span class=w>  </span><span class=c1>// Now the tangents</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataTangents</span><span class=o>&gt;</span><span class=w> </span><span class=n>tangents</span><span class=p>;</span><span class=w></span>
+</span><span class=w>  </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
+<span class=w>  </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>ComputeCellTangentsOn</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>ComputePointTangentsOff</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>tangents</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span><span class=w></span>
 <span class=p>}</span><span class=w></span>
