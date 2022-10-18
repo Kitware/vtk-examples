@@ -2,6 +2,8 @@
 #include <vtkAxesActor.h>
 #include <vtkCallbackCommand.h>
 #include <vtkCameraPass.h>
+#include <vtkCleanPolyData.h>
+#include <vtkClipPolyData.h>
 #include <vtkCubeSource.h>
 #include <vtkEquirectangularToCubeMapTexture.h>
 #include <vtkFloatArray.h>
@@ -25,6 +27,7 @@
 #include <vtkParametricMobius.h>
 #include <vtkParametricRandomHills.h>
 #include <vtkParametricTorus.h>
+#include <vtkPlane.h>
 #include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPolyDataNormals.h>
@@ -150,7 +153,9 @@ vtkSmartPointer<vtkPolyData> GetMobius();
 vtkSmartPointer<vtkPolyData> GetRandomHills();
 vtkSmartPointer<vtkPolyData> GetTorus();
 vtkSmartPointer<vtkPolyData> GetSphere();
+vtkSmartPointer<vtkPolyData> GetClippedSphere();
 vtkSmartPointer<vtkPolyData> GetCube();
+vtkSmartPointer<vtkPolyData> GetClippedCube();
 
 /**
  * Generate u, v texture coordinates on a parametric surface.
@@ -488,8 +493,9 @@ int main(int argc, char* argv[])
                  desiredSurface.begin(),
                  [](char c) { return std::tolower(c); });
   std::map<std::string, int> availableSurfaces = {
-      {"boy", 0},   {"mobius", 1}, {"randomhills", 2},
-      {"torus", 3}, {"sphere", 4}, {"cube", 5}};
+      {"boy", 0},   {"mobius", 1},     {"randomhills", 2},
+      {"torus", 3}, {"sphere", 4},     {"clippedsphere", 5},
+      {"cube", 6},  {"clippedcube", 7}};
   if (availableSurfaces.find(desiredSurface) == availableSurfaces.end())
   {
     desiredSurface = "boy";
@@ -510,7 +516,13 @@ int main(int argc, char* argv[])
     source = GetSphere();
     break;
   case 5:
+    source = GetClippedSphere();
+    break;
+  case 6:
     source = GetCube();
+    break;
+  case 7:
+    source = GetClippedCube();
     break;
   case 0:
   default:
@@ -1181,6 +1193,30 @@ vtkSmartPointer<vtkPolyData> GetSphere()
   return tangents->GetOutput();
 }
 
+vtkSmartPointer<vtkPolyData> GetClippedSphere()
+{
+  auto thetaResolution = 32;
+  auto phiResolution = 32;
+  vtkNew<vtkTexturedSphereSource> surface;
+  surface->SetThetaResolution(thetaResolution);
+  surface->SetPhiResolution(phiResolution);
+
+  vtkNew<vtkPlane> clip_plane;
+  clip_plane->SetOrigin(0, 0.3, 0);
+  clip_plane->SetNormal(0, -1, 0);
+
+  vtkNew<vtkClipPolyData> clipper;
+  clipper->SetInputConnection(surface->GetOutputPort());
+  clipper->SetClipFunction(clip_plane);
+  clipper->GenerateClippedOutputOn();
+
+  // Now the tangents
+  vtkNew<vtkPolyDataTangents> tangents;
+  tangents->SetInputConnection(clipper->GetOutputPort());
+  tangents->Update();
+  return tangents->GetOutput();
+}
+
 vtkSmartPointer<vtkPolyData> GetCube()
 {
   vtkNew<vtkCubeSource> surface;
@@ -1188,13 +1224,56 @@ vtkSmartPointer<vtkPolyData> GetCube()
   // Triangulate
   vtkNew<vtkTriangleFilter> triangulation;
   triangulation->SetInputConnection(surface->GetOutputPort());
+
   // Subdivide the triangles
   vtkNew<vtkLinearSubdivisionFilter> subdivide;
   subdivide->SetInputConnection(triangulation->GetOutputPort());
   subdivide->SetNumberOfSubdivisions(3);
+
   // Now the tangents
   vtkNew<vtkPolyDataTangents> tangents;
   tangents->SetInputConnection(subdivide->GetOutputPort());
+  tangents->Update();
+  return tangents->GetOutput();
+}
+
+vtkSmartPointer<vtkPolyData> GetClippedCube()
+{
+  vtkNew<vtkCubeSource> surface;
+
+  // Triangulate
+  vtkNew<vtkTriangleFilter> triangulation;
+  triangulation->SetInputConnection(surface->GetOutputPort());
+
+  // Subdivide the triangles
+  vtkNew<vtkLinearSubdivisionFilter> subdivide;
+  subdivide->SetInputConnection(triangulation->GetOutputPort());
+  subdivide->SetNumberOfSubdivisions(5);
+
+  vtkNew<vtkPlane> clip_plane;
+  clip_plane->SetOrigin(0, 0.3, 0);
+  clip_plane->SetNormal(0, -1, -1);
+
+  vtkNew<vtkClipPolyData> clipper;
+  clipper->SetInputConnection(subdivide->GetOutputPort());
+  clipper->SetClipFunction(clip_plane);
+  clipper->GenerateClippedOutputOn();
+
+  vtkNew<vtkCleanPolyData> cleaner;
+  cleaner->SetInputConnection(clipper->GetOutputPort());
+  cleaner->SetTolerance(0.005);
+  cleaner->Update();
+
+  vtkNew<vtkPolyDataNormals> normals;
+  normals->SetInputConnection(cleaner->GetOutputPort());
+  normals->FlipNormalsOn();
+  normals->SetFeatureAngle(60);
+
+  // Now the tangents
+  vtkNew<vtkPolyDataTangents> tangents;
+  tangents->SetInputConnection(normals->GetOutputPort());
+  tangents->ComputeCellTangentsOn();
+  tangents->ComputePointTangentsOn();
   tangents->Update();
   return tangents->GetOutput();
 }
