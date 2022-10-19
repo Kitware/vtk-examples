@@ -43,23 +43,9 @@ int main(int, char*[])
   // rng->SetSeed(8775070);
   rng->SetSeed(5127);
 
-  // Create a sphere
-  vtkNew<vtkSphereSource> sphereSource;
-  sphereSource->SetCenter(0.0, 0.0, 0.0);
-  sphereSource->SetRadius(1.0);
-
-  // Create an actor
-  vtkNew<vtkPolyDataMapper> mapper2;
-  mapper2->SetInputConnection(sphereSource->GetOutputPort());
-  vtkNew<vtkActor> actor2;
-  actor2->SetMapper(mapper2);
-  actor2->SetPosition(0, 0, 0);
-  actor2->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
-
   // Create a renderer
   vtkNew<vtkRenderer> renderer;
   renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
-  renderer->AddActor(actor2);
 
   // Create a render window
   vtkNew<vtkRenderWindow> renderWindow;
@@ -70,11 +56,29 @@ int main(int, char*[])
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
+  // Create a sphere
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetCenter(0.0, 0.0, 0.0);
+  sphereSource->SetRadius(1.0);
+
   auto min_r = -10.0;
   auto max_r = 10.0;
 
-  for (int i = 0; i < 10; ++i)
+  for (auto i = 0; i < 10; ++i)
   {
+    if (i == 0)
+    {
+      // Create an actor representing the origin
+      vtkNew<vtkPolyDataMapper> mapper;
+      mapper->SetInputConnection(sphereSource->GetOutputPort());
+
+      vtkNew<vtkActor> actor;
+      actor->SetMapper(mapper);
+      actor->SetPosition(0, 0, 0);
+      actor->GetProperty()->SetColor(colors->GetColor3d("Peacock").GetData());
+
+      renderer->AddActor(actor);
+    }
     // Create a mapper
     vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputConnection(sphereSource->GetOutputPort());
@@ -97,15 +101,24 @@ int main(int, char*[])
     renderer->AddActor(actor);
     renderer->AddActor(textActor);
 
-    vtkNew<vtkCallbackCommand> actorCallback;
-    actorCallback->SetCallback(ActorCallback);
-    actorCallback->SetClientData(textActor);
-    actor->AddObserver(vtkCommand::ModifiedEvent, actorCallback);
+    // If you want to use a callback, do this:
+    // vtkNew<vtkCallbackCommand> actorCallback;
+    // actorCallback->SetCallback(ActorCallback);
+    // actorCallback->SetClientData(textActor);
+    // actor->AddObserver(vtkCommand::ModifiedEvent, actorCallback);
+    // Otherwise do this:
     double position[3];
     RandomPosition(position, min_r, max_r, rng);
     actor->SetPosition(position);
+    std::ostringstream label;
+    label << std::setprecision(3) << actor->GetPosition()[0] << ", "
+          << actor->GetPosition()[1] << ", " << actor->GetPosition()[2]
+          << std::endl;
+    textActor->SetPosition(actor->GetPosition());
+    textActor->SetInput(label.str().c_str());
   }
   renderWindow->Render();
+  renderWindow->SetWindowName("BillboardTextActor3D");
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
