@@ -503,6 +503,7 @@ See [this tutorial](http://www.vtk.org/Wiki/VTK/Tutorials/3DDataTypes) for a bri
 [AnatomicalOrientation](/Python/VisualizationAlgorithms/AnatomicalOrientation) | Show a labelled set of anatomical planes transecting a human figure.
 [AnnotatedCubeActor](/Python/Visualization/AnnotatedCubeActor) | Annotated cube.
 [AssignCellColorsFromLUT](/Python/Visualization/AssignCellColorsFromLUT) | Demonstrates how to assign colors to cells in a vtkPolyData structure using lookup tables.
+[BillboardTextActor3D](/Python/Visualization/BillboardTextActor3D) | Label points with billboards.
 [BlobbyLogo](/Python/Visualization/BlobbyLogo) | A logo created with vtkImplicitModeller.
 [Blow](/Python/Visualization/Blow) | Ten frames from a blow molding finite element analysis.
 [BluntStreamlines](/Python/VisualizationAlgorithms/BluntStreamlines) | Demonstrates airflow around a blunt fin using streamlines.
