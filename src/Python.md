@@ -445,6 +445,13 @@ This section includes vtkUnstructuredGrid.
 [Model](/Python/Rendering/Model) | Illustrative diagram of graphics objects.
 [MotionBlur](/Python/Rendering/MotionBlur) | Example of motion blur.
 [OutlineGlowPass](/Python/Rendering/OutlineGlowPass) | Demonstrates how to render a object in a scene with a glowing outline.
+[PBR_Anisotropy](/Python/Rendering/PBR_Anisotropy) | Render spheres with different anisotropy values.
+[PBR_Clear_Coat](/Python/Rendering/PBR_Clear_Coat) | Render a cube with custom texture mapping and a coat normal texture.
+[PBR_Edge_Tint](/Python/Rendering/PBR_Edge_Tint) | Render spheres with different edge colors using a skybox as image based lighting.
+[PBR_HDR_Environment](/Python/Rendering/PBR_HDR_Environment) | Renders spheres with different materials using a skybox as image based lighting.
+[PBR_Mapping](/Python/Rendering/PBR_Mapping) | Render a cube with custom texture mapping.
+[PBR_Materials](/Python/Rendering/PBR_Materials) | Renders spheres with different materials using a skybox as image based lighting.
+[PBR_Materials_Coat](/Python/Rendering/PBR_Materials_Coat) | Render spheres with different coat materials using a skybox as image based lighting.
 [PBR_Skybox](/Python/Rendering/PBR_Skybox) | Demonstrates physically based rendering, a skybox and image based lighting.
 [PBR_Skybox_Texturing](/Python/Rendering/PBR_Skybox_Texturing) | Demonstrates physically based rendering, a skybox, image based lighting and texturing.
 [PBR_Skybox_Anisotropy](/Python/Rendering/PBR_Skybox_Anisotropy) | Demonstrates physically based rendering, a skybox, image based lighting, and anisotropic texturing.
