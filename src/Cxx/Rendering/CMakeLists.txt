@@ -14,6 +14,7 @@ if(NOT VTK_BINARY_DIR)
     FiltersGeometry
     FiltersModeling
     FiltersSources
+    FiltersTexture
     IOGeometry
     IOImage
     IOLegacy
@@ -52,13 +53,39 @@ Requires_Cxx_Version(PBR_Skybox ${CXX_VERSION_MIN} ALL_FILES)
 Requires_Cxx_Version(PBR_Skybox_Texturing ${CXX_VERSION_MIN} ALL_FILES)
 Requires_Cxx_Version(PBR_Skybox_Anisotropy ${CXX_VERSION_MIN} ALL_FILES)
 
+Requires_Cxx_Version(PBR_Anisotropy ${CXX_VERSION_MIN} ALL_FILES)
+Requires_Cxx_Version(PBR_Clear_Coat ${CXX_VERSION_MIN} ALL_FILES)
+Requires_Cxx_Version(PBR_Edge_Tint ${CXX_VERSION_MIN} ALL_FILES)
+Requires_Cxx_Version(PBR_HDR_Environment ${CXX_VERSION_MIN} ALL_FILES)
+Requires_Cxx_Version(PBR_Mapping ${CXX_VERSION_MIN} ALL_FILES)
+Requires_Cxx_Version(PBR_Materials ${CXX_VERSION_MIN} ALL_FILES)
+Requires_Cxx_Version(PBR_Materials_Coat ${CXX_VERSION_MIN} ALL_FILES)
+
 include(${WikiExamples_SOURCE_DIR}/CMake/RequiresModule.cmake)
 Requires_Module(PBR_Skybox cli11)
-Requires_Module(PBR_Skybox jsoncpp)
 Requires_Module(PBR_Skybox_Texturing cli11)
-Requires_Module(PBR_Skybox_Texturing jsoncpp)
 Requires_Module(PBR_Skybox_Anisotropy cli11)
+
+Requires_Module(PBR_Skybox jsoncpp)
+Requires_Module(PBR_Skybox_Texturing jsoncpp)
 Requires_Module(PBR_Skybox_Anisotropy jsoncpp)
+
+Requires_Module(PBR_Anisotropy cli11)
+Requires_Module(PBR_Clear_Coat cli11)
+Requires_Module(PBR_Edge_Tint cli11)
+Requires_Module(PBR_HDR_Environment cli11)
+Requires_Module(PBR_Mapping cli11)
+Requires_Module(PBR_Materials cli11)
+Requires_Module(PBR_Materials_Coat cli11)
+
+Requires_Module(PBR_Anisotropy jsoncpp)
+Requires_Module(PBR_Clear_Coat jsoncpp)
+Requires_Module(PBR_Edge_Tint jsoncpp)
+Requires_Module(PBR_HDR_Environment jsoncpp)
+Requires_Module(PBR_Mapping jsoncpp)
+Requires_Module(PBR_Materials jsoncpp)
+Requires_Module(PBR_Materials_Coat jsoncpp)
+
 
 foreach(SOURCE_FILE ${ALL_FILES})
   string(REPLACE ".cxx" "" TMP ${SOURCE_FILE})
@@ -79,6 +106,13 @@ if (BUILD_TESTING)
     HiddenLineRemoval
     InterpolateCamera
     MotionBlur
+    PBR_Anisotropy
+    PBR_Clear_Coat
+    PBR_Edge_Tint
+    PBR_HDR_Environment
+    PBR_Mapping
+    PBR_Materials
+    PBR_Materials_Coat
     PBR_Skybox
     PBR_Skybox_Texturing
     PBR_Skybox_Anisotropy
@@ -143,9 +177,38 @@ if (BUILD_TESTING)
   add_test(${KIT}-WalkCowB ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
     TestWalkCowB ${DATA}/cow.g 2)
 
+  if(TARGET PBR_Anisotropy)
+    add_test(${KIT}-PBR_Anisotropy ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+    TestPBR_Anisotropy ${DATA}/PBR_Parameters)
+  endif()
+  if(TARGET PBR_Clear_Coat)
+    add_test(${KIT}-PBR_Clear_Coat ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+      TestPBR_Clear_Coat ${DATA}/PBR_Parameters)
+  endif()
+  if(TARGET PBR_Edge_Tint)
+    add_test(${KIT}-PBR_Edge_Tint ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+      TestPBR_Edge_Tint ${DATA}/PBR_Parameters)
+  endif()
+  if(TARGET PBR_HDR_Environment)
+    add_test(${KIT}-PBR_HDR_Environment ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+      TestPBR_HDR_Environment ${DATA}/PBR_Parameters)
+  endif()
+  if(TARGET PBR_Mapping)
+    add_test(${KIT}-PBR_Mapping ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+      TestPBR_Mapping ${DATA}/PBR_Parameters)
+  endif()
+  if(TARGET PBR_Materials)
+    add_test(${KIT}-PBR_Materials ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+      TestPBR_Materials ${DATA}/PBR_Parameters)
+  endif()
+  if(TARGET PBR_Materials_Coat)
+    add_test(${KIT}-PBR_Materials_Coat ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
+      TestPBR_Materials_Coat ${DATA}/PBR_Parameters)
+  endif()
+
   if(TARGET PBR_Skybox)
-    add_test(${KIT}-PBR_Skybox ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
-      TestPBR_Skybox ${DATA}/PBR_Skybox.json)
+    add_test(${KIT}-PBR_Skybox ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests TestPBR_Skybox
+      ${DATA}/PBR_Skybox.json)
   endif()
   if(TARGET PBR_Skybox_Texturing)
     add_test(${KIT}-PBR_Skybox_Texturing ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KIT}CxxTests
