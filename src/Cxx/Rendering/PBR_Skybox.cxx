@@ -22,6 +22,7 @@
 #include <vtkOpenGLTexture.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkOverlayPass.h>
+#include <vtkPBRIrradianceTexture.h>
 #include <vtkParametricBoy.h>
 #include <vtkParametricFunctionSource.h>
 #include <vtkParametricMobius.h>
@@ -50,6 +51,7 @@
 #include <vtkTransformPolyDataFilter.h>
 #include <vtkTriangleFilter.h>
 #include <vtkVersion.h>
+
 #include <vtk_cli11.h>
 #include <vtk_jsoncpp.h>
 
@@ -109,34 +111,11 @@ struct Parameters
  * Read the parameters from a json file and check that the file paths exist.
  *
  * @param fnPath: The path to the json file.
- * @param surfaceName:  The surface name.
  * @param parameters:  The parameters.
  */
-void GetParameters(const fs::path fnPath, const std::string& surfaceName,
-                   Parameters& parameters);
+void GetParameters(const fs::path fnPath, Parameters& parameters);
 
 std::string DisplayParameters(Parameters& parameters);
-
-/**
- *  Read an equirectangular environment file and convert it to a texture.
- *
- * @param fileName: The equirectangular file path.
- * @param flipX:  Flip x-axis of the texture.
- *
- * @return The texture.
- */
-vtkNew<vtkTexture> EquirectangularFileToTexture(std::string const& fileName,
-                                                bool flipX = false);
-/**
- * Read an equirectangular environment file and convert it to a cube map.
- *
- * @param fileName: The equirectangular file path.
- * @param flipX:  Flip x-axis of the texture.
- *
- * @return The cubemap texture.
- */
-vtkNew<vtkTexture> EquirectangularFileToCubemap(std::string const& fileName,
-                                                bool flipX = false);
 
 /**
  * Read six images forming a cubemap.
@@ -145,7 +124,16 @@ vtkNew<vtkTexture> EquirectangularFileToCubemap(std::string const& fileName,
  *
  * @return The cubemap texture.
  */
-vtkNew<vtkTexture> ReadCubeMap(std::vector<std::string> const& fileNames);
+vtkNew<vtkTexture> ReadCubemap(std::vector<std::string> const& fileNames);
+
+/**
+ *  Read an equirectangular environment file and convert it to a texture.
+ *
+ * @param fileName: The equirectangular file path.
+ *
+ * @return The texture.
+ */
+vtkNew<vtkTexture> ReadEquirectangularFile(std::string const& fileName);
 
 // Some sample surfaces to try.
 vtkSmartPointer<vtkPolyData> GetBoy();
@@ -383,6 +371,12 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
+  vtkNew<vtkNamedColors> colors;
+
+  // Set the background color.
+  std::array<unsigned char, 4> bkg{{26, 51, 102, 255}};
+  colors->SetColor("BkgColor", bkg.data());
+
   CLI::App app{"Demonstrates physically based rendering, image based lighting "
                "and a skybox."};
 
@@ -398,6 +392,8 @@ int main(int argc, char* argv[])
   app.add_flag("-c, --use_cubemap", useCubemap,
                "Build the cubemap from the six cubemap files. Overrides the "
                "equirectangular entry in the json file.");
+  auto useTonemapping{false};
+  app.add_flag("-t, --use_tonemapping", useTonemapping, "Use tone mapping.");
 
   CLI11_PARSE(app, argc, argv);
 
@@ -413,32 +409,101 @@ int main(int argc, char* argv[])
   }
 
   Parameters parameters;
-  GetParameters(fnPath, surfaceName, parameters);
+  GetParameters(fnPath, parameters);
   if (!parameters.parsedOk)
   {
     return EXIT_FAILURE;
   }
 
+  if (!surfaceName.empty())
+  {
+    parameters.parameters["object"] = surfaceName;
+  }
+
+  // Check for missing parameters.
+  if (parameters.parameters.find("bkgcolor") == parameters.parameters.end())
+  {
+    parameters.parameters["bkgcolor"] = "BkgColor";
+  }
+  if (parameters.parameters.find("objcolor") == parameters.parameters.end())
+  {
+    parameters.parameters["objcolor"] = "White";
+  }
+
   auto res = DisplayParameters(parameters);
   std::cout << res << std::endl;
+
+  // Build the pipeline.
+  // ren1 is for the slider rendering,
+  // ren2 is for the object rendering.
+  vtkNew<vtkRenderer> ren1;
+  vtkNew<vtkOpenGLRenderer> ren2;
+  ren1->SetBackground(colors->GetColor3d("Snow").GetData());
+  ren2->SetBackground(
+      colors->GetColor3d(parameters.parameters["bkgcolor"]).GetData());
+
+  vtkNew<vtkRenderWindow> renderWindow;
+  // The order here is important.
+  // This ensures that the sliders will be in ren1.
+  renderWindow->AddRenderer(ren2);
+  renderWindow->AddRenderer(ren1);
+  ren1->SetViewport(0.0, 0.0, 0.2, 1.0);
+  ren2->SetViewport(0.2, 0.0, 1, 1);
+
+  vtkNew<vtkRenderWindowInteractor> interactor;
+  interactor->SetRenderWindow(renderWindow);
+  vtkNew<vtkInteractorStyleTrackballCamera> style;
+  interactor->SetInteractorStyle(style);
+
+  // Set up tone mapping so we can vary the exposure.
+  // Custom Passes.
+  vtkNew<vtkCameraPass> cameraP;
+  vtkNew<vtkSequencePass> seq;
+  vtkNew<vtkOpaquePass> opaque;
+  vtkNew<vtkLightsPass> lights;
+  vtkNew<vtkOverlayPass> overlay;
+
+  vtkNew<vtkRenderPassCollection> passes;
+  passes->AddItem(lights);
+  passes->AddItem(opaque);
+  passes->AddItem(overlay);
+  seq->SetPasses(passes);
+  cameraP->SetDelegatePass(seq);
+
+  vtkNew<vtkToneMappingPass> toneMappingP;
+  toneMappingP->SetToneMappingType(vtkToneMappingPass::GenericFilmic);
+  toneMappingP->SetGenericFilmicUncharted2Presets();
+  toneMappingP->SetExposure(1.0);
+  toneMappingP->SetDelegatePass(cameraP);
+
+  if (useTonemapping)
+  {
+    vtkOpenGLRenderer::SafeDownCast(ren2)->SetPass(toneMappingP);
+  }
+
+  vtkSmartPointer<vtkPBRIrradianceTexture> irradiance =
+      ren2->GetEnvMapIrradiance();
+  irradiance->SetIrradianceStep(0.3);
+
+  vtkNew<vtkSkybox> skybox;
 
   // Choose how to generate the skybox.
   vtkNew<vtkTexture> cubeMap;
   vtkNew<vtkTexture> envTexture;
-  auto hasEnvTexture = false;
   auto isHDR = false;
-  auto hasCubeMap = false;
+  auto hasSkybox = false;
   auto gammaCorrect = false;
-  if (!parameters.skybox)
-  {
-    useCubemap = false;
-  }
+
   if (useCubemap && !parameters.cubemap.empty())
   {
     std::cout << "Using the cubemap files to generate the environment texture."
               << std::endl;
-    cubeMap = ReadCubeMap(parameters.cubemap);
-    hasCubeMap = true;
+    envTexture = ReadCubemap(parameters.cubemap);
+    if (parameters.skybox)
+    {
+      skybox->SetTexture(envTexture);
+      hasSkybox = true;
+    }
   }
   else if (parameters.parameters.find("equirectangular") !=
                parameters.parameters.end() &&
@@ -447,13 +512,8 @@ int main(int argc, char* argv[])
     std::cout
         << "Using the equirectangular file to generate the environment texture."
         << std::endl;
-    // Setting flip_X to false allows us to set the environment texture of the
-    // object correctly.
-    envTexture = EquirectangularFileToTexture(
-        parameters.parameters["equirectangular"], false);
-    envTexture->MipmapOn();
-    envTexture->InterpolateOn();
-    hasEnvTexture = true;
+    envTexture =
+        ReadEquirectangularFile(parameters.parameters["equirectangular"]);
     std::string extension = fs::path(parameters.parameters["equirectangular"])
                                 .extension()
                                 .generic_string();
@@ -467,24 +527,33 @@ int main(int argc, char* argv[])
     }
     if (parameters.skybox)
     {
-      cubeMap = EquirectangularFileToCubemap(
-          parameters.parameters["equirectangular"], true);
-      hasCubeMap = true;
+      skybox->SetTexture(envTexture);
+      skybox->SetFloorRight(0, 0, 1);
+      skybox->SetProjection(vtkSkybox::Sphere);
+      skybox->SetTexture(envTexture);
+      hasSkybox = true;
     }
-  }
-  else if (!parameters.cubemap.empty())
-  {
-    std::cout << "Using the cubemap files to generate the environment texture."
-              << std::endl;
-    cubeMap = ReadCubeMap(parameters.cubemap);
-    hasCubeMap = true;
   }
   else
   {
     std::cerr << "An environment texture is required,\n"
-              << "please add the necessary equiangular"
+              << "please add the necessary equirectangular"
               << " or cubemap file paths to the json file." << std::endl;
     return EXIT_FAILURE;
+  }
+
+  // Turn off the default lighting and use image based lighting.
+  ren2->AutomaticLightCreationOff();
+  ren2->UseImageBasedLightingOn();
+  if (isHDR)
+  {
+    ren2->UseSphericalHarmonicsOn();
+    ren2->SetEnvironmentTexture(envTexture, false);
+  }
+  else
+  {
+    ren2->UseSphericalHarmonicsOff();
+    ren2->SetEnvironmentTexture(envTexture, true);
   }
 
   // Get the surface.
@@ -498,6 +567,8 @@ int main(int argc, char* argv[])
       {"cube", 6},  {"clippedcube", 7}};
   if (availableSurfaces.find(desiredSurface) == availableSurfaces.end())
   {
+    std::cout << "The requested surface: " << parameters.parameters["object"]
+              << " not found, reverting to Boys Surface." << std::endl;
     desiredSurface = "boy";
   }
   vtkSmartPointer<vtkPolyData> source;
@@ -529,95 +600,10 @@ int main(int argc, char* argv[])
     source = GetBoy();
   };
 
-  vtkNew<vtkNamedColors> colors;
-
-  // Set the background color.
-  std::array<unsigned char, 4> bkg{{26, 51, 102, 255}};
-  colors->SetColor("BkgColor", bkg.data());
-
-  // Check for missing parameters.
-  if (parameters.parameters.find("bkgcolor") == parameters.parameters.end())
-  {
-    parameters.parameters["bkgcolor"] = "BkgColor";
-  }
-  if (parameters.parameters.find("objcolor") == parameters.parameters.end())
-  {
-    parameters.parameters["objcolor"] = "White";
-  }
-
-  // Build the pipeline.
-  // ren_1 is for the slider rendering,
-  // ren_2 is for the object rendering.
-  vtkNew<vtkRenderer> ren_1;
-  vtkNew<vtkOpenGLRenderer> ren_2;
-  vtkNew<vtkRenderWindow> renderWindow;
-  // The order here is important.
-  // This ensures that the sliders will be in ren_1.
-  renderWindow->AddRenderer(ren_2);
-  renderWindow->AddRenderer(ren_1);
-  ren_1->SetViewport(0.0, 0.0, 0.2, 1.0);
-  ren_2->SetViewport(0.2, 0.0, 1, 1);
-
-  vtkNew<vtkRenderWindowInteractor> interactor;
-  interactor->SetRenderWindow(renderWindow);
-  vtkNew<vtkInteractorStyleTrackballCamera> style;
-  interactor->SetInteractorStyle(style);
-
-  // Set up tone mapping so we can vary the exposure.
-  // Custom Passes.
-  vtkNew<vtkCameraPass> cameraP;
-  vtkNew<vtkSequencePass> seq;
-  vtkNew<vtkOpaquePass> opaque;
-  vtkNew<vtkLightsPass> lights;
-  vtkNew<vtkOverlayPass> overlay;
-
-  vtkNew<vtkRenderPassCollection> passes;
-  passes->AddItem(lights);
-  passes->AddItem(opaque);
-  passes->AddItem(overlay);
-  seq->SetPasses(passes);
-  cameraP->SetDelegatePass(seq);
-
-  vtkNew<vtkToneMappingPass> toneMappingP;
-  toneMappingP->SetToneMappingType(vtkToneMappingPass::GenericFilmic);
-  toneMappingP->SetGenericFilmicUncharted2Presets();
-  toneMappingP->SetExposure(1.0);
-  toneMappingP->SetDelegatePass(cameraP);
-
-  vtkOpenGLRenderer::SafeDownCast(ren_2)->SetPass(toneMappingP);
-
   // Lets use a smooth metallic surface.
-  // Range: [0 ... 1]
   auto diffuseCoefficient = 1.0;
-  // Range: [0 ... 1]
   auto roughnessCoefficient = 0.0;
-  // Range: [0 ... 1]
   auto metallicCoefficient = 1.0;
-
-  // Turn off the default lighting and use image based lighting.
-  ren_2->AutomaticLightCreationOff();
-  ren_2->UseImageBasedLightingOn();
-  if (hasEnvTexture)
-  {
-    if (isHDR)
-    {
-      ren_2->UseSphericalHarmonicsOn();
-      ren_2->SetEnvironmentTexture(envTexture);
-    }
-    else
-    {
-      ren_2->UseSphericalHarmonicsOff();
-      ren_2->SetEnvironmentTexture(envTexture);
-    }
-  }
-  else
-  {
-    ren_2->UseSphericalHarmonicsOff();
-    ren_2->SetEnvironmentTexture(cubeMap);
-  }
-  ren_1->SetBackground(colors->GetColor3d("Snow").GetData());
-  ren_2->SetBackground(
-      colors->GetColor3d(parameters.parameters["bkgcolor"]).GetData());
 
   vtkNew<vtkPolyDataMapper> mapper;
   mapper->SetInputData(source);
@@ -633,21 +619,19 @@ int main(int argc, char* argv[])
   actor->GetProperty()->SetDiffuse(diffuseCoefficient);
   actor->GetProperty()->SetRoughness(roughnessCoefficient);
   actor->GetProperty()->SetMetallic(metallicCoefficient);
-  ren_2->AddActor(actor);
+  ren2->AddActor(actor);
 
-  if (hasCubeMap)
+  if (hasSkybox)
   {
-    vtkNew<vtkSkybox> skyboxActor;
-    skyboxActor->SetTexture(cubeMap);
     if (gammaCorrect)
     {
-      skyboxActor->GammaCorrectOn();
+      skybox->GammaCorrectOn();
     }
     else
     {
-      skyboxActor->GammaCorrectOff();
+      skybox->GammaCorrectOff();
     }
-    ren_2->AddActor(skyboxActor);
+    ren2->AddActor(skybox);
   }
 
   // Create the slider callbacks to manipulate various parameters.
@@ -658,6 +642,7 @@ int main(int argc, char* argv[])
   auto posX1 = 0.18;
 
   auto slwP = SliderProperties();
+
   slwP.initialValue = 1.0;
   slwP.maximumValue = 5.0;
   slwP.title = "Exposure";
@@ -666,16 +651,24 @@ int main(int argc, char* argv[])
   slwP.p1[1] = posY;
   slwP.p2[0] = posX1;
   slwP.p2[1] = posY;
-  posY += stepSize;
 
   auto swExposure = MakeSliderWidget(slwP);
   swExposure->SetInteractor(interactor);
   swExposure->SetAnimationModeToAnimate();
-  swExposure->EnabledOn();
-  swExposure->SetCurrentRenderer(ren_1);
+  if (useTonemapping)
+  {
+    swExposure->EnabledOn();
+  }
+  else
+  {
+    swExposure->EnabledOff();
+  }
+  swExposure->SetCurrentRenderer(ren1);
   vtkNew<SliderCallbackExposure> swExpCB;
-  swExpCB->property = dynamic_cast<vtkToneMappingPass*>(ren_2->GetPass());
+  swExpCB->property = dynamic_cast<vtkToneMappingPass*>(ren2->GetPass());
   swExposure->AddObserver(vtkCommand::InteractionEvent, swExpCB);
+
+  posY += stepSize;
 
   slwP.initialValue = metallicCoefficient;
   slwP.maximumValue = 1.0;
@@ -685,16 +678,17 @@ int main(int argc, char* argv[])
   slwP.p1[1] = posY;
   slwP.p2[0] = posX1;
   slwP.p2[1] = posY;
-  posY += stepSize;
 
   auto swMetallic = MakeSliderWidget(slwP);
   swMetallic->SetInteractor(interactor);
   swMetallic->SetAnimationModeToAnimate();
   swMetallic->EnabledOn();
-  swMetallic->SetCurrentRenderer(ren_1);
+  swMetallic->SetCurrentRenderer(ren1);
   vtkNew<SliderCallbackMetallic> swMetallicCB;
   swMetallicCB->property = actor->GetProperty();
   swMetallic->AddObserver(vtkCommand::InteractionEvent, swMetallicCB);
+
+  posY += stepSize;
 
   slwP.initialValue = roughnessCoefficient;
   slwP.title = "Roughness";
@@ -703,13 +697,12 @@ int main(int argc, char* argv[])
   slwP.p1[1] = posY;
   slwP.p2[0] = posX1;
   slwP.p2[1] = posY;
-  posY += stepSize;
 
   auto swRoughness = MakeSliderWidget(slwP);
   swRoughness->SetInteractor(interactor);
   swRoughness->SetAnimationModeToAnimate();
   swRoughness->EnabledOn();
-  swRoughness->SetCurrentRenderer(ren_1);
+  swRoughness->SetCurrentRenderer(ren1);
   vtkNew<SliderCallbackRoughness> swRoughnessCB;
   swRoughnessCB->property = actor->GetProperty();
   swRoughness->AddObserver(vtkCommand::InteractionEvent, swRoughnessCB);
@@ -721,7 +714,7 @@ int main(int argc, char* argv[])
 
 #if VTK_HAS_COW
   vtkNew<vtkCameraOrientationWidget> camOrientManipulator;
-  camOrientManipulator->SetParentRenderer(ren_2);
+  camOrientManipulator->SetParentRenderer(ren2);
   // Enable the widget.
   camOrientManipulator->On();
 #else
@@ -777,8 +770,7 @@ bool VTKVersionOk(unsigned long long const& major,
 #endif
 }
 
-void GetParameters(const fs::path fnPath, const std::string& surfaceName,
-                   Parameters& parameters)
+void GetParameters(const fs::path fnPath, Parameters& parameters)
 {
   std::ifstream ifs(fnPath);
   Json::Value root;
@@ -802,22 +794,25 @@ void GetParameters(const fs::path fnPath, const std::string& surfaceName,
       parameters.parsedOk = false;
       return;
     }
+    parameters.parsedOk = true;
   }
   else
   {
     std::cerr << "Unable to open: " << fnPath << std::endl;
+    parameters.parsedOk = false;
   }
 
-  std::set<std::string> allowedKeyNoPaths{"object", "objcolor", "bkgcolor",
-                                          "skybox"};
-  std::set<std::string> allowedKeysPaths{
-      "cubemap", "equirectangular", "albedo",  "normal", "material",
-      "coat",    "anisotropy",      "emissive"};
   // Extract the values.
+  std::set<std::string> keysNoPaths{"title", "object", "objcolor", "bkgcolor",
+                                    "skybox"};
+  std::set<std::string> keysWithPaths{"cubemap",    "equirectangular", "albedo",
+                                      "normal",     "material",        "coat",
+                                      "anisotropy", "emissive"};
+  fs::path cubemapPath;
   for (Json::Value::const_iterator outer = root.begin(); outer != root.end();
-       outer++)
+       ++outer)
   {
-    if (allowedKeyNoPaths.find(outer.name()) != allowedKeyNoPaths.end())
+    if (keysNoPaths.find(outer.name()) != keysNoPaths.end())
     {
       if (outer.name() == "skybox")
       {
@@ -829,15 +824,28 @@ void GetParameters(const fs::path fnPath, const std::string& surfaceName,
       }
       continue;
     }
-
-    if (allowedKeysPaths.find(outer.name()) != allowedKeysPaths.end())
+    if (keysWithPaths.find(outer.name()) != keysWithPaths.end())
     {
       if (outer.name() == "cubemap")
       {
-        for (Json::Value::const_iterator fn = root["cubemap"].begin();
-             fn != root["cubemap"].end(); fn++)
+        std::string path;
+        for (Json::Value::const_iterator pth = root["cubemap"].begin();
+             pth != root["cubemap"].end(); ++pth)
         {
-          parameters.cubemap.push_back(fn->asString());
+          if (pth.name() == "root")
+          {
+            cubemapPath = fs::path(pth->asString());
+            std::cout << path << std::endl;
+          }
+          if (pth.name() == "files")
+          {
+            for (Json::Value::const_iterator fls =
+                     root["cubemap"]["files"].begin();
+                 fls != root["cubemap"]["files"].end(); ++fls)
+            {
+              parameters.cubemap.push_back(fls->asString());
+            }
+          }
         }
       }
       else
@@ -845,9 +853,7 @@ void GetParameters(const fs::path fnPath, const std::string& surfaceName,
         parameters.parameters[outer.name()] = outer->asString();
       }
     }
-    parameters.parsedOk = true;
   }
-
   // Build and check the paths.
   if (!parameters.cubemap.empty())
   {
@@ -860,6 +866,8 @@ void GetParameters(const fs::path fnPath, const std::string& surfaceName,
     {
       for (size_t i = 0; i < parameters.cubemap.size(); i++)
       {
+        auto pth = fnPath.parent_path() / cubemapPath /
+            fs::path(parameters.cubemap[i]);
         if (parameters.cubemap[i].empty())
         {
           std::cerr << "A missing path in the cubemap." << std::endl;
@@ -867,24 +875,22 @@ void GetParameters(const fs::path fnPath, const std::string& surfaceName,
         }
         else
         {
-          parameters.cubemap[i] =
-              (fnPath.parent_path() / fs::path(parameters.cubemap[i]))
-                  .make_preferred()
-                  .string();
-          if (!fs::is_regular_file(parameters.cubemap[i]))
+          parameters.cubemap[i] = pth.make_preferred().string();
+          if (!(fs::is_regular_file(pth) && fs::exists(pth)))
           {
-            std::cerr << "Not a file: " << parameters.cubemap[i] << std::endl;
+            std::cerr << "Not a file or path does not exist: "
+                      << parameters.cubemap[i] << std::endl;
             parameters.parsedOk = false;
           }
         }
       }
     }
   }
-  // We don't need cubemap now.
-  allowedKeysPaths.erase("cubemap");
+  // Check the remaining paths, we don't need cubemap now.
+  keysWithPaths.erase("cubemap");
   for (auto& p : parameters.parameters)
   {
-    if (allowedKeysPaths.find(p.first) != allowedKeysPaths.end())
+    if (keysWithPaths.find(p.first) != keysWithPaths.end())
     {
       if (p.second.empty())
       {
@@ -893,26 +899,16 @@ void GetParameters(const fs::path fnPath, const std::string& surfaceName,
       }
       else
       {
-        p.second = (fnPath.parent_path() / fs::path(p.second))
-                       .make_preferred()
-                       .string();
-        if (!fs::is_regular_file(p.second))
+        auto pth = fnPath.parent_path() / fs::path(p.second);
+        p.second = pth.make_preferred().string();
+        if (!(fs::is_regular_file(pth) && fs::exists(pth)))
         {
-          std::cerr << "Not a file, " << p.first << ": " << p.second
+          std::cerr << "Not a file or path does not exist: " << p.second
                     << std::endl;
           parameters.parsedOk = false;
         }
       }
     }
-  }
-  // Set the surface, if required.
-  if (parameters.parameters["object"].empty())
-  {
-    parameters.parameters["object"] = "Boy";
-  }
-  if (!surfaceName.empty())
-  {
-    parameters.parameters["object"] = surfaceName;
   }
 
   return;
@@ -922,9 +918,9 @@ std::string DisplayParameters(Parameters& parameters)
 {
   std::stringstream res;
   std::vector<std::string> parameterKeys{
-      "object",          "objcolor", "bkgcolor", "skybox",   "cubemap",
-      "equirectangular", "albedo",   "normal",   "material", "coat",
-      "anisotropy",      "emissive"};
+      "title",   "object",          "objcolor", "bkgcolor", "skybox",
+      "cubemap", "equirectangular", "albedo",   "normal",   "material",
+      "coat",    "anisotropy",      "emissive"};
   for (auto const& e : parameterKeys)
   {
     if (e == "cubemap")
@@ -962,8 +958,36 @@ std::string DisplayParameters(Parameters& parameters)
   return res.str();
 }
 
-vtkNew<vtkTexture> EquirectangularFileToTexture(std::string const& fileName,
-                                                bool flipX)
+vtkNew<vtkTexture> ReadCubemap(std::vector<std::string> const& fileNames)
+{
+  vtkNew<vtkTexture> cubeMap;
+  cubeMap->CubeMapOn();
+
+  auto i = 0;
+  for (auto const& fn : fileNames)
+  {
+    // Read the images
+    vtkNew<vtkImageReader2Factory> readerFactory;
+    vtkSmartPointer<vtkImageReader2> imgReader;
+    imgReader.TakeReference(readerFactory->CreateImageReader2(fn.c_str()));
+    imgReader->SetFileName(fn.c_str());
+
+    // Each image must be flipped in Y due to canvas
+    // versus vtk ordering.
+    vtkNew<vtkImageFlip> flip;
+    flip->SetInputConnection(imgReader->GetOutputPort());
+    flip->SetFilteredAxis(1); // flip y axis
+    cubeMap->SetInputConnection(i, flip->GetOutputPort(0));
+    ++i;
+  }
+
+  cubeMap->MipmapOn();
+  cubeMap->InterpolateOn();
+
+  return cubeMap;
+}
+
+vtkNew<vtkTexture> ReadEquirectangularFile(std::string const& fileName)
 {
   vtkNew<vtkTexture> texture;
 
@@ -979,17 +1003,7 @@ vtkNew<vtkTexture> EquirectangularFileToTexture(std::string const& fileName,
         readerFactory->CreateImageReader2(fileName.c_str()));
     imgReader->SetFileName(fileName.c_str());
 
-    if (flipX)
-    {
-      vtkNew<vtkImageFlip> flip;
-      flip->SetInputConnection(imgReader->GetOutputPort());
-      flip->SetFilteredAxis(0);
-      texture->SetInputConnection(flip->GetOutputPort());
-    }
-    else
-    {
-      texture->SetInputConnection(imgReader->GetOutputPort());
-    }
+    texture->SetInputConnection(imgReader->GetOutputPort());
   }
   else
   {
@@ -1001,17 +1015,7 @@ vtkNew<vtkTexture> EquirectangularFileToTexture(std::string const& fileName,
       {
         reader->SetFileName(fileName.c_str());
 
-        if (flipX)
-        {
-          vtkNew<vtkImageFlip> flip;
-          flip->SetInputConnection(reader->GetOutputPort());
-          flip->SetFilteredAxis(0);
-          texture->SetInputConnection(flip->GetOutputPort());
-        }
-        else
-        {
-          texture->SetInputConnection(reader->GetOutputPort());
-        }
+        texture->SetInputConnection(reader->GetOutputPort());
         texture->SetColorModeToDirectScalars();
       }
       else
@@ -1024,44 +1028,6 @@ vtkNew<vtkTexture> EquirectangularFileToTexture(std::string const& fileName,
 
   texture->MipmapOn();
   texture->InterpolateOn();
-
-  return texture;
-}
-
-vtkNew<vtkTexture> EquirectangularFileToCubemap(std::string const& fileName,
-                                                bool flipX)
-{
-  auto env_texture = EquirectangularFileToTexture(fileName, flipX);
-  vtkNew<vtkEquirectangularToCubeMapTexture> cubeMap;
-  cubeMap->SetInputTexture(vtkOpenGLTexture::SafeDownCast(env_texture));
-  cubeMap->MipmapOn();
-  cubeMap->InterpolateOn();
-
-  return cubeMap;
-}
-
-vtkNew<vtkTexture> ReadCubeMap(std::vector<std::string> const& fileNames)
-{
-  vtkNew<vtkTexture> texture;
-  texture->CubeMapOn();
-  texture->MipmapOn();
-  texture->InterpolateOn();
-
-  auto i = 0;
-  for (auto const& fn : fileNames)
-  {
-    // Read the images
-    vtkNew<vtkImageReader2Factory> readerFactory;
-    vtkSmartPointer<vtkImageReader2> imgReader;
-    imgReader.TakeReference(readerFactory->CreateImageReader2(fn.c_str()));
-    imgReader->SetFileName(fn.c_str());
-
-    vtkNew<vtkImageFlip> flip;
-    flip->SetInputConnection(imgReader->GetOutputPort());
-    flip->SetFilteredAxis(1); // flip y axis
-    texture->SetInputConnection(i, flip->GetOutputPort(0));
-    ++i;
-  }
 
   return texture;
 }

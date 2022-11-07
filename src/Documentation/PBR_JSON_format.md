@@ -6,6 +6,7 @@ The following keys and values are recognised when parsing the JSON files used by
 
 ### General
 
+- **title**: A title, it could indicate the program using this file.
 - **object**: The object name.
 - **objcolor**: The colour of the object.
 - **bkgcolor**: The background colour of the scene.
@@ -27,6 +28,8 @@ You must specify at least one of these keys. If both are specified then **equire
 - **anisotropy**: A file setting the Anisotropy Texture controlling the anisotropy strength in the red channel, while the green channel holds the anisotropy rotation. The blue channel is discarded.
 - **emissive**: A file setting the light-emitting texture or Emissive Texture. Note that the material will not actually emit light, and the texture is ignored by OSPRay and NVidia pathtracing backends.
 
+*Note*: Generally only a subset of the available keys are used in any given application.
+
 ## Values
 
 The values consist of strings:
@@ -45,36 +48,41 @@ or
 
 - [+x, -x, +y, -y, +z, -z]
 
+The cubemap key has two subkeys:
+
+- **root**: Specifying the path to the cubemaps.
+- **files**: The ordered list of six files corresponding to the cubemaps.
+
 ## Example
 
 ``` json
 {
-  "object":"Boy",
-  "bkgcolor":"MidnightBlue",
-  "objcolor":"Seashell",
-  "skybox":true,
-
-  "cubemap": [
-    "./Skyboxes/skybox0/right.jpg",
-    "./Skyboxes/skybox0/left.jpg",
-    "./Skyboxes/skybox0/top.jpg",
-    "./Skyboxes/skybox0/bottom.jpg",
-    "./Skyboxes/skybox0/front.jpg",
-    "./Skyboxes/skybox0/back.jpg"
-  ],
-
-  "equirectangular":"./Skyboxes/spiaggia_di_mondello_4k.hdr",
-  "xequirectangular":"./Skyboxes/skybox0/skybox.jpg",
-
-  "albedo":"./Textures/Anisotropic/CarbonFiberAniso_albedo.png",
-  "normal":"./Textures/Anisotropic/CarbonFiberAniso_normal.png",
-  "material":"./Textures/Anisotropic/CarbonFiberAniso_orm.png",
-  "anisotropy":"./Textures/Anisotropic/CarbonFiberAniso_anisotropyAngle.png"
+  "title": "Parameters for PBR_Skybox_Anisotropy",
+  "object": "Boy",
+  "bkgcolor": "MidnightBlue",
+  "objcolor": "Seashell",
+  "skybox": true,
+  "cubemap": {
+    "root": "./Skyboxes/skybox0",
+    "files": [
+      "right.jpg",
+      "left.jpg",
+      "top.jpg",
+      "bottom.jpg",
+      "front.jpg",
+      "back.jpg"
+    ]
+  },
+  "equirectangular": "./Skyboxes/spiaggia_di_mondello_4k.hdr",
+  "xequirectangular": "./Skyboxes/skybox0/skybox.jpg",
+  "albedo": "./Textures/Anisotropic/CarbonFiberAniso_albedo.png",
+  "normal": "./Textures/Anisotropic/CarbonFiberAniso_normal.png",
+  "material": "./Textures/Anisotropic/CarbonFiberAniso_orm.png",
+  "anisotropy": "./Textures/Anisotropic/CarbonFiberAniso_anisotropyAngle.png"
 }
-
 ```
 
  Note:
 
-- The relative paths assume that the folders `Skyboxes` and `Textures` are subfolders relative to the directory where this file is located.
+- In the above example, the relative paths assume that the folders `Skyboxes` and `Textures` are subfolders relative to the directory where this file is located.
 - the key `xequirectangular` will not be loaded, to load it, change it to `equirectangular` and `skybox.jpg` will be used instead of `spiaggia_di_mondello_4k.hd`.

@@ -24,12 +24,13 @@ For information about the parameters in the JSON file, please see [PBR_JSON_form
 
 ``` text
 Positionals:
- fileName         The path to the JSON file containing the parameters.
+ fileName              The path to the JSON file containing the parameters.
 
 Options:
- -h,--help         Print this help message and exit
- -s,--surface      The name of the surface. Overrides the surface entry in the json file.
- -c,--use_cubemap  Build the cubemap from the six cubemap files. Overrides the equirectangular entry in the json file.
+ -h,--help             Print this help message and exit
+ -s,--surface          The name of the surface. Overrides the surface entry in the json file.
+ -c,--use_cubemap      Build the cubemap from the six cubemap files. Overrides the equirectangular entry in the json file.
+ -t, --use_tonemapping Use tone mapping.
 ```
 
 Additionally, you can save a screenshot by pressing "k".
@@ -43,5 +44,8 @@ Additionally, you can save a screenshot by pressing "k".
 - [Object Shading Properties](https://gitlab.kitware.com/paraview/paraview-docs/-/blob/master/doc/source/ReferenceManual/objectShadingProperties.rst)
 
 !!! note
-    - `<DATA>/PBR_Skybox_Anisotropy.json` assumes that the skyboxes and textures are in the subfolders `Skyboxes` and `Textures` relative to this file. This allows you to copy this JSON file and the assocuated subfolders to any other location on your computer.
+    - `<DATA>/PBR_Skybox_Anisotropy.json` assumes that the skyboxes and textures are in the subfolders `Skyboxes` and `Textures` relative to this file. This allows you to copy this JSON file and the associated subfolders to any other location on your computer.
     - You can turn off the skybox in the JSON file by setting `"skybox":false`. Image based lighting will still be active.
+
+!!! note
+    - The C++ example requires C++17 as `std::filesystem` is used. If your compiler does not support C++17 comment out the filesystem stuff.

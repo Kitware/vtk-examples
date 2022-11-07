@@ -62,7 +62,6 @@ from vtkmodules.vtkRenderingCore import (
 )
 from vtkmodules.vtkRenderingOpenGL2 import (
     vtkCameraPass,
-    vtkEquirectangularToCubeMapTexture,
     vtkLightsPass,
     vtkOpaquePass,
     vtkOverlayPass,
@@ -88,8 +87,10 @@ A Skybox is used to create the illusion of distant three-dimensional surrounding
     parser.add_argument('-c', '--use_cubemap', action='store_true',
                         help='Build the cubemap from the six cubemap files.'
                              ' Overrides the equirectangular entry in the json file.')
+    parser.add_argument('-t', '--use_tonemapping', action='store_true',
+                        help='Use tone mapping.')
     args = parser.parse_args()
-    return args.file_name, args.surface, args.use_cubemap
+    return args.file_name, args.surface, args.use_cubemap, args.use_tonemapping
 
 
 def main():
@@ -97,59 +98,127 @@ def main():
         print('You need VTK version 9.0 or greater to run this program.')
         return
 
-    fn, surface_name, use_cubemap = get_program_parameters()
+    colors = vtkNamedColors()
+
+    # Default background color.
+    colors.SetColor('BkgColor', [26, 51, 102, 255])
+
+    fn, surface_name, use_cubemap, use_tonemapping = get_program_parameters()
     fn_path = Path(fn)
     if not fn_path.suffix:
         fn_path = fn_path.with_suffix(".json")
     if not fn_path.is_file():
         print('Unable to find: ', fn_path)
-    paths_ok, parameters = get_parameters(fn_path, surface_name)
+    paths_ok, parameters = get_parameters(fn_path)
     if not paths_ok:
         return
+
+    # Check for missing parameters.
+    if 'bkgcolor' not in parameters.keys():
+        parameters['bkgcolor'] = 'BkgColor'
+    if 'objcolor' not in parameters.keys():
+        parameters['objcolor'] = 'White'
+    if 'skybox' not in parameters.keys():
+        parameters['skybox'] = False
+    if surface_name:
+        parameters['object'] = surface_name
+
     res = display_parameters(parameters)
     print('\n'.join(res))
     print()
 
+    # Build the pipeline.
+    # ren1 is for the slider rendering,
+    # ren2 is for the object rendering.
+    ren1 = vtkRenderer()
+    # ren2 = vtkOpenGLRenderer()
+    ren2 = vtkRenderer()
+    ren1.SetBackground(colors.GetColor3d('Snow'))
+    ren2.SetBackground(colors.GetColor3d(parameters['bkgcolor']))
+
+    render_window = vtkRenderWindow()
+    # The order here is important.
+    # This ensures that the sliders will be in ren1.
+    render_window.AddRenderer(ren2)
+    render_window.AddRenderer(ren1)
+    ren1.SetViewport(0.0, 0.0, 0.2, 1.0)
+    ren2.SetViewport(0.2, 0.0, 1, 1)
+
+    interactor = vtkRenderWindowInteractor()
+    interactor.SetRenderWindow(render_window)
+    style = vtkInteractorStyleTrackballCamera()
+    interactor.SetInteractorStyle(style)
+
+    # Set up tone mapping, so we can vary the exposure.
+    # Custom Passes.
+    camera_p = vtkCameraPass()
+    seq = vtkSequencePass()
+    opaque = vtkOpaquePass()
+    lights = vtkLightsPass()
+    overlay = vtkOverlayPass()
+
+    passes = vtkRenderPassCollection()
+    passes.AddItem(lights)
+    passes.AddItem(opaque)
+    passes.AddItem(overlay)
+    seq.SetPasses(passes)
+    camera_p.SetDelegatePass(seq)
+
+    tone_mapping_p = vtkToneMappingPass()
+    tone_mapping_p.SetDelegatePass(camera_p)
+
+    if use_tonemapping:
+        ren2.SetPass(tone_mapping_p)
+
+    skybox = vtkSkybox()
+
+    irradiance = ren2.GetEnvMapIrradiance()
+    irradiance.SetIrradianceStep(0.3)
+
     # Choose how to generate the skybox.
-    cube_map = None
-    env_texture = None
-    has_env_texture = False
     is_hdr = False
-    has_cube_map = False
+    has_skybox = False
     gamma_correct = False
-    if not parameters['skybox']:
-        use_cubemap = False
+
     if use_cubemap and 'cubemap' in parameters.keys():
         print('Using the cubemap files to generate the environment texture.')
-        cube_map = read_cubemap(parameters['cubemap'])
-        has_cube_map = True
-    elif 'equirectangular' in parameters.keys() and parameters['equirectangular']:
+        env_texture = read_cubemap(parameters['cubemap'])
+        if parameters['skybox']:
+            skybox.SetTexture(env_texture)
+            has_skybox = True
+    elif 'equirectangular' in parameters.keys():
         print('Using the equirectangular file to generate the environment texture.')
-        # Setting flip_X to False allows us to set the environment texture of the
-        # object correctly.
-        env_texture = equirectangular_file_to_texture(parameters['equirectangular'], False)
-        has_env_texture = True
+        env_texture = read_equirectangular_file(parameters['equirectangular'])
         if parameters['equirectangular'].suffix.lower() in '.hdr .pic':
             gamma_correct = True
             is_hdr = True
         if parameters['skybox']:
             # Generate a skybox.
-            cube_map = equirectangular_file_to_cubemap(parameters['equirectangular'], True)
-            has_cube_map = True
-    elif 'cubemap' in parameters.keys() and parameters['cubemap']:
-        print('Using the cubemap files to generate the environment texture.')
-        cube_map = read_cubemap(parameters['cubemap'])
-        has_cube_map = True
+            skybox.SetFloorRight(0, 0, 1)
+            skybox.SetProjection(vtkSkybox.Sphere)
+            skybox.SetTexture(env_texture)
+            has_skybox = True
     else:
         print('An environment texture is required,\n'
-              'please add the necessary equiangular'
+              'please add the necessary equirectangular'
               ' or cubemap file paths to the json file.')
         return
+
+    # Turn off the default lighting and use image based lighting.
+    ren2.AutomaticLightCreationOff()
+    ren2.UseImageBasedLightingOn()
+    if is_hdr:
+        ren2.UseSphericalHarmonicsOn()
+        ren2.SetEnvironmentTexture(env_texture, False)
+    else:
+        ren2.UseSphericalHarmonicsOff()
+        ren2.SetEnvironmentTexture(env_texture, True)
 
     # Get the surface.
     surface = parameters['object'].lower()
     available_surfaces = {'boy', 'mobius', 'randomhills', 'torus', 'sphere', 'clippedsphere', 'cube', 'clippedcube'}
     if surface not in available_surfaces:
+        print(f'The requested surface: {parameters["object"]} not found, reverting to Boys Surface.')
         surface = 'boy'
     if surface == 'mobius':
         source = get_mobius()
@@ -168,81 +237,10 @@ def main():
     else:
         source = get_boy()
 
-    colors = vtkNamedColors()
-
-    # Default background color.
-    colors.SetColor('BkgColor', [26, 51, 102, 255])
-
-    # Check for missing parameters.
-    if 'bkgcolor' not in parameters.keys():
-        parameters['bkgcolor'] = 'BkgColor'
-    if 'objcolor' not in parameters.keys():
-        parameters['objcolor'] = 'White'
-    if 'skybox' not in parameters.keys():
-        parameters['skybox'] = False
-
-    # Build the pipeline.
-    # ren_1 is for the slider rendering,
-    # ren_2 is for the object rendering.
-    ren_1 = vtkRenderer()
-    # ren_2 = vtkOpenGLRenderer()
-    ren_2 = vtkRenderer()
-    render_window = vtkRenderWindow()
-    # The order here is important.
-    # This ensures that the sliders will be in ren_1.
-    render_window.AddRenderer(ren_2)
-    render_window.AddRenderer(ren_1)
-    ren_1.SetViewport(0.0, 0.0, 0.2, 1.0)
-    ren_2.SetViewport(0.2, 0.0, 1, 1)
-
-    interactor = vtkRenderWindowInteractor()
-    interactor.SetRenderWindow(render_window)
-    style = vtkInteractorStyleTrackballCamera()
-    interactor.SetInteractorStyle(style)
-
-    # Set up tone mapping so we can vary the exposure.
-    # Custom Passes.
-    camera_p = vtkCameraPass()
-    seq = vtkSequencePass()
-    opaque = vtkOpaquePass()
-    lights = vtkLightsPass()
-    overlay = vtkOverlayPass()
-
-    passes = vtkRenderPassCollection()
-    passes.AddItem(lights)
-    passes.AddItem(opaque)
-    passes.AddItem(overlay)
-    seq.SetPasses(passes)
-    camera_p.SetDelegatePass(seq)
-
-    tone_mapping_p = vtkToneMappingPass()
-    tone_mapping_p.SetDelegatePass(camera_p)
-
-    ren_2.SetPass(tone_mapping_p)
-
     # Let's use a metallic surface
-    # Range: [0 ... 1]
     diffuse_coefficient = 1.0
-    # Range: [0 ... 1]
     roughness_coefficient = 0.0
-    # Range: [0 ... 1]
     metallic_coefficient = 1.0
-
-    # Turn off the default lighting and use image based lighting.
-    ren_2.AutomaticLightCreationOff()
-    ren_2.UseImageBasedLightingOn()
-    if has_env_texture:
-        if is_hdr:
-            ren_2.UseSphericalHarmonicsOn()
-            ren_2.SetEnvironmentTexture(env_texture)
-        else:
-            ren_2.UseSphericalHarmonicsOff()
-            ren_2.SetEnvironmentTexture(env_texture)
-    else:
-        ren_2.UseSphericalHarmonicsOff()
-        ren_2.SetEnvironmentTexture(cube_map)
-    ren_1.SetBackground(colors.GetColor3d('Snow'))
-    ren_2.SetBackground(colors.GetColor3d(parameters['bkgcolor']))
 
     mapper = vtkPolyDataMapper()
     mapper.SetInputData(source)
@@ -256,16 +254,14 @@ def main():
     actor.GetProperty().SetDiffuse(diffuse_coefficient)
     actor.GetProperty().SetRoughness(roughness_coefficient)
     actor.GetProperty().SetMetallic(metallic_coefficient)
-    ren_2.AddActor(actor)
+    ren2.AddActor(actor)
 
-    if has_cube_map:
-        skybox_actor = vtkSkybox()
-        skybox_actor.SetTexture(cube_map)
+    if has_skybox:
         if gamma_correct:
-            skybox_actor.GammaCorrectOn()
+            skybox.GammaCorrectOn()
         else:
-            skybox_actor.GammaCorrectOff()
-        ren_2.AddActor(skybox_actor)
+            skybox.GammaCorrectOff()
+        ren2.AddActor(skybox)
 
     # Create the slider callbacks to manipulate various parameters.
     step_size = 1.0 / 3
@@ -274,21 +270,26 @@ def main():
     pos_x1 = 0.18
 
     sw_p = SliderProperties()
+
     sw_p.initial_value = 1.0
     sw_p.maximum_value = 5.0
     sw_p.title = 'Exposure'
     # Screen coordinates.
     sw_p.p1 = [pos_x0, pos_y]
     sw_p.p2 = [pos_x1, pos_y]
-    pos_y += step_size
 
     sw_exposure = make_slider_widget(sw_p)
     sw_exposure.SetInteractor(interactor)
     sw_exposure.SetAnimationModeToAnimate()
-    sw_exposure.EnabledOn()
-    sw_exposure.SetCurrentRenderer(ren_1)
+    if use_tonemapping:
+        sw_exposure.EnabledOn()
+    else:
+        sw_exposure.EnabledOff()
+    sw_exposure.SetCurrentRenderer(ren1)
     sw_exposure_cb = SliderCallbackExposure(tone_mapping_p)
     sw_exposure.AddObserver(vtkCommand.InteractionEvent, sw_exposure_cb)
+
+    pos_y += step_size
 
     sw_p.initial_value = metallic_coefficient
     sw_p.maximum_value = 1.0
@@ -296,28 +297,28 @@ def main():
     # Screen coordinates.
     sw_p.p1 = [pos_x0, pos_y]
     sw_p.p2 = [pos_x1, pos_y]
-    pos_y += step_size
 
     sw_metallic = make_slider_widget(sw_p)
     sw_metallic.SetInteractor(interactor)
     sw_metallic.SetAnimationModeToAnimate()
     sw_metallic.EnabledOn()
-    sw_metallic.SetCurrentRenderer(ren_1)
+    sw_metallic.SetCurrentRenderer(ren1)
     sw_metallic_cb = SliderCallbackMetallic(actor.GetProperty())
     sw_metallic.AddObserver(vtkCommand.InteractionEvent, sw_metallic_cb)
+
+    pos_y += step_size
 
     sw_p.initial_value = roughness_coefficient
     sw_p.title = 'Roughness'
     # Screen coordinates.
     sw_p.p1 = [pos_x0, pos_y]
     sw_p.p2 = [pos_x1, pos_y]
-    pos_y += step_size
 
     sw_roughnesss = make_slider_widget(sw_p)
     sw_roughnesss.SetInteractor(interactor)
     sw_roughnesss.SetAnimationModeToAnimate()
     sw_roughnesss.EnabledOn()
-    sw_roughnesss.SetCurrentRenderer(ren_1)
+    sw_roughnesss.SetCurrentRenderer(ren1)
     sw_roughnesss_cb = SliderCallbackRoughness(actor.GetProperty())
     sw_roughnesss.AddObserver(vtkCommand.InteractionEvent, sw_roughnesss_cb)
 
@@ -329,7 +330,7 @@ def main():
     if vtk_version_ok(9, 0, 20210718):
         try:
             cam_orient_manipulator = vtkCameraOrientationWidget()
-            cam_orient_manipulator.SetParentRenderer(ren_2)
+            cam_orient_manipulator.SetParentRenderer(ren2)
             # Enable the widget.
             cam_orient_manipulator.On()
         except AttributeError:
@@ -375,72 +376,65 @@ def vtk_version_ok(major, minor, build):
         return False
 
 
-def get_parameters(fn_path, surface_name):
+def get_parameters(fn_path):
     """
     Read the parameters from a JSON file and check that the file paths exist.
 
-
     :param fn_path: The path to the JSON file.
-    :param surface_name: The surface name.
     :return: True if the paths correspond to files and the parameters.
     """
     with open(fn_path) as data_file:
         json_data = json.load(data_file)
     parameters = dict()
-    paths_ok = True
 
     # Extract the values.
-    allowed_keys_no_paths = {'object', 'objcolor', 'bkgcolor', 'skybox'}
-    allowed_keys_paths = {'cubemap', 'equirectangular',
-                          'albedo', 'normal', 'material',
-                          'coat', 'anisotropy', 'emissive'}
-
+    keys_no_paths = {'title', 'object', 'objcolor', 'bkgcolor', 'skybox'}
+    keys_with_paths = {'cubemap', 'equirectangular', 'albedo', 'normal', 'material', 'coat', 'anisotropy', 'emissive'}
+    paths_ok = True
     for k, v in json_data.items():
-        if k in allowed_keys_no_paths:
+        if k in keys_no_paths:
             parameters[k] = v
             continue
-        if k in allowed_keys_paths:
+        if k in keys_with_paths:
             if k == 'cubemap':
-                cm = list()
-                if len(v) != 6:
-                    print('There must be six filenames for the cubemap.')
-                    paths_ok = False
-                else:
-                    for idx in range(len(v)):
-                        if idx == 3:
-                            pass
-                        if v[idx]:
-                            cm.append(fn_path.parent / v[idx])
-                            if not cm[-1].is_file():
-                                paths_ok = False
-                                print('Not a file:', cm[idx])
-                        else:
-                            print('A missing path in the cubemap.')
-                            paths_ok = False
-                parameters[k] = cm
-            else:
-                if v:
-                    parameters[k] = fn_path.parent / v
-                    if not (parameters[k].is_file() or parameters[k].is_dir()):
-                        print('Not a file or path:', parameters[k])
+                if ('root' in v) and ('files' in v):
+                    root = Path(v['root'])
+                    if not root.exists():
+                        print(f'Bad cubemap path: {root}')
                         paths_ok = False
+                    elif len(v['files']) != 6:
+                        print(f'Expect six cubemap file names.')
+                        paths_ok = False
+                    else:
+                        cm = list(map(lambda p: root / p, v['files']))
+                        for fn in cm:
+                            if not fn.is_file():
+                                paths_ok = False
+                                print(f'Not a file {fn}')
+                        if paths_ok:
+                            parameters['cubemap'] = cm
                 else:
-                    print('No path for the key', k)
                     paths_ok = False
+                    print('Missing the key "root" and/or the key "fíles" for the cubemap.')
+            else:
+                fn = Path(v)
+                if not fn.exists():
+                    print(f'Bad {k} path: {fn}')
+                    paths_ok = False
+                else:
+                    parameters[k] = fn
 
-    # Set the surface, if required.
+    # Set Boy as the default surface.
     if ('object' in parameters.keys() and not parameters['object']) or 'object' not in parameters.keys():
         parameters['object'] = 'Boy'
-    if surface_name:
-        parameters['object'] = surface_name
 
     return paths_ok, parameters
 
 
 def display_parameters(parameters):
     res = list()
-    parameter_keys = ["object", "objcolor", "bkgcolor", "skybox", "cubemap", "equirectangular", "albedo", "normal",
-                      "material", "coat", "anisotropy", "emissive"]
+    parameter_keys = ['title', 'object', 'objcolor', 'bkgcolor', 'skybox', 'cubemap', 'equirectangular', 'albedo',
+                      'normal', 'material', 'coat', 'anisotropy', 'emissive']
     for k in parameter_keys:
         if k != 'cubemap':
             if k in parameters:
@@ -453,74 +447,6 @@ def display_parameters(parameters):
                     else:
                         res.append(f'{" " * 17}{parameters[k][idx]}')
     return res
-
-
-def equirectangular_file_to_texture(fn_path, flip_x=False):
-    """
-    Read an equirectangular environment file and convert to a texture.
-
-    :param fn_path: The equirectangular file path.
-    :param flip_x: Flip x-axis of the texture.
-    :return: The texture.
-    """
-    texture = vtkTexture()
-
-    suffix = fn_path.suffix.lower()
-    if suffix in ['.jpeg', '.jpg', '.png']:
-        reader_factory = vtkImageReader2Factory()
-        img_reader = reader_factory.CreateImageReader2(str(fn_path))
-        img_reader.SetFileName(str(fn_path))
-
-        if flip_x:
-            flip = vtkImageFlip()
-            flip.SetInputConnection(img_reader.GetOutputPort(0))
-            flip.SetFilteredAxis(0)  # flip x axis
-            texture.SetInputConnection(flip.GetOutputPort())
-        else:
-            texture.SetInputConnection(img_reader.GetOutputPort(0))
-
-    else:
-        reader = vtkHDRReader()
-        extensions = reader.GetFileExtensions()
-        # Check the image can be read.
-        if not reader.CanReadFile(str(fn_path)):
-            print('CanReadFile failed for ', fn_path)
-            return None
-        if suffix not in extensions:
-            print('Unable to read this file extension: ', suffix)
-            return None
-        reader.SetFileName(str(fn_path))
-
-        if flip_x:
-            flip = vtkImageFlip()
-            flip.SetInputConnection(reader.GetOutputPort())
-            flip.SetFilteredAxis(0)  # flip x axis
-            texture.SetInputConnection(flip.GetOutputPort())
-        else:
-            texture.SetInputConnection(reader.GetOutputPort())
-        texture.SetColorModeToDirectScalars()
-
-    texture.MipmapOn()
-    texture.InterpolateOn()
-
-    return texture
-
-
-def equirectangular_file_to_cubemap(fn_path, flip_x=False):
-    """
-    Read an equirectangular environment file and convert to a cubemap.
-
-    :param fn_path: The equirectangular file path.
-    :param flip_x: Flip x-axis of the texture.
-    :return: The cubemap texture.
-    """
-    env_texture = equirectangular_file_to_texture(fn_path, flip_x)
-    cube_map = vtkEquirectangularToCubeMapTexture()
-    cube_map.SetInputTexture(env_texture)
-    cube_map.MipmapOn()
-    cube_map.InterpolateOn()
-
-    return cube_map
 
 
 def read_cubemap(cubemap):
@@ -552,6 +478,44 @@ def read_cubemap(cubemap):
     cube_map.InterpolateOn()
 
     return cube_map
+
+
+def read_equirectangular_file(fn_path):
+    """
+    Read an equirectangular environment file and convert to a texture.
+
+    :param fn_path: The equirectangular file path.
+    :return: The texture.
+    """
+    texture = vtkTexture()
+
+    suffix = fn_path.suffix.lower()
+    if suffix in ['.jpeg', '.jpg', '.png']:
+        reader_factory = vtkImageReader2Factory()
+        img_reader = reader_factory.CreateImageReader2(str(fn_path))
+        img_reader.SetFileName(str(fn_path))
+
+        texture.SetInputConnection(img_reader.GetOutputPort(0))
+
+    else:
+        reader = vtkHDRReader()
+        extensions = reader.GetFileExtensions()
+        # Check the image can be read.
+        if not reader.CanReadFile(str(fn_path)):
+            print('CanReadFile failed for ', fn_path)
+            return None
+        if suffix not in extensions:
+            print('Unable to read this file extension: ', suffix)
+            return None
+        reader.SetFileName(str(fn_path))
+
+        texture.SetColorModeToDirectScalars()
+        texture.SetInputConnection(reader.GetOutputPort())
+
+    texture.MipmapOn()
+    texture.InterpolateOn()
+
+    return texture
 
 
 def get_boy():

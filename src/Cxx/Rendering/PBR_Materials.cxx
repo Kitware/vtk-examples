@@ -286,6 +286,7 @@ int main(int argc, char* argv[])
 }
 
 namespace {
+
 void GetParameters(const fs::path fnPath, Parameters& parameters)
 {
   std::ifstream ifs(fnPath);
@@ -319,7 +320,8 @@ void GetParameters(const fs::path fnPath, Parameters& parameters)
   }
 
   // Extract the values.
-  std::set<std::string> keysNoPaths{"title", "skybox"};
+  std::set<std::string> keysNoPaths{"title", "object", "objcolor", "bkgcolor",
+                                    "skybox"};
   std::set<std::string> keysWithPaths{"cubemap",    "equirectangular", "albedo",
                                       "normal",     "material",        "coat",
                                       "anisotropy", "emissive"};
@@ -433,8 +435,9 @@ std::string DisplayParameters(Parameters& parameters)
 {
   std::stringstream res;
   std::vector<std::string> parameterKeys{
-      "title",  "skybox",   "cubemap", "equirectangular", "albedo",
-      "normal", "material", "coat",    "anisotropy",      "emissive"};
+      "title",   "object",          "objcolor", "bkgcolor", "skybox",
+      "cubemap", "equirectangular", "albedo",   "normal",   "material",
+      "coat",    "anisotropy",      "emissive"};
   for (auto const& e : parameterKeys)
   {
     if (e == "cubemap")
