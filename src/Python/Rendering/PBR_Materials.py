@@ -193,7 +193,7 @@ def get_parameters(fn_path):
     parameters = dict()
 
     # Extract the values.
-    keys_no_paths = {'title', 'skybox'}
+    keys_no_paths = {'title', 'object', 'objcolor', 'bkgcolor', 'skybox'}
     keys_with_paths = {'cubemap', 'equirectangular', 'albedo', 'normal', 'material', 'coat', 'anisotropy', 'emissive'}
     paths_ok = True
     for k, v in json_data.items():
@@ -229,13 +229,17 @@ def get_parameters(fn_path):
                 else:
                     parameters[k] = fn
 
+    # Set Boy as the default surface.
+    if ('object' in parameters.keys() and not parameters['object']) or 'object' not in parameters.keys():
+        parameters['object'] = 'Boy'
+
     return paths_ok, parameters
 
 
 def display_parameters(parameters):
     res = list()
-    parameter_keys = ["title", "skybox", "cubemap", "equirectangular", "albedo", "normal",
-                      "material", "coat", "anisotropy", "emissive"]
+    parameter_keys = ['title', 'object', 'objcolor', 'bkgcolor', 'skybox', 'cubemap', 'equirectangular', 'albedo',
+                      'normal', 'material', 'coat', 'anisotropy', 'emissive']
     for k in parameter_keys:
         if k != 'cubemap':
             if k in parameters:
