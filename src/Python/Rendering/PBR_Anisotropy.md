@@ -16,6 +16,8 @@ The parameters used to generate the example image are loaded from a generic JSON
 
 Where `<DATA>` is the path to `?vtk-?examples/src/Testing/Data`.
 
+For information about the parameters in the JSON file, please see [PBR_JSON_format](../../Documentation/PBR_JSON_format.md).
+
 #### Further Reading
 
 - [Introducing Physically Based Rendering with VTK](https://blog.kitware.com/vtk-pbr/)
