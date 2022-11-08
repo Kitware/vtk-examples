@@ -34,9 +34,10 @@ Note:
                         help='Specify the number of columns for excluded VTK classes output, default is 3.', nargs='?',
                         const=3, type=int, default=3)
     parser.add_argument('-a', '--add_vtk_html', help='Add html paths to the VTK classes.', action='store_true')
+    parser.add_argument('-f', '--format_json', help='Format the JSON file.', action='store_true')
 
     args = parser.parse_args()
-    return args.vtk_examples, args.coverage_dest, args.columns, args.excluded_columns, args.add_vtk_html
+    return args.vtk_examples, args.coverage_dest, args.columns, args.excluded_columns, args.add_vtk_html, args.format_json
 
 
 @dataclass(frozen=True)
@@ -69,7 +70,7 @@ class VTKClassesInExamples:
     Determine what classes are being used or not used in the examples.
     """
 
-    def __init__(self, base_path: Path, output_path: Path, columns, excluded_columns, add_vtk_html):
+    def __init__(self, base_path: Path, output_path: Path, columns, excluded_columns, add_vtk_html, format_json):
         """
         Note: base_path, output_path are Path objects.
         :param base_path: The path to the VTK Examples sources, usually some_path/vtk-examples/src
@@ -77,6 +78,7 @@ class VTKClassesInExamples:
         :param columns: When generating the classes not used table, the number of columns to use.
         :param excluded_columns: When generating the excluded classes table, the number of columns to use.
         :param add_vtk_html: True if the Doxygen documentation paths are to be added to the vtk classes in the tables.
+        :param format_json: True if the JSON file should be formatted.
         """
         self.example_types = ['CSharp', 'Cxx', 'Java', 'Python']
         # Classes common to most examples.
@@ -97,6 +99,7 @@ class VTKClassesInExamples:
         self.columns = columns
         self.excluded_columns = excluded_columns
         self.add_vtk_html = add_vtk_html
+        self.format_json = format_json
 
         # A dictionary consisting of the class name as the key and the link class name as the value.
         self.vtk_classes = dict()
@@ -110,8 +113,8 @@ class VTKClassesInExamples:
         # Markdown tables of classes not used keyed on [example type]
         self.classes_not_used_table = dict()
 
-        # This cross references the VTK Class with the relevant example indexed by
-        #    VTK Class and Language.
+        # This dictionary cross-references the VTK Class with the relevant example
+        #    indexed by the VTK Class and Language.
         # The first index is the VTK class.
         # The second index corresponds to the languages: CSharp, Cxx, Java, Python
         #    and, additionally, VTKLink.
@@ -206,18 +209,23 @@ class VTKClassesInExamples:
             r'.*[= ]+(vtk[A-Za-z0-9]+)[ ]*::New'  # match: vtkClass::New()
         )
         class_patterns['Java'] = re.compile(r'^[A-Za-z0-9=. _\t]+new[ ]+(vtk[A-Za-z0-9]+)[ ]*\(')
-        class_patterns['Python'] = re.compile(r'^[A-Za-z0-9=. ()_\t]+(vtk[A-Za-z0-9]+)[ ]*\(')
+        class_patterns['Python'] = re.compile(r'^[ ]*(vtk[A-Za-z0-9]+)|'  # vtkSomeClass at the start of a line
+                                              r'(vtk[A-Za-z0-9]+)[,\n]|'  # match vtkSomeClass at the end of a line
+                                              r'^[A-Za-z0-9=. ()_\t]+(vtk[A-Za-z0-9]+)[ ]*\('  # x = vtkSomeClass()
+                                              )
         # Skip some lines in the files.
         skip_patterns = re.compile(
             r'(^ *$)|'  # Empty lines.
             r'(^ *[(|\)]+$)|'  # Single opening or closing bracket.
             r'(^ *[{|}]+$)'  # Single opening or closing curly brace.
         )
-
+        print('Extracting the classes used in the examples.')
         for eg in self.example_types:
+            print('  Processing the', eg, 'examples.')
             res = defaultdict(lambda: defaultdict(set))
             for k, v in self.example_file_paths[eg].items():
                 for fn in v:
+                    # print(fn)
                     # Open and read the file building a set of classes.
                     content = fn.read_text().split('\n')
                     for line in content:
@@ -232,7 +240,7 @@ class VTKClassesInExamples:
 
     def get_crossreferences(self):
         """
-        Cross-reference the VTK classes to to the corresponding
+        Cross-reference the VTK classes to the corresponding
          VTK Example(s) by language(s).
         """
         links = Links()
@@ -420,9 +428,10 @@ class VTKClassesInExamples:
         if self.vtk_examples_xref:
             fn = self.output_path / 'vtk_vtk-examples_xref.json'
             with open(fn, 'w') as outfile:
-                # For debugging.
-                # json.dump(self.vtk_examples_xref, outfile, indent = 2)
-                json.dump(self.vtk_examples_xref, outfile)
+                if self.format_json:
+                    json.dump(self.vtk_examples_xref, outfile, indent=2)
+                else:
+                    json.dump(self.vtk_examples_xref, outfile)
         for eg in self.example_types:
             fn = self.output_path / (eg + 'VTKClassesUsed.md')
             fn.write_text('\n'.join(self.classes_used_table[eg]))
@@ -431,7 +440,7 @@ class VTKClassesInExamples:
 
 
 def main():
-    example_source, coverage_dest, columns, excluded_columns, add_vtk_html = get_program_parameters()
+    example_source, coverage_dest, columns, excluded_columns, add_vtk_html, format_json = get_program_parameters()
     source_path = Path(example_source)
     coverage_path = Path(coverage_dest)
     if not source_path.is_dir():
@@ -440,7 +449,7 @@ def main():
     if not coverage_path.is_dir():
         print(f'The path: {coverage_path} does not exist.')
         print(f'Creating it.')
-    vtk_classes = VTKClassesInExamples(source_path, coverage_dest, columns, excluded_columns, add_vtk_html)
+    vtk_classes = VTKClassesInExamples(source_path, coverage_dest, columns, excluded_columns, add_vtk_html, format_json)
     vtk_classes.build_tables()
     vtk_classes.generate_files()
 
