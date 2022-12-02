@@ -192,7 +192,7 @@ If you are new to VTK then these [tutorials](#tutorial) will help to get you sta
 [CellTypeSource](/Cxx/GeometricObjects/CellTypeSource) | Generate tessellated cells.
 [ConvexPointSet](/Cxx/GeometricObjects/ConvexPointSet) | Generate a ConvexPointSetCell.
 [Hexahedron](/Cxx/GeometricObjects/Hexahedron) |
-[LinearCellDemo](/Cxx/GeometricObjects/LinearCellDemo) | Linear cell types in VTK.
+[LinearCellDemo](/Cxx/GeometricObjects/LinearCellDemo) | Linear cell types found in VTK. Numbers define ordering of the defining points.
 [LongLine](/Cxx/GeometricObjects/LongLine) | Manually create a polyline.
 [Point](/Cxx/GeometricObjects/Point) |
 [PolyLine](/Cxx/GeometricObjects/PolyLine) |

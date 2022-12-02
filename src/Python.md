@@ -116,7 +116,7 @@ If you are new to VTK then these [tutorials](#tutorial) will help to get you sta
 [CellTypeSource](/Python/GeometricObjects/CellTypeSource) | Generate tessellated cells.
 [ConvexPointSet](/Python/GeometricObjects/ConvexPointSet) | Generate a ConvexPointSetCell.
 [Hexahedron](/Python/GeometricObjects/Hexahedron) |
-[LinearCellDemo](/Python/GeometricObjects/LinearCellDemo) | Linear cell types in VTK.
+[LinearCellDemo](/Python/GeometricObjects/LinearCellDemo) | Linear cell types found in VTK. Numbers define ordering of the defining points.
 [LongLine](/Python/GeometricObjects/LongLine) | Manually create a polyline.
 [Point](/Python/GeometricObjects/Point) |
 [PolyLine](/Python/GeometricObjects/PolyLine) |
