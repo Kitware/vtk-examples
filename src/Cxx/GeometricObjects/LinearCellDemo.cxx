@@ -9,6 +9,7 @@
 #include <vtkNew.h>
 #include <vtkPoints.h>
 #include <vtkProperty.h>
+#include <vtkProperty2D.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
@@ -35,6 +36,8 @@
 #include <vtkVoxel.h>
 #include <vtkWedge.h>
 
+#include <vtk_cli11.h>
+
 #include <cstdlib>
 #include <string>
 #include <vector>
@@ -60,8 +63,27 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePentagonalPrism();
 vtkSmartPointer<vtkUnstructuredGrid> MakeHexagonalPrism();
 } // namespace
 
-int main(int, char*[])
+int main(int argc, char* argv[])
 {
+  CLI::App app{"Demonstrate the linear cell types found in VTK. Numbers define "
+               "ordering of the defining points."};
+
+  // Define options
+  std::string fileName;
+  auto wireframeOn{false};
+  app.add_flag("-w, --wireframe", wireframeOn, "Render a wireframe.");
+  auto backfaceOn{false};
+  app.add_flag("-b, --backface", backfaceOn,
+               "Display the back face in a different colour.");
+  CLI11_PARSE(app, argc, argv);
+  if (wireframeOn && backfaceOn)
+  {
+    std::cerr << "error: argument -b/--backface: not allowed with argument "
+                 "-w/--wireframe"
+              << std::endl;
+    return EXIT_FAILURE;
+  }
+
   std::vector<std::string> titles;
   std::vector<vtkSmartPointer<vtkTextMapper>> textMappers;
   std::vector<vtkSmartPointer<vtkActor2D>> textActors;
@@ -107,7 +129,6 @@ int main(int, char*[])
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkRenderWindow> renWin;
-  renWin->SetSize(600, 600);
   renWin->SetWindowName("LinearCellDemo");
 
   vtkNew<vtkRenderWindowInteractor> iRen;
@@ -124,6 +145,9 @@ int main(int, char*[])
   textProperty->SetFontSize(10);
   textProperty->SetJustificationToCentered();
 
+  vtkNew<vtkProperty> backProperty;
+  backProperty->SetColor(colors->GetColor3d("MediumSeaGreen").GetData());
+
   // Create and link the mappers actors and renderers together.
   for (unsigned int i = 0; i < uGrids.size(); ++i)
   {
@@ -136,15 +160,40 @@ int main(int, char*[])
     renderers.push_back(vtkSmartPointer<vtkRenderer>::New());
     mappers[i]->SetInputData(uGrids[i]);
     actors[i]->SetMapper(mappers[i]);
-    actors[i]->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
-    actors[i]->GetProperty()->EdgeVisibilityOn();
-    actors[i]->GetProperty()->SetLineWidth(3);
-    actors[i]->GetProperty()->SetOpacity(.5);
+    if (wireframeOn)
+    {
+      actors[i]->GetProperty()->SetRepresentationToWireframe();
+      actors[i]->GetProperty()->SetLineWidth(2);
+      actors[i]->GetProperty()->SetOpacity(1);
+      actors[i]->GetProperty()->SetColor(colors->GetColor3d("Black").GetData());
+    }
+    else
+    {
+      actors[i]->GetProperty()->EdgeVisibilityOn();
+      actors[i]->GetProperty()->SetLineWidth(3);
+      actors[i]->GetProperty()->SetColor(
+          colors->GetColor3d("Tomato").GetData());
+      if (backfaceOn)
+      {
+        actors[i]->SetBackfaceProperty(backProperty);
+        actors[i]->GetProperty()->SetOpacity(1);
+      }
+      else
+      {
+        actors[i]->GetProperty()->SetOpacity(0.5);
+      }
+    }
     renderers[i]->AddViewProp(actors[i]);
 
     textMappers[i]->SetInput(titles[i].c_str());
     textActors[i]->SetMapper(textMappers[i]);
     textActors[i]->SetPosition(50, 10);
+    if (wireframeOn)
+    {
+      textActors[i]->GetProperty()->SetColor(
+          colors->GetColor3d("Black").GetData());
+    }
+
     renderers[i]->AddViewProp(textActors[i]);
 
     // Label the points
@@ -153,6 +202,11 @@ int main(int, char*[])
     labelMapper->SetInputData(uGrids[i]);
     vtkSmartPointer<vtkActor2D> labelActor = vtkSmartPointer<vtkActor2D>::New();
     labelActor->SetMapper(labelMapper);
+    if (wireframeOn)
+    {
+      textActors[i]->GetProperty()->SetColor(
+          colors->GetColor3d("Snow").GetData());
+    }
     renderers[i]->AddViewProp(labelActor);
 
     // Glyph the points
@@ -165,8 +219,16 @@ int main(int, char*[])
 
     vtkSmartPointer<vtkActor> pointActor = vtkSmartPointer<vtkActor>::New();
     pointActor->SetMapper(pointMapper);
-    pointActor->GetProperty()->SetDiffuseColor(
-        colors->GetColor3d("Banana").GetData());
+    if (wireframeOn)
+    {
+      pointActor->GetProperty()->SetColor(
+          colors->GetColor3d("Banana").GetData());
+    }
+    else
+    {
+      pointActor->GetProperty()->SetColor(
+          colors->GetColor3d("Banana").GetData());
+    }
     pointActor->GetProperty()->SetSpecular(.6);
     pointActor->GetProperty()->SetSpecularColor(1.0, 1.0, 1.0);
     pointActor->GetProperty()->SetSpecularPower(100);
@@ -175,10 +237,10 @@ int main(int, char*[])
     renWin->AddRenderer(renderers[i]);
   }
 
-  // Setup the viewports
+  // Set up the viewports
   int xGridDimensions = 4;
   int yGridDimensions = 4;
-  int rendererSize = 240;
+  int rendererSize = 300;
 
   renWin->SetSize(rendererSize * xGridDimensions,
                   rendererSize * yGridDimensions);
@@ -205,27 +267,101 @@ int main(int, char*[])
         // Add a renderer even if there is no actor.
         // This makes the render window background all the same color.
         vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
-        ren->SetBackground(colors->GetColor3d("SlateGray").GetData());
+        if (wireframeOn)
+        {
+          ren->SetBackground(colors->GetColor3d("LightSlateGray").GetData());
+        }
+        else
+        {
+          ren->SetBackground(colors->GetColor3d("SlateGray").GetData());
+        }
         ren->SetViewport(viewport);
         renWin->AddRenderer(ren);
         continue;
       }
 
+      if (wireframeOn)
+      {
+        renderers[index]->SetBackground(
+            colors->GetColor3d("LightSlateGray").GetData());
+      }
+      else
+      {
+        renderers[index]->SetBackground(
+            colors->GetColor3d("SlateGray").GetData());
+      }
       renderers[index]->SetViewport(viewport);
-      renderers[index]->SetBackground(
-          colors->GetColor3d("SlateGray").GetData());
       renderers[index]->ResetCamera();
-      renderers[index]->GetActiveCamera()->Azimuth(30);
-      renderers[index]->GetActiveCamera()->Elevation(-30);
       switch (index)
       {
       case 0:
         renderers[index]->GetActiveCamera()->Dolly(0.1);
+        renderers[index]->GetActiveCamera()->Azimuth(30);
+        renderers[index]->GetActiveCamera()->Elevation(-30);
+        break;
+      case 1:
+        renderers[index]->GetActiveCamera()->Dolly(0.8);
+        renderers[index]->GetActiveCamera()->Azimuth(30);
+        renderers[index]->GetActiveCamera()->Elevation(-30);
+        break;
+      case 2:
+        renderers[index]->GetActiveCamera()->Dolly(0.4);
+        renderers[index]->GetActiveCamera()->Azimuth(30);
+        renderers[index]->GetActiveCamera()->Elevation(-30);
         break;
       case 4:
-        renderers[index]->GetActiveCamera()->Dolly(0.8);
+        renderers[index]->GetActiveCamera()->Dolly(0.7);
+        renderers[index]->GetActiveCamera()->Azimuth(30);
+        renderers[index]->GetActiveCamera()->Elevation(-30);
+        break;
+      case 5:
+        renderers[index]->GetActiveCamera()->Dolly(1.1);
+        renderers[index]->GetActiveCamera()->Azimuth(30);
+        renderers[index]->GetActiveCamera()->Elevation(-30);
+        break;
+      case 6:
+        renderers[index]->GetActiveCamera()->Azimuth(0);
+        renderers[index]->GetActiveCamera()->Elevation(-45);
+        break;
+      case 7:
+        renderers[index]->GetActiveCamera()->Azimuth(0);
+        renderers[index]->GetActiveCamera()->Elevation(-45);
+        break;
+      case 8:
+        renderers[index]->GetActiveCamera()->Azimuth(0);
+        renderers[index]->GetActiveCamera()->Elevation(-45);
+        break;
+      case 9:
+        renderers[index]->GetActiveCamera()->Azimuth(0);
+        renderers[index]->GetActiveCamera()->Elevation(-22.5);
+        break;
+      case 10:
+        renderers[index]->GetActiveCamera()->Azimuth(-22.5);
+        renderers[index]->GetActiveCamera()->Elevation(15);
+        break;
+      case 11:
+        renderers[index]->GetActiveCamera()->Azimuth(-22.5);
+        renderers[index]->GetActiveCamera()->Elevation(15);
+        break;
+      case 12:
+        renderers[index]->GetActiveCamera()->Azimuth(-45);
+        renderers[index]->GetActiveCamera()->Elevation(15);
+        break;
+      case 13:
+        renderers[index]->GetActiveCamera()->Azimuth(0);
+        renderers[index]->GetActiveCamera()->Elevation(-30);
+        break;
+      case 14:
+        renderers[index]->GetActiveCamera()->Azimuth(-22.5);
+        renderers[index]->GetActiveCamera()->Elevation(10);
+        break;
+      case 15:
+        renderers[index]->GetActiveCamera()->Azimuth(-30);
+        renderers[index]->GetActiveCamera()->Elevation(15);
         break;
       default:
+        renderers[index]->GetActiveCamera()->Azimuth(30);
+        renderers[index]->GetActiveCamera()->Elevation(-30);
         break;
       }
       renderers[index]->ResetCameraClippingRange();
@@ -233,9 +369,7 @@ int main(int, char*[])
   }
 
   iRen->Initialize();
-
   renWin->Render();
-
   iRen->Start();
 
   return EXIT_SUCCESS;
@@ -255,7 +389,6 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeVertex()
   {
     vertex->GetPointIds()->SetId(i, i);
   }
-
   vtkSmartPointer<vtkUnstructuredGrid> ug =
       vtkSmartPointer<vtkUnstructuredGrid>::New();
   ug->SetPoints(points);
@@ -274,8 +407,8 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePolyVertex()
   points->InsertNextPoint(1, 0, 0);
   points->InsertNextPoint(0, 1, 0);
   points->InsertNextPoint(0, 0, 1);
-  points->InsertNextPoint(1, 0, .4);
-  points->InsertNextPoint(0, 1, .6);
+  points->InsertNextPoint(1, 0, 0.4);
+  points->InsertNextPoint(0, 1, 0.6);
 
   vtkSmartPointer<vtkPolyVertex> polyVertex =
       vtkSmartPointer<vtkPolyVertex>::New();
@@ -301,7 +434,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeLine()
 
   vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
   points->InsertNextPoint(0, 0, 0);
-  points->InsertNextPoint(.5, .5, 0);
+  points->InsertNextPoint(0.5, 0.5, 0);
 
   vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
   for (int i = 0; i < numberOfVertices; ++i)
@@ -323,11 +456,11 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePolyLine()
   int numberOfVertices = 5;
 
   vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-  points->InsertNextPoint(0, .5, 0);
-  points->InsertNextPoint(.5, 0, 0);
-  points->InsertNextPoint(1, .3, 0);
-  points->InsertNextPoint(1.5, .4, 0);
-  points->InsertNextPoint(2.0, .4, 0);
+  points->InsertNextPoint(0, 0.5, 0);
+  points->InsertNextPoint(0.5, 0, 0);
+  points->InsertNextPoint(1, 0.3, 0);
+  points->InsertNextPoint(1.5, 0.4, 0);
+  points->InsertNextPoint(2.0, 0.4, 0);
 
   vtkSmartPointer<vtkPolyLine> polyline = vtkSmartPointer<vtkPolyLine>::New();
   polyline->GetPointIds()->SetNumberOfIds(numberOfVertices);
@@ -352,8 +485,8 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeTriangle()
 
   vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
   points->InsertNextPoint(0, 0, 0);
-  points->InsertNextPoint(.5, .5, 0);
-  points->InsertNextPoint(.2, 1, 0);
+  points->InsertNextPoint(0.5, 0.5, 0);
+  points->InsertNextPoint(0.2, 1, 0);
 
   vtkSmartPointer<vtkTriangle> triangle = vtkSmartPointer<vtkTriangle>::New();
   for (int i = 0; i < numberOfVertices; ++i)
@@ -376,14 +509,14 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeTriangleStrip()
 
   vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
   points->InsertNextPoint(0, 0, 0);
-  points->InsertNextPoint(.5, 1, 0);
-  points->InsertNextPoint(1, -.1, 0);
-  points->InsertNextPoint(1.5, .8, 0);
-  points->InsertNextPoint(2.0, -.1, 0);
-  points->InsertNextPoint(2.5, .9, 0);
+  points->InsertNextPoint(1, -0.1, 0);
+  points->InsertNextPoint(0.5, 1, 0);
+  points->InsertNextPoint(2.0, -0.1, 0);
+  points->InsertNextPoint(1.5, 0.8, 0);
   points->InsertNextPoint(3.0, 0, 0);
-  points->InsertNextPoint(3.5, .8, 0);
-  points->InsertNextPoint(4.0, -.2, 0);
+  points->InsertNextPoint(2.5, 0.9, 0);
+  points->InsertNextPoint(4.0, -0.2, 0);
+  points->InsertNextPoint(3.5, 0.8, 0);
   points->InsertNextPoint(4.5, 1.1, 0);
 
   vtkSmartPointer<vtkTriangleStrip> trianglestrip =
@@ -410,11 +543,11 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePolygon()
 
   vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
   points->InsertNextPoint(0, 0, 0);
-  points->InsertNextPoint(1, -.1, 0);
-  points->InsertNextPoint(.8, .5, 0);
+  points->InsertNextPoint(1, -0.1, 0);
+  points->InsertNextPoint(0.8, 0.5, 0);
   points->InsertNextPoint(1, 1, 0);
-  points->InsertNextPoint(.6, 1.2, 0);
-  points->InsertNextPoint(0, .8, 0);
+  points->InsertNextPoint(0.6, 1.2, 0);
+  points->InsertNextPoint(0, 0.8, 0);
 
   vtkSmartPointer<vtkPolygon> polygon = vtkSmartPointer<vtkPolygon>::New();
   polygon->GetPointIds()->SetNumberOfIds(numberOfVertices);
@@ -540,8 +673,8 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeHexahedron()
   // A regular hexagon (cube) with all faces square and three squares around
   // each vertex is created below.
 
-  // Setup the coordinates of eight points
-  // (the two faces must be in counter clockwise
+  // Set up the coordinates of eight points
+  // (the two faces must be in counter-clockwise
   // order as viewed from the outside).
 
   int numberOfVertices = 8;
@@ -584,10 +717,10 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeWedge()
 
   points->InsertNextPoint(0, 1, 0);
   points->InsertNextPoint(0, 0, 0);
-  points->InsertNextPoint(0, .5, .5);
+  points->InsertNextPoint(0, 0.5, 0.5);
   points->InsertNextPoint(1, 1, 0);
   points->InsertNextPoint(1, 0.0, 0.0);
-  points->InsertNextPoint(1, .5, .5);
+  points->InsertNextPoint(1, 0.5, 0.5);
 
   vtkSmartPointer<vtkWedge> wedge = vtkSmartPointer<vtkWedge>::New();
   for (int i = 0; i < numberOfVertices; ++i)
