@@ -231,7 +231,7 @@ When we create images with computer graphics, we project objects defined in thre
 The usual way of representing a point in 3D is the three element Cartesian vector $(x, y, z)$. Homogeneous coordinates are represented by a four element vector $( x_h, y_h, z_h, w_h)$. The conversion between Cartesian coordinates and homogeneous coordinates is given by:
 
 $$
-x = \frac{x_h}{w_h}\ \ \ \  x = \frac{y_h}{w_h}\ \ \ \ x = \frac{z_h}{w_h}
+x = \frac{x_h}{w_h}\ \ \ \  y = \frac{y_h}{w_h}\ \ \ \ z = \frac{z_h}{w_h}
 \bf\tag{3-5}
 $$
 
@@ -329,12 +329,12 @@ T_{R_z} = \left[\begin{array}{cccc}
 \bf\tag{3-12}
 $$
 
-Another useful rotation matrix is used to transform one coordinate axes $x-y-z$ to another coordinate axes $x'-y'-z'$. To derive the transformation matrix we assume that the unit $x'$. To derive the transformation matrix we assume that the unit $x'$ axis make the angles $(\theta_{x'x},\theta_{x'y},\theta_{x'z})$ around the $x-y-z$ axes (these are called direction cosines). Similarly, the unit $y'$ axis makes the angles $(\theta_{y'x},\theta_{y'y},\theta_{y'z})$ and the unit $z'$ axis makes the angles $(\theta_{z'x},\theta_{z'y},\theta_{z'z})$. The resulting rotation matrix is formed by placing the direction cosines along the rows of the transformation matrix as follows
+Another useful rotation matrix is used to transform one coordinate axes $x-y-z$ to another coordinate axes $x'-y'-z'$. To derive the transformation matrix we assume that the unit $x'$ axis make the angles $(\theta_{x'x},\theta_{x'y},\theta_{x'z})$ around the $x-y-z$ axes (these are called direction cosines). Similarly, the unit $y'$ axis makes the angles $(\theta_{y'x},\theta_{y'y},\theta_{y'z})$ and the unit $z'$ axis makes the angles $(\theta_{z'x},\theta_{z'y},\theta_{z'z})$. The resulting rotation matrix is formed by placing the direction cosines along the rows of the transformation matrix as follows
 
 $$
 T_R = \left[\begin{array}{cccc}
 \cos\theta_{x'x} & \cos\theta_{x'y} & \cos\theta_{x'z} & 0 \\
-\cos\theta_{y'x} & \cos\theta_{z'y} & \cos\theta_{y'z} & 0 \\
+\cos\theta_{y'x} & \cos\theta_{y'y} & \cos\theta_{y'z} & 0 \\
 \cos\theta_{z'x} & \cos\theta_{z'y} & \cos\theta_{z'z} & 0 \\
 0 & 0 & 0 & 1
 \end{array}\right]
