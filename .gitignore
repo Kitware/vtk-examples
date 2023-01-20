@@ -10,3 +10,6 @@ __pycache__
 
 # KDevelop
 *.kdev4
+
+# QtCreator
+CMakeLists.txt.user
