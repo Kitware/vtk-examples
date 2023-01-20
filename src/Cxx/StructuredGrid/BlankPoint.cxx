@@ -51,6 +51,23 @@ int main(int, char*[])
   structuredGrid->BlankPoint(27);
   structuredGrid->Modified();
 
+  // Check.
+  auto isVisible = [&structuredGrid](int const & ptNum){
+    if (structuredGrid->IsPointVisible(ptNum))
+    {
+      std::cout << "Point: " << ptNum << " is visible" << std::endl;
+    }
+    else
+    {
+      std::cout << "Point: " << ptNum << " is not visible" << std::endl;
+    }
+  };
+
+  // Should not be visible.
+  isVisible(27);
+  // Should be visible.
+  isVisible(7);
+
   // Create a mapper and actor
   vtkNew<vtkDataSetMapper> gridMapper;
   gridMapper->SetInputData(structuredGrid);

@@ -307,6 +307,7 @@ This section includes vtkImageData, vtkExplicitStructuredGrid, vtkStructuredGrid
 
 | Example Name | Description | Image |
 | -------------- | ------------- | ------- |
+[BlankPoint](/Python/StructuredGrid/BlankPoint) | Blank a point of a vtkStructuredGrid.
 [SGrid](/Python/StructuredGrid/SGrid) | Creating a structured grid dataset of a semi-cylinder. Vectors are created whose magnitude is proportional to radius and oriented in tangential direction.
 
 #### vtkStructuredPoints
