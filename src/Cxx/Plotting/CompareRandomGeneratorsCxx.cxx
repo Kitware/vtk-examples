@@ -96,23 +96,23 @@ int main(int, char*[])
     renderWindow->AddRenderer(renderer);
   }
 
-  // Setup a grid of renderers
+       // Setup a grid of renderers
   int gridCols = 3;
   int gridRows = 2;
 
-  // Define side length (in pixels) of each renderer square
+       // Define side length (in pixels) of each renderer square
   int rendererSize = 300;
 
   renderWindow->SetWindowName("CompareRandomGeneratorsCxx");
   renderWindow->SetSize(rendererSize * gridCols, rendererSize * gridRows);
 
-  // Set up a grid of viewports for each renderer
+       // Set up a grid of viewports for each renderer
   int r = 0;
-  for (double row = 0; row < gridRows; row++)
+  for (auto row = 0; row < gridRows; row++)
   {
-    for (double col = 0; col < gridCols; col++)
+    for (auto col = 0; col < gridCols; col++)
     {
-      double index = row * gridCols + col;
+      // auto index = row * gridCols + col;
 
       // Set the renderer's viewport dimensions (xmin, ymin, xmax, ymax) within
       // the render window. Note that for the Y values, we need to subtract the
@@ -132,7 +132,7 @@ int main(int, char*[])
 
   renderWindow->Render();
 
-  // Initialize the event loop and then start it
+       // Initialize the event loop and then start it
   interactor->Initialize();
   interactor->Start();
 

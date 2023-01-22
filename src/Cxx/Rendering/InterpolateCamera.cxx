@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 
   for (size_t i = 0; i < keyPoints.size() + 1; ++i)
   {
-    auto j = i;
+    // auto j = i;
     vtkNew<vtkCamera> cam;
     cam->SetFocalPoint(center.data());
     if (i < keyPoints.size())

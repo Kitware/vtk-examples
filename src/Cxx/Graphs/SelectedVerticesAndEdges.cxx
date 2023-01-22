@@ -26,7 +26,7 @@ public:
   static RubberBandStyle* New();
   vtkTypeMacro(RubberBandStyle, vtkInteractorStyleRubberBand2D);
 
-  virtual void OnLeftButtonUp()
+  virtual void OnLeftButtonUp() override
   {
     // Forward events
     vtkInteractorStyleRubberBand2D::OnLeftButtonUp();

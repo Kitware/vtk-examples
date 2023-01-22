@@ -336,7 +336,7 @@ void AdjustEdgeCurvatures(vtkPolyData* source, std::string const& curvatureName,
     else
     {
       // Corner case.
-      countInvalid += 1;
+      // countInvalid += 1;
       // Assuming the curvature of the point is planar.
       newCurv = 0.0;
     }

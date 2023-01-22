@@ -85,7 +85,7 @@ int main(int, char*[])
   std::transform(ext.begin(), ext.end(), std::back_inserter(filenames),
                  [](const std::string& e) { return "ImageWriter" + e; });
   filenames[0] = filenames[0] + '1';
-  for (auto f : filenames)
+  for (auto const & f : filenames)
   {
     WriteImage(f, renWin, false);
   }

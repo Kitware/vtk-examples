@@ -84,8 +84,8 @@ int main(int, char*[])
   }
 
   // Define size of the grid that will hold the objects
-  int gridCols = 3;
-  int gridRows = 3;
+  auto gridCols = 3;
+  auto gridRows = 3;
   // Define side length (in pixels) of each renderer square
   int rendererSize = 300;
 
@@ -94,11 +94,11 @@ int main(int, char*[])
   renderWindow->SetSize(rendererSize * gridCols, rendererSize * gridRows);
 
   // Set up a grid of viewports for each renderer
-  for (double row = 0; row < gridRows; row++)
+  for (auto row = 0; row < gridRows; row++)
   {
-    for (double col = 0; col < gridCols; col++)
+    for (auto col = 0; col < gridCols; col++)
     {
-      double index = row * gridCols + col;
+      auto index = row * gridCols + col;
 
       // Create a renderer for this grid cell
       vtkSmartPointer<vtkRenderer> renderer =
