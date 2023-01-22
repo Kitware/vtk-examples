@@ -619,7 +619,7 @@ std::string HTMLTableMaker::MakeTR_HTML(const std::string& name,
 std::string HTMLTableMaker::MakeWebColorTables()
 {
   std::string res;
-  for (auto p : cs.cnOrder)
+  for (auto const & p : cs.cnOrder)
   {
     if (std::find(this->cs.cnStartTable.begin(), this->cs.cnStartTable.end(),
                   p) != this->cs.cnStartTable.end())
@@ -631,7 +631,7 @@ std::string HTMLTableMaker::MakeWebColorTables()
     // Add in the name of the group in the color table.
     res += this->MakeTD(p + " colors");
     auto values = this->cs.cn[p];
-    for (auto q : values)
+    for (auto const & q : values)
     {
       auto rgb = this->nc->GetColor3ub(q);
       auto y = this->htmlRGBA.RGBToLumaCCIR601(rgb);
@@ -659,7 +659,7 @@ std::string HTMLTableMaker::MakeVTKColorTables()
 {
   std::string res;
 
-  for (auto p : cs.vtkcnOrder)
+  for (auto const & p : cs.vtkcnOrder)
   {
     if (std::find(this->cs.vtkcnStartTable.begin(),
                   this->cs.vtkcnStartTable.end(),
@@ -672,7 +672,7 @@ std::string HTMLTableMaker::MakeVTKColorTables()
     // Add in the name of the group in the color table.
     res += this->MakeTD(p);
     auto values = this->cs.vtkcn[p];
-    for (auto q : values)
+    for (auto const & q : values)
     {
       auto rgb = this->nc->GetColor3ub(q);
       auto y = this->htmlRGBA.RGBToLumaCCIR601(rgb);
@@ -702,12 +702,12 @@ std::string HTMLTableMaker::MakeSynonymColorTable()
 {
   auto synonyms = this->GetSynonyms();
   std::vector<std::string> cn;
-  for (const auto p : this->cs.cn)
+  for (const auto & p : this->cs.cn)
   {
     std::copy(p.second.begin(), p.second.end(), std::back_inserter(cn));
   }
   std::map<std::string, std::string> d;
-  for (const auto p : cn)
+  for (const auto & p : cn)
   {
     // Make a lowercase key.
     std::string key;
@@ -749,7 +749,7 @@ std::string HTMLTableMaker::MakeSynonymColorTable()
     }
     std::sort(p.begin(), p.end());
     std::string names;
-    for (auto q : p)
+    for (auto const & q : p)
     {
       names += q;
       if (q != p.back())

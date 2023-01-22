@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
       randomSequence->Next();
       y = randomSequence->GetRangeValue(-3.0, 5.0);
       randomSequence->Next();
-      z = randomSequence->GetRangeValue(4.0, 14.0);
+      // z = randomSequence->GetRangeValue(4.0, 14.0);
       randomSequence->Next();
       sphereSource1->SetCenter(x, y, x);
       sphereSource1->SetRadius(1.0);

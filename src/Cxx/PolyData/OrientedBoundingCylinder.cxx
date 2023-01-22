@@ -284,7 +284,7 @@ int main(int argc, char* argv[])
   renderer->SetBackground2(colors->GetColor3d("SkyBlue").GetData());
   renderer->SetBackground(colors->GetColor3d("LightSeaGreen").GetData());
 
-  double adjustedRadius = radius;
+  // double adjustedRadius = radius;
   double adjustedIncr = (outerRadius - radius) / 20.0;
   if (enclosedPoints->GetOutput(1)->GetPoints()->GetNumberOfPoints() > 4)
   {

@@ -93,7 +93,7 @@ int main(int, char*[])
   {
     std::cout << "Matching colors to My Red: ";
     size_t i = 1;
-    for (auto p : matchingColors)
+    for (auto const & p : matchingColors)
     {
       std::cout << p;
       if (i < matchingColors.size())
@@ -205,7 +205,7 @@ std::vector<std::string> FindSynonyms(const std::string& color,
   std::transform(color.begin(), color.end(), std::back_inserter(lcColor),
                  (int (*)(int))std::tolower);
   std::vector<std::string> synonyms;
-  for (auto p : availableColors)
+  for (auto const & p : availableColors)
   {
     auto c = namedColors->GetColor3ub(p);
     if (myColor.Compare(c, 1))
@@ -229,7 +229,7 @@ void PrintColors(vtkNamedColors* namedColors)
   auto max_str_len = max_str->size();
   auto n = 0;
   std::ostringstream os;
-  for (auto const p : colors)
+  for (auto const & p : colors)
   {
     ++n;
     if (n % 5 == 0)
@@ -252,7 +252,7 @@ void PrintSynonyms(vtkNamedColors* namedColors)
   std::cout << "There are " << synonyms.size() << " synonyms:" << std::endl;
   // Get the size of the longest synonym name.
   size_t max_str_len = 0;
-  for (auto const p : synonyms)
+  for (auto const & p : synonyms)
   {
     auto max_str = std::max_element(
         p.begin(), p.end(), [](std::string const& a, std::string const& b) {
@@ -261,10 +261,10 @@ void PrintSynonyms(vtkNamedColors* namedColors)
     max_str_len =
         (max_str_len < max_str->size()) ? max_str->size() : max_str_len;
   }
-  for (auto const p : synonyms)
+  for (auto const & p : synonyms)
   {
     size_t n = 0;
-    for (auto const q : p)
+    for (auto const & q : p)
     {
       ++n;
       if (n < p.size())

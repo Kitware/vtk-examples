@@ -915,7 +915,7 @@ int main(int argc, char* argv[])
   slwP.p1[1] = posY;
   slwP.p2[0] = posX1;
   slwP.p2[1] = posY;
-  posY += stepSize;
+  // posY += stepSize;
 
   auto swAnisotropyRotation = MakeSliderWidget(slwP);
   swAnisotropyRotation->SetInteractor(interactor);

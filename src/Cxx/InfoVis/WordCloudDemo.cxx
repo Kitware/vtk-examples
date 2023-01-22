@@ -72,7 +72,7 @@ public:
     os << std::endl;
     os << "  Sizes: " << Sizes[0] << " " << Sizes[1] << std::endl;
     os << "  StopWords: ";
-    for (auto s : StopWords)
+    for (auto const & s : StopWords)
     {
       os << s << " ";
     }
@@ -123,11 +123,11 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  // Transfer parameters to word cloud member data
+       // Transfer parameters to word cloud member data
   auto wordCloud = vtkSmartPointer<vtkWordCloud>::New();
   CloudParametersToWordCloud(cloudParameters, wordCloud);
 
-  // Get the file that contains the text to be converted to a word cloud
+       // Get the file that contains the text to be converted to a word cloud
   char** newArgv = nullptr;
   int newArgc = 0;
   arg.GetUnusedArguments(&newArgc, &newArgv);
@@ -147,7 +147,7 @@ int main(int argc, char* argv[])
   std::cout << "Skipped Words: " << wordCloud->GetSkippedWords().size()
             << std::endl;
 
-  // Display the final image
+       // Display the final image
   vtkNew<vtkNamedColors> colors;
   vtkNew<vtkRenderWindowInteractor> interactor;
 
@@ -159,7 +159,7 @@ int main(int argc, char* argv[])
   imageViewer->SetSize(wordCloud->GetSizes()[0], wordCloud->GetSizes()[1]);
   imageViewer->GetRenderer()->ResetCamera();
 
-  // Zoom in a bit
+       // Zoom in a bit
   vtkCamera* camera = imageViewer->GetRenderer()->GetActiveCamera();
   camera->ParallelProjectionOn();
   camera->SetParallelScale(wordCloud->GetAdjustedSizes()[0] * .4);
@@ -177,7 +177,7 @@ bool ProcessCommandLine(vtksys::CommandLineArguments& arg,
 {
   typedef vtksys::CommandLineArguments argT;
 
-  // Need this to get arguments without --'s
+       // Need this to get arguments without --'s
   arg.StoreUnusedArguments(true);
 
   arg.AddArgument("--backgroundColorName", argT::SPACE_ARGUMENT,
@@ -262,7 +262,7 @@ bool ProcessCommandLine(vtksys::CommandLineArguments& arg,
     return false;
   }
 
-  // Set defaults for vector arguments
+       // Set defaults for vector arguments
   if (cloudParameters.ColorDistribution.size() == 0)
   {
     cloudParameters.ColorDistribution.push_back(.6);
@@ -339,7 +339,7 @@ void CloudParametersToWordCloud(CloudParameters& cloudParameters,
   wordCloud->SetSizes(sizes);
 
   std::set<std::string> stopWords;
-  for (auto s : cloudParameters.StopWords)
+  for (auto const & s : cloudParameters.StopWords)
   {
     stopWords.insert(s);
   }

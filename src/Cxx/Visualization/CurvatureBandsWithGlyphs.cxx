@@ -643,7 +643,7 @@ void AdjustEdgeCurvatures(vtkPolyData* source, std::string const& curvatureName,
     else
     {
       // Corner case.
-      countInvalid += 1;
+      // countInvalid += 1;
       // Assuming the curvature of the point is planar.
       newCurv = 0.0;
     }
@@ -1359,7 +1359,7 @@ void AdjustFrequencyRanges(std::map<int, std::vector<double>>& bands,
   }
   std::map<int, std::vector<double>> adjBands;
   idx = 0;
-  for (auto p : bands)
+  for (auto const & p : bands)
   {
     adjBands[idx] = p.second;
     ++idx;

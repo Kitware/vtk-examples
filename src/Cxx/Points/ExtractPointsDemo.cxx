@@ -21,7 +21,7 @@ int main(int /*argc*/, char* /* argv */[])
 {
   vtkNew<vtkNamedColors> colors;
 
-  // Create implicit functions
+       // Create implicit functions
   vtkNew<vtkCone> cone;
   cone->SetAngle(30.0);
   vtkNew<vtkSphere> sphere;
@@ -30,7 +30,7 @@ int main(int /*argc*/, char* /* argv */[])
   superquadric->SetPhiRoundness(2.5);
   superquadric->SetThetaRoundness(0.5);
 
-  // Store the functions
+       // Store the functions
   std::vector<vtkSmartPointer<vtkImplicitFunction>> functions;
   functions.push_back(sphere);
   functions.push_back(cone);
@@ -40,18 +40,18 @@ int main(int /*argc*/, char* /* argv */[])
   vtkNew<vtkBoundedPointSource> pointSource;
   pointSource->SetNumberOfPoints(100000);
 
-  // Rows and columns
+       // Rows and columns
   unsigned int gridXDimensions = 2;
   unsigned int gridYDimensions = 2;
 
-  // Need a renderer even if there is no actor
+       // Need a renderer even if there is no actor
   std::vector<vtkSmartPointer<vtkRenderer>> renderers;
   double background[6] = {0.4, 0.5, 0.6, 0.6, 0.5, 0.4};
   for (size_t i = 0; i < gridXDimensions * gridYDimensions; i++)
   {
     renderers.push_back(vtkSmartPointer<vtkRenderer>::New());
     renderers[i]->SetBackground(background);
-    auto fwdIt = std::rotate(background, background + 1, background + 6);
+    // auto fwdIt = std::rotate(background, background + 1, background + 6);
   }
 
   // Glyphs

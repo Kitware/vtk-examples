@@ -325,7 +325,7 @@ std::string HTMLTableMaker::MakeTD2(std::vector<vtkColor3ub> const& rgbs)
 std::string HTMLTableMaker::MakeTable()
 {
   auto res = this->MakeTableHeader();
-  for (auto const p : this->cs.cs_colors)
+  for (auto const & p : this->cs.cs_colors)
   {
     auto idx = p.first;
     auto name = p.second.first;
