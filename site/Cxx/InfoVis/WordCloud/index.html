@@ -205,7 +205,7 @@ Skipped <span class=m>5</span> words
 <span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;  Sizes: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>Sizes</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>Sizes</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;  StopWords: &quot;</span><span class=p>;</span><span class=w></span>
-<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>StopWords</span><span class=p>)</span><span class=w></span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=o>&amp;</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>StopWords</span><span class=p>)</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=p>}</span><span class=w></span>
@@ -283,7 +283,7 @@ Skipped <span class=m>5</span> words
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Get the file that contains the text to be converted to a word cloud</span>
+<span class=w>       </span><span class=c1>// Get the file that contains the text to be converted to a word cloud</span>
 <span class=w>  </span><span class=kt>char</span><span class=o>**</span><span class=w> </span><span class=n>newArgv</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>newArgc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=n>arg</span><span class=p>.</span><span class=n>GetUnusedArguments</span><span class=p>(</span><span class=o>&amp;</span><span class=n>newArgc</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=n>newArgv</span><span class=p>);</span><span class=w></span>
@@ -294,22 +294,22 @@ Skipped <span class=m>5</span> words
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Open the text file</span>
+<span class=w>       </span><span class=c1>// Open the text file</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>ifstream</span><span class=w> </span><span class=n>t</span><span class=p>(</span><span class=n>newArgv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span><span class=w></span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>stringstream</span><span class=w> </span><span class=n>buffer</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=n>buffer</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>t</span><span class=p>.</span><span class=n>rdbuf</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>buffer</span><span class=p>.</span><span class=n>str</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>t</span><span class=p>.</span><span class=n>close</span><span class=p>();</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Generate a path for placement of words</span>
+<span class=w>       </span><span class=c1>// Generate a path for placement of words</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>ExtentOffset</span><span class=o>&gt;</span><span class=w> </span><span class=n>offset</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=n>ArchimedesSpiral</span><span class=p>(</span><span class=n>offset</span><span class=p>,</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>Sizes</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Sort the word by frequency</span>
+<span class=w>       </span><span class=c1>// Sort the word by frequency</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>multiset</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>pair</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=o>&gt;</span><span class=p>,</span><span class=w> </span><span class=n>Comparator</span><span class=o>&gt;</span><span class=w> </span><span class=n>sortedWords</span><span class=w> </span><span class=o>=</span><span class=w></span>
 <span class=w>      </span><span class=n>FindWordsSortedByFrequency</span><span class=p>(</span><span class=n>s</span><span class=p>,</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Create a mask image</span>
+<span class=w>       </span><span class=c1>// Create a mask image</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkColor3ub</span><span class=w> </span><span class=n>maskColor</span><span class=w> </span><span class=o>=</span><span class=w></span>
 </span><span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>MaskColorName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span><span class=w></span>
@@ -372,20 +372,20 @@ Skipped <span class=m>5</span> words
 <span class=w>    </span><span class=p>}</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Create an image that will hold the final image</span>
+<span class=w>       </span><span class=c1>// Create an image that will hold the final image</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageBlend</span><span class=o>&gt;</span><span class=w> </span><span class=k>final</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=k>final</span><span class=o>-&gt;</span><span class=n>AddInputData</span><span class=p>(</span><span class=n>maskImage</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=k>final</span><span class=o>-&gt;</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>.5</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=k>final</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Try to add each word</span>
+<span class=w>       </span><span class=c1>// Try to add each word</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>numberSkipped</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>keep</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=mi>6</span><span class=o>&gt;</span><span class=w> </span><span class=n>extent</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=kt>bool</span><span class=w> </span><span class=n>added</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=c1>// Create a vector of orientations to try.</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>mt19937</span><span class=w> </span><span class=nf>mt</span><span class=p>(</span><span class=mi>4355412</span><span class=p>);</span><span class=w> </span><span class=c1>// Standard mersenne twister engine</span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>element</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>sortedWords</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=o>&amp;</span><span class=w> </span><span class=n>element</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>sortedWords</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=w> </span><span class=n>orientations</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>Orientations</span><span class=p>.</span><span class=n>size</span><span class=p>()</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w></span>
@@ -422,10 +422,10 @@ Skipped <span class=m>5</span> words
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Kept &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>keep</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; words&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Skipped &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numberSkipped</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; words&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// If a maskFile is specified, replace the maskColor with the background color</span>
+<span class=w>       </span><span class=c1>// If a maskFile is specified, replace the maskColor with the background color</span>
 <span class=w>  </span><span class=n>ReplaceMaskColorWithBackgroundColor</span><span class=p>(</span><span class=k>final</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>(),</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Display the final image</span>
+<span class=w>       </span><span class=c1>// Display the final image</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>interactor</span><span class=p>;</span><span class=w></span>
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageViewer2</span><span class=o>&gt;</span><span class=w> </span><span class=n>imageViewer</span><span class=p>;</span><span class=w></span>
@@ -436,7 +436,7 @@ Skipped <span class=m>5</span> words
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>Sizes</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>Sizes</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span><span class=w></span>
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Zoom in a bit</span>
+<span class=w>       </span><span class=c1>// Zoom in a bit</span>
 <span class=hll><span class=w>  </span><span class=n>vtkCamera</span><span class=o>*</span><span class=w> </span><span class=n>camera</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span><span class=w></span>
 </span><span class=w>  </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>ParallelProjectionOn</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetParallelScale</span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>AdjustedSizes</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mf>.4</span><span class=p>);</span><span class=w></span>
@@ -457,24 +457,24 @@ Skipped <span class=m>5</span> words
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>stopList</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=n>CreateStopList</span><span class=p>(</span><span class=n>stopList</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Add user stop words</span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>stop</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>StopWords</span><span class=p>)</span><span class=w></span>
+<span class=w>       </span><span class=c1>// Add user stop words</span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=o>&amp;</span><span class=w> </span><span class=n>stop</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>StopWords</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>stopList</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>stop</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Drop the case of all words</span>
+<span class=w>       </span><span class=c1>// Drop the case of all words</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>s</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>s</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span><span class=w> </span><span class=n>s</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=o>::</span><span class=n>tolower</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Extract words</span>
+<span class=w>       </span><span class=c1>// Extract words</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>regex</span><span class=w> </span><span class=nf>wordRegex</span><span class=p>(</span><span class=s>&quot;(</span><span class=se>\\</span><span class=s>w+)&quot;)</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>wordsBegin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>sregex_iterator</span><span class=p>(</span><span class=n>s</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>s</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span><span class=w> </span><span class=n>wordRegex</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>wordsEnd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>sregex_iterator</span><span class=p>();</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Store the words in a map that will contain frequencies</span>
+<span class=w>       </span><span class=c1>// Store the words in a map that will contain frequencies</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=o>&gt;</span><span class=w> </span><span class=n>wordContainer</span><span class=p>;</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// If a title is present add it with a high frequency</span>
+<span class=w>       </span><span class=c1>// If a title is present add it with a high frequency</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>Title</span><span class=p>.</span><span class=n>length</span><span class=p>()</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>wordContainer</span><span class=p>[</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>Title</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>1000</span><span class=p>;</span><span class=w></span>
@@ -485,7 +485,7 @@ Skipped <span class=m>5</span> words
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>matchStr</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=n>i</span><span class=p>).</span><span class=n>str</span><span class=p>();</span><span class=w></span>
 
-<span class=w>    </span><span class=c1>// Replace words with another</span>
+<span class=w>         </span><span class=c1>// Replace words with another</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>ReplacementPairs</span><span class=p>.</span><span class=n>size</span><span class=p>();</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=mi>2</span><span class=p>)</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>from</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>ReplacementPairs</span><span class=p>[</span><span class=n>p</span><span class=p>];</span><span class=w></span>
@@ -499,7 +499,7 @@ Skipped <span class=m>5</span> words
 <span class=w>      </span><span class=p>}</span><span class=w></span>
 <span class=w>    </span><span class=p>}</span><span class=w></span>
 
-<span class=w>    </span><span class=c1>// Skip the word if it is in the stop list or contains a digit</span>
+<span class=w>         </span><span class=c1>// Skip the word if it is in the stop list or contains a digit</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>it</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>find</span><span class=p>(</span><span class=n>stopList</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>stopList</span><span class=p>.</span><span class=n>end</span><span class=p>()</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>matchStr</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=k>const</span><span class=w> </span><span class=k>auto</span><span class=w> </span><span class=n>digit</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=n>i</span><span class=p>).</span><span class=n>str</span><span class=p>().</span><span class=n>find_first_of</span><span class=p>(</span><span class=s>&quot;0123456789&quot;</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=n>it</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=o>*</span><span class=p>(</span><span class=n>stopList</span><span class=p>.</span><span class=n>end</span><span class=p>()</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=mi>1</span><span class=p>)</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>digit</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>::</span><span class=n>npos</span><span class=p>)</span><span class=w></span>
@@ -508,7 +508,7 @@ Skipped <span class=m>5</span> words
 <span class=w>      </span><span class=k>continue</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=p>}</span><span class=w></span>
 
-<span class=w>    </span><span class=c1>// Only include words that have more than N characters</span>
+<span class=w>         </span><span class=c1>// Only include words that have more than N characters</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>matchStr</span><span class=p>.</span><span class=n>size</span><span class=p>()</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>N</span><span class=p>)</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=c1>// Raise the case of he first letter in the word</span>
@@ -519,8 +519,8 @@ Skipped <span class=m>5</span> words
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Stopped &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>stop</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; words&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Defining a lambda function to compare two pairs. It will compare</span>
-<span class=w>  </span><span class=c1>// two pairs using second field</span>
+<span class=w>       </span><span class=c1>// Defining a lambda function to compare two pairs. It will compare</span>
+<span class=w>       </span><span class=c1>// two pairs using second field</span>
 <span class=w>  </span><span class=n>Comparator</span><span class=w> </span><span class=n>compFunctor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>[](</span><span class=n>std</span><span class=o>::</span><span class=n>pair</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=o>&gt;</span><span class=w> </span><span class=n>elem1</span><span class=p>,</span><span class=w></span>
 <span class=w>                              </span><span class=n>std</span><span class=o>::</span><span class=n>pair</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=o>&gt;</span><span class=w> </span><span class=n>elem2</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>elem1</span><span class=p>.</span><span class=n>second</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>elem2</span><span class=p>.</span><span class=n>second</span><span class=p>)</span><span class=w></span>
@@ -530,8 +530,8 @@ Skipped <span class=m>5</span> words
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>elem1</span><span class=p>.</span><span class=n>second</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>elem2</span><span class=p>.</span><span class=n>second</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>};</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Declaring a multiset that will store the pairs using above comparision</span>
-<span class=w>  </span><span class=c1>// logic</span>
+<span class=w>       </span><span class=c1>// Declaring a multiset that will store the pairs using above comparision</span>
+<span class=w>       </span><span class=c1>// logic</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>multiset</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>pair</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=o>&gt;</span><span class=p>,</span><span class=w> </span><span class=n>Comparator</span><span class=o>&gt;</span><span class=w> </span><span class=n>setOfWords</span><span class=p>(</span><span class=w></span>
 <span class=w>      </span><span class=n>wordContainer</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>wordContainer</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span><span class=w> </span><span class=n>compFunctor</span><span class=p>);</span><span class=w></span>
 
@@ -548,17 +548,17 @@ Skipped <span class=m>5</span> words
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Create an image of the string</span>
+<span class=w>       </span><span class=c1>// Create an image of the string</span>
 <span class=hll><span class=w>  </span><span class=n>vtkFreeTypeTools</span><span class=o>*</span><span class=w> </span><span class=n>freeType</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkFreeTypeTools</span><span class=o>::</span><span class=n>GetInstance</span><span class=p>();</span><span class=w></span>
 </span><span class=w>  </span><span class=n>freeType</span><span class=o>-&gt;</span><span class=n>ScaleToPowerTwoOff</span><span class=p>();</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Create random distributions</span>
+<span class=w>       </span><span class=c1>// Create random distributions</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>uniform_real_distribution</span><span class=o>&lt;&gt;</span><span class=w> </span><span class=n>colorDist</span><span class=p>(</span><span class=w></span>
 <span class=w>      </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>ColorDistribution</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w></span>
 <span class=w>      </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>ColorDistribution</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span><span class=w></span>
-<span class=w>  </span><span class=kt>bool</span><span class=w> </span><span class=n>discreteOrientations</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>Orientations</span><span class=p>.</span><span class=n>size</span><span class=p>()</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
+<span class=w>  </span><span class=c1>// bool discreteOrientations = cloudParameters.Orientations.size() != 0;</span>
 
-<span class=w>  </span><span class=c1>// Setup a property for the strings containing fixed parameters</span>
+<span class=w>       </span><span class=c1>// Setup a property for the strings containing fixed parameters</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>textProperty</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>WordColorName</span><span class=p>.</span><span class=n>length</span><span class=p>()</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w></span>
@@ -569,8 +569,8 @@ Skipped <span class=m>5</span> words
 <span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>ColorSchemeName</span><span class=p>.</span><span class=n>length</span><span class=p>()</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkColorSeries</span><span class=o>&gt;</span><span class=w> </span><span class=n>colorScheme</span><span class=p>;</span><span class=w></span>
-</span><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>index</span><span class=w> </span><span class=o>=</span><span class=w></span>
-<span class=w>        </span><span class=n>colorScheme</span><span class=o>-&gt;</span><span class=n>SetColorSchemeByName</span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>ColorSchemeName</span><span class=p>);</span><span class=w></span>
+</span><span class=w>    </span><span class=c1>//    int index =</span>
+<span class=w>    </span><span class=c1>//        colorScheme-&gt;SetColorSchemeByName(cloudParameters.ColorSchemeName);</span>
 <span class=hll><span class=w>    </span><span class=n>vtkColor3ub</span><span class=w> </span><span class=n>color</span><span class=w> </span><span class=o>=</span><span class=w></span>
 </span><span class=w>        </span><span class=n>colorScheme</span><span class=o>-&gt;</span><span class=n>GetColorRepeating</span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>KeptCount</span><span class=p>);</span><span class=w></span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>color</span><span class=p>.</span><span class=n>Compare</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;black&quot;</span><span class=p>),</span><span class=w> </span><span class=mi>1</span><span class=p>)</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w></span>
@@ -591,7 +591,7 @@ Skipped <span class=m>5</span> words
 <span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetJustificationToCentered</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetLineOffset</span><span class=p>(</span><span class=mi>4</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Check if a font file is present</span>
+<span class=w>       </span><span class=c1>// Check if a font file is present</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>FontFile</span><span class=p>.</span><span class=n>length</span><span class=p>()</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetFontFile</span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>FontFile</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span><span class=w></span>
@@ -602,7 +602,7 @@ Skipped <span class=m>5</span> words
 <span class=w>    </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetFontFamilyToArial</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Set the font size</span>
+<span class=w>       </span><span class=c1>// Set the font size</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>fontSize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>FontMultiplier</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>frequency</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>fontSize</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>MaxFontSize</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
@@ -620,21 +620,21 @@ Skipped <span class=m>5</span> words
 <span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=n>fontSize</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetOrientation</span><span class=p>(</span><span class=n>orientation</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Add gap</span>
+<span class=w>       </span><span class=c1>// Add gap</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>spaces</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>Gap</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>p</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>spaces</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=sc>&#39; &#39;</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// For each string, create an image and see if it overlaps with other images,</span>
-<span class=w>  </span><span class=c1>// if so, skip it</span>
+<span class=w>       </span><span class=c1>// For each string, create an image and see if it overlaps with other images,</span>
+<span class=w>       </span><span class=c1>// if so, skip it</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>accepted</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span><span class=w> </span><span class=n>textImage</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>freeType</span><span class=o>-&gt;</span><span class=n>RenderString</span><span class=p>(</span><span class=n>textProperty</span><span class=p>,</span><span class=w> </span><span class=n>spaces</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>word</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>spaces</span><span class=p>,</span><span class=w></span>
 <span class=w>                         </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>DPI</span><span class=p>,</span><span class=w> </span><span class=n>textImage</span><span class=p>.</span><span class=n>GetPointer</span><span class=p>());</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Set the extent of the text image</span>
+<span class=w>       </span><span class=c1>// Set the extent of the text image</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=w> </span><span class=n>bb</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=n>freeType</span><span class=o>-&gt;</span><span class=n>GetBoundingBox</span><span class=p>(</span><span class=n>textProperty</span><span class=p>,</span><span class=w> </span><span class=n>spaces</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>word</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>spaces</span><span class=p>,</span><span class=w></span>
 <span class=w>                           </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>DPI</span><span class=p>,</span><span class=w> </span><span class=n>bb</span><span class=p>.</span><span class=n>data</span><span class=p>());</span><span class=w></span>
@@ -662,7 +662,7 @@ Skipped <span class=m>5</span> words
 <span class=hll><span class=w>      </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span><span class=w> </span><span class=n>image</span><span class=p>;</span><span class=w></span>
 </span><span class=w>      </span><span class=k>final</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w></span>
 
-<span class=w>      </span><span class=c1>// Does the text image overlap with images on the final image</span>
+<span class=w>           </span><span class=c1>// Does the text image overlap with images on the final image</span>
 <span class=hll><span class=w>      </span><span class=n>vtkImageIterator</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=o>&gt;</span><span class=w> </span><span class=n>finalIt</span><span class=p>(</span><span class=k>final</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>(),</span><span class=w></span>
 </span><span class=w>                                              </span><span class=n>textImage</span><span class=o>-&gt;</span><span class=n>GetExtent</span><span class=p>());</span><span class=w></span>
 <span class=w>      </span><span class=n>textImage</span><span class=o>-&gt;</span><span class=n>GetExtent</span><span class=p>(</span><span class=n>extent</span><span class=p>.</span><span class=n>data</span><span class=p>());</span><span class=w></span>
@@ -734,7 +734,7 @@ Skipped <span class=m>5</span> words
 <span class=w>    </span><span class=n>range</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>max</span><span class=p>(</span><span class=n>maxX</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>minX</span><span class=p>,</span><span class=w> </span><span class=n>maxY</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>minY</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>scaleX</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>1.0</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=n>range</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>sizes</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span><span class=w></span>
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>scaleY</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>1.0</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=n>range</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>sizes</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span><span class=w></span>
+<span class=w>  </span><span class=c1>//  double scaleY = 1.0 / range * sizes[1];</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>it</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>archimedes</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span><span class=w> </span><span class=n>it</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>archimedes</span><span class=p>.</span><span class=n>end</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>it</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
@@ -750,7 +750,7 @@ Skipped <span class=m>5</span> words
 <span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=k>typedef</span><span class=w> </span><span class=n>vtksys</span><span class=o>::</span><span class=n>CommandLineArguments</span><span class=w> </span><span class=n>argT</span><span class=p>;</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Need this to get arguments without --&#39;s</span>
+<span class=w>       </span><span class=c1>// Need this to get arguments without --&#39;s</span>
 <span class=w>  </span><span class=n>arg</span><span class=p>.</span><span class=n>StoreUnusedArguments</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=n>arg</span><span class=p>.</span><span class=n>AddArgument</span><span class=p>(</span><span class=s>&quot;--backgroundColorName&quot;</span><span class=p>,</span><span class=w> </span><span class=n>argT</span><span class=o>::</span><span class=n>SPACE_ARGUMENT</span><span class=p>,</span><span class=w></span>
@@ -830,7 +830,7 @@ Skipped <span class=m>5</span> words
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Set defaults for vector arguments</span>
+<span class=w>       </span><span class=c1>// Set defaults for vector arguments</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>ColorDistribution</span><span class=p>.</span><span class=n>size</span><span class=p>()</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>ColorDistribution</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=mf>.6</span><span class=p>);</span><span class=w></span>

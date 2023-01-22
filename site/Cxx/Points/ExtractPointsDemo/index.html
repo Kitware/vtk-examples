@@ -78,7 +78,7 @@ function registerListener(event, func) {
 <span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
 </span>
-<span class=w>  </span><span class=c1>// Create implicit functions</span>
+<span class=w>       </span><span class=c1>// Create implicit functions</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCone</span><span class=o>&gt;</span><span class=w> </span><span class=n>cone</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetAngle</span><span class=p>(</span><span class=mf>30.0</span><span class=p>);</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphere</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphere</span><span class=p>;</span><span class=w></span>
@@ -87,7 +87,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>superquadric</span><span class=o>-&gt;</span><span class=n>SetPhiRoundness</span><span class=p>(</span><span class=mf>2.5</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>superquadric</span><span class=o>-&gt;</span><span class=n>SetThetaRoundness</span><span class=p>(</span><span class=mf>0.5</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Store the functions</span>
+<span class=w>       </span><span class=c1>// Store the functions</span>
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImplicitFunction</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>functions</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>functions</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>sphere</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>functions</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>cone</span><span class=p>);</span><span class=w></span>
@@ -97,18 +97,18 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBoundedPointSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>pointSource</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>pointSource</span><span class=o>-&gt;</span><span class=n>SetNumberOfPoints</span><span class=p>(</span><span class=mi>100000</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Rows and columns</span>
+<span class=w>       </span><span class=c1>// Rows and columns</span>
 <span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>gridXDimensions</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>2</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>gridYDimensions</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>2</span><span class=p>;</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Need a renderer even if there is no actor</span>
+<span class=w>       </span><span class=c1>// Need a renderer even if there is no actor</span>
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>renderers</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>background</span><span class=p>[</span><span class=mi>6</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mf>0.4</span><span class=p>,</span><span class=w> </span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=mf>0.6</span><span class=p>,</span><span class=w> </span><span class=mf>0.6</span><span class=p>,</span><span class=w> </span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=mf>0.4</span><span class=p>};</span><span class=w></span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>size_t</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>gridXDimensions</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>gridYDimensions</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=hll><span class=w>    </span><span class=n>renderers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span><span class=w></span>
 </span><span class=w>    </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>background</span><span class=p>);</span><span class=w></span>
-<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>fwdIt</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>rotate</span><span class=p>(</span><span class=n>background</span><span class=p>,</span><span class=w> </span><span class=n>background</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>background</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>6</span><span class=p>);</span><span class=w></span>
+<span class=w>    </span><span class=c1>// auto fwdIt = std::rotate(background, background + 1, background + 6);</span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Glyphs</span>

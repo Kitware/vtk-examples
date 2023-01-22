@@ -153,23 +153,23 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Setup a grid of renderers</span>
+<span class=w>       </span><span class=c1>// Setup a grid of renderers</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>gridCols</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>3</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>gridRows</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>2</span><span class=p>;</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Define side length (in pixels) of each renderer square</span>
+<span class=w>       </span><span class=c1>// Define side length (in pixels) of each renderer square</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>rendererSize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>300</span><span class=p>;</span><span class=w></span>
 
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;CompareRandomGeneratorsCxx&quot;</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=n>rendererSize</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>gridCols</span><span class=p>,</span><span class=w> </span><span class=n>rendererSize</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>gridRows</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Set up a grid of viewports for each renderer</span>
+<span class=w>       </span><span class=c1>// Set up a grid of viewports for each renderer</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>r</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>double</span><span class=w> </span><span class=n>row</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>row</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>gridRows</span><span class=p>;</span><span class=w> </span><span class=n>row</span><span class=o>++</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>row</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>row</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>gridRows</span><span class=p>;</span><span class=w> </span><span class=n>row</span><span class=o>++</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>double</span><span class=w> </span><span class=n>col</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>col</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>gridCols</span><span class=p>;</span><span class=w> </span><span class=n>col</span><span class=o>++</span><span class=p>)</span><span class=w></span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>col</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>col</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>gridCols</span><span class=p>;</span><span class=w> </span><span class=n>col</span><span class=o>++</span><span class=p>)</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
-<span class=w>      </span><span class=kt>double</span><span class=w> </span><span class=n>index</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>row</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>gridCols</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>col</span><span class=p>;</span><span class=w></span>
+<span class=w>      </span><span class=c1>// auto index = row * gridCols + col;</span>
 
 <span class=w>      </span><span class=c1>// Set the renderer&#39;s viewport dimensions (xmin, ymin, xmax, ymax) within</span>
 <span class=w>      </span><span class=c1>// the render window. Note that for the Y values, we need to subtract the</span>
@@ -189,7 +189,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Initialize the event loop and then start it</span>
+<span class=w>       </span><span class=c1>// Initialize the event loop and then start it</span>
 <span class=w>  </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span><span class=w></span>
 

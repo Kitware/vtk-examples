@@ -129,7 +129,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;  Sizes: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>Sizes</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>Sizes</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;  StopWords: &quot;</span><span class=p>;</span><span class=w></span>
-<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>StopWords</span><span class=p>)</span><span class=w></span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=o>&amp;</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>StopWords</span><span class=p>)</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=p>;</span><span class=w></span>
 <span class=w>    </span><span class=p>}</span><span class=w></span>
@@ -180,11 +180,11 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Transfer parameters to word cloud member data</span>
+<span class=w>       </span><span class=c1>// Transfer parameters to word cloud member data</span>
 <span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>wordCloud</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkWordCloud</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span><span class=w></span>
 </span><span class=w>  </span><span class=n>CloudParametersToWordCloud</span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>,</span><span class=w> </span><span class=n>wordCloud</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Get the file that contains the text to be converted to a word cloud</span>
+<span class=w>       </span><span class=c1>// Get the file that contains the text to be converted to a word cloud</span>
 <span class=w>  </span><span class=kt>char</span><span class=o>**</span><span class=w> </span><span class=n>newArgv</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>newArgc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=n>arg</span><span class=p>.</span><span class=n>GetUnusedArguments</span><span class=p>(</span><span class=o>&amp;</span><span class=n>newArgc</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=n>newArgv</span><span class=p>);</span><span class=w></span>
@@ -204,7 +204,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Skipped Words: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>wordCloud</span><span class=o>-&gt;</span><span class=n>GetSkippedWords</span><span class=p>().</span><span class=n>size</span><span class=p>()</span><span class=w></span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Display the final image</span>
+<span class=w>       </span><span class=c1>// Display the final image</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>interactor</span><span class=p>;</span><span class=w></span>
 </span>
@@ -216,7 +216,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=n>wordCloud</span><span class=o>-&gt;</span><span class=n>GetSizes</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>wordCloud</span><span class=o>-&gt;</span><span class=n>GetSizes</span><span class=p>()[</span><span class=mi>1</span><span class=p>]);</span><span class=w></span>
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Zoom in a bit</span>
+<span class=w>       </span><span class=c1>// Zoom in a bit</span>
 <span class=hll><span class=w>  </span><span class=n>vtkCamera</span><span class=o>*</span><span class=w> </span><span class=n>camera</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span><span class=w></span>
 </span><span class=w>  </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>ParallelProjectionOn</span><span class=p>();</span><span class=w></span>
 <span class=w>  </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetParallelScale</span><span class=p>(</span><span class=n>wordCloud</span><span class=o>-&gt;</span><span class=n>GetAdjustedSizes</span><span class=p>()[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mf>.4</span><span class=p>);</span><span class=w></span>
@@ -234,7 +234,7 @@ function registerListener(event, func) {
 <span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=k>typedef</span><span class=w> </span><span class=n>vtksys</span><span class=o>::</span><span class=n>CommandLineArguments</span><span class=w> </span><span class=n>argT</span><span class=p>;</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Need this to get arguments without --&#39;s</span>
+<span class=w>       </span><span class=c1>// Need this to get arguments without --&#39;s</span>
 <span class=w>  </span><span class=n>arg</span><span class=p>.</span><span class=n>StoreUnusedArguments</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=n>arg</span><span class=p>.</span><span class=n>AddArgument</span><span class=p>(</span><span class=s>&quot;--backgroundColorName&quot;</span><span class=p>,</span><span class=w> </span><span class=n>argT</span><span class=o>::</span><span class=n>SPACE_ARGUMENT</span><span class=p>,</span><span class=w></span>
@@ -319,7 +319,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Set defaults for vector arguments</span>
+<span class=w>       </span><span class=c1>// Set defaults for vector arguments</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>ColorDistribution</span><span class=p>.</span><span class=n>size</span><span class=p>()</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>ColorDistribution</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=mf>.6</span><span class=p>);</span><span class=w></span>
@@ -396,7 +396,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>wordCloud</span><span class=o>-&gt;</span><span class=n>SetSizes</span><span class=p>(</span><span class=n>sizes</span><span class=p>);</span><span class=w></span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>set</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>stopWords</span><span class=p>;</span><span class=w></span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>StopWords</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=o>&amp;</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>cloudParameters</span><span class=p>.</span><span class=n>StopWords</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>stopWords</span><span class=p>.</span><span class=n>insert</span><span class=p>(</span><span class=n>s</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>

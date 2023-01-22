@@ -226,14 +226,14 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Make the planes.</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>actors</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>MakePlanesActors</span><span class=p>(</span><span class=n>colors</span><span class=p>);</span><span class=w></span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>actor</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>actors</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=o>&amp;</span><span class=w> </span><span class=n>actor</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>actors</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 
 <span class=w>  </span><span class=c1>// Label them.</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>textActors</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>AddTextToPlanes</span><span class=p>();</span><span class=w></span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>actor</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>textActors</span><span class=p>)</span><span class=w></span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=o>&amp;</span><span class=w> </span><span class=n>actor</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>textActors</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=p>}</span><span class=w></span>

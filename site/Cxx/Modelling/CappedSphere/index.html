@@ -109,7 +109,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>constexpr</span><span class=w> </span><span class=k>auto</span><span class=w> </span><span class=n>pi</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>3.141592653589793238462643383279502884L</span><span class=p>;</span><span class=w> </span><span class=cm>/* pi */</span><span class=w></span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>d_r</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>[</span><span class=n>pi</span><span class=p>](</span><span class=kt>long</span><span class=w> </span><span class=kt>double</span><span class=w> </span><span class=n>d</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>pi</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>d</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mf>180.0</span><span class=p>;</span><span class=w> </span><span class=p>};</span><span class=w></span>
 <span class=w>  </span><span class=c1>// auto r_d = [pi](long double r) { return 180 * r / pi; };</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>isNumber</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>[](</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span><span class=w> </span><span class=n>token</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w></span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>isNumber</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>[](</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>token</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w></span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>regex_match</span><span class=p>(</span><span class=w></span>
 <span class=w>        </span><span class=n>token</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>regex</span><span class=p>((</span><span class=s>&quot;((</span><span class=se>\\</span><span class=s>+|-)?[[:digit:]]+)(</span><span class=se>\\</span><span class=s>.(([[:digit:]]+)?))?&quot;</span><span class=p>)));</span><span class=w></span>
 <span class=w>  </span><span class=p>};</span><span class=w></span>
@@ -120,7 +120,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>uncapped</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>showLine</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// The command line arguments</span>
+<span class=w>       </span><span class=c1>// The command line arguments</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>cmdVec</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>argc</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
@@ -128,9 +128,9 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span><span class=w></span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>cmdVec</span><span class=p>.</span><span class=n>empty</span><span class=p>())</span><span class=w></span>
 <span class=w>  </span><span class=p>{</span><span class=w></span>
-<span class=w>    </span><span class=c1>// Look for parmeters</span>
+<span class=w>    </span><span class=c1>// Look for parameters</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>posCnt</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w></span>
-<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>token</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>cmdVec</span><span class=p>)</span><span class=w></span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=o>&amp;</span><span class=w> </span><span class=n>token</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>cmdVec</span><span class=p>)</span><span class=w></span>
 <span class=w>    </span><span class=p>{</span><span class=w></span>
 <span class=w>      </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>token</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;-h&quot;</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>token</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;--help&quot;</span><span class=p>)</span><span class=w></span>
 <span class=w>      </span><span class=p>{</span><span class=w></span>
@@ -173,7 +173,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>pts</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetLine</span><span class=p>(</span><span class=n>angle</span><span class=p>,</span><span class=w> </span><span class=n>step</span><span class=p>,</span><span class=w> </span><span class=n>radius</span><span class=p>,</span><span class=w> </span><span class=n>uncapped</span><span class=p>,</span><span class=w> </span><span class=n>start</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Setup points and lines</span>
+<span class=w>       </span><span class=c1>// Setup points and lines</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>points</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCellArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>lines</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>pt</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>pts</span><span class=p>)</span><span class=w></span>
@@ -192,15 +192,15 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>SetLines</span><span class=p>(</span><span class=n>lines</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Extrude the profile to make the capped sphere</span>
+<span class=w>       </span><span class=c1>// Extrude the profile to make the capped sphere</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRotationalExtrusionFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>extrude</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>extrude</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>polydata</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>extrude</span><span class=o>-&gt;</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>60</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>//  Visualize</span>
+<span class=w>       </span><span class=c1>//  Visualize</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
 </span>
-<span class=w>  </span><span class=c1>// To see the line</span>
+<span class=w>       </span><span class=c1>// To see the line</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>lineMapper</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>lineMapper</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>polydata</span><span class=p>);</span><span class=w></span>
 
@@ -209,7 +209,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>lineActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mi>4</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>lineActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Red&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// To see the surface</span>
+<span class=w>       </span><span class=c1>// To see the surface</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>surfaceMapper</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>surfaceMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>extrude</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 

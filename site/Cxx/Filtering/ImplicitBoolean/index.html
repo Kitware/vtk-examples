@@ -75,9 +75,9 @@ function registerListener(event, func) {
 <span class=p>{</span><span class=w></span>
 <span class=w>  </span><span class=c1>// Define colors</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>background</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>);</span><span class=w></span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>actorColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;hot_pink&quot;</span><span class=p>);</span><span class=w></span>
-</span>
+</span><span class=w>  </span><span class=c1>//  vtkColor3d background = colors-&gt;GetColor3d(&quot;SlateGray&quot;);</span>
+<span class=w>  </span><span class=c1>//  vtkColor3d actorColor = colors-&gt;GetColor3d(&quot;hot_pink&quot;);</span>
+
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphere</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphere1</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>sphere1</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>0.9</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphere</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphere2</span><span class=p>;</span><span class=w></span>
@@ -88,29 +88,29 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>implicitBoolean</span><span class=o>-&gt;</span><span class=n>AddFunction</span><span class=p>(</span><span class=n>sphere2</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>implicitBoolean</span><span class=o>-&gt;</span><span class=n>SetOperationTypeToUnion</span><span class=p>();</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>//  implicitBoolean-&gt;SetOperationTypeToIntersection();</span>
-<span class=w>  </span><span class=c1>//  implicitBoolean-&gt;SetOperationTypeToDifference();</span>
+<span class=w>       </span><span class=c1>//  implicitBoolean-&gt;SetOperationTypeToIntersection();</span>
+<span class=w>       </span><span class=c1>//  implicitBoolean-&gt;SetOperationTypeToDifference();</span>
 
-<span class=w>  </span><span class=c1>// Sample the function</span>
+<span class=w>       </span><span class=c1>// Sample the function</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSampleFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>sample</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>sample</span><span class=o>-&gt;</span><span class=n>SetSampleDimensions</span><span class=p>(</span><span class=mi>50</span><span class=p>,</span><span class=w> </span><span class=mi>50</span><span class=p>,</span><span class=w> </span><span class=mi>50</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>sample</span><span class=o>-&gt;</span><span class=n>SetImplicitFunction</span><span class=p>(</span><span class=n>implicitBoolean</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>3.0</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>xmin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>-</span><span class=n>value</span><span class=p>,</span><span class=w> </span><span class=n>xmax</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>value</span><span class=p>,</span><span class=w> </span><span class=n>ymin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>-</span><span class=n>value</span><span class=p>,</span><span class=w> </span><span class=n>ymax</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>value</span><span class=p>,</span><span class=w></span>
-<span class=w>         </span><span class=n>zmin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>-</span><span class=n>value</span><span class=p>,</span><span class=w> </span><span class=n>zmax</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>value</span><span class=p>;</span><span class=w></span>
+<span class=w>      </span><span class=n>zmin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>-</span><span class=n>value</span><span class=p>,</span><span class=w> </span><span class=n>zmax</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>value</span><span class=p>;</span><span class=w></span>
 <span class=w>  </span><span class=n>sample</span><span class=o>-&gt;</span><span class=n>SetModelBounds</span><span class=p>(</span><span class=n>xmin</span><span class=p>,</span><span class=w> </span><span class=n>xmax</span><span class=p>,</span><span class=w> </span><span class=n>ymin</span><span class=p>,</span><span class=w> </span><span class=n>ymax</span><span class=p>,</span><span class=w> </span><span class=n>zmin</span><span class=p>,</span><span class=w> </span><span class=n>zmax</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Create the 0 isosurface</span>
+<span class=w>       </span><span class=c1>// Create the 0 isosurface</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkContourFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>contours</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>contours</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sample</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>contours</span><span class=o>-&gt;</span><span class=n>GenerateValues</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Map the contours to graphical primitives</span>
+<span class=w>       </span><span class=c1>// Map the contours to graphical primitives</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>contourMapper</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>contourMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>contours</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span><span class=w></span>
 <span class=w>  </span><span class=n>contourMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Create an actor for the contours</span>
+<span class=w>       </span><span class=c1>// Create an actor for the contours</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>contourActor</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>contourActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>contourMapper</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>contourActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=w></span>
@@ -119,7 +119,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>contourActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.2</span><span class=p>);</span><span class=w></span>
 <span class=w>  </span><span class=n>contourActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mf>60.0</span><span class=p>);</span><span class=w></span>
 
-<span class=w>  </span><span class=c1>// Visualize</span>
+<span class=w>       </span><span class=c1>// Visualize</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span><span class=w></span>
