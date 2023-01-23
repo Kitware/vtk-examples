@@ -249,7 +249,7 @@ T_T = \left[\begin{array}{cccc}
 \bf\tag{3-6}
 $$
 
-and then postmultiply it with the homogeneous coordinate $(x_h, y_h, z_h, w_h)$. To carry this example through, we construct the homogeneous coordinate from the Cartesian coordinate $( x, y, z)$ by setting $w_h = 1$ to yield $(x, y, z, 1)$. Then to determine the translated point ${x', y', z') we premultiply current position by the transformation matrix $T_T$ to yield the translated coordinate. Substituting into **Equation3-6** we have the result
+and then postmultiply it with the homogeneous coordinate $(x_h, y_h, z_h, w_h)$. To carry this example through, we construct the homogeneous coordinate from the Cartesian coordinate $( x, y, z)$ by setting $w_h = 1$ to yield $(x, y, z, 1)$. Then to determine the translated point $(x', y', z') we premultiply current position by the transformation matrix $T_T$ to yield the translated coordinate. Substituting into **Equation3-6** we have the result
 
 $$
 \left[\begin{array}{c}
