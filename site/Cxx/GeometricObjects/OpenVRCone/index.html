@@ -84,7 +84,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Create a renderer, render window, and interactor</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOpenVRRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span><span class=w></span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOpenVRRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span><span class=w></span>
-</span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span><span class=w></span>
+</span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span><span class=w></span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span><span class=w></span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOpenVRRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span><span class=w></span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span><span class=w></span>
 
