@@ -117,8 +117,7 @@ function registerListener(event, func) {
     <span class=c1># PART 3 Show the data</span>
     <span class=c1># also demonstrate a composite aware filter</span>
     <span class=c1># this filter aggregates all blocks into one polydata</span>
-    <span class=c1># this is handy for display, although fairly limited</span>
-    <span class=c1># see vtkCompositePolyDataMapper2 for something better</span>
+    <span class=c1># this is handy for display, although fairly limited.</span>
 <span class=hll>    <span class=n>polydata</span> <span class=o>=</span> <span class=n>vtkCompositeDataGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>polydata</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>edges</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
