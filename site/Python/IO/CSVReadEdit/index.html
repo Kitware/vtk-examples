@@ -400,75 +400,7 @@ function registerListener(event, func) {
 
     <span class=k>return</span> <span class=n>lut</span>
 
-<span class=kn>from</span> <span class=nn>vtkmodules.vtkIOImage</span> <span class=kn>import</span> <span class=p>(</span>
-<span class=hll>    <span class=n>vtkBMPWriter</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkJPEGWriter</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkPNGWriter</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkPNMWriter</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkPostScriptWriter</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkTIFFWriter</span>
-</span><span class=p>)</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=n>vtkWindowToImageFilter</span>
-</span>
 
-<span class=k>def</span> <span class=nf>write_image</span><span class=p>(</span><span class=n>file_name</span><span class=p>,</span> <span class=n>ren_win</span><span class=p>,</span> <span class=n>rgba</span><span class=o>=</span><span class=kc>True</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>    Write the render window view to an image file.</span>
-
-<span class=sd>    Image types supported are:</span>
-<span class=sd>     BMP, JPEG, PNM, PNG, PostScript, TIFF.</span>
-<span class=sd>    The default parameters are used for all writers, change as needed.</span>
-
-<span class=sd>    :param file_name: The file name, if no extension then PNG is assumed.</span>
-<span class=sd>    :param ren_win: The render window.</span>
-<span class=sd>    :param rgba: Used to set the buffer type.</span>
-<span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
-
-    <span class=k>if</span> <span class=n>file_name</span><span class=p>:</span>
-        <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.bmp&#39;</span><span class=p>,</span> <span class=s1>&#39;.jpg&#39;</span><span class=p>,</span> <span class=s1>&#39;.png&#39;</span><span class=p>,</span> <span class=s1>&#39;.pnm&#39;</span><span class=p>,</span> <span class=s1>&#39;.ps&#39;</span><span class=p>,</span> <span class=s1>&#39;.tiff&#39;</span><span class=p>]</span>
-        <span class=c1># Select the writer to use.</span>
-        <span class=n>parent</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span><span class=o>.</span><span class=n>resolve</span><span class=p>()</span><span class=o>.</span><span class=n>parent</span>
-        <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>parent</span><span class=p>)</span> <span class=o>/</span> <span class=n>file_name</span>
-        <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
-            <span class=n>ext</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-        <span class=k>else</span><span class=p>:</span>
-            <span class=n>ext</span> <span class=o>=</span> <span class=s1>&#39;.png&#39;</span>
-            <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>path</span><span class=p>))</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=n>ext</span><span class=p>)</span>
-        <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>valid_suffixes</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No writer for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-            <span class=k>return</span>
-        <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.bmp&#39;</span><span class=p>:</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkBMPWriter</span><span class=p>()</span>
-</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.jpg&#39;</span><span class=p>:</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkJPEGWriter</span><span class=p>()</span>
-</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.pnm&#39;</span><span class=p>:</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPNMWriter</span><span class=p>()</span>
-</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.ps&#39;</span><span class=p>:</span>
-            <span class=k>if</span> <span class=n>rgba</span><span class=p>:</span>
-                <span class=n>rgba</span> <span class=o>=</span> <span class=kc>False</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPostScriptWriter</span><span class=p>()</span>
-</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.tiff&#39;</span><span class=p>:</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkTIFFWriter</span><span class=p>()</span>
-</span>        <span class=k>else</span><span class=p>:</span>
-<span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPNGWriter</span><span class=p>()</span>
-</span>
-<span class=hll>        <span class=n>windowto_image_filter</span> <span class=o>=</span> <span class=n>vtkWindowToImageFilter</span><span class=p>()</span>
-</span>        <span class=n>windowto_image_filter</span><span class=o>.</span><span class=n>SetInput</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
-        <span class=n>windowto_image_filter</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>  <span class=c1># image quality</span>
-        <span class=k>if</span> <span class=n>rgba</span><span class=p>:</span>
-            <span class=n>windowto_image_filter</span><span class=o>.</span><span class=n>SetInputBufferTypeToRGBA</span><span class=p>()</span>
-        <span class=k>else</span><span class=p>:</span>
-            <span class=n>windowto_image_filter</span><span class=o>.</span><span class=n>SetInputBufferTypeToRGB</span><span class=p>()</span>
-            <span class=c1># Read from the front buffer.</span>
-            <span class=n>windowto_image_filter</span><span class=o>.</span><span class=n>ReadFrontBufferOff</span><span class=p>()</span>
-            <span class=n>windowto_image_filter</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-
-        <span class=n>writer</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>path</span><span class=p>)</span>
-        <span class=n>writer</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>windowto_image_filter</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-        <span class=n>writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
-    <span class=k>else</span><span class=p>:</span>
-        <span class=k>raise</span> <span class=ne>RuntimeError</span><span class=p>(</span><span class=s1>&#39;Need a filename.&#39;</span><span class=p>)</span>
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script> <script src=../../../assets/javascripts/bundle.51198bba.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>
