@@ -92,7 +92,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkHDFReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;number of steps: &#39;</span><span class=p>,</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetNumberOfSteps</span><span class=p>())</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Number of steps: &#39;</span><span class=p>,</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetNumberOfSteps</span><span class=p>())</span>
     <span class=n>polydata</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
 
     <span class=c1># Render the dataset</span>
@@ -120,6 +120,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>CreateRepeatingTimer</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span>
+
     <span class=c1># Add the animation callback</span>
     <span class=n>observer</span> <span class=o>=</span> <span class=n>AnimationObserver</span><span class=p>(</span><span class=n>iren</span><span class=p>,</span> <span class=n>reader</span><span class=p>)</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;TimerEvent&#39;</span><span class=p>,</span> <span class=n>observer</span><span class=p>)</span>
@@ -194,8 +195,8 @@ function registerListener(event, func) {
         <span class=bp>self</span><span class=o>.</span><span class=n>reader</span> <span class=o>=</span> <span class=n>reader</span>
 
     <span class=k>def</span> <span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
-        <span class=n>x</span> <span class=o>=</span> <span class=mi>0</span> <span class=k>if</span> <span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStep</span><span class=p>()</span> <span class=o>==</span> <span class=bp>self</span><span class=o>.</span><span class=n>reader</span><span class=o>.</span><span class=n>GetNumberOfSteps</span><span class=p>()</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span> <span class=k>else</span> <span class=bp>self</span><span class=o>.</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStep</span><span class=p>()</span> <span class=o>+</span> <span class=mi>1</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>reader</span><span class=o>.</span><span class=n>SetStep</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+        <span class=n>step</span> <span class=o>=</span> <span class=mi>0</span> <span class=k>if</span> <span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStep</span><span class=p>()</span> <span class=o>==</span> <span class=bp>self</span><span class=o>.</span><span class=n>reader</span><span class=o>.</span><span class=n>GetNumberOfSteps</span><span class=p>()</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span> <span class=k>else</span> <span class=bp>self</span><span class=o>.</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStep</span><span class=p>()</span> <span class=o>+</span> <span class=mi>1</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>reader</span><span class=o>.</span><span class=n>SetStep</span><span class=p>(</span><span class=n>step</span><span class=p>)</span>
         <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Current step: &#39;</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStep</span><span class=p>())</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>interactor</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
