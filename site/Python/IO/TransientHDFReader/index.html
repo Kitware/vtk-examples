@@ -88,14 +88,14 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-    <span class=c1># Read the dataset</span>
+    <span class=c1># Read the dataset.</span>
 <span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkHDFReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
     <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Number of steps: &#39;</span><span class=p>,</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetNumberOfSteps</span><span class=p>())</span>
     <span class=n>polydata</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
 
-    <span class=c1># Render the dataset</span>
+    <span class=c1># Render the dataset.</span>
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>polydata</span><span class=p>)</span>
     <span class=n>mapper</span><span class=o>.</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>get_ctf</span><span class=p>())</span>
@@ -116,14 +116,18 @@ function registerListener(event, func) {
     <span class=n>ren_win</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>1024</span><span class=p>,</span> <span class=mi>512</span><span class=p>)</span>
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
-    <span class=c1># Add the interactor</span>
+    <span class=c1># Add the interactor.</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
-    <span class=n>iren</span><span class=o>.</span><span class=n>CreateRepeatingTimer</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span>
 
-    <span class=c1># Add the animation callback</span>
+    <span class=c1># Add the animation callback.</span>
     <span class=n>observer</span> <span class=o>=</span> <span class=n>AnimationObserver</span><span class=p>(</span><span class=n>iren</span><span class=p>,</span> <span class=n>reader</span><span class=p>)</span>
+
+    <span class=c1># You must initialize the vtkRenderWindowInteractor</span>
+    <span class=c1># before adding the observer and setting the repeating timer.</span>
+    <span class=n>iren</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;TimerEvent&#39;</span><span class=p>,</span> <span class=n>observer</span><span class=p>)</span>
+    <span class=n>iren</span><span class=o>.</span><span class=n>CreateRepeatingTimer</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>i_style</span> <span class=o>=</span> <span class=n>vtkInteractorStyleTrackballCamera</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>i_style</span><span class=p>)</span>

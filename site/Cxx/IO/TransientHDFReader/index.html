@@ -77,8 +77,9 @@ function registerListener(event, func) {
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
 <span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetCTF</span><span class=p>();</span>
 </span>
-<span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>Animate</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eid</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>clientdata</span><span class=p>,</span>
-</span><span class=w>             </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>calldata</span><span class=p>);</span>
+<span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>Animate</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=cm>/*eid*/</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>clientdata</span><span class=p>,</span>
+</span><span class=w>             </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=cm>/*calldata*/</span><span class=p>);</span>
+
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
 <span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>ac</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>av</span><span class=p>[])</span>
@@ -126,9 +127,12 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Add the animation callback.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCallbackCommand</span><span class=o>&gt;</span><span class=w> </span><span class=n>command</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>command</span><span class=o>-&gt;</span><span class=n>SetCallback</span><span class=p>(</span><span class=o>&amp;</span><span class=n>Animate</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>command</span><span class=o>-&gt;</span><span class=n>SetCallback</span><span class=p>(</span><span class=n>Animate</span><span class=p>);</span>
 <span class=w>  </span><span class=n>command</span><span class=o>-&gt;</span><span class=n>SetClientData</span><span class=p>(</span><span class=n>reader</span><span class=p>);</span>
 
+<span class=w>  </span><span class=c1>// You must initialize the vtkRenderWindowInteractor</span>
+<span class=w>  </span><span class=c1>// before adding the observer and setting the repeating timer.</span>
+<span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
 <span class=hll><span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>TimerEvent</span><span class=p>,</span><span class=w> </span><span class=n>command</span><span class=p>);</span>
 </span><span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>CreateRepeatingTimer</span><span class=p>(</span><span class=mi>50</span><span class=p>);</span>
 
@@ -201,8 +205,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>ctf</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>Animate</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eid</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>clientdata</span><span class=p>,</span>
-</span><span class=w>             </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>calldata</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>Animate</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=cm>/*eid*/</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>clientdata</span><span class=p>,</span>
+</span><span class=w>             </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=cm>/*calldata*/</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkRenderWindowInteractor</span><span class=o>*</span><span class=w> </span><span class=n>interactor</span><span class=w> </span><span class=o>=</span>
 </span><span class=hll><span class=w>      </span><span class=n>vtkRenderWindowInteractor</span><span class=o>::</span><span class=n>SafeDownCast</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span>
