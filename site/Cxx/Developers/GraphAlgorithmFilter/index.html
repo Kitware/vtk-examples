@@ -121,35 +121,6 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Output has &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfVertices</span><span class=p>()</span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; vertices.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=p>}</span>
-</code></pre></div> <p><strong>vtkTestGraphAlgorithmFilter.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTestGraphAlgorithmFilter_h</span>
-<span class=cp>#define __vtkTestGraphAlgorithmFilter_h</span>
-
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkGraphAlgorithm.h&gt;</span>
-</span>
-<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTestGraphAlgorithmFilter</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkGraphAlgorithm</span>
-</span><span class=p>{</span>
-<span class=k>public</span><span class=o>:</span>
-<span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>,</span><span class=w> </span><span class=n>vtkGraphAlgorithm</span><span class=p>);</span>
-</span><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>*</span><span class=w> </span><span class=nf>New</span><span class=p>();</span>
-
-<span class=k>protected</span><span class=o>:</span>
-<span class=w>  </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>()</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=o>~</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>()</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>  </span><span class=p>}</span>
-
-<span class=hll><span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>RequestData</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=p>,</span>
-</span><span class=hll><span class=w>                  </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
-</span>
-<span class=k>private</span><span class=o>:</span>
-<span class=w>  </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>(</span>
-<span class=w>      </span><span class=k>const</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w>            </span><span class=c1>// Not implemented.</span>
-<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w> </span><span class=c1>// Not implemented.</span>
-<span class=p>};</span>
-
-<span class=cp>#endif</span>
 </code></pre></div> <p><strong>vtkTestGraphAlgorithmFilter.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTestGraphAlgorithmFilter.h&quot;</span>
 
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkDataObject.h&gt;</span>
@@ -201,6 +172,35 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
 <span class=p>}</span>
+</code></pre></div> <p><strong>vtkTestGraphAlgorithmFilter.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTestGraphAlgorithmFilter_h</span>
+<span class=cp>#define __vtkTestGraphAlgorithmFilter_h</span>
+
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkGraphAlgorithm.h&gt;</span>
+</span>
+<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTestGraphAlgorithmFilter</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkGraphAlgorithm</span>
+</span><span class=p>{</span>
+<span class=k>public</span><span class=o>:</span>
+<span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>,</span><span class=w> </span><span class=n>vtkGraphAlgorithm</span><span class=p>);</span>
+</span><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>*</span><span class=w> </span><span class=nf>New</span><span class=p>();</span>
+
+<span class=k>protected</span><span class=o>:</span>
+<span class=w>  </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>()</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=o>~</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>()</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>  </span><span class=p>}</span>
+
+<span class=hll><span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>RequestData</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=p>,</span>
+</span><span class=hll><span class=w>                  </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
+</span>
+<span class=k>private</span><span class=o>:</span>
+<span class=w>  </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>(</span>
+<span class=w>      </span><span class=k>const</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w>            </span><span class=c1>// Not implemented.</span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w> </span><span class=c1>// Not implemented.</span>
+<span class=p>};</span>
+
+<span class=cp>#endif</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span><span class=w> </span><span class=s>3.12</span><span class=w> </span><span class=s>FATAL_ERROR</span><span class=p>)</span>
 
 <span class=nb>project</span><span class=p>(</span><span class=s>GraphAlgorithmFilter</span><span class=p>)</span>
