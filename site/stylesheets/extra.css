@@ -9,5 +9,33 @@ height:30px!important;
     box-sizing: content-box;
 }
 
+.wasm-tab {
+  color: #767676;
+  padding: 3px;
+  margin: 10px;
+  cursor: pointer;
+  border-bottom: .125rem solid #4051b5;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.wasm-tab:disabled {
+  color: black;
+  border-top: .125rem solid transparent;
+  cursor: default;
+}
+
+.wasm-tab:enabled:hover {
+  color: black;
+  border-top: .125rem solid #4051b5;
+}
+
+.wasm-button {
+  background: #4051b5;
+  margin: 10px;
+  color: white;
+  padding: 8px;
+  cursor: pointer;
+}
 /* Using semitransparent Lavender instead of a gray: rgba(240,240,240,0.8) */
 .codehilite .hll { background-color: rgba(230,230,250,0.6) }
