@@ -91,7 +91,6 @@ function registerListener(event, func) {
                                         btn_wasm.disabled = false;
                                         checkbox.checked = false;
                                       } 
-                                      const checkbox = document.getElementById('checkbox')
                                       checkbox.addEventListener('change', (event) => {
                                         frame.contentWindow.postMessage("ToggleOutput", "https://vtk.org")
                                       })
