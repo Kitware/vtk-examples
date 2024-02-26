@@ -81,6 +81,7 @@ function registerListener(event, func) {
                                       }
                                       btn_reload.onclick = function() {
                                           frame.src = frame.src;
+                                          checkbox.checked = false;
                                       }
                                       btn_open.onclick = function(){
                                         window.open('https://vtk.org/files/examples/ParticleReader/index.html', "_blank");
