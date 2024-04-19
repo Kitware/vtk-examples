@@ -64,6 +64,7 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonCore</span> <span class=kn>import</span> <span class=n>vtkPoints</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkStructuredGrid</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersGeometry</span> <span class=kn>import</span> <span class=n>vtkStructuredGridGeometryFilter</span>
 </span><span class=kn>from</span> <span class=nn>vtkmodules.vtkRenderingCore</span> <span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
@@ -76,46 +77,49 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>structured_grid</span> <span class=o>=</span> <span class=n>vtkStructuredGrid</span><span class=p>()</span>
-</span>
 <span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
 </span>
     <span class=n>grid_size</span> <span class=o>=</span> <span class=mi>8</span>
     <span class=n>counter</span> <span class=o>=</span> <span class=mi>0</span>
+    <span class=n>pt_idx</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=c1># Create a 5x5 grid of points</span>
     <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>grid_size</span><span class=p>):</span>
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>grid_size</span><span class=p>):</span>
             <span class=k>if</span> <span class=n>i</span> <span class=o>==</span> <span class=mi>3</span> <span class=ow>and</span> <span class=n>j</span> <span class=o>==</span> <span class=mi>3</span><span class=p>:</span>  <span class=c1># Make one point higher than the rest.</span>
                 <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>j</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
-                <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The different point is number &#39;</span><span class=p>,</span> <span class=n>counter</span><span class=p>)</span>
+                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The different point is number </span><span class=si>{</span><span class=n>counter</span><span class=si>}</span><span class=s1>.&#39;</span><span class=p>)</span>
+                <span class=n>pt_idx</span> <span class=o>=</span> <span class=n>counter</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=c1># Make most of the points the same height.</span>
                 <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>j</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
             <span class=n>counter</span> <span class=o>+=</span> <span class=mi>1</span>
 
-    <span class=c1># Specify the dimensions of the grid.</span>
+<span class=hll>    <span class=n>structured_grid</span> <span class=o>=</span> <span class=n>vtkStructuredGrid</span><span class=p>()</span>
+</span>    <span class=c1># Specify the dimensions of the grid, set the points and blank one point.</span>
     <span class=n>structured_grid</span><span class=o>.</span><span class=n>SetDimensions</span><span class=p>(</span><span class=n>grid_size</span><span class=p>,</span> <span class=n>grid_size</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
-
     <span class=n>structured_grid</span><span class=o>.</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>)</span>
-
-    <span class=n>structured_grid</span><span class=o>.</span><span class=n>BlankPoint</span><span class=p>(</span><span class=mi>27</span><span class=p>)</span>
-    <span class=n>structured_grid</span><span class=o>.</span><span class=n>Modified</span><span class=p>()</span>
+    <span class=n>structured_grid</span><span class=o>.</span><span class=n>BlankPoint</span><span class=p>(</span><span class=n>pt_idx</span><span class=p>)</span>
 
     <span class=c1># Check.</span>
     <span class=k>def</span> <span class=nf>is_visible</span><span class=p>(</span><span class=n>pt_num</span><span class=p>):</span>
         <span class=k>if</span> <span class=n>structured_grid</span><span class=o>.</span><span class=n>IsPointVisible</span><span class=p>(</span><span class=n>pt_num</span><span class=p>):</span>
-            <span class=k>return</span> <span class=sa>f</span><span class=s1>&#39;Point </span><span class=si>{</span><span class=n>pt_num</span><span class=si>}</span><span class=s1> is visible.&#39;</span>
+            <span class=k>return</span> <span class=sa>f</span><span class=s1>&#39;Point </span><span class=si>{</span><span class=n>pt_num</span><span class=si>:</span><span class=s1>2d</span><span class=si>}</span><span class=s1> is visible.&#39;</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=k>return</span> <span class=sa>f</span><span class=s1>&#39;Point </span><span class=si>{</span><span class=n>pt_num</span><span class=si>}</span><span class=s1> is not visible.&#39;</span>
+            <span class=k>return</span> <span class=sa>f</span><span class=s1>&#39;Point </span><span class=si>{</span><span class=n>pt_num</span><span class=si>:</span><span class=s1>2d</span><span class=si>}</span><span class=s1> is not visible.&#39;</span>
 
     <span class=c1># Should not be visible.</span>
-    <span class=nb>print</span><span class=p>(</span><span class=n>is_visible</span><span class=p>(</span><span class=mi>27</span><span class=p>))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=n>is_visible</span><span class=p>(</span><span class=n>pt_idx</span><span class=p>))</span>
     <span class=c1># Should be visible.</span>
     <span class=nb>print</span><span class=p>(</span><span class=n>is_visible</span><span class=p>(</span><span class=mi>7</span><span class=p>))</span>
 
+    <span class=c1># We need the geometry filter to ensure that the</span>
+    <span class=c1># blanked point and surrounding faces is missing.</span>
+<span class=hll>    <span class=n>geometry_filter</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
+</span>    <span class=n>geometry_filter</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>structured_grid</span><span class=p>)</span>
+
     <span class=c1># Create a mapper and actor.</span>
 <span class=hll>    <span class=n>grid_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
-</span>    <span class=n>grid_mapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>structured_grid</span><span class=p>)</span>
+</span>    <span class=n>grid_mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>geometry_filter</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
 <span class=hll>    <span class=n>grid_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>grid_actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>grid_mapper</span><span class=p>)</span>

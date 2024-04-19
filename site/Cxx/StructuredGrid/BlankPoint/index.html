@@ -64,9 +64,9 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderer.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkStructuredGrid.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkStructuredGridGeometryFilter.h&gt;</span>
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span>
 
 <span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
@@ -79,6 +79,7 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>gridSize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>8</span><span class=p>;</span>
 <span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>counter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span>
+<span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>ptIdx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span>
 <span class=w>  </span><span class=c1>// Create a 5x5 grid of points</span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>gridSize</span><span class=p>;</span><span class=w> </span><span class=n>j</span><span class=o>++</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
@@ -88,6 +89,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>i</span><span class=p>,</span><span class=w> </span><span class=n>j</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=p>);</span>
 <span class=w>        </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;The different point is number &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>counter</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>        </span><span class=n>ptIdx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>counter</span><span class=p>;</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>      </span><span class=k>else</span>
 <span class=w>      </span><span class=p>{</span>
@@ -98,12 +100,10 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=c1>// Specify the dimensions of the grid</span>
+<span class=w>  </span><span class=c1>// Specify the dimensions of the grid, set the points and blank one point.</span>
 <span class=w>  </span><span class=n>structuredGrid</span><span class=o>-&gt;</span><span class=n>SetDimensions</span><span class=p>(</span><span class=n>gridSize</span><span class=p>,</span><span class=w> </span><span class=n>gridSize</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
-
 <span class=w>  </span><span class=n>structuredGrid</span><span class=o>-&gt;</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>);</span>
-
-<span class=w>  </span><span class=n>structuredGrid</span><span class=o>-&gt;</span><span class=n>BlankPoint</span><span class=p>(</span><span class=mi>27</span><span class=p>);</span>
+<span class=w>  </span><span class=n>structuredGrid</span><span class=o>-&gt;</span><span class=n>BlankPoint</span><span class=p>(</span><span class=n>ptIdx</span><span class=p>);</span>
 <span class=w>  </span><span class=n>structuredGrid</span><span class=o>-&gt;</span><span class=n>Modified</span><span class=p>();</span>
 
 <span class=w>  </span><span class=c1>// Check.</span>
@@ -119,20 +119,27 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>};</span>
 
 <span class=w>  </span><span class=c1>// Should not be visible.</span>
-<span class=w>  </span><span class=n>isVisible</span><span class=p>(</span><span class=mi>27</span><span class=p>);</span>
+<span class=w>  </span><span class=n>isVisible</span><span class=p>(</span><span class=n>ptIdx</span><span class=p>);</span>
 <span class=w>  </span><span class=c1>// Should be visible.</span>
 <span class=w>  </span><span class=n>isVisible</span><span class=p>(</span><span class=mi>7</span><span class=p>);</span>
 
-<span class=w>  </span><span class=c1>// Create a mapper and actor</span>
+<span class=w>  </span><span class=c1>// We need the geometry filter to ensure that the</span>
+<span class=w>  </span><span class=c1>// blanked point and surrounding faces is missing.</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span><span class=n>geometryFilter</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>geometryFilter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>structuredGrid</span><span class=p>);</span>
+
+<span class=w>  </span><span class=c1>// Create a mapper and actor.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>gridMapper</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>gridMapper</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>structuredGrid</span><span class=p>);</span>
+</span><span class=w>  </span><span class=c1>// gridMapper-&gt;SetInputData(structuredGrid);</span>
+<span class=w>  </span><span class=n>gridMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>geometryFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>gridActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>gridActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>gridMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>gridActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>EdgeVisibilityOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>gridActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetEdgeColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Blue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=w>  </span><span class=c1>// Create a renderer, render window, and interactor</span>
+<span class=w>  </span><span class=c1>// Create a renderer, render window, and interactor.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
@@ -141,11 +148,11 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
-<span class=w>  </span><span class=c1>// Add the actor to the scene</span>
+<span class=w>  </span><span class=c1>// Add the actor to the scene.</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>gridActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;ForestGreen&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=w>  </span><span class=c1>// Render and interact</span>
+<span class=w>  </span><span class=c1>// Render and interact.</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
