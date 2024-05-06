@@ -9441,6 +9441,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/CompositeData/CompositePolyDataMapper/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/CompositeData/OverlappingAMR/</loc>
          <lastmod>2024-05-06</lastmod>
          <changefreq>daily</changefreq>
@@ -9481,6 +9486,16 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/GeometricObjects/CellTypeSource/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/GeometricObjects/ConvexPointSet/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/GeometricObjects/CylinderExample/</loc>
          <lastmod>2024-05-06</lastmod>
          <changefreq>daily</changefreq>
@@ -9517,6 +9532,11 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/GeometricObjects/TessellatedBoxSource/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Graphs/LabelVerticesAndEdges/</loc>
          <lastmod>2024-05-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -9661,6 +9681,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Modelling/ContourTriangulator/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Modelling/DelaunayMesh/</loc>
          <lastmod>2024-05-06</lastmod>
          <changefreq>daily</changefreq>
@@ -9702,6 +9727,11 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/SpiderPlot/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/SurfacePlot/</loc>
          <lastmod>2024-05-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -9956,7 +9986,22 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/BillboardTextActor3D/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CollisionDetection/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/ColoredAnnotatedCube/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CubeAxesActor/</loc>
          <lastmod>2024-05-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -9966,7 +10011,17 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/PointDataSubdivision/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/QuadricVisualization/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/IceCream/</loc>
          <lastmod>2024-05-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -9977,6 +10032,16 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/BalloonWidget/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/CompassWidget/</loc>
+         <lastmod>2024-05-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/ContourWidget/</loc>
          <lastmod>2024-05-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
