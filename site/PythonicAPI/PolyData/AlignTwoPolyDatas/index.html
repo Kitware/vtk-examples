@@ -162,8 +162,8 @@ function registerListener(event, func) {
 </span>    <span class=n>p</span> <span class=o>=</span> <span class=p>(</span><span class=n>target_polydata</span> <span class=o>&gt;&gt;</span> <span class=n>tpd</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
 
 <span class=hll>    <span class=n>distance</span> <span class=o>=</span> <span class=n>vtkHausdorffDistancePointSetFilter</span><span class=p>()</span>
-</span>    <span class=n>distance</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>p</span><span class=p>)</span>
-    <span class=n>distance</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>source_polydata</span><span class=p>)</span>
+</span>    <span class=n>distance</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>p</span><span class=p>)</span>
+    <span class=n>distance</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>source_polydata</span><span class=p>)</span>
     <span class=n>distance</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
 
     <span class=n>distance_before_align</span> <span class=o>=</span> <span class=n>distance</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>field_data</span><span class=o>.</span><span class=n>GetArray</span><span class=p>(</span><span class=s1>&#39;HausdorffDistance&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>GetComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
@@ -171,8 +171,8 @@ function registerListener(event, func) {
     <span class=c1># Get initial alignment using oriented bounding boxes.</span>
     <span class=n>align_bounding_boxes</span><span class=p>(</span><span class=n>source_polydata</span><span class=p>,</span> <span class=n>tpd</span><span class=o>.</span><span class=n>output</span><span class=p>)</span>
 
-    <span class=n>distance</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>p</span><span class=p>)</span>
-    <span class=n>distance</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>source_polydata</span><span class=p>)</span>
+    <span class=n>distance</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>p</span><span class=p>)</span>
+    <span class=n>distance</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>source_polydata</span><span class=p>)</span>
     <span class=n>distance</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
 
     <span class=n>distance_after_align</span> <span class=o>=</span> <span class=n>distance</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>field_data</span><span class=o>.</span><span class=n>GetArray</span><span class=p>(</span><span class=s1>&#39;HausdorffDistance&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>GetComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
@@ -195,8 +195,8 @@ function registerListener(event, func) {
     <span class=c1># transform = vtkTransformPolyDataFilter(transform=icp.landmark_transform, input_data=source_polydata)</span>
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>icp</span><span class=p>,</span> <span class=n>input_data</span><span class=o>=</span><span class=n>source_polydata</span><span class=p>)</span>
 </span>
-    <span class=n>distance</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>p</span><span class=p>)</span>
-    <span class=n>distance</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>transform</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span><span class=p>)</span>
+    <span class=n>distance</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>p</span><span class=p>)</span>
+    <span class=n>distance</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>transform</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span><span class=p>)</span>
     <span class=n>distance</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
 
     <span class=c1># Note: If there is an error extracting eigenfunctions, then this will be zero.</span>
@@ -383,8 +383,8 @@ function registerListener(event, func) {
         <span class=n>lm_transform_pd</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=n>source</span>
         <span class=n>lm_transform_pd</span><span class=o>.</span><span class=n>transform</span> <span class=o>=</span> <span class=n>lm_transform</span>
 
-        <span class=n>distance</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>target</span><span class=p>)</span>
-        <span class=n>distance</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>lm_transform_pd</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span><span class=p>)</span>
+        <span class=n>distance</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>target</span><span class=p>)</span>
+        <span class=n>distance</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>lm_transform_pd</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span><span class=p>)</span>
         <span class=n>distance</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
 
         <span class=n>test_distance</span> <span class=o>=</span> <span class=n>distance</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>field_data</span><span class=o>.</span><span class=n>GetArray</span><span class=p>(</span><span class=s1>&#39;HausdorffDistance&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>GetComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>

@@ -188,8 +188,8 @@ function registerListener(event, func) {
             <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Unknown operation:&#39;</span><span class=p>,</span> <span class=n>operation</span><span class=p>)</span>
             <span class=k>return</span>
 
-    <span class=n>boolean_operation</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>input1</span><span class=p>)</span>
-    <span class=n>boolean_operation</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>input2</span><span class=p>)</span>
+    <span class=n>boolean_operation</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>input1</span><span class=p>)</span>
+    <span class=n>boolean_operation</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>input2</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>boolean_operation_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>scalar_visibility</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 </span><span class=hll>    <span class=n>boolean_operation_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>boolean_operation_mapper</span><span class=p>)</span>

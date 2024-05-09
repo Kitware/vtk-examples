@@ -98,8 +98,9 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>selection</span> <span class=o>=</span> <span class=n>vtkSelection</span><span class=p>()</span>
 </span>    <span class=n>selection</span><span class=o>.</span><span class=n>AddNode</span><span class=p>(</span><span class=n>selection_node</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>extract_selection</span> <span class=o>=</span> <span class=n>vtkExtractSelection</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>selection</span><span class=p>))</span>
-</span>    <span class=n>point_source</span><span class=o>.</span><span class=n>output</span> <span class=o>&gt;&gt;</span> <span class=n>extract_selection</span>
+<span class=hll>    <span class=n>extract_selection</span> <span class=o>=</span> <span class=n>vtkExtractSelection</span><span class=p>()</span>
+</span>    <span class=n>extract_selection</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>selection</span><span class=p>)</span>
+    <span class=n>point_source</span><span class=o>.</span><span class=n>output</span> <span class=o>&gt;&gt;</span> <span class=n>extract_selection</span>
 
     <span class=c1># In selection.</span>
 <span class=hll>    <span class=n>selected</span> <span class=o>=</span> <span class=n>vtkUnstructuredGrid</span><span class=p>()</span>
@@ -116,21 +117,19 @@ function registerListener(event, func) {
     <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;There are </span><span class=si>{</span><span class=n>not_selected</span><span class=o>.</span><span class=n>number_of_points</span><span class=si>}</span><span class=s1> points&#39;</span>
           <span class=sa>f</span><span class=s1>&#39; and </span><span class=si>{</span><span class=n>not_selected</span><span class=o>.</span><span class=n>number_of_cells</span><span class=si>}</span><span class=s1> cells NOT in the selection.&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=nb>property</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>()</span>
-</span>    <span class=nb>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>)</span>
-    <span class=nb>property</span><span class=o>.</span><span class=n>point_size</span> <span class=o>=</span> <span class=mi>5</span>
-
+<span class=hll>    <span class=n>point_property</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>),</span> <span class=n>point_size</span><span class=o>=</span><span class=mi>5</span><span class=p>)</span>
+</span>
 <span class=hll>    <span class=n>input_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>point_source</span><span class=o>.</span><span class=n>output</span> <span class=o>&gt;&gt;</span> <span class=n>input_mapper</span>
-<span class=hll>    <span class=n>input_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>input_mapper</span><span class=p>,</span> <span class=nb>property</span><span class=o>=</span><span class=nb>property</span><span class=p>)</span>
+<span class=hll>    <span class=n>input_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>input_mapper</span><span class=p>,</span> <span class=nb>property</span><span class=o>=</span><span class=n>point_property</span><span class=p>)</span>
 </span>
 <span class=hll>    <span class=n>selected_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>selected</span> <span class=o>&gt;&gt;</span> <span class=n>selected_mapper</span>
-<span class=hll>    <span class=n>selected_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>selected_mapper</span><span class=p>,</span> <span class=nb>property</span><span class=o>=</span><span class=nb>property</span><span class=p>)</span>
+<span class=hll>    <span class=n>selected_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>selected_mapper</span><span class=p>,</span> <span class=nb>property</span><span class=o>=</span><span class=n>point_property</span><span class=p>)</span>
 </span>
 <span class=hll>    <span class=n>not_selected_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>not_selected</span> <span class=o>&gt;&gt;</span> <span class=n>not_selected_mapper</span>
-<span class=hll>    <span class=n>not_selected_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>not_selected_mapper</span><span class=p>,</span> <span class=nb>property</span><span class=o>=</span><span class=nb>property</span><span class=p>)</span>
+<span class=hll>    <span class=n>not_selected_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>not_selected_mapper</span><span class=p>,</span> <span class=nb>property</span><span class=o>=</span><span class=n>point_property</span><span class=p>)</span>
 </span>
     <span class=c1># There will be one render window.</span>
 <span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
