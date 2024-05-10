@@ -189,7 +189,7 @@ function registerListener(event, func) {
 </span>    <span class=c1># SetNumberOfValues() actually is a function that returns True or False.</span>
     <span class=n>camera_array</span><span class=o>.</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
     <span class=c1># This has to occur after SetNumberOfValues().</span>
-    <span class=n>camera_array</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>buffer</span><span class=p>)</span>
+    <span class=n>camera_array</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>buffer</span><span class=p>)</span>
     <span class=n>data</span><span class=o>.</span><span class=n>field_data</span><span class=o>.</span><span class=n>AddArray</span><span class=p>(</span><span class=n>camera_array</span><span class=p>)</span>
 
 

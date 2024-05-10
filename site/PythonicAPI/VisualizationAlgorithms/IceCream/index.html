@@ -120,8 +120,9 @@ function registerListener(event, func) {
                                         <span class=n>sample_dimensions</span><span class=o>=</span><span class=p>(</span><span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>),</span>
                                         <span class=n>compute_normals</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>the_cone_surface</span> <span class=o>=</span> <span class=n>vtkContourFilter</span><span class=p>(</span><span class=n>value</span><span class=o>=</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>))</span>
-</span>
+<span class=hll>    <span class=n>the_cone_surface</span> <span class=o>=</span> <span class=n>vtkContourFilter</span><span class=p>()</span>
+</span>    <span class=n>the_cone_surface</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>cone_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>scalar_visibility</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 </span>    <span class=n>the_cone_sample</span> <span class=o>&gt;&gt;</span> <span class=n>the_cone_surface</span> <span class=o>&gt;&gt;</span> <span class=n>cone_mapper</span>
 
@@ -135,8 +136,9 @@ function registerListener(event, func) {
                                          <span class=n>sample_dimensions</span><span class=o>=</span><span class=p>(</span><span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>),</span>
                                          <span class=n>compute_normals</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>the_cream_surface</span> <span class=o>=</span> <span class=n>vtkContourFilter</span><span class=p>(</span><span class=n>value</span><span class=o>=</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>))</span>
-</span>
+<span class=hll>    <span class=n>the_cream_surface</span> <span class=o>=</span> <span class=n>vtkContourFilter</span><span class=p>()</span>
+</span>    <span class=n>the_cream_surface</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>cream_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>scalar_visibility</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 </span>    <span class=n>the_cream_sample</span> <span class=o>&gt;&gt;</span> <span class=n>the_cream_surface</span> <span class=o>&gt;&gt;</span> <span class=n>cream_mapper</span>
 

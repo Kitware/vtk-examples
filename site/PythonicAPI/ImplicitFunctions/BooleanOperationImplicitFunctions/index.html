@@ -99,8 +99,9 @@ function registerListener(event, func) {
 </span>                               <span class=n>sample_dimensions</span><span class=o>=</span><span class=p>(</span><span class=mi>40</span><span class=p>,</span> <span class=mi>40</span><span class=p>,</span> <span class=mi>40</span><span class=p>),</span> <span class=n>compute_normals</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 
     <span class=c1># Contour</span>
-<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtkContourFilter</span><span class=p>(</span><span class=n>value</span><span class=o>=</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>))</span>
-</span>
+<span class=hll>    <span class=n>surface</span> <span class=o>=</span> <span class=n>vtkContourFilter</span><span class=p>()</span>
+</span>    <span class=n>surface</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
+
     <span class=c1># Mapper</span>
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>scalar_visibility</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 </span>    <span class=n>sample</span> <span class=o>&gt;&gt;</span> <span class=n>surface</span> <span class=o>&gt;&gt;</span> <span class=n>mapper</span>

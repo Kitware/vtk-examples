@@ -99,8 +99,9 @@ function registerListener(event, func) {
         <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Error: Could not read&#39;</span><span class=p>,</span> <span class=n>file_name</span><span class=p>)</span>
         <span class=k>return</span>
 
-<span class=hll>    <span class=n>iso</span> <span class=o>=</span> <span class=n>vtkMarchingSquares</span><span class=p>(</span><span class=n>value</span><span class=o>=</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>iso_value</span><span class=p>))</span>
-</span>    <span class=n>reader</span> <span class=o>&gt;&gt;</span> <span class=n>iso</span>
+<span class=hll>    <span class=n>iso</span> <span class=o>=</span> <span class=n>vtkMarchingSquares</span><span class=p>()</span>
+</span>    <span class=n>iso</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>iso_value</span><span class=p>)</span>
+    <span class=n>reader</span> <span class=o>&gt;&gt;</span> <span class=n>iso</span>
 
 <span class=hll>    <span class=n>iso_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>(</span><span class=n>scalar_visibility</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 </span>    <span class=n>iso</span> <span class=o>&gt;&gt;</span> <span class=n>iso_mapper</span>
