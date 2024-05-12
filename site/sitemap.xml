@@ -9506,6 +9506,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/GeometricObjects/Frustum/</loc>
+         <lastmod>2024-05-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/GeometricObjects/GeometricObjectsDemo/</loc>
          <lastmod>2024-05-12</lastmod>
          <changefreq>daily</changefreq>
@@ -9686,6 +9691,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Meshes/PointInterpolator/</loc>
+         <lastmod>2024-05-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Meshes/SolidClip/</loc>
          <lastmod>2024-05-12</lastmod>
          <changefreq>daily</changefreq>
@@ -9707,6 +9717,11 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Modelling/Finance/</loc>
+         <lastmod>2024-05-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Modelling/FinanceFieldData/</loc>
          <lastmod>2024-05-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -10046,12 +10061,22 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/FlyingHeadSlice/</loc>
+         <lastmod>2024-05-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/IceCream/</loc>
          <lastmod>2024-05-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/WarpCombustor/</loc>
+         <lastmod>2024-05-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/VolumeRendering/PseudoVolumeRendering/</loc>
          <lastmod>2024-05-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
