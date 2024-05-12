@@ -98,36 +98,33 @@ function registerListener(event, func) {
 </span>    <span class=n>earth_source</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
     <span class=n>r</span> <span class=o>=</span> <span class=n>earth_source</span><span class=o>.</span><span class=n>GetRadius</span><span class=p>()</span>
 
-    <span class=c1># Transform to geographic coordinates.</span>
+    <span class=c1># Transform to geographic coordinates:</span>
+    <span class=c1># (x, y, z)-&gt;(λ, φ), +λ is East, +φ is North.</span>
+    <span class=c1># +x-axis -&gt; 90°λ, +y-axis -&gt; 90°φ, +z-axis -&gt; 0°λ</span>
+    <span class=c1># This corresponds to RotateX(-90.0) followed by RotateZ(-90.0).</span>
+    <span class=c1># The homogenous matrix for the transform is:</span>
+    <span class=n>m</span> <span class=o>=</span> <span class=p>[[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>]]</span>
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
-</span>    <span class=n>transform</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=o>-</span><span class=mf>180.0</span><span class=p>)</span>
-    <span class=n>transform</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=mf>90.0</span><span class=p>)</span>
-    <span class=n>transform</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=mf>90.0</span><span class=p>)</span>
+</span>    <span class=c1># We need to flatten the matrix.</span>
+    <span class=n>transform</span><span class=o>.</span><span class=n>matrix</span> <span class=o>=</span> <span class=p>[</span><span class=n>x</span> <span class=k>for</span> <span class=n>ms</span> <span class=ow>in</span> <span class=n>m</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>ms</span><span class=p>]</span>
 
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
+<span class=hll>    <span class=n>earth_transform</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
+</span><span class=hll>    <span class=n>sphere_transform</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
 </span>
-    <span class=c1># earth_source &gt;&gt;  transform_filter</span>
-
     <span class=c1># Create a sphere</span>
 <span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>(</span><span class=n>theta_resolution</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span> <span class=n>phi_resolution</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span> <span class=n>radius</span><span class=o>=</span><span class=n>r</span><span class=p>)</span>
 </span>
     <span class=c1># Create a mapper and actor</span>
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
-</span>    <span class=n>earth_source</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span> <span class=o>&gt;&gt;</span> <span class=n>mapper</span>
-    <span class=c1># mapper.SetInputConnection(earth_source.GetOutputPort())</span>
-
+</span>    <span class=n>earth_source</span> <span class=o>&gt;&gt;</span> <span class=n>earth_transform</span> <span class=o>&gt;&gt;</span> <span class=n>mapper</span>
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper</span><span class=p>)</span>
-</span>    <span class=c1># actor.SetMapper(mapper)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>)</span>
+</span>    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>line_width</span> <span class=o>=</span> <span class=mf>2.0</span>
 
 <span class=hll>    <span class=n>sphere_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
-</span>    <span class=n>sphere</span> <span class=o>&gt;&gt;</span> <span class=n>sphere_mapper</span>
-    <span class=c1># sphere_mapper.SetInputConnection(sphere.GetOutputPort())</span>
-
+</span>    <span class=n>sphere</span> <span class=o>&gt;&gt;</span> <span class=n>sphere_transform</span> <span class=o>&gt;&gt;</span> <span class=n>sphere_mapper</span>
 <span class=hll>    <span class=n>sphere_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>sphere_mapper</span><span class=p>)</span>
-</span>    <span class=c1># sphere_actor.SetMapper(sphere_mapper)</span>
-    <span class=n>sphere_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;PeachPuff&#39;</span><span class=p>)</span>
+</span>    <span class=n>sphere_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;PeachPuff&#39;</span><span class=p>)</span>
 
     <span class=c1># Create a renderer, render window, and interactor</span>
 <span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightCyan&#39;</span><span class=p>))</span>
@@ -170,24 +167,24 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span> <span class=nf>make_annotated_cube_actor</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
 <span class=hll>    <span class=n>annotated_cube</span> <span class=o>=</span> <span class=n>vtkAnnotatedCubeActor</span><span class=p>(</span><span class=n>face_text_scale</span><span class=o>=</span><span class=mf>1.0</span> <span class=o>/</span> <span class=mf>4.0</span><span class=p>,</span>
 </span>                                           <span class=n>x_plus_face_text</span><span class=o>=</span><span class=s1>&#39;90°E&#39;</span><span class=p>,</span> <span class=n>x_minus_face_text</span><span class=o>=</span><span class=s1>&#39;90°W&#39;</span><span class=p>,</span>
                                            <span class=n>y_plus_face_text</span><span class=o>=</span><span class=s1>&#39;90°N&#39;</span><span class=p>,</span> <span class=n>y_minus_face_text</span><span class=o>=</span><span class=s1>&#39;90°S&#39;</span><span class=p>,</span>
                                            <span class=n>z_plus_face_text</span><span class=o>=</span><span class=s1>&#39;0°E&#39;</span><span class=p>,</span> <span class=n>z_minus_face_text</span><span class=o>=</span><span class=s1>&#39;180°E&#39;</span>
                                            <span class=p>)</span>
 
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>
     <span class=c1># Change the vector text colors.</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>text_edges_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>)</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>text_edges_property</span><span class=o>.</span><span class=n>line_width</span> <span class=o>=</span> <span class=mi>1</span>
 
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>x_plus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Turquoise&#39;</span><span class=p>)</span>
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>x_minus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Turquoise&#39;</span><span class=p>)</span>
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>y_plus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Mint&#39;</span><span class=p>)</span>
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>y_minus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Mint&#39;</span><span class=p>)</span>
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>z_plus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>)</span>
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>z_minus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>x_plus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Mint&#39;</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>x_minus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Mint&#39;</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>y_plus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>y_minus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>z_plus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Turquoise&#39;</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>z_minus_face_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Turquoise&#39;</span><span class=p>)</span>
 
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>x_face_text_rotation</span> <span class=o>=</span> <span class=o>-</span><span class=mi>90</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>y_face_text_rotation</span> <span class=o>=</span> <span class=mi>180</span>
@@ -198,12 +195,12 @@ function registerListener(event, func) {
     <span class=c1># Colored faces for the cube.</span>
 <span class=hll>    <span class=n>face_colors</span> <span class=o>=</span> <span class=n>vtkUnsignedCharArray</span><span class=p>()</span>
 </span>    <span class=n>face_colors</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
-    <span class=n>face_x_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;FireBrick&#39;</span><span class=p>)</span>
-    <span class=n>face_x_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;FireBrick&#39;</span><span class=p>)</span>
-    <span class=n>face_y_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;DarkGreen&#39;</span><span class=p>)</span>
-    <span class=n>face_y_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;DarkGreen&#39;</span><span class=p>)</span>
-    <span class=n>face_z_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;DarkBlue&#39;</span><span class=p>)</span>
-    <span class=n>face_z_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;DarkBlue&#39;</span><span class=p>)</span>
+    <span class=n>face_x_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;DarkGreen&#39;</span><span class=p>)</span>
+    <span class=n>face_x_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;DarkGreen&#39;</span><span class=p>)</span>
+    <span class=n>face_y_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;DarkBlue&#39;</span><span class=p>)</span>
+    <span class=n>face_y_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;DarkBlue&#39;</span><span class=p>)</span>
+    <span class=n>face_z_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;FireBrick&#39;</span><span class=p>)</span>
+    <span class=n>face_z_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;FireBrick&#39;</span><span class=p>)</span>
     <span class=n>face_colors</span><span class=o>.</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_x_minus</span><span class=p>)</span>
     <span class=n>face_colors</span><span class=o>.</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_x_plus</span><span class=p>)</span>
     <span class=n>face_colors</span><span class=o>.</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_y_minus</span><span class=p>)</span>
@@ -228,6 +225,8 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span> <span class=nf>make_axes_actor</span><span class=p>(</span><span class=n>scale</span><span class=p>,</span> <span class=n>total_length</span><span class=p>,</span> <span class=n>xyz_labels</span><span class=p>):</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
 <span class=hll>    <span class=n>axes</span> <span class=o>=</span> <span class=n>vtkAxesActor</span><span class=p>(</span><span class=n>shaft_type</span><span class=o>=</span><span class=n>vtkAxesActor</span><span class=o>.</span><span class=n>CYLINDER_SHAFT</span><span class=p>,</span> <span class=n>tip_type</span><span class=o>=</span><span class=n>vtkAxesActor</span><span class=o>.</span><span class=n>CONE_TIP</span><span class=p>,</span>
 </span>                        <span class=n>x_axis_label_text</span><span class=o>=</span><span class=n>xyz_labels</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>y_axis_label_text</span><span class=o>=</span><span class=n>xyz_labels</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span>
                         <span class=n>z_axis_label_text</span><span class=o>=</span><span class=n>xyz_labels</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span>
@@ -247,11 +246,19 @@ function registerListener(event, func) {
     <span class=n>axes</span><span class=o>.</span><span class=n>y_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>tprop</span><span class=p>)</span>
     <span class=n>axes</span><span class=o>.</span><span class=n>z_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>tprop</span><span class=p>)</span>
 
+    <span class=c1># Now color the axes.</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>x_axis_tip_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LimeGreen&#39;</span><span class=p>)</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>x_axis_shaft_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LimeGreen&#39;</span><span class=p>)</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>y_axis_tip_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Blue&#39;</span><span class=p>)</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>y_axis_shaft_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Blue&#39;</span><span class=p>)</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>z_axis_tip_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>)</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>z_axis_shaft_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>)</span>
+
     <span class=c1># Now color the labels.</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>    <span class=n>axes</span><span class=o>.</span><span class=n>x_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;FireBrick&#39;</span><span class=p>)</span>
-    <span class=n>axes</span><span class=o>.</span><span class=n>y_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkGreen&#39;</span><span class=p>)</span>
-    <span class=n>axes</span><span class=o>.</span><span class=n>z_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkBlue&#39;</span><span class=p>)</span>
+</span>    <span class=n>axes</span><span class=o>.</span><span class=n>x_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkGreen&#39;</span><span class=p>)</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>y_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkBlue&#39;</span><span class=p>)</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>z_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;FireBrick&#39;</span><span class=p>)</span>
 
     <span class=k>return</span> <span class=n>axes</span>
 
