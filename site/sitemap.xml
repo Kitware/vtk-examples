@@ -9486,6 +9486,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Filtering/Glyph2D/</loc>
+         <lastmod>2024-05-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/GeometricObjects/CellTypeSource/</loc>
          <lastmod>2024-05-15</lastmod>
          <changefreq>daily</changefreq>
@@ -9536,6 +9541,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/GeometricObjects/Planes/</loc>
+         <lastmod>2024-05-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/GeometricObjects/SourceObjectsDemo/</loc>
          <lastmod>2024-05-15</lastmod>
          <changefreq>daily</changefreq>
@@ -9546,12 +9556,27 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Graphs/GraphToPolyData/</loc>
+         <lastmod>2024-05-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Graphs/LabelVerticesAndEdges/</loc>
          <lastmod>2024-05-15</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Graphs/ScaleVertices/</loc>
+         <lastmod>2024-05-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Graphs/SideBySideGraphs/</loc>
+         <lastmod>2024-05-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Graphs/VisualizeDirectedGraph/</loc>
          <lastmod>2024-05-15</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -10066,7 +10091,17 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/HyperStreamline/</loc>
+         <lastmod>2024-05-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/IceCream/</loc>
+         <lastmod>2024-05-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/TensorEllipsoids/</loc>
          <lastmod>2024-05-15</lastmod>
          <changefreq>daily</changefreq>
     </url>
