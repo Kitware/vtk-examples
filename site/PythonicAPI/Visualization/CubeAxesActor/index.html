@@ -99,15 +99,12 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>cube_axes_actor</span> <span class=o>=</span> <span class=n>vtkCubeAxesActor</span><span class=p>(</span><span class=n>bounds</span><span class=o>=</span><span class=n>superquadric_source</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>bounds</span><span class=p>,</span> <span class=n>camera</span><span class=o>=</span><span class=n>renderer</span><span class=o>.</span><span class=n>active_camera</span><span class=p>)</span>
 </span>    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>use_text_actor_3D</span> <span class=o>=</span> <span class=kc>True</span>
-    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>GetTitleTextProperty</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>axis1_color</span>
-    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>GetTitleTextProperty</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>font_size</span> <span class=o>=</span> <span class=mi>48</span>
-    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>GetLabelTextProperty</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>axis1_color</span>
 
-    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>GetTitleTextProperty</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>axis2_color</span>
-    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>GetLabelTextProperty</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>axis2_color</span>
-
-    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>GetTitleTextProperty</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>axis3_color</span>
-    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>GetLabelTextProperty</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>axis3_color</span>
+    <span class=c1># After VTK Version: 20240519</span>
+    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>x_axes_title_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>axis1_color</span>
+    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>x_axes_title_property</span><span class=o>.</span><span class=n>font_size</span> <span class=o>=</span> <span class=mi>48</span>
+    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>y_axes_title_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>axis2_color</span>
+    <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>z_axes_title_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>axis3_color</span>
 
     <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>draw_x_gridlines</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=n>cube_axes_actor</span><span class=o>.</span><span class=n>draw_y_gridlines</span> <span class=o>=</span> <span class=kc>True</span>
