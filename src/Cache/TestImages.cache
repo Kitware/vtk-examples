@@ -1639,3 +1639,16 @@ https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Pytho
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/ImageProcessing/TestMorphologyComparison.png https://tinyurl.com/2cqcr4qd
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/ImageProcessing/TestPad.png https://tinyurl.com/28l6ptn8
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/Widgets/TestImplicitPlaneWidget2.png https://tinyurl.com/23ljb6q2
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/IO/TestReadSLC.png https://tinyurl.com/262h7xf9
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/IO/TestWriteSTL.png https://tinyurl.com/246qygkf
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/GeometricObjects/TestDodecahedron.png https://tinyurl.com/2dzetyrz
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/GeometricObjects/TestPlatonicSolids.png https://tinyurl.com/2a7n88ze
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/Visualization/TestLorenz.png https://tinyurl.com/26tvkf9a
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/Filtering/TestPerlinNoise.png https://tinyurl.com/28zrebuc
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/PolyData/TestRuledSurfaceFilter.png https://tinyurl.com/2yub5pc4
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/UnstructuredGrid/TestClipUnstructuredGridWithPlane.png https://tinyurl.com/23j6wmx6
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/UnstructuredGrid/TestClipUnstructuredGridWithPlane2.png https://tinyurl.com/2btj256g
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/Rendering/TestMotionBlur.png https://tinyurl.com/2coxfkxh
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/Visualization/TestKitchen.png https://tinyurl.com/253qbytd
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/Widgets/TestSphereWidget.png https://tinyurl.com/23euh58b
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/Widgets/TestSplineWidget.png https://tinyurl.com/27hhm9tj
