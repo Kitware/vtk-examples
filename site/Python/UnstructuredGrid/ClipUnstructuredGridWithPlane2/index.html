@@ -63,8 +63,8 @@ vtkUnstructuredGrid that has 110084 cells
 ------------------------
 The clipped dataset contains a 
 vtkUnstructuredGrid that has 110084 cells
-    Cell type vtkTetra occurs 106934 times.
-    Cell type vtkWedge occurs 3150 times.
+    Cell type vtkTetra occurs 107401 times.
+    Cell type vtkWedge occurs 4332 times.
 </code></pre></div> <p>Compare these results with <a href=../ClipUnstructuredGridWithPlane>ClipUnstructuredGridWithPlane</a>. Notice that in this example, the original vtkHexahedron in the unclipped regions are converted to vtkTetra. Also, the resulting vtkUnstructuredGrid's have more than 4 times the number of cells.</p> <div class="admonition example"> <p class=admonition-title>usage</p> <p>ClipUnstructuredGridWithPlane2 treemesh.vtk</p> </div> <div class="admonition info"> <p class=admonition-title>thanks</p> <p>Thanks to Bane Sullivan for sharing the treemesh.vtk unstructured grid dataset.</p> </div> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Cxx/UnstructuredGrid/ClipUnstructuredGridWithPlane2>Cxx</a>), (<a href=../../../PythonicAPI/UnstructuredGrid/ClipUnstructuredGridWithPlane2>PythonicAPI</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>ClipUnstructuredGridWithPlane2.py</strong></p> <div class=codehilite><pre><span></span><code><span class=ch>#!/usr/bin/env python</span>
 
 <span class=kn>import</span> <span class=nn>collections</span>
@@ -103,12 +103,14 @@ vtkUnstructuredGrid that has 110084 cells
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;treemesh.vtk&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-o&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_false&#39;</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Output using the original code.&#39;</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
-    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span>
+    <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>o</span>
 
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-    <span class=n>filename</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
+    <span class=n>filename</span><span class=p>,</span> <span class=n>correct_output</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
     <span class=c1># Create the reader for the data.</span>
 <span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkUnstructuredGridReader</span><span class=p>()</span>
@@ -136,12 +138,35 @@ vtkUnstructuredGrid that has 110084 cells
 </span>    <span class=n>clipPlane</span><span class=o>.</span><span class=n>SetOrigin</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCenter</span><span class=p>())</span>
     <span class=n>clipPlane</span><span class=o>.</span><span class=n>SetNormal</span><span class=p>(</span><span class=n>xnorm</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>clipper</span> <span class=o>=</span> <span class=n>vtkClipDataSet</span><span class=p>()</span>
-</span>    <span class=n>clipper</span><span class=o>.</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clipPlane</span><span class=p>)</span>
-    <span class=n>clipper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-    <span class=n>clipper</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>)</span>
-    <span class=n>clipper</span><span class=o>.</span><span class=n>GenerateClippedOutputOn</span><span class=p>()</span>
-    <span class=n>clipper</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+    <span class=k>if</span> <span class=n>correct_output</span><span class=p>:</span>
+<span class=hll>        <span class=n>clipper</span> <span class=o>=</span> <span class=n>vtkClipDataSet</span><span class=p>()</span>
+</span>        <span class=n>clipper</span><span class=o>.</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clipPlane</span><span class=p>)</span>
+        <span class=n>clipper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
+        <span class=n>clipper</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>)</span>
+        <span class=n>clipper</span><span class=o>.</span><span class=n>GenerateClippedOutputOff</span><span class=p>()</span>
+        <span class=n>clipper</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+
+        <span class=c1># Set inside out, generate the clipped output and</span>
+        <span class=c1>#  use the clipped output for the clipped mapper.</span>
+        <span class=c1># If this is done a similar image to</span>
+        <span class=c1># ClipUnstructuredGridWithPlane is created.</span>
+<span class=hll>        <span class=n>clipper1</span> <span class=o>=</span> <span class=n>vtkClipDataSet</span><span class=p>()</span>
+</span>        <span class=n>clipper1</span><span class=o>.</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clipPlane</span><span class=p>)</span>
+        <span class=n>clipper1</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
+        <span class=n>clipper1</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>)</span>
+        <span class=n>clipper1</span><span class=o>.</span><span class=n>InsideOutOn</span><span class=p>()</span>
+        <span class=n>clipper1</span><span class=o>.</span><span class=n>GenerateClippedOutputOn</span><span class=p>()</span>
+        <span class=n>clipper1</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+
+    <span class=k>else</span><span class=p>:</span>
+<span class=hll>        <span class=n>clipper</span> <span class=o>=</span> <span class=n>vtkClipDataSet</span><span class=p>()</span>
+</span>        <span class=n>clipper</span><span class=o>.</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clipPlane</span><span class=p>)</span>
+        <span class=n>clipper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
+        <span class=n>clipper</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>)</span>
+        <span class=n>clipper</span><span class=o>.</span><span class=n>GenerateClippedOutputOn</span><span class=p>()</span>
+        <span class=n>clipper</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+
+        <span class=n>clipper1</span> <span class=o>=</span> <span class=kc>None</span>
 
 <span class=hll>    <span class=n>insideMapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>insideMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
@@ -154,7 +179,10 @@ vtkUnstructuredGrid that has 110084 cells
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>clippedMapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
-</span>    <span class=n>clippedMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>())</span>
+</span>    <span class=k>if</span> <span class=n>correct_output</span><span class=p>:</span>
+        <span class=n>clippedMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>clipper1</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>())</span>
+    <span class=k>else</span><span class=p>:</span>
+        <span class=n>clippedMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>())</span>
     <span class=n>clippedMapper</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>clippedActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
@@ -174,7 +202,10 @@ vtkUnstructuredGrid that has 110084 cells
 <span class=hll>    <span class=n>clippedTransform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>clippedTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>((</span><span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>*</span> <span class=mf>0.75</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
     <span class=n>clippedTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
-    <span class=n>clippedTransform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=o>-</span><span class=mf>120.0</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>correct_output</span><span class=p>:</span>
+        <span class=n>clippedTransform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mf>60.0</span><span class=p>)</span>
+    <span class=k>else</span><span class=p>:</span>
+        <span class=n>clippedTransform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=o>-</span><span class=mf>120.0</span><span class=p>)</span>
     <span class=n>clippedTransform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
     <span class=n>clippedActor</span><span class=o>.</span><span class=n>SetUserTransform</span><span class=p>(</span><span class=n>clippedTransform</span><span class=p>)</span>
 
@@ -203,16 +234,26 @@ vtkUnstructuredGrid that has 110084 cells
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>collections</span><span class=o>.</span><span class=n>OrderedDict</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=n>cellMap</span><span class=o>.</span><span class=n>items</span><span class=p>()))</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
 <span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\t</span><span class=s1>Cell type &#39;</span><span class=p>,</span> <span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39; occurs &#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39; times.&#39;</span><span class=p>)</span>
 </span>
-    <span class=n>numberOfCells</span> <span class=o>=</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>()</span>
     <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;------------------------&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The clipped dataset contains a </span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetClassName</span><span class=p>(),</span> <span class=s1>&#39; that has &#39;</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>,</span>
-          <span class=s1>&#39; cells&#39;</span><span class=p>)</span>
     <span class=n>outsideCellMap</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
-    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>):</span>
-        <span class=n>outsideCellMap</span><span class=o>.</span><span class=n>setdefault</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span>
-        <span class=n>outsideCellMap</span><span class=p>[</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>)]</span> <span class=o>+=</span> <span class=mi>1</span>
+    <span class=k>if</span> <span class=n>correct_output</span><span class=p>:</span>
+        <span class=n>number_of_cells</span> <span class=o>=</span> <span class=n>clipper1</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>()</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The clipped dataset contains a </span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span> <span class=n>clipper1</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetClassName</span><span class=p>(),</span> <span class=s1>&#39; that has &#39;</span><span class=p>,</span>
+              <span class=n>numberOfCells</span><span class=p>,</span>
+              <span class=s1>&#39; cells&#39;</span><span class=p>)</span>
+        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>number_of_cells</span><span class=p>):</span>
+            <span class=n>outsideCellMap</span><span class=o>.</span><span class=n>setdefault</span><span class=p>(</span><span class=n>clipper1</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span>
+            <span class=n>outsideCellMap</span><span class=p>[</span><span class=n>clipper1</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>)]</span> <span class=o>+=</span> <span class=mi>1</span>
+    <span class=k>else</span><span class=p>:</span>
+        <span class=n>number_of_cells</span> <span class=o>=</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>()</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The clipped dataset contains a </span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetClassName</span><span class=p>(),</span> <span class=s1>&#39; that has &#39;</span><span class=p>,</span>
+              <span class=n>numberOfCells</span><span class=p>,</span>
+              <span class=s1>&#39; cells&#39;</span><span class=p>)</span>
+        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>number_of_cells</span><span class=p>):</span>
+            <span class=n>outsideCellMap</span><span class=o>.</span><span class=n>setdefault</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span>
+            <span class=n>outsideCellMap</span><span class=p>[</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>)]</span> <span class=o>+=</span> <span class=mi>1</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>collections</span><span class=o>.</span><span class=n>OrderedDict</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=n>outsideCellMap</span><span class=o>.</span><span class=n>items</span><span class=p>()))</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\t</span><span class=s1>Cell type &#39;</span><span class=p>,</span> <span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39; occurs &#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39; times.&#39;</span><span class=p>)</span>
+<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39; Cell type </span><span class=si>{</span><span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>)</span><span class=si>}</span><span class=s1> occurs </span><span class=si>{</span><span class=n>v</span><span class=si>}</span><span class=s1> times.&#39;</span><span class=p>)</span>
 </span>
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>

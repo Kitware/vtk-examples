@@ -125,14 +125,13 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// We need the geometry filter to ensure that the</span>
 <span class=w>  </span><span class=c1>// blanked point and surrounding faces is missing.</span>
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span><span class=n>geometryFilter</span><span class=p>;</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>geometryFilter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>geometryFilter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>structuredGrid</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Create a mapper and actor.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>gridMapper</span><span class=p>;</span>
 </span><span class=w>  </span><span class=c1>// gridMapper-&gt;SetInputData(structuredGrid);</span>
 <span class=w>  </span><span class=n>gridMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>geometryFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>gridActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>gridActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>gridMapper</span><span class=p>);</span>
