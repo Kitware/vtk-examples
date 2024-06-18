@@ -73,6 +73,18 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Instead, do the VTK display things here!</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;VTK Stuff&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=p>}</span>
+</code></pre></div> <p><strong>ShowEventDriver.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QApplication&gt;</span>
+
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;ShowEvent.h&quot;</span>
+
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=n>QApplication</span><span class=w> </span><span class=n>app</span><span class=p>(</span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
+<span class=w>  </span><span class=n>ShowEvent</span><span class=w> </span><span class=n>showEvent</span><span class=p>;</span>
+
+<span class=w>  </span><span class=n>showEvent</span><span class=p>.</span><span class=n>show</span><span class=p>();</span>
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>app</span><span class=p>.</span><span class=n>exec</span><span class=p>();</span>
+<span class=p>}</span>
 </code></pre></div> <p><strong>ShowEvent.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef ShowEventQt_H</span>
 <span class=cp>#define ShowEventQt_H</span>
 
@@ -137,18 +149,6 @@ function registerListener(event, func) {
 <span class=w> </span><span class=o>&lt;</span><span class=n>resources</span><span class=o>/&gt;</span>
 <span class=w> </span><span class=o>&lt;</span><span class=n>connections</span><span class=o>/&gt;</span>
 <span class=o>&lt;/</span><span class=n>ui</span><span class=o>&gt;</span>
-</code></pre></div> <p><strong>ShowEventDriver.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QApplication&gt;</span>
-
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;ShowEvent.h&quot;</span>
-
-<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
-<span class=p>{</span>
-<span class=w>  </span><span class=n>QApplication</span><span class=w> </span><span class=n>app</span><span class=p>(</span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ShowEvent</span><span class=w> </span><span class=n>showEvent</span><span class=p>;</span>
-
-<span class=w>  </span><span class=n>showEvent</span><span class=p>.</span><span class=n>show</span><span class=p>();</span>
-<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>app</span><span class=p>.</span><span class=n>exec</span><span class=p>();</span>
-<span class=p>}</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span><span class=w> </span><span class=s>3.12</span><span class=w> </span><span class=s>FATAL_ERROR</span><span class=p>)</span>
 
 <span class=nb>project</span><span class=p>(</span><span class=s>ShowEvent</span><span class=p>)</span>
