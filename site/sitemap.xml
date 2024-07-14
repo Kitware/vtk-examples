@@ -9606,6 +9606,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Graphs/AdjacencyMatrixToEdgeTable/</loc>
+         <lastmod>2024-07-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Graphs/ConstructTree/</loc>
          <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
@@ -9662,6 +9667,11 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/IO/HDRReader/</loc>
+         <lastmod>2024-07-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/IO/ImportToExport/</loc>
          <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -9791,6 +9801,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Images/MarkKeypoints/</loc>
+         <lastmod>2024-07-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/ImplicitFunctions/BooleanOperationImplicitFunctions/</loc>
          <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
@@ -9812,6 +9827,11 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/ImplicitFunctions/SampleFunction/</loc>
+         <lastmod>2024-07-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/InfoVis/ArrayToTable/</loc>
          <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -9992,6 +10012,11 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/ClosedSurface/</loc>
+         <lastmod>2024-07-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/CombineImportedActors/</loc>
          <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -10246,6 +10271,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Utilities/ArrayWriter/</loc>
+         <lastmod>2024-07-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Utilities/CheckVTKVersion/</loc>
          <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
@@ -10342,6 +10372,11 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CameraModel2/</loc>
+         <lastmod>2024-07-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CaptionActor2D/</loc>
          <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -10536,7 +10571,17 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/AffineWidget/</loc>
+         <lastmod>2024-07-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/BalloonWidget/</loc>
+         <lastmod>2024-07-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/BorderWidget/</loc>
          <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
