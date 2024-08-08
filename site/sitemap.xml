@@ -1226,7 +1226,7 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Cxx/GeometricObjects/LinearCellDemo/</loc>
+         <loc>https://examples.vtk.org/site/Cxx/GeometricObjects/LinearCellsDemo/</loc>
          <lastmod>2024-08-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -7596,7 +7596,7 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Python/GeometricObjects/LinearCellDemo/</loc>
+         <loc>https://examples.vtk.org/site/Python/GeometricObjects/LinearCellsDemo/</loc>
          <lastmod>2024-08-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -9556,7 +9556,7 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/PythonicAPI/GeometricObjects/LinearCellDemo/</loc>
+         <loc>https://examples.vtk.org/site/PythonicAPI/GeometricObjects/LinearCellsDemo/</loc>
          <lastmod>2024-08-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
