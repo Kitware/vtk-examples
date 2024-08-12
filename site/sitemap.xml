@@ -9621,6 +9621,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Graphs/AdjacentVertexIterator/</loc>
+         <lastmod>2024-08-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Graphs/ConstructTree/</loc>
          <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
@@ -9847,6 +9852,11 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/InfoVis/ParallelCoordinatesView/</loc>
+         <lastmod>2024-08-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Interaction/Assembly/</loc>
          <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -10301,6 +10311,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Utilities/DetermineActorType/</loc>
+         <lastmod>2024-08-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Utilities/JSONColorMapToLUT/</loc>
          <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
@@ -10471,7 +10486,17 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/ReverseAccess/</loc>
+         <lastmod>2024-08-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/ShadowsLightsDemo/</loc>
+         <lastmod>2024-08-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/TransformActorCollection/</loc>
          <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -10586,6 +10611,16 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/AngleWidget/</loc>
+         <lastmod>2024-08-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/AngleWidget2D/</loc>
+         <lastmod>2024-08-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/BalloonWidget/</loc>
          <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
@@ -10602,6 +10637,11 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/BoxWidget2/</loc>
+         <lastmod>2024-08-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/CameraOrientationWidget/</loc>
          <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
