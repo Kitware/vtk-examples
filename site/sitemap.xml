@@ -10051,6 +10051,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/ExternalContour/</loc>
+         <lastmod>2024-08-13</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/ExtractPolyLinesFromPolyData/</loc>
          <lastmod>2024-08-13</lastmod>
          <changefreq>daily</changefreq>
