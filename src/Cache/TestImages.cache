@@ -1728,3 +1728,11 @@ https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Pytho
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/PolyData/TestExternalContour.png https://tinyurl.com/24wcuqyr
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/Widgets/TestImplicitConeWidget.png https://tinyurl.com/2a5ud3ep
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/Widgets/TestImplicitConeWidget.png https://tinyurl.com/28yk9j38
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/PolyData/TestExtractSelectionUsingCells.png https://tinyurl.com/27g8fd45
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/PolyData/TestExtractSelectionUsingPoints.png https://tinyurl.com/279d3pud
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Python/PolyData/TestExtractSelectionUsingCells.png https://tinyurl.com/243q86z3
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/PolyData/TestExtractSelectionOriginalId.png https://tinyurl.com/2ay994t6
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/PolyData/TestExtractSelectionUsingCells.png https://tinyurl.com/28q45fll
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/PolyData/TestExtractSelectionUsingPoints.png https://tinyurl.com/2ya6ge9c
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/PolyData/TestMergeSelections.png https://tinyurl.com/269qv46z
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/PolyData/TestVertexConnectivity.png https://tinyurl.com/29kzzufm

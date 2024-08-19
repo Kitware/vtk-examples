@@ -3571,11 +3571,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Cxx/PolyData/ExtractCellsUsingPoints/</loc>
-         <lastmod>2024-08-19</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://examples.vtk.org/site/Cxx/PolyData/ExtractOutsideSurface/</loc>
          <lastmod>2024-08-19</lastmod>
          <changefreq>daily</changefreq>
@@ -3591,12 +3586,17 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Cxx/PolyData/ExtractSelectionCells/</loc>
+         <loc>https://examples.vtk.org/site/Cxx/PolyData/ExtractSelectionOriginalId/</loc>
          <lastmod>2024-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Cxx/PolyData/ExtractSelectionOriginalId/</loc>
+         <loc>https://examples.vtk.org/site/Cxx/PolyData/ExtractSelectionUsingCells/</loc>
+         <lastmod>2024-08-19</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/Cxx/PolyData/ExtractSelectionUsingPoints/</loc>
          <lastmod>2024-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -8351,7 +8351,7 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Python/PolyData/ExtractSelectionCells/</loc>
+         <loc>https://examples.vtk.org/site/Python/PolyData/ExtractSelectionUsingCells/</loc>
          <lastmod>2024-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -10071,12 +10071,27 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/ExtractSelectionCells/</loc>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/ExtractSelectionOriginalId/</loc>
+         <lastmod>2024-08-19</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/ExtractSelectionUsingCells/</loc>
+         <lastmod>2024-08-19</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/ExtractSelectionUsingPoints/</loc>
          <lastmod>2024-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/ImplicitPolyDataDistance/</loc>
+         <lastmod>2024-08-19</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/MergeSelections/</loc>
          <lastmod>2024-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -10097,6 +10112,11 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/SmoothMeshGrid/</loc>
+         <lastmod>2024-08-19</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/VertexConnectivity/</loc>
          <lastmod>2024-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
