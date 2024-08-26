@@ -4306,6 +4306,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/Cxx/Rendering/WebGPU_PointCloudMapper/</loc>
+         <lastmod>2024-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/Cxx/Shaders/BozoShader/</loc>
          <lastmod>2024-08-26</lastmod>
          <changefreq>daily</changefreq>
