@@ -3341,6 +3341,10 @@
          <lastmod>2024-09-07</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/Cxx/Rendering/MultipleLayersAndWindows/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/Cxx/Rendering/OutlineGlowPass/</loc>
          <lastmod>2024-09-07</lastmod>
     </url>
@@ -8146,6 +8150,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Rendering/MotionBlur/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Rendering/MultipleLayersAndWindows/</loc>
          <lastmod>2024-09-07</lastmod>
     </url>
     <url>
