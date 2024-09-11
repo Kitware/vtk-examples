@@ -94,6 +94,7 @@ function registerListener(event, func) {
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtk_cli11.h&gt;</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtk_jsoncpp.h&gt;</span>
 
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;algorithm&gt;</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;array&gt;</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;cstdlib&gt;</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;filesystem&gt;</span>
@@ -122,6 +123,38 @@ function registerListener(event, func) {
 <span class=p>};</span>
 
 <span class=cm>/**</span>
+<span class=cm> * Extract the keys from a map.</span>
+<span class=cm> *</span>
+<span class=cm> * @param m: The map.</span>
+<span class=cm> *</span>
+<span class=cm> * @return A vector of the keys in the map.</span>
+<span class=cm> */</span>
+<span class=k>template</span><span class=w> </span><span class=o>&lt;</span><span class=k>typename</span><span class=w> </span><span class=nc>TK</span><span class=p>,</span><span class=w> </span><span class=k>typename</span><span class=w> </span><span class=nc>TV</span><span class=o>&gt;</span>
+<span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>TK</span><span class=o>&gt;</span><span class=w> </span><span class=n>KeysFromMap</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>TK</span><span class=p>,</span><span class=w> </span><span class=n>TV</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>m</span><span class=p>)</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>TK</span><span class=o>&gt;</span><span class=w> </span><span class=n>res</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>m</span><span class=p>.</span><span class=n>cbegin</span><span class=p>(),</span><span class=w> </span><span class=n>m</span><span class=p>.</span><span class=n>cend</span><span class=p>(),</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>inserter</span><span class=p>(</span><span class=n>res</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>end</span><span class=p>(</span><span class=n>res</span><span class=p>)),</span>
+<span class=w>                 </span><span class=p>[](</span><span class=k>auto</span><span class=w> </span><span class=n>p</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>p</span><span class=p>.</span><span class=n>first</span><span class=p>;</span><span class=w> </span><span class=p>});</span>
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>res</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=cm>/**</span>
+<span class=cm> * Extract the values from a map.</span>
+<span class=cm> *</span>
+<span class=cm> * @param m: The map.</span>
+<span class=cm> *</span>
+<span class=cm> * @return A vector of the values in the map.</span>
+<span class=cm> */</span>
+<span class=k>template</span><span class=w> </span><span class=o>&lt;</span><span class=k>typename</span><span class=w> </span><span class=nc>TK</span><span class=p>,</span><span class=w> </span><span class=k>typename</span><span class=w> </span><span class=nc>TV</span><span class=o>&gt;</span>
+<span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>TV</span><span class=o>&gt;</span><span class=w> </span><span class=n>ValuesFromMap</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>TK</span><span class=p>,</span><span class=w> </span><span class=n>TV</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>m</span><span class=p>)</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>TV</span><span class=o>&gt;</span><span class=w> </span><span class=n>res</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>m</span><span class=p>.</span><span class=n>cbegin</span><span class=p>(),</span><span class=w> </span><span class=n>m</span><span class=p>.</span><span class=n>cend</span><span class=p>(),</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>inserter</span><span class=p>(</span><span class=n>res</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>end</span><span class=p>(</span><span class=n>res</span><span class=p>)),</span>
+<span class=w>                 </span><span class=p>[](</span><span class=k>auto</span><span class=w> </span><span class=n>p</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>p</span><span class=p>.</span><span class=n>second</span><span class=p>;</span><span class=w> </span><span class=p>});</span>
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>res</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=cm>/**</span>
 <span class=cm> * Take a string and convert it to lowercase.</span>
 <span class=cm> *</span>
 <span class=cm> * See: https://en.cppreference.com/w/cpp/string/byte/tolower</span>
@@ -131,7 +164,7 @@ function registerListener(event, func) {
 <span class=cm> *</span>
 <span class=cm> * @return The lowercase version of the string.</span>
 <span class=cm> */</span>
-<span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=nf>ToLowerCase</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>s</span><span class=p>);</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>ToLowerCase</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>s</span><span class=p>);</span>
 
 <span class=cm>/**</span>
 <span class=cm> * Read the parameters from a json file and check that the file paths exist.</span>
@@ -258,7 +291,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>                                      </span><span class=n>vtkNamedColors</span><span class=o>*</span><span class=w> </span><span class=n>colors</span><span class=p>);</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>**</span><span class=w> </span><span class=n>argv</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=n>CLI</span><span class=o>::</span><span class=n>App</span><span class=w> </span><span class=n>app</span><span class=p>{</span><span class=s>&quot;Construct surfaces from a segmented frog dataset.&quot;</span><span class=p>};</span>
 
@@ -437,16 +470,29 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>SliceOrder</span><span class=w> </span><span class=n>so</span><span class=p>;</span>
 <span class=w>  </span><span class=c1>// so.PrintAlltransforms();</span>
 
-<span class=w>  </span><span class=kt>size_t</span><span class=w> </span><span class=n>colorSize</span><span class=p>{</span><span class=mi>0</span><span class=p>};</span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>parameters</span><span class=p>.</span><span class=n>colors</span><span class=p>)</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>colorSize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>max</span><span class=p>(</span><span class=n>colorSize</span><span class=p>,</span><span class=w> </span><span class=n>p</span><span class=p>.</span><span class=n>second</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
-<span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=kt>size_t</span><span class=w> </span><span class=n>nameSize</span><span class=p>{</span><span class=mi>0</span><span class=p>};</span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>parameters</span><span class=p>.</span><span class=n>names</span><span class=p>)</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>nameSize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>max</span><span class=p>(</span><span class=n>nameSize</span><span class=p>,</span><span class=w> </span><span class=n>p</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
-<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>keys</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>KeysFromMap</span><span class=p>(</span><span class=n>parameters</span><span class=p>.</span><span class=n>colors</span><span class=p>);</span>
+<span class=w>  </span><span class=c1>// for (const auto&amp; k : keys) std::cout &lt;&lt; k &lt;&lt; &quot; &quot;;</span>
+<span class=w>  </span><span class=c1>// std::cout &lt;&lt; std::endl;</span>
+
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>values</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ValuesFromMap</span><span class=p>(</span><span class=n>parameters</span><span class=p>.</span><span class=n>colors</span><span class=p>);</span>
+<span class=w>  </span><span class=c1>// for (const auto&amp; v : values) std::cout &lt;&lt; v &lt;&lt; &quot; &quot;;</span>
+<span class=w>  </span><span class=c1>// std::cout &lt;&lt; std::endl;</span>
+
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>colorSize</span><span class=w> </span><span class=o>=</span>
+<span class=w>      </span><span class=p>(</span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>max_element</span><span class=p>(</span>
+<span class=w>           </span><span class=n>keys</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>keys</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span>
+<span class=w>           </span><span class=p>[](</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>longestStr</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>tempStr</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
+<span class=w>             </span><span class=k>return</span><span class=w> </span><span class=p>(</span><span class=n>longestStr</span><span class=p>.</span><span class=n>size</span><span class=p>()</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>tempStr</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
+<span class=w>           </span><span class=p>}))</span>
+<span class=w>          </span><span class=p>.</span><span class=n>size</span><span class=p>();</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>nameSize</span><span class=w> </span><span class=o>=</span>
+<span class=w>      </span><span class=p>(</span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>max_element</span><span class=p>(</span>
+<span class=w>           </span><span class=n>values</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>values</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span>
+<span class=w>           </span><span class=p>[](</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>longestStr</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>tempStr</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
+<span class=w>             </span><span class=k>return</span><span class=w> </span><span class=p>(</span><span class=n>longestStr</span><span class=p>.</span><span class=n>size</span><span class=p>()</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>tempStr</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
+<span class=w>           </span><span class=p>}))</span>
+<span class=w>          </span><span class=p>.</span><span class=n>size</span><span class=p>();</span>
+<span class=w>  </span><span class=c1>// std::cout &lt;&lt; colorSize &lt;&lt; &quot;, &quot; &lt;&lt; nameSize &lt;&lt; &quot;, &quot; &lt;&lt; std::endl;</span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>line</span><span class=p>(</span><span class=mi>7</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>nameSize</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>colorSize</span><span class=p>,</span><span class=w> </span><span class=sc>&#39;-&#39;</span><span class=p>);</span>
 
@@ -920,7 +966,7 @@ function registerListener(event, func) {
 
 <span class=kt>void</span><span class=w> </span><span class=n>SliceOrder</span><span class=o>::</span><span class=n>PrintAlltransforms</span><span class=p>()</span>
 <span class=p>{</span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>transform</span><span class=p>)</span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>transform</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>PrintTransform</span><span class=p>(</span><span class=n>p</span><span class=p>.</span><span class=n>first</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
@@ -980,7 +1026,6 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// These are used to determine what filters</span>
 <span class=w>  </span><span class=c1>// to use based on the options chosen.</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>islandRemoverFlag</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>selectTissueFlag</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>gaussianFlag</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
 
@@ -988,6 +1033,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>selectTissue</span><span class=p>;</span>
 </span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=s>&quot;skin&quot;</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>islandRemoverFlag</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>ir</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;island_replace&quot;</span><span class=p>]);</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>ia</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;island_area&quot;</span><span class=p>]);</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>idx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;tissue&quot;</span><span class=p>]);</span>

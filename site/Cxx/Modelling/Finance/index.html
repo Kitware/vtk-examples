@@ -127,7 +127,7 @@ function registerListener(event, func) {
 <span class=kt>int</span><span class=w> </span><span class=nf>ParseFile</span><span class=p>(</span><span class=kt>FILE</span><span class=o>*</span><span class=w> </span><span class=n>file</span><span class=p>,</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>tag</span><span class=p>,</span><span class=w> </span><span class=kt>float</span><span class=o>*</span><span class=w> </span><span class=n>data</span><span class=p>);</span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>**</span><span class=w> </span><span class=n>argv</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>bounds</span><span class=p>[</span><span class=mi>6</span><span class=p>];</span>
 
@@ -137,7 +137,7 @@ function registerListener(event, func) {
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>fname</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
+<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>fname</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>

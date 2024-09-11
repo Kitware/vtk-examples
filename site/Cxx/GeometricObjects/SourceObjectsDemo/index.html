@@ -203,12 +203,12 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>gridDimensions</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>3</span><span class=p>;</span>
 
-<span class=w>  </span><span class=c1>// Need a renderer even if there is no actor</span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>sourceObjects</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
-<span class=w>       </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>gridDimensions</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>gridDimensions</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=hll><span class=w>    </span><span class=n>renderers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span>
-</span><span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=c1>// // Need a renderer even if there is no actor</span>
+<span class=w>  </span><span class=c1>// for (auto i = static_cast&lt;int&gt;(sourceObjects.size());</span>
+<span class=w>  </span><span class=c1>//      i &lt; gridDimensions * gridDimensions; ++i)</span>
+<span class=w>  </span><span class=c1>// {</span>
+<span class=w>  </span><span class=c1>//   renderers.push_back(vtkSmartPointer&lt;vtkRenderer&gt;::New());</span>
+<span class=w>  </span><span class=c1>// }</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;SourceObjectsDemo&quot;</span><span class=p>);</span>

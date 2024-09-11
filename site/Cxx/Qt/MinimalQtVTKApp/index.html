@@ -92,7 +92,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>               </span><span class=n>vtkGenericOpenGLRenderWindow</span><span class=o>*</span><span class=w> </span><span class=n>window</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>mt19937</span><span class=o>&amp;</span><span class=w> </span><span class=n>randEng</span><span class=p>);</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>**</span><span class=w> </span><span class=n>argv</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=n>QSurfaceFormat</span><span class=o>::</span><span class=n>setDefaultFormat</span><span class=p>(</span><span class=n>QVTKOpenGLNativeWidget</span><span class=o>::</span><span class=n>defaultFormat</span><span class=p>());</span>
 

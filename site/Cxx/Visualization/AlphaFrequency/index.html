@@ -112,7 +112,7 @@ function registerListener(event, func) {
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vector&gt;</span>
 
-<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>**</span><span class=w> </span><span class=n>argv</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
@@ -123,7 +123,7 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=kt>char</span><span class=w> </span><span class=n>filename</span><span class=p>[</span><span class=mi>512</span><span class=p>];</span>
 <span class=w>  </span><span class=kt>char</span><span class=w> </span><span class=n>text</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
-<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=kt>char</span><span class=w> </span><span class=n>alphabet</span><span class=p>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>char</span><span class=w> </span><span class=n>alphabet</span><span class=p>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class=p>;</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=p>,</span><span class=w> </span><span class=n>j</span><span class=p>,</span><span class=w> </span><span class=n>freq</span><span class=p>[</span><span class=mi>26</span><span class=p>],</span><span class=w> </span><span class=n>maxFreq</span><span class=p>;</span>
 <span class=w>  </span><span class=kt>float</span><span class=w> </span><span class=n>x</span><span class=p>,</span><span class=w> </span><span class=n>y</span><span class=p>;</span>
 <span class=w>  </span><span class=kt>FILE</span><span class=o>*</span><span class=w> </span><span class=n>fPtr</span><span class=p>;</span>

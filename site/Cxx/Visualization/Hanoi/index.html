@@ -207,7 +207,7 @@ function registerListener(event, func) {
 </span><span class=w>           </span><span class=kt>int</span><span class=w> </span><span class=n>peg2</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>peg3</span><span class=p>);</span>
 
 <span class=c1>// Save a screenshot.</span>
-<span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>Screenshot</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>fileName</span><span class=p>,</span><span class=w> </span><span class=n>vtkRenderWindow</span><span class=o>*</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
+<span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>Screenshot</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>fileName</span><span class=p>,</span><span class=w> </span><span class=n>vtkRenderWindow</span><span class=o>*</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
 </span>
 <span class=c1>// Default values.</span>
 <span class=k>auto</span><span class=w> </span><span class=n>numberOfPucks</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>5</span><span class=p>;</span>
@@ -225,7 +225,7 @@ function registerListener(event, func) {
 <span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>maxPucks</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>20</span><span class=p>;</span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>**</span><span class=w> </span><span class=n>argv</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=c1>// Here we parse the command line.</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>parameters</span><span class=p>;</span>
@@ -532,7 +532,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>return</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>Screenshot</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>fileName</span><span class=p>,</span><span class=w> </span><span class=n>vtkRenderWindow</span><span class=o>*</span><span class=w> </span><span class=n>renWin</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>Screenshot</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>fileName</span><span class=p>,</span><span class=w> </span><span class=n>vtkRenderWindow</span><span class=o>*</span><span class=w> </span><span class=n>renWin</span><span class=p>)</span>
 </span><span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkWindowToImageFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>windowToImageFilter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>windowToImageFilter</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>

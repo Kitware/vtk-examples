@@ -125,7 +125,7 @@ function registerListener(event, func) {
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;cctype&gt;</span><span class=c1>    // For to_lower</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span><span class=c1>    // For find_last_of()</span>
 
-<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>**</span><span class=w> </span><span class=n>argv</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>importRenderWindow</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>importRenderer</span><span class=p>;</span>
@@ -138,15 +138,15 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>fileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>filePrefixArgOffset</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=c1>// Depends on importer.</span>
+<span class=w>  </span><span class=c1>// int filePrefixArgOffset = 0; // Depends on importer.</span>
 
-<span class=w>  </span><span class=c1>// Make the extension lowercase.</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>extension</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>extension</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span><span class=w> </span><span class=n>extension</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span>
-<span class=w>                 </span><span class=o>::</span><span class=n>tolower</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>&quot;.&quot;</span><span class=p>)</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>::</span><span class=n>npos</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fileName</span><span class=p>.</span><span class=n>substr</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>&quot;.&quot;</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=c1>// Make the extension lowercase.</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>extension</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>extension</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span><span class=w> </span><span class=n>extension</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span>
+<span class=w>                 </span><span class=o>::</span><span class=n>tolower</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;wrl&quot;</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkVRMLImporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>importer</span><span class=p>;</span>
@@ -198,7 +198,6 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>while</span><span class=w> </span><span class=p>((</span><span class=n>anActor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>allActors</span><span class=o>-&gt;</span><span class=n>GetNextActor</span><span class=p>(</span><span class=n>actorsIt</span><span class=p>)))</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>appendPD</span><span class=p>;</span>
-</span><span class=hll><span class=w>    </span><span class=n>vtkPolyData</span><span class=o>*</span><span class=w> </span><span class=n>pd</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>anActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>anActor</span><span class=o>-&gt;</span><span class=n>GetUserMatrix</span><span class=p>()</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=k>nullptr</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
@@ -213,7 +212,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=k>else</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=hll><span class=w>      </span><span class=n>pd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>anActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetInput</span><span class=p>());</span>
+<span class=hll><span class=w>      </span><span class=k>auto</span><span class=w> </span><span class=n>pd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>anActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetInput</span><span class=p>());</span>
 </span><span class=w>      </span><span class=n>appendPD</span><span class=o>-&gt;</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>pd</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkUnsignedCharArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>cellData</span><span class=p>;</span>

@@ -68,7 +68,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkXMLImageDataReader.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkXMLImageDataWriter.h&gt;</span>
 </span>
-<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>**</span><span class=w> </span><span class=n>argv</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
@@ -85,7 +85,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>imageData</span><span class=o>-&gt;</span><span class=n>SetDimensions</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=p>,</span><span class=w> </span><span class=mi>5</span><span class=p>);</span>
 <span class=w>  </span><span class=n>imageData</span><span class=o>-&gt;</span><span class=n>AllocateScalars</span><span class=p>(</span><span class=n>VTK_DOUBLE</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 
-<span class=w>  </span><span class=kt>int</span><span class=o>*</span><span class=w> </span><span class=n>dims</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageData</span><span class=o>-&gt;</span><span class=n>GetDimensions</span><span class=p>();</span>
+<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>int</span><span class=o>*</span><span class=w> </span><span class=n>dims</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageData</span><span class=o>-&gt;</span><span class=n>GetDimensions</span><span class=p>();</span>
 
 <span class=w>  </span><span class=c1>// Fill every entry of the image data with &quot;2.0&quot;</span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>z</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>z</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>dims</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span><span class=w> </span><span class=n>z</span><span class=o>++</span><span class=p>)</span>

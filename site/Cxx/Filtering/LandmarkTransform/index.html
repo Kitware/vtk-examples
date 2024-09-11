@@ -195,7 +195,8 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Display the transformation matrix that was computed</span>
 <span class=hll><span class=w>  </span><span class=n>vtkMatrix4x4</span><span class=o>*</span><span class=w> </span><span class=n>mat</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>landmarkTransform</span><span class=o>-&gt;</span><span class=n>GetMatrix</span><span class=p>();</span>
-</span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Matrix: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=o>*</span><span class=n>mat</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Matrix: &quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>mat</span><span class=o>-&gt;</span><span class=n>Print</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Visualize</span>
 <span class=w>  </span><span class=c1>// Map the points to spheres</span>

@@ -262,7 +262,7 @@ function registerListener(event, func) {
 <span class=k>private</span><span class=o>:</span>
 <span class=w>  </span><span class=c1>//-----------------------------------------------------------------------------</span>
 <span class=w>  </span><span class=c1>//! Get a string of [R, G, B, A] as double.</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>RGBAToDoubleString</span><span class=p>(</span><span class=kt>double</span><span class=o>*</span><span class=w> </span><span class=n>rgba</span><span class=p>)</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>RGBAToDoubleString</span><span class=p>(</span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=o>*</span><span class=w> </span><span class=n>rgba</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>os</span><span class=p>;</span>
 <span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;[&quot;</span><span class=p>;</span>
@@ -287,7 +287,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>//-----------------------------------------------------------------------------</span>
 <span class=w>  </span><span class=c1>//! Get a string of [R, G, B, A] as unsigned char.</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>RGBAToCharString</span><span class=p>(</span><span class=kt>double</span><span class=o>*</span><span class=w> </span><span class=n>rgba</span><span class=p>)</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>RGBAToCharString</span><span class=p>(</span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=o>*</span><span class=w> </span><span class=n>rgba</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>os</span><span class=p>;</span>
 <span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;[&quot;</span><span class=p>;</span>
@@ -312,7 +312,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>//-----------------------------------------------------------------------------</span>
 <span class=w>  </span><span class=c1>//! Get a hexadecimal string of the RGB colors.</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>RGBToHexString</span><span class=p>(</span><span class=kt>double</span><span class=o>*</span><span class=w> </span><span class=n>rgba</span><span class=p>)</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>RGBToHexString</span><span class=p>(</span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=o>*</span><span class=w> </span><span class=n>rgba</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>os</span><span class=p>;</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>3</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span>
@@ -325,7 +325,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>//-----------------------------------------------------------------------------</span>
 <span class=w>  </span><span class=c1>//! Get a string of [R, G, B, A] as double, unsigned char and hex.</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>AssembleRGBAString</span><span class=p>(</span><span class=kt>double</span><span class=o>*</span><span class=w> </span><span class=n>rgba</span><span class=p>)</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>AssembleRGBAString</span><span class=p>(</span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=o>*</span><span class=w> </span><span class=n>rgba</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>os</span><span class=p>;</span>
 <span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>RGBAToDoubleString</span><span class=p>(</span><span class=n>rgba</span><span class=p>);</span>
@@ -338,7 +338,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>//-----------------------------------------------------------------------------</span>
 <span class=w>  </span><span class=c1>//! Compare two rgba colors.</span>
-<span class=w>  </span><span class=k>template</span><span class=w> </span><span class=o>&lt;</span><span class=k>typename</span><span class=w> </span><span class=nc>T</span><span class=o>&gt;</span><span class=w> </span><span class=kt>bool</span><span class=w> </span><span class=n>CompareRGBA</span><span class=p>(</span><span class=n>T</span><span class=o>*</span><span class=w> </span><span class=n>rgba1</span><span class=p>,</span><span class=w> </span><span class=n>T</span><span class=o>*</span><span class=w> </span><span class=n>rgba2</span><span class=p>)</span>
+<span class=w>  </span><span class=k>template</span><span class=w> </span><span class=o>&lt;</span><span class=k>typename</span><span class=w> </span><span class=nc>T</span><span class=o>&gt;</span><span class=w> </span><span class=kt>bool</span><span class=w> </span><span class=n>CompareRGBA</span><span class=p>(</span><span class=n>T</span><span class=w> </span><span class=k>const</span><span class=o>*</span><span class=w> </span><span class=n>rgba1</span><span class=p>,</span><span class=w> </span><span class=n>T</span><span class=w> </span><span class=k>const</span><span class=o>*</span><span class=w> </span><span class=n>rgba2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=kt>bool</span><span class=w> </span><span class=n>areEquivalent</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>4</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span>
@@ -376,7 +376,7 @@ function registerListener(event, func) {
 <span class=cm> * @param colorSchemes - a map of the names keyed on their index.</span>
 <span class=cm> * @return a string if the indexes and names.</span>
 <span class=cm> */</span>
-<span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>AvailableColorSchemes</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;&amp;</span><span class=w> </span><span class=n>colorSchemes</span><span class=p>)</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>AvailableColorSchemes</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>colorSchemes</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>os</span><span class=p>;</span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;::</span><span class=n>const_iterator</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colorSchemes</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span>
@@ -405,7 +405,7 @@ function registerListener(event, func) {
 <span class=cm> * @param lut1 - the first lookup table.</span>
 <span class=cm> * @param lut2 - the second lookup table.</span>
 <span class=cm> */</span>
-<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>DisplayResults</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span><span class=w> </span><span class=n>reason</span><span class=p>,</span><span class=w> </span><span class=n>vtkLookupTable</span><span class=o>*</span><span class=w> </span><span class=n>lut1</span><span class=p>,</span>
+<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>DisplayResults</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reason</span><span class=p>,</span><span class=w> </span><span class=n>vtkLookupTable</span><span class=o>*</span><span class=w> </span><span class=n>lut1</span><span class=p>,</span>
 </span><span class=hll><span class=w>                    </span><span class=n>vtkLookupTable</span><span class=o>*</span><span class=w> </span><span class=n>lut2</span><span class=p>)</span>
 </span><span class=p>{</span>
 <span class=w>  </span><span class=n>LUTUtilities</span><span class=w> </span><span class=n>lutUtilities</span><span class=p>;</span>
@@ -447,7 +447,7 @@ function registerListener(event, func) {
 <span class=cm> */</span>
 <span class=kt>bool</span><span class=w> </span><span class=n>TestLookupTables</span><span class=p>(</span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>lutMode</span><span class=p>)</span>
 <span class=p>{</span>
-<span class=w>  </span><span class=n>LUTUtilities</span><span class=w> </span><span class=n>lutUtilities</span><span class=p>;</span>
+<span class=w>  </span><span class=c1>// LUTUtilities lutUtilities;</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>lut1</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>lut2</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkColorSeries</span><span class=o>&gt;</span><span class=w> </span><span class=n>colorSeries</span><span class=p>;</span>

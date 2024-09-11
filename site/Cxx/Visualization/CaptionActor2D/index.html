@@ -113,7 +113,6 @@ function registerListener(event, func) {
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;sstream&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>MyStyle</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkInteractorStyleImage</span>
@@ -124,7 +123,7 @@ function registerListener(event, func) {
 </span>
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>*&gt;</span><span class=w> </span><span class=n>Numbers</span><span class=p>;</span>
 </span>
-<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>OnLeftButtonDown</span><span class=p>()</span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>OnLeftButtonDown</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot;Picking pixel: &quot; &lt;&lt; this-&gt;Interactor-&gt;GetEventPosition()[0]</span>
 <span class=w>    </span><span class=c1>// &lt;&lt; &quot; &quot; &lt;&lt; this-&gt;Interactor-&gt;GetEventPosition()[1] &lt;&lt; std::endl;</span>

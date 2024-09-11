@@ -67,7 +67,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>imageData</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>-5</span><span class=p>,</span><span class=w> </span><span class=mi>5</span><span class=p>,</span><span class=w> </span><span class=mi>-5</span><span class=p>,</span><span class=w> </span><span class=mi>5</span><span class=p>,</span><span class=w> </span><span class=mi>-5</span><span class=p>,</span><span class=w> </span><span class=mi>5</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Fill every entry of the image data with &quot;2.0&quot;</span>
-<span class=w>  </span><span class=kt>int</span><span class=o>*</span><span class=w> </span><span class=n>extent</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageData</span><span class=o>-&gt;</span><span class=n>GetExtent</span><span class=p>();</span>
+<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>int</span><span class=o>*</span><span class=w> </span><span class=n>extent</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageData</span><span class=o>-&gt;</span><span class=n>GetExtent</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>imageData</span><span class=o>-&gt;</span><span class=n>AllocateScalars</span><span class=p>(</span><span class=n>VTK_UNSIGNED_CHAR</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 

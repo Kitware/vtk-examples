@@ -109,7 +109,6 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span>
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
 
@@ -120,7 +119,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>MyInteractorStyle</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>();</span>
 <span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>MyInteractorStyle</span><span class=p>,</span><span class=w> </span><span class=n>vtkInteractorStyleTrackballActor</span><span class=p>);</span>
 </span>
-<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>OnLeftButtonDown</span><span class=p>()</span>
+<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>OnLeftButtonDown</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Pressed left mouse button.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
@@ -132,7 +131,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkInteractorStyleTrackballActor</span><span class=o>::</span><span class=n>OnLeftButtonDown</span><span class=p>();</span>
 </span><span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>OnLeftButtonUp</span><span class=p>()</span>
+<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>OnLeftButtonUp</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Released left mouse button.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 

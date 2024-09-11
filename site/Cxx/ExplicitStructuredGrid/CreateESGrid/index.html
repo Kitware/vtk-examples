@@ -175,7 +175,7 @@ function registerListener(event, func) {
 <span class=w>        </span><span class=c1>// Now let&#39;s emulate:</span>
 <span class=w>        </span><span class=c1>// pts = np.ravel_multi_index(multi_index, dimensions, order=&#39;F&#39;)</span>
 <span class=w>        </span><span class=n>cells</span><span class=o>-&gt;</span><span class=n>InsertNextCell</span><span class=p>(</span><span class=mi>8</span><span class=p>);</span>
-<span class=w>        </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=w> </span><span class=n>cell</span><span class=p>;</span>
+<span class=w>        </span><span class=c1>// std::vector&lt;vtkIdType&gt; cell;</span>
 <span class=w>        </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>idx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>idx</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>8</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>idx</span><span class=p>)</span>
 <span class=w>        </span><span class=p>{</span>
 <span class=w>          </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>ii</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>multiIndex</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span><span class=n>idx</span><span class=p>];</span>

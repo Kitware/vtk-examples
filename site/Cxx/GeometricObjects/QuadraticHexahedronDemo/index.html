@@ -128,7 +128,7 @@ function registerListener(event, func) {
 </span>
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>MakeWidget</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;&amp;</span><span class=w> </span><span class=n>widget</span><span class=p>,</span>
 </span><span class=hll><span class=w>                </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTessellatorFilter</span><span class=o>&gt;&amp;</span><span class=w> </span><span class=n>tessellate</span><span class=p>,</span>
-</span><span class=hll><span class=w>                </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;&amp;</span><span class=w> </span><span class=n>textMapper</span><span class=p>,</span>
+</span><span class=hll><span class=w>                </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>textMapper</span><span class=p>,</span>
 </span><span class=hll><span class=w>                </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;&amp;</span><span class=w> </span><span class=n>interactor</span><span class=p>);</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
@@ -276,7 +276,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>MakeWidget</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;&amp;</span><span class=w> </span><span class=n>widget</span><span class=p>,</span>
 </span><span class=hll><span class=w>                </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTessellatorFilter</span><span class=o>&gt;&amp;</span><span class=w> </span><span class=n>tessellate</span><span class=p>,</span>
-</span><span class=hll><span class=w>                </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;&amp;</span><span class=w> </span><span class=n>textMapper</span><span class=p>,</span>
+</span><span class=hll><span class=w>                </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>textMapper</span><span class=p>,</span>
 </span><span class=hll><span class=w>                </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;&amp;</span><span class=w> </span><span class=n>interactor</span><span class=p>)</span>
 </span><span class=p>{</span>
 <span class=w>  </span><span class=c1>// Setup a slider widget for each varying parameter</span>
