@@ -224,7 +224,7 @@ function registerListener(event, func) {
 
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;BarChartQt.h&quot;</span>
 
-<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>**</span><span class=w> </span><span class=n>argv</span><span class=p>)</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=c1>// Needed to ensure appropriate OpenGL context is created for VTK rendering.</span>
 <span class=w>  </span><span class=n>QSurfaceFormat</span><span class=o>::</span><span class=n>setDefaultFormat</span><span class=p>(</span><span class=n>QVTKOpenGLNativeWidget</span><span class=o>::</span><span class=n>defaultFormat</span><span class=p>());</span>
