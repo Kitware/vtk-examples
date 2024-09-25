@@ -422,19 +422,21 @@ function registerListener(event, func) {
         <span class=n>VTK_NEAREST_INTERPOLATION</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
         <span class=n>VTK_LINEAR_INTERPOLATION</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
         <span class=n>VTK_CUBIC_INTERPOLATION</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
-</code></pre></div> <h3 id=voxelmodeller>VoxelModeller<a class=headerlink href=#voxelmodeller title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code>    @dataclass(frozen=True)
-    class ScalarType:
-        VTK_BIT: int = 1
-        VTK_CHAR: int = 2
-        VTK_UNSIGNED_CHAR: int = 3
-        VTK_SHORT: int = 4
-        VTK_UNSIGNED_SHORT: int = 5
-        VTK_INT: int = 6
-        VTK_UNSIGNED_INT: int = 7
-        VTK_LONG: int = 8
-        VTK_UNSIGNED_LONG: int = 9
-        VTK_FLOAT: int = 10
-        VTK_DOUBLE: int = 11
+</code></pre></div> <h3 id=voxelmodeller>VoxelModeller<a class=headerlink href=#voxelmodeller title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+<span class=k>class</span> <span class=nc>VoxelModeller</span><span class=p>:</span>
+    <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+    <span class=k>class</span> <span class=nc>ScalarType</span><span class=p>:</span>
+        <span class=n>VTK_BIT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
+        <span class=n>VTK_CHAR</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
+        <span class=n>VTK_UNSIGNED_CHAR</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
+        <span class=n>VTK_SHORT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>4</span>
+        <span class=n>VTK_UNSIGNED_SHORT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
+        <span class=n>VTK_INT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>6</span>
+        <span class=n>VTK_UNSIGNED_INT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>7</span>
+        <span class=n>VTK_LONG</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>8</span>
+        <span class=n>VTK_UNSIGNED_LONG</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>9</span>
+        <span class=n>VTK_FLOAT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>10</span>
+        <span class=n>VTK_DOUBLE</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>11</span>
 </code></pre></div> <h3 id=windowtoimagefilter>WindowToImageFilter<a class=headerlink href=#windowtoimagefilter title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 <span class=k>class</span> <span class=nc>WindowToImageFilter</span><span class=p>:</span>
     <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
