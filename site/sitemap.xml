@@ -7781,6 +7781,10 @@
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/IO/ReadCML/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/IO/ReadDICOM/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
@@ -7917,6 +7921,10 @@
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Interaction/EllipticalButton/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Interaction/InteractorStyleTrackballActor/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
@@ -8049,6 +8057,22 @@
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Points/FitImplicitFunction/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Points/MaskPointsFilter/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Points/SignedDistance/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Points/UnsignedDistance/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/AlignTwoPolyDatas/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
@@ -8113,11 +8137,19 @@
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/Outline/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/PolyDataContourToImageData/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/PolyDataToImageDataStencil/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/ResamplePolyLine/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
@@ -8154,6 +8186,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Rendering/GradientBackground/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Rendering/InterpolateCamera/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
@@ -8222,6 +8258,18 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Rendering/TransparentBackground/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/SimpleOperations/DistanceBetweenPoints/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/SimpleOperations/DistancePointToLine/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/SimpleOperations/GaussianRandomNumber/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
@@ -8317,6 +8365,14 @@
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Utilities/BoundingBox/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Utilities/BoundingBoxIntersection/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Utilities/CheckVTKVersion/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
@@ -8338,6 +8394,14 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Utilities/JSONColorMapToLUT/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Utilities/PCADemo/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Utilities/PCAStatistics/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
@@ -8401,6 +8465,18 @@
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/BoxClipStructuredPoints/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/BoxClipUnstructuredGrid/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CameraActor/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CameraModel1/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
@@ -8422,6 +8498,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CubeAxesActor/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CubeAxesActor2D/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
@@ -8606,6 +8686,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/CameraOrientationWidget/</loc>
+         <lastmod>2024-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/CaptionWidget/</loc>
          <lastmod>2024-10-02</lastmod>
     </url>
     <url>
