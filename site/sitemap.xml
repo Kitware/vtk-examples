@@ -7985,6 +7985,10 @@
          <lastmod>2024-10-08</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Modelling/Delaunay3DDemo/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Modelling/DelaunayMesh/</loc>
          <lastmod>2024-10-08</lastmod>
     </url>
@@ -8033,6 +8037,26 @@
          <lastmod>2024-10-08</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/AreaPlot/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/BoxChart/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/ChartMatrix/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/FunctionalBagPlot/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/Histogram2D/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/HistogramBarChart/</loc>
          <lastmod>2024-10-08</lastmod>
     </url>
@@ -8041,11 +8065,23 @@
          <lastmod>2024-10-08</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/ParallelCoordinates/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/PieChart/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/ScatterPlot/</loc>
          <lastmod>2024-10-08</lastmod>
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/SpiderPlot/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/StackedBar/</loc>
          <lastmod>2024-10-08</lastmod>
     </url>
     <url>
@@ -8081,7 +8117,15 @@
          <lastmod>2024-10-08</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/CellTreeLocator/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/CellsInsideObject/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/CenterOfMass/</loc>
          <lastmod>2024-10-08</lastmod>
     </url>
     <url>
@@ -8122,6 +8166,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/ExtractSelectionUsingPoints/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/FitSplineToCutterOutput/</loc>
          <lastmod>2024-10-08</lastmod>
     </url>
     <url>
@@ -8534,6 +8582,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/Kitchen/</loc>
+         <lastmod>2024-10-08</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/LabeledMesh/</loc>
          <lastmod>2024-10-08</lastmod>
     </url>
     <url>
