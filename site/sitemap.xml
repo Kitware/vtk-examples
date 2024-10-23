@@ -637,6 +637,10 @@
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/Cxx/DataStructures/KDTree/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/Cxx/DataStructures/KDTreeAccessPoints/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
@@ -650,10 +654,6 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/Cxx/DataStructures/KDTreeTimingDemo/</loc>
-         <lastmod>2024-10-23</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/Cxx/DataStructures/KdTree/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
@@ -2593,7 +2593,11 @@
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Cxx/Plotting/LinePlot/</loc>
+         <loc>https://examples.vtk.org/site/Cxx/Plotting/LinePlot2D/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/Cxx/Plotting/LinePlot3D/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
@@ -2610,10 +2614,6 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/Cxx/Plotting/PieChartActor/</loc>
-         <lastmod>2024-10-23</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/Cxx/Plotting/PlotLine3D/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
@@ -7609,6 +7609,14 @@
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/DataStructures/KDTree/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/DataStructures/KDTreeAccessPoints/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/ExplicitStructuredGrid/CreateESGrid/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
@@ -7773,6 +7781,10 @@
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/IO/ImportPolyDataScene/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/IO/ImportToExport/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
@@ -7822,6 +7834,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/IO/WriteXMLLinearCells/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/ImageData/ClipVolume/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
@@ -7953,6 +7969,10 @@
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Meshes/ClipClosedSurface/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Meshes/ClipDataSetWithPolyData/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
@@ -7965,11 +7985,19 @@
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Meshes/FitToHeightMap/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Meshes/PointInterpolator/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Meshes/SolidClip/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Meshes/TableBasedClipDataSetWithPolyData2/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
@@ -8058,6 +8086,14 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/HistogramBarChart/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/LinePlot2D/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Plotting/LinePlot3D/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
@@ -8194,6 +8230,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/PolyDataToImageDataStencil/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/PolygonalSurfacePointPlacer/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
@@ -8545,6 +8585,10 @@
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CornerAnnotation/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CubeAxesActor/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
@@ -8553,7 +8597,19 @@
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/Cursor2D/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/Cursor3D/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CurvaturesNormalsElevations/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/FastSplatter/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
@@ -8586,6 +8642,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/LabeledMesh/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/LoopShrink/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
@@ -8709,6 +8769,10 @@
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/VolumeRendering/RayCastIsosurface/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/AffineWidget/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
@@ -8722,6 +8786,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/BalloonWidget/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/BiDimensionalWidget/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
@@ -8745,6 +8813,10 @@
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/CheckerboardWidget/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/CompassWidget/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
@@ -8758,6 +8830,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/ImplicitPlaneWidget2/</loc>
+         <lastmod>2024-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/RectilinearWipeWidget/</loc>
          <lastmod>2024-10-23</lastmod>
     </url>
     <url>
