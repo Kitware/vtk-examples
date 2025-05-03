@@ -76,6 +76,51 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
+</code></pre></div> <p><strong>vtkTest1.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTest1.h&quot;</span>
+
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkObjectFactory.h&gt;</span>
+</span>
+<span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTest1</span><span class=p>);</span>
+
+<span class=n>vtkTest1</span><span class=o>::</span><span class=n>vtkTest1</span><span class=p>()</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>4.5</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>vtkTest1</span><span class=o>::~</span><span class=n>vtkTest1</span><span class=p>()</span>
+<span class=p>{</span>
+<span class=p>}</span>
+
+<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>vtkTest1</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span><span class=w> </span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>vtkIndent</span><span class=w> </span><span class=n>indent</span><span class=p>)</span>
+</span><span class=p>{</span>
+<span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Superclass</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>indent</span><span class=p>);</span>
+<span class=p>}</span>
+</code></pre></div> <p><strong>vtkTest1.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTest1_h</span>
+<span class=cp>#define __vtkTest1_h</span>
+
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkDataObject.h&gt;</span>
+</span>
+<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTest1</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkDataObject</span>
+</span><span class=p>{</span>
+<span class=k>public</span><span class=o>:</span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTest1</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>();</span>
+<span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTest1</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataObject</span><span class=p>);</span>
+</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span><span class=w> </span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>vtkIndent</span><span class=w> </span><span class=n>indent</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
+</span>
+<span class=w>  </span><span class=n>vtkGetMacro</span><span class=p>(</span><span class=n>Value</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=p>);</span>
+
+<span class=k>protected</span><span class=o>:</span>
+<span class=w>  </span><span class=n>vtkTest1</span><span class=p>();</span>
+<span class=w>  </span><span class=o>~</span><span class=n>vtkTest1</span><span class=p>();</span>
+
+<span class=k>private</span><span class=o>:</span>
+<span class=w>  </span><span class=n>vtkTest1</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTest1</span><span class=o>&amp;</span><span class=p>);</span><span class=w>       </span><span class=c1>// Not implemented.</span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTest1</span><span class=o>&amp;</span><span class=p>);</span><span class=w> </span><span class=c1>// Not implemented.</span>
+
+<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>Value</span><span class=p>;</span>
+<span class=p>};</span>
+
+<span class=cp>#endif</span>
 </code></pre></div> <p><strong>vtkTestAlgorithmSource.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTestAlgorithmSource_h</span>
 <span class=cp>#define __vtkTestAlgorithmSource_h</span>
 
@@ -137,51 +182,6 @@ function registerListener(event, func) {
 <span class=k>private</span><span class=o>:</span>
 <span class=w>  </span><span class=n>vtkTestAlgorithmSource</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestAlgorithmSource</span><span class=o>&amp;</span><span class=p>);</span><span class=w> </span><span class=c1>// Not implemented.</span>
 <span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestAlgorithmSource</span><span class=o>&amp;</span><span class=p>);</span><span class=w>         </span><span class=c1>// Not implemented.</span>
-<span class=p>};</span>
-
-<span class=cp>#endif</span>
-</code></pre></div> <p><strong>vtkTest1.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTest1.h&quot;</span>
-
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkObjectFactory.h&gt;</span>
-</span>
-<span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTest1</span><span class=p>);</span>
-
-<span class=n>vtkTest1</span><span class=o>::</span><span class=n>vtkTest1</span><span class=p>()</span>
-<span class=p>{</span>
-<span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>4.5</span><span class=p>;</span>
-<span class=p>}</span>
-
-<span class=n>vtkTest1</span><span class=o>::~</span><span class=n>vtkTest1</span><span class=p>()</span>
-<span class=p>{</span>
-<span class=p>}</span>
-
-<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>vtkTest1</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span><span class=w> </span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>vtkIndent</span><span class=w> </span><span class=n>indent</span><span class=p>)</span>
-</span><span class=p>{</span>
-<span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Superclass</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>indent</span><span class=p>);</span>
-<span class=p>}</span>
-</code></pre></div> <p><strong>vtkTest1.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTest1_h</span>
-<span class=cp>#define __vtkTest1_h</span>
-
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkDataObject.h&gt;</span>
-</span>
-<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTest1</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkDataObject</span>
-</span><span class=p>{</span>
-<span class=k>public</span><span class=o>:</span>
-<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTest1</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>();</span>
-<span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTest1</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataObject</span><span class=p>);</span>
-</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span><span class=w> </span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>vtkIndent</span><span class=w> </span><span class=n>indent</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
-</span>
-<span class=w>  </span><span class=n>vtkGetMacro</span><span class=p>(</span><span class=n>Value</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=p>);</span>
-
-<span class=k>protected</span><span class=o>:</span>
-<span class=w>  </span><span class=n>vtkTest1</span><span class=p>();</span>
-<span class=w>  </span><span class=o>~</span><span class=n>vtkTest1</span><span class=p>();</span>
-
-<span class=k>private</span><span class=o>:</span>
-<span class=w>  </span><span class=n>vtkTest1</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTest1</span><span class=o>&amp;</span><span class=p>);</span><span class=w>       </span><span class=c1>// Not implemented.</span>
-<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTest1</span><span class=o>&amp;</span><span class=p>);</span><span class=w> </span><span class=c1>// Not implemented.</span>
-
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>Value</span><span class=p>;</span>
 <span class=p>};</span>
 
 <span class=cp>#endif</span>
