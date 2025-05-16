@@ -153,8 +153,8 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=n>ren</span><span class=p>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>);</span>
 
 <span class=w>         </span><span class=n>_ImageViewer</span><span class=p>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
-<span class=w>         </span><span class=n>_ImageViewer</span><span class=p>.</span><span class=n>GetRenderer</span><span class=p>().</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>sliceStatusActor</span><span class=p>);</span>
-<span class=w>         </span><span class=n>_ImageViewer</span><span class=p>.</span><span class=n>GetRenderer</span><span class=p>().</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>usageTextActor</span><span class=p>);</span>
+<span class=w>         </span><span class=n>_ImageViewer</span><span class=p>.</span><span class=n>GetRenderer</span><span class=p>().</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>sliceStatusActor</span><span class=p>);</span>
+<span class=w>         </span><span class=n>_ImageViewer</span><span class=p>.</span><span class=n>GetRenderer</span><span class=p>().</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>usageTextActor</span><span class=p>);</span>
 <span class=w>         </span><span class=n>_ImageViewer</span><span class=p>.</span><span class=n>SetSlice</span><span class=p>(</span><span class=n>_MinSlice</span><span class=p>);</span>
 <span class=w>         </span><span class=n>_ImageViewer</span><span class=p>.</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>      </span><span class=p>}</span>

@@ -271,15 +271,15 @@ function registerListener(event, func) {
 
     <span class=c1># Create a TextActor for Yaw  (a1 and a2 actor&#39;s color).</span>
     <span class=n>text</span> <span class=o>=</span> <span class=n>get_text_actor</span><span class=p>(</span><span class=s1>&#39;Yaw&#39;</span><span class=p>,</span> <span class=p>(</span><span class=mi>20</span><span class=p>,</span> <span class=mi>50</span><span class=p>),</span> <span class=n>a1_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>text</span><span class=p>)</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>text</span><span class=p>)</span>
 
     <span class=c1># Create a TextActor for Pitch  (a3 and a4 actor&#39;s color).</span>
     <span class=n>text2</span> <span class=o>=</span> <span class=n>get_text_actor</span><span class=p>(</span><span class=s1>&#39;Pitch&#39;</span><span class=p>,</span> <span class=p>(</span><span class=mi>20</span><span class=p>,</span> <span class=mi>100</span><span class=p>),</span> <span class=n>a3_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>text2</span><span class=p>)</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>text2</span><span class=p>)</span>
 
     <span class=c1># Create a TextActor for roll (a6 actor&#39;s color).</span>
     <span class=n>text3</span> <span class=o>=</span> <span class=n>get_text_actor</span><span class=p>(</span><span class=s1>&#39;Roll&#39;</span><span class=p>,</span> <span class=p>(</span><span class=mi>20</span><span class=p>,</span> <span class=mi>150</span><span class=p>),</span> <span class=n>a6_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>text3</span><span class=p>)</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>text3</span><span class=p>)</span>
 
     <span class=n>iren</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>

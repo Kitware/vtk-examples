@@ -311,9 +311,9 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// xy-plot actors to the renderer.  Set the size of the render window.</span>
 <span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;silver&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>xyplot</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>xyplot2</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>xyplot3</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>xyplot</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>xyplot2</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>xyplot3</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>800</span><span class=p>,</span><span class=w> </span><span class=mi>600</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Set up the camera parameters.</span>

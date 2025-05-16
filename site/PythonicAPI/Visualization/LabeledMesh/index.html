@@ -170,9 +170,9 @@ function registerListener(event, func) {
 
     <span class=c1># Add the actors to the renderer set the background and size render</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sphere_actor</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>rect_actor</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>point_labels</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>cell_labels</span><span class=p>)</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>rect_actor</span><span class=p>)</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>point_labels</span><span class=p>)</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>cell_labels</span><span class=p>)</span>
 
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 

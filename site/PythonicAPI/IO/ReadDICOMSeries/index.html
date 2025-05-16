@@ -139,8 +139,8 @@ function registerListener(event, func) {
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
     <span class=c1># Add slice status message and usage hint message to the renderer.</span>
-    <span class=n>image_viewer</span><span class=o>.</span><span class=n>renderer</span><span class=o>.</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>slice_text_actor</span><span class=p>)</span>
-    <span class=n>image_viewer</span><span class=o>.</span><span class=n>renderer</span><span class=o>.</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>usage_text_actor</span><span class=p>)</span>
+    <span class=n>image_viewer</span><span class=o>.</span><span class=n>renderer</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>slice_text_actor</span><span class=p>)</span>
+    <span class=n>image_viewer</span><span class=o>.</span><span class=n>renderer</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>usage_text_actor</span><span class=p>)</span>
 
     <span class=c1># Initialize rendering and interaction.</span>
     <span class=n>image_viewer</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>

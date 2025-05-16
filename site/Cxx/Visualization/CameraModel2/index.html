@@ -426,7 +426,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>36</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>a1Actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>());</span>
 <span class=w>  </span><span class=n>text</span><span class=o>-&gt;</span><span class=n>SetDisplayPosition</span><span class=p>(</span><span class=mi>20</span><span class=p>,</span><span class=w> </span><span class=mi>50</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>text</span><span class=p>);</span>
+<span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>text</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Create a TextActor for Pitch  (a3 and a4 actor&#39;s color)</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>text2</span><span class=p>;</span>
@@ -438,7 +438,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>36</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>a3Actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>());</span>
 <span class=w>  </span><span class=n>text2</span><span class=o>-&gt;</span><span class=n>SetDisplayPosition</span><span class=p>(</span><span class=mi>20</span><span class=p>,</span><span class=w> </span><span class=mi>100</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>text2</span><span class=p>);</span>
+<span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>text2</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Create a TextActor for roll (a6 actor&#39;s color)</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>text3</span><span class=p>;</span>
@@ -450,7 +450,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>36</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>a6Actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>());</span>
 <span class=w>  </span><span class=n>text3</span><span class=o>-&gt;</span><span class=n>SetDisplayPosition</span><span class=p>(</span><span class=mi>20</span><span class=p>,</span><span class=w> </span><span class=mi>150</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>text3</span><span class=p>);</span>
+<span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>text3</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>

@@ -308,8 +308,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// this must be called after SetupInteractor().</span>
 <span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>myInteractorStyle</span><span class=p>);</span>
 <span class=w>  </span><span class=c1>// Sdd slice status message and usage hint message to the renderer.</span>
-<span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>sliceTextActor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>usageTextActor</span><span class=p>);</span>
+<span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>sliceTextActor</span><span class=p>);</span>
+<span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>usageTextActor</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Initialize rendering and interaction.</span>
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>

@@ -299,13 +299,13 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Add the actors to the renderer; set the background and size; zoom in</span>
 <span class=w>  </span><span class=c1>// closer to the image; render</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>textActorL</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>textActorC</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>textActorR</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>singleLineTextActorB</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>singleLineTextActorC</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>singleLineTextActorT</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor2D</span><span class=p>(</span><span class=n>gridActor</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>textActorL</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>textActorC</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>textActorR</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>singleLineTextActorB</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>singleLineTextActorC</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>singleLineTextActorT</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>gridActor</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Silver&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span><span class=w> </span><span class=mi>480</span><span class=p>);</span>
