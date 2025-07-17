@@ -141,31 +141,33 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>SetUseTextActor3D</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>SetBounds</span><span class=p>(</span><span class=n>superquadricSource</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetBounds</span><span class=p>());</span>
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>SetCamera</span><span class=p>(</span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>());</span>
+
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>GetTitleTextProperty</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>axis1Color</span><span class=p>.</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>GetTitleTextProperty</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>48</span><span class=p>);</span>
+<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>GetTitleTextProperty</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>18</span><span class=p>);</span>
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>GetLabelTextProperty</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>axis1Color</span><span class=p>.</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>DrawXGridlinesOn</span><span class=p>();</span>
+<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>XAxisMinorTickVisibilityOff</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>GetTitleTextProperty</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>axis2Color</span><span class=p>.</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>GetTitleTextProperty</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>18</span><span class=p>);</span>
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>GetLabelTextProperty</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>axis2Color</span><span class=p>.</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>DrawYGridlinesOn</span><span class=p>();</span>
+<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>YAxisMinorTickVisibilityOff</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>GetTitleTextProperty</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>axis3Color</span><span class=p>.</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>GetTitleTextProperty</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>18</span><span class=p>);</span>
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>GetLabelTextProperty</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>axis3Color</span><span class=p>.</span><span class=n>GetData</span><span class=p>());</span>
-
-<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>DrawXGridlinesOn</span><span class=p>();</span>
-<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>DrawYGridlinesOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>DrawZGridlinesOn</span><span class=p>();</span>
+<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>ZAxisMinorTickVisibilityOff</span><span class=p>();</span>
+
 <span class=cp>#if VTK_MAJOR_VERSION == 6</span>
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>SetGridLineLocation</span><span class=p>(</span><span class=n>VTK_GRID_LINES_FURTHEST</span><span class=p>);</span>
 <span class=cp>#endif</span>
 <span class=cp>#if VTK_MAJOR_VERSION &gt; 6</span>
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>SetGridLineLocation</span><span class=p>(</span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>VTK_GRID_LINES_FURTHEST</span><span class=p>);</span>
 <span class=cp>#endif</span>
-
-<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>XAxisMinorTickVisibilityOff</span><span class=p>();</span>
-<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>YAxisMinorTickVisibilityOff</span><span class=p>();</span>
-<span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>ZAxisMinorTickVisibilityOff</span><span class=p>();</span>
-
 <span class=w>  </span><span class=n>cubeAxesActor</span><span class=o>-&gt;</span><span class=n>SetFlyModeToStaticEdges</span><span class=p>();</span>
+
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cubeAxesActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>superquadricActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>30</span><span class=p>);</span>
