@@ -115,9 +115,12 @@ function registerListener(event, func) {
     <span class=c1># Use MakeScalars() above to fill the scalar arrays.</span>
 
 <span class=hll>    <span class=n>amr</span> <span class=o>=</span> <span class=n>vtkOverlappingAMR</span><span class=p>()</span>
-</span>    <span class=n>num_levels</span> <span class=o>=</span> <span class=mi>2</span>
+</span>    <span class=c1># num_levels = 2</span>
+    <span class=c1># blocks_per_level = (1, 2)</span>
+    <span class=c1># amr.Initialize(num_levels, blocks_per_level)</span>
+    <span class=c1># Use this if VTK_VERSION_NUMBER &gt;= 90520250724ULL</span>
     <span class=n>blocks_per_level</span> <span class=o>=</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
-    <span class=n>amr</span><span class=o>.</span><span class=n>Initialize</span><span class=p>(</span><span class=n>num_levels</span><span class=p>,</span> <span class=n>blocks_per_level</span><span class=p>)</span>
+    <span class=n>amr</span><span class=o>.</span><span class=n>Initialize</span><span class=p>(</span><span class=n>blocks_per_level</span><span class=p>)</span>
 
     <span class=n>origin</span> <span class=o>=</span> <span class=p>([</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>],</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>],</span> <span class=p>[</span><span class=mi>5</span><span class=p>,</span> <span class=mi>5</span><span class=p>,</span> <span class=mi>5</span><span class=p>])</span>
     <span class=n>spacing</span> <span class=o>=</span> <span class=p>([</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>],</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>],</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>])</span>
@@ -156,13 +159,12 @@ function registerListener(event, func) {
 </span>
     <span class=c1># Create the render window, renderer, and interactor.</span>
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;CornflowerBlue&#39;</span><span class=p>))</span>
-</span>    <span class=c1># Add the actor to the renderer.</span>
+</span>    <span class=c1># Add the actors to the renderer.</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor1</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor2</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
-</span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;OverlappingAMR&#39;</span><span class=p>)</span>
-    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>&#39;OverlappingAMR&#39;</span><span class=p>)</span>
+</span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
