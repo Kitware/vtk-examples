@@ -4873,6 +4873,10 @@
          <lastmod>2025-08-03</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/Cxx/Widgets/RadioButton/</loc>
+         <lastmod>2025-08-03</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/Cxx/Widgets/RectilinearWipeWidget/</loc>
          <lastmod>2025-08-03</lastmod>
     </url>
@@ -9398,6 +9402,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/PlaneWidget/</loc>
+         <lastmod>2025-08-03</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Widgets/RadioButton/</loc>
          <lastmod>2025-08-03</lastmod>
     </url>
     <url>
