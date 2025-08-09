@@ -84,6 +84,149 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
+</code></pre></div> <p><strong>vtkTestAlgorithmFilter.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTestAlgorithmFilter_h</span>
+<span class=cp>#define __vtkTestAlgorithmFilter_h</span>
+
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkAlgorithm.h&gt;</span>
+</span>
+<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkDataSet</span><span class=p>;</span>
+</span><span class=k>class</span><span class=w> </span><span class=nc>vtkTest</span><span class=p>;</span>
+
+<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTestAlgorithmFilter</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkAlgorithm</span>
+</span><span class=p>{</span>
+<span class=k>public</span><span class=o>:</span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTestAlgorithmFilter</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>();</span>
+<span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTestAlgorithmFilter</span><span class=p>,</span><span class=w> </span><span class=n>vtkAlgorithm</span><span class=p>);</span>
+</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span><span class=w> </span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>vtkIndent</span><span class=w> </span><span class=n>indent</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
+</span>
+<span class=w>  </span><span class=c1>// Description:</span>
+<span class=w>  </span><span class=c1>// Get the output data object for a port on this algorithm.</span>
+<span class=w>  </span><span class=n>vtkTest</span><span class=o>*</span><span class=w> </span><span class=nf>GetOutput</span><span class=p>();</span>
+<span class=w>  </span><span class=n>vtkTest</span><span class=o>*</span><span class=w> </span><span class=nf>GetOutput</span><span class=p>(</span><span class=kt>int</span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>SetOutput</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span><span class=w> </span><span class=n>d</span><span class=p>);</span>
+</span>
+<span class=w>  </span><span class=c1>// Description:</span>
+<span class=hll><span class=w>  </span><span class=c1>// see vtkAlgorithm for details</span>
+</span><span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>ProcessRequest</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=p>,</span>
+</span><span class=hll><span class=w>                             </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
+</span>
+<span class=w>  </span><span class=c1>// this method is not recommended for use, but lots of old style filters use</span>
+<span class=w>  </span><span class=c1>// it</span>
+<span class=hll><span class=w>  </span><span class=n>vtkDataObject</span><span class=o>*</span><span class=w> </span><span class=nf>GetInput</span><span class=p>();</span>
+</span><span class=hll><span class=w>  </span><span class=n>vtkDataObject</span><span class=o>*</span><span class=w> </span><span class=nf>GetInput</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>port</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>vtkTest</span><span class=o>*</span><span class=w> </span><span class=nf>GetLabelHierarchyInput</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>port</span><span class=p>);</span>
+
+<span class=w>  </span><span class=c1>// Description:</span>
+<span class=w>  </span><span class=c1>// Set an input of this algorithm. You should not override these</span>
+<span class=w>  </span><span class=c1>// methods because they are not the only way to connect a pipeline.</span>
+<span class=w>  </span><span class=c1>// Note that these methods support old-style pipeline connections.</span>
+<span class=w>  </span><span class=c1>// When writing new code you should use the more general</span>
+<span class=hll><span class=w>  </span><span class=c1>// vtkAlgorithm::SetInputConnection().  These methods transform the</span>
+</span><span class=w>  </span><span class=c1>// input index to the input port index, not an index of a connection</span>
+<span class=w>  </span><span class=c1>// within a single port.</span>
+<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>SetInput</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span><span class=p>);</span>
+</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>SetInput</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataObject</span><span class=o>*</span><span class=p>);</span>
+</span>
+<span class=w>  </span><span class=c1>// Description:</span>
+<span class=w>  </span><span class=c1>// Add an input of this algorithm.  Note that these methods support</span>
+<span class=w>  </span><span class=c1>// old-style pipeline connections.  When writing new code you should</span>
+<span class=hll><span class=w>  </span><span class=c1>// use the more general vtkAlgorithm::AddInputConnection().  See</span>
+</span><span class=w>  </span><span class=c1>// SetInput() for details.</span>
+<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>AddInput</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span><span class=p>);</span>
+</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>AddInput</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataObject</span><span class=o>*</span><span class=p>);</span>
+</span>
+<span class=k>protected</span><span class=o>:</span>
+<span class=w>  </span><span class=n>vtkTestAlgorithmFilter</span><span class=p>();</span>
+<span class=w>  </span><span class=o>~</span><span class=n>vtkTestAlgorithmFilter</span><span class=p>();</span>
+
+<span class=w>  </span><span class=c1>// Description:</span>
+<span class=w>  </span><span class=c1>// This is called by the superclass.</span>
+<span class=w>  </span><span class=c1>// This is the method you should override.</span>
+<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>RequestDataObject</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>request</span><span class=p>,</span>
+</span><span class=hll><span class=w>                                </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=w> </span><span class=n>inputVector</span><span class=p>,</span>
+</span><span class=hll><span class=w>                                </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=w> </span><span class=n>outputVector</span><span class=p>);</span>
+</span>
+<span class=w>  </span><span class=c1>// convenience method</span>
+<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>RequestInformation</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>request</span><span class=p>,</span>
+</span><span class=hll><span class=w>                                 </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=w> </span><span class=n>inputVector</span><span class=p>,</span>
+</span><span class=hll><span class=w>                                 </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=w> </span><span class=n>outputVector</span><span class=p>);</span>
+</span>
+<span class=w>  </span><span class=c1>// Description:</span>
+<span class=w>  </span><span class=c1>// This is called by the superclass.</span>
+<span class=w>  </span><span class=c1>// This is the method you should override.</span>
+<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>RequestData</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>request</span><span class=p>,</span>
+</span><span class=hll><span class=w>                          </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=w> </span><span class=n>inputVector</span><span class=p>,</span>
+</span><span class=hll><span class=w>                          </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=w> </span><span class=n>outputVector</span><span class=p>);</span>
+</span>
+<span class=w>  </span><span class=c1>// Description:</span>
+<span class=w>  </span><span class=c1>// This is called by the superclass.</span>
+<span class=w>  </span><span class=c1>// This is the method you should override.</span>
+<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>RequestUpdateExtent</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=p>,</span>
+</span><span class=hll><span class=w>                                  </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=p>);</span>
+</span>
+<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>FillOutputPortInformation</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>port</span><span class=p>,</span>
+<span class=hll><span class=w>                                        </span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>info</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
+</span><span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>FillInputPortInformation</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>port</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>info</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
+</span>
+<span class=k>private</span><span class=o>:</span>
+<span class=w>  </span><span class=n>vtkTestAlgorithmFilter</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w> </span><span class=c1>// Not implemented.</span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w>         </span><span class=c1>// Not implemented.</span>
+<span class=p>};</span>
+
+<span class=cp>#endif</span>
+</code></pre></div> <p><strong>vtkTest.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTest_h</span>
+<span class=cp>#define __vtkTest_h</span>
+
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkDataObject.h&gt;</span>
+</span>
+<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTest</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkDataObject</span>
+</span><span class=p>{</span>
+<span class=k>public</span><span class=o>:</span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTest</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>();</span>
+<span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTest</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataObject</span><span class=p>);</span>
+</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span><span class=w> </span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>vtkIndent</span><span class=w> </span><span class=n>indent</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
+</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>ShallowCopy</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span><span class=w> </span><span class=n>t</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
+</span>
+<span class=w>  </span><span class=n>vtkGetMacro</span><span class=p>(</span><span class=n>Value</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=p>);</span>
+<span class=w>  </span><span class=n>vtkSetMacro</span><span class=p>(</span><span class=n>Value</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=p>);</span>
+
+<span class=k>protected</span><span class=o>:</span>
+<span class=w>  </span><span class=n>vtkTest</span><span class=p>();</span>
+<span class=w>  </span><span class=o>~</span><span class=n>vtkTest</span><span class=p>();</span>
+
+<span class=k>private</span><span class=o>:</span>
+<span class=w>  </span><span class=n>vtkTest</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTest</span><span class=o>&amp;</span><span class=p>);</span><span class=w>        </span><span class=c1>// Not implemented.</span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTest</span><span class=o>&amp;</span><span class=p>);</span><span class=w> </span><span class=c1>// Not implemented.</span>
+
+<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>Value</span><span class=p>;</span>
+<span class=p>};</span>
+
+<span class=cp>#endif</span>
+</code></pre></div> <p><strong>vtkTest.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTest.h&quot;</span>
+
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkObjectFactory.h&gt;</span>
+</span>
+<span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTest</span><span class=p>);</span>
+
+<span class=n>vtkTest</span><span class=o>::</span><span class=n>vtkTest</span><span class=p>()</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.0</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>vtkTest</span><span class=o>::~</span><span class=n>vtkTest</span><span class=p>()</span>
+<span class=p>{</span>
+<span class=p>}</span>
+
+<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>vtkTest</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span><span class=w> </span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>vtkIndent</span><span class=w> </span><span class=n>indent</span><span class=p>)</span>
+</span><span class=p>{</span>
+<span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Superclass</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>indent</span><span class=p>);</span>
+<span class=p>}</span>
+
+<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>vtkTest</span><span class=o>::</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span><span class=w> </span><span class=n>t</span><span class=p>)</span>
+</span><span class=p>{</span>
+<span class=w>  </span><span class=n>vtkTest</span><span class=o>*</span><span class=w> </span><span class=n>m</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkTest</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>t</span><span class=p>);</span>
+<span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>m</span><span class=o>-&gt;</span><span class=n>GetValue</span><span class=p>();</span>
+<span class=p>}</span>
 </code></pre></div> <p><strong>vtkTestAlgorithmFilter.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTestAlgorithmFilter.h&quot;</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTest.h&quot;</span>
 
@@ -308,149 +451,6 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>AddInputDataObject</span><span class=p>(</span><span class=n>index</span><span class=p>,</span><span class=w> </span><span class=n>input</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
-</code></pre></div> <p><strong>vtkTestAlgorithmFilter.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTestAlgorithmFilter_h</span>
-<span class=cp>#define __vtkTestAlgorithmFilter_h</span>
-
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkAlgorithm.h&gt;</span>
-</span>
-<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkDataSet</span><span class=p>;</span>
-</span><span class=k>class</span><span class=w> </span><span class=nc>vtkTest</span><span class=p>;</span>
-
-<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTestAlgorithmFilter</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkAlgorithm</span>
-</span><span class=p>{</span>
-<span class=k>public</span><span class=o>:</span>
-<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTestAlgorithmFilter</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>();</span>
-<span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTestAlgorithmFilter</span><span class=p>,</span><span class=w> </span><span class=n>vtkAlgorithm</span><span class=p>);</span>
-</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span><span class=w> </span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>vtkIndent</span><span class=w> </span><span class=n>indent</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
-</span>
-<span class=w>  </span><span class=c1>// Description:</span>
-<span class=w>  </span><span class=c1>// Get the output data object for a port on this algorithm.</span>
-<span class=w>  </span><span class=n>vtkTest</span><span class=o>*</span><span class=w> </span><span class=nf>GetOutput</span><span class=p>();</span>
-<span class=w>  </span><span class=n>vtkTest</span><span class=o>*</span><span class=w> </span><span class=nf>GetOutput</span><span class=p>(</span><span class=kt>int</span><span class=p>);</span>
-<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>SetOutput</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span><span class=w> </span><span class=n>d</span><span class=p>);</span>
-</span>
-<span class=w>  </span><span class=c1>// Description:</span>
-<span class=hll><span class=w>  </span><span class=c1>// see vtkAlgorithm for details</span>
-</span><span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>ProcessRequest</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=p>,</span>
-</span><span class=hll><span class=w>                             </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
-</span>
-<span class=w>  </span><span class=c1>// this method is not recommended for use, but lots of old style filters use</span>
-<span class=w>  </span><span class=c1>// it</span>
-<span class=hll><span class=w>  </span><span class=n>vtkDataObject</span><span class=o>*</span><span class=w> </span><span class=nf>GetInput</span><span class=p>();</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkDataObject</span><span class=o>*</span><span class=w> </span><span class=nf>GetInput</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>port</span><span class=p>);</span>
-</span><span class=w>  </span><span class=n>vtkTest</span><span class=o>*</span><span class=w> </span><span class=nf>GetLabelHierarchyInput</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>port</span><span class=p>);</span>
-
-<span class=w>  </span><span class=c1>// Description:</span>
-<span class=w>  </span><span class=c1>// Set an input of this algorithm. You should not override these</span>
-<span class=w>  </span><span class=c1>// methods because they are not the only way to connect a pipeline.</span>
-<span class=w>  </span><span class=c1>// Note that these methods support old-style pipeline connections.</span>
-<span class=w>  </span><span class=c1>// When writing new code you should use the more general</span>
-<span class=hll><span class=w>  </span><span class=c1>// vtkAlgorithm::SetInputConnection().  These methods transform the</span>
-</span><span class=w>  </span><span class=c1>// input index to the input port index, not an index of a connection</span>
-<span class=w>  </span><span class=c1>// within a single port.</span>
-<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>SetInput</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span><span class=p>);</span>
-</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>SetInput</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataObject</span><span class=o>*</span><span class=p>);</span>
-</span>
-<span class=w>  </span><span class=c1>// Description:</span>
-<span class=w>  </span><span class=c1>// Add an input of this algorithm.  Note that these methods support</span>
-<span class=w>  </span><span class=c1>// old-style pipeline connections.  When writing new code you should</span>
-<span class=hll><span class=w>  </span><span class=c1>// use the more general vtkAlgorithm::AddInputConnection().  See</span>
-</span><span class=w>  </span><span class=c1>// SetInput() for details.</span>
-<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>AddInput</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span><span class=p>);</span>
-</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>AddInput</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataObject</span><span class=o>*</span><span class=p>);</span>
-</span>
-<span class=k>protected</span><span class=o>:</span>
-<span class=w>  </span><span class=n>vtkTestAlgorithmFilter</span><span class=p>();</span>
-<span class=w>  </span><span class=o>~</span><span class=n>vtkTestAlgorithmFilter</span><span class=p>();</span>
-
-<span class=w>  </span><span class=c1>// Description:</span>
-<span class=w>  </span><span class=c1>// This is called by the superclass.</span>
-<span class=w>  </span><span class=c1>// This is the method you should override.</span>
-<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>RequestDataObject</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>request</span><span class=p>,</span>
-</span><span class=hll><span class=w>                                </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=w> </span><span class=n>inputVector</span><span class=p>,</span>
-</span><span class=hll><span class=w>                                </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=w> </span><span class=n>outputVector</span><span class=p>);</span>
-</span>
-<span class=w>  </span><span class=c1>// convenience method</span>
-<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>RequestInformation</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>request</span><span class=p>,</span>
-</span><span class=hll><span class=w>                                 </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=w> </span><span class=n>inputVector</span><span class=p>,</span>
-</span><span class=hll><span class=w>                                 </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=w> </span><span class=n>outputVector</span><span class=p>);</span>
-</span>
-<span class=w>  </span><span class=c1>// Description:</span>
-<span class=w>  </span><span class=c1>// This is called by the superclass.</span>
-<span class=w>  </span><span class=c1>// This is the method you should override.</span>
-<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>RequestData</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>request</span><span class=p>,</span>
-</span><span class=hll><span class=w>                          </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=w> </span><span class=n>inputVector</span><span class=p>,</span>
-</span><span class=hll><span class=w>                          </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=w> </span><span class=n>outputVector</span><span class=p>);</span>
-</span>
-<span class=w>  </span><span class=c1>// Description:</span>
-<span class=w>  </span><span class=c1>// This is called by the superclass.</span>
-<span class=w>  </span><span class=c1>// This is the method you should override.</span>
-<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>RequestUpdateExtent</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=p>,</span>
-</span><span class=hll><span class=w>                                  </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=p>);</span>
-</span>
-<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>FillOutputPortInformation</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>port</span><span class=p>,</span>
-<span class=hll><span class=w>                                        </span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>info</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>FillInputPortInformation</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>port</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>info</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
-</span>
-<span class=k>private</span><span class=o>:</span>
-<span class=w>  </span><span class=n>vtkTestAlgorithmFilter</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w> </span><span class=c1>// Not implemented.</span>
-<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w>         </span><span class=c1>// Not implemented.</span>
-<span class=p>};</span>
-
-<span class=cp>#endif</span>
-</code></pre></div> <p><strong>vtkTest.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTest.h&quot;</span>
-
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkObjectFactory.h&gt;</span>
-</span>
-<span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTest</span><span class=p>);</span>
-
-<span class=n>vtkTest</span><span class=o>::</span><span class=n>vtkTest</span><span class=p>()</span>
-<span class=p>{</span>
-<span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.0</span><span class=p>;</span>
-<span class=p>}</span>
-
-<span class=n>vtkTest</span><span class=o>::~</span><span class=n>vtkTest</span><span class=p>()</span>
-<span class=p>{</span>
-<span class=p>}</span>
-
-<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>vtkTest</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span><span class=w> </span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>vtkIndent</span><span class=w> </span><span class=n>indent</span><span class=p>)</span>
-</span><span class=p>{</span>
-<span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Superclass</span><span class=o>::</span><span class=n>PrintSelf</span><span class=p>(</span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>indent</span><span class=p>);</span>
-<span class=p>}</span>
-
-<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>vtkTest</span><span class=o>::</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span><span class=w> </span><span class=n>t</span><span class=p>)</span>
-</span><span class=p>{</span>
-<span class=w>  </span><span class=n>vtkTest</span><span class=o>*</span><span class=w> </span><span class=n>m</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkTest</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>t</span><span class=p>);</span>
-<span class=w>  </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>m</span><span class=o>-&gt;</span><span class=n>GetValue</span><span class=p>();</span>
-<span class=p>}</span>
-</code></pre></div> <p><strong>vtkTest.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTest_h</span>
-<span class=cp>#define __vtkTest_h</span>
-
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkDataObject.h&gt;</span>
-</span>
-<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTest</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkDataObject</span>
-</span><span class=p>{</span>
-<span class=k>public</span><span class=o>:</span>
-<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTest</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>();</span>
-<span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTest</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataObject</span><span class=p>);</span>
-</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>PrintSelf</span><span class=p>(</span><span class=n>ostream</span><span class=o>&amp;</span><span class=w> </span><span class=n>os</span><span class=p>,</span><span class=w> </span><span class=n>vtkIndent</span><span class=w> </span><span class=n>indent</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>ShallowCopy</span><span class=p>(</span><span class=n>vtkDataObject</span><span class=o>*</span><span class=w> </span><span class=n>t</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
-</span>
-<span class=w>  </span><span class=n>vtkGetMacro</span><span class=p>(</span><span class=n>Value</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=p>);</span>
-<span class=w>  </span><span class=n>vtkSetMacro</span><span class=p>(</span><span class=n>Value</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=p>);</span>
-
-<span class=k>protected</span><span class=o>:</span>
-<span class=w>  </span><span class=n>vtkTest</span><span class=p>();</span>
-<span class=w>  </span><span class=o>~</span><span class=n>vtkTest</span><span class=p>();</span>
-
-<span class=k>private</span><span class=o>:</span>
-<span class=w>  </span><span class=n>vtkTest</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTest</span><span class=o>&amp;</span><span class=p>);</span><span class=w>        </span><span class=c1>// Not implemented.</span>
-<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTest</span><span class=o>&amp;</span><span class=p>);</span><span class=w> </span><span class=c1>// Not implemented.</span>
-
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>Value</span><span class=p>;</span>
-<span class=p>};</span>
-
-<span class=cp>#endif</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span><span class=w> </span><span class=s>3.12</span><span class=w> </span><span class=s>FATAL_ERROR</span><span class=p>)</span>
 
 <span class=nb>project</span><span class=p>(</span><span class=s>AlgorithmFilter</span><span class=p>)</span>
