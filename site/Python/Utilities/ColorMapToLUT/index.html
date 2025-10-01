@@ -124,16 +124,16 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_ctf</span><span class=p>():</span>
-    <span class=c1># name: Fast, creator: Francesca Samsel and Alan W. Scott</span>
-    <span class=c1># interpolationspace: RGB, space: rgb</span>
+    <span class=c1># name: Fast, creator: Francesca Samsel, and Alan W. Scott</span>
+    <span class=c1># interpolationspace: Lab, space: rgb</span>
     <span class=c1># file name: Fast.json</span>
 
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkDiscretizableColorTransferFunction</span><span class=p>()</span>
 </span>
-    <span class=n>ctf</span><span class=o>.</span><span class=n>SetColorSpaceToRGB</span><span class=p>()</span>
+    <span class=n>ctf</span><span class=o>.</span><span class=n>SetColorSpaceToLab</span><span class=p>()</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>SetScaleToLinear</span><span class=p>()</span>
 
-    <span class=n>ctf</span><span class=o>.</span><span class=n>SetNanColor</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
+    <span class=n>ctf</span><span class=o>.</span><span class=n>SetNanColor</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
 
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.05639999999999999</span><span class=p>,</span> <span class=mf>0.05639999999999999</span><span class=p>,</span> <span class=mf>0.47</span><span class=p>)</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.17159223942480895</span><span class=p>,</span> <span class=mf>0.24300000000000013</span><span class=p>,</span> <span class=mf>0.4603500000000004</span><span class=p>,</span> <span class=mf>0.81</span><span class=p>)</span>
