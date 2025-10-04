@@ -98,6 +98,7 @@ function registerListener(event, func) {
                         </script> <hr> <h3 id=description>Description<a class=headerlink href=#description title="Permanent link">&para;</a></h3> <p>This examples cuts a vtkPolydata and fits a <a href=https://www.vtk.org/doc/nightly/html/classvtkKochanekSpline.html>vtkKochanekSpline</a> to the resulting polylines. The cut lines are passed through <a href=https://www.vtk.org/doc/nightly/html/classvtkStripper.html>vtkStripper</a> to make them into connected polylines. Then, the lines are passed through <a href=https://www.vtk.org/doc/nightly/html/classvtkTubeFilter.html>vtkTubeFilter</a> to improve the visualization.</p> <p>The example takes an optional argument that specifies a vtk polydata file (.vtp). If run without an argument, it processes a sphere.</p> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../PythonicAPI/PolyData/FitSplineToCutterOutput>PythonicAPI</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>FitSplineToCutterOutput.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkActor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCamera.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCellArray.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCellArrayIterator.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCutter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkKochanekSpline.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNamedColors.h&gt;</span>
@@ -117,10 +118,6 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTubeFilter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkXMLPolyDataReader.h&gt;</span>
 </span>
-<span class=cp>#ifdef VTK_CELL_ARRAY_V2</span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCellArrayIterator.h&gt;</span>
-</span><span class=cp>#endif </span><span class=c1>// VTK_CELL_ARRAY_V2</span>
-
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
 
 <span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
@@ -243,8 +240,6 @@ function registerListener(event, func) {
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=cp>#ifdef VTK_CELL_ARRAY_V2</span>
-
 <span class=w>  </span><span class=c1>// Newer versions of vtkCellArray prefer local iterators:</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>cellIter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtk</span><span class=o>::</span><span class=n>TakeSmartPointer</span><span class=p>(</span><span class=n>cells</span><span class=o>-&gt;</span><span class=n>NewIterator</span><span class=p>());</span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>GoToFirstCell</span><span class=p>();</span><span class=w> </span><span class=o>!</span><span class=n>cellIter</span><span class=o>-&gt;</span><span class=n>IsDoneWithTraversal</span><span class=p>();</span>
@@ -261,28 +256,6 @@ function registerListener(event, func) {
 <span class=w>                </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;)&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
-
-<span class=cp>#else </span><span class=c1>// VTK_CELL_ARRAY_V2</span>
-
-<span class=w>  </span><span class=c1>// Older implementations of vtkCellArray use internal iterator APIs (not</span>
-<span class=w>  </span><span class=c1>// thread safe):</span>
-<span class=w>  </span><span class=n>vtkIdType</span><span class=o>*</span><span class=w> </span><span class=n>indices</span><span class=p>;</span>
-<span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>numberOfPoints</span><span class=p>;</span>
-<span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>lineCount</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>cells</span><span class=o>-&gt;</span><span class=n>InitTraversal</span><span class=p>();</span><span class=w> </span><span class=n>cells</span><span class=o>-&gt;</span><span class=n>GetNextCell</span><span class=p>(</span><span class=n>numberOfPoints</span><span class=p>,</span><span class=w> </span><span class=n>indices</span><span class=p>);</span>
-<span class=w>       </span><span class=n>lineCount</span><span class=o>++</span><span class=p>)</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Line &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>lineCount</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>numberOfPoints</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span>
-<span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=kt>double</span><span class=w> </span><span class=n>point</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
-<span class=w>      </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>indices</span><span class=p>[</span><span class=n>i</span><span class=p>],</span><span class=w> </span><span class=n>point</span><span class=p>);</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;</span><span class=se>\t</span><span class=s>(&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>point</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>point</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>point</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span>
-<span class=w>                </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;)&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=p>}</span>
-<span class=w>  </span><span class=p>}</span>
-
-<span class=cp>#endif </span><span class=c1>// VTK_CELL_ARRAY_V2</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>

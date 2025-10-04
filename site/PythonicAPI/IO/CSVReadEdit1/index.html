@@ -348,10 +348,10 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_ctf</span><span class=p>():</span>
     <span class=c1># name: Fast, creator: Francesca Samsel, and Alan W. Scott</span>
-    <span class=c1># interpolationspace: RGB, space: rgb</span>
+    <span class=c1># interpolationspace: Lab, space: rgb</span>
     <span class=c1># file name: Fast.json</span>
 
-<span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkDiscretizableColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_RGB</span><span class=p>,</span>
+<span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkDiscretizableColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_LAB</span><span class=p>,</span>
 </span>                                                <span class=n>scale</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>Scale</span><span class=o>.</span><span class=n>VTK_CTF_LINEAR</span><span class=p>,</span>
                                                 <span class=n>nan_color</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>),</span>
                                                 <span class=n>number_of_values</span><span class=o>=</span><span class=mi>9</span><span class=p>,</span> <span class=n>discretize</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
