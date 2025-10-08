@@ -67,7 +67,7 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonColor</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonCore</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkFloatArray</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonDataModel</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
-<span class=hll>    <span class=n>vtkCellTypes</span><span class=p>,</span>
+<span class=hll>    <span class=n>vtkCellTypeUtilities</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRectilinearGrid</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersCore</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImplicitPolyDataDistance</span>
@@ -216,28 +216,26 @@ function registerListener(event, func) {
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
     <span class=c1># Generate a report.</span>
-<span class=hll>    <span class=n>ct</span> <span class=o>=</span> <span class=n>vtkCellTypes</span><span class=p>()</span>
-</span>
     <span class=n>number_of_cells</span> <span class=o>=</span> <span class=n>clipper</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>number_of_cells</span>
     <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;------------------------&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The clipped dataset(inside) contains a </span><span class=si>{</span><span class=n>clipper</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>class_name</span><span class=si>}</span><span class=s1> that has </span><span class=si>{</span><span class=n>number_of_cells</span><span class=si>}</span><span class=s1> cells&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The clipped dataset (inside) contains a </span><span class=si>{</span><span class=n>clipper</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>class_name</span><span class=si>}</span><span class=s1> that has </span><span class=si>{</span><span class=n>number_of_cells</span><span class=si>}</span><span class=s1> cells&#39;</span><span class=p>)</span>
     <span class=n>cell_map</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>number_of_cells</span><span class=p>):</span>
         <span class=n>cell_map</span><span class=p>[</span><span class=n>clipper</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>)]</span> <span class=o>=</span> <span class=n>cell_map</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=mi>1</span>
 
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>cell_map</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39; Cell type &#39;</span><span class=p>,</span> <span class=n>ct</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39;occurs&#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39;times.&#39;</span><span class=p>)</span>
-
+<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39; Cell type &#39;</span><span class=p>,</span> <span class=n>vtkCellTypeUtilities</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39;occurs&#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39;times.&#39;</span><span class=p>)</span>
+</span>
     <span class=n>number_of_cells</span> <span class=o>=</span> <span class=n>clipper1</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>number_of_cells</span>
     <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;------------------------&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The clipped dataset(outside) contains a </span><span class=si>{</span><span class=n>clipper1</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>class_name</span><span class=si>}</span><span class=s1> that has </span><span class=si>{</span><span class=n>number_of_cells</span><span class=si>}</span><span class=s1> cells&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The clipped dataset (outside) contains a </span><span class=si>{</span><span class=n>clipper1</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>class_name</span><span class=si>}</span><span class=s1> that has </span><span class=si>{</span><span class=n>number_of_cells</span><span class=si>}</span><span class=s1> cells&#39;</span><span class=p>)</span>
     <span class=n>outside_cell_map</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>number_of_cells</span><span class=p>):</span>
         <span class=n>outside_cell_map</span><span class=p>[</span><span class=n>clipper1</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>)]</span> <span class=o>=</span> <span class=n>outside_cell_map</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>clipper1</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=mi>1</span>
 
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>outside_cell_map</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39; Cell type &#39;</span><span class=p>,</span> <span class=n>ct</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39;occurs&#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39;times.&#39;</span><span class=p>)</span>
-
+<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39; Cell type &#39;</span><span class=p>,</span> <span class=n>vtkCellTypeUtilities</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39;occurs&#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39;times.&#39;</span><span class=p>)</span>
+</span>
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 <span class=k>class</span><span class=w> </span><span class=nc>Property</span><span class=p>:</span>
