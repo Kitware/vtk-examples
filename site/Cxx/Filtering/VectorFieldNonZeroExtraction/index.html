@@ -90,8 +90,9 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThresholdPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>thresholdPoints</span><span class=p>;</span>
 </span><span class=w>  </span><span class=c1>// thresholdPoints-&gt;SetInputConnection(magnitudeFilter-&gt;GetOutputPort());</span>
 <span class=w>  </span><span class=n>thresholdPoints</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>image</span><span class=p>);</span>
-<span class=w>  </span><span class=n>thresholdPoints</span><span class=o>-&gt;</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mf>.05</span><span class=p>);</span>
-<span class=w>  </span><span class=n>thresholdPoints</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
+<span class=w>  </span><span class=n>thresholdPoints</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=mf>0.05</span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=n>thresholdPoints</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkThresholdPoints</span><span class=o>::</span><span class=n>THRESHOLD_UPPER</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>thresholdPoints</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>WriteImage</span><span class=p>(</span><span class=n>image</span><span class=p>,</span><span class=w> </span><span class=s>&quot;input.vti&quot;</span><span class=p>);</span>
 <span class=w>  </span><span class=n>WriteVectorField</span><span class=p>(</span><span class=n>thresholdPoints</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>(),</span><span class=w> </span><span class=s>&quot;output.vtp&quot;</span><span class=p>);</span>

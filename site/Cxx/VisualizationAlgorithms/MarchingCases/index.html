@@ -257,51 +257,51 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>size_t</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>mcCases</span><span class=p>.</span><span class=n>size</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=c1>// Define a Single Cube</span>
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>Scalars</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>Scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>scalars</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
 
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>Points</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>Points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>points</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
+<span class=w>    </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
+<span class=w>    </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
+<span class=w>    </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span><span class=w> </span><span class=n>Ids</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>Ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>4</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>7</span><span class=p>);</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span><span class=w> </span><span class=n>ids</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+<span class=w>    </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
+<span class=w>    </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
+<span class=w>    </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>4</span><span class=p>);</span>
+<span class=w>    </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span>
+<span class=w>    </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
+<span class=w>    </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=mi>7</span><span class=p>);</span>
 
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGrid</span><span class=o>&gt;</span><span class=w> </span><span class=n>Grid</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>Grid</span><span class=o>-&gt;</span><span class=n>Allocate</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span><span class=w> </span><span class=mi>10</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Grid</span><span class=o>-&gt;</span><span class=n>InsertNextCell</span><span class=p>(</span><span class=mi>12</span><span class=p>,</span><span class=w> </span><span class=n>Ids</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Grid</span><span class=o>-&gt;</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>Points</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Grid</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetScalars</span><span class=p>(</span><span class=n>Scalars</span><span class=p>);</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGrid</span><span class=o>&gt;</span><span class=w> </span><span class=n>grid</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>grid</span><span class=o>-&gt;</span><span class=n>Allocate</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span><span class=w> </span><span class=mi>10</span><span class=p>);</span>
+<span class=w>    </span><span class=n>grid</span><span class=o>-&gt;</span><span class=n>InsertNextCell</span><span class=p>(</span><span class=mi>12</span><span class=p>,</span><span class=w> </span><span class=n>ids</span><span class=p>);</span>
+<span class=w>    </span><span class=n>grid</span><span class=o>-&gt;</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>);</span>
+<span class=w>    </span><span class=n>grid</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetScalars</span><span class=p>(</span><span class=n>scalars</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Find the triangles that lie along the 0.5 contour in this cube.</span>
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkContourFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>Marching</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>Marching</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>Grid</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Marching</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.5</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Marching</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkContourFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>marching</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>marching</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>grid</span><span class=p>);</span>
+<span class=w>    </span><span class=n>marching</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.5</span><span class=p>);</span>
+<span class=w>    </span><span class=n>marching</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=w>    </span><span class=c1>// Extract the edges of the triangles just found.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkExtractEdges</span><span class=o>&gt;</span><span class=w> </span><span class=n>triangleEdges</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>triangleEdges</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>Marching</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+</span><span class=w>    </span><span class=n>triangleEdges</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>marching</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
 <span class=w>    </span><span class=c1>// Draw the edges as tubes instead of lines.  Also create the associated</span>
 <span class=w>    </span><span class=c1>// mapper and actor to display the tubes.</span>
@@ -327,66 +327,68 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// and actor.  Set the opacity of the shrunken triangles.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkShrinkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>aShrinker</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>aShrinker</span><span class=o>-&gt;</span><span class=n>SetShrinkFactor</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
-<span class=w>    </span><span class=n>aShrinker</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>Marching</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>    </span><span class=n>aShrinker</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>marching</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>aMapper</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>aMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 <span class=w>    </span><span class=n>aMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>aShrinker</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>Triangles</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>Triangles</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>aMapper</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Triangles</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>triangles</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>triangles</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>aMapper</span><span class=p>);</span>
+<span class=w>    </span><span class=n>triangles</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
 <span class=w>        </span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;banana&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>    </span><span class=n>Triangles</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.6</span><span class=p>);</span>
+<span class=w>    </span><span class=n>triangles</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.6</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Draw a cube the same size and at the same position as the one</span>
 <span class=w>    </span><span class=c1>// created previously.  Extract the edges because we only want to see</span>
 <span class=w>    </span><span class=c1>// the outline of the cube.  Pass the edges through a vtkTubeFilter so</span>
 <span class=w>    </span><span class=c1>// they are displayed as tubes rather than lines.</span>
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCubeSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>CubeModel</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>CubeModel</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>.5</span><span class=p>,</span><span class=w> </span><span class=mf>.5</span><span class=p>,</span><span class=w> </span><span class=mf>.5</span><span class=p>);</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCubeSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>cubeModel</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>cubeModel</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>.5</span><span class=p>,</span><span class=w> </span><span class=mf>.5</span><span class=p>,</span><span class=w> </span><span class=mf>.5</span><span class=p>);</span>
 
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkExtractEdges</span><span class=o>&gt;</span><span class=w> </span><span class=n>Edges</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>Edges</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>CubeModel</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkExtractEdges</span><span class=o>&gt;</span><span class=w> </span><span class=n>edges</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>edges</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cubeModel</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTubeFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>Tubes</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>Tubes</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>Edges</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=w>    </span><span class=n>Tubes</span><span class=o>-&gt;</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>.01</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Tubes</span><span class=o>-&gt;</span><span class=n>SetNumberOfSides</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Tubes</span><span class=o>-&gt;</span><span class=n>UseDefaultNormalOn</span><span class=p>();</span>
-<span class=w>    </span><span class=n>Tubes</span><span class=o>-&gt;</span><span class=n>SetDefaultNormal</span><span class=p>(</span><span class=mf>.577</span><span class=p>,</span><span class=w> </span><span class=mf>.577</span><span class=p>,</span><span class=w> </span><span class=mf>.577</span><span class=p>);</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTubeFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>tubes</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>tubes</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>edges</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>    </span><span class=n>tubes</span><span class=o>-&gt;</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>.01</span><span class=p>);</span>
+<span class=w>    </span><span class=n>tubes</span><span class=o>-&gt;</span><span class=n>SetNumberOfSides</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
+<span class=w>    </span><span class=n>tubes</span><span class=o>-&gt;</span><span class=n>UseDefaultNormalOn</span><span class=p>();</span>
+<span class=w>    </span><span class=n>tubes</span><span class=o>-&gt;</span><span class=n>SetDefaultNormal</span><span class=p>(</span><span class=mf>.577</span><span class=p>,</span><span class=w> </span><span class=mf>.577</span><span class=p>,</span><span class=w> </span><span class=mf>.577</span><span class=p>);</span>
 <span class=w>    </span><span class=c1>// Create the mapper and actor to display the cube edges.</span>
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>TubeMapper</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>TubeMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>Tubes</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>CubeEdges</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>CubeEdges</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>TubeMapper</span><span class=p>);</span>
-<span class=w>    </span><span class=n>CubeEdges</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>tubeMapper</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>tubeMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tubes</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>cubeEdges</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>cubeEdges</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>tubeMapper</span><span class=p>);</span>
+<span class=w>    </span><span class=n>cubeEdges</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
 <span class=w>        </span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;khaki&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>    </span><span class=n>CubeEdges</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.4</span><span class=p>);</span>
-<span class=w>    </span><span class=n>CubeEdges</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
+<span class=w>    </span><span class=n>cubeEdges</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.4</span><span class=p>);</span>
+<span class=w>    </span><span class=n>cubeEdges</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Create a sphere to use as a glyph source for vtkGlyph3D.</span>
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>Sphere</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>Sphere</span><span class=o>-&gt;</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>0.04</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Sphere</span><span class=o>-&gt;</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Sphere</span><span class=o>-&gt;</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphere</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>sphere</span><span class=o>-&gt;</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>0.04</span><span class=p>);</span>
+<span class=w>    </span><span class=n>sphere</span><span class=o>-&gt;</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span>
+<span class=w>    </span><span class=n>sphere</span><span class=o>-&gt;</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span>
 <span class=w>    </span><span class=c1>// Remove the part of the cube with data values below 0.5.</span>
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThresholdPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>ThresholdIn</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>ThresholdIn</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>Grid</span><span class=p>);</span>
-<span class=w>    </span><span class=n>ThresholdIn</span><span class=o>-&gt;</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mf>.5</span><span class=p>);</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThresholdPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>thresholdIn</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>thresholdIn</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>grid</span><span class=p>);</span>
+<span class=w>    </span><span class=n>thresholdIn</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=mf>0.5</span><span class=p>);</span>
+<span class=hll><span class=w>    </span><span class=n>thresholdIn</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkThresholdPoints</span><span class=o>::</span><span class=n>THRESHOLD_UPPER</span><span class=p>);</span>
+</span>
 <span class=w>    </span><span class=c1>// Display spheres at the vertices remaining in the cube data set after</span>
 <span class=w>    </span><span class=c1>// it was passed through vtkThresholdPoints.</span>
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;</span><span class=w> </span><span class=n>Vertices</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>Vertices</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>ThresholdIn</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=w>    </span><span class=n>Vertices</span><span class=o>-&gt;</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>Sphere</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;</span><span class=w> </span><span class=n>vertices</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>vertices</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>thresholdIn</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>    </span><span class=n>vertices</span><span class=o>-&gt;</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>sphere</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>    </span><span class=c1>// Create a mapper and actor to display the glyphs.</span>
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>SphereMapper</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>SphereMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>Vertices</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=w>    </span><span class=n>SphereMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphereMapper</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>sphereMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>vertices</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>    </span><span class=n>sphereMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>CubeVertices</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>CubeVertices</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>SphereMapper</span><span class=p>);</span>
-<span class=w>    </span><span class=n>CubeVertices</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>cubeVertices</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>cubeVertices</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>sphereMapper</span><span class=p>);</span>
+<span class=w>    </span><span class=n>cubeVertices</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
 <span class=w>        </span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>    </span><span class=c1>// Define the text for the label</span>
@@ -455,14 +457,14 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>mcCase</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>mcCases</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>mcCase</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>0</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>cases</span><span class=p>[</span><span class=o>-</span><span class=n>mcCase</span><span class=p>](</span><span class=n>Scalars</span><span class=p>,</span><span class=w> </span><span class=n>caseLabel</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
+<span class=w>      </span><span class=n>cases</span><span class=p>[</span><span class=o>-</span><span class=n>mcCase</span><span class=p>](</span><span class=n>scalars</span><span class=p>,</span><span class=w> </span><span class=n>caseLabel</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=k>else</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>cases</span><span class=p>[</span><span class=n>mcCase</span><span class=p>](</span><span class=n>Scalars</span><span class=p>,</span><span class=w> </span><span class=n>caseLabel</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
+<span class=w>      </span><span class=n>cases</span><span class=p>[</span><span class=n>mcCase</span><span class=p>](</span><span class=n>scalars</span><span class=p>,</span><span class=w> </span><span class=n>caseLabel</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=c1>// Force the grid to update.</span>
-<span class=w>    </span><span class=n>Grid</span><span class=o>-&gt;</span><span class=n>Modified</span><span class=p>();</span>
+<span class=w>    </span><span class=n>grid</span><span class=o>-&gt;</span><span class=n>Modified</span><span class=p>();</span>
 
 <span class=w>    </span><span class=c1>// Add the actors to the renderer</span>
 <span class=w>    </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>triangleEdgeActor</span><span class=p>);</span>
@@ -471,9 +473,9 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>labelActor</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>CubeEdges</span><span class=p>);</span>
-<span class=w>    </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>CubeVertices</span><span class=p>);</span>
-<span class=w>    </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>Triangles</span><span class=p>);</span>
+<span class=w>    </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cubeEdges</span><span class=p>);</span>
+<span class=w>    </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cubeVertices</span><span class=p>);</span>
+<span class=w>    </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>triangles</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Position the camera.</span>
 <span class=w>    </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Dolly</span><span class=p>(</span><span class=mf>1.2</span><span class=p>);</span>

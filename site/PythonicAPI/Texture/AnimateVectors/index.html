@@ -91,8 +91,9 @@ function registerListener(event, func) {
 
     <span class=c1># Generate the other vecAnim file names. There are 8 of them.</span>
     <span class=n>old_stem</span> <span class=o>=</span> <span class=n>vec_anim_paths</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>stem</span>
+    <span class=n>stem</span> <span class=o>=</span> <span class=n>old_stem</span><span class=p>[:</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>9</span><span class=p>):</span>
-        <span class=n>new_stem</span> <span class=o>=</span> <span class=n>old_stem</span><span class=p>[:</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=o>+</span> <span class=nb>str</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
+        <span class=n>new_stem</span> <span class=o>=</span> <span class=n>stem</span> <span class=o>+</span> <span class=nb>str</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
         <span class=n>vec_anim_paths</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vec_anim_paths</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>with_stem</span><span class=p>(</span><span class=n>new_stem</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
@@ -108,15 +109,16 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkStructuredPointsReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>vec_anim_paths</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
 </span>
 <span class=hll>    <span class=n>threshold</span> <span class=o>=</span> <span class=n>vtkThresholdPoints</span><span class=p>()</span>
-</span>    <span class=n>threshold</span><span class=o>.</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mi>200</span><span class=p>)</span>
-
+</span>    <span class=n>threshold</span><span class=o>.</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=mi>200</span><span class=p>)</span>
+<span class=hll>    <span class=n>threshold</span><span class=o>.</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkThresholdPoints</span><span class=o>.</span><span class=n>THRESHOLD_UPPER</span><span class=p>)</span>
+</span>
 <span class=hll>    <span class=n>line</span> <span class=o>=</span> <span class=n>vtkLineSource</span><span class=p>(</span><span class=n>resolution</span><span class=o>=</span><span class=mi>1</span><span class=p>)</span>
 </span>
 <span class=hll>    <span class=n>lines</span> <span class=o>=</span> <span class=n>vtkGlyph3D</span><span class=p>(</span><span class=n>source_connection</span><span class=o>=</span><span class=n>line</span><span class=o>.</span><span class=n>output_port</span><span class=p>,</span> <span class=n>scale_factor</span><span class=o>=</span><span class=mf>0.005</span><span class=p>,</span>
 </span>                       <span class=n>scale_mode</span><span class=o>=</span><span class=n>Glyph3D</span><span class=o>.</span><span class=n>ScaleMode</span><span class=o>.</span><span class=n>VTK_SCALE_BY_SCALAR</span>
                        <span class=p>)</span>
-    <span class=p>(</span><span class=n>reader</span> <span class=o>&gt;&gt;</span> <span class=n>threshold</span> <span class=o>&gt;&gt;</span> <span class=n>lines</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
-    <span class=n>scalar_range</span> <span class=o>=</span> <span class=n>lines</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>scalar_range</span>
+    <span class=n>reader</span> <span class=o>&gt;&gt;</span> <span class=n>threshold</span> <span class=o>&gt;&gt;</span> <span class=n>lines</span>
+    <span class=n>scalar_range</span> <span class=o>=</span> <span class=n>lines</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>scalar_range</span>
 
 <span class=hll>    <span class=n>vector_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>scalar_range</span><span class=o>=</span><span class=n>scalar_range</span><span class=p>)</span>
 </span>    <span class=n>lines</span> <span class=o>&gt;&gt;</span> <span class=n>vector_mapper</span>
@@ -137,7 +139,7 @@ function registerListener(event, func) {
 
     <span class=c1>#  Texture maps.</span>
     <span class=n>texture_maps</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>vec_anim_paths</span><span class=p>)):</span>
+    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>vec_anim_paths</span><span class=p>)):</span>
 <span class=hll>        <span class=n>tmap</span> <span class=o>=</span> <span class=n>vtkStructuredPointsReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>vec_anim_paths</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
 </span>
 <span class=hll>        <span class=n>texture</span> <span class=o>=</span> <span class=n>vtkTexture</span><span class=p>(</span><span class=n>interpolate</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>repeat</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>

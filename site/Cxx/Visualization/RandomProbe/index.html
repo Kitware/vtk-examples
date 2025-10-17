@@ -156,8 +156,9 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThresholdPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>selectPoints</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>selectPoints</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>randomProbe</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=w>  </span><span class=n>selectPoints</span><span class=o>-&gt;</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span>
-
+<span class=w>  </span><span class=n>selectPoints</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=n>selectPoints</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkThresholdPoints</span><span class=o>::</span><span class=n>THRESHOLD_UPPER</span><span class=p>);</span>
+</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphere</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>sphere</span><span class=o>-&gt;</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>0.025</span><span class=p>);</span>
 
