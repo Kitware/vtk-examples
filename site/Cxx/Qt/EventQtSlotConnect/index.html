@@ -188,6 +188,63 @@ function registerListener(event, func) {
 <span class=p>}</span>
 
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
+</code></pre></div> <p><strong>EventQtSlotConnectDriver.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QApplication&gt;</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QSurfaceFormat&gt;</span>
+
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QVTKOpenGLNativeWidget.h&gt;</span>
+
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;EventQtSlotConnect.h&quot;</span>
+
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=c1>// needed to ensure appropriate OpenGL context is created for VTK rendering.</span>
+<span class=w>  </span><span class=n>QSurfaceFormat</span><span class=o>::</span><span class=n>setDefaultFormat</span><span class=p>(</span><span class=n>QVTKOpenGLNativeWidget</span><span class=o>::</span><span class=n>defaultFormat</span><span class=p>());</span>
+
+<span class=w>  </span><span class=n>QApplication</span><span class=w> </span><span class=n>app</span><span class=p>(</span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
+
+<span class=w>  </span><span class=n>EventQtSlotConnect</span><span class=w> </span><span class=n>eventQtSlotConnect</span><span class=p>;</span>
+<span class=w>  </span><span class=n>eventQtSlotConnect</span><span class=p>.</span><span class=n>show</span><span class=p>();</span>
+
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>app</span><span class=p>.</span><span class=n>exec</span><span class=p>();</span>
+<span class=p>}</span>
+</code></pre></div> <p><strong>EventQtSlotConnect.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef EventQtSlotConnect_H</span>
+<span class=cp>#define EventQtSlotConnect_H</span>
+
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QMainWindow&gt;</span>
+
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkObject.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span>
+</span>
+<span class=c1>// Forward class declarations</span>
+<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkEventQtSlotConnect</span><span class=p>;</span>
+</span>
+<span class=cm>/*</span>
+<span class=cm> * See &quot;The Single Inheritance Approach&quot; in this link:</span>
+<span class=cm> * [Using a Designer UI File in Your C++</span>
+<span class=cm> * Application](https://doc.qt.io/qt-5/designer-using-a-ui-file.html)</span>
+<span class=cm> */</span>
+<span class=k>namespace</span><span class=w> </span><span class=nn>Ui</span><span class=w> </span><span class=p>{</span>
+<span class=k>class</span><span class=w> </span><span class=nc>EventQtSlotConnect</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=k>class</span><span class=w> </span><span class=nc>EventQtSlotConnect</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>QMainWindow</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=n>Q_OBJECT</span>
+<span class=k>public</span><span class=o>:</span>
+<span class=w>  </span><span class=k>explicit</span><span class=w> </span><span class=n>EventQtSlotConnect</span><span class=p>(</span><span class=n>QWidget</span><span class=o>*</span><span class=w> </span><span class=n>parent</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>);</span>
+<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=o>~</span><span class=n>EventQtSlotConnect</span><span class=p>();</span>
+
+<span class=k>public</span><span class=w> </span><span class=n>slots</span><span class=o>:</span>
+
+<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>slot_clicked</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>);</span>
+</span>
+<span class=k>private</span><span class=o>:</span>
+<span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkEventQtSlotConnect</span><span class=o>&gt;</span><span class=w> </span><span class=n>Connections</span><span class=p>;</span>
+</span><span class=w>  </span><span class=c1>// Designer form</span>
+<span class=w>  </span><span class=n>Ui</span><span class=o>::</span><span class=n>EventQtSlotConnect</span><span class=o>*</span><span class=w> </span><span class=n>ui</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
+<span class=p>};</span>
+
+<span class=cp>#endif</span>
 </code></pre></div> <p><strong>EventQtSlotConnect.ui</strong></p> <div class=codehilite><pre><span></span><code><span class=o>&lt;?</span><span class=n>xml</span><span class=w> </span><span class=n>version</span><span class=o>=</span><span class=s>&quot;1.0&quot;</span><span class=w> </span><span class=n>encoding</span><span class=o>=</span><span class=s>&quot;UTF-8&quot;</span><span class=o>?&gt;</span>
 <span class=o>&lt;</span><span class=n>ui</span><span class=w> </span><span class=n>version</span><span class=o>=</span><span class=s>&quot;4.0&quot;</span><span class=o>&gt;</span>
 <span class=w> </span><span class=o>&lt;</span><span class=k>class</span><span class=o>&gt;</span><span class=n>EventQtSlotConnect</span><span class=o>&lt;/</span><span class=k>class</span><span class=o>&gt;</span>
@@ -256,63 +313,6 @@ function registerListener(event, func) {
 <span class=w> </span><span class=o>&lt;</span><span class=n>resources</span><span class=o>/&gt;</span>
 <span class=w> </span><span class=o>&lt;</span><span class=n>connections</span><span class=o>/&gt;</span>
 <span class=o>&lt;/</span><span class=n>ui</span><span class=o>&gt;</span>
-</code></pre></div> <p><strong>EventQtSlotConnectDriver.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QApplication&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QSurfaceFormat&gt;</span>
-
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QVTKOpenGLNativeWidget.h&gt;</span>
-
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;EventQtSlotConnect.h&quot;</span>
-
-<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
-<span class=p>{</span>
-<span class=w>  </span><span class=c1>// needed to ensure appropriate OpenGL context is created for VTK rendering.</span>
-<span class=w>  </span><span class=n>QSurfaceFormat</span><span class=o>::</span><span class=n>setDefaultFormat</span><span class=p>(</span><span class=n>QVTKOpenGLNativeWidget</span><span class=o>::</span><span class=n>defaultFormat</span><span class=p>());</span>
-
-<span class=w>  </span><span class=n>QApplication</span><span class=w> </span><span class=n>app</span><span class=p>(</span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
-
-<span class=w>  </span><span class=n>EventQtSlotConnect</span><span class=w> </span><span class=n>eventQtSlotConnect</span><span class=p>;</span>
-<span class=w>  </span><span class=n>eventQtSlotConnect</span><span class=p>.</span><span class=n>show</span><span class=p>();</span>
-
-<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>app</span><span class=p>.</span><span class=n>exec</span><span class=p>();</span>
-<span class=p>}</span>
-</code></pre></div> <p><strong>EventQtSlotConnect.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef EventQtSlotConnect_H</span>
-<span class=cp>#define EventQtSlotConnect_H</span>
-
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QMainWindow&gt;</span>
-
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkObject.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span>
-</span>
-<span class=c1>// Forward class declarations</span>
-<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkEventQtSlotConnect</span><span class=p>;</span>
-</span>
-<span class=cm>/*</span>
-<span class=cm> * See &quot;The Single Inheritance Approach&quot; in this link:</span>
-<span class=cm> * [Using a Designer UI File in Your C++</span>
-<span class=cm> * Application](https://doc.qt.io/qt-5/designer-using-a-ui-file.html)</span>
-<span class=cm> */</span>
-<span class=k>namespace</span><span class=w> </span><span class=nn>Ui</span><span class=w> </span><span class=p>{</span>
-<span class=k>class</span><span class=w> </span><span class=nc>EventQtSlotConnect</span><span class=p>;</span>
-<span class=p>}</span>
-
-<span class=k>class</span><span class=w> </span><span class=nc>EventQtSlotConnect</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>QMainWindow</span>
-<span class=p>{</span>
-<span class=w>  </span><span class=n>Q_OBJECT</span>
-<span class=k>public</span><span class=o>:</span>
-<span class=w>  </span><span class=k>explicit</span><span class=w> </span><span class=n>EventQtSlotConnect</span><span class=p>(</span><span class=n>QWidget</span><span class=o>*</span><span class=w> </span><span class=n>parent</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>);</span>
-<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=o>~</span><span class=n>EventQtSlotConnect</span><span class=p>();</span>
-
-<span class=k>public</span><span class=w> </span><span class=n>slots</span><span class=o>:</span>
-
-<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>slot_clicked</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>);</span>
-</span>
-<span class=k>private</span><span class=o>:</span>
-<span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkEventQtSlotConnect</span><span class=o>&gt;</span><span class=w> </span><span class=n>Connections</span><span class=p>;</span>
-</span><span class=w>  </span><span class=c1>// Designer form</span>
-<span class=w>  </span><span class=n>Ui</span><span class=o>::</span><span class=n>EventQtSlotConnect</span><span class=o>*</span><span class=w> </span><span class=n>ui</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
-<span class=p>};</span>
-
-<span class=cp>#endif</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span><span class=w> </span><span class=s>3.12</span><span class=w> </span><span class=s>FATAL_ERROR</span><span class=p>)</span>
 
 <span class=nb>if</span><span class=p>(</span><span class=s>POLICY</span><span class=w> </span><span class=s>CMP0020</span><span class=p>)</span>
