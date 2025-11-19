@@ -109,13 +109,36 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderer.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkScalarBarActor.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkScalarBarRepresentation.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkScalarBarWidget.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTextActor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTextMapper.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTextProperty.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTextRepresentation.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTextWidget.h&gt;</span>
 </span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;array&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vector&gt;</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtk_cli11.h&gt;</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtk_fmt.h&gt;</span>
+<span class=c1>// clang-format off</span>
+<span class=cp>#include VTK_FMT(fmt/format.h)</span>
+<span class=c1>// clang-format on</span>
+
+<span class=c1>// #include &lt;algorithm&gt;</span>
+<span class=c1>// #include &lt;array&gt;</span>
+<span class=c1>// #include &lt;cctype&gt;</span>
+<span class=c1>// #include &lt;cmath&gt;</span>
+<span class=c1>// #include &lt;cstdlib&gt;</span>
+<span class=c1>// #include &lt;filesystem&gt;</span>
+<span class=c1>// #include &lt;functional&gt;</span>
+<span class=c1>// #include &lt;iomanip&gt;</span>
+<span class=c1>// #include &lt;iostream&gt;</span>
+<span class=c1>// #include &lt;iterator&gt;</span>
+<span class=c1>// #include &lt;map&gt;</span>
+<span class=c1>// #include &lt;numeric&gt;</span>
+<span class=c1>// #include &lt;sstream&gt;</span>
+
+<span class=k>namespace</span><span class=w> </span><span class=nn>fs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nn>std</span><span class=o>::</span><span class=nn>filesystem</span><span class=p>;</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
 <span class=cm>/**</span>
@@ -130,11 +153,12 @@ function registerListener(event, func) {
 <span class=cm> *</span>
 <span class=cm> * @param modern: Selects either Newton&#39;s original seven colors or the modern</span>
 <span class=cm> * version.</span>
+<span class=cm> * @param discretize: Selects whether the CTF is discretized or not.</span>
 <span class=cm> *</span>
 <span class=cm> * @return The color transfer function.</span>
 <span class=cm> */</span>
 <span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span>
-</span><span class=n>GetCTF</span><span class=p>(</span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>modern</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>);</span>
+</span><span class=n>GetCTF</span><span class=p>(</span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>modern</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>discretize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>);</span>
 
 <span class=cm>/**</span>
 <span class=cm> * Generate a new color transfer function from the old one,</span>
@@ -143,6 +167,7 @@ function registerListener(event, func) {
 <span class=cm> * @param oldCTF: The old color transfer function.</span>
 <span class=cm> * @param newX: The new color x-values.</span>
 <span class=cm> * @param newRGB: The color RGB values.</span>
+<span class=cm> * @param discretize: Selects whether the CTF is discretized or not.</span>
 <span class=cm> * @param reverse: If true, reverse the colors.</span>
 <span class=cm> *</span>
 <span class=cm> * @return The new color transfer function.</span>
@@ -151,7 +176,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=n>GenerateNewCTF</span><span class=p>(</span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>oldCTF</span><span class=p>,</span>
 </span><span class=w>               </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>newX</span><span class=p>,</span>
 <span class=w>               </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>newRGB</span><span class=p>,</span>
-<span class=w>               </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reverse</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>);</span>
+<span class=w>               </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>discretise</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>,</span><span class=w> </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reverse</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>);</span>
 
 <span class=cm>/**</span>
 <span class=cm> * Rescale the values.</span>
@@ -174,6 +199,7 @@ function registerListener(event, func) {
 <span class=cm> * @param ctf: The color transfer function to rescale.</span>
 <span class=cm> * @param newMin: The new minimum value.</span>
 <span class=cm> * @param newMax: The new maximum value.</span>
+<span class=cm> * @param discretize: Selects whether the CTF is discretized or not.</span>
 <span class=cm> * @param reverse: If true, reverse the colors.</span>
 <span class=cm> *</span>
 <span class=cm> * @return The rescaled color transfer function.</span>
@@ -181,30 +207,110 @@ function registerListener(event, func) {
 <span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span>
 </span><span class=hll><span class=n>RescaleCTF</span><span class=p>(</span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>ctf</span><span class=p>,</span>
 </span><span class=w>           </span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>newMin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>newMax</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>1</span><span class=p>,</span>
-<span class=w>           </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reverse</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>);</span>
+<span class=w>           </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>discretise</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>,</span><span class=w> </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reverse</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>);</span>
+
+<span class=k>typedef</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>TTextPosition</span><span class=p>;</span>
+<span class=k>typedef</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=n>TTextPosition</span><span class=o>&gt;</span><span class=w> </span><span class=n>TTextPositions</span><span class=p>;</span>
+
+<span class=k>struct</span><span class=w> </span><span class=nc>ScalarBarProperties</span>
+<span class=p>{</span>
+<span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
+</span>
+<span class=w>  </span><span class=c1>// The properties needed for scalar bars.</span>
+<span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>lut</span><span class=p>;</span>
+</span><span class=w>  </span><span class=c1>// These are in pixels.</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=o>&gt;</span><span class=w> </span><span class=n>maximumDimensions</span><span class=p>{{</span><span class=s>&quot;width&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>100</span><span class=p>},</span><span class=w> </span><span class=p>{</span><span class=s>&quot;height&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>260</span><span class=p>}};</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>titleText</span><span class=p>{</span><span class=s>&quot;&quot;</span><span class=p>};</span>
+<span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>number_of_labels</span><span class=p>{</span><span class=mi>7</span><span class=p>};</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>labelFormat</span><span class=p>{</span><span class=s>&quot;{:0.2f}&quot;</span><span class=p>};</span>
+<span class=w>  </span><span class=c1>// Orientation vertical=true, horizontal=false.</span>
+<span class=w>  </span><span class=kt>bool</span><span class=w> </span><span class=n>orientation</span><span class=p>{</span><span class=nb>true</span><span class=p>};</span>
+<span class=w>  </span><span class=c1>// Horizontal and vertical positioning.</span>
+<span class=w>  </span><span class=c1>// These are the defaults, don&#39;t change these.</span>
+<span class=w>  </span><span class=n>TTextPosition</span><span class=w> </span><span class=n>defaultV</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{{</span><span class=s>&quot;p&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.85</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>}},</span><span class=w> </span><span class=p>{</span><span class=s>&quot;p2&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.1</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>}}};</span>
+<span class=w>  </span><span class=n>TTextPosition</span><span class=w> </span><span class=n>defaultH</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{{</span><span class=s>&quot;p&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.10</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>}},</span><span class=w> </span><span class=p>{</span><span class=s>&quot;p2&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.7</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>}}};</span>
+<span class=w>  </span><span class=c1>// Modify these as needed.</span>
+<span class=w>  </span><span class=n>TTextPosition</span><span class=w> </span><span class=n>positionV</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{{</span><span class=s>&quot;p&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.75</span><span class=p>,</span><span class=w> </span><span class=mf>0.2</span><span class=p>}},</span><span class=w> </span><span class=p>{</span><span class=s>&quot;p2&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.075</span><span class=p>,</span><span class=w> </span><span class=mf>0.7</span><span class=p>}}};</span>
+<span class=w>  </span><span class=n>TTextPosition</span><span class=w> </span><span class=n>positionH</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{{</span><span class=s>&quot;p&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.10</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>}},</span><span class=w> </span><span class=p>{</span><span class=s>&quot;p2&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.7</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>}}};</span>
+<span class=p>};</span>
+
+<span class=cm>/** Make a scalar bar widget.</span>
+<span class=cm> *</span>
+<span class=cm> *  @param scalar_bar_properties - The lookup table, title name, maximum</span>
+<span class=cm> * dimensions in pixels and position.</span>
+<span class=cm> *  @param textProperty - The properties for the title.</span>
+<span class=cm> *  @param labelTextProperty - The properties for the labels.</span>
+<span class=hll><span class=cm> *  @param ren - The vtkRenderer.</span>
+</span><span class=cm> *  @param iren - The vtkInteractor.</span>
+<span class=cm> *  @return The scalar bar widget.</span>
+<span class=cm> */</span>
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkScalarBarWidget</span><span class=o>&gt;</span>
+</span><span class=n>MakeScalarBarWidget</span><span class=p>(</span><span class=n>ScalarBarProperties</span><span class=o>&amp;</span><span class=w> </span><span class=n>scalarBarProperties</span><span class=p>,</span>
+<span class=hll><span class=w>                    </span><span class=n>vtkTextProperty</span><span class=o>*</span><span class=w> </span><span class=n>textProperty</span><span class=p>,</span>
+</span><span class=hll><span class=w>                    </span><span class=n>vtkTextProperty</span><span class=o>*</span><span class=w> </span><span class=n>labelTextProperty</span><span class=p>,</span><span class=w> </span><span class=n>vtkRenderer</span><span class=o>*</span><span class=w> </span><span class=n>ren</span><span class=p>,</span>
+</span><span class=hll><span class=w>                    </span><span class=n>vtkRenderWindowInteractor</span><span class=o>*</span><span class=w> </span><span class=n>iren</span><span class=p>);</span>
+</span>
+<span class=cm>/**</span>
+<span class=cm> * Get viewport positioning information for a vector of names.</span>
+<span class=cm> *</span>
+<span class=hll><span class=cm> * Note: You must include vtkSystemIncludes.h to get these defines:</span>
+</span><span class=cm> *  VTK_TEXT_LEFT 0, VTK_TEXT_CENTERED 1, VTK_TEXT_RIGHT 2,</span>
+<span class=cm> *  VTK_TEXT_BOTTOM 0, VTK_TEXT_TOP 2</span>
+<span class=cm> *</span>
+<span class=cm> *  @param names - The vector of names.</span>
+<span class=cm> *  @param justification - Horizontal justification of the text.</span>
+<span class=cm> *  @param verticalJustification - Vertical justification of the text.</span>
+<span class=cm> *  @param width - Width of the bounding_box of the text in screen coordinates.</span>
+<span class=cm> *  @param height - Height of the bounding_box of the text in screen</span>
+<span class=cm> * coordinates.</span>
+<span class=cm> *  @return A map of positioning information.</span>
+<span class=cm> */</span>
+<span class=n>TTextPositions</span>
+<span class=nf>GetTextPositions</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>names</span><span class=p>,</span>
+<span class=w>                 </span><span class=kt>int</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>justification</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>VTK_TEXT_LEFT</span><span class=p>,</span>
+<span class=w>                 </span><span class=kt>int</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>verticalJustification</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>VTK_TEXT_BOTTOM</span><span class=p>,</span>
+<span class=w>                 </span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>width</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.96</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>height</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.1</span><span class=p>);</span>
+
+<span class=cm>/** Convert a string to title case.</span>
+<span class=cm> *</span>
+<span class=cm> *  @param input - The string to convert.</span>
+<span class=cm> *  @return The string converted to title case.</span>
+<span class=cm> */</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=nf>Title</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span><span class=w> </span><span class=n>input</span><span class=p>);</span>
+
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=w> </span><span class=n>bkg</span><span class=p>{</span><span class=mi>82</span><span class=p>,</span><span class=w> </span><span class=mi>87</span><span class=p>,</span><span class=w> </span><span class=mi>110</span><span class=p>,</span><span class=w> </span><span class=mi>255</span><span class=p>};</span>
+<span class=w>  </span><span class=n>CLI</span><span class=o>::</span><span class=n>App</span><span class=w> </span><span class=n>app</span><span class=p>{</span>
+<span class=w>      </span><span class=s>&quot;Demonstrates how to adjust the colormap scalar range and reverse it.&quot;</span><span class=p>};</span>
+<span class=w>  </span><span class=c1>// Define options</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>modern</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
+<span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-m, --modern&quot;</span><span class=p>,</span><span class=w> </span><span class=n>modern</span><span class=p>,</span>
+<span class=w>               </span><span class=s>&quot;Use the </span><span class=se>\&quot;</span><span class=s>modern</span><span class=se>\&quot;</span><span class=s> colors instead of Newtonian colors.&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>compactification</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
+<span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-c, --compactification&quot;</span><span class=p>,</span><span class=w> </span><span class=n>compactification</span><span class=p>,</span>
+<span class=w>               </span><span class=s>&quot;Build a continuous colormap.&quot;</span><span class=p>);</span>
+
+<span class=w>  </span><span class=n>CLI11_PARSE</span><span class=p>(</span><span class=n>app</span><span class=p>,</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
+
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>discretize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>!</span><span class=n>compactification</span><span class=p>;</span>
+
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;ParaViewBkg&quot;</span><span class=p>,</span><span class=w> </span><span class=n>bkg</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;ParaViewBlueGrayBkg&quot;</span><span class=p>,</span>
+<span class=w>                   </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=p>{</span><span class=mi>84</span><span class=p>,</span><span class=w> </span><span class=mi>89</span><span class=p>,</span><span class=w> </span><span class=mi>109</span><span class=p>,</span><span class=w> </span><span class=mi>255</span><span class=p>}.</span><span class=n>data</span><span class=p>());</span>
+<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;ParaViewWarmGrayBkg&quot;</span><span class=p>,</span>
+<span class=w>                   </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=p>{</span><span class=mi>98</span><span class=p>,</span><span class=w> </span><span class=mi>93</span><span class=p>,</span><span class=w> </span><span class=mi>90</span><span class=p>,</span><span class=w> </span><span class=mi>255</span><span class=p>}.</span><span class=n>data</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renWin</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mi>2</span><span class=p>,</span><span class=w> </span><span class=mi>480</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mi>2</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;RescaleReverseLUT&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>appFn</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fs</span><span class=o>::</span><span class=n>path</span><span class=p>((</span><span class=n>app</span><span class=p>.</span><span class=n>get_name</span><span class=p>())).</span><span class=n>stem</span><span class=p>().</span><span class=n>string</span><span class=p>();</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=n>appFn</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>iRen</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleTrackballCamera</span><span class=o>&gt;</span><span class=w> </span><span class=n>style</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>style</span><span class=p>);</span>
-
-<span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>ctf</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>ctf</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>GetCTF</span><span class=p>(</span><span class=nb>false</span><span class=p>));</span>
-<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>double</span><span class=o>*</span><span class=w> </span><span class=n>tmp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ctf</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>();</span>
-<span class=w>  </span><span class=n>ctf</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>RescaleCTF</span><span class=p>(</span><span class=n>ctf</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=nb>false</span><span class=p>));</span>
-<span class=w>  </span><span class=n>ctf</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>RescaleCTF</span><span class=p>(</span><span class=n>ctf</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>tmp</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>tmp</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span><span class=w> </span><span class=nb>true</span><span class=p>));</span>
-<span class=w>  </span><span class=n>ctf</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>RescaleCTF</span><span class=p>(</span><span class=n>ctf</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=nb>true</span><span class=p>));</span>
 
 <span class=w>  </span><span class=c1>// Define viewport ranges.</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=w> </span><span class=n>xMins</span><span class=p>{</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=mf>0.5</span><span class=p>};</span>
@@ -214,75 +320,127 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Define titles.</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>titles</span><span class=p>{</span><span class=s>&quot;Orginal&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Rescaled&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Reversed&quot;</span><span class=p>,</span>
-<span class=w>                                  </span><span class=s>&quot;Rescaled and Reversed&quot;</span><span class=p>};</span>
-
-<span class=w>  </span><span class=c1>// Create a common text property-&gt;</span>
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>textProperty</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>36</span><span class=p>);</span>
-<span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetJustificationToCentered</span><span class=p>();</span>
-<span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightGoldenrodYellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-
-<span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCylinderSource</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>sources</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkElevationFilter</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>elevation_filters</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>mappers</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>actors</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkScalarBarActor</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>scalarBars</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>renderers</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>textMappers</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>textActors</span><span class=p>;</span>
-</span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>4</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span>
+<span class=w>                                  </span><span class=s>&quot;Rescaled &amp; Reversed&quot;</span><span class=p>};</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>txtPos</span><span class=w> </span><span class=o>=</span>
+<span class=w>      </span><span class=n>GetTextPositions</span><span class=p>(</span><span class=n>titles</span><span class=p>,</span><span class=w> </span><span class=n>VTK_TEXT_CENTERED</span><span class=p>,</span><span class=w> </span><span class=n>VTK_TEXT_BOTTOM</span><span class=p>,</span><span class=w> </span><span class=mf>0.45</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>);</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=n>TTextPosition</span><span class=o>&gt;</span><span class=w> </span><span class=n>namePositions</span><span class=p>;</span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>t</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>titles</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCylinderSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>cylinder</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>cylinder</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>cylinder</span><span class=o>-&gt;</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
-<span class=w>    </span><span class=n>cylinder</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
+<span class=w>    </span><span class=n>namePositions</span><span class=p>[</span><span class=n>t</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>txtPos</span><span class=p>[</span><span class=n>t</span><span class=p>];</span>
+<span class=w>  </span><span class=p>}</span>
+
+<span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>ctf</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>ctf</span><span class=p>[</span><span class=n>titles</span><span class=p>[</span><span class=mi>0</span><span class=p>]]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetCTF</span><span class=p>(</span><span class=n>modern</span><span class=p>,</span><span class=w> </span><span class=n>discretize</span><span class=p>);</span>
+<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>double</span><span class=o>*</span><span class=w> </span><span class=n>tmp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ctf</span><span class=p>[</span><span class=n>titles</span><span class=p>[</span><span class=mi>0</span><span class=p>]]</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>();</span>
+<span class=w>  </span><span class=n>ctf</span><span class=p>[</span><span class=n>titles</span><span class=p>[</span><span class=mi>1</span><span class=p>]]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>RescaleCTF</span><span class=p>(</span><span class=n>ctf</span><span class=p>[</span><span class=n>titles</span><span class=p>[</span><span class=mi>0</span><span class=p>]],</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>discretize</span><span class=p>);</span>
+<span class=w>  </span><span class=n>ctf</span><span class=p>[</span><span class=n>titles</span><span class=p>[</span><span class=mi>2</span><span class=p>]]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>RescaleCTF</span><span class=p>(</span><span class=n>ctf</span><span class=p>[</span><span class=n>titles</span><span class=p>[</span><span class=mi>0</span><span class=p>]],</span><span class=w> </span><span class=n>tmp</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>tmp</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span><span class=w> </span><span class=n>discretize</span><span class=p>,</span><span class=w> </span><span class=nb>true</span><span class=p>);</span>
+<span class=w>  </span><span class=n>ctf</span><span class=p>[</span><span class=n>titles</span><span class=p>[</span><span class=mi>3</span><span class=p>]]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>RescaleCTF</span><span class=p>(</span><span class=n>ctf</span><span class=p>[</span><span class=n>titles</span><span class=p>[</span><span class=mi>0</span><span class=p>]],</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>discretize</span><span class=p>,</span><span class=w> </span><span class=nb>true</span><span class=p>);</span>
+
+<span class=w>  </span><span class=c1>// Create text properties.</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>textProperty</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightGoldenrodYellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>16</span><span class=p>);</span>
+<span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>BoldOff</span><span class=p>();</span>
+<span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>ItalicOff</span><span class=p>();</span>
+<span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>ShadowOff</span><span class=p>();</span>
+<span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetJustificationToCentered</span><span class=p>();</span>
+<span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetVerticalJustificationToCentered</span><span class=p>();</span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>titleTextProperty</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>titleTextProperty</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightGoldenrodYellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>titleTextProperty</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>16</span><span class=p>);</span>
+<span class=w>  </span><span class=n>titleTextProperty</span><span class=o>-&gt;</span><span class=n>BoldOff</span><span class=p>();</span>
+<span class=w>  </span><span class=n>titleTextProperty</span><span class=o>-&gt;</span><span class=n>ItalicOff</span><span class=p>();</span>
+<span class=w>  </span><span class=n>titleTextProperty</span><span class=o>-&gt;</span><span class=n>ShadowOff</span><span class=p>();</span>
+<span class=w>  </span><span class=n>titleTextProperty</span><span class=o>-&gt;</span><span class=n>SetFontFamilyAsString</span><span class=p>(</span><span class=s>&quot;Courier&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>titleTextProperty</span><span class=o>-&gt;</span><span class=n>SetJustificationToCentered</span><span class=p>();</span>
+<span class=w>  </span><span class=n>titleTextProperty</span><span class=o>-&gt;</span><span class=n>SetVerticalJustificationToCentered</span><span class=p>();</span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>labelTextProperty</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>labelTextProperty</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightGoldenrodYellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>labelTextProperty</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>16</span><span class=p>);</span>
+<span class=w>  </span><span class=n>labelTextProperty</span><span class=o>-&gt;</span><span class=n>BoldOff</span><span class=p>();</span>
+<span class=w>  </span><span class=n>labelTextProperty</span><span class=o>-&gt;</span><span class=n>ItalicOff</span><span class=p>();</span>
+<span class=w>  </span><span class=n>labelTextProperty</span><span class=o>-&gt;</span><span class=n>ShadowOff</span><span class=p>();</span>
+<span class=w>  </span><span class=n>labelTextProperty</span><span class=o>-&gt;</span><span class=n>SetJustificationToCentered</span><span class=p>();</span>
+<span class=w>  </span><span class=n>labelTextProperty</span><span class=o>-&gt;</span><span class=n>SetVerticalJustificationToCentered</span><span class=p>();</span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCylinderSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>cylinder</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>cylinder</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>);</span>
+<span class=w>  </span><span class=n>cylinder</span><span class=o>-&gt;</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
+<span class=w>  </span><span class=n>cylinder</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
+
+<span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextWidget</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>textWidgets</span><span class=p>;</span>
+</span><span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkScalarBarWidget</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>sbWidgets</span><span class=p>;</span>
+</span><span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>renderers</span><span class=p>;</span>
+</span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>idx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>idx</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>titles</span><span class=p>.</span><span class=n>size</span><span class=p>());</span><span class=w> </span><span class=o>++</span><span class=n>idx</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>titles</span><span class=p>[</span><span class=n>idx</span><span class=p>];</span>
+
 <span class=w>    </span><span class=kt>double</span><span class=o>*</span><span class=w> </span><span class=n>bounds</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cylinder</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetBounds</span><span class=p>();</span>
-<span class=w>    </span><span class=n>sources</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>cylinder</span><span class=p>);</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkElevationFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>elevation_filter</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>elevation_filter</span><span class=o>-&gt;</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 <span class=w>    </span><span class=n>elevation_filter</span><span class=o>-&gt;</span><span class=n>SetLowPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>bounds</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
 <span class=w>    </span><span class=n>elevation_filter</span><span class=o>-&gt;</span><span class=n>SetHighPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>bounds</span><span class=p>[</span><span class=mi>3</span><span class=p>],</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>elevation_filter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sources</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=w>    </span><span class=n>elevation_filters</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>elevation_filter</span><span class=p>);</span>
+<span class=w>    </span><span class=n>elevation_filter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cylinder</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>mapper</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>elevation_filters</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>ctf</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
+</span><span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>elevation_filter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>ctf</span><span class=p>[</span><span class=n>name</span><span class=p>]);</span>
 <span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetColorModeToMapScalars</span><span class=p>();</span>
 <span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>InterpolateScalarsBeforeMappingOn</span><span class=p>();</span>
-<span class=w>    </span><span class=n>mappers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mappers</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>actors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
-
-<span class=w>    </span><span class=c1>// Add a scalar bar.</span>
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkScalarBarActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>scalarBar</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>scalarBar</span><span class=o>-&gt;</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>ctf</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>scalarBars</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>scalarBar</span><span class=p>);</span>
-
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>textMapper</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>textMappers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>textMapper</span><span class=p>);</span>
-<span class=w>    </span><span class=n>textMappers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>titles</span><span class=p>[</span><span class=n>i</span><span class=p>].</span><span class=n>c_str</span><span class=p>());</span>
-<span class=w>    </span><span class=n>textMappers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetTextProperty</span><span class=p>(</span><span class=n>textProperty</span><span class=p>);</span>
-
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>textActor</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>textActors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>textActor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>textActors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMappers</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
-<span class=w>    </span><span class=c1>// Note: The position of an Actor2D is specified in display coordinates.</span>
-<span class=w>    </span><span class=n>textActors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span><span class=w> </span><span class=mi>16</span><span class=p>);</span>
+</span><span class=w>    </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>ren</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;ParaViewBkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>scalarBars</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>textActors</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>xMins</span><span class=p>[</span><span class=n>i</span><span class=p>],</span><span class=w> </span><span class=n>yMins</span><span class=p>[</span><span class=n>i</span><span class=p>],</span><span class=w> </span><span class=n>xMaxs</span><span class=p>[</span><span class=n>i</span><span class=p>],</span><span class=w> </span><span class=n>yMaxs</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>renderers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
+</span><span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;ParaViewBlueGrayBkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>xMins</span><span class=p>[</span><span class=n>idx</span><span class=p>],</span><span class=w> </span><span class=n>yMins</span><span class=p>[</span><span class=n>idx</span><span class=p>],</span><span class=w> </span><span class=n>xMaxs</span><span class=p>[</span><span class=n>idx</span><span class=p>],</span><span class=w> </span><span class=n>yMaxs</span><span class=p>[</span><span class=n>idx</span><span class=p>]);</span>
 
-<span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
+<span class=w>    </span><span class=c1>// Add a title.</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>textActor</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>textActor</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>name</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
+<span class=w>    </span><span class=n>textActor</span><span class=o>-&gt;</span><span class=n>SetTextScaleModeToViewport</span><span class=p>();</span>
+<span class=w>    </span><span class=n>textActor</span><span class=o>-&gt;</span><span class=n>SetTextProperty</span><span class=p>(</span><span class=n>titleTextProperty</span><span class=p>);</span>
+
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>pos</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>namePositions</span><span class=p>[</span><span class=n>name</span><span class=p>];</span>
+
+<span class=w>    </span><span class=c1>// Create the text widget, setting the default renderer and interactor.</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextRepresentation</span><span class=o>&gt;</span><span class=w> </span><span class=n>textRepresentation</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>textRepresentation</span><span class=o>-&gt;</span><span class=n>EnforceNormalizedViewportBoundsOn</span><span class=p>();</span>
+<span class=w>    </span><span class=n>textRepresentation</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=n>pos</span><span class=p>[</span><span class=s>&quot;p&quot;</span><span class=p>][</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>pos</span><span class=p>[</span><span class=s>&quot;p&quot;</span><span class=p>][</span><span class=mi>1</span><span class=p>]);</span>
+<span class=w>    </span><span class=n>textRepresentation</span><span class=o>-&gt;</span><span class=n>SetPosition2</span><span class=p>(</span><span class=n>pos</span><span class=p>[</span><span class=s>&quot;p2&quot;</span><span class=p>][</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>pos</span><span class=p>[</span><span class=s>&quot;p2&quot;</span><span class=p>][</span><span class=mi>1</span><span class=p>]);</span>
+
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>textWidget</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>textWidget</span><span class=o>-&gt;</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>textRepresentation</span><span class=p>);</span>
+<span class=w>    </span><span class=n>textWidget</span><span class=o>-&gt;</span><span class=n>SetTextActor</span><span class=p>(</span><span class=n>textActor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>textWidget</span><span class=o>-&gt;</span><span class=n>SelectableOff</span><span class=p>();</span>
+<span class=w>    </span><span class=n>textWidget</span><span class=o>-&gt;</span><span class=n>ResizableOn</span><span class=p>();</span>
+<span class=w>    </span><span class=n>textWidget</span><span class=o>-&gt;</span><span class=n>SetDefaultRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
+<span class=w>    </span><span class=n>textWidget</span><span class=o>-&gt;</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iRen</span><span class=p>);</span>
+<span class=w>    </span><span class=n>textWidgets</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>textWidget</span><span class=p>);</span>
+
+<span class=w>    </span><span class=c1>// Create the scalar bar, setting the default renderer and interactor.</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>sbProperties</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ScalarBarProperties</span><span class=p>();</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>sbName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>name</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>replace</span><span class=p>(</span><span class=n>sbName</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>sbName</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span><span class=w> </span><span class=sc>&#39;&amp;&#39;</span><span class=p>,</span><span class=w> </span><span class=sc>&#39;\n&#39;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>sbProperties</span><span class=p>.</span><span class=n>titleText</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sbName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=sc>&#39;\n&#39;</span><span class=p>;</span>
+<span class=w>    </span><span class=n>sbProperties</span><span class=p>.</span><span class=n>lut</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ctf</span><span class=p>[</span><span class=n>name</span><span class=p>];</span>
+<span class=w>    </span><span class=n>sbWidgets</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeScalarBarWidget</span><span class=p>(</span><span class=n>sbProperties</span><span class=p>,</span><span class=w> </span><span class=n>titleTextProperty</span><span class=p>,</span>
+<span class=w>                                            </span><span class=n>labelTextProperty</span><span class=p>,</span><span class=w> </span><span class=n>ren</span><span class=p>,</span><span class=w> </span><span class=n>iRen</span><span class=p>));</span>
+<span class=w>    </span><span class=n>renderers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
+<span class=w>  </span><span class=p>}</span>
+
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>size_t</span><span class=w> </span><span class=n>idx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>idx</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>renderers</span><span class=p>.</span><span class=n>size</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>idx</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]);</span>
+<span class=w>    </span><span class=n>textWidgets</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>On</span><span class=p>();</span>
+<span class=w>    </span><span class=n>sbWidgets</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>On</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
@@ -292,8 +450,9 @@ function registerListener(event, func) {
 <span class=p>}</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
-<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetCTF</span><span class=p>(</span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>modern</span><span class=p>)</span>
-</span><span class=p>{</span>
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetCTF</span><span class=p>(</span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>modern</span><span class=p>,</span>
+</span><span class=w>                                                     </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>discretise</span><span class=p>)</span>
+<span class=p>{</span>
 <span class=w>  </span><span class=c1>// name: Rainbow, creator: Andrew Maclean</span>
 <span class=w>  </span><span class=c1>// interpolationspace: RGB, space: rgb</span>
 <span class=w>  </span><span class=c1>// file name:</span>
@@ -307,6 +466,15 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>UseBelowRangeColorOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetAboveRangeColor</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>UseAboveRangeColorOn</span><span class=p>();</span>
+<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=mi>7</span><span class=p>);</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>discretise</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>DiscretizeOn</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>DiscretizeOff</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>modern</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
@@ -330,9 +498,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>153.0</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mf>255.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>);</span><span class=w> </span><span class=c1>// Violet #9900ff</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=mi>7</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>DiscretizeOn</span><span class=p>();</span>
-
+<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>Build</span><span class=p>();</span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>ctf</span><span class=p>;</span>
 <span class=p>}</span>
 
@@ -340,12 +506,21 @@ function registerListener(event, func) {
 </span><span class=hll><span class=n>GenerateNewCTF</span><span class=p>(</span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>oldCTF</span><span class=p>,</span>
 </span><span class=w>               </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>newX</span><span class=p>,</span>
 <span class=w>               </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>newRGB</span><span class=p>,</span>
-<span class=w>               </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reverse</span><span class=p>)</span>
+<span class=w>               </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>discretise</span><span class=p>,</span><span class=w> </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reverse</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>newCTF</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>SetScale</span><span class=p>(</span><span class=n>oldCTF</span><span class=o>-&gt;</span><span class=n>GetScale</span><span class=p>());</span>
-<span class=w>  </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>SetColorSpace</span><span class=p>(</span><span class=n>oldCTF</span><span class=o>-&gt;</span><span class=n>GetColorSpace</span><span class=p>());</span>
+</span><span class=w>  </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>SetColorSpace</span><span class=p>(</span><span class=n>oldCTF</span><span class=o>-&gt;</span><span class=n>GetColorSpace</span><span class=p>());</span>
+<span class=w>  </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>SetScale</span><span class=p>(</span><span class=n>oldCTF</span><span class=o>-&gt;</span><span class=n>GetScale</span><span class=p>());</span>
 <span class=w>  </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>SetNanColor</span><span class=p>(</span><span class=n>oldCTF</span><span class=o>-&gt;</span><span class=n>GetNanColor</span><span class=p>());</span>
+<span class=w>  </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=n>newX</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>discretise</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>DiscretizeOn</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>DiscretizeOff</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>reverse</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>SetBelowRangeColor</span><span class=p>(</span><span class=n>oldCTF</span><span class=o>-&gt;</span><span class=n>GetBelowRangeColor</span><span class=p>());</span>
@@ -360,8 +535,6 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>SetAboveRangeColor</span><span class=p>(</span><span class=n>oldCTF</span><span class=o>-&gt;</span><span class=n>GetBelowRangeColor</span><span class=p>());</span>
 <span class=w>    </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>SetUseAboveRangeColor</span><span class=p>(</span><span class=n>oldCTF</span><span class=o>-&gt;</span><span class=n>GetUseBelowRangeColor</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=n>newX</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
-<span class=w>  </span><span class=n>newCTF</span><span class=o>-&gt;</span><span class=n>SetDiscretize</span><span class=p>(</span><span class=n>oldCTF</span><span class=o>-&gt;</span><span class=n>GetDiscretize</span><span class=p>());</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>reverse</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>size_t</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>newX</span><span class=p>.</span><span class=n>size</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span>
@@ -402,7 +575,8 @@ function registerListener(event, func) {
 
 <span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span>
 </span><span class=hll><span class=n>RescaleCTF</span><span class=p>(</span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>ctf</span><span class=p>,</span>
-</span><span class=w>           </span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>newMin</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>newMax</span><span class=p>,</span><span class=w> </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reverse</span><span class=p>)</span>
+</span><span class=w>           </span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>newMin</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>newMax</span><span class=p>,</span><span class=w> </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>discretise</span><span class=p>,</span>
+<span class=w>           </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reverse</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>r0</span><span class=p>;</span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>r1</span><span class=p>;</span>
@@ -435,7 +609,150 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=w> </span><span class=n>xvr</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Rescale</span><span class=p>(</span><span class=n>xv</span><span class=p>,</span><span class=w> </span><span class=n>r0</span><span class=p>,</span><span class=w> </span><span class=n>r1</span><span class=p>);</span>
 
-<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>GenerateNewCTF</span><span class=p>(</span><span class=n>ctf</span><span class=p>,</span><span class=w> </span><span class=n>xvr</span><span class=p>,</span><span class=w> </span><span class=n>rgbv</span><span class=p>,</span><span class=w> </span><span class=n>reverse</span><span class=p>);</span>
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>GenerateNewCTF</span><span class=p>(</span><span class=n>ctf</span><span class=p>,</span><span class=w> </span><span class=n>xvr</span><span class=p>,</span><span class=w> </span><span class=n>rgbv</span><span class=p>,</span><span class=w> </span><span class=n>discretise</span><span class=p>,</span><span class=w> </span><span class=n>reverse</span><span class=p>);</span>
+<span class=p>}</span>
+
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkScalarBarWidget</span><span class=o>&gt;</span>
+</span><span class=n>MakeScalarBarWidget</span><span class=p>(</span><span class=n>ScalarBarProperties</span><span class=o>&amp;</span><span class=w> </span><span class=n>sbProperties</span><span class=p>,</span>
+<span class=hll><span class=w>                    </span><span class=n>vtkTextProperty</span><span class=o>*</span><span class=w> </span><span class=n>textProperty</span><span class=p>,</span>
+</span><span class=hll><span class=w>                    </span><span class=n>vtkTextProperty</span><span class=o>*</span><span class=w> </span><span class=n>labelTextProperty</span><span class=p>,</span><span class=w> </span><span class=n>vtkRenderer</span><span class=o>*</span><span class=w> </span><span class=n>ren</span><span class=p>,</span>
+</span><span class=hll><span class=w>                    </span><span class=n>vtkRenderWindowInteractor</span><span class=o>*</span><span class=w> </span><span class=n>iren</span><span class=p>)</span>
+</span><span class=p>{</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkScalarBarActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>sbActor</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>sbActor</span><span class=o>-&gt;</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>sbProperties</span><span class=p>.</span><span class=n>lut</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sbActor</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=n>sbProperties</span><span class=p>.</span><span class=n>titleText</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
+<span class=w>  </span><span class=n>sbActor</span><span class=o>-&gt;</span><span class=n>UnconstrainedFontSizeOn</span><span class=p>();</span>
+<span class=w>  </span><span class=n>sbActor</span><span class=o>-&gt;</span><span class=n>SetNumberOfLabels</span><span class=p>(</span><span class=n>sbProperties</span><span class=p>.</span><span class=n>number_of_labels</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sbActor</span><span class=o>-&gt;</span><span class=n>SetTitleTextProperty</span><span class=p>(</span><span class=n>textProperty</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sbActor</span><span class=o>-&gt;</span><span class=n>SetLabelTextProperty</span><span class=p>(</span><span class=n>labelTextProperty</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sbActor</span><span class=o>-&gt;</span><span class=n>SetLabelFormat</span><span class=p>(</span><span class=n>sbProperties</span><span class=p>.</span><span class=n>labelFormat</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkScalarBarRepresentation</span><span class=o>&gt;</span><span class=w> </span><span class=n>sbRep</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>sbRep</span><span class=o>-&gt;</span><span class=n>EnforceNormalizedViewportBoundsOn</span><span class=p>();</span>
+<span class=w>  </span><span class=n>sbRep</span><span class=o>-&gt;</span><span class=n>SetOrientation</span><span class=p>(</span><span class=n>sbProperties</span><span class=p>.</span><span class=n>orientation</span><span class=p>);</span>
+<span class=w>  </span><span class=c1>// Set the position.</span>
+<span class=w>  </span><span class=n>sbRep</span><span class=o>-&gt;</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetCoordinateSystemToNormalizedViewport</span><span class=p>();</span>
+<span class=w>  </span><span class=n>sbRep</span><span class=o>-&gt;</span><span class=n>GetPosition2Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetCoordinateSystemToNormalizedViewport</span><span class=p>();</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>sbProperties</span><span class=p>.</span><span class=n>orientation</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>p1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sbProperties</span><span class=p>.</span><span class=n>positionV</span><span class=p>[</span><span class=s>&quot;p&quot;</span><span class=p>];</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>p2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sbProperties</span><span class=p>.</span><span class=n>positionV</span><span class=p>[</span><span class=s>&quot;p2&quot;</span><span class=p>];</span>
+<span class=w>    </span><span class=n>sbRep</span><span class=o>-&gt;</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>p1</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+<span class=w>    </span><span class=n>sbRep</span><span class=o>-&gt;</span><span class=n>GetPosition2Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>p2</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>p1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sbProperties</span><span class=p>.</span><span class=n>positionH</span><span class=p>[</span><span class=s>&quot;p&quot;</span><span class=p>];</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>p2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sbProperties</span><span class=p>.</span><span class=n>positionH</span><span class=p>[</span><span class=s>&quot;p2&quot;</span><span class=p>];</span>
+<span class=w>    </span><span class=n>sbRep</span><span class=o>-&gt;</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>p1</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+<span class=w>    </span><span class=n>sbRep</span><span class=o>-&gt;</span><span class=n>GetPosition2Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>p2</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+<span class=w>  </span><span class=p>}</span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkScalarBarWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>widget</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>widget</span><span class=o>-&gt;</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>sbRep</span><span class=p>);</span>
+<span class=w>  </span><span class=n>widget</span><span class=o>-&gt;</span><span class=n>SetScalarBarActor</span><span class=p>(</span><span class=n>sbActor</span><span class=p>);</span>
+<span class=w>  </span><span class=n>widget</span><span class=o>-&gt;</span><span class=n>SetDefaultRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
+<span class=w>  </span><span class=n>widget</span><span class=o>-&gt;</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>);</span>
+<span class=w>  </span><span class=n>widget</span><span class=o>-&gt;</span><span class=n>EnabledOn</span><span class=p>();</span>
+
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>widget</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>TTextPositions</span><span class=w> </span><span class=n>GetTextPositions</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>names</span><span class=p>,</span>
+<span class=w>                                </span><span class=kt>int</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>justification</span><span class=p>,</span>
+<span class=w>                                </span><span class=kt>int</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>vertical_justification</span><span class=p>,</span>
+<span class=w>                                </span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>width</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>height</span><span class=p>)</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=c1>// The gap between the left or right edge of the screen and the text.</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>dx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.02</span><span class=p>;</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>w</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>abs</span><span class=p>(</span><span class=n>width</span><span class=p>);</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>w</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mf>0.96</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>w</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.96</span><span class=p>;</span>
+<span class=w>  </span><span class=p>}</span>
+
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>y0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.01</span><span class=p>;</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>h</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>abs</span><span class=p>(</span><span class=n>height</span><span class=p>);</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>h</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mf>0.9</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>h</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.9</span><span class=p>;</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>dy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>h</span><span class=p>;</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>vertical_justification</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>VTK_TEXT_TOP</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>y0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>1.0</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=p>(</span><span class=n>dy</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>y0</span><span class=p>);</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>vertical_justification</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>VTK_TEXT_CENTERED</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>y0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.5</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=p>(</span><span class=n>dy</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mf>2.0</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>y0</span><span class=p>);</span>
+<span class=w>  </span><span class=p>}</span>
+
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>minmaxIt</span><span class=w> </span><span class=o>=</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>minmax_element</span><span class=p>(</span><span class=n>names</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>names</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span>
+<span class=w>                          </span><span class=p>[](</span><span class=k>const</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span><span class=w> </span><span class=n>a</span><span class=p>,</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span><span class=w> </span><span class=n>b</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
+<span class=w>                            </span><span class=k>return</span><span class=w> </span><span class=n>a</span><span class=p>.</span><span class=n>length</span><span class=p>()</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>b</span><span class=p>.</span><span class=n>length</span><span class=p>();</span>
+<span class=w>                          </span><span class=p>});</span>
+
+<span class=w>  </span><span class=c1>// auto nameLenMin = minmaxIt.first-&gt;size();</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>nameLenMax</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>minmaxIt</span><span class=p>.</span><span class=n>second</span><span class=o>-&gt;</span><span class=n>size</span><span class=p>();</span>
+
+<span class=w>  </span><span class=n>TTextPositions</span><span class=w> </span><span class=n>textPositions</span><span class=p>;</span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=k>auto</span><span class=o>&amp;</span><span class=w> </span><span class=n>k</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>names</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>sz</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>k</span><span class=p>.</span><span class=n>size</span><span class=p>();</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>delta_sz</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>w</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>sz</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=n>nameLenMax</span><span class=p>;</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>delta_sz</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>w</span><span class=p>)</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=n>delta_sz</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>w</span><span class=p>;</span>
+<span class=w>    </span><span class=p>}</span>
+
+<span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>x0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>justification</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>VTK_TEXT_CENTERED</span><span class=p>)</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=n>x0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.5</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>delta_sz</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mf>2.0</span><span class=p>;</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>justification</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>VTK_TEXT_RIGHT</span><span class=p>)</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=n>x0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>1.0</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>dx</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>delta_sz</span><span class=p>;</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>    </span><span class=k>else</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=c1>// Default is left justification.</span>
+<span class=w>      </span><span class=n>x0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>dx</span><span class=p>;</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>    </span><span class=n>textPositions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{{</span><span class=s>&quot;p&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=n>x0</span><span class=p>,</span><span class=w> </span><span class=n>y0</span><span class=p>}},</span><span class=w> </span><span class=p>{</span><span class=s>&quot;p2&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=n>delta_sz</span><span class=p>,</span><span class=w> </span><span class=n>dy</span><span class=p>}}};</span>
+<span class=w>    </span><span class=c1>// For testing.</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; k &lt;&lt; std::endl;</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot;  p: &quot; &lt;&lt; textPositions[k][&quot;p&quot;][0] &lt;&lt; &quot;, &quot;</span>
+<span class=w>    </span><span class=c1>//           &lt;&lt; textPositions[k][&quot;p&quot;][1] &lt;&lt; std::endl;</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot; p2: &quot; &lt;&lt; textPositions[k][&quot;p2&quot;][0] &lt;&lt; &quot;, &quot;</span>
+<span class=w>    </span><span class=c1>//           &lt;&lt; textPositions[k][&quot;p2&quot;][1] &lt;&lt; std::endl;</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>textPositions</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>Title</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span><span class=w> </span><span class=n>input</span><span class=p>)</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>result</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>input</span><span class=p>;</span>
+<span class=w>  </span><span class=kt>bool</span><span class=w> </span><span class=n>capitalizeNext</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
+
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>char</span><span class=o>&amp;</span><span class=w> </span><span class=n>c</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>result</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>isspace</span><span class=p>(</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=o>&gt;</span><span class=p>(</span><span class=n>c</span><span class=p>)))</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=n>capitalizeNext</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>capitalizeNext</span><span class=p>)</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=n>c</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>char</span><span class=o>&gt;</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>toupper</span><span class=p>(</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=o>&gt;</span><span class=p>(</span><span class=n>c</span><span class=p>)));</span>
+<span class=w>      </span><span class=n>capitalizeNext</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>;</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>    </span><span class=k>else</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=n>c</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>char</span><span class=o>&gt;</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>tolower</span><span class=p>(</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=o>&gt;</span><span class=p>(</span><span class=n>c</span><span class=p>)));</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>result</span><span class=p>;</span>
 <span class=p>}</span>
 
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
