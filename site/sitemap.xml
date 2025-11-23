@@ -8573,6 +8573,10 @@
          <lastmod>2025-11-23</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/CurvaturesNormalsElevations/</loc>
+         <lastmod>2025-11-23</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/DecimatePolyline/</loc>
          <lastmod>2025-11-23</lastmod>
     </url>
@@ -9094,10 +9098,6 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/Cursor3D/</loc>
-         <lastmod>2025-11-23</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CurvaturesNormalsElevations/</loc>
          <lastmod>2025-11-23</lastmod>
     </url>
     <url>
