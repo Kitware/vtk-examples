@@ -70,6 +70,8 @@ function registerListener(event, func) {
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTestGraphAlgorithmFilter.h&quot;</span>
 
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
+
 <span class=kt>void</span><span class=w> </span><span class=nf>TestDirected</span><span class=p>();</span>
 <span class=kt>void</span><span class=w> </span><span class=nf>TestUndirected</span><span class=p>();</span>
 
@@ -134,6 +136,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkStreamingDemandDrivenPipeline.h&gt;</span>
 </span>
 <span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>);</span>
+
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
 
 <span class=kt>int</span><span class=w> </span><span class=nf>vtkTestGraphAlgorithmFilter::RequestData</span><span class=p>(</span>
 <span class=hll><span class=w>    </span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>request</span><span class=p>),</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=w> </span><span class=n>inputVector</span><span class=p>,</span>

@@ -115,8 +115,9 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTextMapper.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTextProperty.h&gt;</span>
 </span>
-<span class=c1>// Needed to easily convert int to std::string.</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;sstream&gt;</span>
+
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;sstream&gt;</span><span class=c1> // Needed to easily convert int to std::string.</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
 
@@ -153,7 +154,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>_MinSlice</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetSliceMin</span><span class=p>();</span>
 <span class=w>    </span><span class=n>_MaxSlice</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetSliceMax</span><span class=p>();</span>
 <span class=w>    </span><span class=n>_Slice</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>_MinSlice</span><span class=p>;</span>
-<span class=w>    </span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Slicer: Min = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_MinSlice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, Max = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_MaxSlice</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Slicer: Min = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_MinSlice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, Max = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_MaxSlice</span>
 <span class=w>         </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -168,7 +169,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>_Slice</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>_MaxSlice</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>_Slice</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
-<span class=w>      </span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;MoveSliceForward::Slice = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_Slice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;MoveSliceForward::Slice = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_Slice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>      </span><span class=n>_ImageViewer</span><span class=o>-&gt;</span><span class=n>SetSlice</span><span class=p>(</span><span class=n>_Slice</span><span class=p>);</span>
 <span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>msg</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>StatusMessage</span><span class=o>::</span><span class=n>Format</span><span class=p>(</span><span class=n>_Slice</span><span class=p>,</span><span class=w> </span><span class=n>_MaxSlice</span><span class=p>);</span>
 <span class=w>      </span><span class=n>_StatusMapper</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>msg</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
@@ -181,7 +182,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>_Slice</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>_MinSlice</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>_Slice</span><span class=w> </span><span class=o>-=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
-<span class=w>      </span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;MoveSliceBackward::Slice = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_Slice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;MoveSliceBackward::Slice = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_Slice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>      </span><span class=n>_ImageViewer</span><span class=o>-&gt;</span><span class=n>SetSlice</span><span class=p>(</span><span class=n>_Slice</span><span class=p>);</span>
 <span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>msg</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>StatusMessage</span><span class=o>::</span><span class=n>Format</span><span class=p>(</span><span class=n>_Slice</span><span class=p>,</span><span class=w> </span><span class=n>_MaxSlice</span><span class=p>);</span>
 <span class=w>      </span><span class=n>_StatusMapper</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>msg</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
