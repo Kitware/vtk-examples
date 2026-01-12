@@ -557,6 +557,14 @@
          <lastmod>2026-01-12</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/ColorNamesSeries/ColorNamePatches/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/ColorNamesSeries/ColorSeriesPatches/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/Cxx/Snippets/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
@@ -3749,6 +3757,14 @@
          <lastmod>2026-01-12</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/Cxx/Utilities/ColorNamePatches/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/Cxx/Utilities/ColorSeriesPatches/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/Cxx/Utilities/ColorTransferFunction/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
@@ -4085,10 +4101,6 @@
          <lastmod>2026-01-12</lastmod>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Cxx/Visualization/ColorSeriesPatches/</loc>
-         <lastmod>2026-01-12</lastmod>
-    </url>
-    <url>
          <loc>https://examples.vtk.org/site/Cxx/Visualization/ColoredAnnotatedCube/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
@@ -4310,10 +4322,6 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/Cxx/Visualization/MultipleViewports/</loc>
-         <lastmod>2026-01-12</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/Cxx/Visualization/NamedColorPatches/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
     <url>
@@ -7057,6 +7065,14 @@
          <lastmod>2026-01-12</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/Python/Utilities/ColorNamePatches/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/Python/Utilities/ColorSeriesPatches/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/Python/Utilities/JSONColorMapToLUT/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
@@ -7161,10 +7177,6 @@
          <lastmod>2026-01-12</lastmod>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Python/Visualization/ColorSeriesPatches/</loc>
-         <lastmod>2026-01-12</lastmod>
-    </url>
-    <url>
          <loc>https://examples.vtk.org/site/Python/Visualization/ColoredAnnotatedCube/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
@@ -7262,10 +7274,6 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/Python/Visualization/MultipleViewports/</loc>
-         <lastmod>2026-01-12</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/Python/Visualization/NamedColorPatches/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
     <url>
