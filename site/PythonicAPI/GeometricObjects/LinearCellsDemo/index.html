@@ -730,20 +730,20 @@ function registerListener(event, func) {
 </span>
     <span class=c1># Original Points.</span>
     <span class=c1># points.InsertNextPoint(0, 1, 0)</span>
-    <span class=c1># points.InsertNextPoint(0, 0, 0)</span>
     <span class=c1># points.InsertNextPoint(0, 0.5, 0.5)</span>
+    <span class=c1># points.InsertNextPoint(0, 0, 0)</span>
     <span class=c1># points.InsertNextPoint(1, 1, 0)</span>
-    <span class=c1># points.InsertNextPoint(1, 0.0, 0.0)</span>
     <span class=c1># points.InsertNextPoint(1, 0.5, 0.5)</span>
+    <span class=c1># points.InsertNextPoint(1, 0.0, 0.0)</span>
 
     <span class=c1># Rotate the above points -90° about the X-axis</span>
     <span class=c1># and translate -1 along the Y-axis.</span>
     <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
-    <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
     <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>)</span>
+    <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
     <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
-    <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
     <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>)</span>
+    <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>wedge</span> <span class=o>=</span> <span class=n>vtkWedge</span><span class=p>()</span>
 </span>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>number_of_vertices</span><span class=p>):</span>
