@@ -77,6 +77,10 @@
   tbody {color: MidnightBlue;}
   tfoot {color: SaddleBrown;}
 
+@media print {
+  table {page-break-after: always;}
+  }
+
   </style>
 </head>
 <body>
@@ -87,13 +91,18 @@ The class vtkNamedColors provides color names and their values for the convenien
 <ul>
 	<li><a href="#WebColorNames">Web color Names</a> These colors correspond to those in <a href="http://en.wikipedia.org/wiki/Web_colors" title="Web Colors">Web Colors</a>.
 </li>
+	<li><a href="#ParaViewColorNames">ParaView color Names</a> The colors correspond to additional colors commonly used in ParaView.
+<br>The web colors take precedence over colors with
+ the same name (case insensitive) here.
+</li>
 	<li><a href="#VTKColorNames">VTK color Names</a>
  The colors correspond to additional colors commonly used in VTK.
 <br>The web colors take precedence over colors with
  the same name (case insensitive) here.
 </li>
-	<li><a href="#Synonyms">Synonyms</a></li>
-</ul>
+	<li><a href="#Synonyms">Synonyms</a>
+ These are colors that are the same but differ only in name.
+</li></ul>
 <table>
 <tr>
 <th colspan="3"><a id="WebColorNames">Web color Names</a></th>
@@ -717,6 +726,37 @@ The class vtkNamedColors provides color names and their values for the convenien
 <tr>
 <td style="background:Black;color:#ffffff">Black</td>
 <td style="background:Black;color:#ffffff">&#160;&#160;0&#160;&#160;&#160;&#160;0&#160;&#160;&#160;&#160;0</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<br>
+<table>
+<tr>
+<th colspan="3"><a id="ParaViewColorNames">ParaView color Names</a></th>
+</tr>
+<tr>
+<td>
+<table>
+<tr>
+<th>HTML name</th>
+<th>Decimal code<br>
+&#160;&#160;R&#160;&#160;&#160;&#160;G&#160;&#160;&#160;&#160;B</th>
+</tr>
+<tr>
+<td colspan="2"><b>Blue</b></td>
+</tr>
+<tr>
+<td style="background:#54596d;color:#ffffff">ParaViewBlueGrayBkg</td>
+<td style="background:#54596d;color:#ffffff">&#160;84&#160;&#160;&#160;89&#160;&#160;109</td>
+</tr>
+<tr>
+<td colspan="2"><b>Gray</b></td>
+</tr>
+<tr>
+<td style="background:#625d5a;color:#ffffff">ParaViewWarmGrayBkg</td>
+<td style="background:#625d5a;color:#ffffff">&#160;98&#160;&#160;&#160;93&#160;&#160;&#160;90</td>
 </tr>
 </table>
 </td>
