@@ -65,7 +65,6 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonColor</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonCore</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkPoints</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonDataModel</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkCellArray</span><span class=p>,</span> <span class=n>vtkPolyData</span><span class=p>,</span> <span class=n>vtkPolyLine</span>
-</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersCore</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkAppendPolyData</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkIOImage</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageReader2Factory</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingMorphological</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkImageDilateErode3D</span><span class=p>,</span>
@@ -97,7 +96,7 @@ function registerListener(event, func) {
 <span class=s1>    &#39;&#39;&#39;</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;original_actor.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;binary.pgm&#39;</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span>
 
@@ -190,16 +189,16 @@ function registerListener(event, func) {
             <span class=p>)</span>
 
             <span class=k>if</span> <span class=n>last_row</span> <span class=ow>and</span> <span class=n>last_col</span><span class=p>:</span>
-                <span class=n>border</span> <span class=o>=</span> <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>TOP_LEFT_BOTTOM_RIGHT</span>
+                <span class=n>border</span> <span class=o>=</span> <span class=n>ViewPortBorders</span><span class=o>.</span><span class=n>tlbr</span>
                 <span class=n>last_row</span> <span class=o>=</span> <span class=kc>False</span>
                 <span class=n>last_col</span> <span class=o>=</span> <span class=kc>False</span>
             <span class=k>elif</span> <span class=n>last_col</span><span class=p>:</span>
-                <span class=n>border</span> <span class=o>=</span> <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>RIGHT_TOP_LEFT</span>
+                <span class=n>border</span> <span class=o>=</span> <span class=n>ViewPortBorders</span><span class=o>.</span><span class=n>rtl</span>
                 <span class=n>last_col</span> <span class=o>=</span> <span class=kc>False</span>
             <span class=k>elif</span> <span class=n>last_row</span><span class=p>:</span>
-                <span class=n>border</span> <span class=o>=</span> <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>TOP_LEFT_BOTTOM</span>
+                <span class=n>border</span> <span class=o>=</span> <span class=n>ViewPortBorders</span><span class=o>.</span><span class=n>tlb</span>
             <span class=k>else</span><span class=p>:</span>
-                <span class=n>border</span> <span class=o>=</span> <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>TOP_LEFT</span>
+                <span class=n>border</span> <span class=o>=</span> <span class=n>ViewPortBorders</span><span class=o>.</span><span class=n>tl</span>
             <span class=n>vp_params</span> <span class=o>=</span> <span class=n>VP_Params</span><span class=p>(</span><span class=n>viewport</span><span class=p>,</span> <span class=n>border</span><span class=p>)</span>
             <span class=n>viewports</span><span class=p>[</span><span class=n>keys</span><span class=p>[</span><span class=n>index</span><span class=p>]]</span> <span class=o>=</span> <span class=n>vp_params</span>
 
@@ -242,7 +241,7 @@ function registerListener(event, func) {
     <span class=c1># Draw a line around the viewport of each renderer.</span>
     <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>actors</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
         <span class=n>border</span> <span class=o>=</span> <span class=n>viewports</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>border</span>
-        <span class=n>draw_viewport_border</span><span class=p>(</span><span class=n>renderers</span><span class=p>[</span><span class=n>k</span><span class=p>],</span> <span class=n>border</span><span class=o>=</span><span class=n>border</span><span class=p>,</span> <span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Yellow&#39;</span><span class=p>),</span> <span class=n>line_width</span><span class=o>=</span><span class=mi>4</span><span class=p>)</span>
+        <span class=n>draw_viewport_border</span><span class=p>(</span><span class=n>renderers</span><span class=p>[</span><span class=n>k</span><span class=p>],</span> <span class=n>sides</span><span class=o>=</span><span class=n>border</span><span class=p>,</span> <span class=n>border_color</span><span class=o>=</span><span class=s1>&#39;Yellow&#39;</span><span class=p>,</span> <span class=n>border_width</span><span class=o>=</span><span class=mi>4</span><span class=p>)</span>
 
     <span class=c1># The renderers share one camera.</span>
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
@@ -259,6 +258,98 @@ function registerListener(event, func) {
 
     <span class=n>iren</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
+
+
+<span class=k>def</span><span class=w> </span><span class=nf>draw_viewport_border</span><span class=p>(</span><span class=n>renderer</span><span class=p>,</span> <span class=n>sides</span><span class=p>,</span> <span class=n>border_color</span><span class=p>,</span> <span class=n>border_width</span><span class=p>):</span>
+<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>    Set a border around a viewport.</span>
+
+<span class=sd>    :param renderer: The renderer corresponding to the viewport.</span>
+<span class=sd>    :param sides: An array of boolean corresponding to [top, left, bottom, right]</span>
+<span class=sd>    :param border_color: The color of the border.</span>
+<span class=sd>    :param border_width: The width of the border.</span>
+<span class=sd>    :return:</span>
+<span class=sd>    &quot;&quot;&quot;</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
+    <span class=c1># Points start at upper right and proceed anti-clockwise.</span>
+<span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
+</span>    <span class=n>points</span><span class=o>.</span><span class=n>SetNumberOfPoints</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span>
+    <span class=n>points</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>points</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>points</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>points</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+
+<span class=hll>    <span class=n>cells</span> <span class=o>=</span> <span class=n>vtkCellArray</span><span class=p>()</span>
+</span>    <span class=n>cells</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
+
+    <span class=k>if</span> <span class=n>sides</span><span class=p>[</span><span class=mi>0</span><span class=p>]:</span>
+        <span class=c1># Top</span>
+<span class=hll>        <span class=n>top</span> <span class=o>=</span> <span class=n>vtkPolyLine</span><span class=p>()</span>
+</span>        <span class=n>top</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetNumberOfIds</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+        <span class=n>top</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+        <span class=n>top</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+        <span class=n>cells</span><span class=o>.</span><span class=n>InsertNextCell</span><span class=p>(</span><span class=n>top</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>sides</span><span class=p>[</span><span class=mi>1</span><span class=p>]:</span>
+        <span class=c1># Left</span>
+<span class=hll>        <span class=n>left</span> <span class=o>=</span> <span class=n>vtkPolyLine</span><span class=p>()</span>
+</span>        <span class=n>left</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetNumberOfIds</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+        <span class=n>left</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+        <span class=n>left</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+        <span class=n>cells</span><span class=o>.</span><span class=n>InsertNextCell</span><span class=p>(</span><span class=n>left</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>sides</span><span class=p>[</span><span class=mi>2</span><span class=p>]:</span>
+        <span class=c1># Bottom</span>
+<span class=hll>        <span class=n>bottom</span> <span class=o>=</span> <span class=n>vtkPolyLine</span><span class=p>()</span>
+</span>        <span class=n>bottom</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetNumberOfIds</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+        <span class=n>bottom</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+        <span class=n>bottom</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
+        <span class=n>cells</span><span class=o>.</span><span class=n>InsertNextCell</span><span class=p>(</span><span class=n>bottom</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>sides</span><span class=p>[</span><span class=mi>3</span><span class=p>]:</span>
+        <span class=c1># Right</span>
+<span class=hll>        <span class=n>right</span> <span class=o>=</span> <span class=n>vtkPolyLine</span><span class=p>()</span>
+</span>        <span class=n>right</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetNumberOfIds</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+        <span class=n>right</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
+        <span class=n>right</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+        <span class=n>cells</span><span class=o>.</span><span class=n>InsertNextCell</span><span class=p>(</span><span class=n>right</span><span class=p>)</span>
+
+    <span class=c1># Now make the polydata and display it.</span>
+<span class=hll>    <span class=n>poly</span> <span class=o>=</span> <span class=n>vtkPolyData</span><span class=p>()</span>
+</span>    <span class=n>poly</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
+    <span class=n>poly</span><span class=o>.</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>)</span>
+    <span class=n>poly</span><span class=o>.</span><span class=n>SetLines</span><span class=p>(</span><span class=n>cells</span><span class=p>)</span>
+
+    <span class=c1># Use normalized viewport coordinates since</span>
+    <span class=c1># they are independent of window size.</span>
+<span class=hll>    <span class=n>coordinate</span> <span class=o>=</span> <span class=n>vtkCoordinate</span><span class=p>()</span>
+</span>    <span class=n>coordinate</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedViewport</span><span class=p>()</span>
+
+<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper2D</span><span class=p>()</span>
+</span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>poly</span><span class=p>)</span>
+    <span class=n>mapper</span><span class=o>.</span><span class=n>SetTransformCoordinate</span><span class=p>(</span><span class=n>coordinate</span><span class=p>)</span>
+
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor2D</span><span class=p>()</span>
+</span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>border_color</span><span class=p>))</span>
+
+    <span class=c1># Line width should be at least 2 to be visible at extremes.</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=n>border_width</span><span class=p>)</span>
+
+    <span class=n>renderer</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
+
+
+<span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+<span class=k>class</span><span class=w> </span><span class=nc>ViewPortBorders</span><span class=p>:</span>
+    <span class=c1># Define borders for the viewports  = [top, left, bottom, right].</span>
+    <span class=n>t</span> <span class=o>=</span> <span class=p>[</span><span class=kc>True</span><span class=p>,</span> <span class=kc>False</span><span class=p>,</span> <span class=kc>False</span><span class=p>,</span> <span class=kc>False</span><span class=p>]</span>
+    <span class=n>l</span> <span class=o>=</span> <span class=p>[</span><span class=kc>False</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>False</span><span class=p>,</span> <span class=kc>False</span><span class=p>]</span>
+    <span class=n>b</span> <span class=o>=</span> <span class=p>[</span><span class=kc>False</span><span class=p>,</span> <span class=kc>False</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>False</span><span class=p>]</span>
+    <span class=n>r</span> <span class=o>=</span> <span class=p>[</span><span class=kc>False</span><span class=p>,</span> <span class=kc>False</span><span class=p>,</span> <span class=kc>False</span><span class=p>,</span> <span class=kc>True</span><span class=p>]</span>
+    <span class=n>lb</span> <span class=o>=</span> <span class=p>[</span><span class=kc>False</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>False</span><span class=p>]</span>
+    <span class=n>lbr</span> <span class=o>=</span> <span class=p>[</span><span class=kc>False</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>]</span>
+    <span class=n>tlb</span> <span class=o>=</span> <span class=p>[</span><span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>False</span><span class=p>]</span>
+    <span class=n>tlbr</span> <span class=o>=</span> <span class=p>[</span><span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>]</span>
+    <span class=n>rtl</span> <span class=o>=</span> <span class=p>[</span><span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>False</span><span class=p>,</span> <span class=kc>True</span><span class=p>]</span>
+    <span class=n>tl</span> <span class=o>=</span> <span class=p>[</span><span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>False</span><span class=p>,</span> <span class=kc>False</span><span class=p>]</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_text_positions</span><span class=p>(</span><span class=n>names</span><span class=p>,</span> <span class=n>justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>vertical_justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>width</span><span class=o>=</span><span class=mf>0.96</span><span class=p>,</span> <span class=n>height</span><span class=o>=</span><span class=mf>0.1</span><span class=p>):</span>
@@ -325,95 +416,6 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>text_positions</span>
 
 
-<span class=k>def</span><span class=w> </span><span class=nf>draw_viewport_border</span><span class=p>(</span><span class=n>renderer</span><span class=p>,</span> <span class=n>border</span><span class=p>,</span> <span class=n>color</span><span class=o>=</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>),</span> <span class=n>line_width</span><span class=o>=</span><span class=mi>2</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>    Draw a border around the viewport of a renderer.</span>
-
-<span class=sd>    :param renderer: The renderer.</span>
-<span class=sd>    :param border: The border to draw, it must be one of the constants in ViewPort.Border.</span>
-<span class=sd>    :param color: The color.</span>
-<span class=sd>    :param line_width: The line width of the border.</span>
-<span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
-
-    <span class=k>def</span><span class=w> </span><span class=nf>generate_border_lines</span><span class=p>(</span><span class=n>border_type</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>        Generate the lines for the border.</span>
-
-<span class=sd>        :param border_type:  The border type to draw, it must be one of the constants in ViewPort.Border</span>
-<span class=sd>        :return: The points and lines.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
-        <span class=k>if</span> <span class=n>border_type</span> <span class=o>&gt;=</span> <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>NUMBER_OF_BORDER_TYPES</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Not a valid border type.&#39;</span><span class=p>)</span>
-            <span class=k>return</span> <span class=kc>None</span>
-
-        <span class=c1># Points start at upper right and proceed anti-clockwise.</span>
-        <span class=n>pts</span> <span class=o>=</span> <span class=p>(</span>
-            <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>),</span>
-            <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>),</span>
-            <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>),</span>
-            <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>),</span>
-            <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>),</span>
-        <span class=p>)</span>
-        <span class=n>pt_orders</span> <span class=o>=</span> <span class=p>{</span>
-            <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>TOP</span><span class=p>:</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>),</span>
-            <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>LEFT</span><span class=p>:</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>),</span>
-            <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>BOTTOM</span><span class=p>:</span> <span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>),</span>
-            <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>RIGHT</span><span class=p>:</span> <span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span>
-            <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>LEFT_BOTTOM</span><span class=p>:</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>),</span>
-            <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>BOTTOM_RIGHT</span><span class=p>:</span> <span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span>
-            <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>RIGHT_TOP</span><span class=p>:</span> <span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>1</span><span class=p>),</span>
-            <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>RIGHT_TOP_LEFT</span><span class=p>:</span> <span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>),</span>
-            <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>TOP_LEFT</span><span class=p>:</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>),</span>
-            <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>TOP_LEFT_BOTTOM</span><span class=p>:</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>),</span>
-            <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>TOP_LEFT_BOTTOM_RIGHT</span><span class=p>:</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>)</span>
-        <span class=p>}</span>
-        <span class=n>pt_order</span> <span class=o>=</span> <span class=n>pt_orders</span><span class=p>[</span><span class=n>border_type</span><span class=p>]</span>
-        <span class=n>number_of_points</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>pt_order</span><span class=p>)</span>
-<span class=hll>        <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>(</span><span class=n>number_of_points</span><span class=o>=</span><span class=n>number_of_points</span><span class=p>)</span>
-</span>        <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span>
-        <span class=k>for</span> <span class=n>pt_id</span> <span class=ow>in</span> <span class=n>pt_order</span><span class=p>:</span>
-            <span class=n>points</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=o>*</span><span class=n>pts</span><span class=p>[</span><span class=n>pt_id</span><span class=p>])</span>
-            <span class=n>i</span> <span class=o>+=</span> <span class=mi>1</span>
-
-<span class=hll>        <span class=n>lines</span> <span class=o>=</span> <span class=n>vtkPolyLine</span><span class=p>()</span>
-</span>        <span class=n>lines</span><span class=o>.</span><span class=n>point_ids</span><span class=o>.</span><span class=n>SetNumberOfIds</span><span class=p>(</span><span class=n>number_of_points</span><span class=p>)</span>
-        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>number_of_points</span><span class=p>):</span>
-            <span class=n>lines</span><span class=o>.</span><span class=n>point_ids</span><span class=o>.</span><span class=n>id</span> <span class=o>=</span> <span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>i</span><span class=p>)</span>
-
-<span class=hll>        <span class=n>cells</span> <span class=o>=</span> <span class=n>vtkCellArray</span><span class=p>()</span>
-</span>        <span class=n>cells</span><span class=o>.</span><span class=n>InsertNextCell</span><span class=p>(</span><span class=n>lines</span><span class=p>)</span>
-
-        <span class=c1># Make the polydata and return.</span>
-<span class=hll>        <span class=k>return</span> <span class=n>vtkPolyData</span><span class=p>(</span><span class=n>points</span><span class=o>=</span><span class=n>points</span><span class=p>,</span> <span class=n>lines</span><span class=o>=</span><span class=n>cells</span><span class=p>)</span>
-</span>
-    <span class=c1># Use normalized viewport coordinates since</span>
-    <span class=c1># they are independent of window size.</span>
-<span class=hll>    <span class=n>coordinate</span> <span class=o>=</span> <span class=n>vtkCoordinate</span><span class=p>(</span><span class=n>coordinate_system</span><span class=o>=</span><span class=n>Coordinate</span><span class=o>.</span><span class=n>CoordinateSystem</span><span class=o>.</span><span class=n>VTK_NORMALIZED_VIEWPORT</span><span class=p>)</span>
-</span><span class=hll>    <span class=n>poly</span> <span class=o>=</span> <span class=n>vtkAppendPolyData</span><span class=p>()</span>
-</span>    <span class=k>if</span> <span class=n>border</span> <span class=o>==</span> <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>TOP_BOTTOM</span><span class=p>:</span>
-        <span class=p>(</span>
-            <span class=n>generate_border_lines</span><span class=p>(</span><span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>TOP</span><span class=p>),</span>
-            <span class=n>generate_border_lines</span><span class=p>(</span><span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>BOTTOM</span><span class=p>)</span>
-        <span class=p>)</span> <span class=o>&gt;&gt;</span> <span class=n>poly</span>
-    <span class=k>elif</span> <span class=n>border</span> <span class=o>==</span> <span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>LEFT_RIGHT</span><span class=p>:</span>
-        <span class=p>(</span>
-            <span class=n>generate_border_lines</span><span class=p>(</span><span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>LEFT</span><span class=p>),</span>
-            <span class=n>generate_border_lines</span><span class=p>(</span><span class=n>ViewPort</span><span class=o>.</span><span class=n>Border</span><span class=o>.</span><span class=n>RIGHT</span><span class=p>)</span>
-        <span class=p>)</span> <span class=o>&gt;&gt;</span> <span class=n>poly</span>
-    <span class=k>else</span><span class=p>:</span>
-        <span class=n>generate_border_lines</span><span class=p>(</span><span class=n>border</span><span class=p>)</span> <span class=o>&gt;&gt;</span> <span class=n>poly</span>
-
-<span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper2D</span><span class=p>(</span><span class=n>transform_coordinate</span><span class=o>=</span><span class=n>coordinate</span><span class=p>)</span>
-</span>    <span class=n>poly</span> <span class=o>&gt;&gt;</span> <span class=n>mapper</span>
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor2D</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper</span><span class=p>)</span>
-</span>    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>color</span>
-    <span class=c1># Line width should be at least 2 to be visible at the extremes.</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>line_width</span> <span class=o>=</span> <span class=n>line_width</span>
-
-    <span class=n>renderer</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
-
-
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 <span class=k>class</span><span class=w> </span><span class=nc>Coordinate</span><span class=p>:</span>
     <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
@@ -450,26 +452,6 @@ function registerListener(event, func) {
         <span class=n>VTK_TEXT_BOTTOM</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
         <span class=n>VTK_TEXT_CENTERED</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
         <span class=n>VTK_TEXT_TOP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
-
-
-<span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-<span class=k>class</span><span class=w> </span><span class=nc>ViewPort</span><span class=p>:</span>
-    <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-    <span class=k>class</span><span class=w> </span><span class=nc>Border</span><span class=p>:</span>
-        <span class=n>TOP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
-        <span class=n>LEFT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
-        <span class=n>BOTTOM</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
-        <span class=n>RIGHT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
-        <span class=n>LEFT_BOTTOM</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>4</span>
-        <span class=n>BOTTOM_RIGHT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
-        <span class=n>RIGHT_TOP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>6</span>
-        <span class=n>RIGHT_TOP_LEFT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>7</span>
-        <span class=n>TOP_LEFT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>8</span>
-        <span class=n>TOP_LEFT_BOTTOM</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>9</span>
-        <span class=n>TOP_LEFT_BOTTOM_RIGHT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>10</span>
-        <span class=n>TOP_BOTTOM</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>11</span>
-        <span class=n>LEFT_RIGHT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>12</span>
-        <span class=n>NUMBER_OF_BORDER_TYPES</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>13</span>
 
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
