@@ -98,7 +98,6 @@ function registerListener(event, func) {
                         </script> <hr> <h3 id=description>Description<a class=headerlink href=#description title="Permanent link">&para;</a></h3> <p>Creates surfaces from labeled data. Volume data does not always contain samples of continuous data. A volume may contain discrete integer values, often the result of segmentation. <a href=https://www.vtk.org/doc/nightly/html/classvtkDiscreteFlyingEdges3D.html>vtkDiscreteFlyingEdges3D</a> or <a href=https://www.vtk.org/doc/nightly/html/classvtkDiscreteMarchingCubes.html>vtkDiscreteMarchingCubes</a> create surfaces from these segmented volumes using a modified flying edges or marching cubes algorithm. The algorithm generates one or more models representing the boundaries between the specified label and the adjacent structures. One or more label values must be specified to generate the models. The boundary positions are always defined to be half-way between adjacent voxels.</p> <div class="admonition seealso"> <p class=admonition-title>Seealso</p> <p><a href=../SmoothDiscreteMarchingCubes>SmoothDiscreteMarchingCubes</a> produces smooth models.</p> </div> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Python/Modelling/DiscreteMarchingCubes>Python</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>DiscreteMarchingCubes.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkActor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageData.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageMathematics.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageThreshold.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkLookupTable.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkMinimalStandardRandomSequence.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNamedColors.h&gt;</span>
@@ -123,6 +122,13 @@ function registerListener(event, func) {
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkDiscreteFlyingEdges3D.h&gt;</span>
 </span><span class=cp>#else</span>
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkDiscreteMarchingCubes.h&gt;</span>
+</span><span class=cp>#endif</span>
+
+<span class=c1>// #define USE_IMAGE_THRESHOLD</span>
+<span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageThreshold.h&gt;</span>
+</span><span class=cp>#else</span>
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageBinaryThreshold.h&gt;</span>
 </span><span class=cp>#endif</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
@@ -205,6 +211,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>sampler</span><span class=o>-&gt;</span><span class=n>SetSampleDimensions</span><span class=p>(</span><span class=mi>100</span><span class=p>,</span><span class=w> </span><span class=mi>100</span><span class=p>,</span><span class=w> </span><span class=mi>100</span><span class=p>);</span>
 <span class=w>    </span><span class=n>sampler</span><span class=o>-&gt;</span><span class=n>SetModelBounds</span><span class=p>(</span><span class=mi>-50</span><span class=p>,</span><span class=w> </span><span class=mi>50</span><span class=p>,</span><span class=w> </span><span class=mi>-50</span><span class=p>,</span><span class=w> </span><span class=mi>50</span><span class=p>,</span><span class=w> </span><span class=mi>-50</span><span class=p>,</span><span class=w> </span><span class=mi>50</span><span class=p>);</span>
 
+<span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>thres</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sampler</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>ThresholdByLower</span><span class=p>(</span><span class=n>radius</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>radius</span><span class=p>);</span>
@@ -212,6 +219,17 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>ReplaceOutOn</span><span class=p>();</span>
 <span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=n>i</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 <span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+<span class=cp>#else</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageBinaryThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>thres</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sampler</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=hll><span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_LOWER</span><span class=p>);</span>
+</span><span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>radius</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>radius</span><span class=p>);</span>
+<span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
+<span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>ReplaceOutOn</span><span class=p>();</span>
+<span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=n>i</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
+<span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+<span class=cp>#endif</span>
+
 <span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>i</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>0</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>

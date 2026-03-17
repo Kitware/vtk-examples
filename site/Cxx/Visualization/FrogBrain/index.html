@@ -98,7 +98,6 @@ function registerListener(event, func) {
                         </script> <hr> <h3 id=description>Description<a class=headerlink href=#description title="Permanent link">&para;</a></h3> <p>The frog's brain. Model extracted without smoothing (left) and with smoothing (right).</p> <div class="admonition info"> <p class=admonition-title>Info</p> <p>See <a href=../../../VTKBook/12Chapter12/#Figure%2012-7>Figure 12-7</a> in <a href=../../..//VTKBook/12Chapter12>Chapter 12</a> the <a href=../../../VTKBook/01Chapter1>VTK Textbook</a>.</p> </div> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Python/Visualization/FrogBrain>Python</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>FrogBrain.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkActor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCamera.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageGaussianSmooth.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageThreshold.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkLookupTable.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkMetaImageReader.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNamedColors.h&gt;</span>
@@ -126,6 +125,13 @@ function registerListener(event, func) {
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkMarchingCubes.h&gt;</span>
 </span><span class=cp>#endif</span>
 
+<span class=c1>// #define USE_IMAGE_THRESHOLD</span>
+<span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageThreshold.h&gt;</span>
+</span><span class=cp>#else</span>
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageBinaryThreshold.h&gt;</span>
+</span><span class=cp>#endif</span>
+
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;map&gt;</span>
 
@@ -142,7 +148,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>3</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;InputFile(.mhd) Tissue e.g.frogtissue.mhd brain&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;InputFile(.mhd) Tissue e.g.Frog/frogtissue.mhd brain&quot;</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -229,11 +236,26 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>  </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
+<span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>selectTissue</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>tissue</span><span class=p>,</span><span class=w> </span><span class=n>tissue</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>tissue</span><span class=p>,</span><span class=w> </span><span class=n>tissue</span><span class=p>);</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>255</span><span class=p>);</span>
 <span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=cp>#else</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageBinaryThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>selectTissue</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span>
+<span class=hll><span class=w>      </span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_BETWEEN</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>tissue</span><span class=p>);</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>tissue</span><span class=p>);</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceOutOn</span><span class=p>();</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>255</span><span class=p>);</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+<span class=cp>#endif</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>gaussianRadius</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>gaussianStandardDeviation</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>2.0</span><span class=p>;</span>
@@ -290,11 +312,27 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>  </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
+<span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>selectTissue</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>tissue</span><span class=p>,</span><span class=w> </span><span class=n>tissue</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>tissue</span><span class=p>,</span><span class=w> </span><span class=n>tissue</span><span class=p>);</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>255</span><span class=p>);</span>
 <span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
+<span class=cp>#else</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageBinaryThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>selectTissue</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span>
+<span class=hll><span class=w>      </span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_BETWEEN</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>tissue</span><span class=p>);</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>tissue</span><span class=p>);</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceOutOn</span><span class=p>();</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>255</span><span class=p>);</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+<span class=cp>#endif</span>
+<span class=w>  </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>isoValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>63.5</span><span class=p>;</span>
 <span class=cp>#ifdef USE_FLYING_EDGES</span>

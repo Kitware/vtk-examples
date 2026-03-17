@@ -67,7 +67,6 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageGaussianSmooth.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageIslandRemoval2D.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageShrink3D.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageThreshold.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkInteractorStyleTrackballCamera.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkLookupTable.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkMarchingCubes.h&gt;</span>
@@ -104,6 +103,13 @@ function registerListener(event, func) {
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;sstream&gt;</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;variant&gt;</span>
+
+<span class=c1>// #define USE_IMAGE_THRESHOLD</span>
+<span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageThreshold.h&gt;</span>
+</span><span class=cp>#else</span>
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageBinaryThreshold.h&gt;</span>
+</span><span class=cp>#endif</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=nn>fs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nn>std</span><span class=o>::</span><span class=nn>filesystem</span><span class=p>;</span>
 
@@ -1030,8 +1036,12 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>gaussianFlag</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageIslandRemoval2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>islandRemover</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>selectTissue</span><span class=p>;</span>
-</span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=s>&quot;skin&quot;</span><span class=p>)</span>
+</span><span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>selectTissue</span><span class=p>;</span>
+</span><span class=cp>#else</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageBinaryThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>selectTissue</span><span class=p>;</span>
+</span><span class=cp>#endif</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=s>&quot;skin&quot;</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>islandRemoverFlag</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>ir</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;island_replace&quot;</span><span class=p>]);</span>
@@ -1046,9 +1056,22 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=n>islandRemover</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>      </span><span class=n>islandRemoverFlag</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
+<span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
 <span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ThresholdBetween</span><span class=p>(</span><span class=n>idx</span><span class=p>,</span><span class=w> </span><span class=n>idx</span><span class=p>);</span>
+<span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
+<span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceOutOn</span><span class=p>();</span>
 <span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>255</span><span class=p>);</span>
 <span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+<span class=cp>#else</span>
+<span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span>
+<span class=hll><span class=w>        </span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_BETWEEN</span><span class=p>);</span>
+</span><span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>idx</span><span class=p>);</span>
+<span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>idx</span><span class=p>);</span>
+<span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
+<span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceOutOn</span><span class=p>();</span>
+<span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>255</span><span class=p>);</span>
+<span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+<span class=cp>#endif</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>islandRemoverFlag</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>islandRemover</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
