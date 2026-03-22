@@ -199,15 +199,10 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;</span><span class=w> </span><span class=n>dc1</span><span class=p>{</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>};</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;</span><span class=w> </span><span class=n>dc2</span><span class=p>{</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>};</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>c1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=n>color1</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>c2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=n>color2</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
-<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>3</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>dc1</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>c1</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
-<span class=w>    </span><span class=n>dc2</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>c2</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
-<span class=w>  </span><span class=p>}</span>
+<span class=hll><span class=w>  </span><span class=n>vtkColor3ub</span><span class=w> </span><span class=n>c1</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=n>color1</span><span class=p>,</span><span class=w> </span><span class=n>c1</span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=n>vtkColor3ub</span><span class=w> </span><span class=n>c2</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=n>color2</span><span class=p>,</span><span class=w> </span><span class=n>c2</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Specify the size of the image data.</span>
 <span class=w>  </span><span class=n>image</span><span class=o>-&gt;</span><span class=n>SetDimensions</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span><span class=w> </span><span class=mi>10</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
@@ -226,11 +221,11 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>x</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>5</span><span class=p>)</span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>pixel</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>dc1</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+<span class=w>          </span><span class=n>pixel</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>c1</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>        </span><span class=k>else</span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>pixel</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>dc2</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+<span class=w>          </span><span class=n>pixel</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>c2</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>

@@ -84,13 +84,13 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
 <span class=hll>    <span class=n>chart</span> <span class=o>=</span> <span class=n>vtkChartXYZ</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>chart</span><span class=o>.</span><span class=n>SetGeometry</span><span class=p>(</span><span class=n>vtkRectf</span><span class=p>(</span><span class=mf>10.0</span><span class=p>,</span> <span class=mf>10.0</span><span class=p>,</span> <span class=mi>630</span><span class=p>,</span> <span class=mi>470</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>chart</span><span class=o>.</span><span class=n>SetGeometry</span><span class=p>(</span><span class=n>vtkRectf</span><span class=p>(</span><span class=mf>150.0</span><span class=p>,</span> <span class=mf>40.0</span><span class=p>,</span> <span class=mi>500</span><span class=p>,</span> <span class=mi>520</span><span class=p>))</span>
 </span>
 <span class=hll>    <span class=n>plot</span> <span class=o>=</span> <span class=n>vtkPlotSurface</span><span class=p>()</span>
 </span>
 <span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtkContextView</span><span class=p>()</span>
 </span>    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Silver&quot;</span><span class=p>))</span>
-    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>800</span><span class=p>,</span> <span class=mi>600</span><span class=p>)</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetScene</span><span class=p>()</span><span class=o>.</span><span class=n>AddItem</span><span class=p>(</span><span class=n>chart</span><span class=p>)</span>
 
     <span class=c1># Create a surface</span>
@@ -124,10 +124,11 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>mouseEvent</span> <span class=o>=</span> <span class=n>vtkContextMouseEvent</span><span class=p>()</span>
 </span>    <span class=n>mouseEvent</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>())</span>
 
+    <span class=c1># This section doesn&#39;t work because vtkVector2f is needed.</span>
 <span class=hll>    <span class=n>pos</span> <span class=o>=</span> <span class=n>vtkVector2i</span><span class=p>()</span>
+</span><span class=hll>    <span class=n>lastPos</span> <span class=o>=</span> <span class=n>vtkVector2i</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>lastPos</span> <span class=o>=</span> <span class=n>vtkVector2i</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>mouseEvent</span><span class=o>.</span><span class=n>SetButton</span><span class=p>(</span><span class=n>vtkContextMouseEvent</span><span class=o>.</span><span class=n>LEFT_BUTTON</span><span class=p>)</span>
+<span class=hll>    <span class=n>mouseEvent</span><span class=o>.</span><span class=n>SetButton</span><span class=p>(</span><span class=n>vtkContextMouseEvent</span><span class=o>.</span><span class=n>LEFT_BUTTON</span><span class=p>)</span>
 </span>    <span class=n>lastPos</span><span class=o>.</span><span class=n>Set</span><span class=p>(</span><span class=mi>100</span><span class=p>,</span> <span class=mi>50</span><span class=p>)</span>
     <span class=n>mouseEvent</span><span class=o>.</span><span class=n>SetLastScreenPos</span><span class=p>(</span><span class=n>lastPos</span><span class=p>)</span>
     <span class=n>pos</span><span class=o>.</span><span class=n>Set</span><span class=p>(</span><span class=mi>150</span><span class=p>,</span> <span class=mi>100</span><span class=p>)</span>
