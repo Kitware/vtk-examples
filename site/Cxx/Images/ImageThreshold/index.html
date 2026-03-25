@@ -108,8 +108,8 @@ function registerListener(event, func) {
 <span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageThreshold.h&gt;</span>
 </span><span class=cp>#else</span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageBinaryThreshold.h&gt;</span>
-</span><span class=cp>#endif</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageBinaryThreshold.h&gt;</span>
+<span class=cp>#endif</span>
 
 <span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
@@ -134,8 +134,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageBinaryThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>imageThreshold</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>imageThreshold</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>imageThreshold</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span>
-<span class=hll><span class=w>      </span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_BETWEEN</span><span class=p>);</span>
-</span><span class=w>  </span><span class=n>imageThreshold</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>lower</span><span class=p>);</span>
+<span class=w>      </span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_BETWEEN</span><span class=p>);</span>
+<span class=w>  </span><span class=n>imageThreshold</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>lower</span><span class=p>);</span>
 <span class=w>  </span><span class=n>imageThreshold</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>upper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>imageThreshold</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>imageThreshold</span><span class=o>-&gt;</span><span class=n>ReplaceOutOn</span><span class=p>();</span>

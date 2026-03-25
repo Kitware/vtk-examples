@@ -108,8 +108,8 @@ function registerListener(event, func) {
 <span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageThreshold.h&gt;</span>
 </span><span class=cp>#else</span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageBinaryThreshold.h&gt;</span>
-</span><span class=cp>#endif</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageBinaryThreshold.h&gt;</span>
+<span class=cp>#endif</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=nn>fs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nn>std</span><span class=o>::</span><span class=nn>filesystem</span><span class=p>;</span>
 
@@ -1064,8 +1064,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 <span class=cp>#else</span>
 <span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span>
-<span class=hll><span class=w>        </span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_BETWEEN</span><span class=p>);</span>
-</span><span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>idx</span><span class=p>);</span>
+<span class=w>        </span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_BETWEEN</span><span class=p>);</span>
+<span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>idx</span><span class=p>);</span>
 <span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>idx</span><span class=p>);</span>
 <span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
 <span class=w>    </span><span class=n>selectTissue</span><span class=o>-&gt;</span><span class=n>ReplaceOutOn</span><span class=p>();</span>
