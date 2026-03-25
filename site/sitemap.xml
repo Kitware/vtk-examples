@@ -1541,7 +1541,7 @@
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Cxx/IO/TransientHDFReader/</loc>
+         <loc>https://examples.vtk.org/site/Cxx/IO/TemporalHDFReader/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
@@ -6397,7 +6397,7 @@
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Python/IO/TransientHDFReader/</loc>
+         <loc>https://examples.vtk.org/site/Python/IO/TemporalHDFReader/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
@@ -7953,7 +7953,7 @@
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/PythonicAPI/IO/TransientHDFReader/</loc>
+         <loc>https://examples.vtk.org/site/PythonicAPI/IO/TemporalHDFReader/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
