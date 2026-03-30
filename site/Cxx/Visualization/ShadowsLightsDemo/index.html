@@ -199,7 +199,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>boxNormals</span><span class=o>-&gt;</span><span class=n>ComputePointNormalsOff</span><span class=p>();</span>
 <span class=w>  </span><span class=n>boxNormals</span><span class=o>-&gt;</span><span class=n>ComputeCellNormalsOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>boxNormals</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
-<span class=w>  </span><span class=n>boxNormals</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetNormals</span><span class=p>(</span><span class=k>nullptr</span><span class=p>);</span>
+<span class=w>  </span><span class=n>boxNormals</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetNormals</span><span class=p>(</span><span class=nb>nullptr</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>boxMapper</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>boxMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>boxNormals</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>

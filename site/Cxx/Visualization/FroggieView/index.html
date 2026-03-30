@@ -319,7 +319,7 @@ function registerListener(event, func) {
 <span class=w>                       </span><span class=o>-&gt;</span><span class=n>GetValue</span><span class=p>();</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>property</span><span class=o>-&gt;</span><span class=n>SetOpacity</span><span class=p>(</span><span class=n>value</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>SliderCallbackOpacity</span><span class=p>()</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>property</span><span class=p>(</span><span class=k>nullptr</span><span class=p>)</span>
+<span class=w>  </span><span class=n>SliderCallbackOpacity</span><span class=p>()</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>property</span><span class=p>(</span><span class=nb>nullptr</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=hll><span class=w>  </span><span class=n>vtkProperty</span><span class=o>*</span><span class=w> </span><span class=n>property</span><span class=p>;</span>
@@ -414,7 +414,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>SliderToggleCallback</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>SliderToggleCallback</span><span class=o>&amp;</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>delete</span><span class=p>;</span>
 <span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>SliderToggleCallback</span><span class=o>&amp;</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>delete</span><span class=p>;</span>
 
-<span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;&gt;*</span><span class=w> </span><span class=n>sliders</span><span class=p>{</span><span class=k>nullptr</span><span class=p>};</span>
+<span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;&gt;*</span><span class=w> </span><span class=n>sliders</span><span class=p>{</span><span class=nb>nullptr</span><span class=p>};</span>
 </span><span class=p>};</span>
 
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>

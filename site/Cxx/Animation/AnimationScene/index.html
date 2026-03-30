@@ -115,9 +115,9 @@ function registerListener(event, func) {
 <span class=k>public</span><span class=o>:</span>
 <span class=w>  </span><span class=n>CueAnimator</span><span class=p>()</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SphereSource</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
-<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Mapper</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
-<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Actor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
+<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SphereSource</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>;</span>
+<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Mapper</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>;</span>
+<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Actor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=o>~</span><span class=n>CueAnimator</span><span class=p>()</span>
@@ -176,21 +176,21 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>Cleanup</span><span class=p>()</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SphereSource</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=k>nullptr</span><span class=p>)</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SphereSource</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SphereSource</span><span class=o>-&gt;</span><span class=n>Delete</span><span class=p>();</span>
-<span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SphereSource</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
+<span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SphereSource</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Mapper</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=k>nullptr</span><span class=p>)</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Mapper</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Mapper</span><span class=o>-&gt;</span><span class=n>Delete</span><span class=p>();</span>
-<span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Mapper</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
+<span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Mapper</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Actor</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=k>nullptr</span><span class=p>)</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Actor</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Actor</span><span class=o>-&gt;</span><span class=n>Delete</span><span class=p>();</span>
-<span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Actor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
+<span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Actor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>};</span>
@@ -206,7 +206,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>caller</span><span class=p>),</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>event</span><span class=p>,</span>
 </span><span class=w>                       </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>calldata</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Animator</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=k>nullptr</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Renderer</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=k>nullptr</span><span class=p>)</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Animator</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=nb>nullptr</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Renderer</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=hll><span class=w>      </span><span class=n>vtkAnimationCue</span><span class=o>::</span><span class=n>AnimationCueInfo</span><span class=o>*</span><span class=w> </span><span class=n>info</span><span class=w> </span><span class=o>=</span>
 </span><span class=hll><span class=w>          </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkAnimationCue</span><span class=o>::</span><span class=n>AnimationCueInfo</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>calldata</span><span class=p>);</span>
@@ -223,7 +223,7 @@ function registerListener(event, func) {
 <span class=w>        </span><span class=k>break</span><span class=p>;</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>RenWin</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=k>nullptr</span><span class=p>)</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>RenWin</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>RenWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>    </span><span class=p>}</span>
@@ -236,9 +236,9 @@ function registerListener(event, func) {
 <span class=k>protected</span><span class=o>:</span>
 <span class=w>  </span><span class=n>vtkAnimationCueObserver</span><span class=p>()</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Renderer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
-<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Animator</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
-<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>RenWin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
+<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Renderer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>;</span>
+<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Animator</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>;</span>
+<span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>RenWin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>};</span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>

@@ -190,7 +190,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>compassWidget</span><span class=o>-&gt;</span><span class=n>EnabledOn</span><span class=p>();</span>
 
 <span class=w>  </span><span class=c1>// no interactor style - camera is moved by widget callback</span>
-<span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=k>nullptr</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=nb>nullptr</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// set camera to initial position</span>
 <span class=hll><span class=w>  </span><span class=n>compassWidget</span><span class=o>-&gt;</span><span class=n>InvokeEvent</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>WidgetValueChangedEvent</span><span class=p>);</span>

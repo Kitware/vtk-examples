@@ -128,11 +128,11 @@ function registerListener(event, func) {
 </span><span class=w>               </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>callData</span><span class=p>))</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Axes</span><span class=o>-&gt;</span><span class=n>InitPathTraversal</span><span class=p>();</span>
-<span class=hll><span class=w>    </span><span class=n>vtkAssemblyPath</span><span class=o>*</span><span class=w> </span><span class=n>path</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>nullptr</span><span class=p>;</span>
+<span class=hll><span class=w>    </span><span class=n>vtkAssemblyPath</span><span class=o>*</span><span class=w> </span><span class=n>path</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>;</span>
 </span><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>count</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>vtkFollower</span><span class=o>*</span><span class=w> </span><span class=n>followers</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>XLabel</span><span class=p>,</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>YLabel</span><span class=p>,</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>ZLabel</span><span class=p>};</span>
 </span><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>followerId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span>
-<span class=w>    </span><span class=k>while</span><span class=w> </span><span class=p>((</span><span class=n>path</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Axes</span><span class=o>-&gt;</span><span class=n>GetNextPath</span><span class=p>())</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=k>nullptr</span><span class=p>)</span>
+<span class=w>    </span><span class=k>while</span><span class=w> </span><span class=p>((</span><span class=n>path</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Axes</span><span class=o>-&gt;</span><span class=n>GetNextPath</span><span class=p>())</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=nb>nullptr</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>count</span><span class=o>++</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>      </span><span class=p>{</span>
@@ -143,14 +143,14 @@ function registerListener(event, func) {
 <span class=w>          </span><span class=n>prop3D</span><span class=o>-&gt;</span><span class=n>PokeMatrix</span><span class=p>(</span><span class=n>path</span><span class=o>-&gt;</span><span class=n>GetLastNode</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetMatrix</span><span class=p>());</span>
 <span class=w>          </span><span class=n>followers</span><span class=p>[</span><span class=n>followerId</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=n>prop3D</span><span class=o>-&gt;</span><span class=n>GetCenter</span><span class=p>());</span>
 <span class=w>          </span><span class=n>followerId</span><span class=o>++</span><span class=p>;</span>
-<span class=w>          </span><span class=n>prop3D</span><span class=o>-&gt;</span><span class=n>PokeMatrix</span><span class=p>(</span><span class=k>nullptr</span><span class=p>);</span>
+<span class=w>          </span><span class=n>prop3D</span><span class=o>-&gt;</span><span class=n>PokeMatrix</span><span class=p>(</span><span class=nb>nullptr</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=n>vtkPositionCallback</span><span class=p>()</span>
-<span class=w>    </span><span class=o>:</span><span class=w> </span><span class=n>XLabel</span><span class=p>(</span><span class=k>nullptr</span><span class=p>),</span><span class=w> </span><span class=n>YLabel</span><span class=p>(</span><span class=k>nullptr</span><span class=p>),</span><span class=w> </span><span class=n>ZLabel</span><span class=p>(</span><span class=k>nullptr</span><span class=p>),</span><span class=w> </span><span class=n>Axes</span><span class=p>(</span><span class=k>nullptr</span><span class=p>)</span>
+<span class=w>    </span><span class=o>:</span><span class=w> </span><span class=n>XLabel</span><span class=p>(</span><span class=nb>nullptr</span><span class=p>),</span><span class=w> </span><span class=n>YLabel</span><span class=p>(</span><span class=nb>nullptr</span><span class=p>),</span><span class=w> </span><span class=n>ZLabel</span><span class=p>(</span><span class=nb>nullptr</span><span class=p>),</span><span class=w> </span><span class=n>Axes</span><span class=p>(</span><span class=nb>nullptr</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>  </span><span class=p>}</span>
 

@@ -158,9 +158,9 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBalloonWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>balloonWidget</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iRen</span><span class=p>);</span>
 <span class=w>  </span><span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>balloonRep</span><span class=p>);</span>
-<span class=w>  </span><span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>AddBalloon</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>,</span><span class=w> </span><span class=s>&quot;This is a sphere&quot;</span><span class=p>,</span><span class=w> </span><span class=k>nullptr</span><span class=p>);</span>
+<span class=w>  </span><span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>AddBalloon</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>,</span><span class=w> </span><span class=s>&quot;This is a sphere&quot;</span><span class=p>,</span><span class=w> </span><span class=nb>nullptr</span><span class=p>);</span>
 <span class=w>  </span><span class=n>balloonWidget</span><span class=o>-&gt;</span><span class=n>AddBalloon</span><span class=p>(</span><span class=n>regularPolygonActor</span><span class=p>,</span><span class=w> </span><span class=s>&quot;This is a regular polygon&quot;</span><span class=p>,</span>
-<span class=w>                            </span><span class=k>nullptr</span><span class=p>);</span>
+<span class=w>                            </span><span class=nb>nullptr</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Add the actors to the scene.</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>);</span>
