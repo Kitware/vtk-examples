@@ -3561,6 +3561,10 @@
          <lastmod>2026-04-06</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/Cxx/Snippets/DrawViewportBorder/</loc>
+         <lastmod>2026-04-06</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/Cxx/Snippets/PointToGlyph/</loc>
          <lastmod>2026-04-06</lastmod>
     </url>
@@ -3582,10 +3586,6 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/Cxx/Snippets/SaveSceneToFile/</loc>
-         <lastmod>2026-04-06</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/Cxx/Snippets/ViewportBorders/</loc>
          <lastmod>2026-04-06</lastmod>
     </url>
     <url>
