@@ -105,6 +105,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkConeSource.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkCubeSource.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkElevationFilter.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkInteractorStyleSwitch.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkLookupTable.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNamedColors.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNew.h&gt;</span>
@@ -156,6 +157,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span><span class=w> </span><span class=mi>480</span><span class=p>);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>iRen</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>is</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkInteractorStyleSwitch</span><span class=o>::</span><span class=n>SafeDownCast</span><span class=p>(</span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>GetInteractorStyle</span><span class=p>());</span>
+</span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>is</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>is</span><span class=o>-&gt;</span><span class=n>SetCurrentStyleToTrackballCamera</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=c1>// Create a cone with an elliptical base whose major axis is in the</span>
 <span class=w>  </span><span class=c1>// X-direction.</span>
@@ -235,12 +241,20 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>om2</span><span class=o>-&gt;</span><span class=n>EnabledOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>om2</span><span class=o>-&gt;</span><span class=n>InteractiveOn</span><span class=p>();</span>
 
+<span class=w>  </span><span class=c1>// Try different gradient modes for the renderer.</span>
+<span class=w>  </span><span class=c1>// Choose from:</span>
+<span class=w>  </span><span class=c1>// vtkRenderer::GradientModes::VTK_GRADIENT_RADIAL_VIEWPORT_FARTHEST_SIDE</span>
+<span class=w>  </span><span class=c1>// vtkRenderer::GradientModes::VTK_GRADIENT_RADIAL_VIEWPORT_FARTHEST_CORNER</span>
+<span class=w>  </span><span class=c1>// vtkRenderer::GradientModes::VTK_GRADIENT_VERTICAL</span>
+<span class=w>  </span><span class=c1>// vtkRenderer::GradientModes::VTK_GRADIENT_HORIZONTAL</span>
+
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>coneActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>contourLineActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;RoyalBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MistyRose&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>GradientBackgroundOn</span><span class=p>();</span>
-<span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>45</span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetGradientMode</span><span class=p>(</span><span class=n>vtkRenderer</span><span class=o>::</span><span class=n>GradientModes</span><span class=o>::</span><span class=n>VTK_GRADIENT_VERTICAL</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>45</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Pitch</span><span class=p>(</span><span class=mf>-22.5</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 
@@ -297,24 +311,21 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkUnsignedCharArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>face_colors</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>face_x_plus</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Red&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>face_x_minus</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Green&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>face_y_plus</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Blue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>face_y_minus</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Yellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>face_z_plus</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Cyan&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>face_z_minus</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Magenta&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
-<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_x_minus</span><span class=p>);</span>
-<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_x_plus</span><span class=p>);</span>
-<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_y_minus</span><span class=p>);</span>
-<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_y_plus</span><span class=p>);</span>
-<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_z_minus</span><span class=p>);</span>
-<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_z_plus</span><span class=p>);</span>
+<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Green&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Red&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Yellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Blue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Magenta&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>face_colors</span><span class=o>-&gt;</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;Cyan&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
+<span class=w>  </span><span class=c1>// auto pd = cube_source-&gt;GetOutput();</span>
 <span class=w>  </span><span class=n>cube_source</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetCellData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetScalars</span><span class=p>(</span><span class=n>face_colors</span><span class=p>);</span>
-<span class=w>  </span><span class=n>cube_source</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
+<span class=w>  </span><span class=c1>// pd-&gt;GetCellData()-&gt;SetScalars(face_colors);</span>
+<span class=w>  </span><span class=c1>// cube_source-&gt;Update();</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>cube_mapper</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>cube_mapper</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>cube_source</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
+<span class=w>  </span><span class=c1>// cube_mapper-&gt;SetInputData(pd);</span>
 <span class=w>  </span><span class=n>cube_mapper</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>cube_actor</span><span class=p>;</span>
