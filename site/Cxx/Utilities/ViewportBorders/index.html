@@ -179,7 +179,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>numberOfFiles</span><span class=p>,</span><span class=w> </span><span class=mi>300</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>numberOfFiles</span><span class=p>),</span><span class=w> </span><span class=mi>300</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ViewportBorders&quot;</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>borderWidth</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>4</span><span class=p>;</span>
