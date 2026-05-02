@@ -65,7 +65,7 @@ function registerListener(event, func) {
 <span class=kn>import</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonColor</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonDataModel</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageData</span>
-</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkIOImage</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkPNGReader</span>
+</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkIOImage</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageReader2Factory</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingMorphological</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageContinuousErode3D</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingSources</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageCanvasSource2D</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingCore</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
@@ -119,19 +119,18 @@ function registerListener(event, func) {
         <span class=n>source</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
         <span class=n>image</span><span class=o>.</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>output</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPNGReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>fp</span><span class=p>)</span>
-</span>        <span class=n>reader</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
+<span class=hll>        <span class=n>reader</span><span class=p>:</span> <span class=n>vtkImageReader2Factory</span> <span class=o>=</span> <span class=n>vtkImageReader2Factory</span><span class=p>()</span><span class=o>.</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fp</span><span class=p>))</span>
+</span>        <span class=n>reader</span><span class=o>.</span><span class=n>file_name</span> <span class=o>=</span> <span class=n>fp</span>
+        <span class=n>reader</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
         <span class=n>image</span><span class=o>.</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>output</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>erode_filter</span> <span class=o>=</span> <span class=n>vtkImageContinuousErode3D</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>image</span><span class=p>,</span> <span class=n>kernel_size</span><span class=o>=</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>1</span><span class=p>))</span>
-</span>
 <span class=hll>    <span class=n>original_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>image</span><span class=p>)</span>
+</span><span class=hll>    <span class=n>original_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>original_mapper</span><span class=p>)</span>
 </span>
-<span class=hll>    <span class=n>original_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>original_mapper</span><span class=p>)</span>
-</span>
+<span class=hll>    <span class=n>erode_filter</span> <span class=o>=</span> <span class=n>vtkImageContinuousErode3D</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>image</span><span class=p>,</span> <span class=n>kernel_size</span><span class=o>=</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>1</span><span class=p>))</span>
+</span>    <span class=n>erode_filter</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
 <span class=hll>    <span class=n>eroded_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>erode_filter</span> <span class=o>&gt;&gt;</span> <span class=n>eroded_mapper</span>
-
 <span class=hll>    <span class=n>eroded_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>eroded_mapper</span><span class=p>)</span>
 </span>
     <span class=c1># Visualize</span>

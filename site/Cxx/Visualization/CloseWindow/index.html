@@ -148,8 +148,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Render and interact.</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;First Window&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Window 1 opened...&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
-
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Window 1 closed...&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Make another interactor, but use the same render window.</span>
@@ -165,7 +165,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renderWindowInteractor2</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Second Window&quot;</span><span class=p>);</span>
-
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Window 2 opened...&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>renderWindowInteractor2</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Window 2 closed. Exiting...&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
