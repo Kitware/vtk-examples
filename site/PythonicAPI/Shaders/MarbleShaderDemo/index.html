@@ -75,7 +75,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>vtkTriangleFilter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkTriangleMeshPointNormals</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+<span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformFilter</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersSources</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkSphereSource</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkIOGeometry</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkBYUReader</span><span class=p>,</span>
@@ -190,7 +190,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>user_transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>user_transform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
     <span class=n>user_transform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mf>1.0</span> <span class=o>/</span> <span class=n>max_bound</span><span class=p>,</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=n>max_bound</span><span class=p>,</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=n>max_bound</span><span class=p>)</span>
-<span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>user_transform</span><span class=p>,</span> <span class=n>input_data</span><span class=o>=</span><span class=n>poly_data</span><span class=p>)</span>
+<span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>user_transform</span><span class=p>,</span> <span class=n>input_data</span><span class=o>=</span><span class=n>poly_data</span><span class=p>)</span>
 </span>
 <span class=hll>    <span class=n>triangles</span> <span class=o>=</span> <span class=n>vtkTriangleFilter</span><span class=p>()</span>
 </span>

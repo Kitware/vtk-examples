@@ -78,7 +78,6 @@ function registerListener(event, func) {
 </span><span class=p>)</span>
 <span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkTransformFilter</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkTransformPolyDataFilter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkWarpTo</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersHybrid</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImplicitModeller</span>
@@ -201,7 +200,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>arrow_t2</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>arrow_t2</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
     <span class=n>arrow_t2</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
-<span class=hll>    <span class=n>arrow_tf2</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>arrow_t2</span><span class=p>)</span>
+<span class=hll>    <span class=n>arrow_tf2</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>arrow_t2</span><span class=p>)</span>
 </span><span class=hll>    <span class=n>arrow_ref</span> <span class=o>=</span> <span class=n>vtkRotationalExtrusionFilter</span><span class=p>(</span><span class=n>capping</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>resolution</span><span class=o>=</span><span class=mi>30</span><span class=p>)</span>
 </span><span class=hll>    <span class=n>spike_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>pd2</span> <span class=o>&gt;&gt;</span> <span class=n>arrow_tf2</span> <span class=o>&gt;&gt;</span> <span class=n>arrow_ref</span> <span class=o>&gt;&gt;</span> <span class=n>spike_mapper</span>

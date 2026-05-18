@@ -112,7 +112,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransform.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformFilter.h&gt;</span>
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;array&gt;</span>
 
@@ -328,11 +328,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>Scale</span><span class=p>(</span><span class=n>length</span><span class=p>,</span><span class=w> </span><span class=n>length</span><span class=p>,</span><span class=w> </span><span class=n>length</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Transform the polydata</span>
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>transformPD</span><span class=p>;</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>transformPD</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>transformPD</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>);</span>
 <span class=w>  </span><span class=n>transformPD</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>arrowSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>transformPD</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
-<span class=w>  </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>transformPD</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
+<span class=w>  </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>transformPD</span><span class=o>-&gt;</span><span class=n>GetPolyDataOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>polyData</span><span class=p>;</span>
 <span class=p>}</span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>

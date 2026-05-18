@@ -119,7 +119,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTextProperty.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransform.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformFilter.h&gt;</span>
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;array&gt;</span>
 
@@ -176,7 +176,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>transform</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>Scale</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.75</span><span class=p>);</span>
 
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>transF</span><span class=p>;</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>transF</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>transF</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>coneSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>transF</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>);</span>
 

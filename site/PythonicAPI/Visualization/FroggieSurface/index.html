@@ -78,7 +78,7 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkStripper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkWindowedSincPolyDataFilter</span>
 </span><span class=p>)</span>
-<span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+<span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformFilter</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkIOImage</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkMetaImageReader</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingCore</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkImageBinaryThreshold</span><span class=p>,</span>
@@ -470,8 +470,8 @@ function registerListener(event, func) {
 </span>                                       <span class=n>compute_scalars</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>compute_gradients</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>compute_normals</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
         <span class=n>iso_surface</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>iso_value</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>so</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;slice_order&#39;</span><span class=p>]),</span>
-</span>                                    <span class=n>input_connection</span><span class=o>=</span><span class=n>iso_surface</span><span class=o>.</span><span class=n>output_port</span><span class=p>)</span>
+<span class=hll>    <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>so</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;slice_order&#39;</span><span class=p>]),</span>
+</span>                            <span class=n>input_connection</span><span class=o>=</span><span class=n>iso_surface</span><span class=o>.</span><span class=n>output_port</span><span class=p>)</span>
     <span class=n>last_connection</span> <span class=o>=</span> <span class=n>tf</span>
 
     <span class=k>if</span> <span class=n>decimate</span><span class=p>:</span>

@@ -112,7 +112,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTexture.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransform.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformFilter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkWindowLevelLookupTable.h&gt;</span>
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
@@ -167,7 +167,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlaneSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>greyPlane</span><span class=p>;</span>
 </span>
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>greyTransform</span><span class=p>;</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>greyTransform</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>greyTransform</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>sliceOrder</span><span class=p>[</span><span class=s>&quot;hfsi&quot;</span><span class=p>]);</span>
 <span class=w>  </span><span class=n>greyTransform</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>greyPlane</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
@@ -205,7 +205,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlaneSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>segmentPlane</span><span class=p>;</span>
 </span>
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>segmentTransform</span><span class=p>;</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>segmentTransform</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>segmentTransform</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>sliceOrder</span><span class=p>[</span><span class=s>&quot;hfsi&quot;</span><span class=p>]);</span>
 <span class=w>  </span><span class=n>segmentTransform</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>segmentPlane</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 

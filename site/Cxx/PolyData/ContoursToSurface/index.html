@@ -108,7 +108,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderer.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransform.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformFilter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVoxelContoursToSurfaceFilter.h&gt;</span>
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
@@ -201,7 +201,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>center</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
 <span class=w>  </span><span class=n>contours</span><span class=o>-&gt;</span><span class=n>GetCenter</span><span class=p>(</span><span class=n>center</span><span class=p>);</span>
 
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>transformFilter</span><span class=p>;</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>transformFilter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>transformFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>contoursToSurface</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>transform</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>transformFilter</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>);</span>

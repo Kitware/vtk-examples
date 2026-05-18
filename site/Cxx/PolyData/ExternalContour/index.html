@@ -72,7 +72,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransform.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformFilter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVersion.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkWindowToImageFilter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkXMLPolyDataReader.h&gt;</span>
@@ -174,12 +174,12 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>transform1</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>transform1</span><span class=o>-&gt;</span><span class=n>Scale</span><span class=p>(</span><span class=n>ratioX</span><span class=p>,</span><span class=w> </span><span class=n>ratioY</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>);</span>
 
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>tfilter1</span><span class=p>;</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>tfilter1</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>tfilter1</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>contour</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tfilter1</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tfilter1</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=w>  </span><span class=n>contour</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>tfilter1</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
+<span class=w>  </span><span class=n>contour</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>tfilter1</span><span class=o>-&gt;</span><span class=n>GetPolyDataOutput</span><span class=p>();</span>
 
 <span class=w>  </span><span class=c1>// Translate the contour so that it shares the same center as the</span>
 <span class=w>  </span><span class=c1>// input data.</span>
@@ -191,12 +191,12 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>transform2</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>transform2</span><span class=o>-&gt;</span><span class=n>Translate</span><span class=p>(</span><span class=n>transX</span><span class=p>,</span><span class=w> </span><span class=n>transY</span><span class=p>,</span><span class=w> </span><span class=n>transZ</span><span class=p>);</span>
 
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>tfilter2</span><span class=p>;</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>tfilter2</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>tfilter2</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>contour</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tfilter2</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform2</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tfilter2</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=w>  </span><span class=n>contour</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>tfilter2</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
+<span class=w>  </span><span class=n>contour</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>tfilter2</span><span class=o>-&gt;</span><span class=n>GetPolyDataOutput</span><span class=p>();</span>
 
 <span class=w>  </span><span class=c1>// Render the result : Input data + resulting silhouette</span>
 

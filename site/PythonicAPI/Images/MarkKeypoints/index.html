@@ -65,7 +65,7 @@ function registerListener(event, func) {
 <span class=kn>import</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonColor</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonTransforms</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransform</span>
-</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformFilter</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingSources</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageCanvasSource2D</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkInteractionStyle</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkInteractorStyleImage</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingCore</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
@@ -169,7 +169,7 @@ function registerListener(event, func) {
 </span>        <span class=n>trans</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=o>-</span><span class=n>center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>trans</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=mi>0</span><span class=p>)</span>
 
-<span class=hll>        <span class=n>tpd</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>trans</span><span class=p>)</span>
+<span class=hll>        <span class=n>tpd</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>trans</span><span class=p>)</span>
 </span>
 <span class=hll>        <span class=n>coordinate</span> <span class=o>=</span> <span class=n>vtkCoordinate</span><span class=p>(</span><span class=n>coordinate_system</span><span class=o>=</span><span class=n>Coordinate</span><span class=o>.</span><span class=n>CoordinateSystem</span><span class=o>.</span><span class=n>VTK_WORLD</span><span class=p>)</span>
 </span>

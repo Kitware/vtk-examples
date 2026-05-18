@@ -74,7 +74,7 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonMath</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkMatrix4x4</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonTransforms</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransform</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersCore</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkPolyDataNormals</span>
-</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformFilter</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkIOLegacy</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkPolyDataReader</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkInteractionStyle</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkInteractorStyleTrackballCamera</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkInteractionWidgets</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
@@ -222,7 +222,7 @@ function registerListener(event, func) {
         <span class=n>trans</span> <span class=o>=</span> <span class=n>SliceOrder</span><span class=p>()</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;orientation&#39;</span><span class=p>][</span><span class=n>name</span><span class=p>])</span>
         <span class=n>trans</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
 
-<span class=hll>        <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>trans</span><span class=p>)</span>
+<span class=hll>        <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>trans</span><span class=p>)</span>
 </span>
 <span class=hll>        <span class=n>normals</span> <span class=o>=</span> <span class=n>vtkPolyDataNormals</span><span class=p>(</span><span class=n>feature_angle</span><span class=o>=</span><span class=mf>60.0</span><span class=p>)</span>
 </span>

@@ -67,7 +67,7 @@ function registerListener(event, func) {
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonMath</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkMatrix4x4</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonTransforms</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransform</span>
-</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformFilter</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersSources</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkArrowSource</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPlaneSource</span><span class=p>,</span>
@@ -231,7 +231,7 @@ function registerListener(event, func) {
     <span class=n>transform</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=n>matrix</span><span class=p>)</span>
     <span class=n>transform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=n>length</span><span class=p>,</span> <span class=n>length</span><span class=p>,</span> <span class=n>length</span><span class=p>)</span>
     <span class=c1># Transform the polydata.</span>
-<span class=hll>    <span class=n>transform_pd</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>,</span> <span class=n>input_connection</span><span class=o>=</span><span class=n>arrow_source</span><span class=o>.</span><span class=n>output_port</span><span class=p>)</span>
+<span class=hll>    <span class=n>transform_pd</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>,</span> <span class=n>input_connection</span><span class=o>=</span><span class=n>arrow_source</span><span class=o>.</span><span class=n>output_port</span><span class=p>)</span>
 </span>    <span class=n>arrow_source</span> <span class=o>&gt;&gt;</span> <span class=n>transform_pd</span>
 
     <span class=k>return</span> <span class=n>transform_pd</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>

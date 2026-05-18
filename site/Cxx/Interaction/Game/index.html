@@ -113,7 +113,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSelectEnclosedPoints.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransform.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformFilter.h&gt;</span>
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
 
@@ -160,7 +160,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>transform</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>SetMatrix</span><span class=p>(</span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetMatrix</span><span class=p>());</span>
 
-<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>transformPolyData</span><span class=p>;</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>transformPolyData</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>transformPolyData</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>polydata</span><span class=p>);</span>
 <span class=w>    </span><span class=n>transformPolyData</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>);</span>
 <span class=w>    </span><span class=n>transformPolyData</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>

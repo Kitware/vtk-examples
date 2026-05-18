@@ -97,7 +97,7 @@ function registerListener(event, func) {
 </span><span class=p>)</span>
 <span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkCurvatures</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll>    <span class=n>vtkTransformFilter</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersModeling</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkLinearSubdivisionFilter</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersSources</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
@@ -656,7 +656,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>transform</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mf>90.0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
+<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
 </span>
     <span class=k>return</span> <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span>
 
@@ -777,7 +777,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=c1># transform.Translate(0.0, 5.0, 15.0)</span>
     <span class=n>transform</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mf>90.0</span><span class=p>)</span>
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
+<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
 </span>
     <span class=k>return</span> <span class=n>poly_data</span> <span class=o>&gt;&gt;</span> <span class=n>elevation_filter</span> <span class=o>&gt;&gt;</span> <span class=n>normals</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span>
 
@@ -797,7 +797,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>transform</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mf>90.0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
+<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
 </span>
     <span class=k>return</span> <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span>
 
@@ -819,7 +819,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>transform</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mf>90.0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
+<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
 </span>
     <span class=k>return</span> <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span>
 
@@ -844,7 +844,7 @@ function registerListener(event, func) {
 </span>    <span class=n>transform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>5.0</span><span class=p>,</span> <span class=mf>15.0</span><span class=p>)</span>
     <span class=n>transform</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mf>90.0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
+<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
 </span>
     <span class=k>return</span> <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span>
 
@@ -875,7 +875,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>transform</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mf>90.0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
+<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
 </span>
     <span class=k>return</span> <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span>
 

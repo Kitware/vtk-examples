@@ -68,7 +68,7 @@ function registerListener(event, func) {
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonMath</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkMatrix4x4</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonTransforms</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransform</span>
-</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformFilter</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersSources</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkCylinderSource</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkSphereSource</span>
@@ -83,7 +83,7 @@ function registerListener(event, func) {
 
 <span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>There are two alternative ways to apply the transform.</span>
-<span class=hll><span class=sd> 1) Use vtkTransformPolyDataFilter to create a new transformed polydata.</span>
+<span class=hll><span class=sd> 1) Use vtkTransformFilter to create a new transformed polydata.</span>
 </span><span class=sd>    This method is useful if the transformed polydata is needed</span>
 <span class=sd>      later in the pipeline</span>
 <span class=sd>    To do this, set USER_MATRIX = True</span>
@@ -153,7 +153,7 @@ function registerListener(event, func) {
     <span class=n>transform</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=n>length</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>  <span class=c1># scale along the height vector</span>
     <span class=n>transform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>.5</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>  <span class=c1># translate to start of cylinder</span>
 
-<span class=hll>    <span class=n>transform_pd</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
+<span class=hll>    <span class=n>transform_pd</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
 </span>
     <span class=c1># Create a mapper and actor for the cylinder.</span>
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>

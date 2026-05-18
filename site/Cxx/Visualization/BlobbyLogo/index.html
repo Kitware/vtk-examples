@@ -113,7 +113,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderer.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransform.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformFilter.h&gt;</span>
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
 
@@ -148,17 +148,17 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// create a transform and transform filter for each letter</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>VTransform</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>VTransformFilter</span><span class=p>;</span>
+</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>VTransformFilter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>VTransformFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>letterV</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>VTransformFilter</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>VTransform</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>TTransform</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>TTransformFilter</span><span class=p>;</span>
+</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>TTransformFilter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>TTransformFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>letterT</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>TTransformFilter</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>TTransform</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>KTransform</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>KTransformFilter</span><span class=p>;</span>
+</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>KTransformFilter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>KTransformFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>letterK</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>KTransformFilter</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>KTransform</span><span class=p>);</span>
 

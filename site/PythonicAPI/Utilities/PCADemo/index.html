@@ -77,7 +77,7 @@ function registerListener(event, func) {
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonDataModel</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTable</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonTransforms</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransform</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
-<span class=hll>    <span class=n>vtkTransformPolyDataFilter</span><span class=p>,</span>
+<span class=hll>    <span class=n>vtkTransformFilter</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkVertexGlyphFilter</span>
 </span><span class=p>)</span>
 <span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersSources</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
@@ -116,7 +116,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>transform</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>,</span> <span class=n>input_data</span><span class=o>=</span><span class=n>polydata</span><span class=p>)</span>
+<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>,</span> <span class=n>input_data</span><span class=o>=</span><span class=n>polydata</span><span class=p>)</span>
 </span>    <span class=n>transform_filter</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
 
     <span class=c1># These would be all of your &#39;x&#39; values.</span>

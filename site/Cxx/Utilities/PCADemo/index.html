@@ -115,7 +115,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTable.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransform.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformFilter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVertexGlyphFilter.h&gt;</span>
 </span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
@@ -154,7 +154,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>transform</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>30</span><span class=p>);</span>
 
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>transformFilter</span><span class=p>;</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>transformFilter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>transformFilter</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>);</span>
 <span class=w>  </span><span class=n>transformFilter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>polydata</span><span class=p>);</span>
 <span class=w>  </span><span class=n>transformFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>

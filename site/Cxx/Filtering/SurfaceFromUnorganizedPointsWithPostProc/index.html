@@ -111,7 +111,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSurfaceReconstructionFilter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransform.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformFilter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkXMLPolyDataReader.h&gt;</span>
 </span>
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
@@ -240,13 +240,13 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>transp</span><span class=o>-&gt;</span><span class=n>Scale</span><span class=p>(</span><span class=n>scale</span><span class=p>,</span><span class=w> </span><span class=n>scale</span><span class=p>,</span><span class=w> </span><span class=n>scale</span><span class=p>);</span>
 <span class=w>  </span><span class=n>transp</span><span class=o>-&gt;</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=n>pd_bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=o>-</span><span class=n>pd_bounds</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span><span class=w> </span><span class=o>-</span><span class=n>pd_bounds</span><span class=p>[</span><span class=mi>4</span><span class=p>]);</span>
 
-<span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>tpd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>tpd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
 </span>
 <span class=w>  </span><span class=n>tpd</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>pd</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tpd</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transp</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tpd</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>tpd</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>tpd</span><span class=o>-&gt;</span><span class=n>GetPolyDataOutput</span><span class=p>();</span>
 <span class=p>}</span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span><span class=w> </span><span class=s>3.12</span><span class=w> </span><span class=s>FATAL_ERROR</span><span class=p>)</span>

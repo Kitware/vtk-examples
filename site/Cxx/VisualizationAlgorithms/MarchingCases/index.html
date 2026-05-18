@@ -116,7 +116,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkThresholdPoints.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransform.h&gt;</span>
-</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTransformFilter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkTubeFilter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkUnstructuredGrid.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkVectorText.h&gt;</span>
@@ -428,7 +428,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>}</span>
 
 <span class=w>      </span><span class=c1>// Move the label to a new position.</span>
-<span class=hll><span class=w>      </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>labelTransform</span><span class=p>;</span>
+<span class=hll><span class=w>      </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>labelTransform</span><span class=p>;</span>
 </span><span class=w>      </span><span class=n>labelTransform</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>aLabelTransform</span><span class=p>);</span>
 <span class=w>      </span><span class=n>labelTransform</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
