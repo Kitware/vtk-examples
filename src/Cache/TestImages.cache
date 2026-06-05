@@ -1929,3 +1929,5 @@ https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Pytho
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/IO/TestCSVReadEdit1.png https://tinyurl.com/ykz7rckx
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/PolyData/TestCurvaturesNormalsElevations.png https://tinyurl.com/2xrvlr6j
 https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/Cxx/IO/TestTemporalHDFReader.png https://tinyurl.com/23m4wdnz
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/Visualization/TestCurvatureBandsWithGlyphs.png https://tinyurl.com/23s8bf2g
+https://github.com/Kitware/vtk-examples/blob/gh-pages/src/Testing/Baseline/PythonicAPI/Visualization/TestElevationBandsWithGlyphs.png https://tinyurl.com/25h45bnz

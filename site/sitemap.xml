@@ -9105,6 +9105,10 @@
          <lastmod>2026-06-05</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CurvatureBandsWithGlyphs/</loc>
+         <lastmod>2026-06-05</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/DepthSortPolyData/</loc>
          <lastmod>2026-06-05</lastmod>
     </url>
@@ -9114,6 +9118,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/EdgePoints/</loc>
+         <lastmod>2026-06-05</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/ElevationBandsWithGlyphs/</loc>
          <lastmod>2026-06-05</lastmod>
     </url>
     <url>
