@@ -71,7 +71,7 @@ function registerListener(event, func) {
 <span class=kn>import</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonColor</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonTransforms</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransform</span>
-</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformFilter</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersSources</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkConeSource</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkIOGeometry</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkBYUReader</span><span class=p>,</span>
@@ -156,7 +156,7 @@ function registerListener(event, func) {
         <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;horse.vtp&#39;</span><span class=p>:</span>
             <span class=n>tran</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mi>90</span><span class=p>)</span>
             <span class=n>tran</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
-<span class=hll>    <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>tran</span><span class=p>)</span>
+<span class=hll>    <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>tran</span><span class=p>)</span>
 </span>    <span class=n>surf</span> <span class=o>=</span> <span class=n>poly_data</span> <span class=o>&gt;&gt;</span> <span class=n>tf</span>
 
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>

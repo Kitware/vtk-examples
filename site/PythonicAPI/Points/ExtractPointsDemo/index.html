@@ -77,7 +77,7 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkSuperquadric</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonTransforms</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransform</span>
-</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformFilter</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersPoints</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkBoundedPointSource</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkExtractPoints</span>
@@ -139,7 +139,7 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>    <span class=n>trans</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>180</span><span class=p>)</span>
     <span class=n>trans</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=mf>0.5</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-<span class=hll>    <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>trans</span><span class=p>)</span>
+<span class=hll>    <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>trans</span><span class=p>)</span>
 </span>    <span class=n>cone</span> <span class=o>&gt;&gt;</span> <span class=n>tf</span>
 
     <span class=n>src_functions</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>

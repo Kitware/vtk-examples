@@ -80,7 +80,7 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkPolyLine</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonTransforms</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransform</span>
-</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformPolyDataFilter</span>
+</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersGeneral</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkTransformFilter</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkIOXML</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkXMLPolyDataWriter</span><span class=p>,</span> <span class=n>vtkXMLWriterBase</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkInteractionWidgets</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkCameraOrientationWidget</span><span class=p>,</span> <span class=n>vtkOrientationMarkerWidget</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingAnnotation</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkAxesActor</span><span class=p>,</span> <span class=n>vtkScalarBarActor</span>
@@ -256,7 +256,7 @@ function registerListener(event, func) {
         <span class=n>transform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
         <span class=n>transform</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>90</span> <span class=o>-</span> <span class=n>lat_mid_pt</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>,</span> <span class=n>input_data</span><span class=o>=</span><span class=n>poly_data</span><span class=p>)</span>
+<span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>,</span> <span class=n>input_data</span><span class=o>=</span><span class=n>poly_data</span><span class=p>)</span>
 </span>
     <span class=k>if</span> <span class=n>vtp</span><span class=p>:</span>
 <span class=hll>        <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>vtp_fn</span><span class=p>,</span> <span class=n>data_mode</span><span class=o>=</span><span class=n>vtkXMLWriterBase</span><span class=o>.</span><span class=n>Binary</span><span class=p>,</span>
