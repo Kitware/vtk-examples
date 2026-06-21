@@ -2829,18 +2829,6 @@
          <lastmod>2026-06-21</lastmod>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Cxx/PolyData/Curvatures/</loc>
-         <lastmod>2026-06-21</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/Cxx/PolyData/CurvaturesAdjustEdges/</loc>
-         <lastmod>2026-06-21</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/Cxx/PolyData/CurvaturesDemo/</loc>
-         <lastmod>2026-06-21</lastmod>
-    </url>
-    <url>
          <loc>https://examples.vtk.org/site/Cxx/PolyData/DataBounds/</loc>
          <lastmod>2026-06-21</lastmod>
     </url>
@@ -4138,6 +4126,18 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/Cxx/Visualization/CurvatureBandsWithGlyphs/</loc>
+         <lastmod>2026-06-21</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/Cxx/Visualization/Curvatures/</loc>
+         <lastmod>2026-06-21</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/Cxx/Visualization/CurvaturesAdjustEdges/</loc>
+         <lastmod>2026-06-21</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/Cxx/Visualization/CurvaturesDemo/</loc>
          <lastmod>2026-06-21</lastmod>
     </url>
     <url>
@@ -6701,18 +6701,6 @@
          <lastmod>2026-06-21</lastmod>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/Python/PolyData/Curvatures/</loc>
-         <lastmod>2026-06-21</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/Python/PolyData/CurvaturesAdjustEdges/</loc>
-         <lastmod>2026-06-21</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/Python/PolyData/CurvaturesDemo/</loc>
-         <lastmod>2026-06-21</lastmod>
-    </url>
-    <url>
          <loc>https://examples.vtk.org/site/Python/PolyData/ExtractPolyLinesFromPolyData/</loc>
          <lastmod>2026-06-21</lastmod>
     </url>
@@ -7190,6 +7178,18 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/Python/Visualization/CurvatureBandsWithGlyphs/</loc>
+         <lastmod>2026-06-21</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/Python/Visualization/Curvatures/</loc>
+         <lastmod>2026-06-21</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/Python/Visualization/CurvaturesAdjustEdges/</loc>
+         <lastmod>2026-06-21</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/Python/Visualization/CurvaturesDemo/</loc>
          <lastmod>2026-06-21</lastmod>
     </url>
     <url>
@@ -8569,18 +8569,6 @@
          <lastmod>2026-06-21</lastmod>
     </url>
     <url>
-         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/Curvatures/</loc>
-         <lastmod>2026-06-21</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/CurvaturesAdjustEdges/</loc>
-         <lastmod>2026-06-21</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/CurvaturesNormalsElevations/</loc>
-         <lastmod>2026-06-21</lastmod>
-    </url>
-    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/PolyData/DecimatePolyline/</loc>
          <lastmod>2026-06-21</lastmod>
     </url>
@@ -9106,6 +9094,22 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CurvatureBandsWithGlyphs/</loc>
+         <lastmod>2026-06-21</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/Curvatures/</loc>
+         <lastmod>2026-06-21</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CurvaturesAdjustEdges/</loc>
+         <lastmod>2026-06-21</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CurvaturesDemo/</loc>
+         <lastmod>2026-06-21</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Visualization/CurvaturesNormalsElevations/</loc>
          <lastmod>2026-06-21</lastmod>
     </url>
     <url>
