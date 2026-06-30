@@ -273,9 +273,9 @@ function registerListener(event, func) {
 </span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;ParaViewBlueGrayBkg&#39;</span><span class=p>,</span> <span class=mi>84</span><span class=p>,</span> <span class=mi>89</span><span class=p>,</span> <span class=mi>109</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
     <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;ParaViewWarmGrayBkg&#39;</span><span class=p>,</span> <span class=mi>98</span><span class=p>,</span> <span class=mi>93</span><span class=p>,</span> <span class=mi>90</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
 
-    <span class=n>ctf</span> <span class=o>=</span> <span class=n>get_ctf</span><span class=p>()</span>
+    <span class=n>ctf</span> <span class=o>=</span> <span class=n>get_fast_ctf</span><span class=p>(</span><span class=n>discretize</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
     <span class=c1># Rescale the color transfer function to the elevation range.</span>
-    <span class=n>rescaled_ctf</span> <span class=o>=</span> <span class=n>rescale_ctf</span><span class=p>(</span><span class=n>ctf</span><span class=p>,</span> <span class=n>new_min</span><span class=o>=</span><span class=n>elev_range</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>new_max</span><span class=o>=</span><span class=n>elev_range</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>reverse</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
+    <span class=n>rescaled_ctf</span> <span class=o>=</span> <span class=n>rescale_ctf</span><span class=p>(</span><span class=n>ctf</span><span class=p>,</span> <span class=n>new_min</span><span class=o>=</span><span class=n>elev_range</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>new_max</span><span class=o>=</span><span class=n>elev_range</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
     <span class=n>rescaled_ctf</span><span class=o>.</span><span class=n>discretize</span> <span class=o>=</span> <span class=kc>False</span>
 
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>input_connection</span><span class=o>=</span><span class=n>transform_filter</span><span class=o>.</span><span class=n>output_port</span><span class=p>,</span>
@@ -346,66 +346,49 @@ function registerListener(event, func) {
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>def</span><span class=w> </span><span class=nf>get_ctf</span><span class=p>():</span>
-    <span class=c1># name: Fast, creator: Francesca Samsel, and Alan W. Scott</span>
-    <span class=c1># interpolationspace: Lab, space: rgb</span>
-    <span class=c1># file name: Fast.json</span>
+<span class=k>def</span><span class=w> </span><span class=nf>get_fast_ctf</span><span class=p>(</span><span class=n>discretize</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>reverse</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
+<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>    Generate the color transfer function.</span>
+
+<span class=sd>    name: Fast, creator: Francesca Samsel, and Alan W. Scott</span>
+<span class=sd>    interpolationspace: Lab, space: rgb</span>
+<span class=sd>    file name: Fast.json</span>
+
+<span class=sd>    :param discretize: Selects whether the CTF is discretized or not.</span>
+<span class=sd>    :param reverse: Reverse the colors in the CTF.</span>
+<span class=sd>    :return: The color transfer function.</span>
+
+<span class=sd>    &quot;&quot;&quot;</span>
+    <span class=c1># The points and RGB values.</span>
+    <span class=n>pts_rgb</span> <span class=o>=</span> <span class=p>{</span>
+        <span class=mi>0</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.05639999999999999</span><span class=p>,</span> <span class=mf>0.05639999999999999</span><span class=p>,</span> <span class=mf>0.47</span><span class=p>),</span>
+        <span class=mf>0.17159223942480895</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.24300000000000013</span><span class=p>,</span> <span class=mf>0.4603500000000004</span><span class=p>,</span> <span class=mf>0.81</span><span class=p>),</span>
+        <span class=mf>0.2984914818394138</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.3568143826543521</span><span class=p>,</span> <span class=mf>0.7450246485363142</span><span class=p>,</span> <span class=mf>0.954367702893722</span><span class=p>),</span>
+        <span class=mf>0.4321287371255907</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.6882</span><span class=p>,</span> <span class=mf>0.93</span><span class=p>,</span> <span class=mf>0.9179099999999999</span><span class=p>),</span>
+        <span class=mf>0.5</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.8994959551205902</span><span class=p>,</span> <span class=mf>0.944646394975174</span><span class=p>,</span> <span class=mf>0.7686567142818399</span><span class=p>),</span>
+        <span class=mf>0.5882260353170073</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.957107977357604</span><span class=p>,</span> <span class=mf>0.8338185108985666</span><span class=p>,</span> <span class=mf>0.5089156299842102</span><span class=p>),</span>
+        <span class=mf>0.7061412605695164</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9275207599610714</span><span class=p>,</span> <span class=mf>0.6214389091739178</span><span class=p>,</span> <span class=mf>0.31535705838676426</span><span class=p>),</span>
+        <span class=mf>0.8476395308725272</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.3520000000000001</span><span class=p>,</span> <span class=mf>0.15999999999999998</span><span class=p>),</span>
+        <span class=mi>1</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.59</span><span class=p>,</span> <span class=mf>0.07670000000000013</span><span class=p>,</span> <span class=mf>0.11947499999999994</span><span class=p>),</span>
+    <span class=p>}</span>
+    <span class=n>indices</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>pts_rgb</span><span class=o>.</span><span class=n>keys</span><span class=p>())</span>
 
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkDiscretizableColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_LAB</span><span class=p>,</span>
 </span>                                                <span class=n>scale</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>Scale</span><span class=o>.</span><span class=n>VTK_CTF_LINEAR</span><span class=p>,</span>
                                                 <span class=n>nan_color</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>),</span>
-                                                <span class=n>number_of_values</span><span class=o>=</span><span class=mi>9</span><span class=p>,</span> <span class=n>discretize</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
+                                                <span class=n>number_of_values</span><span class=o>=</span><span class=nb>len</span><span class=p>(</span><span class=n>pts_rgb</span><span class=p>),</span> <span class=n>discretize</span><span class=o>=</span><span class=n>discretize</span><span class=p>)</span>
 
-    <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.05639999999999999</span><span class=p>,</span> <span class=mf>0.05639999999999999</span><span class=p>,</span> <span class=mf>0.47</span><span class=p>)</span>
-    <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.17159223942480895</span><span class=p>,</span> <span class=mf>0.24300000000000013</span><span class=p>,</span> <span class=mf>0.4603500000000004</span><span class=p>,</span> <span class=mf>0.81</span><span class=p>)</span>
-    <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.2984914818394138</span><span class=p>,</span> <span class=mf>0.3568143826543521</span><span class=p>,</span> <span class=mf>0.7450246485363142</span><span class=p>,</span> <span class=mf>0.954367702893722</span><span class=p>)</span>
-    <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.4321287371255907</span><span class=p>,</span> <span class=mf>0.6882</span><span class=p>,</span> <span class=mf>0.93</span><span class=p>,</span> <span class=mf>0.9179099999999999</span><span class=p>)</span>
-    <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.8994959551205902</span><span class=p>,</span> <span class=mf>0.944646394975174</span><span class=p>,</span> <span class=mf>0.7686567142818399</span><span class=p>)</span>
-    <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.5882260353170073</span><span class=p>,</span> <span class=mf>0.957107977357604</span><span class=p>,</span> <span class=mf>0.8338185108985666</span><span class=p>,</span> <span class=mf>0.5089156299842102</span><span class=p>)</span>
-    <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.7061412605695164</span><span class=p>,</span> <span class=mf>0.9275207599610714</span><span class=p>,</span> <span class=mf>0.6214389091739178</span><span class=p>,</span> <span class=mf>0.31535705838676426</span><span class=p>)</span>
-    <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.8476395308725272</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.3520000000000001</span><span class=p>,</span> <span class=mf>0.15999999999999998</span><span class=p>)</span>
-    <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mf>0.59</span><span class=p>,</span> <span class=mf>0.07670000000000013</span><span class=p>,</span> <span class=mf>0.11947499999999994</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>reverse</span><span class=p>:</span>
+        <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=k>for</span> <span class=n>index_rev</span> <span class=ow>in</span> <span class=nb>reversed</span><span class=p>(</span><span class=n>indices</span><span class=p>):</span>
+            <span class=n>index</span> <span class=o>=</span> <span class=n>indices</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span>
+            <span class=n>idx</span> <span class=o>+=</span> <span class=mi>1</span>
+            <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>index_rev</span><span class=p>,</span> <span class=o>*</span><span class=n>pts_rgb</span><span class=p>[</span><span class=n>index</span><span class=p>])</span>
+    <span class=k>else</span><span class=p>:</span>
+        <span class=k>for</span> <span class=n>index</span> <span class=ow>in</span> <span class=n>indices</span><span class=p>:</span>
+            <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>index</span><span class=p>,</span> <span class=o>*</span><span class=n>pts_rgb</span><span class=p>[</span><span class=n>index</span><span class=p>])</span>
 
     <span class=k>return</span> <span class=n>ctf</span>
-
-
-<span class=k>def</span><span class=w> </span><span class=nf>generate_new_ctf</span><span class=p>(</span><span class=n>old_ctf</span><span class=p>,</span> <span class=n>new_x</span><span class=p>,</span> <span class=n>new_rgb</span><span class=p>,</span> <span class=n>reverse</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>    Generate a new color transfer function from the old one,</span>
-<span class=sd>    adding in the new x and rgb values.</span>
-
-<span class=sd>    :param old_ctf: The old color transfer function.</span>
-<span class=sd>    :param new_x: The new color x-values.</span>
-<span class=sd>    :param new_rgb: The color RGB values.</span>
-<span class=sd>    :param reverse: If true, reverse the colors.</span>
-<span class=sd>    :return: The new color transfer function.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
-<span class=hll>    <span class=n>new_ctf</span> <span class=o>=</span> <span class=n>vtkDiscretizableColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>old_ctf</span><span class=o>.</span><span class=n>color_space</span><span class=p>,</span> <span class=n>scale</span><span class=o>=</span><span class=n>old_ctf</span><span class=o>.</span><span class=n>scale</span><span class=p>,</span>
-</span>                                                    <span class=n>nan_color</span><span class=o>=</span><span class=n>old_ctf</span><span class=o>.</span><span class=n>nan_color</span><span class=p>,</span>
-                                                    <span class=n>number_of_values</span><span class=o>=</span><span class=nb>len</span><span class=p>(</span><span class=n>new_x</span><span class=p>),</span> <span class=n>discretize</span><span class=o>=</span><span class=kc>False</span>
-                                                    <span class=p>)</span>
-    <span class=k>if</span> <span class=ow>not</span> <span class=n>reverse</span><span class=p>:</span>
-        <span class=n>new_ctf</span><span class=o>.</span><span class=n>below_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>below_range_color</span>
-        <span class=n>new_ctf</span><span class=o>.</span><span class=n>use_below_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>use_below_range_color</span>
-        <span class=n>new_ctf</span><span class=o>.</span><span class=n>above_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>above_range_color</span>
-        <span class=n>new_ctf</span><span class=o>.</span><span class=n>use_above_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>use_above_range_color</span>
-    <span class=k>else</span><span class=p>:</span>
-        <span class=n>new_ctf</span><span class=o>.</span><span class=n>below_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>above_range_color</span>
-        <span class=n>new_ctf</span><span class=o>.</span><span class=n>use_below_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>use_above_range_color</span>
-        <span class=n>new_ctf</span><span class=o>.</span><span class=n>above_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>below_range_color</span>
-        <span class=n>new_ctf</span><span class=o>.</span><span class=n>use_above_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>use_below_range_color</span>
-
-    <span class=k>if</span> <span class=ow>not</span> <span class=n>reverse</span><span class=p>:</span>
-        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>new_x</span><span class=p>)):</span>
-            <span class=n>new_ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>new_x</span><span class=p>[</span><span class=n>i</span><span class=p>],</span> <span class=o>*</span><span class=n>new_rgb</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
-    <span class=k>else</span><span class=p>:</span>
-        <span class=n>sz</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>new_x</span><span class=p>)</span>
-        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>sz</span><span class=p>):</span>
-            <span class=n>j</span> <span class=o>=</span> <span class=n>sz</span> <span class=o>-</span> <span class=p>(</span><span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
-            <span class=n>new_ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>new_x</span><span class=p>[</span><span class=n>i</span><span class=p>],</span> <span class=o>*</span><span class=n>new_rgb</span><span class=p>[</span><span class=n>j</span><span class=p>])</span>
-
-    <span class=n>new_ctf</span><span class=o>.</span><span class=n>Build</span><span class=p>()</span>
-    <span class=k>return</span> <span class=n>new_ctf</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>rescale</span><span class=p>(</span><span class=n>values</span><span class=p>,</span> <span class=n>new_min</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>new_max</span><span class=o>=</span><span class=mi>1</span><span class=p>):</span>
@@ -428,15 +411,14 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>res</span>
 
 
-<span class=k>def</span><span class=w> </span><span class=nf>rescale_ctf</span><span class=p>(</span><span class=n>ctf</span><span class=p>,</span> <span class=n>new_min</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>new_max</span><span class=o>=</span><span class=mi>1</span><span class=p>,</span> <span class=n>reverse</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
+<span class=k>def</span><span class=w> </span><span class=nf>rescale_ctf</span><span class=p>(</span><span class=n>old_ctf</span><span class=p>,</span> <span class=n>new_min</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>new_max</span><span class=o>=</span><span class=mi>1</span><span class=p>):</span>
 <span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>    Rescale and, optionally, reverse the colors in the color transfer function.</span>
+<span class=sd>    Rescale the color transfer function.</span>
 
-<span class=sd>    :param ctf: The color transfer function to rescale.</span>
+<span class=sd>    :param old_ctf: The color transfer function to rescale.</span>
 <span class=sd>    :param new_min: The new minimum value.</span>
 <span class=sd>    :param new_max: The new maximum value.</span>
-<span class=sd>    :param reverse: If true, reverse the colors.</span>
-<span class=sd>    :return: The rescaled color transfer function.</span>
+<span class=sd>    :return: A new rescaled color transfer function.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=k>if</span> <span class=n>new_min</span> <span class=o>&gt;</span> <span class=n>new_max</span><span class=p>:</span>
         <span class=n>r0</span> <span class=o>=</span> <span class=n>new_max</span>
@@ -448,15 +430,27 @@ function registerListener(event, func) {
     <span class=n>xv</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>rgbv</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>nv</span> <span class=o>=</span> <span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>*</span> <span class=mi>6</span>
-    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>ctf</span><span class=o>.</span><span class=n>GetNumberOfValues</span><span class=p>()):</span>
-        <span class=n>ctf</span><span class=o>.</span><span class=n>GetNodeValue</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>nv</span><span class=p>)</span>
+    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>GetNumberOfValues</span><span class=p>()):</span>
+        <span class=n>old_ctf</span><span class=o>.</span><span class=n>GetNodeValue</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>nv</span><span class=p>)</span>
         <span class=n>x</span> <span class=o>=</span> <span class=n>nv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
         <span class=n>rgb</span> <span class=o>=</span> <span class=n>nv</span><span class=p>[</span><span class=mi>1</span><span class=p>:</span><span class=mi>4</span><span class=p>]</span>
         <span class=n>xv</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
         <span class=n>rgbv</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>rgb</span><span class=p>)</span>
     <span class=n>xvr</span> <span class=o>=</span> <span class=n>rescale</span><span class=p>(</span><span class=n>xv</span><span class=p>,</span> <span class=n>r0</span><span class=p>,</span> <span class=n>r1</span><span class=p>)</span>
 
-    <span class=k>return</span> <span class=n>generate_new_ctf</span><span class=p>(</span><span class=n>ctf</span><span class=p>,</span> <span class=n>xvr</span><span class=p>,</span> <span class=n>rgbv</span><span class=p>,</span> <span class=n>reverse</span><span class=o>=</span><span class=n>reverse</span><span class=p>)</span>
+<span class=hll>    <span class=n>new_ctf</span> <span class=o>=</span> <span class=n>vtkDiscretizableColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>old_ctf</span><span class=o>.</span><span class=n>color_space</span><span class=p>,</span> <span class=n>scale</span><span class=o>=</span><span class=n>old_ctf</span><span class=o>.</span><span class=n>scale</span><span class=p>,</span>
+</span>                                                    <span class=n>nan_color</span><span class=o>=</span><span class=n>old_ctf</span><span class=o>.</span><span class=n>nan_color</span><span class=p>,</span>
+                                                    <span class=n>number_of_values</span><span class=o>=</span><span class=nb>len</span><span class=p>(</span><span class=n>xvr</span><span class=p>),</span> <span class=n>discretize</span><span class=o>=</span><span class=n>old_ctf</span><span class=o>.</span><span class=n>discretize</span>
+                                                    <span class=p>)</span>
+    <span class=n>new_ctf</span><span class=o>.</span><span class=n>below_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>below_range_color</span>
+    <span class=n>new_ctf</span><span class=o>.</span><span class=n>use_below_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>use_below_range_color</span>
+    <span class=n>new_ctf</span><span class=o>.</span><span class=n>above_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>above_range_color</span>
+    <span class=n>new_ctf</span><span class=o>.</span><span class=n>use_above_range_color</span> <span class=o>=</span> <span class=n>old_ctf</span><span class=o>.</span><span class=n>use_above_range_color</span>
+
+    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>xvr</span><span class=p>)):</span>
+        <span class=n>new_ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>xvr</span><span class=p>[</span><span class=n>i</span><span class=p>],</span> <span class=o>*</span><span class=n>rgbv</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
+
+    <span class=k>return</span> <span class=n>new_ctf</span>
 
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>

@@ -166,12 +166,22 @@ function registerListener(event, func) {
 </span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetSphere</span><span class=p>();</span>
 </span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetTorus</span><span class=p>();</span>
 </span>
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetSource</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>soource</span><span class=p>);</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetSource</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>source</span><span class=p>);</span>
 </span>
 <span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetDivergingLut</span><span class=p>();</span>
 </span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetDivergingLutSV</span><span class=p>();</span>
 </span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetDivergingLut1</span><span class=p>();</span>
-</span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetCTF</span><span class=p>();</span>
+</span><span class=cm>/**</span>
+<span class=cm> * @brief GetFastCTF Generate the color transfer function.</span>
+<span class=cm> * name: Fast, creator: Francesca Samsel, and Alan W. Scott</span>
+<span class=cm> * interpolationspace: Lab, space: rgb</span>
+<span class=cm> * file name: Fast.json</span>
+<span class=cm> *</span>
+<span class=cm> * @param discretize Selects whether the CTF is discretized or not.</span>
+<span class=cm> * @param reverse Reverse the colors in the CTF.</span>
+<span class=cm> * @return The color transfer function.</span>
+<span class=cm> */</span>
+<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetFastCTF</span><span class=p>();</span>
 </span>
 <span class=cm>/**</span>
 <span class=cm> *  Divide a range into bands.</span>
@@ -1106,37 +1116,59 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>lut</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetCTF</span><span class=p>()</span>
-</span><span class=p>{</span>
-<span class=w>  </span><span class=c1>// name: Fast, creator: Francesca Samsel, and Alan W. Scott</span>
-<span class=w>  </span><span class=c1>// interpolationspace: Lab, space: rgb</span>
-<span class=w>  </span><span class=c1>// file name: Fast.json</span>
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetFastCTF</span><span class=p>(</span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>discretize</span><span class=p>,</span>
+</span><span class=w>                                                         </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reverse</span><span class=p>)</span>
+<span class=p>{</span>
+
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>ptsRGB</span><span class=p>{</span>
+<span class=w>      </span><span class=p>{</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.05639999999999999</span><span class=p>,</span><span class=w> </span><span class=mf>0.05639999999999999</span><span class=p>,</span><span class=w> </span><span class=mf>0.47</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.17159223942480895</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.24300000000000013</span><span class=p>,</span><span class=w> </span><span class=mf>0.4603500000000004</span><span class=p>,</span><span class=w> </span><span class=mf>0.81</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.2984914818394138</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{</span><span class=mf>0.3568143826543521</span><span class=p>,</span><span class=w> </span><span class=mf>0.7450246485363142</span><span class=p>,</span><span class=w> </span><span class=mf>0.954367702893722</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.4321287371255907</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.6882</span><span class=p>,</span><span class=w> </span><span class=mf>0.93</span><span class=p>,</span><span class=w> </span><span class=mf>0.9179099999999999</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.8994959551205902</span><span class=p>,</span><span class=w> </span><span class=mf>0.944646394975174</span><span class=p>,</span><span class=w> </span><span class=mf>0.7686567142818399</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.5882260353170073</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{</span><span class=mf>0.957107977357604</span><span class=p>,</span><span class=w> </span><span class=mf>0.8338185108985666</span><span class=p>,</span><span class=w> </span><span class=mf>0.5089156299842102</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.7061412605695164</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{</span><span class=mf>0.9275207599610714</span><span class=p>,</span><span class=w> </span><span class=mf>0.6214389091739178</span><span class=p>,</span><span class=w> </span><span class=mf>0.31535705838676426</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.8476395308725272</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.8</span><span class=p>,</span><span class=w> </span><span class=mf>0.3520000000000001</span><span class=p>,</span><span class=w> </span><span class=mf>0.15999999999999998</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.59</span><span class=p>,</span><span class=w> </span><span class=mf>0.07670000000000013</span><span class=p>,</span><span class=w> </span><span class=mf>0.11947499999999994</span><span class=p>}},</span>
+<span class=w>  </span><span class=p>};</span>
+
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=w> </span><span class=n>indices</span><span class=p>;</span>
+<span class=w>  </span><span class=n>indices</span><span class=p>.</span><span class=n>reserve</span><span class=p>(</span><span class=n>ptsRGB</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=k>auto</span><span class=o>&amp;</span><span class=w> </span><span class=n>pair</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>ptsRGB</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>indices</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>pair</span><span class=p>.</span><span class=n>first</span><span class=p>);</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=w> </span><span class=n>indicesRev</span><span class=p>(</span><span class=n>indices</span><span class=p>.</span><span class=n>rbegin</span><span class=p>(),</span><span class=w> </span><span class=n>indices</span><span class=p>.</span><span class=n>rend</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>ctf</span><span class=p>;</span>
-</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetColorSpaceToLab</span><span class=p>();</span>
+</span><span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetColorSpaceToLab</span><span class=p>();</span>
 <span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetScaleToLinear</span><span class=p>();</span>
-
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetNanColor</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>);</span>
-
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.05639999999999999</span><span class=p>,</span><span class=w> </span><span class=mf>0.05639999999999999</span><span class=p>,</span><span class=w> </span><span class=mf>0.47</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.17159223942480895</span><span class=p>,</span><span class=w> </span><span class=mf>0.24300000000000013</span><span class=p>,</span><span class=w> </span><span class=mf>0.4603500000000004</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.81</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.2984914818394138</span><span class=p>,</span><span class=w> </span><span class=mf>0.3568143826543521</span><span class=p>,</span><span class=w> </span><span class=mf>0.7450246485363142</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.954367702893722</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.4321287371255907</span><span class=p>,</span><span class=w> </span><span class=mf>0.6882</span><span class=p>,</span><span class=w> </span><span class=mf>0.93</span><span class=p>,</span><span class=w> </span><span class=mf>0.9179099999999999</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=mf>0.8994959551205902</span><span class=p>,</span><span class=w> </span><span class=mf>0.944646394975174</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.7686567142818399</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.5882260353170073</span><span class=p>,</span><span class=w> </span><span class=mf>0.957107977357604</span><span class=p>,</span><span class=w> </span><span class=mf>0.8338185108985666</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.5089156299842102</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.7061412605695164</span><span class=p>,</span><span class=w> </span><span class=mf>0.9275207599610714</span><span class=p>,</span><span class=w> </span><span class=mf>0.6214389091739178</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.31535705838676426</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.8476395308725272</span><span class=p>,</span><span class=w> </span><span class=mf>0.8</span><span class=p>,</span><span class=w> </span><span class=mf>0.3520000000000001</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.15999999999999998</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mf>0.59</span><span class=p>,</span><span class=w> </span><span class=mf>0.07670000000000013</span><span class=p>,</span><span class=w> </span><span class=mf>0.11947499999999994</span><span class=p>);</span>
-
 <span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=mi>9</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>DiscretizeOff</span><span class=p>();</span>
+<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetNanColor</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>);</span>
+<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetDiscretize</span><span class=p>(</span><span class=n>discretize</span><span class=p>);</span>
+
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>reverse</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>idx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>indexRev</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>indicesRev</span><span class=p>)</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=k>auto</span><span class=w> </span><span class=n>index</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>indices</span><span class=p>[</span><span class=n>idx</span><span class=p>];</span>
+<span class=w>      </span><span class=n>idx</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
+<span class=w>      </span><span class=k>auto</span><span class=w> </span><span class=n>rgb</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ptsRGB</span><span class=p>[</span><span class=n>index</span><span class=p>];</span>
+<span class=w>      </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>indexRev</span><span class=p>,</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>index</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>indices</span><span class=p>)</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=k>auto</span><span class=w> </span><span class=n>rgb</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ptsRGB</span><span class=p>[</span><span class=n>index</span><span class=p>];</span>
+<span class=w>      </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>index</span><span class=p>,</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>ctf</span><span class=p>;</span>
 <span class=p>}</span>

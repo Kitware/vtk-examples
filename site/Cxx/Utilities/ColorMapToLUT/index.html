@@ -107,23 +107,58 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindow.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkRenderer.h&gt;</span>
-</span><span class=c1>// #include &lt;vtkSphereSource.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSmartPointer.h&gt;</span>
+</span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span>
+</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtk_cli11.h&gt;</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtk_fmt.h&gt;</span>
+<span class=c1>// clang-format off</span>
+<span class=cp>#include VTK_FMT(fmt/format.h)</span>
+<span class=c1>// clang-format on</span>
 
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;array&gt;</span>
+<span class=k>namespace</span><span class=w> </span><span class=nn>fs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nn>std</span><span class=o>::</span><span class=nn>filesystem</span><span class=p>;</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
-<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetCTF</span><span class=p>();</span>
-</span>
-<span class=p>}</span>
+<span class=cm>/**</span>
+<span class=cm> * @brief GetFastCTF Generate the color transfer function.</span>
+<span class=cm> *</span>
+<span class=cm> * name: Fast, creator: Francesca Samsel, and Alan W. Scott</span>
+<span class=cm> * interpolationspace: Lab, space: rgb</span>
+<span class=cm> * file name: Fast.json</span>
+<span class=cm> *</span>
+<span class=cm> * @param discretize: Selects whether the CTF is discretized or not.</span>
+<span class=cm> * @param reverse: Reverse the colors in the CTF.</span>
+<span class=cm> *</span>
+<span class=cm> * @return The color transfer function.</span>
+<span class=cm> */</span>
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span>
+</span><span class=n>GetFastCTF</span><span class=p>(</span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>discretize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reverse</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>);</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
+
+<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=w> </span><span class=n>bkg</span><span class=p>{</span><span class=mi>82</span><span class=p>,</span><span class=w> </span><span class=mi>87</span><span class=p>,</span><span class=w> </span><span class=mi>110</span><span class=p>,</span><span class=w> </span><span class=mi>255</span><span class=p>};</span>
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;ParaViewBkg&quot;</span><span class=p>,</span><span class=w> </span><span class=n>bkg</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+<span class=hll><span class=w>  </span><span class=n>CLI</span><span class=o>::</span><span class=n>App</span><span class=w> </span><span class=n>app</span><span class=p>{</span><span class=s>&quot;Display a cone using the vtkDiscretizableColorTransferFunction &quot;</span>
+</span><span class=w>               </span><span class=s>&quot;to generate the colormap.&quot;</span><span class=p>};</span>
 
+<span class=w>  </span><span class=c1>// Define options.</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>useSphere</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
+<span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-s, --sphere&quot;</span><span class=p>,</span><span class=w> </span><span class=n>useSphere</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Use a sphere.&quot;</span><span class=p>);</span>
+
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>continuous</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
+<span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-c, --continuous&quot;</span><span class=p>,</span><span class=w> </span><span class=n>continuous</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Build a continuous colormap.&quot;</span><span class=p>);</span>
+
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>reverse</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
+<span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-r, --reverse&quot;</span><span class=p>,</span><span class=w> </span><span class=n>reverse</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Reverse the colormap.&quot;</span><span class=p>);</span>
+
+<span class=w>  </span><span class=n>CLI11_PARSE</span><span class=p>(</span><span class=n>app</span><span class=p>,</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
+
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>discretize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>!</span><span class=n>continuous</span><span class=p>;</span>
+
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
+</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>ren</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;ParaViewBkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+</span><span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;ParaViewBlueGrayBkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renWin</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span><span class=w> </span><span class=mi>480</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ColorMapToLUT&quot;</span><span class=p>);</span>
@@ -134,25 +169,32 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleTrackballCamera</span><span class=o>&gt;</span><span class=w> </span><span class=n>style</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>style</span><span class=p>);</span>
 
-<span class=w>  </span><span class=c1>// vtkNew&lt;vtkSphereSource&gt; sphere;</span>
-<span class=w>  </span><span class=c1>// sphere-&gt;SetThetaResolution(64);</span>
-<span class=w>  </span><span class=c1>// sphere-&gt;SetPhiResolution(32);</span>
-<span class=w>  </span><span class=c1>// auto bounds = sphere-&gt;GetOutput()-&gt;GetBounds();</span>
-
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkConeSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>cone</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
-<span class=w>  </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetDirection</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetHeight</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
-<span class=w>  </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>bounds</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetBounds</span><span class=p>();</span>
+<span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>source</span><span class=p>;</span>
+</span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>useSphere</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphere</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>sphere</span><span class=o>-&gt;</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=mi>64</span><span class=p>);</span>
+<span class=w>    </span><span class=n>sphere</span><span class=o>-&gt;</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>32</span><span class=p>);</span>
+<span class=w>    </span><span class=n>sphere</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
+<span class=w>    </span><span class=n>source</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sphere</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkConeSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>cone</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
+<span class=w>    </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetDirection</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
+<span class=w>    </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetHeight</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+<span class=w>    </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
+<span class=w>    </span><span class=n>source</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>bounds</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>source</span><span class=o>-&gt;</span><span class=n>GetBounds</span><span class=p>();</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkElevationFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>elevation_filter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>elevation_filter</span><span class=o>-&gt;</span><span class=n>SetLowPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>bounds</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
 <span class=w>  </span><span class=n>elevation_filter</span><span class=o>-&gt;</span><span class=n>SetHighPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>bounds</span><span class=p>[</span><span class=mi>3</span><span class=p>],</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>elevation_filter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=w>  </span><span class=c1>// elevation_filter-&gt;SetInputConnection(sphere-&gt;GetOutputPort());</span>
+<span class=w>  </span><span class=n>elevation_filter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>source</span><span class=p>);</span>
 
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>ctf</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetCTF</span><span class=p>();</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>ctf</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetFastCTF</span><span class=p>(</span><span class=n>discretize</span><span class=p>,</span><span class=w> </span><span class=n>reverse</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>mapper</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>elevation_filter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
@@ -172,37 +214,59 @@ function registerListener(event, func) {
 <span class=p>}</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
-<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetCTF</span><span class=p>()</span>
-</span><span class=p>{</span>
-<span class=w>  </span><span class=c1>// name: Fast, creator: Francesca Samsel, and Alan W. Scott</span>
-<span class=w>  </span><span class=c1>// interpolationspace: Lab, space: rgb</span>
-<span class=w>  </span><span class=c1>// file name: Fast.json</span>
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>GetFastCTF</span><span class=p>(</span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>discretize</span><span class=p>,</span>
+</span><span class=w>                                                         </span><span class=kt>bool</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reverse</span><span class=p>)</span>
+<span class=p>{</span>
+
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>ptsRGB</span><span class=p>{</span>
+<span class=w>      </span><span class=p>{</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.05639999999999999</span><span class=p>,</span><span class=w> </span><span class=mf>0.05639999999999999</span><span class=p>,</span><span class=w> </span><span class=mf>0.47</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.17159223942480895</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.24300000000000013</span><span class=p>,</span><span class=w> </span><span class=mf>0.4603500000000004</span><span class=p>,</span><span class=w> </span><span class=mf>0.81</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.2984914818394138</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{</span><span class=mf>0.3568143826543521</span><span class=p>,</span><span class=w> </span><span class=mf>0.7450246485363142</span><span class=p>,</span><span class=w> </span><span class=mf>0.954367702893722</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.4321287371255907</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.6882</span><span class=p>,</span><span class=w> </span><span class=mf>0.93</span><span class=p>,</span><span class=w> </span><span class=mf>0.9179099999999999</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.8994959551205902</span><span class=p>,</span><span class=w> </span><span class=mf>0.944646394975174</span><span class=p>,</span><span class=w> </span><span class=mf>0.7686567142818399</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.5882260353170073</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{</span><span class=mf>0.957107977357604</span><span class=p>,</span><span class=w> </span><span class=mf>0.8338185108985666</span><span class=p>,</span><span class=w> </span><span class=mf>0.5089156299842102</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.7061412605695164</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{</span><span class=mf>0.9275207599610714</span><span class=p>,</span><span class=w> </span><span class=mf>0.6214389091739178</span><span class=p>,</span><span class=w> </span><span class=mf>0.31535705838676426</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mf>0.8476395308725272</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.8</span><span class=p>,</span><span class=w> </span><span class=mf>0.3520000000000001</span><span class=p>,</span><span class=w> </span><span class=mf>0.15999999999999998</span><span class=p>}},</span>
+<span class=w>      </span><span class=p>{</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=p>{</span><span class=mf>0.59</span><span class=p>,</span><span class=w> </span><span class=mf>0.07670000000000013</span><span class=p>,</span><span class=w> </span><span class=mf>0.11947499999999994</span><span class=p>}},</span>
+<span class=w>  </span><span class=p>};</span>
+
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=w> </span><span class=n>indices</span><span class=p>;</span>
+<span class=w>  </span><span class=n>indices</span><span class=p>.</span><span class=n>reserve</span><span class=p>(</span><span class=n>ptsRGB</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
+<span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=k>auto</span><span class=o>&amp;</span><span class=w> </span><span class=n>pair</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>ptsRGB</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>indices</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>pair</span><span class=p>.</span><span class=n>first</span><span class=p>);</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=w> </span><span class=n>indicesRev</span><span class=p>(</span><span class=n>indices</span><span class=p>.</span><span class=n>rbegin</span><span class=p>(),</span><span class=w> </span><span class=n>indices</span><span class=p>.</span><span class=n>rend</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDiscretizableColorTransferFunction</span><span class=o>&gt;</span><span class=w> </span><span class=n>ctf</span><span class=p>;</span>
-</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetColorSpaceToLab</span><span class=p>();</span>
+</span><span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetColorSpaceToLab</span><span class=p>();</span>
 <span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetScaleToLinear</span><span class=p>();</span>
-
+<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=n>ptsRGB</span><span class=p>.</span><span class=n>size</span><span class=p>());</span>
 <span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetNanColor</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>);</span>
+<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetDiscretize</span><span class=p>(</span><span class=n>discretize</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.05639999999999999</span><span class=p>,</span><span class=w> </span><span class=mf>0.05639999999999999</span><span class=p>,</span><span class=w> </span><span class=mf>0.47</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.17159223942480895</span><span class=p>,</span><span class=w> </span><span class=mf>0.24300000000000013</span><span class=p>,</span><span class=w> </span><span class=mf>0.4603500000000004</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.81</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.2984914818394138</span><span class=p>,</span><span class=w> </span><span class=mf>0.3568143826543521</span><span class=p>,</span><span class=w> </span><span class=mf>0.7450246485363142</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.954367702893722</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.4321287371255907</span><span class=p>,</span><span class=w> </span><span class=mf>0.6882</span><span class=p>,</span><span class=w> </span><span class=mf>0.93</span><span class=p>,</span><span class=w> </span><span class=mf>0.9179099999999999</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=mf>0.8994959551205902</span><span class=p>,</span><span class=w> </span><span class=mf>0.944646394975174</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.7686567142818399</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.5882260353170073</span><span class=p>,</span><span class=w> </span><span class=mf>0.957107977357604</span><span class=p>,</span><span class=w> </span><span class=mf>0.8338185108985666</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.5089156299842102</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.7061412605695164</span><span class=p>,</span><span class=w> </span><span class=mf>0.9275207599610714</span><span class=p>,</span><span class=w> </span><span class=mf>0.6214389091739178</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.31535705838676426</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.8476395308725272</span><span class=p>,</span><span class=w> </span><span class=mf>0.8</span><span class=p>,</span><span class=w> </span><span class=mf>0.3520000000000001</span><span class=p>,</span>
-<span class=w>                   </span><span class=mf>0.15999999999999998</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mf>0.59</span><span class=p>,</span><span class=w> </span><span class=mf>0.07670000000000013</span><span class=p>,</span><span class=w> </span><span class=mf>0.11947499999999994</span><span class=p>);</span>
-
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=mi>9</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>DiscretizeOff</span><span class=p>();</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>reverse</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>idx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>indexRev</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>indicesRev</span><span class=p>)</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=k>auto</span><span class=w> </span><span class=n>index</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>indices</span><span class=p>[</span><span class=n>idx</span><span class=p>];</span>
+<span class=w>      </span><span class=n>idx</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
+<span class=w>      </span><span class=k>auto</span><span class=w> </span><span class=n>rgb</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ptsRGB</span><span class=p>[</span><span class=n>index</span><span class=p>];</span>
+<span class=w>      </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>indexRev</span><span class=p>,</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>index</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>indices</span><span class=p>)</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=k>auto</span><span class=w> </span><span class=n>rgb</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ptsRGB</span><span class=p>[</span><span class=n>index</span><span class=p>];</span>
+<span class=w>      </span><span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>index</span><span class=p>,</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span><span class=w> </span><span class=n>rgb</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>ctf</span><span class=p>;</span>
 <span class=p>}</span>
