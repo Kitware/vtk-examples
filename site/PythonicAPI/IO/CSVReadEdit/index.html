@@ -264,13 +264,10 @@ function registerListener(event, func) {
         <span class=n>writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;ParaViewBlueGrayBkg&#39;</span><span class=p>,</span> <span class=mi>84</span><span class=p>,</span> <span class=mi>89</span><span class=p>,</span> <span class=mi>109</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;ParaViewWarmGrayBkg&#39;</span><span class=p>,</span> <span class=mi>98</span><span class=p>,</span> <span class=mi>93</span><span class=p>,</span> <span class=mi>90</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
-
+</span>
     <span class=n>ctf</span> <span class=o>=</span> <span class=n>get_fast_ctf</span><span class=p>(</span><span class=n>discretize</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
     <span class=c1># Rescale the color transfer function to the elevation range.</span>
     <span class=n>rescaled_ctf</span> <span class=o>=</span> <span class=n>rescale_ctf</span><span class=p>(</span><span class=n>ctf</span><span class=p>,</span> <span class=n>new_min</span><span class=o>=</span><span class=n>elev_range</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>new_max</span><span class=o>=</span><span class=n>elev_range</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
-    <span class=n>rescaled_ctf</span><span class=o>.</span><span class=n>discretize</span> <span class=o>=</span> <span class=kc>False</span>
 
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>input_connection</span><span class=o>=</span><span class=n>transform_filter</span><span class=o>.</span><span class=n>output_port</span><span class=p>,</span>
 </span>                               <span class=n>lookup_table</span><span class=o>=</span><span class=n>rescaled_ctf</span><span class=p>,</span>
@@ -339,6 +336,7 @@ function registerListener(event, func) {
 
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
+
 <span class=k>def</span><span class=w> </span><span class=nf>get_fast_ctf</span><span class=p>(</span><span class=n>discretize</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>reverse</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
 <span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>    Generate the color transfer function.</span>
@@ -350,8 +348,8 @@ function registerListener(event, func) {
 <span class=sd>    :param discretize: Selects whether the CTF is discretized or not.</span>
 <span class=sd>    :param reverse: Reverse the colors in the CTF.</span>
 <span class=sd>    :return: The color transfer function.</span>
-
 <span class=sd>    &quot;&quot;&quot;</span>
+
     <span class=c1># The points and RGB values.</span>
     <span class=n>pts_rgb</span> <span class=o>=</span> <span class=p>{</span>
         <span class=mi>0</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.05639999999999999</span><span class=p>,</span> <span class=mf>0.05639999999999999</span><span class=p>,</span> <span class=mf>0.47</span><span class=p>),</span>
@@ -364,25 +362,20 @@ function registerListener(event, func) {
         <span class=mf>0.8476395308725272</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.3520000000000001</span><span class=p>,</span> <span class=mf>0.15999999999999998</span><span class=p>),</span>
         <span class=mi>1</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.59</span><span class=p>,</span> <span class=mf>0.07670000000000013</span><span class=p>,</span> <span class=mf>0.11947499999999994</span><span class=p>),</span>
     <span class=p>}</span>
-    <span class=n>indices</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>pts_rgb</span><span class=o>.</span><span class=n>keys</span><span class=p>())</span>
+    <span class=n>indices</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=nb>list</span><span class=p>(</span><span class=n>pts_rgb</span><span class=o>.</span><span class=n>keys</span><span class=p>()))</span>
 
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkDiscretizableColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_LAB</span><span class=p>,</span>
 </span>                                                <span class=n>scale</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>Scale</span><span class=o>.</span><span class=n>VTK_CTF_LINEAR</span><span class=p>,</span>
                                                 <span class=n>nan_color</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>),</span>
                                                 <span class=n>number_of_values</span><span class=o>=</span><span class=nb>len</span><span class=p>(</span><span class=n>pts_rgb</span><span class=p>),</span> <span class=n>discretize</span><span class=o>=</span><span class=n>discretize</span><span class=p>)</span>
-
     <span class=k>if</span> <span class=n>reverse</span><span class=p>:</span>
-        <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span>
-        <span class=k>for</span> <span class=n>index_rev</span> <span class=ow>in</span> <span class=nb>reversed</span><span class=p>(</span><span class=n>indices</span><span class=p>):</span>
-            <span class=n>index</span> <span class=o>=</span> <span class=n>indices</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span>
-            <span class=n>idx</span> <span class=o>+=</span> <span class=mi>1</span>
-            <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>index_rev</span><span class=p>,</span> <span class=o>*</span><span class=n>pts_rgb</span><span class=p>[</span><span class=n>index</span><span class=p>])</span>
+        <span class=k>for</span> <span class=n>index</span><span class=p>,</span> <span class=p>(</span><span class=n>key</span><span class=p>,</span> <span class=n>value</span><span class=p>)</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=nb>reversed</span><span class=p>(</span><span class=n>pts_rgb</span><span class=o>.</span><span class=n>items</span><span class=p>())):</span>
+            <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>indices</span><span class=p>[</span><span class=n>index</span><span class=p>],</span> <span class=o>*</span><span class=n>value</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=k>for</span> <span class=n>index</span> <span class=ow>in</span> <span class=n>indices</span><span class=p>:</span>
             <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>index</span><span class=p>,</span> <span class=o>*</span><span class=n>pts_rgb</span><span class=p>[</span><span class=n>index</span><span class=p>])</span>
 
     <span class=k>return</span> <span class=n>ctf</span>
-
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>rescale</span><span class=p>(</span><span class=n>values</span><span class=p>,</span> <span class=n>new_min</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>new_max</span><span class=o>=</span><span class=mi>1</span><span class=p>):</span>
@@ -445,8 +438,6 @@ function registerListener(event, func) {
         <span class=n>new_ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=n>xvr</span><span class=p>[</span><span class=n>i</span><span class=p>],</span> <span class=o>*</span><span class=n>rgbv</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
 
     <span class=k>return</span> <span class=n>new_ctf</span>
-
-
 
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
