@@ -169,6 +169,25 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=n>qApp</span><span class=o>-&gt;</span><span class=n>exit</span><span class=p>();</span>
 <span class=p>}</span>
+</code></pre></div> <p><strong>ShareCameraQtDriver.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QApplication&gt;</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QSurfaceFormat&gt;</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QVTKOpenGLNativeWidget.h&gt;</span>
+
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;ShareCameraQt.h&quot;</span>
+
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=c1>// needed to ensure appropriate OpenGL context is created for VTK rendering.</span>
+<span class=w>  </span><span class=n>QSurfaceFormat</span><span class=o>::</span><span class=n>setDefaultFormat</span><span class=p>(</span><span class=n>QVTKOpenGLNativeWidget</span><span class=o>::</span><span class=n>defaultFormat</span><span class=p>());</span>
+
+<span class=w>  </span><span class=c1>// QT Stuff</span>
+<span class=w>  </span><span class=n>QApplication</span><span class=w> </span><span class=n>app</span><span class=p>(</span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
+
+<span class=w>  </span><span class=n>ShareCameraQt</span><span class=w> </span><span class=n>shareCameraQt</span><span class=p>;</span>
+<span class=w>  </span><span class=n>shareCameraQt</span><span class=p>.</span><span class=n>show</span><span class=p>();</span>
+
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>app</span><span class=p>.</span><span class=n>exec</span><span class=p>();</span>
+<span class=p>}</span>
 </code></pre></div> <p><strong>ShareCameraQt.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef ShareCameraQt_H</span>
 <span class=cp>#define ShareCameraQt_H</span>
 
@@ -312,25 +331,6 @@ function registerListener(event, func) {
 <span class=w> </span><span class=o>&lt;/</span><span class=n>resources</span><span class=o>&gt;</span>
 <span class=w> </span><span class=o>&lt;</span><span class=n>connections</span><span class=o>/&gt;</span>
 <span class=o>&lt;/</span><span class=n>ui</span><span class=o>&gt;</span>
-</code></pre></div> <p><strong>ShareCameraQtDriver.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QApplication&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QSurfaceFormat&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;QVTKOpenGLNativeWidget.h&gt;</span>
-
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;ShareCameraQt.h&quot;</span>
-
-<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
-<span class=p>{</span>
-<span class=w>  </span><span class=c1>// needed to ensure appropriate OpenGL context is created for VTK rendering.</span>
-<span class=w>  </span><span class=n>QSurfaceFormat</span><span class=o>::</span><span class=n>setDefaultFormat</span><span class=p>(</span><span class=n>QVTKOpenGLNativeWidget</span><span class=o>::</span><span class=n>defaultFormat</span><span class=p>());</span>
-
-<span class=w>  </span><span class=c1>// QT Stuff</span>
-<span class=w>  </span><span class=n>QApplication</span><span class=w> </span><span class=n>app</span><span class=p>(</span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
-
-<span class=w>  </span><span class=n>ShareCameraQt</span><span class=w> </span><span class=n>shareCameraQt</span><span class=p>;</span>
-<span class=w>  </span><span class=n>shareCameraQt</span><span class=p>.</span><span class=n>show</span><span class=p>();</span>
-
-<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>app</span><span class=p>.</span><span class=n>exec</span><span class=p>();</span>
-<span class=p>}</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span><span class=w> </span><span class=s>3.12</span><span class=w> </span><span class=s>FATAL_ERROR</span><span class=p>)</span>
 
 <span class=nb>if</span><span class=p>(</span><span class=s>POLICY</span><span class=w> </span><span class=s>CMP0020</span><span class=p>)</span>
